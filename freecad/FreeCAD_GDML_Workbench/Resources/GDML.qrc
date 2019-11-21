@@ -1,0 +1,8 @@
+<RCC>
+    <qresource>
+       <file>icons/preferences-gdml.svg</file>
+       <file>ui/openscadprefs-base.ui</file>
+       <file>ui/GDML-base.ui</file>
+    </qresource>
+</RCC>
+
