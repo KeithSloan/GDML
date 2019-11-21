@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <isotope N="12" Z="6" name="C120x55d1238febb0">
+      <atom unit="g/mole" value="12"/>
+    </isotope>
+    <isotope N="13" Z="6" name="C130x55d1238fec20">
+      <atom unit="g/mole" value="13.0034"/>
+    </isotope>
+    <element name="C0x55d123ce3330">
+      <fraction n="0.9893" ref="C120x55d1238febb0"/>
+      <fraction n="0.0107" ref="C130x55d1238fec20"/>
+    </element>
+    <isotope N="14" Z="7" name="N140x55d1238b6dc0">
+      <atom unit="g/mole" value="14.0031"/>
+    </isotope>
+    <isotope N="15" Z="7" name="N150x55d1238b6e40">
+      <atom unit="g/mole" value="15.0001"/>
+    </isotope>
+    <element name="N0x55d123cff380">
+      <fraction n="0.99632" ref="N140x55d1238b6dc0"/>
+      <fraction n="0.00368" ref="N150x55d1238b6e40"/>
+    </element>
+    <isotope N="16" Z="8" name="O160x55d1238fd180">
+      <atom unit="g/mole" value="15.9949"/>
+    </isotope>
+    <isotope N="17" Z="8" name="O170x55d1238fd220">
+      <atom unit="g/mole" value="16.9991"/>
+    </isotope>
+    <isotope N="18" Z="8" name="O180x55d1238fd290">
+      <atom unit="g/mole" value="17.9992"/>
+    </isotope>
+    <element name="O0x55d1238fd2e0">
+      <fraction n="0.99757" ref="O160x55d1238fd180"/>
+      <fraction n="0.00038" ref="O170x55d1238fd220"/>
+      <fraction n="0.00205" ref="O180x55d1238fd290"/>
+    </element>
+    <isotope N="36" Z="18" name="Ar360x55d1238fd4c0">
+      <atom unit="g/mole" value="35.9675"/>
+    </isotope>
+    <isotope N="38" Z="18" name="Ar380x55d1238fd530">
+      <atom unit="g/mole" value="37.9627"/>
+    </isotope>
+    <isotope N="40" Z="18" name="Ar400x55d1238fd1d0">
+      <atom unit="g/mole" value="39.9624"/>
+    </isotope>
+    <element name="Ar0x55d1238fd5a0">
+      <fraction n="0.003365" ref="Ar360x55d1238fd4c0"/>
+      <fraction n="0.000632" ref="Ar380x55d1238fd530"/>
+      <fraction n="0.996003" ref="Ar400x55d1238fd1d0"/>
+    </element>
+    <material name="G4_AIR0x55d123d17ea0" state="gas">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="85.7"/>
+      <D unit="g/cm3" value="0.00120479"/>
+      <fraction n="0.000124000124000124" ref="C0x55d123ce3330"/>
+      <fraction n="0.755267755267755" ref="N0x55d123cff380"/>
+      <fraction n="0.231781231781232" ref="O0x55d1238fd2e0"/>
+      <fraction n="0.0128270128270128" ref="Ar0x55d1238fd5a0"/>
+    </material>
+  </materials>
+
+  <solids>
+    <twistedtubs aunit="deg" lunit="mm" midinnerrad="86.6025403784439" midouterrad="129.903810567666" name="twistedtube0x55d123d19e30" negativeEndz="-200" phi="90" positiveEndz="200" twistedangle="60"/>
+    <box lunit="mm" name="world0x55d123d0daa0" x="2000" y="2000" z="2000"/>
+  </solids>
+
+  <structure>
+    <volume name="dummy0x55d123905920">
+      <materialref ref="G4_AIR0x55d123d17ea0"/>
+      <solidref ref="twistedtube0x55d123d19e30"/>
+    </volume>
+    <volume name="world0x55d123cff820">
+      <materialref ref="G4_AIR0x55d123d17ea0"/>
+      <solidref ref="world0x55d123d0daa0"/>
+      <physvol name="dummy0x55d123905820">
+        <volumeref ref="dummy0x55d123905920"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="world0x55d123cff820"/>
+  </setup>
+
+</gdml>

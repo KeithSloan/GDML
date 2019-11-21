@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+       <file>ui/openscadprefs-base.ui</file>
+       <file>ui/GDML-base.ui</file>
+    </qresource>
+</RCC>
+

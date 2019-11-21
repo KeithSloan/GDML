@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+<define>
+ <position name="pos1" unit="mm" x="105.0" y="5.0" z="5.0" />
+ <position name="pos2" unit="mm" x="5.0" y="5.0" z="5.0" />
+</define>>
+<materials>
+    <isotope N="12" Z="6" name="C120x56070ee874f0">
+      <atom unit="g/mole" value="12" />
+    </isotope>
+  <isotope N="13" Z="6" name="C130x56070ee940b0">
+      <atom unit="g/mole" value="13.0034" />
+    </isotope>
+  <isotope N="14" Z="7" name="N140x56070ee89030">
+      <atom unit="g/mole" value="14.0031" />
+    </isotope>
+  <isotope N="15" Z="7" name="N150x56070ee8feb0">
+      <atom unit="g/mole" value="15.0001" />
+    </isotope>
+  <isotope N="16" Z="8" name="O160x56070ee8fa60">
+      <atom unit="g/mole" value="15.9949" />
+    </isotope>
+  <isotope N="17" Z="8" name="O170x56070ee8a570">
+      <atom unit="g/mole" value="16.9991" />
+    </isotope>
+  <isotope N="18" Z="8" name="O180x56070ee90cb0">
+      <atom unit="g/mole" value="17.9992" />
+    </isotope>
+  <isotope N="50" Z="24" name="Cr500x56070ee875e0">
+      <atom unit="g/mole" value="49.946" />
+    </isotope>
+  <isotope N="52" Z="24" name="Cr520x56070ee897e0">
+      <atom unit="g/mole" value="51.9405" />
+    </isotope>
+  <isotope N="53" Z="24" name="Cr530x56070ee89830">
+      <atom unit="g/mole" value="52.9407" />
+    </isotope>
+  <isotope N="54" Z="24" name="Cr540x56070ee89880">
+      <atom unit="g/mole" value="53.9389" />
+    </isotope>
+  <isotope N="58" Z="28" name="Ni580x56070ee899c0">
+      <atom unit="g/mole" value="57.9353" />
+    </isotope>
+  <isotope N="60" Z="28" name="Ni600x56070ee89a10">
+      <atom unit="g/mole" value="59.9308" />
+    </isotope>
+  <isotope N="61" Z="28" name="Ni610x56070ee89a60">
+      <atom unit="g/mole" value="61.9311" />
+    </isotope>
+  <isotope N="62" Z="28" name="Ni620x56070ee89ab0">
+      <atom unit="g/mole" value="61.9283" />
+    </isotope>
+  <isotope N="64" Z="28" name="Ni640x56070ee87ca0">
+      <atom unit="g/mole" value="63.928" />
+    </isotope>
+  <isotope N="36" Z="18" name="Ar360x56070ee8aba0">
+      <atom unit="g/mole" value="35.9675" />
+    </isotope>
+  <isotope N="38" Z="18" name="Ar380x56070ee87400">
+      <atom unit="g/mole" value="37.9627" />
+    </isotope>
+  <isotope N="40" Z="18" name="Ar400x56070ee90c20">
+      <atom unit="g/mole" value="37.9627" />
+    </isotope>
+  <isotope N="54" Z="26" name="Fe540x56070ee87130">
+      <atom unit="g/mole" value="53.9396" />
+    </isotope>
+  <isotope N="56" Z="26" name="Fe560x56070ee95300">
+      <atom unit="g/mole" value="55.9349" />
+    </isotope>
+  <isotope N="57" Z="26" name="Fe570x56070ee8eff0">
+      <atom unit="g/mole" value="56.9354" />
+    </isotope>
+  <isotope N="58" Z="26" name="Fe580x56070ee8d300">
+      <atom unit="g/mole" value="57.9333" />
+    </isotope>
+  <element name="Iron0x56070eea0880">
+      <fraction n="0.05845" ref="Fe540x56070ee87130" />
+    <fraction n="0.91754" ref="Fe560x56070ee95300" />
+    <fraction n="0.02119" ref="Fe570x56070ee8eff0" />
+    <fraction n="0.00282" ref="Fe580x56070ee8d300" />
+    </element>
+  <element name="Chromium0x56070eea004">
+      <fraction n="0.04345" ref="Cr500x56070ee875e0" />
+    <fraction n="0.83789" ref="Cr520x56070ee897e0" />
+    <fraction n="0.09501" ref="Cr530x56070ee89830" />
+    <fraction n="0.02365" ref="Cr540x56070ee89880" />
+    </element>
+  <element name="Nickel0x56070ee81420">
+      <fraction n="0.680769" ref="Ni580x56070ee899c0" />
+    <fraction n="0.262231" ref="Ni600x56070ee89a10" />
+    <fraction n="0.011399" ref="Ni610x56070ee89a60" />
+    <fraction n="0.036345" ref="Ni620x56070ee89ab0" />
+    <fraction n="0.009256" ref="Ni640x56070ee87ca0" />
+    </element>
+  <element name="N0x56070ee94e30">
+      <fraction n="0.99632" ref="N140x56070ee89030" />
+    <fraction n="0.00368" ref="N150x56070ee8feb0" />
+    </element>
+  <element name="O0x56070eea0370">
+      <fraction n="0.99757" ref="O160x56070ee8fa60" />
+    <fraction n="0.00038" ref="O170x56070ee8a570" />
+    <fraction n="0.00205" ref="O180x56070ee90cb0" />
+    </element>
+  <element name="Ar0x56070eea07c0">
+      <fraction n="0.003365" ref="Ar360x56070ee8aba0" />
+    <fraction n="0.000632" ref="Ar380x56070ee87400" />
+    <fraction n="0.996003" ref="Ar400x56070ee90c20" />
+    </element>
+  <material name="SSteel0x56070ee87d10">
+      <T unit="K" value="293.15" />
+    <MEE unit="eV" value="282.530633667015" />
+    <D unit="g/cm3" value="1.286547719061e-18" />
+    <fraction n="0.74" ref="Iron0x56070eea0880" />
+    <fraction n="0.18" ref="Chromium0x56070eea004" />
+    <fraction n="0.08" ref="Nickel0x56070ee81420" />
+    </material>
+  <material name="G4_AIR0x56070ee81710" state="gas">
+      <T unit="K" value="293.15" />
+    <MEE unit="eV" value="85.7" />
+    <D unit="g/cm3" value="0.00120479" />
+    <fraction n="0.75" ref="N0x56070ee94e30" />
+    <fraction n="0.24" ref="O0x56070eea0370" />
+    <fraction n="0.01" ref="Ar0x56070eea07c0" />
+    </material>
+  </materials>
+
+  <solids>
+
+	  <box name = "WorldBox" x="500" y="500" z="500" />	  
+
+<xtru name = "refSol_50002" lunit= "mm" >
+ <twoDimVertex x="21.276183953896" y="40" />
+ <twoDimVertex x="-67.6537069510008" y="21.9070092079" />
+ <twoDimVertex x="-5" y="-40" />
+ <twoDimVertex x="5" y="-40" />
+ <section zOrder="1" zPosition="-38.895909044445" xOffset="0" yOffset="0" scalingFactor="1" />
+ <section zOrder="2" zPosition="38.895909044445" xOffset="0" yOffset="0" scalingFactor="1"/>
+</xtru>
+
+ <xtru name = "reflectorSol_50002" lunit= "mm" >
+ <twoDimVertex x="21.9149147770604" y="40.1299512546856" />
+ <twoDimVertex x="21.276183953896" y="40" />
+ <twoDimVertex x="5" y="-40" />
+ <twoDimVertex x="5.61229194158562" y="-40" />
+ <section zOrder="1" zPosition="-38.895909044445" xOffset="0" yOffset="0" scalingFactor="1" />
+ <section zOrder="2" zPosition="38.895909044445" xOffset="0" yOffset="0" scalingFactor="1"/>
+</xtru>
+	
+<xtru name = "refLogicSol_50002" lunit= "mm" >
+ <twoDimVertex x="25.1085688928823" y="40.7797075281135" />
+ <twoDimVertex x="-70.5934810648633" y="21.3089054046484" />
+ <twoDimVertex x="-8.06145970792809" y="-40" />
+ <twoDimVertex x="8.6737516495137" y="-40" />
+ <section zOrder="1" zPosition="-41.895909044445" xOffset="0" yOffset="0" scalingFactor="1" />
+ <section zOrder="2" zPosition="41.895909044445" xOffset="0" yOffset="0" scalingFactor="1"/>
+</xtru>
+
+<subtraction name ="refSolSkin1_50002">
+   <first ref="refSolSkin_50002"/>
+   <second ref="reflectorSol_50002"/>
+   <position name="reflectorSolPos_50002" unit="mm" x="0" y="0" z="0"/>
+   <rotation name="reflectorSolRot_50002" unit="rad" x="0" y="0" z="0"/>
+</subtraction>
+
+<subtraction name ="refSolSkin_50002">
+        <first ref="refLogicSol_50002"/>
+        <second ref="refSol_50002"/>
+        <position unit="mm" name="refSolPos_50002" x="0" y="0" z="0"/>
+        <rotation unit="rad" name="refSolRot_50002" x="0" y="0" z="0"/>
+</subtraction>
+
+
+
+</solids>
+<structure>
+ <volume name="v1">
+  <materialref ref="SSteel0x56070ee87d10" />
+  <solidref ref="refSolSkin1_50002"/>
+ </volume>
+ <volume name="worldVol">
+  <materialref ref="G4_AIR0x56070ee81710"/>
+  <solidref ref="WorldBox"/>
+  <physvol>
+     <volumeref ref="v1"/>
+     <positionref ref="pos1"/>
+  </physvol>
+ </volume>  
+</structure>
+<setup name="Default" version="1.0">
+  <world ref="worldVol" />
+</setup>
+</gdml>
