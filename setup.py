@@ -16,12 +16,14 @@ def mysetup(requires) :
       include_package_data=True
       include_package_data=True)
 
+# Still not clear if under linux one can just install lxml with pip
+# or sudo apt-get install python3-lxml
 
-
-import os
-if 'posix' in os.name:
-    mysetup('lxml')
-
-else:
-    mysetup('python3-lxml')
+mysetup('lxml')
+#import os
+#if 'posix' in os.name:
+#    mysetup('lxml')
+#
+#else:
+#    mysetup('python3-lxml')
 
