@@ -330,8 +330,8 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mysphere.Placement.Rotation)
     # set ViewProvider before setDisplay
-    setDisplayMode(mysphere,displayMode)
     ViewProvider(mysphere.ViewObject)
+    setDisplayMode(mysphere,displayMode)
     return mysphere
 
 def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
