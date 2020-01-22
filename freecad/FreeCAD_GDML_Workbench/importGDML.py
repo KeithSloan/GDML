@@ -133,6 +133,7 @@ def setDisplayMode(obj,mode):
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     from GDMLObjects import GDMLBox, ViewProvider
     GDMLShared.trace("CreateBox : ")
+    #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
     mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
     x = GDMLShared.getVal(solid,'x')
@@ -452,6 +453,46 @@ def createTube(part,solid,material,px,py,pz,rot,displayMode) :
     setDisplayMode(mytube,displayMode)
     return mytube
 
+def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
+    from GDMLObjects import GDMLcutTube, ViewProvider
+    GDMLShared.trace("CreateCutTube : ")
+    GDMLShared.trace(solid.attrib)
+    rmin = GDMLShared.getVal(solid,'rmin')
+    rmax = GDMLShared.getVal(solid,'rmax')
+    z = GDMLShared.getVal(solid,'z')
+    startphi = GDMLShared.getVal(solid,'startphi')
+    deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    aunit = getText(solid,'aunit','rad')
+    print("aunit : "+aunit)
+    lowX = GDMLShared.getVal(solid,'lowX')
+    lowY = GDMLShared.getVal(solid,'lowY')
+    lowZ = GDMLShared.getVal(solid,'lowZ')
+    highX = GDMLShared.getVal(solid,'highX')
+    highY = GDMLShared.getVal(solid,'highY')
+    highZ = GDMLShared.getVal(solid,'highZ')
+    lunit = getText(solid,'lunit',"mm")
+    GDMLShared.trace(rmin)
+    GDMLShared.trace(rmax)
+    GDMLShared.trace(z)
+    GDMLShared.trace(lowX)
+    GDMLShared.trace(lowY)
+    GDMLShared.trace(lowZ)
+    GDMLShared.trace(highX)
+    GDMLShared.trace(highY)
+    GDMLShared.trace(highZ)
+    mycuttube=part.newObject("Part::FeaturePython","GDMLcutTube:"+getName(solid))
+    GDMLcutTube(mycuttube,rmin,rmax,z,startphi,deltaphi,aunit, \
+                lowX, lowY, lowZ, highX, highY, highZ, lunit, material)
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    #base = FreeCAD.Vector(0,0,0)
+    base = FreeCAD.Vector(px,py,pz)
+    mycuttube.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mycuttube.Placement.Rotation)
+    # set ViewProvider before setDisplay
+    ViewProvider(mycuttube.ViewObject)
+    setDisplayMode(mycuttube,displayMode)
+    return mycuttube
+
 def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     from GDMLObjects import GDMLTessellated, GDMLTriangular, \
             GDMLQuadrangular,  ViewProvider, ViewProviderExtension
@@ -570,6 +611,10 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
            return(createTube(part,solid,material,px,py,pz,rot,displayMode)) 
            break
 
+        if case('cutTube'):
+           return(createCutTube(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
         if case('tessellated'):
            return(createTessellated(part,solid,material,px,py,pz,rot,displayMode)) 
            break
@@ -670,6 +715,8 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
           #material = GDMLShared.getRef(vol,"materialref")
           material = GDMLShared.getRef(vol,"materialref")
           #createSolid(part,solid,material,px,py,pz,rot,displayMode)
+          #print('solid : '+solid.tag)
+          #print('material :'+material)
           obj = createSolid(parent,solid,material,px,py,pz,rot,displayMode)
        # Volume may or maynot contain physvol's
        displayMode = 1
@@ -886,20 +933,24 @@ def processGDML(doc,filename,prompt):
     root = etree.parse(filename, parser=parser)
 
     setup     = root.find('setup')
-    print("Call set Define")
-    GDMLShared.setDefine(root.find('define'))
+    define    = root.find('define')
+    if define != None :
+       print("Call set Define")
+       GDMLShared.setDefine(root.find('define'))
+       GDMLShared.processConstants(doc)
+       GDMLShared.trace(setup.attrib)
+
     materials = root.find('materials')
+    if materials != None :
+       processIsotopes(doc)
+       processElements(doc)
+       processMaterials(doc)
+
     solids    = root.find('solids')
     structure = root.find('structure')
 
     # volDict dictionary of volume names and associated FreeCAD part
     volDict = {}
-
-    GDMLShared.processConstants(doc)
-    GDMLShared.trace(setup.attrib)
-    processIsotopes(doc)
-    processElements(doc)
-    processMaterials(doc)
 
     part =doc.addObject("App::Part","Volumes")
     world = GDMLShared.getRef(setup,"world")
