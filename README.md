@@ -7,50 +7,10 @@
 
 FreeCAD's python Importer & Exporter for GDML files.
 
-The experimental branches **compound** and **scan** have now been merged into master  
-
-**Note:** Sister project development https://github.com/KeithSloan/FreeCAD_Geant4
-
-## Prerequisites
-
-* FreeCAD >= v0.18.3 (build that supports Python3)
-* Python 3  
-* python3-lxml package  
-* git
-
-> **Note:** As I had to make a lot of changes to get things working with Python3 the
-development branch `<workbench>` has now been merged with the master branch
 
 ## Installation 
 
-As stated above, this WB requires `python3-lxml`  
-For example on Ubuntu or Debian derivatives you can install via:  
-```bash
-apt-get install python3-lxml
-```
-
-### Linux and MacOS
-
-* Invoke the following in the CLI
-```bash
-git clone https://github.com/KeithSloan/FreeCAD_Python_GDML.git
-cd FreeCAD_Python_GDML
-chmod +x softLinks
-```
-* Open `softLinks` in your text editor and check that the paths are correct.
-* Run `softLink` script to soft link the module into FreeCAD and FreeCAD-daily systems
-```bash
-sudo ./softLinks
-```
-* Start or Restart FreeCAD
-
-### Windows
-
-* Contents of Mod directory should be copied to a sub directory named
-GDML in the windows FreeCAD Mod directory  
-* A correct version of `python3-lxml` for your version of windows should be downloaded and installed.
-* Start or Restart FreeCAD
-
+Install by use of FreeCAD Addon Manager
 ## Details of GDML
 
 For more information on GDML see
