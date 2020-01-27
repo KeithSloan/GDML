@@ -35,7 +35,7 @@
 import FreeCAD
 import PartGui
 import FreeCADGui
-from freecad.gdml_workbench import GDMLCommands, GDMLResources
+from freecad.gdml import GDMLCommands, GDMLResources
 
 def joinDir(path) :
     import os

@@ -131,7 +131,7 @@ def setDisplayMode(obj,mode):
        obj.ViewObject.DisplayMode = 'Wireframe'
 
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLBox, ViewProvider
+    from .GDMLObjects import GDMLBox, ViewProvider
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
@@ -152,7 +152,7 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     return mycube
 
 def createCone(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLCone, ViewProvider
+    from .GDMLObjects import GDMLCone, ViewProvider
     GDMLShared.trace("CreateCone : ")
     GDMLShared.trace(solid.attrib)
     rmin1 = GDMLShared.getVal(solid,'rmin1')
@@ -178,7 +178,7 @@ def createCone(part,solid,material,px,py,pz,rot,displayMode) :
     return(mycone)
 
 def createElcone(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLElCone, ViewProvider
+    from .GDMLObjects import GDMLElCone, ViewProvider
     GDMLShared.trace("CreateElCone : ")
     dx = GDMLShared.getVal(solid,'dx')
     dy = GDMLShared.getVal(solid,'dy')
@@ -199,7 +199,7 @@ def createElcone(part,solid,material,px,py,pz,rot,displayMode) :
     return(myelcone)
 
 def createEllipsoid(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLEllipsoid, ViewProvider
+    from .GDMLObjects import GDMLEllipsoid, ViewProvider
     GDMLShared.trace("CreateElTube : ")
     GDMLShared.trace(solid.attrib)
     ax = GDMLShared.getVal(solid,'ax')
@@ -222,7 +222,7 @@ def createEllipsoid(part,solid,material,px,py,pz,rot,displayMode) :
     return myelli
 
 def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLElTube, ViewProvider
+    from .GDMLObjects import GDMLElTube, ViewProvider
     GDMLShared.trace("CreateElTube : ")
     GDMLShared.trace(solid.attrib)
     dx = GDMLShared.getVal(solid,'dx')
@@ -242,7 +242,7 @@ def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
     return myeltube
 
 def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLPolycone, GDMLzplane, \
+    from .GDMLObjects import GDMLPolycone, GDMLzplane, \
             ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polycone : ")
     GDMLShared.trace(solid.attrib)
@@ -277,7 +277,7 @@ def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
     return mypolycone
 
 def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLPolyhedra, GDMLzplane, \
+    from .GDMLObjects import GDMLPolyhedra, GDMLzplane, \
             ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polyhedra : ")
     GDMLShared.trace(solid.attrib)
@@ -314,7 +314,7 @@ def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
     return mypolyhedra
 
 def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLSphere, ViewProvider
+    from .GDMLObjects import GDMLSphere, ViewProvider
     GDMLShared.trace("CreateSphere : ")
     GDMLShared.trace(solid.attrib)
     rmin = GDMLShared.getVal(solid,'rmin')
@@ -336,7 +336,7 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     return mysphere
 
 def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLTrap, ViewProvider
+    from .GDMLObjects import GDMLTrap, ViewProvider
     GDMLShared.trace("CreateTrap : ")
     GDMLShared.trace(solid.attrib)
     z  = GDMLShared.getVal(solid,'z')
@@ -364,7 +364,7 @@ def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
     return mytrap
 
 def createTrd(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLTrd, ViewProvider
+    from .GDMLObjects import GDMLTrd, ViewProvider
     GDMLShared.trace("CreateTrd : ")
     GDMLShared.trace(solid.attrib)
     z  = GDMLShared.getVal(solid,'z')
@@ -387,7 +387,7 @@ def createTrd(part,solid,material,px,py,pz,rot,displayMode) :
     return mytrd
 
 def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLXtru, GDML2dVertex, GDMLSection, \
+    from .GDMLObjects import GDMLXtru, GDML2dVertex, GDMLSection, \
              ViewProvider, ViewProviderExtension
     GDMLShared.trace("CreateXtru : ")
     #print(solid)
@@ -427,7 +427,7 @@ def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
     return(myXtru)
 
 def createTube(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLTube, ViewProvider
+    from .GDMLObjects import GDMLTube, ViewProvider
     GDMLShared.trace("CreateTube : ")
     GDMLShared.trace(solid.attrib)
     rmin = GDMLShared.getVal(solid,'rmin')
@@ -454,7 +454,7 @@ def createTube(part,solid,material,px,py,pz,rot,displayMode) :
     return mytube
 
 def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLcutTube, ViewProvider
+    from .GDMLObjects import GDMLcutTube, ViewProvider
     GDMLShared.trace("CreateCutTube : ")
     GDMLShared.trace(solid.attrib)
     rmin = GDMLShared.getVal(solid,'rmin')
@@ -494,7 +494,7 @@ def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
     return mycuttube
 
 def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import GDMLTessellated, GDMLTriangular, \
+    from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
             GDMLQuadrangular,  ViewProvider, ViewProviderExtension
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
@@ -533,7 +533,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     return myTess
 
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
-    from GDMLObjects import ViewProvider
+    from .GDMLObjects import ViewProvider
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -769,7 +769,7 @@ def getItem(element, attribute) :
        return ""
 
 def processIsotopes(doc) :
-    from GDMLObjects import GDMLisotope, ViewProvider
+    from .GDMLObjects import GDMLisotope, ViewProvider
     isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
     for isotope in materials.findall('isotope') :
         N = int(isotope.get('N'))
@@ -784,7 +784,7 @@ def processIsotopes(doc) :
         GDMLisotope(isoObj,name,N,Z,unit,value)
 
 def processElements(doc) :
-    from GDMLObjects import GDMLelement, GDMLfraction
+    from .GDMLObjects import GDMLelement, GDMLfraction
     elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
     elementsGrp.Label = 'Elements'
     for element in materials.findall('element') :
@@ -816,7 +816,7 @@ def processElements(doc) :
             fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
 
 def processMaterials(doc) :
-    from GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
+    from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
                             MaterialsList
 
     materialGrp = doc.addObject("App::DocumentObjectGroupPython","Materials")

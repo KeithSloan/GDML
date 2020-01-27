@@ -22,7 +22,7 @@ def processConstants(doc):
     # all of math must be imported at global level
     trace("Process Constants")
     constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants")
-    from GDMLObjects import GDMLconstant
+    from .GDMLObjects import GDMLconstant
     for cdefine in define.findall('constant') :
         #print cdefine.attrib
         name  = str(cdefine.attrib.get('name'))
