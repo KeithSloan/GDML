@@ -28,7 +28,7 @@ __url__ = ["https://github.com/KeithSloan/FreeCAD_Geant4"]
 
 import FreeCAD, os, Part, math
 from FreeCAD import Vector
-from GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
+from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 
 # xml handling
 #import argparse

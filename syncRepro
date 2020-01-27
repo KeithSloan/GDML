@@ -1,2 +1,0 @@
-#rsync --dry-run -av --exclude '.git' ~/FreeCAD_Python_GDML/Mod/ ~/FreeCAD_GDML_Workbench/freecad/FreeCAD_GDML_Workbench
-rsync -av --exclude '.git' ~/FreeCAD_Python_GDML/Mod/ ~/FreeCAD_GDML_Workbench/freecad/FreeCAD_GDML_Workbench

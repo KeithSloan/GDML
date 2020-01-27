@@ -1,7 +1,7 @@
 import FreeCAD, FreeCADGui, Part
 from pivy import coin
 import math
-import GDMLShared
+from . import GDMLShared
 
 # Global Material List
 global MaterialsList

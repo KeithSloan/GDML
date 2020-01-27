@@ -31,29 +31,36 @@
 #***************************************************************************/
 
 #import FreeCAD
-from FreeCAD import *
+#from FreeCAD import *
+import FreeCAD
 import PartGui
-import GDMLCommands, GDMLResources
+import FreeCADGui
+from freecad.gdml_workbench import GDMLCommands, GDMLResources
+
+def joinDir(path) :
+    import os
+    __dirname__ = os.path.dirname(__file__)
+    return(os.path.join(__dirname__,path))
 
 def processDefault(doc) :
-    from importGDML import processGDML
-    processGDML(doc,FreeCAD.getResourceDir() + \
-                "Mod/GDML/Resources/Default.gdml",False)
+    from .importGDML import processGDML
+    processGDML(doc,joinDir("Mod/GDML/Resources/Default.gdml"),False)
 
-class GDML_Workbench ( Workbench ):
+class GDML_Workbench ( FreeCADGui.Workbench ):
+
+#    import FreeCAD
 
     class MyObserver():
        def __init__(self):
            self.signal = []
 
        def slotCreatedDocument(self, doc):
-           from importGDML import processGDML
-           processGDML(doc,FreeCAD.getResourceDir() + \
-                "Mod/GDML/Resources/Default.gdml",False)
+           from .importGDML import processGDML
+           processGDML(doc,joinDir("Resources/Default.gdml"),False)
     
     "GDML workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/GDML/Resources/icons/GDMLWorkbench.svg"
+        self.__class__.Icon = joinDir("Resources/icons/GDMLWorkbench.svg")
         self.__class__.MenuText = "GDML"
         self.__class__.ToolTip = "GDML workbench"
 
@@ -76,20 +83,15 @@ class GDML_Workbench ( Workbench ):
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','GDMLTools'),toolbarcommands)
         self.appendMenu('GDML',commands)
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
-        ResourcePath = FreeCAD.getHomePath() + "Mod/GDML/Resources/"
-        print("Resource Path : "+ResourcePath)
-        #FreeCADGui.addIconPath(FreeCAD.getResourceDir() + \
-        #FreeCADGui.addIconPath(":/icons")
-        FreeCADGui.addIconPath(ResourcePath + "icons")
-        #FreeCADGui.addLanguagePath(":/translations")
-        FreeCADGui.addLanguagePath(ResourcePath + "/translations")
-        FreeCADGui.addPreferencePage(ResourcePath + "/ui/GDML-base.ui","GDML")
+        FreeCADGui.addIconPath(joinDir("Resources/icons"))
+        FreeCADGui.addLanguagePath(joinDir("Resources/translations"))
+        FreeCADGui.addPreferencePage(joinDir("Resources/ui/GDML-base.ui"),"GDML")
 
     def Activated(self):
         "This function is executed when the workbench is activated"
         print ("Activated")
         self.obs = self.MyObserver()
-        App.addDocumentObserver(self.obs)
+        FreeCAD.addDocumentObserver(self.obs)
         doc = FreeCAD.activeDocument()
         if doc != None :
            #print(dir(doc)) 
@@ -110,5 +112,5 @@ class GDML_Workbench ( Workbench ):
     def GetClassName(self):
         return "Gui::PythonWorkbench"
 
-Gui.addWorkbench(GDML_Workbench())
+FreeCADGui.addWorkbench(GDML_Workbench())
 

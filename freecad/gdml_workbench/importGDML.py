@@ -32,7 +32,7 @@ import os, io, sys, re
 import Part, Draft
 
 from math import *
-import GDMLShared
+from . import GDMLShared
 
 ##########################
 # Globals Dictionarys    #
@@ -885,10 +885,10 @@ def processMaterials(doc) :
 
 def processGDML(doc,filename,prompt):
 
-    import GDMLShared
-    import GDMLObjects
-    import GDMLCommands
-    from   GDMLCommands import importPrompt
+    from . import GDMLShared
+    from . import GDMLObjects
+    from . import GDMLCommands
+    from   .GDMLCommands import importPrompt
 
     if prompt : 
        dialog = importPrompt()
