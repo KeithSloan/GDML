@@ -249,6 +249,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * easyw-fc
   * bernd
   * vocx
+  * sgrogan
 
 * OpenCascade Forum members:
   *  Sergey Slyadnev
