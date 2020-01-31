@@ -1,9 +1,5 @@
-# Attempt at installable Workbench version
+## Installable FreeCAD Python Workbench
 
-# UNTESTED
-
-
-# FreeCAD Python GDML Workbench
 
 FreeCAD's python Importer & Exporter for GDML files.
 
