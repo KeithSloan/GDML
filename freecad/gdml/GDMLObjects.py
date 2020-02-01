@@ -112,6 +112,16 @@ def setMaterial(obj, m) :
        if not ( m == 0 or m == None ) : 
           obj.material = MaterialsList.index(m)
 
+def getMult(lunit) :
+    print('lunit : '+lunit)
+    if lunit == 'mm' or lunit == None :
+       return(1)
+    elif lunit == 'cm' :
+       return(100)
+    elif lunit == 'm' :
+       return(1000)
+    print('lunit not handled : '+lunit)
+
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
@@ -157,8 +167,13 @@ class GDMLBox(GDMLcommon) :
        print(fp)
        if all((fp.x,fp.y,fp.z)) :
        #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
-          box = Part.makeBox(fp.x,fp.y,fp.z)
-          base = FreeCAD.Vector(-fp.x/2,-fp.y/2,-fp.z/2)
+          mul = getMult(fp.lunit)
+          print('mul : '+str(mul))
+          x = mul * fp.x
+          y = mul * fp.y
+          z = mul * fp.z
+          box = Part.makeBox(x,y,z)
+          base = FreeCAD.Vector(-x/2,-y/2,-z/2)
           fp.Shape = translate(box,base)
 
 class GDMLCone(GDMLcommon) :
@@ -205,23 +220,28 @@ class GDMLCone(GDMLcommon) :
        # Need to add code to check variables will make a valid cone
        # i.e.max > min etc etc
           print("execute cone")
-          print(fp.rmax1)
-          print(fp.rmax2)
-          print(fp.z)
-       
-          cone1 = Part.makeCone(fp.rmin1,fp.rmax1,fp.z)
-          if (fp.rmin1 != fp.rmin2 or fp.rmax1 != fp.rmax2 ) :
-             cone2 = Part.makeCone(fp.rmin2,fp.rmax2,fp.z)
-             if fp.rmax1 > fp.rmax2 :                
+          mul = getMult(fp.lunit)
+          rmin1 = mul * fp.rmin1
+          rmin2 = mul * fp.rmin2
+          rmax1 = mul * fp.rmax1
+          rmax2 = mul * fp.rmax2
+          z = mul * fp.z
+          print(rmax1)
+          print(rmax2)
+          print(z)
+          cone1 = Part.makeCone(rmin1,rmax1,z)
+          if (rmin1 != rmin2 or rmax1 != rmax2 ) :
+             cone2 = Part.makeCone(rmin2,rmax2,z)
+             if rmax1 > rmax2 :
                 cone3 = cone1.cut(cone2)
              else :
                 cone3 = cone2.cut(cone1)
           else :
              cone3 = cone1
-          base = FreeCAD.Vector(0,0,-fp.z/2)
+          base = FreeCAD.Vector(0,0,-z/2)
           if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-             rmax = max(fp.rmax1, fp.rmax2)
-             cone = angleSectionSolid(fp, rmax, fp.z, cone3)
+             rmax = max(rmax1, rmax2)
+             cone = angleSectionSolid(fp, rmax, z, cone3)
              fp.Shape = translate(cone,base)
           else :   
              fp.Shape = translate(cone3,base)
@@ -261,21 +281,22 @@ class GDMLElCone(GDMLcommon) :
        cone1 = Part.makeCone(100,0,100)
        mat = FreeCAD.Matrix()
        mat.unity()
+       mul = getMult(fp.lunit)
        # Semi axis values so need to double
-       dx = 2*fp.dx
-       dy = 2*fp.dy
-       zcut = fp.zcut
-       zmax = fp.zmax
+       dx = dx * mul
+       dy = dy * mul
+       zcut = fp.zcut * mul
+       zmax = fp.zmax * mul
        mat.A11 = dx / 100
        mat.A22 = dy / 100
        mat.A33 = zmax / 100
        mat.A44 = 1
        cone2 = cone1.transformGeometry(mat)
        if zcut != None :
-          box = Part.makeBox(dx,dy,zcut)
+          box = Part.makeBox(2*dx,2*dy,zcut)
           pl = FreeCAD.Placement()
           # Only need to move to semi axis
-          pl.move(FreeCAD.Vector(-fp.dx,-fp.dy,zmax-zcut))
+          pl.move(FreeCAD.Vector(-dx,-dy,zmax-zcut))
           box.Placement = pl
           fp.Shape = cone2.cut(box)
        else :
@@ -318,10 +339,11 @@ class GDMLEllipsoid(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       mul = getMult(fp.lunit)
        sphere = Part.makeSphere(100)
-       ax = fp.ax
-       by = fp.by
-       cz = fp.cz
+       ax = fp.ax * mul
+       by = fp.by * mul
+       cz = fp.cz * mul
        mat = FreeCAD.Matrix()
        mat.unity()
        # Semi axis values so need to double
@@ -329,8 +351,8 @@ class GDMLEllipsoid(GDMLcommon) :
        mat.A22 = by / 100
        mat.A33 = cz / 100
        mat.A44 = 1
-       zcut1 = abs(fp.zcut1)
-       zcut2 = abs(fp.zcut2)
+       zcut1 = abs(fp.zcut1*mul)
+       zcut2 = abs(fp.zcut2*mul)
        GDMLShared.trace("zcut2 : "+str(zcut2))
        t1ellipsoid = sphere.transformGeometry(mat) 
        if zcut2 != None and zcut2 > 0 :   # Remove from upper z
@@ -388,16 +410,17 @@ class GDMLElTube(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       mul = getMult(fp.lunit)
        tube = Part.makeCylinder(100,100)
        mat = FreeCAD.Matrix()
        mat.unity()
-       mat.A11 = fp.dx / 100
-       mat.A22 = fp.dy / 100
-       mat.A33 = fp.dz / 50
+       mat.A11 = (fp.dx * mul) / 100
+       mat.A22 = (fp.dy * mul) / 100
+       mat.A33 = (fp.dz * mul) / 50
        mat.A44 = 1
        #trace mat
        newtube = tube.transformGeometry(mat)
-       base = FreeCAD.Vector(0,0,-fp.dz/2)
+       base = FreeCAD.Vector(0,0,-i(fp.dz*mul)/2)
        fp.Shape = translate(newtube,base)
        GDMLShared.trace("Recompute GDML ElTube Object \n")
 
@@ -441,9 +464,10 @@ class GDMLPolyhedra(GDMLcommon) :
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        numsides = fp.numsides
        GDMLShared.trace("Number of sides : "+str(numsides))
-       z0    = parms[0].z
-       rmin0 = parms[0].rmin
-       rmax0 = parms[0].rmax
+       mul = getMult(fp.lunit)
+       z0    = parms[0].z * mul
+       rmin0 = parms[0].rmin * mul
+       rmax0 = parms[0].rmax * mul
        GDMLShared.trace("Top z    : "+str(z0))
        GDMLShared.trace("Top rmin : "+str(rmin0))
        GDMLShared.trace("Top rmax : "+str(rmax0))
@@ -457,9 +481,9 @@ class GDMLPolyhedra(GDMLcommon) :
        outer_poly0 = makeRegularPolygon(numsides,rmax0,z0)
        outer_faces.append(Part.Face(Part.makePolygon(outer_poly0)))
        for ptr in parms[1:] :
-           z1 = ptr.z
-           rmin1 = ptr.rmin
-           rmax1 = ptr.rmax
+           z1 = ptr.z * mul
+           rmin1 = ptr.rmin * mul
+           rmax1 = ptr.rmax * mul
            GDMLShared.trace("z1    : "+str(z1))
            GDMLShared.trace("rmin1 : "+str(rmin1))
            GDMLShared.trace("rmax1 : "+str(rmax1))
@@ -529,18 +553,19 @@ class GDMLXtru(GDMLcommon) :
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        polyList = []
        sections = []
+       mul = getMult(fp.lunit)
        for ptr in parms :
            if hasattr(ptr,'x') :
-              x = ptr.x
-              y = ptr.y
+              x = ptr.x * mul
+              y = ptr.y * mul
               GDMLShared.trace('x : '+str(x))
               GDMLShared.trace('y : '+str(y))
               polyList.append([x, y])
            if hasattr(ptr,'zOrder') :
               zOrder = ptr.zOrder
-              xOffset = ptr.xOffset
-              yOffset = ptr.yOffset
-              zPosition = ptr.zPosition
+              xOffset = ptr.xOffset * mul
+              yOffset = ptr.yOffset * mul
+              zPosition = ptr.zPosition * mul
               sf = ptr.scalingFactor
               s = [zOrder,xOffset,yOffset,zPosition,sf]
               sections.append(s)
@@ -552,14 +577,14 @@ class GDMLXtru(GDMLcommon) :
        polyList.append(polyList[0])
        #print("Start Range "+str(len(sections)-1))
        for s in range(0,len(sections)-1) :
-           xOffset1   = sections[s][1]
-           yOffset1   = sections[s][2]
-           zPosition1 = sections[s][3]
-           sf1        = sections[s][4]
-           xOffset2   = sections[s+1][1]
-           yOffset2   = sections[s+1][2]
-           zPosition2 = sections[s+1][3]
-           sf2        = sections[s+1][4]
+           xOffset1   = sections[s][1] * mul
+           yOffset1   = sections[s][2] * mul
+           zPosition1 = sections[s][3] * mul
+           sf1        = sections[s][4] * mul
+           xOffset2   = sections[s+1][1] * mul
+           yOffset2   = sections[s+1][2] * mul
+           zPosition2 = sections[s+1][3] * mul
+           sf2        = sections[s+1][4] * mul
            #print("polyList")
            for p in polyList :
               #print(p)
@@ -724,13 +749,14 @@ class GDMLPolycone(GDMLcommon) :
        zplanes = fp.OutList
        cones = []
        GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
+       mul = getMult(fp.lunit)
        for i in range(0,len(zplanes)-1) :
            GDMLShared.trace('index : '+str(i))
-           h = zplanes[i+1].z - zplanes[i].z
-           rm1 = zplanes[i].rmin
-           rm2 = zplanes[i+1].rmin
-           rM1 = zplanes[i].rmax
-           rM2 = zplanes[i+1].rmax
+           h = zplanes[i+1].z - zplanes[i].z * mul
+           rm1 = zplanes[i].rmin * mul
+           rm2 = zplanes[i+1].rmin * mul
+           rM1 = zplanes[i].rmax * mul
+           rM2 = zplanes[i+1].rmax * mul
            GDMLShared.trace('height :'+str(h))
            GDMLShared.trace('rm1 :'+str(rm1)+' rm2 :'+str(rm2))
            GDMLShared.trace('rM1 :'+str(rM1)+' rM2 :'+str(rM2))
@@ -798,6 +824,7 @@ class GDMLSphere(GDMLcommon) :
    
    def createGeometry(self,fp):
        import math
+       mul = getMult(fp.lunit)
        # Need to add code to check values make a valid sphere
        cp = FreeCAD.Vector(0,0,0)
        axis_dir = FreeCAD.Vector(0,0,1)
@@ -805,7 +832,7 @@ class GDMLSphere(GDMLcommon) :
        #            fp.startphi+fp.deltaphi, fp.deltatheta)
        #sphere2 = Part.makeSphere(fp.rmax, cp, axis_dir, fp.startphi, \
        #            fp.startphi+fp.deltaphi, fp.deltatheta)
-       sphere2 = Part.makeSphere(fp.rmax, cp, axis_dir)
+       sphere2 = Part.makeSphere(fp.rmax * mul, cp, axis_dir)
        
        #sphere3 = sphere2.cut(sphere1)
        fp.Shape = sphere2
@@ -861,15 +888,16 @@ class GDMLTrap(GDMLcommon) :
        alpha = getAngle(fp.aunit,fp.alpha)
        theta = getAngle(fp.aunit,fp.theta)
        phi   = getAngle(fp.aunit,fp.phi)
-       dx = fp.y1*math.sin(alpha)
-       dy = fp.y1*(1.0 - math.cos(alpha))
+       mul   = getMult(fp.lunit)
+       dx = fp.y1*math.sin(alpha) * mul
+       dy = fp.y1*(1.0 - math.cos(alpha)) * mul
        GDMLShared.trace("Delta adjustments")
        GDMLShared.trace("dx : "+str(dx)+" dy : "+str(dy))
-       y1m = dy - fp.y1
-       y1p = dy + fp.y1
-       x1m = dx - fp.x1
-       x1p = dx + fp.x1
-       z    = fp.z
+       y1m = dy - (fp.y1 * mul)
+       y1p = dy + (fp.y1 * mul)
+       x1m = dx - (fp.x1 * mul)
+       x1p = dx + (fp.x1 * mul)
+       z    = fp.z * mul
        GDMLShared.trace("y1m : "+str(y1m))
        GDMLShared.trace("y1p : "+str(y1p))
        GDMLShared.trace("z   : "+str(z))
@@ -887,12 +915,12 @@ class GDMLTrap(GDMLcommon) :
        ty = dr*math.cos(phi)
        GDMLShared.trace("Coord of top surface centre")
        GDMLShared.trace("x : "+str(tx)+" y : "+str(ty))
-       py2 = ty + fp.y2
-       my2 = ty - fp.y2
-       px3 = tx + fp.x3
-       mx3 = tx - fp.x3
-       px4 = tx + fp.x4
-       mx4 = tx - fp.x4
+       py2 = ty + (fp.y2 * mul)
+       my2 = ty - (fp.y2 * mul)
+       px3 = tx + (fp.x3 * mul)
+       mx3 = tx - (fp.x3 * mul)
+       px4 = tx + (fp.x4 * mul)
+       mx4 = tx - (fp.x4 * mul)
        GDMLShared.trace("px3 : "+str(px3))
        GDMLShared.trace("py2 : "+str(py2))
        GDMLShared.trace("my2 : "+str(my2))
@@ -951,11 +979,12 @@ class GDMLTrd(GDMLcommon) :
        import math
        GDMLShared.trace("x2  : "+str(fp.x2))
 
-       x1 = fp.x1/2
-       x2 = fp.x2/2
-       y1 = fp.y1/2
-       y2 = fp.y2/2
-       z  = fp.z
+       mul = getMult(fp.lunit)
+       x1 = (fp.x1 * mul)/2
+       x2 = (fp.x2 * mul)/2
+       y1 = (fp.y1 * mul)/2
+       y2 = (fp.y2 * mul)/2
+       z  = fp.z * mul
        v1 = FreeCAD.Vector(-x1, -y1, -z)
        v2 = FreeCAD.Vector(-x1, +y1, -z)
        v3 = FreeCAD.Vector(x1,  +y1, -z)
@@ -1012,12 +1041,13 @@ class GDMLTube(GDMLcommon) :
    def createGeometry(self,fp):
        # Need to add code to check values make a valid Tube
        # Define six vetices for the shape
-       cyl1 = Part.makeCylinder(fp.rmax,fp.z)
-       cyl2 = Part.makeCylinder(fp.rmin,fp.z)
+       mul  = getMult(fp.lunit)
+       cyl1 = Part.makeCylinder(fp.rmax * mul, fp.z * mul)
+       cyl2 = Part.makeCylinder(fp.rmin * mul, fp.z * mul)
        cyl3 = cyl1.cut(cyl2) 
 
        if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          tube = angleSectionSolid(fp, fp.rmax, fp.z, cyl3)
+          tube = angleSectionSolid(fp, fp.rmax * mul, fp.z, cyl3)
        else :
           tube = cyl3
        #base = FreeCAD.Vector(0,0,fp.z/2)
@@ -1068,7 +1098,7 @@ class GDMLcutTube(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
-       print('Create Cut Tube')
+       print('Create Cut Tube : Need to write')
 
 class GDMLVertex(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit):
@@ -1172,24 +1202,29 @@ class GDMLTessellated(GDMLcommon) :
        parms = fp.OutList
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        faces = []
+       mul = getMult(fp.lunit)
+       v1 = ptr.v1 * mul
+       v2 = ptr.v2 * mul
+       v3 = ptr.v3 * mul
+       v4 = ptr.v4 * mul
        for ptr in parms :
            #print(dir(ptr))
            if hasattr(ptr,'v4') :
               print("Quad")
-              print(ptr.v1)
-              print(ptr.v2)
-              print(ptr.v3)
-              print(ptr.v4)
-              faces.append(GDMLShared.quad(ptr.v1,ptr.v2,ptr.v3,ptr.v4))
+              print(v1)
+              print(v2)
+              print(v3)
+              print(v4)
+              faces.append(GDMLShared.quad(v1,v2,v3,v4))
 
            else :   
               print("Triangle")
               print("Vertex 1")
-              print(ptr.v1)
+              print(v1)
               print("Vertex 2")
-              print(ptr.v2)
+              print(v2)
               print("Vertex 3")
-              print(ptr.v3)
+              print(v3)
               faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
      
        print(faces)
