@@ -49,7 +49,7 @@ class BoxFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLBox, ViewProvider
+        from .GDMLObjects import GDMLBox, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLBox")
         print("GDMLBox Object - added")
         # obj, x, y, z, lunits, material
@@ -78,7 +78,7 @@ class ConeFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLCone, ViewProvider
+        from .GDMLObjects import GDMLCone, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLCone")
         print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
@@ -107,7 +107,7 @@ class EllispoidFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLEllipsoid, ViewProvider
+        from .GDMLObjects import GDMLEllipsoid, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
                   "GDMLEllipsoid")
         print("GDMLEllipsoid Object - added")
@@ -137,7 +137,7 @@ class ElliTubeFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLElTube, ViewProvider
+        from .GDMLObjects import GDMLElTube, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
                   "GDMLElTube")
         print("GDMLElTube Object - added")
@@ -167,7 +167,7 @@ class SphereFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLSphere, ViewProvider
+        from .GDMLObjects import GDMLSphere, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLSphere")
         print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
@@ -197,7 +197,7 @@ class TrapFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLTrap, ViewProvider
+        from .GDMLObjects import GDMLTrap, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLTrap")
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
@@ -228,7 +228,7 @@ class TubeFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from GDMLObjects import GDMLTube, ViewProvider
+        from .GDMLObjects import GDMLTube, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLTube")
         print("GDMLTube Object - added")
         # obj, rmin, rmax, z, startphi, deltaphi, aunit, lunits, material
@@ -342,7 +342,7 @@ class CompoundFeature :
     
     def Activated(self) :
 
-        from GDMLObjects import GDMLcommon
+        from .GDMLObjects import GDMLcommon
         import ObjectsFem
    
         def allocateMaterial(doc, analObj, materials, material) :
