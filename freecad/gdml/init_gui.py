@@ -106,7 +106,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
 
     def Deactivated(self):
         "This function is executed when the workbench is deactivated"
-        App.removeDocumentObserver(self.obs)
+        FreeCAD.removeDocumentObserver(self.obs)
         return
     
     def GetClassName(self):
