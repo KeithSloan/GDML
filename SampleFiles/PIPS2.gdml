@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:gdml="http://cern.ch/2001/Schemas/GDML" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  
+    <!--CUSTOM BLOCK START-->
+    <!--
+        The Canberra CAM2000RM PIPS detector used in Minipanda. 
+        R = 70.0 mm: diameter of case
+        detector recessed 1.0 mm
+        Ra = 50 mm: diameter of active area
+        L = 8.5 mm:
+        Window thickness <2.0 um eq. Si (newer brochure states < 1.5 um)
+        Now thickness = 1.5 um
+        
+    -->
+  
+  <define>
+    <constant name="PIPSR"           value="35.0" />
+    <constant name="SiR"             value="25.0" />
+    <constant name="SiHHgt"          value="0.15" />
+    <constant name="SiRecess"        value="1.0" />
+    <constant name="PIPSHHgt"        value="4.25" />
+    <constant name="WinHHgt"         value="0.00075" />
+    <constant name="PIPSUpperHgt"    value="SiRecess + 2 * WinHHgt + 2 * SiHHgt" />
+    <constant name="PIPSLowerHgt"    value="2 * PIPSHHgt - PIPSUpperHgt" />
+
+    
+    <position name="SiPos"           unit="mm" x="0." y="0." z="PIPSHHgt - SiRecess - 2 * WinHHgt - SiHHgt" />
+    <position name="WinPos"           unit="mm" x="0." y="0." z="PIPSHHgt - SiRecess - WinHHgt" />
+    <position name="PIPSUpperPos"    unit="mm" x="0." y="0." z="PIPSHHgt - SiRecess / 2 - WinHHgt - SiHHgt" />
+    <position name="PIPSLowerPos"    unit="mm" x="0." y="0." z="PIPSHHgt - PIPSUpperHgt - PIPSLowerHgt / 2" />
+    <position name="Nulpos"          unit="mm" x="0." y="0." z="0." />
+  </define>
+  
+  <materials>
+  
+    <element Z="6" formula="C" name="elemCarbon" >
+      <atom value="12.0" />
+    </element>
+    <element Z="7" formula="N" name="elemNitrogen" >
+      <atom value="14.0" />
+    </element>
+    <element Z="8" formula="O" name="elemOxygen" >
+      <atom value="16.0" />
+    </element>
+    <element Z="13" formula="Al" name="elemAluminum" >
+      <atom value="27.0" />
+    </element>
+    <element Z="14" formula="Si" name="elemSilicon" >
+      <atom value="28.1" />
+    </element>
+
+    <material formula="fSi" name="Silicon"  state="solid">
+      <D value="2.33"  unit="g/cm3"/>
+      <composite n="1" ref="elemSilicon" /> 
+    </material> 
+    <material formula="fair" name="air" state="gas">
+      <D value="0.0012" unit="g/cm3"/>
+      <fraction n="0.2" ref="elemOxygen"/>
+      <fraction n="0.8" ref="elemNitrogen"/>
+    </material> 
+    <material formula="fAl" name="Aluminum" state="solid">
+      <D value="2.7" unit="g/cm3"/>
+      <composite n="1" ref="elemAluminum" /> 
+    </material> 
+  </materials>
+  
+  <solids>
+    <tube  name  =  "PIPSWorld"  rmin="0"  rmax="PIPSR"    z="2 * PIPSHHgt"  deltaphi="360"  startphi="0"
+           aunit="deg"  lunit= "mm"/>
+    <tube  name  =  "PIPSUpperCase"  rmin="SiR"  rmax="PIPSR"    z="PIPSUpperHgt"  deltaphi="360"  startphi="0"
+           aunit="deg"  lunit= "mm"/>
+    <tube  name  =  "PIPSLowerCase"  rmin="0."  rmax="PIPSR"    z="PIPSLowerHgt"  deltaphi="360"  startphi="0"
+           aunit="deg"  lunit= "mm"/>
+    <tube  name  =  "Silicon"  rmin="0"  rmax="SiR"    z="2 * SiHHgt"  deltaphi="360"  startphi="0"
+           aunit="deg"  lunit= "mm"/>
+    <tube  name  =  "Window"  rmin="0."  rmax="SiR"    z="2 * WinHHgt"  deltaphi="360"  startphi="0"
+           aunit="deg"  lunit= "mm"/>
+
+  </solids>
+  
+  <structure>
+    <volume name="PIPSUpperCaseVol" >
+      <materialref ref="Aluminum" />
+      <solidref ref="PIPSUpperCase" />
+    </volume>
+    <volume name="PIPSLowerCaseVol" >
+      <materialref ref="Aluminum" />
+      <solidref ref="PIPSLowerCase" />
+    </volume>
+    <volume name="WindowVol" >
+      <materialref ref="Silicon" />
+      <solidref ref="Window" />
+    </volume>
+    <volume name="SiVol" >
+      <materialref ref="Silicon" />
+      <solidref ref="Silicon" />
+      <auxiliary auxtype="SensDet" auxvalue="PIPS" />
+    </volume>
+    <volume name="PIPS" >
+      <materialref ref="air" />
+      <solidref ref="PIPSWorld" />
+      <physvol>
+        <volumeref ref="PIPSUpperCaseVol" />
+        <positionref ref="PIPSUpperPos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="PIPSLowerCaseVol" />
+        <positionref ref="PIPSLowerPos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="WindowVol" />
+        <positionref ref="WinPos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="SiVol" />
+        <positionref ref="SiPos"/>
+      </physvol>
+    </volume>
+  </structure>
+  
+  <setup name="World" version="1.0" >
+    <world ref="PIPS" />
+  </setup>
+</gdml>
