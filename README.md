@@ -1,9 +1,5 @@
-# Attempt at installable Workbench version
+## Installable FreeCAD Python Workbench
 
-# UNTESTED
-
-
-# FreeCAD Python GDML Workbench
 
 FreeCAD's python Importer & Exporter for GDML files.
 
@@ -11,6 +7,12 @@ FreeCAD's python Importer & Exporter for GDML files.
 ## Installation 
 
 Install by use of FreeCAD Addon Manager
+
+Needs lxml which should be installed as part of FreeCAD
+
+   * FreeCAD_0.19.19424 and above.
+   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above
+   
 ## Details of GDML
 
 For more information on GDML see
