@@ -173,7 +173,7 @@ def createLVandPV(obj, name, solidName):
        posName = 'Pos'+name+str(POScount)
        POScount += 1
        ET.SubElement(phys, 'position', {'name': posName, 'unit': 'mm', \
-                  'x': str(x), 'y': str(y), 'z': str(y) })
+                  'x': str(x), 'y': str(y), 'z': str(z) })
     angles = obj.Placement.Rotation.toEuler()
     print ("Angles")
     print (angles)
