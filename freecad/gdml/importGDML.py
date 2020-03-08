@@ -672,10 +672,11 @@ def parsePhysVol(parent,physVol,phylvl,displayMode):
        rot = physVol.find("rotation")
 
     volref = GDMLShared.getRef(physVol,"volumeref")
-    GDMLShared.trace("Volume ref : "+volref)
-    part = parent.newObject("App::Part",volref)
-    print("px : "+str(px)+" : "+str(py)+" : "+str(pz))
-    parseVolume(part,volref,px,py,pz,rot,phylvl,displayMode)
+    if volref != None :
+       GDMLShared.trace("Volume ref : "+volref)
+       part = parent.newObject("App::Part",volref)
+       print("px : "+str(px)+" : "+str(py)+" : "+str(pz))
+       parseVolume(part,volref,px,py,pz,rot,phylvl,displayMode)
 
 # ParseVolume name - structure is global
 # We get passed position and rotation
