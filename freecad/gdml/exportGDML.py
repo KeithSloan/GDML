@@ -172,8 +172,9 @@ def createLVandPV(obj, name, solidName):
     if x!=0 and y!=0 and z!=0 :
        posName = 'Pos'+name+str(POScount)
        POScount += 1
-       ET.SubElement(phys, 'position', {'name': posName, 'unit': 'mm', \
-                  'x': str(x), 'y': str(y), 'z': str(y) })
+       ET.SubElement(phys, 'positionref', {'name': posName})
+       ET.SubElement(define, 'position', {'name': posName, 'unit': 'mm', \
+                  'x': str(x), 'y': str(y), 'z': str(z) })
     angles = obj.Placement.Rotation.toEuler()
     print ("Angles")
     print (angles)
@@ -183,7 +184,8 @@ def createLVandPV(obj, name, solidName):
     if a0!=0 and a1!=0 and a2!=0 :
        rotName = 'Rot'+name+str(ROTcount)
        ROTcount += 1
-       ET.SubElement(phys, 'rotation', {'name': rotName, 'unit': 'deg', \
+       ET.SubElement(phys, 'rotationref', {'name': rotName})
+       ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
                   'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
 
 def createAdjustedLVandPV(obj, name, solidName, delta):
