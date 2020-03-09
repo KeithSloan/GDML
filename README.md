@@ -224,7 +224,7 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   - [ ] Display mesh for objects that will not directly convert
   - [ ] Provide options to control meshing objects that will be Tessellated
   - [ ] Icons to Analize and Export
-  - [ ] Make GDML an installable workbench 
+
 
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData
