@@ -229,6 +229,22 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData
 
+## Development Notes
+ 
+ based on gdml.xsd
+ 
+ * 'World Volume'
+ 
+    * May or may not have solid & material ref
+ 
+ * PhysVol 
+ 
+     * Must contain volref ( or file ) 
+     * volref must not be same as current volume name
+     * May contain position or position ref
+     * May contain rotation or rotation ref
+ 
+
 ## Acknowledgements 
 
 **Graphic Icons** 
