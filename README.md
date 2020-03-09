@@ -239,10 +239,10 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
  
  * PhysVol 
  
-     * Must contain volref ( or file ) 
-     * volref must not be same as current volume name
-     * May contain position or position ref
-     * May contain rotation or rotation ref
+     * Must contain **volref** ( or file ) 
+     * volref **must not** be same as current volume name
+     * May contain **position** or **position ref**
+     * May contain **rotation** or **rotation ref**
  
 
 ## Acknowledgements 
