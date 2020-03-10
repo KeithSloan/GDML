@@ -319,7 +319,7 @@ class ExpandFeature :
     def Activated(self) :
        
         for obj in FreeCADGui.Selection.getSelection():
-            from importGDML import expandVolume
+            from .importGDML import expandVolume
             #if len(obj.InList) == 0: # allowed only for for top level objects
             # add check for Part i.e. Volume
             print("Selected")

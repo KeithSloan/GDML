@@ -11,7 +11,8 @@ printverbose = False
 global define
 
 def trace(s):
-    if printverbose == True : print(s)
+    #if printverbose == True : print(s)
+    return
 
 def setDefine(val) :
     print("Set Define")
@@ -26,11 +27,11 @@ def processConstants(doc):
     for cdefine in define.findall('constant') :
         #print cdefine.attrib
         name  = str(cdefine.attrib.get('name'))
-        print('name : '+name)
+        trace('name : '+name)
         value = cdefine.attrib.get('value')
-        print('value : '+ value)
+        trace('value : '+ value)
         #constDict[name] = value
-        print(name)
+        trace(name)
         #print(dir(name))
         globals()[name] = eval(value)
         constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
@@ -48,7 +49,7 @@ def getVal(ptr,var,vtype = 1) :
     if var in ptr.attrib :
        # if yes get its value
        vval = ptr.attrib.get(var)
-       print("vval : "+str(vval))
+       trace("vval : "+str(vval))
        if vval[0] == '&' :  # Is this refering to an HTML entity constant
          chkval = vval[1:]
        else :
@@ -60,12 +61,12 @@ def getVal(ptr,var,vtype = 1) :
        #   return(eval(c))
        #
        #else :
-       print("chkval : "+str(chkval))
+       trace("chkval : "+str(chkval))
        if vtype == 1 :
           ret = float(eval(chkval))
        else :
           ret = int(eval(chkval))
-       print('return value : '+str(ret))
+       trace('return value : '+str(ret))
        return(ret)
     else :
        if vtype == 1 :
@@ -126,17 +127,17 @@ def getPlacementFromRefs(ptr) :
 
 
 def getVertex(v):
-    print("Vertex")
+    trace("Vertex")
     #print(dir(v))
     pos = define.find("position[@name='%s']" % v)
     #print("Position")
     #print(dir(pos))
     x = getVal(pos,'x')
-    print('x : '+str(x))
+    trace('x : '+str(x))
     y = getVal(pos,'y')
-    print('y : '+str(y))
+    trace('y : '+str(y))
     z = getVal(pos,'z')
-    print('z : '+str(z))
+    trace('z : '+str(z))
     return(FreeCAD.Vector(x,y,z))
 
 def triangle(v1,v2,v3) :

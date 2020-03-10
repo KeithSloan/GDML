@@ -65,7 +65,7 @@ def makeFrustrum(num,poly0,poly1) :
     faces = []
     for i in range(num) :
        j = i + 1
-       print([poly0[i],poly0[j],poly1[j],poly1[i]])
+       #print([poly0[i],poly0[j],poly1[j],poly1[i]])
        w = Part.makePolygon([poly0[i],poly0[j],poly1[j],poly1[i],poly0[i]])
        faces.append(Part.Face(w))
     print("Number of Faces : "+str(len(faces)))
@@ -74,13 +74,13 @@ def makeFrustrum(num,poly0,poly1) :
 def angleSectionSolid(fp, rmax, z, shape) :
     # Different Solids have different rmax and height
     import math
-    print("aunit : "+fp.aunit)
-    print("startphi : "+str(fp.startphi))
-    print("deltaphi : "+str(fp.deltaphi))
+    #print("aunit : "+fp.aunit)
+    #print("startphi : "+str(fp.startphi))
+    #print("deltaphi : "+str(fp.deltaphi))
     startphirad = getAngle(fp.aunit,fp.startphi)
     deltaphirad = getAngle(fp.aunit,fp.deltaphi)
-    print("startphirad : "+str(startphirad))
-    print("deltaphirad : "+str(deltaphirad))
+    #print("startphirad : "+str(startphirad))
+    #print("deltaphirad : "+str(deltaphirad))
     x1 = rmax*math.cos(startphirad)
     y1 = rmax*math.sin(startphirad)
     x2 = rmax*math.cos(startphirad+deltaphirad)
@@ -113,7 +113,7 @@ def setMaterial(obj, m) :
           obj.material = MaterialsList.index(m)
 
 def getMult(lunit) :
-    print('lunit : '+lunit)
+    #print('lunit : '+lunit)
     if lunit == 'mm' or lunit == None :
        return(1)
     elif lunit == 'cm' :
@@ -154,7 +154,7 @@ class GDMLBox(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           #if prop in ['x','y','z','lunit']  :
           if prop in ['x','y','z']  :
@@ -164,11 +164,11 @@ class GDMLBox(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
-       print(fp)
+       #print(fp)
        if all((fp.x,fp.y,fp.z)) :
        #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
           mul = getMult(fp.lunit)
-          print('mul : '+str(mul))
+          #print('mul : '+str(mul))
           x = mul * fp.x
           y = mul * fp.y
           z = mul * fp.z
@@ -201,7 +201,7 @@ class GDMLCone(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           if prop in ['rmin1','rmax1','rmin2','rmax2','z','startphi','deltaphi' \
                ,'aunit', 'lunit'] :
@@ -211,24 +211,24 @@ class GDMLCone(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
-       print("fp : ")
-       print(vars(fp))
+       #print("fp : ")
+       #print(vars(fp))
        #if all((fp.rmin1,fp.rmin2,fp.rmax1,fp.rmax2,fp.z)) :
        if (hasattr(fp,'rmin1') and hasattr(fp,'rmax1') and \
            hasattr(fp,'rmin2') and hasattr(fp,'rmax2') and \
            hasattr(fp,'z')) :
        # Need to add code to check variables will make a valid cone
        # i.e.max > min etc etc
-          print("execute cone")
+          #print("execute cone")
           mul = getMult(fp.lunit)
           rmin1 = mul * fp.rmin1
           rmin2 = mul * fp.rmin2
           rmax1 = mul * fp.rmax1
           rmax2 = mul * fp.rmax2
           z = mul * fp.z
-          print(rmax1)
-          print(rmax2)
-          print(z)
+          #print(rmax1)
+          #print(rmax2)
+          #print(z)
           cone1 = Part.makeCone(rmin1,rmax1,z)
           if (rmin1 != rmin2 or rmax1 != rmax2 ) :
              cone2 = Part.makeCone(rmin2,rmax2,z)
@@ -269,7 +269,7 @@ class GDMLElCone(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           if prop in ['dx','dy','zmax','zcut','lunit'] :
              self.createGeometry(fp)
@@ -330,7 +330,7 @@ class GDMLEllipsoid(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           if prop in ['ax','by','cz','zcut1','zcut2','lunit'] :
              self.createGeometry(fp)
@@ -400,7 +400,7 @@ class GDMLElTube(GDMLcommon) :
       obj.Proxy = self
 
    def onChanged(self, fp, prop):
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        '''Do something when a property has changed'''
        if not ('Restore' in fp.State) :
           if prop in ['dx','dy','dz','lunit'] :
@@ -450,7 +450,7 @@ class GDMLPolyhedra(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
              self.createGeometry(fp)
@@ -459,7 +459,7 @@ class GDMLPolyhedra(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       print("Execute Polyhedra")
+       #print("Execute Polyhedra")
        parms = fp.OutList
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        numsides = fp.numsides
@@ -536,7 +536,7 @@ class GDMLXtru(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if not ('Restore' in fp.State) :
           if prop in ['startphi','deltaphi','aunit','lunit'] :
              #self.execute(fp)
@@ -1373,7 +1373,7 @@ class ViewProvider(GDMLcommon):
  
    def updateData(self, fp, prop):
        '''If a property of the handled feature has changed we have the chance to handle this here'''
-       print("updateData")
+       #print("updateData")
        # fp is the handled feature, prop is the name of the property that has changed
        #l = fp.getPropertyByName("Length")
        #w = fp.getPropertyByName("Width")
@@ -1400,11 +1400,11 @@ class ViewProvider(GDMLcommon):
  
    def onChanged(self, vp, prop):
        '''Here we can do something when a single property got changed'''
-       if hasattr(vp,'Name') :
-          print("View Provider : "+vp.Name+" State : "+str(vp.State)+" prop : "+prop)
-       else :   
-          print("View Provider : prop : "+prop)
-       GDMLShared.trace("Change property: " + str(prop) + "\n")
+       #if hasattr(vp,'Name') :
+       #   print("View Provider : "+vp.Name+" State : "+str(vp.State)+" prop : "+prop)
+       #else :   
+       #   print("View Provider : prop : "+prop)
+       #GDMLShared.trace("Change property: " + str(prop) + "\n")
        #if prop == "Color":
        #    c = vp.getPropertyByName("Color")
 #    self.color.rgb.setValue(c[0],c[1],c[2])    

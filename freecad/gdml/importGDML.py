@@ -110,7 +110,7 @@ def translate(shape,base) :
     return retShape
 
 def checkConstant(vval):
-    print (vval)
+    GDMLShared.trace(vval)
 
 def getName(ptr) :
     return (ptr.attrib.get('name'))
@@ -462,7 +462,7 @@ def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
-    print("aunit : "+aunit)
+    GDMLShared.trace("aunit : "+aunit)
     lowX = GDMLShared.getVal(solid,'lowX')
     lowY = GDMLShared.getVal(solid,'lowY')
     lowZ = GDMLShared.getVal(solid,'lowZ')
@@ -503,7 +503,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     ViewProviderExtension(myTess.ViewObject)
     ViewProvider(myTess.ViewObject)
     for elem in solid.getchildren() :
-        print(elem)
+        GDMLShared.trace(elem)
         v1 = elem.attrib['vertex1']
         v2 = elem.attrib['vertex2']
         v3 = elem.attrib['vertex3']
@@ -674,7 +674,7 @@ def parsePhysVol(parent,physVol,phylvl,displayMode):
     if volref != None :
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
-       print("px : "+str(px)+" : "+str(py)+" : "+str(pz))
+       GDMLShared.trace("px : "+str(px)+" : "+str(py)+" : "+str(pz))
        expandVolume(part,volref,px,py,pz,rot,phylvl,displayMode)
 
 # ParseVolume name - structure is global
@@ -704,8 +704,8 @@ def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
 def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
     # also used in ScanCommand
-    print("expandVolume : "+name)
-    print("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
+    GDMLShared.trace("expandVolume : "+name)
+    GDMLShared.trace("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
     vol = structure.find("volume[@name='%s']" % name )
     if vol != None : # If not volume test for assembly
        solidref = GDMLShared.getRef(vol,"solidref")
@@ -884,8 +884,8 @@ def processMaterials(doc) :
                                                  ref)
             GDMLcomposite(compositeObj,ref,n)
             compositeObj.Label = ref +' : '+str(n)
-    print("Materials List :")
-    print(MaterialsList)
+    GDMLShared.trace("Materials List :")
+    GDMLShared.trace(MaterialsList)
 
 def processGDML(doc,filename,prompt):
 
@@ -913,7 +913,7 @@ def processGDML(doc,filename,prompt):
        phylvl = 0
 
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
-    GDMLShared.printverbose = params.GetBool('printVerbose',False)
+    #GDMLShared.printverbose = params.GetBool('printVerbose',False)
     print("Print Verbose : "+ str(GDMLShared.printverbose))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
@@ -939,7 +939,7 @@ def processGDML(doc,filename,prompt):
     setup     = root.find('setup')
     define    = root.find('define')
     if define != None :
-       print("Call set Define")
+       GDMLShared.trace("Call set Define")
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
        GDMLShared.trace(setup.attrib)
