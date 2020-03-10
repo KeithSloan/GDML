@@ -224,10 +224,26 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   - [ ] Display mesh for objects that will not directly convert
   - [ ] Provide options to control meshing objects that will be Tessellated
   - [ ] Icons to Analize and Export
-  - [ ] Make GDML an installable workbench 
+
 
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData
+
+## Development Notes
+ 
+ based on gdml.xsd
+ 
+ * 'World Volume'
+ 
+    * May or may not have solid & material ref
+ 
+ * PhysVol 
+ 
+     * Must contain **volref** ( or file ) 
+     * volref **must not** be same as current volume name
+     * May contain **position** or **position ref**
+     * May contain **rotation** or **rotation ref**
+ 
 
 ## Acknowledgements 
 
