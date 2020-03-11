@@ -233,9 +233,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
  
  based on gdml.xsd
  
- * 'World Volume'
+ * 'Volumes'
  
-    * May or may not have solid & material ref
+    * **Must** have **solid & material ref**
  
  * PhysVol 
  
