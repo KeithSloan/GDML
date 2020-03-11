@@ -212,7 +212,6 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   - [ ] Add facility to edit Materials
   - [ ] Add facility to edit Isotopes
   - [ ] Add facility to edit Elements 
-  - [ ] Tidy up `softLink` script
   - [ ] Documentation
   - [ ] Investigate handling of Materials
   - [ ] Need to sort out AIR definition
