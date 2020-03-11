@@ -736,9 +736,26 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
            else :  # Just Add to structure 
               from PySide import QtGui, QtCore 
               volref = GDMLShared.getRef(pv,"volumeref")
+              print(volref)
+              posref = GDMLShared.getRef(pv,'positionref')
+              print(posref)
               GDMLShared.trace("Volume ref : "+volref)
-              #part = parent.newObject("App::Part","\033[1;40;31m"+volref)
-              part = parent.newObject("App::Part","NOT-Expanded_"+volref)
+              GDMLShared.trace("Position ref : "+posref)
+              pos = define.find("position[@name='%s']" % posref )
+              print(pos)
+              if pos is not None :
+                 px = GDMLShared.getVal(pos,'x')
+                 py = GDMLShared.getVal(pos,'y')
+                 pz = GDMLShared.getVal(pos,'z')
+              else :
+                 px = py = pz = 0 
+              part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
+              base = FreeCAD.Vector(px,py,pz)
+              # For now ignore rotation
+              #part.Placement = GDMLShared.processPlacement(base,rot)
+              part.Placement = GDMLShared.processPlacement(base,None)
+              #print(dir(part))
+              #
               #obj = part.newObject("App::Annotation","Not Expanded")
               #obj.LabelText="Annotation"
               #view = obj.ViewObject
@@ -923,7 +940,7 @@ def processGDML(doc,filename,prompt):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, materials, solids, structure, volDict
+    global setup, define, materials, solids, structure, volDict
   
   # Add files object so user can change to organise files
   #  from GDMLObjects import GDMLFiles, ViewProvider

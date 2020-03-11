@@ -328,8 +328,19 @@ class ExpandFeature :
                #parent = obj.InList[0]
                name = obj.Label[13:]
                obj.Label = name
+               # Get original volume name i.e. loose _ or _nnn
+               print('Name : '+name)
+               l = len(name) - 1
+               print(name[l])
+               if name[l] == '_' :
+                   name = name[:-1]
+               else :   
+                   name = name[:-4]
                print("Name : "+name)
-               expandVolume(obj,name,0,0,0,None,0,3)
+               x = obj.Placement.Base[0]
+               y = obj.Placement.Base[1]
+               z = obj.Placement.Base[2]
+               expandVolume(obj,name,x,y,z,None,0,3)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_ExpandVol', 'MenuText': \
