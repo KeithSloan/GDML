@@ -11,7 +11,7 @@ printverbose = False
 global define
 
 def trace(s):
-    #if printverbose == True : print(s)
+    if printverbose == True : print(s)
     return
 
 def setDefine(val) :

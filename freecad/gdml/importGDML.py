@@ -131,6 +131,7 @@ def setDisplayMode(obj,mode):
        obj.ViewObject.DisplayMode = 'Wireframe'
 
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
+    # parent, sold
     from .GDMLObjects import GDMLBox, ViewProvider
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
@@ -435,7 +436,6 @@ def createTube(part,solid,material,px,py,pz,rot,displayMode) :
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
-    print("aunit : "+aunit)
     lunit = getText(solid,'lunit',"mm")
     GDMLShared.trace(rmin)
     GDMLShared.trace(rmax)
@@ -532,6 +532,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     return myTess
 
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
+    # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
@@ -560,6 +561,7 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        return mybool
 
 def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
+    # parent,solid, material
     GDMLShared.trace(solid.tag)
     while switch(solid.tag) :
         if case('box'):

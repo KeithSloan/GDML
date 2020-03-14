@@ -42,7 +42,7 @@ else: gui = True
 
 global zOrder
 
-from GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
+from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDML2dVertex, GDMLSection, \
                         GDMLmaterial, GDMLfraction, \
                         GDMLcomposite, GDMLisotope, \
