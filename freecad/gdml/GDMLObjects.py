@@ -103,8 +103,8 @@ def angleSectionSolid(fp, rmax, z, shape) :
     #if deltaphirad < math.pi :
     #   return(shape.common(solid))
     #else :   
-    #   return(shape.cut(solid))
-    return(shape)
+       return(shape.cut(solid))
+    #return(shape)
     #return(solid)
 
 def setMaterial(obj, m) :
