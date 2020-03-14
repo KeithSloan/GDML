@@ -212,7 +212,6 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   - [ ] Add facility to edit Materials
   - [ ] Add facility to edit Isotopes
   - [ ] Add facility to edit Elements 
-  - [ ] Tidy up `softLink` script
   - [ ] Documentation
   - [ ] Investigate handling of Materials
   - [ ] Need to sort out AIR definition
@@ -233,9 +232,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
  
  based on gdml.xsd
  
- * 'World Volume'
+ * 'Volumes'
  
-    * May or may not have solid & material ref
+    * **Must** have **solid & material ref**
  
  * PhysVol 
  
