@@ -15,10 +15,18 @@ def checkFullCircle(aunit, angle) :
     return False
 
 # Get angle in Radians
-def getAngle(aunit,angle) :
+def getAngleRad(aunit,angle) :
    #print("aunit : "+str(aunit))
    if aunit == 'deg' :   # 0 radians 1 Degrees
       return(angle*math.pi/180)
+   else :
+      return angle
+
+# Get angle in Degrees
+def getAngleDeg(aunit,angle) :
+   #print("aunit : "+str(aunit))
+   if aunit == 'rad' :   # 0 radians 1 Degrees
+      return(angle*180/math.pi)
    else :
       return angle
 
@@ -74,38 +82,55 @@ def makeFrustrum(num,poly0,poly1) :
 def angleSectionSolid(fp, rmax, z, shape) :
     # Different Solids have different rmax and height
     import math
-    print("angleSectionSolid")
+    #print("angleSectionSolid")
     #print("aunit : "+fp.aunit)
     #print("startphi : "+str(fp.startphi))
     #print("deltaphi : "+str(fp.deltaphi))
-    startphirad = getAngle(fp.aunit,fp.startphi)
-    deltaphirad = getAngle(fp.aunit,fp.deltaphi)
+    #
+    # Old code
+    #
+    #startphirad = getAngle(fp.aunit,fp.startphi)
+    #deltaphirad = getAngle(fp.aunit,fp.deltaphi)
     #print("startphirad : "+str(startphirad))
     #print("deltaphirad : "+str(deltaphirad))
-    x1 = rmax*math.cos(startphirad)
-    y1 = rmax*math.sin(startphirad)
-    x2 = rmax*math.cos(startphirad+deltaphirad)
-    y2 = rmax*math.sin(startphirad+deltaphirad)
+    #x1 = rmax*math.cos(startphirad)
+    #y1 = rmax*math.sin(startphirad)
+    #x2 = rmax*math.cos(startphirad+deltaphirad)
+    #y2 = rmax*math.sin(startphirad+deltaphirad)
+    #v1 = FreeCAD.Vector(0,0,0)
+    #v2 = FreeCAD.Vector(x1,y1,0)
+    #v3 = FreeCAD.Vector(x2,y2,0)
+    #v4 = FreeCAD.Vector(0,0,z)
+    #v5 = FreeCAD.Vector(x1,y1,z)
+    #v6 = FreeCAD.Vector(x2,y2,z)
+    startPhiDeg = getAngleDeg(fp.aunit,fp.startphi)
+    deltaPhiDeg = getAngleDeg(fp.aunit,fp.deltaphi)
     v1 = FreeCAD.Vector(0,0,0)
-    v2 = FreeCAD.Vector(x1,y1,0)
-    v3 = FreeCAD.Vector(x2,y2,0)
+    v2 = FreeCAD.Vector(rmax,0,0)
+    v3 = FreeCAD.Vector(rmax,0,z)
     v4 = FreeCAD.Vector(0,0,z)
-    v5 = FreeCAD.Vector(x1,y1,z)
-    v6 = FreeCAD.Vector(x2,y2,z)
 
+    f1 = make_face4(v1,v2,v3,v4)
+    s1 = f1.revolve(v1,v4,deltaPhiDeg)
+    s2 = s1.rotate(v1,v4,startPhiDeg)
+
+    #
+    # Old code
+    #
     # Make the wires/faces
-    f1 = make_face3(v1,v2,v3)
-    f2 = make_face4(v1,v3,v6,v4)
-    f3 = make_face3(v4,v6,v5)
-    f4 = make_face4(v5,v2,v1,v4)
-    shell=Part.makeShell([f1,f2,f3,f4])
-    solid=Part.makeSolid(shell)
-    #if deltaphirad < math.pi :
-    #   return(shape.common(solid))
-    #else :   
-       return(shape.cut(solid))
+    #f1 = make_face3(v1,v2,v3)
+    #f2 = make_face4(v1,v3,v6,v4)
+    #f3 = make_face3(v4,v6,v5)
+    #f4 = make_face4(v5,v2,v1,v4)
+    #shell=Part.makeShell([f1,f2,f3,f4])
+    #solid=Part.makeSolid(shell)
+    if deltaPhiDeg < 90 :
+       return(shape.common(s2))
+    else :   
+       return(shape.cut(s2))
     #return(shape)
     #return(solid)
+    #return(s2)
 
 def setMaterial(obj, m) :
     #print('setMaterial')
@@ -748,7 +773,7 @@ class GDMLPolycone(GDMLcommon) :
    def createGeometry(self,fp) :    
        zplanes = fp.OutList
        cones = []
-       GDMLShared.printverbose = True
+       #GDMLShared.printverbose = True
        GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
        mul = getMult(fp.lunit)
        # Running height
@@ -775,7 +800,6 @@ class GDMLPolycone(GDMLcommon) :
               coneOuter = Part.makeCylinder(rM1,h)
            coneOuter.translate(v)
            rh = rh + h
-           #cones.append(coneOuter)
            cones.append(coneOuter.cut(coneInner))
 
        cone = cones[0]
@@ -893,9 +917,9 @@ class GDMLTrap(GDMLcommon) :
    def createGeometry(self,fp):
        import math
        # Define six vetices for the shape
-       alpha = getAngle(fp.aunit,fp.alpha)
-       theta = getAngle(fp.aunit,fp.theta)
-       phi   = getAngle(fp.aunit,fp.phi)
+       alpha = getAngleRad(fp.aunit,fp.alpha)
+       theta = getAngleRad(fp.aunit,fp.theta)
+       phi   = getAngleRad(fp.aunit,fp.phi)
        mul   = getMult(fp.lunit)
        dx = fp.y1*math.sin(alpha) * mul
        dy = fp.y1*(1.0 - math.cos(alpha)) * mul
@@ -1051,18 +1075,19 @@ class GDMLTube(GDMLcommon) :
        cyl1 = Part.makeCylinder(fp.rmax * mul, fp.z * mul)
        cyl2 = Part.makeCylinder(fp.rmin * mul, fp.z * mul)
        cyl3 = cyl1.cut(cyl2) 
-
        if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          tube = angleSectionSolid(fp, fp.rmax * mul, fp.z, cyl3.tpShape())
+          tube = angleSectionSolid(fp, fp.rmax * mul, fp.z, cyl3)
        else :
-          tube = cyl3.toShape()
+          tube = cyl3
        #base = FreeCAD.Vector(0,0,fp.z/2)
        #base = FreeCAD.Vector(0,0,0)
        base = FreeCAD.Vector(0,0,-fp.z/2)
        fp.Shape = translate(tube,base)
-       print('Tube')
+       #print('Tube')
        #print(dir(fp.Shape))
-       print(fp.Shape.isClosed())
+       #print(fp.Shape.isClosed())
+       #print(fp.Shape.isValid())
+       #print(fp.Shape.isClosed())
        #print(fp.Shape.Solids)
        #print(dir(fp.Shape.Solids))
 
