@@ -155,6 +155,7 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
 
 def createCone(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLCone, ViewProvider
+    GDMLShared.printverbose = True
     GDMLShared.trace("CreateCone : ")
     GDMLShared.trace(solid.attrib)
     rmin1 = GDMLShared.getVal(solid,'rmin1')
