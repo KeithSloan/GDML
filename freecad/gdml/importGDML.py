@@ -912,25 +912,26 @@ def processGDML(doc,filename,prompt):
     from . import GDMLShared
     from . import GDMLObjects
     from . import GDMLCommands
-    from   .GDMLCommands import importPrompt
 
-    if FreeCAD.GuiUp and prompt : 
-       dialog = importPrompt()
-       dialog.exec_()
-       #FreeCADGui.Control.showDialog(dialog)
-       #if dialog.retStatus == 1 :
-       #   print('Import')
-       #   phylvl = -1
+    if FreeCAD.GuiUp :
+       from   .GDMLCommands import importPrompt
+       if prompt :
+          dialog = importPrompt()
+          dialog.exec_()
+          #FreeCADGui.Control.showDialog(dialog)
+          #if dialog.retStatus == 1 :
+          #   print('Import')
+          #   phylvl = -1
 
-       if dialog.retStatus == 2 :
-          print('Scan Vol') 
-          phylvl = 0 
+          if dialog.retStatus == 2 :
+             print('Scan Vol') 
+             phylvl = 0 
 
-       else :
-          phylvl = -1
+          else :
+             phylvl = -1
 
-    else :   
-       phylvl = 0
+       else :   
+          phylvl = 0
 
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
     #GDMLShared.printverbose = params.GetBool('printVerbose',False)
