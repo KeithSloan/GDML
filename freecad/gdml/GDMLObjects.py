@@ -777,7 +777,7 @@ class GDMLPolycone(GDMLcommon) :
    def createGeometry(self,fp) :    
        zplanes = fp.OutList
        cones = []
-       #GDMLShared.printverbose = True
+       #GDMLShared.setTrace(True)
        GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
        mul = getMult(fp.lunit)
        # Running height

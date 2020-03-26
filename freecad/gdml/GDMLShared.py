@@ -6,16 +6,27 @@
 from math import *
 import FreeCAD, Part
 
+global define
+
+global printverbose
 printverbose = False
 
-global define
+def setTrace(flag) :
+    print('Trace set to : '+str(flag))
+    global printverbose
+    printverbose = flag
+
+def getTrace() :
+    global printverbose
+    #print('Get Trace : '+str(printverbose))
+    return(printverbose)
 
 def trace(s):
     if printverbose == True : print(s)
     return
 
 def setDefine(val) :
-    print("Set Define")
+    #print("Set Define")
     global define
     define = val
 

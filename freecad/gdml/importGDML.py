@@ -41,11 +41,11 @@ from . import GDMLShared
 #globals constDict, filesDict 
 
 if FreeCAD.GuiUp:
-    import PartGui, FreeCADGui
-    gui = True
+   import PartGui, FreeCADGui
+   gui = True
 else:
-    if printverbose: print("FreeCAD Gui not present.")
-    gui = False
+   print("FreeCAD Gui not present.")
+   gui = False
 
 import Part
 
@@ -147,15 +147,15 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mycube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycube.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mycube.ViewObject)
-    setDisplayMode(mycube,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mycube.ViewObject)
+       setDisplayMode(mycube,displayMode)
     #myCube.Shape = translate(mycube.Shape,base)
     return mycube
 
 def createCone(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLCone, ViewProvider
-    GDMLShared.printverbose = True
     GDMLShared.trace("CreateCone : ")
     GDMLShared.trace(solid.attrib)
     rmin1 = GDMLShared.getVal(solid,'rmin1')
@@ -175,9 +175,10 @@ def createCone(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mycone.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycone.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mycone.ViewObject)
-    setDisplayMode(mycone,displayMode)
+    if FreeCAD.GuiUp :
+       # set "ViewProvider before setDisplay
+       ViewProvider(mycone.ViewObject)
+       setDisplayMode(mycone,displayMode)
     return(mycone)
 
 def createElcone(part,solid,material,px,py,pz,rot,displayMode) :
@@ -196,9 +197,10 @@ def createElcone(part,solid,material,px,py,pz,rot,displayMode) :
     #base = FreeCAD.Vector(0,0,0)
     myelcone.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myelcone.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(myelcone.ViewObject)
-    setDisplayMode(myelcone,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myelcone.ViewObject)
+       setDisplayMode(myelcone,displayMode)
     return(myelcone)
 
 def createEllipsoid(part,solid,material,px,py,pz,rot,displayMode) :
@@ -219,9 +221,10 @@ def createEllipsoid(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     myelli.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myelli.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(myelli.ViewObject)
-    setDisplayMode(myelli,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myelli.ViewObject)
+       setDisplayMode(myelli,displayMode)
     return myelli
 
 def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
@@ -239,9 +242,10 @@ def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     myeltube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myeltube.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(myeltube.ViewObject)
-    setDisplayMode(myeltube,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myeltube.ViewObject)
+       setDisplayMode(myeltube,displayMode)
     return myeltube
 
 def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
@@ -256,7 +260,8 @@ def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
     mypolycone=part.newObject("Part::FeaturePython","GDMLPolycone:"+getName(solid))
     mypolycone.addExtension("App::OriginGroupExtensionPython", None)
     GDMLPolycone(mypolycone,startphi,deltaphi,aunit,lunit,material)
-    ViewProviderExtension(mypolycone.ViewObject)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(mypolycone.ViewObject)
 
     #mypolycone.ViewObject.DisplayMode = "Shaded"
     GDMLShared.trace(solid.findall('zplane'))
@@ -269,14 +274,16 @@ def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
         mypolycone.addObject(myzplane)
         #myzplane=mypolycone.newObject('App::FeaturePython','zplane') 
         GDMLzplane(myzplane,rmin,rmax,z)
-        ViewProvider(myzplane)
+        if FreeCAD.GuiUp :
+           ViewProvider(myzplane)
 
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mypolycone.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mypolycone.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    setDisplayMode(mypolycone,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       setDisplayMode(mypolycone,displayMode)
     return mypolycone
 
 def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
@@ -293,7 +300,8 @@ def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
                 getName(solid))
     mypolyhedra.addExtension("App::OriginGroupExtensionPython", None)
     GDMLPolyhedra(mypolyhedra,startphi,deltaphi,numsides,aunit,lunit,material)
-    ViewProviderExtension(mypolyhedra.ViewObject)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(mypolyhedra.ViewObject)
 
     #mypolyhedra.ViewObject.DisplayMode = "Shaded"
     GDMLShared.trace(solid.findall('zplane'))
@@ -306,14 +314,16 @@ def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
         mypolyhedra.addObject(myzplane)
         #myzplane=mypolyhedra.newObject('App::FeaturePython','zplane') 
         GDMLzplane(myzplane,rmin,rmax,z)
-        ViewProvider(myzplane)
+        if FreeCAD.GuiUp :
+           ViewProvider(myzplane)
 
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mypolyhedra.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mypolyhedra.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    setDisplayMode(mypolyhedra,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       setDisplayMode(mypolyhedra,displayMode)
     return mypolyhedra
 
 def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
@@ -333,9 +343,10 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mysphere.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mysphere.ViewObject)
-    setDisplayMode(mysphere,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mysphere.ViewObject)
+       setDisplayMode(mysphere,displayMode)
     return mysphere
 
 def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
@@ -361,9 +372,10 @@ def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mytrap.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mytrap.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mytrap.ViewObject)
-    setDisplayMode(mytrap,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytrap.ViewObject)
+       setDisplayMode(mytrap,displayMode)
     return mytrap
 
 def createTrd(part,solid,material,px,py,pz,rot,displayMode) :
@@ -383,9 +395,10 @@ def createTrd(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mytrd.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mytrd.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mytrd.ViewObject)
-    setDisplayMode(mytrd,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytrd.ViewObject)
+       setDisplayMode(mytrd,displayMode)
     return mytrd
 
 def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
@@ -398,7 +411,8 @@ def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
     #myXtru.addExtension("App::OriginGroupExtensionPython", None)
     lunit = getText(solid,'lunit',"mm")
     GDMLXtru(myXtru,lunit,material)
-    ViewProviderExtension(myXtru.ViewObject)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(myXtru.ViewObject)
     for vert2d in solid.findall('twoDimVertex') : 
         x = GDMLShared.getVal(vert2d,'x')
         y = GDMLShared.getVal(vert2d,'y')
@@ -406,7 +420,8 @@ def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
         #myzplane=mypolycone.newObject('App::FeaturePython','zplane') 
         GDML2dVertex(my2dVert,x,y)
         myXtru.addObject(my2dVert)
-        ViewProvider(my2dVert)
+        if FreeCAD.GuiUp :
+           ViewProvider(my2dVert)
     for section in solid.findall('section') : 
         zOrder = GDMLShared.getVal(section,'zOrder',2)     # Get Int
         zPosition = GDMLShared.getVal(section,'zPosition',2) # Get Int
@@ -416,7 +431,8 @@ def createXtru(part,solid,material,px,py,pz,rot,displayMode) :
         mysection=FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLSection')
         GDMLSection(mysection,zOrder,zPosition,xOffset,yOffset,scalingFactor)
         myXtru.addObject(mysection)
-        ViewProvider(mysection)
+        if FreeCAD.GuiUp :
+           ViewProvider(mysection)
 
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -448,9 +464,10 @@ def createTube(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mytube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mytube.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mytube.ViewObject)
-    setDisplayMode(mytube,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytube.ViewObject)
+       setDisplayMode(mytube,displayMode)
     return mytube
 
 def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
@@ -488,9 +505,10 @@ def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
     base = FreeCAD.Vector(px,py,pz)
     mycuttube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycuttube.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(mycuttube.ViewObject)
-    setDisplayMode(mycuttube,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mycuttube.ViewObject)
+       setDisplayMode(mycuttube,displayMode)
     return mycuttube
 
 def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
@@ -501,8 +519,9 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     myTess=part.newObject("Part::FeaturePython","GDMLTessellated:"+getName(solid))
     #myTess.addExtension("App::OriginGroupExtensionPython", None)
     GDMLTessellated(myTess,material)
-    ViewProviderExtension(myTess.ViewObject)
-    ViewProvider(myTess.ViewObject)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(myTess.ViewObject)
+       ViewProvider(myTess.ViewObject)
     for elem in solid.getchildren() :
         GDMLShared.trace(elem)
         v1 = elem.attrib['vertex1']
@@ -513,23 +532,26 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
            myTri = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLTriangle')
            GDMLTriangular(myTri,v1,v2,v3,vType) 
            myTess.addObject(myTri)
-           ViewProvider(myTri)
+           if FreeCAD.GuiUp :
+              ViewProvider(myTri)
         
         if elem.tag == 'quadrangular' :
            v4 = elem.attrib['vertex4']
            myQuad = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLQuadrangular')
            GDMLQuadrangular(myQuad,v1,v2,v3,v4,vType) 
            myTess.addObject(myQuad)
-           ViewProvider(myQuad)
+           if FreeCAD.GuiUp :
+              ViewProvider(myQuad)
 
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     #base = FreeCAD.Vector(0,0,0)
     myTess.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myTess.Placement.Rotation)
-    # set ViewProvider before setDisplay
-    ViewProvider(myTess.ViewObject)
-    setDisplayMode(myTess,displayMode)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myTess.ViewObject)
+       setDisplayMode(myTess,displayMode)
     return myTess
 
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
@@ -911,11 +933,12 @@ def processGDML(doc,filename,prompt):
 
     from . import GDMLShared
     from . import GDMLObjects
-    from . import GDMLCommands
 
+    phylvl = -1 # Set default
     if FreeCAD.GuiUp :
-       from   .GDMLCommands import importPrompt
+       from . import GDMLCommands
        if prompt :
+          from   .GDMLCommands import importPrompt
           dialog = importPrompt()
           dialog.exec_()
           #FreeCADGui.Control.showDialog(dialog)
@@ -927,15 +950,14 @@ def processGDML(doc,filename,prompt):
              print('Scan Vol') 
              phylvl = 0 
 
-          else :
-             phylvl = -1
+          params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
+          #GDMLShared.setTrace(printverbose = params.GetBool('printVerbose',False))
+   
+    else :
+        # For Non Gui default Trace to on
+        GDMLShared.setTrace(True)
 
-       else :   
-          phylvl = 0
-
-    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
-    #GDMLShared.printverbose = params.GetBool('printVerbose',False)
-    print("Print Verbose : "+ str(GDMLShared.printverbose))
+    print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
     FreeCAD.Console.PrintMessage('ImportGDML Version 0.2\n')
@@ -986,5 +1008,6 @@ def processGDML(doc,filename,prompt):
     parseVolume(part,world,0,0,0,None,phylvl,3)
 
     doc.recompute()
-    FreeCADGui.SendMsgToActiveView("ViewFit")
+    if FreeCAD.GuiUp :
+       FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
