@@ -210,6 +210,11 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   syntax is
    
          python3 gdml2step.py <input gdml file> <output step file>
+         
+         The step file should be given a .step extension.
+         
+         In theory other file extension should produce a file of the appropriate type,
+         e.g. iges, but this is untested.
 
 ## Roadmap
 
