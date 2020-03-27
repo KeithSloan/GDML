@@ -202,6 +202,19 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   Also as an experiment: thermal parameters have been added to the `GDMLmaterial` object so these could
   be changed before creating a compound. One option to be would be to add elements to GDML files to enable
   loading and exporting, but then they would **NOT** be standard GDML files (maybe a different file extension?)  
+  
+## Standalone Utility
+
+  In directory **Utils** You will find a python script **gdml2step.py** for creating a step file from a gdml file.
+  
+  syntax is
+   
+         python3 gdml2step.py <input gdml file> <output step file>
+         
+         The step file should be given a .step extension.
+         
+         In theory other file extension should produce a file of the appropriate type,
+         e.g. iges, but this is untested.
 
 ## Roadmap
 
