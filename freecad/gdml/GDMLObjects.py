@@ -170,7 +170,7 @@ class GDMLcommon :
         return None
 
 class GDMLBox(GDMLcommon) :
-   def __init__(self, obj, x, y, z, lunit, material):
+   def __init__(self, obj, x, y, z, lunit, material, flag = False):
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
       #GDMLShared.trace("material : "+material)
@@ -180,21 +180,25 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
-      obj.addProperty("Part::PropertyPartShape","Shape","GDMLBox", "Shape of the Box")
+      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLBox", "Shape of the Box")
       obj.Proxy = self
-      self.Type = 'GDMLBox'
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       # Changing Shape in createGeometry will redrive onChanged
+       if ('Restore' in fp.State) :
+          return
+       
        if prop in ['x','y','z']  :
-          self.createGeometry(fp)
+             self.createGeometry(fp) 
 
    def execute(self, fp):
+       #print('execute')
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
+       #print('createGeometry')
        #print(fp)
        if all((fp.x,fp.y,fp.z)) :
        #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
@@ -206,6 +210,10 @@ class GDMLBox(GDMLcommon) :
           box = Part.makeBox(x,y,z)
           base = FreeCAD.Vector(-x/2,-y/2,-z/2)
           fp.Shape = translate(box,base)
+    
+   def OnDocumentRestored(self,obj) :
+       print('Doc Restored')
+          
 
 class GDMLCone(GDMLcommon) :
    def __init__(self, obj, rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit, \
@@ -233,7 +241,9 @@ class GDMLCone(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if  'Restore' in fp.State :
+           return
+
        if prop in ['rmin1','rmax1','rmin2','rmax2','z','startphi','deltaphi' \
                ,'aunit', 'lunit'] :
           self.createGeometry(fp)
@@ -301,9 +311,10 @@ class GDMLElCone(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       if not ('Restore' in fp.State) :
-          if prop in ['dx','dy','zmax','zcut','lunit'] :
-             self.createGeometry(fp)
+       if 'Restore' in fp.State :
+          return  
+       if prop in ['dx','dy','zmax','zcut','lunit'] :
+          self.createGeometry(fp)
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -361,7 +372,9 @@ class GDMLEllipsoid(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['ax','by','cz','zcut1','zcut2','lunit'] :
           self.createGeometry(fp)
 
@@ -431,7 +444,9 @@ class GDMLElTube(GDMLcommon) :
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        '''Do something when a property has changed'''
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['dx','dy','dz','lunit'] :
           self.createGeometry(fp)
 
@@ -479,9 +494,11 @@ class GDMLPolyhedra(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       if not ('Restore' in fp.State) :
-          if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
-             self.createGeometry(fp)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
+          self.createGeometry(fp)
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -564,9 +581,10 @@ class GDMLXtru(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['startphi','deltaphi','aunit','lunit'] :
-          #self.execute(fp)
           self.createGeometry(fp)
             
    def execute(self, fp):
@@ -765,10 +783,10 @@ class GDMLPolycone(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
-       #GDMLShared.trace("Change property: " + str(prop) + "\n")
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['startphi','deltaphi','aunit','lunit'] :
-          #print(dir(fp)) 
           self.createGeometry(fp)
 
    def execute(self, fp):
@@ -851,7 +869,9 @@ class GDMLSphere(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['rmin','rmax','startphi','deltaphi','starttheta', \
                     'deltatheta','aunit','lunit'] :
           self.createGeometry(fp)
@@ -910,7 +930,9 @@ class GDMLTrap(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['z','theta','phi','x1','x2','x3','x4','y1','y2','alpha', \
                    'aunit', 'lunit'] :
           self.createGeometry(fp)
@@ -1003,7 +1025,9 @@ class GDMLTrd(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['z','x1','x2','y1','y2','lunit'] :
           self.createGeometry(fp)
    
@@ -1064,7 +1088,9 @@ class GDMLTube(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                   'lunit'] :
           self.createGeometry(fp)
@@ -1128,7 +1154,9 @@ class GDMLcutTube(GDMLcommon) :
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                    'lowX', 'lowY', 'lowZ', \
                    'highX','highY','highZ','lunit'] :
@@ -1232,7 +1260,9 @@ class GDMLTessellated(GDMLcommon) :
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
+       if 'Restore' in fp.State :
+          return
+
        if prop in ['v1','v2','v3','v4','type'] :
           self.createGeometry(fp)
 
