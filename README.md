@@ -11,7 +11,11 @@ Install by use of FreeCAD Addon Manager
 Needs lxml which should be installed as part of FreeCAD
 
    * FreeCAD_0.19.19424 and above.
-   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above
+   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
+   
+If you get an error message No module named 'lxml' then on Linux you can install with
+  
+  sudo apt-get install python3-lxml
    
 ## Details of GDML
 
