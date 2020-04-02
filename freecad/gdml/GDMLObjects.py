@@ -181,6 +181,7 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
       #obj.addProperty("Part::PropertyPartShape","Shape","GDMLBox", "Shape of the Box")
+      self.Type = 'GDMLBox'
       obj.Proxy = self
 
    def onChanged(self, fp, prop):

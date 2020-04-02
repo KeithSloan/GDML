@@ -723,8 +723,9 @@ def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
 
     else :
         GDMLShared.trace("ParseVolume : "+name)
-        part = parent.newObject("App::Part",name)
-        expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
+        #part = parent.newObject("App::Part",name)
+        #expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
+        expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode)
 
 def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
@@ -999,8 +1000,9 @@ def processGDML(doc,filename,prompt):
     # volDict dictionary of volume names and associated FreeCAD part
     volDict = {}
 
-    part =doc.addObject("App::Part","Volumes")
+    #part =doc.addObject("App::Part","Volumes")
     world = GDMLShared.getRef(setup,"world")
+    part =doc.addObject("App::Part",world)
     #print(world)
     global volCount
     volCount = 0

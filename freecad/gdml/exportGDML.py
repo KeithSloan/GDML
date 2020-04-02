@@ -1,4 +1,4 @@
-#***************************************************************************
+#]***************************************************************************
 #*                                                                         
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
 #*                                                                        *
@@ -214,11 +214,12 @@ def reportObject(obj) :
       ###########################################
       if case("Part::FeaturePython") : 
          print("Part::FeaturePython")
-         if hasattr(obj.Proxy,'Type'):
-            print (obj.Proxy.Type)
-            print (obj.Name)
-         else :
-            print("Not a GDML Feature")
+         #
+         #if hasattr(obj.Proxy,'Type'):
+         #   print (obj.Proxy.Type)
+         #   print (obj.Name)
+         #else :
+         #   print("Not a GDML Feature")
             
          #print dir(obj)
          #print dir(obj.Proxy)
@@ -913,6 +914,7 @@ def processMaterialObject(obj) :
 
 def processGDMLsolid(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
+    print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLBox") :
           print("      GDMLBox") 
@@ -1121,7 +1123,8 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
              return solidName
           else :
              print("Not a GDML Feature")
-          break  
+             break  
+
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
          print("App::FeaturePython") 
@@ -1181,41 +1184,64 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
             return(processObjectShape(obj))
       break
 
-def createWorldVol():
-    print("Need to create World Volume")
-    bbox = FreeCAD.BoundBox()
-    ET.SubElement(setup,'world', {'ref':name})
-    return ET.SubElement(structure,'volume',{'name':name}) 
+def processWorldVol(worldVol):
+    # Should be - App::Part
+    # Origin
+    # GDML Object
+    # Sub Volume - App::Part
+    print('Process world Volume : '+worldVol.Name)
+    world = ET.SubElement(structure,'volume',{'name':worldVol.Name}) 
+    dummy = None
+    if hasattr(worldVol,'OutList') :
+       if len(worldVol.OutList) == 3 :
+          # Correct GDML structure
+          for obj in worldVol.OutList :
+              if obj.TypeId == 'App::Part' :
+                 dummy = ET.SubElement(world,'volume',{'name':obj.Name})
+                 if hasattr(obj,'OutList') :
+                    for sub in obj.OutList : 
+                        processObject(sub,dummy, world, None, False)
 
-def processWorldVol(first) :
-    # Check If Pure GDML workbench 
-    # return worldVol xml element
-    global setup, structure
-    #print(dir(first)
-    if hasattr(first,'OutList') :
-       objList = first.OutList
-       print("Length of List : "+str(len(objList)))
-       if first.TypeId == "App::Part" :
-          print("Found App Part")
-          name = first.Name
-          # Also allow for App::Origin 
-          print(objList[1].TypeId)
-          if isinstance(objList[1].Proxy,GDMLcommon) : 
-          #if isinstance(objList[1].Proxy,GDMLBox) or \
-          #   isinstance(objList[1].Proxy,GDMLTube) :
-             print("Adjust Setup")
-             ET.SubElement(setup,'world', {'ref':name})
-             return(structure)
+              else :   # Process GDML Object Add code to check
+                 processObject(obj, dummy, world, None, False)
+       else :
+          # Will catch Objects as we have fallen through  
+          dummy = createDummyVol(world)
 
-    # drop through if not handled
-    print("Need to create World Volume")
+    return world, dummy      
+
+
+def createDummyVol(world) :
+    print("Need to create Dummy Volume and World Bo ")
     bbox = FreeCAD.BoundBox()
     name = defineWorldBox(bbox)
-    ET.SubElement(setup,'world', {'ref':name})
-    worldVol = ET.SubElement(structure,'volume',{'name': name}) 
-    ET.SubElement(worldVol, 'solidref',{'ref': name})
+    dummyVol = ET.SubElement(world,'volume',{'name': 'Dummy'}) 
+    ET.SubElement(dummyVol, 'solidref',{'ref': name})
     print("Need to FIX !!!! To use defined gas")
-    ET.SubElement('worldVOL', 'materialref',{'ref': 'G4_Galactic'})
+    ET.SubElement(dummyVol, 'materialref',{'ref': 'G4_Galactic'})
+    return dummyVol
+
+def processVolumes(vol) :
+    # Should be Volumes - App::Part
+    # Origin
+    # World Vol - App::Part
+
+    print('Process Volumes')
+    
+    dummy = None
+    world = None
+    
+    if hasattr(vol,'OutList') :
+       for obj in vol.OutList :
+           if obj.TypeId == 'App::Part' :
+              world, dummy = processWorldVol(obj) 
+
+    if world == None :
+       world = ET.SubElement(structure,'volume',{'name':'World'}) 
+    if dummy == None :
+       createDummyVol(world)
+    return dummy   
+
 
 def export(exportList,filename) :
     "called when FreeCAD exports a file"
@@ -1229,8 +1255,9 @@ def export(exportList,filename) :
        zOrder = 1
        processMaterials()
 
-       vol = processWorldVol(exportList[0])
-       for obj in exportList :
+       vol = processVolumes(exportList[0])
+       #print(vol)
+       for obj in exportList[1:] :
            #reportObject(obj)
            processObject(obj, vol, None, None, False)
 
