@@ -13,9 +13,27 @@ Needs lxml which should be installed as part of FreeCAD
    * FreeCAD_0.19.19424 and above.
    * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
    
-If you get an error message No module named 'lxml' then on Linux you can install with
-  
-  sudo apt-get install python3-lxml
+## No module named 'lxml'
+
+If you get an error message No module named 'lxml' then on Linux you can diagnose as follows.
+
+To check path FreeCAD uses from a command line.
+
+    freecad -c
+    import sys
+    print(sys.path)
+    
+To check lxml correctly installed for freecad
+
+    freecad -c
+    import lxml
+    from lxml import etree
+    print(etree.LXML_VERSION)
+    
+ On linux to install lxml to a specific directory
+ 
+    pip3 install lxml -t <directory>
+    
    
 ## Details of GDML
 
