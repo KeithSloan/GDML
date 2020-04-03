@@ -488,9 +488,9 @@ def processSphereObject(obj, addVolsFlag) :
        createLVandPV(obj,obj.Name,sphereName)
     return(sphereName)
 
-def addPhysVol(obj, vol, volName) :
+def addPhysVol(obj, xmlVol, volName) :
     print("Add PhysVol to Vol") 
-    pvol = ET.SubElement(vol,'physvol')
+    pvol = ET.SubElement(xmlVol,'physvol')
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
     
@@ -633,7 +633,7 @@ def processGDMLPolyconeObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
     polyconeName = obj.Name
-    ET.SubElement(solids, 'genericPolycone',{'name': polyconeName, \
+    ET.SubElement(solids, 'polycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
                           'deltaphi': str(obj.deltaphi),  \
                           'aunit': obj.aunit,  \
@@ -981,30 +981,60 @@ from itertools import islice
 def consume(iterator) :
     next(islice(iterator,2,2), None)
 
-def processObject(obj, vol, newVol, pName, addVolsFlag) :
+def getXmlVolume(volObj) :
+    if volObj == None :
+       return None 
+    xmlvol = structure.find("volume[@name='%s']" % volObj.Name)
+    if xmlvol == None :
+       print(volObj.Name+' Not Found') 
+    return xmlvol
+
+
+#def processObject(obj, xmlVol, xmlParent, pName, addVolsFlag) :
+def processObject(obj, vol, parent, addVolsFlag) :
+    # Maybe multiple Objects in Volume so pass volObj
+    # And subvolumes must be dealt with first
+
+    # obj       - Object
+    # parent    - parent Object
+    # xmlVol    - xmlVol
+    # xmlParent - xmlParent Volume
+    # pName     - physical name
+    # addVolsFlag - Add physical Vol
     # return solid or boolean reference name or None
     # addVolsFlag = True then create Logical & Physical Volumes
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     print("Process Object : "+obj.Name)
+    # Do not pass parent as maybe multiple objects in Volume
+    #xmlParent = getXmlVolume(parent)
+    xmlVol = getXmlVolume(vol)
+    xmlParent = getXmlVolume(parent)
     while switch(obj.TypeId) :
 
+      # App::Part dealt with by processVol
+      # but need to avoid dropping through to Tessellate
+      #
       if case("App::Part") :
-         if hasattr(obj,'OutList') :
-            name = obj.Label
-            vol = newVol
-            newVOL = ET.SubElement(structure,'volume',{'name':name}) 
-            global lst
-            lst = iter(obj.OutList)
-            for sub in lst :
-                print(sub.Name)
-                ret = processObject(sub, vol, newVOL, name, addVolsFlag) 
-                # once first solid is processed set flag to add PV
-                if ret != None :
-                   print("First Solid : "+ret)
-                   addVolsFlag = True 
-         return    
-         break
+          return
+      #   xmlParent = xmlVol
+      #   pName = obj.Name
+      #   xmlVol = exportVol(obj, xmlParent, pName)
+      #if hasattr(obj,'OutList') :
+      #   name = obj.Label
+      #   vol = newVol
+      #   newVOL = ET.SubElement(structure,'volume',{'name':name}) 
+      #   global lst
+      #   lst = iter(obj.OutList)
+      #   for sub in lst :
+      #       print(sub.Name)
+      #       ret = processObject(sub, vol, newVOL, name, addVolsFlag) 
+      #       # once first solid is processed set flag to add PV
+      #       if ret != None :
+      #          print("First Solid : "+ret)
+      #          addVolsFlag = True 
+      #return    
+      #   break
          
       if case("App::Origin") :
          print("App Origin")
@@ -1030,15 +1060,17 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
          # Maybe Booleans could be grouped with GDML solids 
          print("   Cut")
          cutName = 'Cut'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, vol, False)
-         ref2 = processGDMLsolid(obj.Tool, vol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         addVolRef(newVol,cutName,obj.Base.material)
-         pvol = addPhysVol(obj,vol,pName)
+         addVolRef(xmlParent,cutName,obj.Base.material)
+         #addVolRef(xmlVol,cutName,obj.Base.material)
+         pvol = addPhysVol(obj,xmlVol,pName)
          defaultPlacement = testDefaultPlacement(obj)
          if defaultPlacement == False :
+            #addPositionReferenceSolid(obj,xmlVol,subtract)    
             addPositionReferenceSolid(obj,subtract)    
          consume(lst)
          return cutName
@@ -1047,15 +1079,17 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
       if case("Part::Fuse") :
          print("   Union")
          unionName = 'Union'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, vol, False)
-         ref2 = processGDMLsolid(obj.Tool, vol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         addVolRef(newVol,unionName,obj.Base.material)
+         addVolRef(xmlParent,unionName,obj.Base.material)
+         #addVolRef(xmlVol,unionName,obj.Base.material)
          pvol = addPhysVol(obj,vol,pName)
          defaultPlacement = testDefaultPlacement(obj)
          if defaultPlacement == False :
+            #addPositionReferenceSolid(obj,xmlVol,union)    
             addPositionReferenceSolid(obj,union)    
          consume(lst)
          return unionName
@@ -1064,12 +1098,13 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
       if case("Part::Common") :
          print("   Intersection")
          intersectName = 'Intersect'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, vol, False)
-         ref2 = processGDMLsolid(obj.Tool, vol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
          intersect = ET.SubElement(solids,'intersection',{'name': intersectName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
-         addVolRef(newVol,intersectName,obj.Base.material)
+         addVolRef(xmlParent,intersectName,obj.Base.material)
+         #addVolRef(xmlVol,intersectName,obj.Base.material)
          pvol = addPhysVol(obj,vol,pName)
          defaultPlacement = testDefaultPlacement(obj)
          if defaultPlacement == False :
@@ -1083,7 +1118,7 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
          multName = 'MultiFuse'+obj.Name
          multUnion = ET.Element('multiUnion',{'name': multName })
          for subobj in obj.Shapes:
-            solidName = processObject(subobj, vol, newVol, pName, False)
+            solidName = processObject(subobj, xmlVol, xmlParent, pName, False)
             node = ET.SubElement(multUnion,'multiUnionNode', \
                {'MF-Node' : 'Node-'+solidName})
             ET.SubElement(node,'solid', {'ref': solidName})
@@ -1108,15 +1143,18 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
           print("   Python Feature")
           if hasattr(obj.Proxy, 'Type') :
              print(obj.Proxy.Type) 
-             solidName = processGDMLsolid(obj, newVol, addVolsFlag)
+             #solidName = processGDMLsolid(obj, newVol, addVolsFlag)
+             #solidName = processGDMLsolid(obj, xmlVol, addVolsFlag)
+             solidName = processGDMLsolid(obj, xmlVol, False)
              material = obj.material
-             addVolRef(newVol,solidName,material)
+             addVolRef(xmlVol,solidName,material)
              print(testDefaultPlacement(obj))
              defaultPlacement = testDefaultPlacement(obj)
              if defaultPlacement == False or addVolsFlag == True :
-                print("Add Physical Volume : "+pName ) 
+                print("Add Physical Volume : "+parent.Name )
+                #pName = 'PV-'+solidName
                 #addVol(volName, solidName, material)
-                pvol = addPhysVol(obj,vol,pName)
+                pvol = addPhysVol(obj,xmlParent,vol.Name)
                 print("Not Default placement")
                 if defaultPlacement == False :
                    addPositionRotationPVol(obj,pvol)    
@@ -1184,64 +1222,74 @@ def processObject(obj, vol, newVol, pName, addVolsFlag) :
             return(processObjectShape(obj))
       break
 
-def processWorldVol(worldVol):
-    # Should be - App::Part
-    # Origin
-    # GDML Object
-    # Sub Volume - App::Part
-    print('Process world Volume : '+worldVol.Name)
-    world = ET.SubElement(structure,'volume',{'name':worldVol.Name}) 
-    dummy = None
-    if hasattr(worldVol,'OutList') :
-       if len(worldVol.OutList) == 3 :
-          # Correct GDML structure
-          for obj in worldVol.OutList :
-              if obj.TypeId == 'App::Part' :
-                 dummy = ET.SubElement(world,'volume',{'name':obj.Name})
-                 if hasattr(obj,'OutList') :
-                    for sub in obj.OutList : 
-                        processObject(sub,dummy, world, None, False)
 
-              else :   # Process GDML Object Add code to check
-                 processObject(obj, dummy, world, None, False)
-       else :
-          # Will catch Objects as we have fallen through  
-          dummy = createDummyVol(world)
+def processSubVol(vol, parent, addVolsFlag) :
+    # Need to create xml volume of sub volumes first, returns xmlVol
+    # parent - parent object
+    print('processSubVol : '+vol.Name)
+    for obj in vol.OutList :
+        if obj.TypeId == 'App::Part' :
+            if hasattr(obj,'OutList') :
+                # Always add Volumes on Sub Volumes
+                # Cannot save xml as maybe multiple
+                processSubVol(obj, vol, True)
 
-    return world, dummy      
+    # Don't save xml as may have many per vold
+    xmlVol = ET.SubElement(structure,'volume',{'name':vol.Name})
+    print(vol.Name+' Created')
+    if parent != None :
+       print(parent.Name+' Parent')
+    return(xmlVol)
 
+def processVol(vol, parent, addVolsFlag) :
+    # Need to create xml volume of sub volumes first, returns xmlVol
+    # parent - parent object
+    print('processVol : '+vol.Name)
+    
+    for obj in vol.OutList :
+        if obj.TypeId == 'App::Part' :
+            if hasattr(obj,'OutList') :
+                # Always add Volumes on Sub Volumes
+                # Cannot save xml as maybe multiple
+                print('Process '+obj.Name)
+                processVol(obj, vol, True)
 
-def createDummyVol(world) :
+        processObject(obj, vol, parent, addVolsFlag)
+
+def createDummyVol() :
     print("Need to create Dummy Volume and World Bo ")
     bbox = FreeCAD.BoundBox()
     name = defineWorldBox(bbox)
-    dummyVol = ET.SubElement(world,'volume',{'name': 'Dummy'}) 
+    dummyVol = ET.SubElement(structure,'volume',{'name': 'Dummy'}) 
     ET.SubElement(dummyVol, 'solidref',{'ref': name})
     print("Need to FIX !!!! To use defined gas")
     ET.SubElement(dummyVol, 'materialref',{'ref': 'G4_Galactic'})
     return dummyVol
 
-def processVolumes(vol) :
-    # Should be Volumes - App::Part
-    # Origin
+def checkGDMLstructure(objList) :
+    # Should be 
+    # App::Origin
+    # GDML Object
     # World Vol - App::Part
+    if len(objList) != 3 :
+        return False
+    if objList[0].TypeId != 'App::Origin' \
+        or objList[2].TypeId != 'App::Part' :
+            return False
+    return True
 
-    print('Process Volumes')
-    
-    dummy = None
-    world = None
+def exportWorldVol(vol) :
+
+    print('Export World Process Volume')
+    ET.SubElement(setup,'world',{'ref':vol.Name}) 
     
     if hasattr(vol,'OutList') :
-       for obj in vol.OutList :
-           if obj.TypeId == 'App::Part' :
-              world, dummy = processWorldVol(obj) 
-
-    if world == None :
-       world = ET.SubElement(structure,'volume',{'name':'World'}) 
-    if dummy == None :
-       createDummyVol(world)
-    return dummy   
-
+        if checkGDMLstructure(vol.OutList) == False :
+            xmlVol = createDummyVol(xmlParent)
+            xmlParent = ET.SubElement(structure,'volume',{'name':vol.Name}) 
+        #processVol(vol, parent, addVolsFlag) :
+        processSubVol(vol, None, False)
+        processVol(vol, None, False)
 
 def export(exportList,filename) :
     "called when FreeCAD exports a file"
@@ -1254,12 +1302,12 @@ def export(exportList,filename) :
        GDMLstructure()
        zOrder = 1
        processMaterials()
-
-       vol = processVolumes(exportList[0])
+       exportWorldVol(first)
+       #vol = processVolumes(exportList[0])
        #print(vol)
-       for obj in exportList[1:] :
-           #reportObject(obj)
-           processObject(obj, vol, None, None, False)
+       #for obj in exportList[1:] :
+       #    #reportObject(obj)
+       #    processObject(obj, vol, None, None, False)
 
        # format & write GDML file 
        indent(gdml)
