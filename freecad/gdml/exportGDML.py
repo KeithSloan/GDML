@@ -633,14 +633,14 @@ def processGDMLPolyconeObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
     polyconeName = obj.Name
-    ET.SubElement(solids, 'polycone',{'name': polyconeName, \
+    cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
                           'deltaphi': str(obj.deltaphi),  \
                           'aunit': obj.aunit,  \
                           'lunit' : 'mm'})
     print(obj.OutList)
     for zplane in obj.OutList :
-        ET.SubElement(solids, 'zplane',{'rmin': str(zplane.rmin), \
+        ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
 
@@ -676,15 +676,15 @@ def processGDMLTessellatedObject(obj, vol, addVolsFlag) :
     #            'x':items.x , 'y':items.y, 'z':items.z,'unit':'mm')
 
     tessName = 'Tess' + obj.Name
-    ET.SubElement(solids, 'tessellated',{'name': tessName})
+    tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
     print(len(obj.OutList))
     for items in obj.OutList :
         if hasattr(items,'v4' ) :
-            ET.SubElement(solids,'quadrangular',{'vertex1':'v1', \
+            ET.SubElement(tess,'quadrangular',{'vertex1':'v1', \
                     'vertex2':'v2', 'vertex3':'v3', 'vertex4':'v4',
                                  'type':'ABSOLUTE'})
         else :    
-            ET.SubElement(solids,'triangular',{'vertex1':'v1', 'vertex2':'v2', \
+            ET.SubElement(tess,'triangular',{'vertex1':'v1', 'vertex2':'v2', \
                                  'vertex3':'v3','type':'ABSOLUTE'})
 
     return(tessName)
@@ -748,14 +748,14 @@ def processGDMLXtruObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     #tubeName = 'Tube' + obj.Name
     xtruName = obj.Name
-    ET.SubElement(solids, 'xtru',{'name': xtruName, \
+    xtru = ET.SubElement(solids, 'xtru',{'name': xtruName, \
                            'lunit' : 'mm'})
     for items in obj.OutList :
         if items.Type == 'twoDimVertex' :
-           ET.SubElement(solids, 'twoDimVertex',{'x': str(items.x), \
+           ET.SubElement(xtru, 'twoDimVertex',{'x': str(items.x), \
                                    'y': str(items.y)})
         if items.Type == 'section' :
-           ET.SubElement(solids, 'section',{'zOrder': str(items.zOrder), \
+           ET.SubElement(xtru, 'section',{'zOrder': str(items.zOrder), \
                                   'zPosition': str(items.zPosition), \
                                   'xOffset' : str(items.xOffset), \
                                   'yOffset' : str(items.yOffset), \
