@@ -98,11 +98,15 @@ def GDMLstructure() :
 
     defineCnt = LVcount = PVcount = POScount =  ROTcount = 1
 
-    #gdml = ET.Element('gdml', {
+    NS = 'http://www.w3.org/2001/XMLSchema-instance'
+    location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
+    gdml = ET.Element('gdml',attrib={location_attribute: 'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
+    print(gdml.tag)
+
           #'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
           #'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"
 #})
-    gdml = ET.Element('gdml')
+    #gdml = ET.Element('gdml')
     define = ET.SubElement(gdml, 'define')
     materials = ET.SubElement(gdml, 'materials')
     solids = ET.SubElement(gdml, 'solids')
@@ -1313,7 +1317,8 @@ def export(exportList,filename) :
        indent(gdml)
        print("Write to GDML file")
        #ET.ElementTree(gdml).write(filename, 'utf-8', True)
-       ET.ElementTree(gdml).write(filename)
+       ET.ElementTree(gdml).write(filename,xml_declaration=True)
+       #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
        print("GDML file written")
     
     else :
