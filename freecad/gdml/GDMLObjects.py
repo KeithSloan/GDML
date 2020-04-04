@@ -1137,12 +1137,12 @@ class GDMLcutTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLcutTube","aunit")
       obj.aunit=['rad','deg']
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyLength","lowX","GDMLcutTube","low X").lowX=lowX
-      obj.addProperty("App::PropertyLength","lowY","GDMLcutTube","low Y").lowY=lowY
-      obj.addProperty("App::PropertyLength","lowZ","GDMLcutTube","low Z").lowZ=lowZ
-      obj.addProperty("App::PropertyLength","highX","GDMLcutTube","high X").highX=highX
-      obj.addProperty("App::PropertyLength","highY","GDMLcutTube","high Y").highY=highY
-      obj.addProperty("App::PropertyLength","highZ","GDMLcutTube","high Z").highZ=highZ
+      obj.addProperty("App::PropertyFloat","lowX","GDMLcutTube","low X").lowX=lowX
+      obj.addProperty("App::PropertyFloat","lowY","GDMLcutTube","low Y").lowY=lowY
+      obj.addProperty("App::PropertyFloat","lowZ","GDMLcutTube","low Z").lowZ=lowZ
+      obj.addProperty("App::PropertyFloat","highX","GDMLcutTube","high X").highX=highX
+      obj.addProperty("App::PropertyFloat","highY","GDMLcutTube","high Y").highY=highY
+      obj.addProperty("App::PropertyFloat","highZ","GDMLcutTube","high Z").highZ=highZ
       obj.addProperty("App::PropertyString","lunit","GDMLcutTube","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLcutTube","Material")
       print('Add material')
@@ -1167,7 +1167,25 @@ class GDMLcutTube(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
-       print('Create Cut Tube : Need to write')
+        print('Create Cut Tube : Need to write')
+        angle = getAngleDeg(fp.aunit,fp.deltaphi)
+        pntC = FreeCAD.Vector(0,0,0)
+        dirC = FreeCAD.Vector(0,0,1)
+
+        #tube1 = Part.makeCylinder(fp.rmax, fp.z, [pntC, dirC, angle])
+        #tube2 = Part.makeCylinder(fp.rmin, fp.z, [pntC, dirC, angle])
+        tube1 = Part.makeCylinder(fp.rmax, fp.z)
+        tube2 = Part.makeCylinder(fp.rmin, fp.z)
+        tube = tube1.cut(tube2)
+        topPlane = Part.makePlane(100,100, \
+                FreeCAD.Vector(fp.highX,fp.highY,fp.highZ))
+                #[pntC,FreeCAD.Vector(fp.highX,fp.highY,fp.highZ)])
+        comp = tube.cut(topPlane)        
+        botPlane = Part.makePlane(100,100, \
+                FreeCAD.Vector(fp.lowX,fp.lowY,fp.lowZ))
+                #[pntC,FreeCAD.Vector(fp.lowX,fp.lowY,fp.lowZ)])
+        #botTube = topTube.cut(botPlane)
+        fp.Shape = comp
 
 class GDMLVertex(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit):
