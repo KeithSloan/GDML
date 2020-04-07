@@ -26,13 +26,14 @@ for o in App.ActiveDocument.Objects:
   # find root object and export the shape
   #print(dir(o))
   #print(o.Name)
-  if o.Name == 'Volumes' :
+  if o.TypeId == 'App::Part' :
      #print(o.TypeId) 
      print('Exporting STEP file : '+oname)
      print('This can be a very slow process')
      print('for large files Please be patient')
      #Import.export([o],"/tmp/test4.step")
      Import.export([o],oname)
+     sys.exit(0)
 
 sys.exit(0)
 
