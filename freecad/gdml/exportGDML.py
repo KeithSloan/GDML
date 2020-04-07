@@ -586,9 +586,9 @@ def processGDMLBoxObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     boxName = 'Box' + obj.Name
     ET.SubElement(solids, 'box',{'name': boxName, \
-                          'x': str(obj.x.Value),  \
-                          'y': str(obj.y.Value),  \
-                          'z': str(obj.z.Value),  \
+                          'x': str(obj.x),  \
+                          'y': str(obj.y),  \
+                          'z': str(obj.z),  \
                           'lunit' : 'mm'})
     return (boxName)
 
@@ -597,27 +597,47 @@ def processGDMLConeObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     coneName = 'Cone' + obj.Name
     ET.SubElement(solids, 'cone',{'name': coneName, \
-                          'rmin1': str(obj.rmin1.Value),  \
-                          'rmin2': str(obj.rmin2.Value),  \
-                          'rmax1': str(obj.rmax1.Value),  \
-                          'rmax2': str(obj.rmax2.Value),  \
+                          'rmin1': str(obj.rmin1),  \
+                          'rmin2': str(obj.rmin2),  \
+                          'rmax1': str(obj.rmax1),  \
+                          'rmax2': str(obj.rmax2),  \
                           'startphi': str(obj.startphi), \
                           'deltaphi': str(obj.deltaphi), \
-                          'aunit': obj.aunit,
-                          'z': str(obj.z.Value),  \
+                          'aunit': obj.aunit, \
+                          'z': str(obj.z),  \
                           'lunit' : 'mm'})
     return(coneName)
+
+def processGDMLCutTubeObject(obj, vol, addVolsFlag) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    cTubeName = 'CutTube' + obj.Name
+    ET.SubElement(solids, 'cutTube',{'name': cTubeName, \
+                          'rmin': str(obj.rmin),  \
+                          'rmax': str(obj.rmax),  \
+                          'startphi': str(obj.startphi), \
+                          'deltaphi': str(obj.deltaphi), \
+                          'aunit': obj.aunit, \
+                          'z': str(obj.z),  \
+                          'highX':str(obj.highX), \
+                          'highY':str(obj.highY), \
+                          'highZ':str(obj.highZ), \
+                          'lowX':str(obj.lowX), \
+                          'lowY':str(obj.lowY), \
+                          'lowZ':str(obj.lowZ), \
+                          'lunit' : 'mm'})
+    return(cTubeName)
 
 def processGDMLEllipsoidObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     ellipsoidName = 'Ellipsoid' + obj.Name
     ET.SubElement(solids, 'ellipsoid',{'name': ellipsoidName, \
-                          'ax': str(obj.ax.Value),  \
-                          'by': str(obj.by.Value),  \
-                          'cz': str(obj.cz.Value),  \
-                          'zcut1': str(obj.zcut1.Value),  \
-                          'zcut2': str(obj.zcut2.Value),  \
+                          'ax': str(obj.ax),  \
+                          'by': str(obj.by),  \
+                          'cz': str(obj.cz),  \
+                          'zcut1': str(obj.zcut1),  \
+                          'zcut2': str(obj.zcut2),  \
                           'lunit' : 'mm'})
     return(ellipsoidName)
 
@@ -626,9 +646,9 @@ def processGDMLElTubeObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     eltubeName = 'Cone' + obj.Name
     ET.SubElement(solids, 'eltube',{'name': eltubeName, \
-                          'dx': str(obj.dx.Value),  \
-                          'dy': str(obj.dy.Value),  \
-                          'dz': str(obj.dz.Value),  \
+                          'dx': str(obj.dx),  \
+                          'dy': str(obj.dy),  \
+                          'dz': str(obj.dz),  \
                           'lunit' : 'mm'})
     return(eltubeName)
 
@@ -662,8 +682,8 @@ def processGDMLSphereObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     sphereName = 'Sphere' + obj.Name
     ET.SubElement(solids, 'sphere',{'name': sphereName, \
-                           'rmin': str(obj.rmin.Value),  \
-                           'rmax': str(obj.rmax.Value),  \
+                           'rmin': str(obj.rmin),  \
+                           'rmax': str(obj.rmax),  \
                            'startphi': str(obj.startphi), \
                            'deltaphi': str(obj.deltaphi), \
                            'aunit': obj.aunit,
@@ -699,15 +719,15 @@ def processGDMLTrapObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     trapName = 'Trap' + obj.Name
     ET.SubElement(solids, 'trap',{'name': trapName, \
-                           'z': str(obj.z.Value),  \
+                           'z': str(obj.z),  \
                            'theta': str(obj.theta),  \
                            'phi': str(obj.phi), \
-                           'x1': str(obj.x1.Value),  \
-                           'x2': str(obj.x2.Value),  \
-                           'x3': str(obj.x3.Value),  \
-                           'x4': str(obj.x4.Value),  \
-                           'y1': str(obj.y1.Value),  \
-                           'y2': str(obj.y2.Value),  \
+                           'x1': str(obj.x1),  \
+                           'x2': str(obj.x2),  \
+                           'x3': str(obj.x3),  \
+                           'x4': str(obj.x4),  \
+                           'y1': str(obj.y1),  \
+                           'y2': str(obj.y2),  \
                            'alpha1': str(obj.alpha), \
                            'alpha2': str(obj.alpha), \
                            'aunit': obj.aunit, \
@@ -719,11 +739,11 @@ def processGDMLTrdObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     trdName = 'Trd' + obj.Name
     ET.SubElement(solids, 'trd',{'name': trdName, \
-                           'z': str(obj.z.Value),  \
-                           'x1': str(obj.x1.Value),  \
-                           'x2': str(obj.x2.Value),  \
-                           'y1': str(obj.y1.Value),  \
-                           'y2': str(obj.y2.Value),  \
+                           'z': str(obj.z),  \
+                           'x1': str(obj.x1),  \
+                           'x2': str(obj.x2),  \
+                           'y1': str(obj.y1),  \
+                           'y2': str(obj.y2),  \
                            'lunit': obj.lunit})
     return(trdName)
 
@@ -738,12 +758,12 @@ def processGDMLTubeObject(obj, vol, addVolsFlag) :
     # flag needed for boolean otherwise parse twice
     tubeName = 'Tube' + obj.Name
     ET.SubElement(solids, 'tube',{'name': tubeName, \
-                           'rmin': str(obj.rmin.Value),  \
-                           'rmax': str(obj.rmax.Value),  \
+                           'rmin': str(obj.rmin),  \
+                           'rmax': str(obj.rmax),  \
                            'startphi': str(obj.startphi), \
                            'deltaphi': str(obj.deltaphi), \
                            'aunit': obj.aunit,
-                           'z': str(obj.z.Value),  \
+                           'z': str(obj.z),  \
                            'lunit' : 'mm'})
     return(tubeName)
 
@@ -923,6 +943,11 @@ def processGDMLsolid(obj, vol, addVolsFlag) :
        if case("GDMLBox") :
           print("      GDMLBox") 
           return(processGDMLBoxObject(obj, vol, addVolsFlag))
+          break
+
+       if case("GDMLcutTube") :
+          print("      GDMLcutTube") 
+          return(processGDMLCutTubeObject(obj, vol, addVolsFlag))
           break
 
        if case("GDMLEllipsoid") :
@@ -1179,7 +1204,7 @@ def processObject(obj, vol, parent, addVolsFlag) :
          #   return(processGDMLTriangleObject(obj, addVolsFlag))
          #   break
           
-    # Following not needed as handled bu Outlist on Xtru
+         # Following not needed as handled bu Outlist on Xtru
 
          #if isinstance(obj.Proxy, GDML2dVertex) :
          #   return(processGDML2dVertObject(obj, addVolsFlag))
