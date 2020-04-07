@@ -115,7 +115,7 @@ def GDMLstructure() :
     #worldVOL = None
     # worldVOL needs to be added after file scanned.
     #ET.ElementTree(gdml).write("/tmp/test2", 'utf-8', True)
-
+    return structure
 
 def defineMaterials():
     # Replaced by loading Default
@@ -1020,12 +1020,11 @@ def getXmlVolume(volObj) :
 
 
 #def processObject(obj, xmlVol, xmlParent, pName, addVolsFlag) :
-def processObject(obj, vol, parent, addVolsFlag) :
+def processObject(obj, xmlVol, xmlParent, addVolsFlag) :
     # Maybe multiple Objects in Volume so pass volObj
     # And subvolumes must be dealt with first
 
     # obj       - Object
-    # parent    - parent Object
     # xmlVol    - xmlVol
     # xmlParent - xmlParent Volume
     # pName     - physical name
@@ -1035,10 +1034,6 @@ def processObject(obj, vol, parent, addVolsFlag) :
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     print("Process Object : "+obj.Name)
-    # Do not pass parent as maybe multiple objects in Volume
-    #xmlParent = getXmlVolume(parent)
-    xmlVol = getXmlVolume(vol)
-    xmlParent = getXmlVolume(parent)
     while switch(obj.TypeId) :
 
       # App::Part dealt with by processVol
@@ -1180,12 +1175,11 @@ def processObject(obj, vol, parent, addVolsFlag) :
              print(testDefaultPlacement(obj))
              defaultPlacement = testDefaultPlacement(obj)
              if defaultPlacement == False or addVolsFlag == True :
-                print("Add Physical Volume : "+parent.Name )
-                #pName = 'PV-'+solidName
-                #addVol(volName, solidName, material)
-                pvol = addPhysVol(obj,xmlParent,vol.Name)
-                print("Not Default placement")
+                pName = 'PV-'+solidName
+                print("Add Physical Volume : "+pName )
+                pvol = addPhysVol(obj,xmlParent,pName)
                 if defaultPlacement == False :
+                   print("Not Default placement")
                    addPositionRotationPVol(obj,pvol)    
              return solidName
           else :
@@ -1252,38 +1246,34 @@ def processObject(obj, vol, parent, addVolsFlag) :
       break
 
 
-def processSubVol(vol, parent, addVolsFlag) :
+def processSubVols(vol) :
     # Need to create xml volume of sub volumes first, returns xmlVol
     # parent - parent object
-    print('processSubVol : '+vol.Name)
+    # Don't save xml as may have many per vold
+    print('processSubVols : '+vol.Name)
     for obj in vol.OutList :
         if obj.TypeId == 'App::Part' :
             if hasattr(obj,'OutList') :
                 # Always add Volumes on Sub Volumes
                 # Cannot save xml as maybe multiple
-                processSubVol(obj, vol, True)
+                processSubVols(obj)
 
-    # Don't save xml as may have many per vold
-    xmlVol = ET.SubElement(structure,'volume',{'name':vol.Name})
+    ET.SubElement(structure,'volume',{'name':vol.Name})
     print(vol.Name+' Created')
-    if parent != None :
-       print(parent.Name+' Parent')
-    return(xmlVol)
 
-def processVol(vol, parent, addVolsFlag) :
-    # Need to create xml volume of sub volumes first, returns xmlVol
-    # parent - parent object
+def processVols(vol, xmlVol, xmlParent, addVolsFlag) :
     print('processVol : '+vol.Name)
-    
+    # xmlVol could be created dummy volume
     for obj in vol.OutList :
         if obj.TypeId == 'App::Part' :
             if hasattr(obj,'OutList') :
                 # Always add Volumes on Sub Volumes
                 # Cannot save xml as maybe multiple
                 print('Process '+obj.Name)
-                processVol(obj, vol, True)
+                subXMLvol = locateXMLvol(obj)
+                processVols(obj, subXMLvol, xmlVol, True)
 
-        processObject(obj, vol, parent, addVolsFlag)
+        processObject(obj, xmlVol, xmlParent, addVolsFlag)
 
 def createDummyVol() :
     print("Need to create Dummy Volume and World Bo ")
@@ -1307,18 +1297,25 @@ def checkGDMLstructure(objList) :
             return False
     return True
 
+def locateXMLvol(vol) :
+    global structure
+    xmlVol = structure.find("volume[@name='%s']" % vol.Name)
+    return xmlVol
+
 def exportWorldVol(vol) :
 
     print('Export World Process Volume')
     ET.SubElement(setup,'world',{'ref':vol.Name}) 
     
     if hasattr(vol,'OutList') :
+        processSubVols(vol)
         if checkGDMLstructure(vol.OutList) == False :
-            xmlVol = createDummyVol(xmlParent)
             xmlParent = ET.SubElement(structure,'volume',{'name':vol.Name}) 
-        #processVol(vol, parent, addVolsFlag) :
-        processSubVol(vol, None, False)
-        processVol(vol, None, False)
+            xmlVol = createDummyVol()
+        else :
+            xmlParent = None
+            xmlVol = locateXMLvol(vol)
+        processVols(vol, xmlVol, xmlParent, False)
 
 def export(exportList,filename) :
     "called when FreeCAD exports a file"
