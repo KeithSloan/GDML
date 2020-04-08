@@ -287,6 +287,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 * Cycle icon by Flaticon see www.flaticon.com
 
 **Thank you also to:** 
+
+  * Louis Helary
+  * Emmanuel Delage
   * Wouter Deconnick
   * Hilden Timo
 
