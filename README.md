@@ -290,7 +290,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Wouter Deconnick
   * Hilden Timo
 
-* FreeCAD forum members:
+* FreeCAD forum members (Applogies if I left anybody off ) :
 
   * wmayer
   * Joel_graff
@@ -332,30 +332,6 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 ## Need to sort out AIR definition
 
-## Graphic Icons 
-
-GDML Shapes designed by Jim Austin jmaustpc
-Cycle icon by Flaticon see www.flaticon.com
-
-Thanks to
-
-* Wouter Deconnick
-* Hilden Timo
-
-and the following FreeCAD forum members
-
-* wmayer
-* Joel_graff
-* chrisb
-* DeepSOIC
-* ickby
-* looooo
-* easyw-fc
-* bernd
-
-OpenCascade Forum members
-
-* Sergey Slyadnev
 
 ## Feedback
 
