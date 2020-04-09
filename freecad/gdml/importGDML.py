@@ -809,11 +809,8 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
            print("Not Volume or Assembly") 
 
 def getItem(element, attribute) :
-    item = element.get(attribute)
-    if item != None :
-       return item
-    else :
-       return ""
+    # returns None if not found
+    return element.get(attribute)
 
 def processIsotopes(doc) :
     from .GDMLObjects import GDMLisotope, ViewProvider
@@ -827,7 +824,6 @@ def processIsotopes(doc) :
         value = float(atom.get('value'))
         #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
         isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
-        #GDMLisotope(isoObj,name,N,Z,unit,value)
         GDMLisotope(isoObj,name,N,Z,unit,value)
 
 def processElements(doc) :
@@ -836,31 +832,42 @@ def processElements(doc) :
     elementsGrp.Label = 'Elements'
     for element in materials.findall('element') :
         name = element.get('name')
-        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython", \
-                     name)
+        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython", name)
         Z = element.get('Z')
         if (Z != None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
+        N = element.get('N')
+        if (N != None ) :
+           elementObj.addProperty("App::PropertyInteger","N",name).N=int(N)
+            
+        formula = element.get('formula')
+        if (formula != None ) :
+           elementObj.addProperty("App::PropertyString","formula",name). \
+                   formula = formula
+            
         atom = element.find('atom') 
         if atom != None :
            unit = atom.get('unit')
            if unit != None :
               elementObj.addProperty("App::PropertyString","atom_unit",name). \
                                       atom_unit = unit
-              value = float(atom.get('value'))                        
+           value = atom.get('value')
+           if value != None :
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
-                                      atom_value = value
+                                      atom_value = float(value)
 
 
         GDMLelement(elementObj,name)
         for fraction in element.findall('fraction') :
             ref = fraction.get('ref')
+            print('fraction ref : '+ref)
             n = float(fraction.get('n'))
             #fractObj = elementObj.newObject("App::FeaturePython",ref)
             fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
+            print('fraction obj : '+fractObj.Name)
             GDMLfraction(fractObj,ref,n)
             #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
-            fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
+            #fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
 
 def processMaterials(doc) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
@@ -881,9 +888,15 @@ def processMaterials(doc) :
         D = material.find('D')
         if D != None :
            Dunit = getItem(D,'unit')
-           Dvalue = float(D.get('value'))
-           materialObj.addProperty("App::PropertyString",'Dunit','GDMLmaterial','D unit').Dunit = Dunit
-           materialObj.addProperty("App::PropertyFloat",'Dvalue','GDMLmaterial','D value').Dvalue = Dvalue
+           print(Dunit)
+           if Dunit != None :
+                 materialObj.addProperty("App::PropertyString",'Dunit', \
+                                'GDMLmaterial','Dunit').Dunit = Dunit
+           Dvalue = getItem(D,'value')
+           if Dvalue != None :
+              materialObj.addProperty("App::PropertyFloat", \
+                      'Dvalue','GDMLmaterial','value').Dvalue = float(Dvalue)
+
         Z = material.get('Z')
         if Z != None :
            materialObj.addProperty("App::PropertyString",'Z',name).Z = Z
@@ -913,20 +926,34 @@ def processMaterials(doc) :
            materialObj.addProperty("App::PropertyFloat",'MEEvalue','GDMLmaterial','MEE value').MEEvalue = Mvalue
         for fraction in material.findall('fraction') :
             n = float(fraction.get('n'))
+            print(n)
             ref = fraction.get('ref')
-            fractionObj = materialObj.newObject("App::DocumentObjectGroupPython", \
-                                                 ref)
+            print('fraction : '+ref)
+            fractionObj = materialObj.newObject('App::DocumentObjectGroupPython', ref)
+            #print('fractionObj Name : '+fractionObj.Name)
             GDMLfraction(fractionObj,ref,n)
+            # problems with changing labels if more than one
+            #
             #fractionObj.Label = ref[0:5] +' : '+'{0:0.2f}'.format(n)
-            fractionObj.Label = ref +' : '+'{0:0.2f}'.format(n)
+            #print('Fract Label : ' +fractionObj.Label)
+            #fractionObj.Label = ref +' : '+'{0:0.2f}'.format(n)
+            #print('Fract Label : ' +fractionObj.Label)
 
         for composite in material.findall('composite') :
+            print('Composite')
             n = int(composite.get('n'))
+            print('n = '+str(n))
             ref = composite.get('ref')
-            compositeObj = materialObj.newObject("App::DocumentObjectGroupPython", \
+            print('ref : '+ref)
+            compObj = materialObj.newObject("App::DocumentObjectGroupPython", \
                                                  ref)
-            GDMLcomposite(compositeObj,ref,n)
-            compositeObj.Label = ref +' : '+str(n)
+            GDMLcomposite(compObj,'comp',n,ref)
+            # problems with changing labels if more than one
+            #
+            #print('Comp Label : ' +compObj.Label)
+            #compObj.Label = ref +' : '+str(n)
+            #print('Comp Label : ' +compObj.Label)
+
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 

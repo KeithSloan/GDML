@@ -829,9 +829,19 @@ def processElement(obj, item): # maybe part of material or element (common code)
        #print(dir(obj))
        item.set('Z',str(obj.Z)) 
 
-    if hasattr(obj,'atom_unit') :
+    if hasattr(obj,'N') :
+       #print(dir(obj))
+       item.set('N',str(obj.N)) 
+
+    if hasattr(obj,'formula') :
+       #print(dir(obj))
+       item.set('formula',str(obj.formula)) 
+
+    if hasattr(obj,'atom_unit') or hasattr(obj,'atom_value') :
        atom = ET.SubElement(item,'atom') 
-       atom.set('unit',str(obj.atom_unit)) 
+    
+       if hasattr(obj,'atom_unit') :
+          atom.set('unit',str(obj.atom_unit)) 
             
        if hasattr(obj,'atom_value') :
           atom.set('value',str(obj.atom_value)) 
@@ -890,9 +900,13 @@ def processMaterialObject(obj) :
              # process common options material / element
              processElement(obj, item)
 
-          if hasattr(obj,'Dunit') :
-             ET.SubElement(item,'D',{'unit': obj.Dunit, \
-                                      'value': str(obj.Dvalue)})
+          if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
+             D = ET.SubElement(item,'D')
+             if hasattr(obj,'Dunit') :
+                D.set('unit',str(obj.Dunit))
+             
+             if hasattr(obj,'Dvalue') :
+                D.set('value',str(obj.Dvalue))
 
           if hasattr(obj,'Tunit') :
              ET.SubElement(item,'T',{'unit': obj.Tunit, \
@@ -907,14 +921,19 @@ def processMaterialObject(obj) :
 
           if isinstance(obj.Proxy,GDMLfraction) :
 
-             print("GDML fraction")
+             print("GDML fraction :" + obj.Name)
+             # need to strip number making it unique
              ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                                          'ref': obj.Name})
+                     'ref': obj.Name[:-3]})
+
              #return True
              break
 
           if isinstance(obj.Proxy,GDMLcomposite) :
              print("GDML Composite")
+             ET.SubElement(item,'composite',{'n': str(obj.n), \
+             #        'ref': obj.Name[:obj.Name.index('_')]})
+             'ref': obj.Name[:-3]})
              #return True
              break
 
@@ -1092,8 +1111,8 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          print("   Cut")
          print(boolFlg)
          cutName = 'Cut'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
