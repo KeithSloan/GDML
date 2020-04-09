@@ -240,10 +240,10 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 
 ## Roadmap
 
-  - [ ] Handle different Positioning between GDML & FreeCAD
+  - [ ] Change structure of xml handing to use Python class rather than global variables
+  - [ ] Check handling of different Positioning between GDML & FreeCAD
   - [ ] Add support for quantity
   - [ ] Add further GDML Objects
-  - [ ] Add facility to add Volume
   - [ ] Add facility to edit Materials
   - [ ] Add facility to edit Isotopes
   - [ ] Add facility to edit Elements 
