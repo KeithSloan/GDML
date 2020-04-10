@@ -1129,8 +1129,8 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
       if case("Part::Fuse") :
          print("   Union")
          unionName = 'Union'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
@@ -1141,14 +1141,14 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          if defaultPlacement == False :
             #addPositionReferenceSolid(obj,xmlVol,subtract)    
             addPositionReferenceSolid(obj,union)    
-         return true, unionName
+         return True, unionName
          break
 
       if case("Part::Common") :
          print("   Intersection")
          intersectName = 'Intersect'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, False)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, False)
+         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
+         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
          intersect = ET.SubElement(solids,'intersection',{'name': \
                      intersectName })
          ET.SubElement(intersect,'first', {'ref': ref1})

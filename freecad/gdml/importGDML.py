@@ -145,6 +145,7 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
     #base = FreeCAD.Vector(0,0,0)
     base = FreeCAD.Vector(px,py,pz)
+    print('process placement')
     mycube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycube.Placement.Rotation)
     if FreeCAD.GuiUp :
@@ -557,6 +558,9 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
+
+    GDMLShared.setTrace(True)
+
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -569,17 +573,21 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        tool = solids.find("*[@name='%s']" % name2nd )
        GDMLShared.trace("second : "+name2nd)
        #parseObject(root,tool)
+       #x,y,z = GDMLShared.getBaseFromRefs(solid)
+       x,y,z = getPosition(solid)
+       #rot = GDMLShared.getRotFromRefs(solid)
+       rot = getRotation(solid)
        mybool = part.newObject(objType,solid.tag+':'+getName(solid))
+       #mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
-       mybool.Tool = createSolid(part,tool,material,0,0,0,None,displayMode)
-       #mybool.Tool.Placement= GDMLShared.getPlacementFromRefs(solid) 
+       mybool.Tool = createSolid(part,tool,material,x,y,z,rot,displayMode)
        # Okay deal with position of boolean
        #GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
        #base = FreeCAD.Vector(0,0,0)
        #base = FreeCAD.Vector(px,py,pz)
        #/mybool.Placement = GDMLShared.processPlacement(base,rot)
-       mybool.Placement= GDMLShared.getPlacementFromRefs(solid) 
+       #mybool.Placement= GDMLShared.getPlacementFromRefs(solid) 
        #ViewProvider(mybool.ViewObject)
        return mybool
 
@@ -674,27 +682,38 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(parent,physVol,phylvl,displayMode):
-    GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    posref = GDMLShared.getRef(physVol,"positionref")
+def getPosition(xmlEntity) :
+    GDMLShared.trace('GetPosition')
+    posref = GDMLShared.getRef(xmlEntity,"positionref")
     if posref is not None :
        GDMLShared.trace("positionref : "+posref)
        pos = GDMLShared.define.find("position[@name='%s']" % posref )
        if pos is not None : GDMLShared.trace(pos.attrib)
     else :
-       pos = physVol.find("position")
+       pos = xmlEntity.find("position")
     if pos is not None :
        px = GDMLShared.getVal(pos,'x')
        py = GDMLShared.getVal(pos,'y')
        pz = GDMLShared.getVal(pos,'z')
     else :
        px = py = pz = 0 
-    rotref = GDMLShared.getRef(physVol,"rotationref")
+    return px, py, pz
+
+def getRotation(xmlEntity) :
+    GDMLShared.trace('GetRotation')
+    rotref = GDMLShared.getRef(xmlEntity,"rotationref")
     if rotref is not None :
        rot = GDMLShared.define.find("rotation[@name='%s']" % rotref )
     else :
-       rot = physVol.find("rotation")
+       rot = xmlEntity.find("rotation")
+    GDMLShared.trace(rot)
+    return rot
 
+def parsePhysVol(parent,physVol,phylvl,displayMode):
+    # physvol is xml entity
+    GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
+    px, py, pz = getPosition(physVol)
+    rot = getRotation(physVol)
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
        GDMLShared.trace("Volume ref : "+volref)
@@ -860,11 +879,11 @@ def processElements(doc) :
         GDMLelement(elementObj,name)
         for fraction in element.findall('fraction') :
             ref = fraction.get('ref')
-            print('fraction ref : '+ref)
+            #print('fraction ref : '+ref)
             n = float(fraction.get('n'))
             #fractObj = elementObj.newObject("App::FeaturePython",ref)
             fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
-            print('fraction obj : '+fractObj.Name)
+            #print('fraction obj : '+fractObj.Name)
             GDMLfraction(fractObj,ref,n)
             #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
             #fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
@@ -888,7 +907,7 @@ def processMaterials(doc) :
         D = material.find('D')
         if D != None :
            Dunit = getItem(D,'unit')
-           print(Dunit)
+           #print(Dunit)
            if Dunit != None :
                  materialObj.addProperty("App::PropertyString",'Dunit', \
                                 'GDMLmaterial','Dunit').Dunit = Dunit
@@ -902,7 +921,7 @@ def processMaterials(doc) :
            materialObj.addProperty("App::PropertyString",'Z',name).Z = Z
         atom = material.find('atom')
         if atom != None :
-           print("Found atom in : "+name) 
+           #print("Found atom in : "+name) 
            aUnit = atom.get('unit')
            if aUnit != None :
               materialObj.addProperty("App::PropertyString",'atom_unit', \
@@ -926,9 +945,9 @@ def processMaterials(doc) :
            materialObj.addProperty("App::PropertyFloat",'MEEvalue','GDMLmaterial','MEE value').MEEvalue = Mvalue
         for fraction in material.findall('fraction') :
             n = float(fraction.get('n'))
-            print(n)
+            #print(n)
             ref = fraction.get('ref')
-            print('fraction : '+ref)
+            #print('fraction : '+ref)
             fractionObj = materialObj.newObject('App::DocumentObjectGroupPython', ref)
             #print('fractionObj Name : '+fractionObj.Name)
             GDMLfraction(fractionObj,ref,n)
@@ -940,11 +959,11 @@ def processMaterials(doc) :
             #print('Fract Label : ' +fractionObj.Label)
 
         for composite in material.findall('composite') :
-            print('Composite')
+            #print('Composite')
             n = int(composite.get('n'))
-            print('n = '+str(n))
+            #print('n = '+str(n))
             ref = composite.get('ref')
-            print('ref : '+ref)
+            #print('ref : '+ref)
             compObj = materialObj.newObject("App::DocumentObjectGroupPython", \
                                                  ref)
             GDMLcomposite(compObj,'comp',n,ref)

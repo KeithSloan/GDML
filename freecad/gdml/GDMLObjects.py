@@ -8,9 +8,10 @@ global MaterialsList
 MaterialsList = []
 
 def checkFullCircle(aunit, angle) :
+    #print(angle)
     if aunit == 'deg' and angle == 360 :
        return True
-    if aunit == 'rad' and angle == math.pi :
+    if aunit == 'rad' and angle == 2 * math.pi : 
        return True
     return False
 
@@ -1105,19 +1106,29 @@ class GDMLTube(GDMLcommon) :
        # Need to add code to check values make a valid Tube
        # Define six vetices for the shape
        mul  = getMult(fp.lunit)
-       cyl1 = Part.makeCylinder(fp.rmax * mul, fp.z * mul)
-       cyl2 = Part.makeCylinder(fp.rmin * mul, fp.z * mul)
-       cyl3 = cyl1.cut(cyl2) 
-       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          tube = angleSectionSolid(fp, fp.rmax * mul, fp.z, cyl3)
+       rmax = mul * fp.rmax
+       rmin = mul * fp.rmin
+       z = fp.z * mul
+       #print('mul : '+str(mul))
+       #print('rmax : '+str(rmax))
+       #print('z    : '+str(z))
+       #print('deltaPhi : '+str(fp.deltaphi))
+       cyl1 = Part.makeCylinder(rmax, z)
+       if fp.rmin > 0 :
+          cyl2 = Part.makeCylinder(rmin, z)
+          cyl3 = cyl1.cut(cyl2)
        else :
+          print('Single Cylinder') 
+          cyl3 = cyl1
+
+       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
+          #print('Angled section') 
+          tube = angleSectionSolid(fp, rmax, z, cyl3)
+       else :
+          #print('Full arc') 
           tube = cyl3
-       #base = FreeCAD.Vector(0,0,fp.z/2)
-       #base = FreeCAD.Vector(0,0,0)
-       base = FreeCAD.Vector(0,0,-fp.z/2)
+       base = FreeCAD.Vector(0,0,-z/2)
        fp.Shape = translate(tube,base)
-       #print('Tube')
-       #print(dir(fp.Shape))
        #print(fp.Shape.isClosed())
        #print(fp.Shape.isValid())
        #print(fp.Shape.isClosed())
