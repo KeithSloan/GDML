@@ -1,0 +1,1 @@
+python3 gdml2step.py ./g4box.gdml g4box.step

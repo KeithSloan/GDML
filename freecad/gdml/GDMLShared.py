@@ -6,15 +6,27 @@
 from math import *
 import FreeCAD, Part
 
+global define
+
+global printverbose
 printverbose = False
 
-global define
+def setTrace(flag) :
+    print('Trace set to : '+str(flag))
+    global printverbose
+    printverbose = flag
+
+def getTrace() :
+    global printverbose
+    #print('Get Trace : '+str(printverbose))
+    return(printverbose)
 
 def trace(s):
     if printverbose == True : print(s)
+    return
 
 def setDefine(val) :
-    print("Set Define")
+    #print("Set Define")
     global define
     define = val
 
@@ -26,11 +38,11 @@ def processConstants(doc):
     for cdefine in define.findall('constant') :
         #print cdefine.attrib
         name  = str(cdefine.attrib.get('name'))
-        print('name : '+name)
+        trace('name : '+name)
         value = cdefine.attrib.get('value')
-        print('value : '+ value)
+        trace('value : '+ value)
         #constDict[name] = value
-        print(name)
+        trace(name)
         #print(dir(name))
         globals()[name] = eval(value)
         constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
@@ -48,7 +60,7 @@ def getVal(ptr,var,vtype = 1) :
     if var in ptr.attrib :
        # if yes get its value
        vval = ptr.attrib.get(var)
-       print("vval : "+str(vval))
+       trace("vval : "+str(vval))
        if vval[0] == '&' :  # Is this refering to an HTML entity constant
          chkval = vval[1:]
        else :
@@ -60,12 +72,12 @@ def getVal(ptr,var,vtype = 1) :
        #   return(eval(c))
        #
        #else :
-       print("chkval : "+str(chkval))
+       trace("chkval : "+str(chkval))
        if vtype == 1 :
           ret = float(eval(chkval))
        else :
           ret = int(eval(chkval))
-       print('return value : '+str(ret))
+       trace('return value : '+str(ret))
        return(ret)
     else :
        if vtype == 1 :
@@ -82,61 +94,93 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
+def getDegrees(flag, r) :
+    import math
+    if flag == True :
+       return r * 180/math.pi
+    else :
+       return r
 
 def processPlacement(base,rot) :
+    trace('processPlacement')
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
     # set angle & axis in case not set by rotation attribute
     #axis = FreeCAD.Vector(1,0,0)
     #angle = 0
-    Xangle = Yangle = Zangle = 0.0
     if rot != None :
+        Xangle = Yangle = Zangle = 0.0
+        radianFlg = True
+        if 'name' in rot.attrib :
+            if rot.attrib['name'] == 'identity' :
+                trace('identity')
+                rot = FreeCAD.Rotation(0,0,0)
+                return FreeCAD.Placement(base,rot)
+
         trace("Rotation : ")
         trace(rot.attrib)
-        if 'y' in rot.attrib :
-            #axis = FreeCAD.Vector(0,1,0)
-            Yangle = float(eval(rot.attrib['y']))
+        if 'aunit' in rot.attrib :
+            #print(rot.attrib['aunit'][:3])
+            if rot.attrib['aunit'][:3] == 'deg' :
+                radianFlg = False
         if 'x' in rot.attrib :
-            #axis = FreeCAD.Vector(1,0,0)
-            Xangle = float(eval(rot.attrib['x']))
+            #print(rot.attrib['x'])
+            #print(eval(rot.attrib['x']))
+            Xangle = getDegrees(radianFlg,float(eval(rot.attrib['x'])))
+        if 'y' in rot.attrib :
+            Yangle = getDegrees(radianFlg,float(eval(rot.attrib['y'])))
+            #print('Y angle : '+str(Yangle))
         if 'z' in rot.attrib :
-            #axis = FreeCAD.Vector(0,0,1)
-            Zangle = float(eval(rot.attrib['z']))
-        rot = FreeCAD.Rotation(Zangle,Yangle,Xangle)
+            Zangle = getDegrees(radianFlg,float(eval(rot.attrib['z'])))
+            #print('Z angle : '+str(Zangle))
+            # Use only three float values for Rotation
+        #axis = FreeCAD.Vector(0,0,1)
+        rotate = FreeCAD.Rotation(Xangle,Yangle,Zangle)
+        return FreeCAD.Placement(base,rotate)
+
     else :
+        #print('No rotation')
         rot = FreeCAD.Rotation(0,0,0)
-    place = FreeCAD.Placement(base,rot)
-    return place
+        return FreeCAD.Placement(base,rot)
 
 # Return a FreeCAD placement for positionref & rotateref
-def getPlacementFromRefs(ptr) :
-    trace("getPlacementFromRef")
+def getBaseFromRefs(ptr) :
+    printverbose = True
+    trace("getBaseFromRef")
     pos = define.find("position[@name='%s']" % getRef(ptr,'positionref'))
     trace(pos)
-    base = FreeCAD.Vector(0.0,0.0,0.0)
+    x = y = z = 0 
     if pos != None :
        trace(pos.attrib)
        x = getVal(pos,'x')
        trace(x)
        y = getVal(pos,'y')
        z = getVal(pos,'z')
-       base = FreeCAD.Vector(x,y,z)
-    rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
-    return(processPlacement(base,rot))
+    return x,y,z
 
+def getRotFromRefs(ptr) :
+    printverbose = True
+    trace("getRotFromRef")
+    rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
+    print(rot)
+    return rot
 
 def getVertex(v):
-    print("Vertex")
+    trace("Vertex")
+    #print(dir(v))
+
+def getVertex(v):
+    trace("Vertex")
     #print(dir(v))
     pos = define.find("position[@name='%s']" % v)
     #print("Position")
     #print(dir(pos))
     x = getVal(pos,'x')
-    print('x : '+str(x))
+    trace('x : '+str(x))
     y = getVal(pos,'y')
-    print('y : '+str(y))
+    trace('y : '+str(y))
     z = getVal(pos,'z')
-    print('z : '+str(z))
+    trace('z : '+str(z))
     return(FreeCAD.Vector(x,y,z))
 
 def triangle(v1,v2,v3) :

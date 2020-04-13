@@ -11,7 +11,29 @@ Install by use of FreeCAD Addon Manager
 Needs lxml which should be installed as part of FreeCAD
 
    * FreeCAD_0.19.19424 and above.
-   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above
+   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
+   
+## No module named 'lxml'
+
+If you get an error message No module named 'lxml' then on Linux you can diagnose as follows.
+
+To check path FreeCAD uses from a command line.
+
+    freecad -c
+    import sys
+    print(sys.path)
+    
+To check lxml correctly installed for freecad
+
+    freecad -c
+    import lxml
+    from lxml import etree
+    print(etree.LXML_VERSION)
+    
+ On linux to install lxml to a specific directory
+ 
+    pip3 install lxml -t <directory>
+    
    
 ## Details of GDML
 
@@ -202,17 +224,29 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   Also as an experiment: thermal parameters have been added to the `GDMLmaterial` object so these could
   be changed before creating a compound. One option to be would be to add elements to GDML files to enable
   loading and exporting, but then they would **NOT** be standard GDML files (maybe a different file extension?)  
+  
+## Standalone Utility
+
+  In directory **Utils** You will find a python script **gdml2step.py** for creating a step file from a gdml file.
+  
+  syntax is
+   
+         python3 gdml2step.py <input gdml file> <output step file>
+         
+         The step file should be given a .step extension.
+         
+         In theory other file extension should produce a file of the appropriate type,
+         e.g. iges, but this is untested.
 
 ## Roadmap
 
-  - [ ] Handle different Positioning between GDML & FreeCAD
+  - [ ] Change structure of xml handing to use Python class rather than global variables
+  - [ ] Check handling of different Positioning between GDML & FreeCAD
   - [ ] Add support for quantity
   - [ ] Add further GDML Objects
-  - [ ] Add facility to add Volume
   - [ ] Add facility to edit Materials
   - [ ] Add facility to edit Isotopes
   - [ ] Add facility to edit Elements 
-  - [ ] Tidy up `softLink` script
   - [ ] Documentation
   - [ ] Investigate handling of Materials
   - [ ] Need to sort out AIR definition
@@ -224,10 +258,26 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
   - [ ] Display mesh for objects that will not directly convert
   - [ ] Provide options to control meshing objects that will be Tessellated
   - [ ] Icons to Analize and Export
-  - [ ] Make GDML an installable workbench 
+
 
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData
+
+## Development Notes
+ 
+ based on gdml.xsd
+ 
+ * 'Volumes'
+ 
+    * **Must** have **solid & material ref**
+ 
+ * PhysVol 
+ 
+     * Must contain **volref** ( or file ) 
+     * volref **must not** be same as current volume name
+     * May contain **position** or **position ref**
+     * May contain **rotation** or **rotation ref**
+ 
 
 ## Acknowledgements 
 
@@ -237,10 +287,13 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 * Cycle icon by Flaticon see www.flaticon.com
 
 **Thank you also to:** 
+
+  * Louis Helary
+  * Emmanuel Delage
   * Wouter Deconnick
   * Hilden Timo
 
-* FreeCAD forum members:
+* FreeCAD forum members (Applogies if I left anybody off ) :
 
   * wmayer
   * Joel_graff
@@ -282,30 +335,6 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 ## Need to sort out AIR definition
 
-## Graphic Icons 
-
-GDML Shapes designed by Jim Austin jmaustpc
-Cycle icon by Flaticon see www.flaticon.com
-
-Thanks to
-
-* Wouter Deconnick
-* Hilden Timo
-
-and the following FreeCAD forum members
-
-* wmayer
-* Joel_graff
-* chrisb
-* DeepSOIC
-* ickby
-* looooo
-* easyw-fc
-* bernd
-
-OpenCascade Forum members
-
-* Sergey Slyadnev
 
 ## Feedback
 
