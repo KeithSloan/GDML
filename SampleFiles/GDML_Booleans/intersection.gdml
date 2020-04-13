@@ -81,7 +81,7 @@
   <trd name="trd1" x1="10.0" x2="10.0" y1="10.0" y2="20.0" z="30.0"/>
   <tube name="t1000" z="1000.0" rmax="100.0" deltaphi="TWOPI"/>
   <tube name="t900" z="900.0" rmax="100.0" deltaphi="TWOPI"/>
-  <tube name="t100" z="102.0" rmax="30.0" deltaphi="TWOPI"/>
+  <tube name="t100" z="150.0" rmax="30.0" deltaphi="TWOPI"/>
 
   <union name="u2">
       <first ref="b500"/>

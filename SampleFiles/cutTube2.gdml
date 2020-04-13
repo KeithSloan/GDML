@@ -123,46 +123,31 @@
   </materials>
 <solids>
 <box lunit="mm" name="WorldBox" x="20.0" y="20.0" z="20.0" />
-<xtru name = "refLogicSol_50002" lunit= "mm" >
- <twoDimVertex x="25.1085688928823" y="40.7797075281135" />
- <twoDimVertex x="-70.5934810648633" y="21.3089054046484" />
- <twoDimVertex x="-8.06145970792809" y="-40" />
- <twoDimVertex x="8.6737516495137" y="-40" />
- <section zOrder="1" zPosition="-41.895909044445" xOffset="0" yOffset="0" scalingFactor="1" />
- <section zOrder="2" zPosition="41.895909044445" xOffset="0" yOffset="0" scalingFactor="1"/>
-</xtru>
-
-<xtru name = "refSol_50002" lunit= "mm" >
- <twoDimVertex x="21.276183953896" y="40" />
- <twoDimVertex x="-67.6537069510008" y="21.9070092079" />
- <twoDimVertex x="-5" y="-40" />
- <twoDimVertex x="5" y="-40" />
- <section zOrder="1" zPosition="-38.895909044445" xOffset="0" yOffset="0" scalingFactor="1" />
- <section zOrder="2" zPosition="38.895909044445" xOffset="0" yOffset="0" scalingFactor="1"/>
-</xtru>
-
-<subtraction name ="refSolSkin_50002">
-        <first ref="refLogicSol_50002"/>
-        <second ref="refSol_50002"/>
-        <position unit="mm" name="refSolPos_50002" x="0" y="0" z="0"/>
-        <rotation unit="rad" name="refSolRot_50002" x="0" y="0" z="0"/>
-</subtraction>
-
-
+<cutTube name = "thecuttube" z="20" rmin="1"  rmax="5" startphi="1" deltaphi="4"  lowX="15" lowY="15"  lowZ="15" highX="10" highY="10"  highZ="10"  aunit="rad"  lunit= "mm"/>
+<tube name='thetube' z="60" rmin="12"  rmax="20" lunit= "mm" startphi="0" deltaphi="360" aunit="deg"/>
   </solids>
 <structure>
-    <volume name="Test">
+    <volume name="PVCutTube">
       <materialref ref="SSteel0x56070ee87d10" />
-    <solidref ref="refSol_50002" />
+    <solidref ref="thecuttube" />
+    </volume>
+    <volume name="PVTube">
+      <materialref ref="SSteel0x56070ee87d10" />
+    <solidref ref="thetube" />
     </volume>
   <volume name="worldVOL">
       <materialref ref="G4_AIR0x56070ee81710" />
     <solidref ref="WorldBox" />
     <physvol>
-        <volumeref ref="Test" />
+        <volumeref ref="PVCutTube" />
       <position name="PosBox1" unit="mm" x="5.0" y="5.0" z="5.0" />
       <rotation name="RotBox1" unit="deg" x="-0.0" y="-0.0" z="-0.0" />
       </physvol>
+    <physvol>
+        <volumeref ref="PVTube" />
+      <position name="PosBox1" unit="mm" x="5.0" y="5.0" z="5.0" />
+      <rotation name="RotBox1" unit="deg" x="-0.0" y="-0.0" z="-0.0" />
+    </physvol>
     </volume>
   </structure>
 <setup name="Default" version="1.0">

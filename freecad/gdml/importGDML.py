@@ -34,6 +34,7 @@ import Part, Draft
 from math import *
 from . import GDMLShared
 
+printverbose = True
 ##########################
 # Globals Dictionarys    #
 ##########################

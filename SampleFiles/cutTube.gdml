@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
-  <define>
-   <constant name="PI" value="1.*pi"/>
- </define>
+  <define />
 <materials>
     <isotope N="12" Z="6" name="C120x56070ee874f0">
       <atom unit="g/mole" value="12" />
@@ -124,29 +122,19 @@
     </material>
   </materials>
 <solids>
-<box lunit="mm" name="WorldBox" x="100.0" y="100.0" z="100.0" />
-<box lunit="mm" name="box" x="5" y="5" z="5" />
-<cone aunit="rad" deltaphi="2*PI" lunit="mm" name="coneMotherSol_Mainz_v2" rmax1="20" rmax2="20" rmin1="0" rmin2="0" startphi="0" z="30"/>
+<box lunit="mm" name="WorldBox" x="20.0" y="20.0" z="20.0" />
+<cutTube name = "thecuttube" z="60" rmin="12"  rmax="20" startphi="1" deltaphi="4"  lowX="0" lowY="-0.7"  lowZ="-0.71" highX="0.7" highY="0"  highZ="0.71"  aunit="rad"  lunit= "mm"/>
   </solids>
 <structure>
-    <volume name="PVBox">
+    <volume name="PVCutTube">
       <materialref ref="SSteel0x56070ee87d10" />
-    <solidref ref="box" />
-    </volume>
-    <volume name="PVPolyCone1">
-      <materialref ref="SSteel0x56070ee87d10" />
-    <solidref ref="coneMotherSol_Mainz_v2" />
+    <solidref ref="thecuttube" />
     </volume>
   <volume name="worldVOL">
       <materialref ref="G4_AIR0x56070ee81710" />
     <solidref ref="WorldBox" />
     <physvol>
-        <volumeref ref="PVPolyCone1" />
-      <position name="PosBox1" unit="mm" x="10.0" y="20.0" z="30.0" />
-      <rotation name="RotBox1" unit="deg" x="-0.0" y="-0.0" z="-0.0" />
-      </physvol>
-       <physvol>
-        <volumeref ref="PVBox" />
+        <volumeref ref="PVCutTube" />
       </physvol>
     </volume>
   </structure>

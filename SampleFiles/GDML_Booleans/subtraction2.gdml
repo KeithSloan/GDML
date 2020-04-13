@@ -17,7 +17,6 @@
  <rotation name="rotatebyx" x="HALFPI/2."/>
  <rotation name="rotatebyall" x="HALFPI" y="PI" z="TWOPI"/>
 </define>
-
  <materials>
   <define>
    <quantity type="density" name="ro" unit="g/cm3" value="1234.00"/>
@@ -31,7 +30,7 @@
   </element>
   <element name="Hydrogen" formula="H" Z="1."> <atom value="1.01"/>
   </element>
-  <element name="Oxygen" formula="O" Z="8." N="8"> <atom value="16.0"/>
+  <element name="Oxygen" formula="O" Z="8."> <atom value="16.0"/>
   </element>
   <element name="Nitrogen" formula="N" Z="7."> <atom value="14.01"/>
   </element>
@@ -61,7 +60,8 @@
    <fraction n="0.3" ref="Oxygen"/>
   </material>
  </materials>
-
+ <materials>
+  
 <solids>
   <define>
    <quantity type="length" name="sizeoft500" unit="mm" value="500.0"/>

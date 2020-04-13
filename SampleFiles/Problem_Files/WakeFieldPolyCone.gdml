@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
-  <define>
-   <constant name="PI" value="1.*pi"/>
- </define>
+  <define />
 <materials>
     <isotope N="12" Z="6" name="C120x56070ee874f0">
       <atom unit="g/mole" value="12" />
@@ -124,29 +122,46 @@
     </material>
   </materials>
 <solids>
-<box lunit="mm" name="WorldBox" x="100.0" y="100.0" z="100.0" />
-<box lunit="mm" name="box" x="5" y="5" z="5" />
-<cone aunit="rad" deltaphi="2*PI" lunit="mm" name="coneMotherSol_Mainz_v2" rmax1="20" rmax2="20" rmin1="0" rmin2="0" startphi="0" z="30"/>
+<box lunit="mm" name="WorldBox" x="20.0" y="20.0" z="20.0" />
+<polycone aunit="degree" deltaphi="170" lunit="mm" name="WakeFieldPolyCone1" startphi="95">
+   <zplane rmax="5.5" rmin="5.424" z="0"/>
+   <zplane rmax="5.5" rmin="5.424" z="5"/>
+   <zplane rmax="7.07123" rmin="6.99523" z="17.5"/>
+   </polycone>
+   <!--<zplane rmax="7.07123" rmin="6.99523" z="17.5"/-->
+   <!--<zplane rmax="10.3226" rmin="10.2466" z="19.5"/-->
+   <!--<zplane rmax="4.82542" rmin="4.74942" z="23.5"/-->
+   <!--<zplane rmax="11.3282" rmin="11.2522" z="27.5"/-->
+   <!--<zplane rmax="5.83101" rmin="5.75501" z="31.5"/-->
+   <!--<zplane rmax="12.3338" rmin="12.2578" z="35.5"/-->
+   <!--<zplane rmax="6.83659" rmin="6.76059" z="39.5"/-->
+   <!--<zplane rmax="13.3394" rmin="13.2634" z="43.5"/-->
+   <!--<zplane rmax="7.84218" rmin="7.76618" z="47.5"/-->
+   <!--<zplane rmax="14.345" rmin="14.269" z="51.5"/-->
+   <!--<zplane rmax="8.84777" rmin="8.77177" z="55.5"/-->
+   <!--<zplane rmax="15.3506" rmin="15.2746" z="59.5"/-->
+   <!--<zplane rmax="9.85335" rmin="9.77735" z="63.5"/-->
+   <!--<zplane rmax="16.3561" rmin="16.2801" z="67.5"/-->
+   <!--<zplane rmax="10.8589" rmin="10.7829" z="71.5"/-->
+   <!--<zplane rmax="16.5489" rmin="16.4729" z="75"/-->
+  <!--</polycone-->
+<polycone name = "thepolycone" startphi="1" deltaphi="4" aunit="rad" lunit= "mm">
+<zplane rmin="1" rmax="9" z="10" />
+<zplane rmin="3" rmax="5" z="12" />
+</polycone>
   </solids>
 <structure>
-    <volume name="PVBox">
-      <materialref ref="SSteel0x56070ee87d10" />
-    <solidref ref="box" />
-    </volume>
     <volume name="PVPolyCone1">
       <materialref ref="SSteel0x56070ee87d10" />
-    <solidref ref="coneMotherSol_Mainz_v2" />
+    <solidref ref="WakeFieldPolyCone1" />
     </volume>
   <volume name="worldVOL">
       <materialref ref="G4_AIR0x56070ee81710" />
     <solidref ref="WorldBox" />
     <physvol>
         <volumeref ref="PVPolyCone1" />
-      <position name="PosBox1" unit="mm" x="10.0" y="20.0" z="30.0" />
+      <position name="PosBox1" unit="mm" x="5.0" y="5.0" z="5.0" />
       <rotation name="RotBox1" unit="deg" x="-0.0" y="-0.0" z="-0.0" />
-      </physvol>
-       <physvol>
-        <volumeref ref="PVBox" />
       </physvol>
     </volume>
   </structure>
