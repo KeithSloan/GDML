@@ -94,42 +94,52 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
-def radians2deg(r) :
+def getDegrees(flag, r) :
     import math
-    return(r * 180/math.pi)
+    if flag == True :
+       return r * 180/math.pi
+    else :
+       return r
 
 def processPlacement(base,rot) :
-    printverbose = True
     trace('processPlacement')
-    print('processPlacement')
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
     # set angle & axis in case not set by rotation attribute
     #axis = FreeCAD.Vector(1,0,0)
     #angle = 0
-    Xangle = Yangle = Zangle = 0.0
     if rot != None :
+        Xangle = Yangle = Zangle = 0.0
+        radianFlg = True
+        if 'name' in rot.attrib :
+            if rot.attrib['name'] == 'identity' :
+                trace('identity')
+                rot = FreeCAD.Rotation(0,0,0)
+                return FreeCAD.Placement(base,rot)
+
         trace("Rotation : ")
-        print("Rotation : ")
-        print(rot)
         trace(rot.attrib)
-        if 'y' in rot.attrib :
-            #axis = FreeCAD.Vector(0,1,0)
-            Yangle = radians2deg(float(eval(rot.attrib['y'])))
-            print('Y angle : '+str(Yangle))
+        if 'aunit' in rot.attrib :
+            #print(rot.attrib['aunit'][:3])
+            if rot.attrib['aunit'][:3] == 'deg' :
+                radianFlg = False
         if 'x' in rot.attrib :
-            print(rot.attrib['x'])
-            print(eval(rot.attrib['x']))
-            Xangle = radians2deg(float(eval(rot.attrib['x'])))
-            print('X angle : '+str(Xangle))
+            #print(rot.attrib['x'])
+            #print(eval(rot.attrib['x']))
+            Xangle = getDegrees(radianFlg,float(eval(rot.attrib['x'])))
+        if 'y' in rot.attrib :
+            Yangle = getDegrees(radianFlg,float(eval(rot.attrib['y'])))
+            #print('Y angle : '+str(Yangle))
         if 'z' in rot.attrib :
-            Zangle = radians2deg(float(eval(rot.attrib['z'])))
-            print('Z angle : '+str(Zangle))
+            Zangle = getDegrees(radianFlg,float(eval(rot.attrib['z'])))
+            #print('Z angle : '+str(Zangle))
             # Use only three float values for Rotation
-        return FreeCAD.Placement(base,FreeCAD.Rotation(Xangle,Yangle,Zangle))
+        #axis = FreeCAD.Vector(0,0,1)
+        rotate = FreeCAD.Rotation(Xangle,Yangle,Zangle)
+        return FreeCAD.Placement(base,rotate)
 
     else :
-        print('No rotation')
+        #print('No rotation')
         rot = FreeCAD.Rotation(0,0,0)
         return FreeCAD.Placement(base,rot)
 

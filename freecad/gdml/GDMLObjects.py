@@ -129,10 +129,12 @@ def angleSectionSolid(fp, rmax, z, shape) :
     #f4 = make_face4(v5,v2,v1,v4)
     #shell=Part.makeShell([f1,f2,f3,f4])
     #solid=Part.makeSolid(shell)
-    if deltaPhiDeg < 90 :
+    if deltaPhiDeg > 90 :
        return(shape.common(s2))
     else :   
        return(shape.cut(s2))
+    #return(shape.cut(s2))
+    #return(shape.common(s2))
     #return(shape)
     #return(solid)
     #return(s2)
@@ -271,11 +273,13 @@ class GDMLCone(GDMLcommon) :
           z = mul * fp.z
           #print(rmax1)
           #print(rmax2)
+          #print(rmin1)
+          #print(rmin2)
           #print(z)
-          cone1 = Part.makeCone(rmin1,rmax1,z)
-          if (rmin1 != rmin2 or rmax1 != rmax2 ) :
-             cone2 = Part.makeCone(rmin2,rmax2,z)
-             if rmax1 > rmax2 :
+          cone1 = Part.makeCone(rmax1,rmax2,z)
+          if (rmin1 != 0 and rmin2 != 0 ) :
+             cone2 = Part.makeCone(rmin1,rmin2,z)
+             if rmax1 > rmin1 :
                 cone3 = cone1.cut(cone2)
              else :
                 cone3 = cone2.cut(cone1)

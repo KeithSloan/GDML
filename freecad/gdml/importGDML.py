@@ -143,9 +143,7 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     lunit = getText(solid,'lunit',"mm")
     GDMLBox(mycube,x,y,z,lunit,material)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
-    #base = FreeCAD.Vector(0,0,0)
     base = FreeCAD.Vector(px,py,pz)
-    print('process placement')
     mycube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycube.Placement.Rotation)
     if FreeCAD.GuiUp :
@@ -560,7 +558,6 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import ViewProvider
 
     GDMLShared.setTrace(True)
-
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -572,23 +569,22 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        name2nd = GDMLShared.getRef(solid,'second')
        tool = solids.find("*[@name='%s']" % name2nd )
        GDMLShared.trace("second : "+name2nd)
-       #parseObject(root,tool)
-       #x,y,z = GDMLShared.getBaseFromRefs(solid)
        x,y,z = getPosition(solid)
        #rot = GDMLShared.getRotFromRefs(solid)
-       rot = getRotation(solid)
-       mybool = part.newObject(objType,solid.tag+':'+getName(solid))
-       #mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
+       rotBool = getRotation(solid)
+       #mybool = part.newObject(objType,solid.tag+':'+getName(solid))
+       mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
-       mybool.Tool = createSolid(part,tool,material,x,y,z,rot,displayMode)
+       mybool.Tool = createSolid(part,tool,material,x,y,z,rotBool,displayMode)
+       #mybool.Tool = createSolid(part,tool,material,x,y,z,None,displayMode)
        # Okay deal with position of boolean
-       #GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+       GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
        #base = FreeCAD.Vector(0,0,0)
-       #base = FreeCAD.Vector(px,py,pz)
-       #/mybool.Placement = GDMLShared.processPlacement(base,rot)
-       #mybool.Placement= GDMLShared.getPlacementFromRefs(solid) 
-       #ViewProvider(mybool.ViewObject)
+       base = FreeCAD.Vector(px,py,pz)
+       mybool.Placement = GDMLShared.processPlacement(base,rot)
+       #if FreeCAD.GuiUp :
+       #     ViewProvider(mybool.ViewObject)
        return mybool
 
 def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
