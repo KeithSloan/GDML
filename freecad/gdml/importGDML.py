@@ -34,7 +34,6 @@ import Part, Draft
 from math import *
 from . import GDMLShared
 
-printverbose = True
 ##########################
 # Globals Dictionarys    #
 ##########################
@@ -558,7 +557,7 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -573,8 +572,8 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        x,y,z = getPosition(solid)
        #rot = GDMLShared.getRotFromRefs(solid)
        rotBool = getRotation(solid)
-       #mybool = part.newObject(objType,solid.tag+':'+getName(solid))
-       mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
+       mybool = part.newObject(objType,solid.tag+':'+getName(solid))
+       #mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
        mybool.Tool = createSolid(part,tool,material,x,y,z,rotBool,displayMode)

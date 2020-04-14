@@ -3,7 +3,7 @@
 
   <define>
      <constant name="HALFPI" value="pi/2."/>
-     <rotation name="rotatebyx" x="HALFPI/2."/>
+     <rotation name="rotatebyx" x="HALFPI/4."/>
   </define>
   <materials>
     <isotope N="12" Z="6" name="C120x55d1238febb0">
