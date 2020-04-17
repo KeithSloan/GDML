@@ -1,4 +1,4 @@
-#]***************************************************************************
+#***************************************************************************
 #*                                                                         
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
 #*                                                                        *
@@ -151,7 +151,6 @@ def addObjectToVol(obj, lvol, name, solidName, material) :
 
 def createLVandPV(obj, name, solidName):
     #
-    # Cannot rely on obj.Name so have to pass name
     # Logical & Physical Volumes get added to structure section of gdml
     #
     #ET.ElementTree(gdml).write("test9d", 'utf-8', True)
@@ -497,62 +496,59 @@ def addPhysVol(obj, xmlVol, volName) :
     pvol = ET.SubElement(xmlVol,'physvol')
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
-    
-def addPositionReferenceSolid(obj, solid) :
-    # not also function to add without reference
-    global POScount, ROTcount
 
-    print("Add pos and rot references to PhysVol")
-    pos = obj.Placement.Base
+def exportPosition(name, xml, pos) :
+    global POScount
     print(pos)
     x = pos[0]
     y = pos[1]
     z = pos[2]
-    name = obj.Name
     posName = 'PS'+name+str(POScount)
     POScount += 1
-    ET.SubElement(define,'position',{'name' : posName, 'unit': 'mm', \
-            'x': str(x), 'y': str(y), 'z': str(z) })
-    ET.SubElement(solid,'positionref',{'ref' : posName})
-    angles = obj.Placement.Rotation.toEuler()
-    print ("Angles")
-    print (angles)
-    a0 = angles[0]
-    a1 = angles[1]
-    a2 = angles[2]
-    if a0!=0 or a1!=0 or a2!=0 :
-       rotName = 'Rot'+name+str(ROTcount)
-       ROTcount += 1
-       ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
-                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
-       ET.SubElement(solid,'rotationref',{'ref' : rotName})
+    posxml = ET.SubElement(define,'position',{'name' : name, \
+                   'unit': 'mm'})
+    if x != 0 :
+       posxml.attrib['x'] = str(x)
+    if y != 0 :
+       posxml.attrib['y'] = str(y)
+    if z != 0 :
+       posxml.attrib['z'] = str(z)
+    ET.SubElement(xml,'positionref',{'ref' : name})
 
+def exportRotation(name, xml, Rotation) :
+    global ROTcount
+    if Rotation.Angle != 0 :
+        angles = Rotation.toEuler()
+        print ("Angles")
+        print (angles)
+        a0 = angles[0]
+        a1 = angles[1]
+        a2 = angles[2]
+        if a0!=0 or a1!=0 or a2!=0 :
+            rotName = 'Rot'+name+str(ROTcount)
+            ROTcount += 1
+            rotxml = ET.SubElement(define, 'rotation', {'name': name, \
+                    'unit': 'deg'})
+            if abs(a2) != 0 :
+                rotxml.attrib['x']=str(-a2)
+            if abs(a1) != 0 :
+                rotxml.attrib['y']=str(-a1)
+            if abs(a0) != 0 :
+                rotxml.attrib['z']=str(-a0)
+            ET.SubElement(xml, 'rotationref', {'ref': name})
 
-def addPositionRotationPVol(obj,pvol) :
-    # This does not add references - Is it redundant
-    global POScount, ROTcount
+def processPosition(obj, solid) :
+    if obj.Placement.Base == FreeCAD.Vector(0,0,0) :
+        return
+    print("Define position & references to Solid")
+    exportPosition(obj.Name, solid, obj.Placement.Base)
 
-    print("Add pos and rot to PhysVol")
-    pos = obj.Placement.Base
-    print(pos)
-    x = pos[0]
-    y = pos[1]
-    z = pos[2]
-    posName = 'PS'+obj.Name+str(POScount)
-    POScount += 1
-    ET.SubElement(pvol,'position',{'name' : posName, 'unit': 'mm', \
-            'x': str(x), 'y': str(y), 'z': str(z) })
-    angles = obj.Placement.Rotation.toEuler()
-    print ("Angles")
-    print (angles)
-    a0 = angles[0]
-    a1 = angles[1]
-    a2 = angles[2]
-    if a0!=0 or a1!=0 or a2!=0 :
-       rotName = 'Rot'+name+str(ROTcount)
-       ROTcount += 1
-       ET.SubElement(pvol, 'rotation', {'name': rotName, 'unit': 'deg', \
-                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
+def processRotation(obj2, solid) :
+    if obj2.Placement.Rotation.Angle == 0 :
+       return
+    print('Deal with Rotation')
+    exportRotation(obj2.Name,solid,obj2.Placement.Rotation)
+
 
 def addVolRef(vol,solidName,material) :
     ET.SubElement(vol,'solidref',{'ref': solidName})
@@ -560,6 +556,8 @@ def addVolRef(vol,solidName,material) :
 
 def testDefaultPlacement(obj) :
     #print(dir(obj.Placement.Rotation))
+    print('Test Default Placement : '+obj.Name)
+    print('No longer used ??')
     print(obj.Placement.Base)
     print(obj.Placement.Rotation.Angle)
     if obj.Placement.Base == FreeCAD.Vector(0,0,0) and \
@@ -567,19 +565,6 @@ def testDefaultPlacement(obj) :
        return True
     else :
        return False
-
-# Should no longer be used
-def postProcessObject(obj, vol, solidName ) :
-    material = obj.material
-    addVolRef(vol,solidName,material)
-    print(testDefaultPlacement(obj))
-    if testDefaultPlacement(obj) == False :
-       print("Not Default placement")
-       volName = 'PV-'+obj.Name
-       addVol(volName, solidName, material)
-       pvol = addPhysVol(obj,vol,volname)
-       addPositionRotationPVol(obj,pvol)    
-
 
 def processGDMLBoxObject(obj, vol, flag) :
     # Needs unique Name
@@ -1047,7 +1032,6 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
-
 def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
     # obj       - Object
     # boolFlg   - True once boolean found in volume
@@ -1087,65 +1071,65 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
       #   break
          
       if case("App::Origin") :
-         print("App Origin")
+         #print("App Origin")
          return boolFlg
          break
 
       if case("App::GeoFeature") :
-         print("App GeoFeature")
+         #print("App GeoFeature")
          return
          break
 
       if case("App::Line") :
-         print("App Line")
+         #print("App Line")
          return
          break
 
       if case("App::Plane") :
-         print("App Plane")
+         #print("App Plane")
          return
          break
 
       if case("Part::Cut") :
          # Maybe Booleans could be grouped with GDML solids 
-         print("   Cut")
-         print(boolFlg)
+         #print("   Cut")
+         #print(boolFlg)
          cutName = 'Cut'+obj.Name
          ref1 = processGDMLsolid(obj.Base, xmlVol, True)
          ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         if boolFlg == False :
+         if boolFlg == False :  # True once boolean found
             addVolRef(xmlVol,cutName,obj.Base.material)
-         addPhysVol(obj,xmlParent,parentName)
-         defaultPlacement = testDefaultPlacement(obj)
-         if defaultPlacement == False :
-            #addPositionReferenceSolid(obj,xmlVol,subtract)    
-            addPositionReferenceSolid(obj,subtract)    
+         pvol = addPhysVol(obj,xmlParent,parentName)
+         processPosition(obj,pvol)
+         processRotation(obj,pvol)
+         processPosition(obj.Tool,subtract)
+         processRotation(obj.Tool,subtract)   
          return True, cutName
          break
 
       if case("Part::Fuse") :
-         print("   Union")
+         #print("   Union")
          unionName = 'Union'+obj.Name
          ref1 = processGDMLsolid(obj.Base, xmlVol, True)
          ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         if boolFlg == False :
+         if boolFlg == False :  # True once boolean found
             addVolRef(xmlVol,unionName,obj.Base.material)
-         addPhysVol(obj,xmlParent,parentName)
-         defaultPlacement = testDefaultPlacement(obj)
-         if defaultPlacement == False :
-            #addPositionReferenceSolid(obj,xmlVol,subtract)    
-            addPositionReferenceSolid(obj,union)    
+         pvol = addPhysVol(obj,xmlParent,parentName)
+         processPosition(obj,pvol)
+         processRotation(obj,pvol)
+         processPosition(obj.Tool,union)
+         processRotation(obj.Tool,union)   
          return True, unionName
          break
 
       if case("Part::Common") :
-         print("   Intersection")
+         #print("   Intersection")
          intersectName = 'Intersect'+obj.Name
          ref1 = processGDMLsolid(obj.Base, xmlVol, True)
          ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
@@ -1153,13 +1137,13 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
                      intersectName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
-         if boolFlg == False :
+         if boolFlg == False :  # true once boolean found
             addVolRef(xmlVol,intersectName,obj.Base.material)
-         addPhysVol(obj,xmlParent,parentName)
-         defaultPlacement = testDefaultPlacement(obj)
-         if defaultPlacement == False :
-            #addPositionReferenceSolid(obj,xmlVol,subtract)    
-            addPositionReferenceSolid(obj,intersect)    
+         pvol = addPhysVol(obj,xmlParent,parentName)
+         processPosition(obj,pvol)
+         processRotation(obj,pvol)
+         processPosition(obj.Tool,intersect)
+         processRotation(obj.Tool,intersect)
          return True, intersectName
          break
 
@@ -1193,20 +1177,17 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          break
 
       if case("Part::FeaturePython"):
-          print("   Python Feature")
+          #print("   Python Feature")
           if hasattr(obj.Proxy, 'Type') :
-             print(obj.Proxy.Type) 
+             #print(obj.Proxy.Type) 
              solidName = processGDMLsolid(obj, xmlVol, True)
-             if boolFlg == False :
+             if boolFlg == False :      # True once boolean found
                 addVolRef(xmlVol,solidName,obj.material)
                 if addVolsFlag == True :
                    pvol = addPhysVol(obj,xmlParent,parentName)
+                   processPosition(obj,pvol)
+                   processRotation(obj,pvol)
                 boolFlg = True 
-                defaultPlacement = testDefaultPlacement(obj)
-                print(testDefaultPlacement(obj))
-                if defaultPlacement == False :
-                   print("Not Default placement")
-                   addPositionRotationPVol(obj,pvol)
              return boolFlg 
           else :
              print("Not a GDML Feature")
@@ -1283,20 +1264,21 @@ def createXMLvol(name):
 def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     print('processVol : '+vol.Name)
     # xmlVol could be created dummy volume
-    print('Number of Objects : '+str(len(vol.OutList)))
+
+    #print('Number of Objects : '+str(len(vol.OutList)))
     boolflg = False
     for obj in vol.OutList :
         if obj.TypeId == 'App::Part' :
             subXMLvol = insertXMLvol(obj.Name)
             if hasattr(obj,'OutList') :
-                print('Process '+obj.Name)
+                #print('Process '+obj.Name)
                 processVols(obj, subXMLvol, xmlVol, obj.Name, True)
 
         boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
                       parentName, addVolsFlag)
 
 def createDummyVol() :
-    print("Need to create Dummy Volume and World Bo ")
+    print("Need to create Dummy Volume and World Box ")
     bbox = FreeCAD.BoundBox()
     name = defineWorldBox(bbox)
     dummyVol = ET.SubElement(structure,'volume',{'name': 'Dummy'}) 
@@ -1364,4 +1346,5 @@ def export(exportList,filename) :
        print("GDML file written")
     
     else :
-       print("Need to select World Part") 
+       print("Need to select World Part")
+
