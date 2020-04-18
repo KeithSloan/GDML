@@ -143,6 +143,7 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     lunit = getText(solid,'lunit',"mm")
     GDMLBox(mycube,x,y,z,lunit,material)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
+    #base = FreeCAD.Vector(0,0,0)
     base = FreeCAD.Vector(px,py,pz)
     mycube.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(mycube.Placement.Rotation)
@@ -333,11 +334,17 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    # modifs
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
+    #aunit = GDMLShared.getRef(solid,'aunit')
+    #lunit = GDMLShared.getRef(solid,'lunit')
+    starttheta = GDMLShared.getVal(solid,'starttheta')
+    deltatheta = GDMLShared.getVal(solid,'deltatheta')    
     mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
-    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,0,3.00,aunit, \
+    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta,deltatheta,aunit, \
                lunit,material)
+    # end modifs
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
@@ -590,8 +597,6 @@ def parseMultiUnion(part,solid,material,px,py,pz,rot,displayMode) :
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
-
-    #GDMLShared.setTrace(True)
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -607,18 +612,17 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        #rot = GDMLShared.getRotFromRefs(solid)
        rotBool = getRotation(solid)
        mybool = part.newObject(objType,solid.tag+':'+getName(solid))
-       #mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
-       mybool.Tool = createSolid(part,tool,material,x,y,z,rotBool,displayMode)
-       #mybool.Tool = createSolid(part,tool,material,x,y,z,None,displayMode)
+       mybool.Tool = createSolid(part,tool,material,0,0,0,None,displayMode)
+       #mybool.Tool.Placement= GDMLShared.getPlacementFromRefs(solid) 
        # Okay deal with position of boolean
-       GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+       #GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
        #base = FreeCAD.Vector(0,0,0)
-       base = FreeCAD.Vector(px,py,pz)
-       mybool.Placement = GDMLShared.processPlacement(base,rot)
-       #if FreeCAD.GuiUp :
-       #     ViewProvider(mybool.ViewObject)
+       #base = FreeCAD.Vector(px,py,pz)
+       #/mybool.Placement = GDMLShared.processPlacement(base,rot)
+       mybool.Placement= GDMLShared.getPlacementFromRefs(solid) 
+       #ViewProvider(mybool.ViewObject)
        return mybool
 
 def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
@@ -718,16 +722,13 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-
 def getRotation(xmlEntity) :
     GDMLShared.trace('GetRotation')
     rotref = GDMLShared.getRef(xmlEntity,"rotationref")
     if rotref is not None :
        rot = GDMLShared.define.find("rotation[@name='%s']" % rotref )
     else :
-       rot = xmlEntity.find("rotation")
-    GDMLShared.trace(rot)
-    return rot
+       rot = physVol.find("rotation")
 
 def parsePhysVol(parent,physVol,phylvl,displayMode):
     # physvol is xml entity
@@ -762,9 +763,8 @@ def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
 
     else :
         GDMLShared.trace("ParseVolume : "+name)
-        #part = parent.newObject("App::Part",name)
-        #expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
-        expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode)
+        part = parent.newObject("App::Part",name)
+        expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
 
 def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
@@ -848,8 +848,11 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
            print("Not Volume or Assembly") 
 
 def getItem(element, attribute) :
-    # returns None if not found
-    return element.get(attribute)
+    item = element.get(attribute)
+    if item != None :
+       return item
+    else :
+       return ""
 
 def processIsotopes(doc) :
     from .GDMLObjects import GDMLisotope, ViewProvider
@@ -863,6 +866,7 @@ def processIsotopes(doc) :
         value = float(atom.get('value'))
         #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
         isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
+        #GDMLisotope(isoObj,name,N,Z,unit,value)
         GDMLisotope(isoObj,name,N,Z,unit,value)
 
 def processElements(doc) :
@@ -871,42 +875,31 @@ def processElements(doc) :
     elementsGrp.Label = 'Elements'
     for element in materials.findall('element') :
         name = element.get('name')
-        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython", name)
+        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython", \
+                     name)
         Z = element.get('Z')
         if (Z != None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
-        N = element.get('N')
-        if (N != None ) :
-           elementObj.addProperty("App::PropertyInteger","N",name).N=int(N)
-            
-        formula = element.get('formula')
-        if (formula != None ) :
-           elementObj.addProperty("App::PropertyString","formula",name). \
-                   formula = formula
-            
         atom = element.find('atom') 
         if atom != None :
            unit = atom.get('unit')
            if unit != None :
               elementObj.addProperty("App::PropertyString","atom_unit",name). \
                                       atom_unit = unit
-           value = atom.get('value')
-           if value != None :
+              value = float(atom.get('value'))                        
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
-                                      atom_value = float(value)
+                                      atom_value = value
 
 
         GDMLelement(elementObj,name)
         for fraction in element.findall('fraction') :
             ref = fraction.get('ref')
-            #print('fraction ref : '+ref)
             n = float(fraction.get('n'))
             #fractObj = elementObj.newObject("App::FeaturePython",ref)
             fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
-            #print('fraction obj : '+fractObj.Name)
             GDMLfraction(fractObj,ref,n)
             #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
-            #fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
+            fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
 
 def processMaterials(doc) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
@@ -927,21 +920,32 @@ def processMaterials(doc) :
         D = material.find('D')
         if D != None :
            Dunit = getItem(D,'unit')
-           #print(Dunit)
-           if Dunit != None :
-                 materialObj.addProperty("App::PropertyString",'Dunit', \
-                                'GDMLmaterial','Dunit').Dunit = Dunit
-           Dvalue = getItem(D,'value')
-           if Dvalue != None :
-              materialObj.addProperty("App::PropertyFloat", \
-                      'Dvalue','GDMLmaterial','value').Dvalue = float(Dvalue)
+           Dvalue = float(D.get('value'))
+           materialObj.addProperty("App::PropertyString",'Dunit','GDMLmaterial','D unit').Dunit = Dunit
+           materialObj.addProperty("App::PropertyFloat",'Dvalue','GDMLmaterial','D value').Dvalue = Dvalue
+        # modif begin 
+        else:
+           FreeCAD.Console.PrintMessage("Density not found in material default value given")
+           Dunit = 'g/cm3'
+           Dvalue = float(1e-25)
+           materialObj.addProperty("App::PropertyString",'Dunit','GDMLmaterial','D unit').Dunit = Dunit
+           materialObj.addProperty("App::PropertyFloat",'Dvalue','GDMLmaterial','D value').Dvalue = Dvalue
+        # modif end
+
 
         Z = material.get('Z')
         if Z != None :
            materialObj.addProperty("App::PropertyString",'Z',name).Z = Z
+        # modif begin 
+        else:
+           FreeCAD.Console.PrintMessage("Z not found in material")
+           Z = '1'
+           materialObj.addProperty("App::PropertyString",'Z',name).Z = Z
+        # modif end
+
         atom = material.find('atom')
         if atom != None :
-           #print("Found atom in : "+name) 
+           print("Found atom in : "+name) 
            aUnit = atom.get('unit')
            if aUnit != None :
               materialObj.addProperty("App::PropertyString",'atom_unit', \
@@ -965,46 +969,33 @@ def processMaterials(doc) :
            materialObj.addProperty("App::PropertyFloat",'MEEvalue','GDMLmaterial','MEE value').MEEvalue = Mvalue
         for fraction in material.findall('fraction') :
             n = float(fraction.get('n'))
-            #print(n)
             ref = fraction.get('ref')
-            #print('fraction : '+ref)
-            fractionObj = materialObj.newObject('App::DocumentObjectGroupPython', ref)
-            #print('fractionObj Name : '+fractionObj.Name)
+            fractionObj = materialObj.newObject("App::DocumentObjectGroupPython", \
+                                                 ref)
             GDMLfraction(fractionObj,ref,n)
-            # problems with changing labels if more than one
-            #
             #fractionObj.Label = ref[0:5] +' : '+'{0:0.2f}'.format(n)
-            #print('Fract Label : ' +fractionObj.Label)
-            #fractionObj.Label = ref +' : '+'{0:0.2f}'.format(n)
-            #print('Fract Label : ' +fractionObj.Label)
+            fractionObj.Label = ref +' : '+'{0:0.2f}'.format(n)
 
         for composite in material.findall('composite') :
-            #print('Composite')
             n = int(composite.get('n'))
-            #print('n = '+str(n))
             ref = composite.get('ref')
-            #print('ref : '+ref)
-            compObj = materialObj.newObject("App::DocumentObjectGroupPython", \
+            compositeObj = materialObj.newObject("App::DocumentObjectGroupPython", \
                                                  ref)
-            GDMLcomposite(compObj,'comp',n,ref)
-            # problems with changing labels if more than one
-            #
-            #print('Comp Label : ' +compObj.Label)
-            #compObj.Label = ref +' : '+str(n)
-            #print('Comp Label : ' +compObj.Label)
-
+            GDMLcomposite(compositeObj,ref,n)
+            compositeObj.Label = ref +' : '+str(n)
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 
 def processGDML(doc,filename,prompt):
+
 
     from . import GDMLShared
     from . import GDMLObjects
     
     #GDMLShared.setTrace(True)
 
-    phylvl = -1 # Set default
-    if FreeCAD.GuiUp :
+   phylvl = -1 # Set default
+   if FreeCAD.GuiUp :
        from . import GDMLCommands
        if prompt :
           from   .GDMLCommands import importPrompt
@@ -1022,62 +1013,86 @@ def processGDML(doc,filename,prompt):
           params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
           #GDMLShared.setTrace(printverbose = params.GetBool('printVerbose',False))
    
-    else :
+   else :
         # For Non Gui default Trace to on
         GDMLShared.setTrace(True)
 
-    print("Print Verbose : "+ str(GDMLShared.getTrace()))
+   print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
-    FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
-    FreeCAD.Console.PrintMessage('ImportGDML Version 0.2\n')
+   FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
+   FreeCAD.Console.PrintMessage('ImportGDML Version 0.2\n')
     
-    global pathName
-    pathName = os.path.dirname(os.path.normpath(filename))
-    FilesEntity = False
+   global pathName
+   pathName = os.path.dirname(os.path.normpath(filename))
+   FilesEntity = False
 
-    global setup, define, materials, solids, structure, volDict
+   global setup, define, materials, solids, structure, volDict
   
-  # Add files object so user can change to organise files
-  #  from GDMLObjects import GDMLFiles, ViewProvider
-  #  myfiles = doc.addObject("App::FeaturePython","Export_Files")
-    #myfiles = doc.addObject("App::DocumentObjectGroupPython","Export_Files")
-    #GDMLFiles(myfiles,FilesEntity,sectionDict)
+   # Add files object so user can change to organise files
+   #  from GDMLObjects import GDMLFiles, ViewProvider
+   #  myfiles = doc.addObject("App::FeaturePython","Export_Files")
+   #myfiles = doc.addObject("App::DocumentObjectGroupPython","Export_Files")
+   #GDMLFiles(myfiles,FilesEntity,sectionDict)
 
-    from lxml import etree
-    #root = etree.fromstring(currentString)
-    parser = etree.XMLParser(resolve_entities=True)
-    root = etree.parse(filename, parser=parser)
+   # modifs
+   #before from lxml import etree
+   try:
+       from lxml import etree
+       FreeCAD.Console.PrintMessage("running with lxml.etree")
+       parser = etree.XMLParser(resolve_entities=True)
+       root = etree.parse(filename, parser=parser)
 
-    setup     = root.find('setup')
-    define    = root.find('define')
-    if define != None :
+   except ImportError:
+       try:
+           import xml.etree.ElementTree as etree
+           FreeCAD.Console.PrintMessage("running with etree.ElementTree\n")
+           tree = etree.parse(filename)
+           FreeCAD.Console.PrintMessage(tree)
+           root = tree.getroot()
+
+       except ImportError:
+           print('pb xml lib not found')
+           sys.exit()
+   # end modifs 
+
+
+   #root = etree.fromstring(currentString)
+
+
+   setup     = root.find('setup')
+   define    = root.find('define')
+   if define != None :
        GDMLShared.trace("Call set Define")
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
        GDMLShared.trace(setup.attrib)
 
-    materials = root.find('materials')
-    if materials != None :
+   materials = root.find('materials')
+   if materials != None :
        processIsotopes(doc)
        processElements(doc)
        processMaterials(doc)
 
-    solids    = root.find('solids')
-    structure = root.find('structure')
+   solids    = root.find('solids')
+   structure = root.find('structure')
 
-    # volDict dictionary of volume names and associated FreeCAD part
-    volDict = {}
+   # volDict dictionary of volume names and associated FreeCAD part
+   volDict = {}
 
-    #part =doc.addObject("App::Part","Volumes")
-    world = GDMLShared.getRef(setup,"world")
-    part =doc.addObject("App::Part",world)
-    #print(world)
-    global volCount
-    volCount = 0
-    #scanVolume(part,world)
-    parseVolume(part,world,0,0,0,None,phylvl,3)
+   
+   part =doc.addObject("App::Part","Volumes")
+   world = GDMLShared.getRef(setup,"world")
+   #print(world)
+   global volCount
+   volCount = 0
+   #scanVolume(part,world)
 
-    doc.recompute()
-    if FreeCAD.GuiUp :
+   parseVolume(part,world,0,0,0,None,phylvl,3)
+   
+
+   doc.recompute()
+   if FreeCAD.GuiUp :
        FreeCADGui.SendMsgToActiveView("ViewFit")
-    FreeCAD.Console.PrintMessage('End processing GDML file\n')
+   FreeCAD.Console.PrintMessage('\nEnd processing GDML file\n')
+
+
