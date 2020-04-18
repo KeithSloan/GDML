@@ -120,6 +120,7 @@ def processPlacement(base,rot) :
     
     else :
         trace("Rotation : ")
+        print(rot.attrib)
         trace(rot.attrib)
         x = y = z = 0
 
@@ -160,11 +161,11 @@ def processPlacement(base,rot) :
         c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
         return FreeCAD.Placement(base, rot,  c_rot)
 
-# Return a FreeCAD placement for positionref & rotateref
-def getBaseFromRefs(ptr) :
+# Return x,y,z for positionref 
+def getDefinedPosition(name) :
     printverbose = True
     trace("getBaseFromRef")
-    pos = define.find("position[@name='%s']" % getRef(ptr,'positionref'))
+    pos = define.find("position[@name='%s']" % name )
     trace(pos)
     x = y = z = 0 
     if pos != None :
@@ -175,16 +176,44 @@ def getBaseFromRefs(ptr) :
        z = getVal(pos,'z')
     return x,y,z
 
+def getPosition(xmlEntity) :
+    trace('GetPosition')
+    posref = getRef(xmlEntity,"positionref")
+    if posref is not None :
+       trace("positionref : "+posref)
+       pos = define.find("position[@name='%s']" % posref )
+       if pos is not None : trace(pos.attrib)
+    else :
+       pos = xmlEntity.find("position")
+    if pos is not None :
+       px = getVal(pos,'x')
+       py = getVal(pos,'y')
+       pz = getVal(pos,'z')
+    else :
+       px = py = pz = 0
+    return px, py, pz
+
+#def getDefinedRotation(name) :
+#    rot = define.find("rotation[@name='%s']" % name )
+#    #if hasattr(pos,'unit')
+#    if rot is not None :
+#       px = getVal(rot,'x')
+#       py = getVal(rot,'y')
+#       pz = getVal(rot,'z')
+#       return px, py, pz
+#    else :
+#       return 0,0,0
+
+def getDefinedRotation(name) :
+    # Just get defintion - used by parseMultiUnion passed to create solids
+    return(define.find("rotation[@name='%s']" % name ))
+
 def getRotFromRefs(ptr) :
     printverbose = True
     trace("getRotFromRef")
     rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
     print(rot)
     return rot
-
-def getVertex(v):
-    trace("Vertex")
-    #print(dir(v))
 
 def getVertex(v):
     trace("Vertex")

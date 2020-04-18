@@ -1346,5 +1346,7 @@ def export(exportList,filename) :
        print("GDML file written")
     
     else :
-       print("Need to select World Part")
+       print("Need to a Part for export")
+       from PyQt5 import QtGui
+       QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
 
