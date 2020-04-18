@@ -560,6 +560,40 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(myTess,displayMode)
     return myTess
 
+def parseMultiUnion(part,solid,material,px,py,pz,rot,displayMode) :
+    print('Multi Union - MultiFuse')
+    print(solid.tag)
+    print(solid.attrib)
+    muName = solid.attrib.get('name')
+    print('multi Union : '+muName)
+    #for s in solid.findall('multiUnionNode') :
+    objList = []
+    for s in solid :
+        if s.tag == 'multiUnionNode' :
+            # each solid may change x,y,z,rot
+            nx = px
+            ny = py
+            nz = pz
+            nrot = rot
+            for t in s :
+                if t.tag == 'solid' :
+                    sname = t.get('ref')
+                    print('solid : '+sname)
+                    ssolid  = solids.find("*[@name='%s']" % sname )
+                if t.tag == 'positionref' :
+                    pname = t.get('ref')
+                    nx, ny, nz = GDMLShared.getDefinedPosition(pname)
+                if t.tag == 'rotationref' :
+                    rname = t.get('ref')
+                    print('rotation ref : '+rname)
+                    nrot = GDMLShared.getDefinedRotation(rname)
+            if sname != None :        # Did we find at least one solid
+                objList.append(createSolid(part,ssolid,material,nx,ny,nz, \
+                    nrot,displayMode))
+    myMUobj = part.newObject('Part::MultiFuse',muName)
+    myMUobj.Shapes = objList
+
+
 def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
@@ -574,7 +608,9 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        name2nd = GDMLShared.getRef(solid,'second')
        tool = solids.find("*[@name='%s']" % name2nd )
        GDMLShared.trace("second : "+name2nd)
-       #parseObject(root,tool)
+       x,y,z = GDMLShared.getPosition(solid)
+       #rot = GDMLShared.getRotFromRefs(solid)
+       rotBool = getRotation(solid)
        mybool = part.newObject(objType,solid.tag+':'+getName(solid))
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
@@ -591,6 +627,7 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
 
 def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
     # parent,solid, material
+    # returns created Object
     GDMLShared.trace(solid.tag)
     while switch(solid.tag) :
         if case('box'):
@@ -668,7 +705,12 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
                   material,px,py,pz,rot,displayMode)) 
             break
 
-        GDMLShared.trace("Solid : "+solid.tag+" Not yet supported")
+        if case('multiUnion'):
+            return(parseMultiUnion(part,solid,material, \
+                  px,py,pz,rot,displayMode))
+            break
+
+        print("Solid : "+solid.tag+" Not yet supported")
         break
 
 def getVolSolid(name):
@@ -680,27 +722,19 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(parent,physVol,phylvl,displayMode):
-    GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    posref = GDMLShared.getRef(physVol,"positionref")
-    if posref is not None :
-       GDMLShared.trace("positionref : "+posref)
-       pos = GDMLShared.define.find("position[@name='%s']" % posref )
-       if pos is not None : GDMLShared.trace(pos.attrib)
-    else :
-       pos = physVol.find("position")
-    if pos is not None :
-       px = GDMLShared.getVal(pos,'x')
-       py = GDMLShared.getVal(pos,'y')
-       pz = GDMLShared.getVal(pos,'z')
-    else :
-       px = py = pz = 0 
-    rotref = GDMLShared.getRef(physVol,"rotationref")
+def getRotation(xmlEntity) :
+    GDMLShared.trace('GetRotation')
+    rotref = GDMLShared.getRef(xmlEntity,"rotationref")
     if rotref is not None :
        rot = GDMLShared.define.find("rotation[@name='%s']" % rotref )
     else :
        rot = physVol.find("rotation")
 
+def parsePhysVol(parent,physVol,phylvl,displayMode):
+    # physvol is xml entity
+    GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
+    px, py, pz = GDMLShared.getPosition(physVol)
+    rot = getRotation(physVol)
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
        GDMLShared.trace("Volume ref : "+volref)
@@ -954,8 +988,11 @@ def processMaterials(doc) :
 
 def processGDML(doc,filename,prompt):
 
-   from . import GDMLShared
-   from . import GDMLObjects
+
+    from . import GDMLShared
+    from . import GDMLObjects
+    
+    #GDMLShared.setTrace(True)
 
    phylvl = -1 # Set default
    if FreeCAD.GuiUp :

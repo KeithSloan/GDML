@@ -304,13 +304,23 @@ class GDMLCone(GDMLcommon) :
           rmax1 = mul * fp.rmax1
           rmax2 = mul * fp.rmax2
           z = mul * fp.z
+          #print(mul)
           #print(rmax1)
           #print(rmax2)
           #print(z)
           cone1 = Part.makeCone(rmin1,rmax1,z)
-          if (rmin1 != rmin2 or rmax1 != rmax2 ) :
-             cone2 = Part.makeCone(rmin2,rmax2,z)
-             if rmax1 > rmax2 :
+          if rmax1 != rmax2 :
+             cone1 = Part.makeCone(rmax1,rmax2,z)
+          else :  
+             cone1 = Part.makeCylinder(rmax1,z)
+
+          if (rmin1 != 0 and rmin2 != 0 ) :
+             if rmin1 != rmin2 :
+                cone2 = Part.makeCone(rmin1,rmin2,z)
+             else :
+                cone2 = Part.makeCylinder(rmin1,z)
+
+             if rmax1 > rmin1 :
                 cone3 = cone1.cut(cone2)
              else :
                 cone3 = cone2.cut(cone1)

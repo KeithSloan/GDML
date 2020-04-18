@@ -1537,7 +1537,7 @@ def export(exportList,filename) :
        FreeCAD.Console.PrintMessage("GDML file written")
     
     else :
-       FreeCAD.Console.PrintMessage("Need to select World Part") 
-
-
-
+<
+       print("Need to a Part for export")
+       from PyQt5 import QtGui
+       QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')

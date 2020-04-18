@@ -104,6 +104,7 @@ def processPlacement(base,rot) :
     Xangle = Yangle = Zangle = 0.0
     if rot != None :
         trace("Rotation : ")
+        print(rot.attrib)
         trace(rot.attrib)
         if 'y' in rot.attrib :
             #axis = FreeCAD.Vector(0,1,0)
@@ -120,10 +121,12 @@ def processPlacement(base,rot) :
     place = FreeCAD.Placement(base,rot)
     return place
 
-# Return a FreeCAD placement for positionref & rotateref
-def getPlacementFromRefs(ptr) :
-    trace("getPlacementFromRef")
-    pos = define.find("position[@name='%s']" % getRef(ptr,'positionref'))
+
+# Return x,y,z for positionref 
+def getDefinedPosition(name) :
+    printverbose = True
+    trace("getBaseFromRef")
+    pos = define.find("position[@name='%s']" % name )
     trace(pos)
     base = FreeCAD.Vector(0.0,0.0,0.0)
     if pos != None :
@@ -132,10 +135,45 @@ def getPlacementFromRefs(ptr) :
        trace(x)
        y = getVal(pos,'y')
        z = getVal(pos,'z')
-       base = FreeCAD.Vector(x,y,z)
+    return x,y,z
+
+def getPosition(xmlEntity) :
+    trace('GetPosition')
+    posref = getRef(xmlEntity,"positionref")
+    if posref is not None :
+       trace("positionref : "+posref)
+       pos = define.find("position[@name='%s']" % posref )
+       if pos is not None : trace(pos.attrib)
+    else :
+       pos = xmlEntity.find("position")
+    if pos is not None :
+       px = getVal(pos,'x')
+       py = getVal(pos,'y')
+       pz = getVal(pos,'z')
+    else :
+       px = py = pz = 0
+    return px, py, pz
+
+#def getDefinedRotation(name) :
+#    rot = define.find("rotation[@name='%s']" % name )
+#    #if hasattr(pos,'unit')
+#    if rot is not None :
+#       px = getVal(rot,'x')
+#       py = getVal(rot,'y')
+#       pz = getVal(rot,'z')
+#       return px, py, pz
+#    else :
+#       return 0,0,0
+
+def getDefinedRotation(name) :
+    # Just get defintion - used by parseMultiUnion passed to create solids
+    return(define.find("rotation[@name='%s']" % name ))
+
+def getRotFromRefs(ptr) :
+    printverbose = True
+    trace("getRotFromRef")
     rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
     return(processPlacement(base,rot))
-
 
 def getVertex(v):
     trace("Vertex")
