@@ -30,15 +30,44 @@ import FreeCAD, os, Part, math
 from FreeCAD import Vector
 from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 
+# modif add 
+from .GDMLObjects import getMult, convertionlisteCharToLunit
+
+
+
 # xml handling
 #import argparse
-import lxml.etree  as ET
+#import lxml.etree  as ET
 #from   xml.etree.ElementTree import XML 
+
+# modifs
+#import lxml.etree  as ET
+
+global XML_IO_VERSION
+
+import sys
+try:
+   import lxml.etree  as ET
+   FreeCAD.Console.PrintMessage("running with lxml.etree")
+   XML_IO_VERSION='lxml'
+except ImportError:
+   try:
+       import xml.etree.ElementTree as ET 
+       FreeCAD.Console.PrintMessage("running with xml.etree.ElementTree")
+       XML_IO_VERSION = 'xml'
+   except ImportError:    
+       FreeCAD.Console.PrintMessage('pb xml lib not found')
+       sys.exit()
+# end modifsS
+
 #################################
 
-try: import FreeCADGui
-except ValueError: gui = False
-else: gui = True
+try: 
+   import FreeCADGui
+   gui = True
+except ValueError: 
+   gui = False
+ 
 
 global zOrder
 
@@ -98,24 +127,23 @@ def GDMLstructure() :
 
     defineCnt = LVcount = PVcount = POScount =  ROTcount = 1
 
-    NS = 'http://www.w3.org/2001/XMLSchema-instance'
-    location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
-    gdml = ET.Element('gdml',attrib={location_attribute: 'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
-    print(gdml.tag)
 
-          #'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
-          #'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"
-#})
+  
+
+    gdml = ET.Element('gdml', {
+          'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
+          'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"})
     #gdml = ET.Element('gdml')
     define = ET.SubElement(gdml, 'define')
     materials = ET.SubElement(gdml, 'materials')
     solids = ET.SubElement(gdml, 'solids')
     structure = ET.SubElement(gdml, 'structure')
     setup = ET.SubElement(gdml, 'setup', {'name': 'Default', 'version': '1.0'})
+    #ET.tostring(gdml, encoding="UTF-8")
     #worldVOL = None
     # worldVOL needs to be added after file scanned.
     #ET.ElementTree(gdml).write("/tmp/test2", 'utf-8', True)
-    return structure
+
 
 def defineMaterials():
     # Replaced by loading Default
@@ -151,6 +179,7 @@ def addObjectToVol(obj, lvol, name, solidName, material) :
 
 def createLVandPV(obj, name, solidName):
     #
+    # Cannot rely on obj.Name so have to pass name
     # Logical & Physical Volumes get added to structure section of gdml
     #
     #ET.ElementTree(gdml).write("test9d", 'utf-8', True)
@@ -217,12 +246,11 @@ def reportObject(obj) :
       ###########################################
       if case("Part::FeaturePython") : 
          print("Part::FeaturePython")
-         #
-         #if hasattr(obj.Proxy,'Type'):
-         #   print (obj.Proxy.Type)
-         #   print (obj.Name)
-         #else :
-         #   print("Not a GDML Feature")
+         if hasattr(obj.Proxy,'Type'):
+            print (obj.Proxy.Type)
+            print (obj.Name)
+         else :
+            print("Not a GDML Feature")
             
          #print dir(obj)
          #print dir(obj.Proxy)
@@ -429,7 +457,9 @@ def processBoxObject(obj, addVolsFlag) :
                            'x': str(obj.Length.Value),  \
                            'y': str(obj.Width.Value),  \
                            'z': str(obj.Height.Value),  \
-                           'lunit' : 'mm'})
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(obj.Length.Value / 2, \
@@ -447,7 +477,9 @@ def processCylinderObject(obj, addVolsFlag) :
                            'deltaphi': str(float(obj.Angle)), \
                            'aunit': obj.aunit,
                            'z': str(obj.Height.Value),  \
-                           'lunit' : 'mm'})
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(0, 0, obj.Height.Value / 2)
@@ -463,7 +495,9 @@ def processConeObject(obj, addVolsFlag) :
                            'deltaphi': str(float(obj.Angle)), \
                            'aunit': obj.aunit,
                            'z': str(obj.Height.Value),  \
-                           'lunit' : 'mm'})
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(0, 0, obj.Height.Value / 2)
@@ -486,69 +520,74 @@ def processSphereObject(obj, addVolsFlag) :
                            'deltatheta': str(float(obj.Angle2-obj.Angle1)), \
                            'deltaphi': str(float(obj.Angle3)), \
                            'aunit': obj.aunit,
-                           'lunit' : 'mm'})
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+
     if addVolsFlag :
        createLVandPV(obj,obj.Name,sphereName)
     return(sphereName)
 
-def addPhysVol(obj, xmlVol, volName) :
+def addPhysVol(obj, vol, volName) :
     print("Add PhysVol to Vol") 
-    pvol = ET.SubElement(xmlVol,'physvol')
+    pvol = ET.SubElement(vol,'physvol')
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
+    
+def addPositionReferenceSolid(obj, solid) :
+    # not also function to add without reference
+    global POScount, ROTcount
 
-def exportPosition(name, xml, pos) :
-    global POScount
+    print("Add pos and rot references to PhysVol")
+    pos = obj.Placement.Base
     print(pos)
     x = pos[0]
     y = pos[1]
     z = pos[2]
+    name = obj.Name
     posName = 'PS'+name+str(POScount)
     POScount += 1
-    posxml = ET.SubElement(define,'position',{'name' : name, \
-                   'unit': 'mm'})
-    if x != 0 :
-       posxml.attrib['x'] = str(x)
-    if y != 0 :
-       posxml.attrib['y'] = str(y)
-    if z != 0 :
-       posxml.attrib['z'] = str(z)
-    ET.SubElement(xml,'positionref',{'ref' : name})
+    ET.SubElement(define,'position',{'name' : posName, 'unit': 'mm', \
+            'x': str(x), 'y': str(y), 'z': str(z) })
+    ET.SubElement(solid,'positionref',{'ref' : posName})
+    angles = obj.Placement.Rotation.toEuler()
+    print ("Angles")
+    print (angles)
+    a0 = angles[0]
+    a1 = angles[1]
+    a2 = angles[2]
+    if a0!=0 or a1!=0 or a2!=0 :
+       rotName = 'Rot'+name+str(ROTcount)
+       ROTcount += 1
+       ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
+                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
+       ET.SubElement(solid,'rotationref',{'ref' : rotName})
 
-def exportRotation(name, xml, Rotation) :
-    global ROTcount
-    if Rotation.Angle != 0 :
-        angles = Rotation.toEuler()
-        print ("Angles")
-        print (angles)
-        a0 = angles[0]
-        a1 = angles[1]
-        a2 = angles[2]
-        if a0!=0 or a1!=0 or a2!=0 :
-            rotName = 'Rot'+name+str(ROTcount)
-            ROTcount += 1
-            rotxml = ET.SubElement(define, 'rotation', {'name': name, \
-                    'unit': 'deg'})
-            if abs(a2) != 0 :
-                rotxml.attrib['x']=str(-a2)
-            if abs(a1) != 0 :
-                rotxml.attrib['y']=str(-a1)
-            if abs(a0) != 0 :
-                rotxml.attrib['z']=str(-a0)
-            ET.SubElement(xml, 'rotationref', {'ref': name})
 
-def processPosition(obj, solid) :
-    if obj.Placement.Base == FreeCAD.Vector(0,0,0) :
-        return
-    print("Define position & references to Solid")
-    exportPosition(obj.Name, solid, obj.Placement.Base)
+def addPositionRotationPVol(obj,pvol) :
+    # This does not add references - Is it redundant
+    global POScount, ROTcount
 
-def processRotation(obj2, solid) :
-    if obj2.Placement.Rotation.Angle == 0 :
-       return
-    print('Deal with Rotation')
-    exportRotation(obj2.Name,solid,obj2.Placement.Rotation)
-
+    print("Add pos and rot to PhysVol")
+    pos = obj.Placement.Base
+    print(pos)
+    x = pos[0]
+    y = pos[1]
+    z = pos[2]
+    posName = 'PS'+obj.Name+str(POScount)
+    POScount += 1
+    ET.SubElement(pvol,'position',{'name' : posName, 'unit': 'mm', \
+            'x': str(x), 'y': str(y), 'z': str(z) })
+    angles = obj.Placement.Rotation.toEuler()
+    print ("Angles")
+    print (angles)
+    a0 = angles[0]
+    a1 = angles[1]
+    a2 = angles[2]
+    if a0!=0 or a1!=0 or a2!=0 :
+       rotName = 'Rot'+name+str(ROTcount)
+       ROTcount += 1
+       ET.SubElement(pvol, 'rotation', {'name': rotName, 'unit': 'deg', \
+                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
 
 def addVolRef(vol,solidName,material) :
     ET.SubElement(vol,'solidref',{'ref': solidName})
@@ -556,8 +595,6 @@ def addVolRef(vol,solidName,material) :
 
 def testDefaultPlacement(obj) :
     #print(dir(obj.Placement.Rotation))
-    print('Test Default Placement : '+obj.Name)
-    print('No longer used ??')
     print(obj.Placement.Base)
     print(obj.Placement.Rotation.Angle)
     if obj.Placement.Base == FreeCAD.Vector(0,0,0) and \
@@ -566,124 +603,122 @@ def testDefaultPlacement(obj) :
     else :
        return False
 
-def processGDMLBoxObject(obj, vol, flag) :
+# Should no longer be used
+def postProcessObject(obj, vol, solidName ) :
+    material = obj.material
+    addVolRef(vol,solidName,material)
+    print(testDefaultPlacement(obj))
+    if testDefaultPlacement(obj) == False :
+       print("Not Default placement")
+       volName = 'PV-'+obj.Name
+       addVol(volName, solidName, material)
+       pvol = addPhysVol(obj,vol,volname)
+       addPositionRotationPVol(obj,pvol)    
+
+
+def processGDMLBoxObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     boxName = 'Box' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'box',{'name': boxName, \
-                          'x': str(obj.x),  \
-                          'y': str(obj.y),  \
-                          'z': str(obj.z),  \
-                          'lunit' : 'mm'})
+    ET.SubElement(solids, 'box',{'name': boxName, \
+                          'x': str(obj.x.Value),  \
+                          'y': str(obj.y.Value),  \
+                          'z': str(obj.z.Value),  \
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+   
     return (boxName)
 
-def processGDMLConeObject(obj, vol, flag) :
+def processGDMLConeObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     coneName = 'Cone' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'cone',{'name': coneName, \
-                          'rmin1': str(obj.rmin1),  \
-                          'rmin2': str(obj.rmin2),  \
-                          'rmax1': str(obj.rmax1),  \
-                          'rmax2': str(obj.rmax2),  \
+    ET.SubElement(solids, 'cone',{'name': coneName, \
+                          'rmin1': str(obj.rmin1.Value),  \
+                          'rmin2': str(obj.rmin2.Value),  \
+                          'rmax1': str(obj.rmax1.Value),  \
+                          'rmax2': str(obj.rmax2.Value),  \
                           'startphi': str(obj.startphi), \
                           'deltaphi': str(obj.deltaphi), \
-                          'aunit': obj.aunit, \
-                          'z': str(obj.z),  \
-                          'lunit' : 'mm'})
+                          'aunit': obj.aunit,
+                          'z': str(obj.z.Value),  \
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
     return(coneName)
 
-def processGDMLCutTubeObject(obj, vol, flag) :
-    # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    cTubeName = 'CutTube' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'cutTube',{'name': cTubeName, \
-                          'rmin': str(obj.rmin),  \
-                          'rmax': str(obj.rmax),  \
-                          'startphi': str(obj.startphi), \
-                          'deltaphi': str(obj.deltaphi), \
-                          'aunit': obj.aunit, \
-                          'z': str(obj.z),  \
-                          'highX':str(obj.highX), \
-                          'highY':str(obj.highY), \
-                          'highZ':str(obj.highZ), \
-                          'lowX':str(obj.lowX), \
-                          'lowY':str(obj.lowY), \
-                          'lowZ':str(obj.lowZ), \
-                          'lunit' : 'mm'})
-    return(cTubeName)
-
-def processGDMLEllipsoidObject(obj, vol, flag) :
+def processGDMLEllipsoidObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     ellipsoidName = 'Ellipsoid' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'ellipsoid',{'name': ellipsoidName, \
-                          'ax': str(obj.ax),  \
-                          'by': str(obj.by),  \
-                          'cz': str(obj.cz),  \
-                          'zcut1': str(obj.zcut1),  \
-                          'zcut2': str(obj.zcut2),  \
-                          'lunit' : 'mm'})
+    ET.SubElement(solids, 'ellipsoid',{'name': ellipsoidName, \
+                          'ax': str(obj.ax.Value),  \
+                          'by': str(obj.by.Value),  \
+                          'cz': str(obj.cz.Value),  \
+                          'zcut1': str(obj.zcut1.Value),  \
+                          'zcut2': str(obj.zcut2.Value),  \
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
     return(ellipsoidName)
 
-def processGDMLElTubeObject(obj, vol, flag) :
+def processGDMLElTubeObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     eltubeName = 'Cone' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'eltube',{'name': eltubeName, \
-                          'dx': str(obj.dx),  \
-                          'dy': str(obj.dy),  \
-                          'dz': str(obj.dz),  \
-                          'lunit' : 'mm'})
+    ET.SubElement(solids, 'eltube',{'name': eltubeName, \
+                          'dx': str(obj.dx.Value),  \
+                          'dy': str(obj.dy.Value),  \
+                          'dz': str(obj.dz.Value),  \
+                           'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
     return(eltubeName)
 
-def processGDMLPolyconeObject(obj, vol, flag) :
+def processGDMLPolyconeObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
     polyconeName = obj.Name
-    if flag == True :
-        cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
+    ET.SubElement(solids, 'genericPolycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
                           'deltaphi': str(obj.deltaphi),  \
                           'aunit': obj.aunit,  \
-                          'lunit' : 'mm'})
-        print(obj.OutList)
-        for zplane in obj.OutList :
-            ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+    print(obj.OutList)
+    for zplane in obj.OutList :
+        ET.SubElement(solids, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
 
     return(polyconeName)
 
-def processGDMLQuadObject(obj, flag) :
+def processGDMLQuadObject(obj, addVolsFlag) :
     print("GDMLQuadrangular")
-    if flag == True :
-        ET.SubElement(solids, 'quadrangular',{'vertex1': obj.v1, \
+    ET.SubElement(solids, 'quadrangular',{'vertex1': obj.v1, \
             'vertex2': obj.v2, 'vertex3': obj.v3, 'vertex4': obj.v4, \
             'type': obj.vtype})
     
 
-def processGDMLSphereObject(obj, vol, flag) :
+def processGDMLSphereObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    sphereName = 'Sphere' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'sphere',{'name': sphereName, \
-                           'rmin': str(obj.rmin),  \
-                           'rmax': str(obj.rmax),  \
+    #sphereName = 'Sphere' + obj.Name
+   
+    sphereName = obj.Name.replace('GDMLSphere_', '')
+    sphereName = sphereName.replace('GDMLSphere', '')
+    # modifs
+    '''
+    ET.SubElement(solids, 'sphere',{'name': sphereName, \
+                           'rmin': str(obj.rmin.Value),  \
+                           'rmax': str(obj.rmax.Value),  \
                            'startphi': str(obj.startphi), \
                            'deltaphi': str(obj.deltaphi), \
                            'aunit': obj.aunit,
-                           'lunit' : 'mm'})
+                          'lunit' : obj.lunit})
+    # modif 'mm' -> obj.lunit
+    '''
     return(sphereName)
 
-def processGDMLTessellatedObject(obj, vol, flag) :
+def processGDMLTessellatedObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     # Need to output unique define positions
@@ -693,102 +728,95 @@ def processGDMLTessellatedObject(obj, vol, flag) :
     #            'x':items.x , 'y':items.y, 'z':items.z,'unit':'mm')
 
     tessName = 'Tess' + obj.Name
-    if flag == True :
-        tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
-        print(len(obj.OutList))
-        for items in obj.OutList :
-            if hasattr(items,'v4' ) :
-                ET.SubElement(tess,'quadrangular',{'vertex1':'v1', \
+    ET.SubElement(solids, 'tessellated',{'name': tessName})
+    print(len(obj.OutList))
+    for items in obj.OutList :
+        if hasattr(items,'v4' ) :
+            ET.SubElement(solids,'quadrangular',{'vertex1':'v1', \
                     'vertex2':'v2', 'vertex3':'v3', 'vertex4':'v4',
                                  'type':'ABSOLUTE'})
-            else :    
-                ET.SubElement(tess,'triangular',{'vertex1':'v1', 'vertex2':'v2', \
+        else :    
+            ET.SubElement(solids,'triangular',{'vertex1':'v1', 'vertex2':'v2', \
                                  'vertex3':'v3','type':'ABSOLUTE'})
 
     return(tessName)
 
 
-def processGDMLTrapObject(obj, vol, flag) :
+def processGDMLTrapObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     trapName = 'Trap' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'trap',{'name': trapName, \
-                           'z': str(obj.z),  \
+    ET.SubElement(solids, 'trap',{'name': trapName, \
+                           'z': str(obj.z.Value),  \
                            'theta': str(obj.theta),  \
                            'phi': str(obj.phi), \
-                           'x1': str(obj.x1),  \
-                           'x2': str(obj.x2),  \
-                           'x3': str(obj.x3),  \
-                           'x4': str(obj.x4),  \
-                           'y1': str(obj.y1),  \
-                           'y2': str(obj.y2),  \
+                           'x1': str(obj.x1.Value),  \
+                           'x2': str(obj.x2.Value),  \
+                           'x3': str(obj.x3.Value),  \
+                           'x4': str(obj.x4.Value),  \
+                           'y1': str(obj.y1.Value),  \
+                           'y2': str(obj.y2.Value),  \
                            'alpha1': str(obj.alpha), \
                            'alpha2': str(obj.alpha), \
                            'aunit': obj.aunit, \
                            'lunit': obj.lunit})
     return(trapName)
 
-def processGDMLTrdObject(obj, vol, flag) :
+def processGDMLTrdObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     trdName = 'Trd' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'trd',{'name': trdName, \
-                           'z': str(obj.z),  \
-                           'x1': str(obj.x1),  \
-                           'x2': str(obj.x2),  \
-                           'y1': str(obj.y1),  \
-                           'y2': str(obj.y2),  \
+    ET.SubElement(solids, 'trd',{'name': trdName, \
+                           'z': str(obj.z.Value),  \
+                           'x1': str(obj.x1.Value),  \
+                           'x2': str(obj.x2.Value),  \
+                           'y1': str(obj.y1.Value),  \
+                           'y2': str(obj.y2.Value),  \
                            'lunit': obj.lunit})
     return(trdName)
 
-def processGDMLTriangle(obj, flag) :
-    if flag == True :
-        print("Process GDML Triangle")
-        ET.SubElement(solids, 'triangular',{'vertex1': obj.v1, \
+def processGDMLTriangle(obj, addVolsFlag) :
+    print("Process GDML Triangle")
+    ET.SubElement(solids, 'triangular',{'vertex1': obj.v1, \
             'vertex2': obj.v2, 'vertex3': obj.v3,  \
             'type': obj.vtype})
 
-def processGDMLTubeObject(obj, vol, flag) :
+def processGDMLTubeObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     tubeName = 'Tube' + obj.Name
-    if flag == True :
-        ET.SubElement(solids, 'tube',{'name': tubeName, \
-                           'rmin': str(obj.rmin),  \
-                           'rmax': str(obj.rmax),  \
+    ET.SubElement(solids, 'tube',{'name': tubeName, \
+                           'rmin': str(obj.rmin.Value),  \
+                           'rmax': str(obj.rmax.Value),  \
                            'startphi': str(obj.startphi), \
                            'deltaphi': str(obj.deltaphi), \
                            'aunit': obj.aunit,
-                           'z': str(obj.z),  \
+                           'z': str(obj.z.Value),  \
                            'lunit' : 'mm'})
     return(tubeName)
 
-def processGDMLXtruObject(obj, vol, flag) :
+def processGDMLXtruObject(obj, vol, addVolsFlag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #tubeName = 'Tube' + obj.Name
     xtruName = obj.Name
-    if flag == True :
-        xtru = ET.SubElement(solids, 'xtru',{'name': xtruName, \
+    ET.SubElement(solids, 'xtru',{'name': xtruName, \
                            'lunit' : 'mm'})
-        for items in obj.OutList :
-            if items.Type == 'twoDimVertex' :
-                ET.SubElement(xtru, 'twoDimVertex',{'x': str(items.x), \
+    for items in obj.OutList :
+        if items.Type == 'twoDimVertex' :
+           ET.SubElement(solids, 'twoDimVertex',{'x': str(items.x), \
                                    'y': str(items.y)})
-            if items.Type == 'section' :
-                ET.SubElement(xtru, 'section',{'zOrder': str(items.zOrder), \
+        if items.Type == 'section' :
+           ET.SubElement(solids, 'section',{'zOrder': str(items.zOrder), \
                                   'zPosition': str(items.zPosition), \
                                   'xOffset' : str(items.xOffset), \
                                   'yOffset' : str(items.yOffset), \
                                   'scalingFactor' : str(items.scalingFactor)})
     return(xtruName)
 
-def processGDML2dVertex(obj, flag) :
-    if flag == True :
-        print("Process 2d Vertex")
-        ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
+def processGDML2dVertex(obj, addVolsFlag) :
+    print("Process 2d Vertex")
+    ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
 
 
 # Need to add position of object2 relative to object1
@@ -809,24 +837,19 @@ def addBooleanPositionAndRotation(element,obj1,obj2):
     defineCnt += 1
     ET.SubElement(element,'positionref', {'ref': positionName})
 
+def processGroup(obj, vol, newvol, pName, addVolsFlag) :
+    print("Group Num : "+str(len(obj.Group)))
+    for grp in obj.Group :
+        processObject(grp, vol, newVol, pName, addVolsFlag)
+
 def processElement(obj, item): # maybe part of material or element (common code)
     if hasattr(obj,'Z') :
        #print(dir(obj))
        item.set('Z',str(obj.Z)) 
 
-    if hasattr(obj,'N') :
-       #print(dir(obj))
-       item.set('N',str(obj.N)) 
-
-    if hasattr(obj,'formula') :
-       #print(dir(obj))
-       item.set('formula',str(obj.formula)) 
-
-    if hasattr(obj,'atom_unit') or hasattr(obj,'atom_value') :
+    if hasattr(obj,'atom_unit') :
        atom = ET.SubElement(item,'atom') 
-    
-       if hasattr(obj,'atom_unit') :
-          atom.set('unit',str(obj.atom_unit)) 
+       atom.set('unit',str(obj.atom_unit)) 
             
        if hasattr(obj,'atom_value') :
           atom.set('value',str(obj.atom_value)) 
@@ -885,13 +908,9 @@ def processMaterialObject(obj) :
              # process common options material / element
              processElement(obj, item)
 
-          if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-             D = ET.SubElement(item,'D')
-             if hasattr(obj,'Dunit') :
-                D.set('unit',str(obj.Dunit))
-             
-             if hasattr(obj,'Dvalue') :
-                D.set('value',str(obj.Dvalue))
+          if hasattr(obj,'Dunit') :
+             ET.SubElement(item,'D',{'unit': obj.Dunit, \
+                                      'value': str(obj.Dvalue)})
 
           if hasattr(obj,'Tunit') :
              ET.SubElement(item,'T',{'unit': obj.Tunit, \
@@ -906,19 +925,14 @@ def processMaterialObject(obj) :
 
           if isinstance(obj.Proxy,GDMLfraction) :
 
-             print("GDML fraction :" + obj.Name)
-             # need to strip number making it unique
+             print("GDML fraction")
              ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                     'ref': obj.Name[:-3]})
-
+                                          'ref': obj.Name})
              #return True
              break
 
           if isinstance(obj.Proxy,GDMLcomposite) :
              print("GDML Composite")
-             ET.SubElement(item,'composite',{'n': str(obj.n), \
-             #        'ref': obj.Name[:obj.Name.index('_')]})
-             'ref': obj.Name[:-3]})
              #return True
              break
 
@@ -951,17 +965,14 @@ def processMaterialObject(obj) :
        break
 
 def processGDMLsolid(obj, vol, addVolsFlag) :
-    # flag needed for boolean otherwise parse twice
-    print(obj.Proxy.Type)
+  # flag needed for boolean otherwise parse twice
+  # modif add following line
+
+  if hasattr(obj.Proxy, 'Type'):
     while switch(obj.Proxy.Type) :
        if case("GDMLBox") :
           print("      GDMLBox") 
           return(processGDMLBoxObject(obj, vol, addVolsFlag))
-          break
-
-       if case("GDMLcutTube") :
-          print("      GDMLcutTube") 
-          return(processGDMLCutTubeObject(obj, vol, addVolsFlag))
           break
 
        if case("GDMLEllipsoid") :
@@ -1018,143 +1029,333 @@ def processGDMLsolid(obj, vol, addVolsFlag) :
        print("Not yet Handled")
        break  
 
+
 import collections
 from itertools import islice
+
 
 def consume(iterator) :
     next(islice(iterator,2,2), None)
 
-def getXmlVolume(volObj) :
-    if volObj == None :
-       return None 
-    xmlvol = structure.find("volume[@name='%s']" % volObj.Name)
-    if xmlvol == None :
-       print(volObj.Name+' Not Found') 
-    return xmlvol
+## modif add begin
+def giveListeSolidListePhysVolInGroupList(listGroup):
+    listeSolidOut=[]
+    listPhysVolOut=[]
+    for elemInGroup in listGroup:
+       if hasattr(elemInGroup, 'material'):
+           listeSolidOut.append(elemInGroup)
+       elif hasattr(elemInGroup, 'Group') :
+           toAdd=False
+           for elemInGroupB in elemInGroup.Group:
+               if hasattr(elemInGroupB, 'material'):toAdd=True
+           if toAdd: listPhysVolOut.append(elemInGroup)
+    return listeSolidOut, listPhysVolOut
 
-def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
-    # obj       - Object
-    # boolFlg   - True once boolean found in volume
-    # xmlVol    - xmlVol
-    # xmlParent - xmlParent Volume
-    # parenName - Parent Name
-    # addVolsFlag - Add physical Vol
+## modif add end
+
+def processObject(obj, vol, newVol, pName, addVolsFlag) :
     # return solid or boolean reference name or None
     # addVolsFlag = True then create Logical & Physical Volumes
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     print("Process Object : "+obj.Name)
+    FreeCAD.Console.PrintMessage("\n\nProcess Object : "+obj.Name +" : "+obj.TypeId + "\n")
+    
     while switch(obj.TypeId) :
-
-      # App::Part dealt with by processVol
-      # but need to avoid dropping through to Tessellate
-      #
       if case("App::Part") :
-          return
-      #   xmlParent = xmlVol
-      #   pName = obj.Name
-      #   xmlVol = exportVol(obj, xmlParent, pName)
-      #if hasattr(obj,'OutList') :
-      #   name = obj.Label
-      #   vol = newVol
-      #   newVOL = ET.SubElement(structure,'volume',{'name':name}) 
-      #   global lst
-      #   lst = iter(obj.OutList)
-      #   for sub in lst :
-      #       print(sub.Name)
-      #       ret = processObject(sub, vol, newVOL, name, addVolsFlag) 
-      #       # once first solid is processed set flag to add PV
-      #       if ret != None :
-      #          print("First Solid : "+ret)
-      #          addVolsFlag = True 
-      #return    
-      #   break
+         if hasattr(obj,'OutList') :
+            name = obj.Label
+            vol = newVol
+            # modifs
+
+            FreeCAD.Console.PrintMessage("-> Process Object : "+obj.Name + "\n")
+            
+            
+
+            if hasattr(obj, 'Group') :
+               [thisListSolidOut,  thisListPhysVol]= giveListeSolidListePhysVolInGroupList(obj.Group)
+               newVOL = ET.SubElement(structure,'volume',{'name':name})
+               
+               if(len(thisListSolidOut)>0):
+                   elemInGroup = thisListSolidOut[0]
+                   FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has material attribut "+str(elemInGroup.material)+" \n")
+                   if hasattr(elemInGroup, 'lunit'):
+                       FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has lunit attribut \n")
+                       thisx=''
+                       thisy=''
+                       thisz=''
+                       thisrmin=''
+                       thisrmax=''
+                       thisdeltaphi=''
+                       thisdeltatheta=''
+                       thisaunit=''
+                       if hasattr(elemInGroup, 'x'): thisx = float(convertionlisteCharToLunit(elemInGroup.x, elemInGroup.lunit))
+                       if hasattr(elemInGroup, 'y'): thisy = float(convertionlisteCharToLunit(elemInGroup.y, elemInGroup.lunit))
+                       if hasattr(elemInGroup, 'z'): thisz = float(convertionlisteCharToLunit(elemInGroup.z, elemInGroup.lunit))
+
+                       if hasattr(elemInGroup, 'rmin'): thisrmin = float(convertionlisteCharToLunit(elemInGroup.rmin, elemInGroup.lunit))
+                       if hasattr(elemInGroup, 'rmax'): thisrmax = float(convertionlisteCharToLunit(elemInGroup.rmax, elemInGroup.lunit))
+
+                       if hasattr(elemInGroup, 'deltaphi'): thisdeltaphi = (elemInGroup.deltaphi)
+                       if hasattr(elemInGroup, 'deltatheta'): thisdeltatheta = (elemInGroup.deltatheta)
+                       if hasattr(elemInGroup, 'aunit'): thisaunit = (elemInGroup.aunit)
+
+                      
+
+                       if(( thisx != "") and( thisy != "") and( thisz != "")):
+                           nameThisSolid = elemInGroup.Label.replace('GDMLBox_', '')
+                           nameThisSolid = nameThisSolid.replace('GDMLBox', '')
+                           newSTRUC = ET.SubElement(solids,'box',
+                                           {'name':nameThisSolid, 'lunit':elemInGroup.lunit, 
+                                            'x':str(thisx), 'y':str(thisy), 'z':str(thisz)})
+                           ET.SubElement(newVOL,'solidref',{'ref': nameThisSolid})
+                           ET.SubElement(newVOL,'materialref',{'ref': elemInGroup.material})
+                       elif( (thisrmin != "") and (thisrmax != "") and (thisdeltaphi != "")and (thisdeltatheta != "") and (thisaunit != ""  )):
+                           nameThisSolid = elemInGroup.Label.replace('GDMLSphere_', '')
+                           nameThisSolid = nameThisSolid.replace('GDMLSphere', '')
+                           newSTRUC = ET.SubElement(solids,'sphere',
+                                           {'name':nameThisSolid, 
+                                            'rmin':str(thisrmin), 'rmax':str(thisrmax), 'lunit':elemInGroup.lunit,
+                                            'deltaphi':str(thisdeltaphi), 'deltatheta':str(thisdeltatheta), 
+                                             'aunit':str(thisaunit)})
+                           
+                           ET.SubElement(newVOL,'solidref',{'ref': nameThisSolid})
+                           ET.SubElement(newVOL,'materialref',{'ref': elemInGroup.material})
+
+
+
+                   if(len(thisListPhysVol)>0):
+                       for elementPhysVol in thisListPhysVol: 
+                           if hasattr(elementPhysVol, 'Group') :
+                               [thisListSolidOut2,  thisListPhysVol2]= giveListeSolidListePhysVolInGroupList(elementPhysVol.Group)
+                               if(len(thisListSolidOut2)>0):
+                                   physvol = ET.SubElement(newVOL,'physvol',{'name': name +'-'+elementPhysVol.Label})
+                                   #nameThisSolid = thisListSolidOut[0].Label.replace('GDMLBox_', '')
+                                   ET.SubElement(physvol,'volumeref',{'ref':elementPhysVol.Label})
+
+                                   #deltaX_mm = thisListSolidOut2[0].Placement.Base[0] - thisListSolidOut[0].Placement.Base[0]
+                                   #deltaY_mm = thisListSolidOut2[0].Placement.Base[1] - thisListSolidOut[0].Placement.Base[1]
+                                   #deltaZ_mm = thisListSolidOut2[0].Placement.Base[2] - thisListSolidOut[0].Placement.Base[2]
+
+
+                                   deltaX_mm = thisListSolidOut2[0].Placement.Base[0] 
+                                   deltaY_mm = thisListSolidOut2[0].Placement.Base[1] 
+                                   deltaZ_mm = thisListSolidOut2[0].Placement.Base[2] 
+
+
+                                   ET.SubElement(physvol,'position',
+                                       {'name': 'Pos-'+name +'-'+elementPhysVol.Label,
+                                         'unit':'mm',
+                                          'x':str(deltaX_mm), 'y':str(deltaY_mm), 'z':str(deltaZ_mm)})
+
+
+               '''
+
+               indiceTmp=0
+
+               for elemInGroup in obj.Group:
+                   indiceTmp=indiceTmp+1
+                   FreeCAD.Console.PrintMessage(str(indiceTmp) + " " +str(len(obj.Group)) +"\n")
+
+                   
+                    
+
+                   elif hasattr(elemInGroup, 'Group'):
+                      for elemInGroupSub in elemInGroup.Group: 
+                         if hasattr(elemInGroupSub, 'material'):
+                           FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has Placement attribut \n")
+                           FreeCAD.Console.PrintMessage("-> elemInGroup "+str(elemInGroupSub.Placement.Base)+" \n")    
+
+                           solidName = elemInGroupSub.Label.replace('GDMLBox_', '')
+                           physvol = ET.SubElement(newVOL,'physvol',{'ref': name})
+
+                           ET.SubElement(physvol,'volumeref',{'ref': solidName})
+                           deltaX_mm = ((elemInGroupSub.Placement.Base[0]))
+                           deltaY_mm = ((elemInGroupSub.Placement.Base[1]))
+                           deltaZ_mm = ((elemInGroupSub.Placement.Base[2]))
+
+
+                           FreeCAD.Console.PrintMessage("Placement")
+                           FreeCAD.Console.PrintMessage("Pos   : "+str(elemInGroupSub.Placement.Base))
+                           FreeCAD.Console.PrintMessage("axis  : "+str(elemInGroupSub.Placement.Rotation.Axis))
+                           FreeCAD.Console.PrintMessage("angle : "+str(elemInGroupSub.Placement.Rotation.Angle))
+
+                           ET.SubElement(physvol,'position',
+                                       {'name': 'Pos-'+solidName,
+                                         'unit':'mm',
+                                          'x':str(deltaX_mm), 'y':str(deltaY_mm), 'z':str(deltaZ_mm)})
+                   
+               '''
+
+
+
+               '''
+               indiceTmp=0
+               newVOL = ET.SubElement(structure,'volume',{'name':name})
+               for elemInGroup in obj.Group:
+                   indiceTmp=indiceTmp+1
+                   FreeCAD.Console.PrintMessage(str(indiceTmp) + " " +str(len(obj.Group)) +"\n")
+
+                   
+                   if hasattr(elemInGroup, 'material'):
+                       thisMaterial = elemInGroup.material
+                       FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has material attribut "+str(elemInGroup.material)+" \n")
+
+                       if hasattr(elemInGroup, 'lunit'):
+                           FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has lunit attribut \n")
+                           thislunit = elemInGroup.lunit
+                           coeffthislunit = float(getMult(thislunit))
+                           if hasattr(elemInGroup, 'x'):
+                               FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has x attribut \n")
+                               thisx = float(convertionlisteCharToLunit(elemInGroup.x, thislunit))
+                           if hasattr(elemInGroup, 'y'):
+                               FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has y attribut \n")
+                               thisy = float(convertionlisteCharToLunit(elemInGroup.y, thislunit))
+                           if hasattr(elemInGroup, 'z'):
+                               FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has z attribut \n")
+                               thisz = float(convertionlisteCharToLunit(elemInGroup.z, thislunit))
+
+
+                           newSTRUC = ET.SubElement(solids,'box',
+                                           {'name':name, 'lunit':thislunit, 
+                                            'x':str(thisx), 'y':str(thisy), 'z':str(thisz)})
+                           ET.SubElement(newVOL,'solidref',{'ref': name})
+                           ET.SubElement(newVOL,'materialref',{'ref': thisMaterial}) 
+
+                   elif hasattr(elemInGroup, 'Group'):
+                      for elemInGroupSub in elemInGroup.Group: 
+                         if hasattr(elemInGroupSub, 'material'):
+                           FreeCAD.Console.PrintMessage("-> elemInGroup in obj.Group has Placement attribut \n")
+                           FreeCAD.Console.PrintMessage("-> elemInGroup "+str(elemInGroupSub.Placement.Base)+" \n")    
+
+                           solidName = elemInGroupSub.Label.replace('GDMLBox_', '')
+                           physvol = ET.SubElement(newVOL,'physvol',{'ref': name})
+
+                           ET.SubElement(physvol,'volumeref',{'ref': solidName})
+                           deltaX_mm = ((elemInGroupSub.Placement.Base[0]))
+                           deltaY_mm = ((elemInGroupSub.Placement.Base[1]))
+                           deltaZ_mm = ((elemInGroupSub.Placement.Base[2]))
+
+
+                           FreeCAD.Console.PrintMessage("Placement")
+                           FreeCAD.Console.PrintMessage("Pos   : "+str(elemInGroupSub.Placement.Base))
+                           FreeCAD.Console.PrintMessage("axis  : "+str(elemInGroupSub.Placement.Rotation.Axis))
+                           FreeCAD.Console.PrintMessage("angle : "+str(elemInGroupSub.Placement.Rotation.Angle))
+
+                           ET.SubElement(physvol,'position',
+                                       {'name': 'Pos-'+solidName,
+                                         'unit':'mm',
+                                          'x':str(deltaX_mm), 'y':str(deltaY_mm), 'z':str(deltaZ_mm)})
+
+               '''
+
+
+            # end modifs
+            global lst
+            lst = iter(obj.OutList)
+            for sub in lst :
+                print(sub.Name)
+                FreeCAD.Console.PrintMessage("sub.Name " + sub.Name)
+                ret = processObject(sub, vol, newVOL, name, addVolsFlag) 
+                # once first solid is processed set flag to add PV
+                if ret != None :
+                   print("First Solid : "+ret)
+                   addVolsFlag = True 
+         return    
+         break
          
       if case("App::Origin") :
-         #print("App Origin")
-         return boolFlg
+         FreeCAD.Console.PrintMessage("App::Origin  " + "\n")
+         print("App Origin")
+         return
          break
 
       if case("App::GeoFeature") :
-         #print("App GeoFeature")
+         FreeCAD.Console.PrintMessage("App GeoFeature  " + "\n")
+         print("App GeoFeature")
          return
          break
 
       if case("App::Line") :
-         #print("App Line")
+         FreeCAD.Console.PrintMessage("App Line  " + "\n")
+         print("App Line")
          return
          break
 
       if case("App::Plane") :
-         #print("App Plane")
+         FreeCAD.Console.PrintMessage("App Plane  " + "\n")
+         print("App Plane")
          return
          break
 
       if case("Part::Cut") :
          # Maybe Booleans could be grouped with GDML solids 
-         #print("   Cut")
-         #print(boolFlg)
+         FreeCAD.Console.PrintMessage("Part::Cut  " + "\n")
+         print("   Cut")
          cutName = 'Cut'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
+         ref1 = processGDMLsolid(obj.Base, vol, False)
+         ref2 = processGDMLsolid(obj.Tool, vol, False)
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
-         ET.SubElement(subtract,'first', {'ref': ref1})
-         ET.SubElement(subtract,'second',{'ref': ref2})
-         if boolFlg == False :  # True once boolean found
-            addVolRef(xmlVol,cutName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
-         processPosition(obj,pvol)
-         processRotation(obj,pvol)
-         processPosition(obj.Tool,subtract)
-         processRotation(obj.Tool,subtract)   
-         return True, cutName
+         # modifs add .Label
+         ET.SubElement(subtract,'first', {'ref': obj.Base.Label})
+         ET.SubElement(subtract,'second',{'ref': obj.Tool.Label})
+         # end modifs
+         addVolRef(newVol,cutName,obj.Base.material)
+         pvol = addPhysVol(obj,vol,pName)
+         defaultPlacement = testDefaultPlacement(obj)
+         if defaultPlacement == False :
+            addPositionReferenceSolid(obj,subtract)    
+         consume(lst)
+         return cutName
          break
 
       if case("Part::Fuse") :
-         #print("   Union")
+         FreeCAD.Console.PrintMessage("Part::Fuse  " + "\n")
+         print("   Union")
          unionName = 'Union'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
+         ref1 = processGDMLsolid(obj.Base, vol, False)
+         ref2 = processGDMLsolid(obj.Tool, vol, False)
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         if boolFlg == False :  # True once boolean found
-            addVolRef(xmlVol,unionName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
-         processPosition(obj,pvol)
-         processRotation(obj,pvol)
-         processPosition(obj.Tool,union)
-         processRotation(obj.Tool,union)   
-         return True, unionName
+         addVolRef(newVol,unionName,obj.Base.material)
+         pvol = addPhysVol(obj,vol,pName)
+         defaultPlacement = testDefaultPlacement(obj)
+         if defaultPlacement == False :
+            addPositionReferenceSolid(obj,union)    
+         consume(lst)
+         return unionName
          break
 
       if case("Part::Common") :
-         #print("   Intersection")
+         FreeCAD.Console.PrintMessage("Part::Common  " + "\n")
+         print("   Intersection")
          intersectName = 'Intersect'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
-         intersect = ET.SubElement(solids,'intersection',{'name': \
-                     intersectName })
-         ET.SubElement(intersect,'first', {'ref': ref1})
-         ET.SubElement(intersect,'second',{'ref': ref2})
-         if boolFlg == False :  # true once boolean found
-            addVolRef(xmlVol,intersectName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
-         processPosition(obj,pvol)
-         processRotation(obj,pvol)
-         processPosition(obj.Tool,intersect)
-         processRotation(obj.Tool,intersect)
-         return True, intersectName
+         ref1 = processGDMLsolid(obj.Base, vol, False)
+         ref2 = processGDMLsolid(obj.Tool, vol, False)
+         intersect = ET.SubElement(solids,'intersection',{'name': intersectName })
+         #modifs add .Label
+         ET.SubElement(intersect,'first', {'ref': ref1.Label})
+         ET.SubElement(intersect,'second',{'ref': ref2.Label})
+         #end modifs add .Label
+         addVolRef(newVol,intersectName,obj.Base.material)
+         pvol = addPhysVol(obj,vol,pName)
+         defaultPlacement = testDefaultPlacement(obj)
+         if defaultPlacement == False :
+            addPositionReferenceSolid(obj,intersect)    
+         consume(lst)
+         return intersectName
          break
 
       if case("Part::MultiFuse") :
+         FreeCAD.Console.PrintMessage("Part::MultiFuse  " + "\n")
          print("   Multifuse") 
-         # test and fix
+
          multName = 'MultiFuse'+obj.Name
+         FreeCAD.Console.PrintMessage(multName + '\n')
          multUnion = ET.Element('multiUnion',{'name': multName })
          for subobj in obj.Shapes:
-            boolFlg, solidName = processObject(subobj, xmlVol, xmlParent, \
-                       parentName, False)
+            solidName = processObject(subobj, vol, newVol, pName, False)
             node = ET.SubElement(multUnion,'multiUnionNode', \
                {'MF-Node' : 'Node-'+solidName})
             ET.SubElement(node,'solid', {'ref': solidName})
@@ -1165,37 +1366,54 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          break
 
       if case("Part::MultiCommon") :
+         FreeCAD.Console.PrintMessage("Part::MultiCommon  " + "\n")
          print("   Multi Common / intersection")
          print("   Not available in GDML")
          exit(-3)
          break
 
       if case("Mesh::Feature") :
+         FreeCAD.Console.PrintMessage("Mesh::Feature  " + "\n")
          print("   Mesh Feature") 
-         # test and Fix
          return(processMesh(obj, obj.Mesh, obj.Name))
          break
 
       if case("Part::FeaturePython"):
-          #print("   Python Feature")
-          if hasattr(obj.Proxy, 'Type') :
-             #print(obj.Proxy.Type) 
-             solidName = processGDMLsolid(obj, xmlVol, True)
-             if boolFlg == False :      # True once boolean found
-                addVolRef(xmlVol,solidName,obj.material)
-                if addVolsFlag == True :
-                   pvol = addPhysVol(obj,xmlParent,parentName)
-                   processPosition(obj,pvol)
-                   processRotation(obj,pvol)
-                boolFlg = True 
-             return boolFlg 
-          else :
-             print("Not a GDML Feature")
-             break  
 
+           print("   Python Feature")
+           FreeCAD.Console.PrintMessage( 'Part::FeaturePython '+'\n')
+           if hasattr(obj.Proxy, 'GDMLBox') :
+               FreeCAD.Console.PrintMessage( 'Part::FeaturePython ->GDMLBox'+'\n')
+
+           elif hasattr(obj.Proxy, 'Type') :
+               print(obj.Proxy.Type) 
+               solidName = processGDMLsolid(obj, newVol, addVolsFlag)
+               material = obj.material
+               addVolRef(newVol,solidName,material)
+               print(testDefaultPlacement(obj))
+               defaultPlacement = testDefaultPlacement(obj)
+               if defaultPlacement == False or addVolsFlag == True :
+                   print("Add Physical Volume : "+pName ) 
+                   #addVol(volName, solidName, material)
+                   pvol = addPhysVol(obj,vol,pName)
+                   print("Not Default placement")
+                   if defaultPlacement == False :
+                       addPositionRotationPVol(obj,pvol)    
+               return solidName
+
+           elif hasattr(obj,'Placement') :
+               FreeCAD.Console.PrintMessage("Placement")
+               FreeCAD.Console.PrintMessage("Pos   : "+str(obj.Placement.Base))
+               FreeCAD.Console.PrintMessage("axis  : "+str(obj.Placement.Rotation.Axis))
+               FreeCAD.Console.PrintMessage("angle : "+str(obj.Placement.Rotation.Angle))
+
+           else :
+               FreeCAD.Console.PrintMessage("Not a GDML Feature")
+           break  
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
          print("App::FeaturePython") 
+         FreeCAD.Console.PrintMessage("App::FeaturePython")
          # Following not needed as handled bu Outlist on Tessellated
          #if isinstance(obj.Proxy, GDMLQuadrangular) :
          #   return(processGDMLQuadObject(obj, addVolsFlag))
@@ -1215,26 +1433,29 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          #   return(processGDMLSection(obj, addVolsFlag))
          #   break
          break  
-
+      FreeCAD.Console.PrintMessage("\n--------Now deal with objects that map to GDML solids "+str(obj)+"\n")
       #
       #  Now deal with objects that map to GDML solids
       #
       if case("Part::Box") :
          print("    Box")
+
+         FreeCAD.Console.PrintMessage("\n---------------> Part::Box str : "+str(obj)+"\n")
+
          return(processBoxObject(obj, addVolsFlag))
          break
 
-      if case("Part::Cylinder") :
+      elif case("Part::Cylinder") :
          print("    Cylinder")
          return(processCylinderObject(obj, addVolsFlag))
          break
 
-      if case("Part::Cone") :
+      elif case("Part::Cone") :
          print("    Cone")
          return(processConeObject(obj, addVolsFlag))
          break
 
-      if case("Part::Sphere") :
+      elif case("Part::Sphere") :
          print("    Sphere")
          return(processSphereObject(obj, addVolsFlag))
          break
@@ -1252,72 +1473,43 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
             return(processObjectShape(obj))
       break
 
-def insertXMLvol(name):
-    # Insert at beginning for sub volumes
-    elem =  ET.Element('volume',{'name': name})
-    structure.insert(0,elem)
-    return elem
+def createWorldVol():
+    print("Need to create World Volume")
+    bbox = FreeCAD.BoundBox()
+    ET.SubElement(setup,'world', {'ref':name})
+    return ET.SubElement(structure,'volume',{'name':name}) 
 
-def createXMLvol(name):
-    return ET.SubElement(structure,'volume',{'name': name})
+def processWorldVol(first) :
+    # Check If Pure GDML workbench 
+    # return worldVol xml element
+    global setup, structure
+    #print(dir(first)
+    if hasattr(first,'OutList') :
+       objList = first.OutList
+       FreeCAD.Console.PrintMessage("Length of List : "+str(len(objList)) + '\n')
+       if first.TypeId == "App::Part" :
+          FreeCAD.Console.PrintMessage("Found App Part")
+          name = first.Name
+          FreeCAD.Console.PrintMessage(name)
+          # Also allow for App::Origin 
+          FreeCAD.Console.PrintMessage(objList[1].TypeId)
 
-def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
-    print('processVol : '+vol.Name)
-    # xmlVol could be created dummy volume
+          if isinstance(objList[1].Proxy,GDMLcommon) : 
+          #if isinstance(objList[1].Proxy,GDMLBox) or \
+          #   isinstance(objList[1].Proxy,GDMLTube) :
+             FreeCAD.Console.PrintMessage("Adjust Setup")
+             ET.SubElement(setup,'world', {'ref':name})
+             return(structure)
 
-    #print('Number of Objects : '+str(len(vol.OutList)))
-    boolflg = False
-    for obj in vol.OutList :
-        if obj.TypeId == 'App::Part' :
-            subXMLvol = insertXMLvol(obj.Name)
-            if hasattr(obj,'OutList') :
-                #print('Process '+obj.Name)
-                processVols(obj, subXMLvol, xmlVol, obj.Name, True)
-
-        boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
-                      parentName, addVolsFlag)
-
-def createDummyVol() :
-    print("Need to create Dummy Volume and World Box ")
+    # drop through if not handled
+    FreeCAD.Console.PrintMessage("Need to create World Volume")
     bbox = FreeCAD.BoundBox()
     name = defineWorldBox(bbox)
-    dummyVol = ET.SubElement(structure,'volume',{'name': 'Dummy'}) 
-    ET.SubElement(dummyVol, 'solidref',{'ref': name})
-    print("Need to FIX !!!! To use defined gas")
-    ET.SubElement(dummyVol, 'materialref',{'ref': 'G4_Galactic'})
-    return dummyVol
-
-def checkGDMLstructure(objList) :
-    # Should be 
-    # App::Origin
-    # GDML Object
-    # World Vol - App::Part
-    if len(objList) != 3 :
-        return False
-    if objList[0].TypeId != 'App::Origin' \
-        or objList[2].TypeId != 'App::Part' :
-            return False
-    return True
-
-def locateXMLvol(vol) :
-    global structure
-    xmlVol = structure.find("volume[@name='%s']" % vol.Name)
-    return xmlVol
-
-def exportWorldVol(vol) :
-
-    print('Export World Process Volume')
-    ET.SubElement(setup,'world',{'ref':vol.Name}) 
-
-    if hasattr(vol,'OutList') :
-        if checkGDMLstructure(vol.OutList) == False :
-            xmlParent = createXMLvol(vol.Name) 
-            xmlVol = createDummyVol()
-        else :
-            xmlParent = None
-            xmlVol = createXMLvol(vol.Name)
-
-        processVols(vol, xmlVol, xmlParent, vol.Name, False)
+    ET.SubElement(setup,'world', {'ref':name})
+    worldVol = ET.SubElement(structure,'volume',{'name': name}) 
+    ET.SubElement(worldVol, 'solidref',{'ref': name})
+    FreeCAD.Console.PrintMessage("Need to FIX !!!! To use defined gas")
+    ET.SubElement('worldVOL', 'materialref',{'ref': 'G4_Galactic'})
 
 def export(exportList,filename) :
     "called when FreeCAD exports a file"
@@ -1326,25 +1518,26 @@ def export(exportList,filename) :
     if first.TypeId == "App::Part" :
        # GDML Export
        print("\nStart GDML Export 0.1")
-
+       FreeCAD.Console.PrintMessage("\nStart GDML Export 0.1")
        GDMLstructure()
        zOrder = 1
        processMaterials()
-       exportWorldVol(first)
-       #vol = processVolumes(exportList[0])
-       #print(vol)
-       #for obj in exportList[1:] :
-       #    #reportObject(obj)
-       #    processObject(obj, vol, None, None, False)
+
+       vol = processWorldVol(exportList[0])
+       for obj in exportList :
+           #reportObject(obj)
+           processObject(obj, vol, None, None, False)
 
        # format & write GDML file 
        indent(gdml)
-       print("Write to GDML file")
-       #ET.ElementTree(gdml).write(filename, 'utf-8', True)
-       ET.ElementTree(gdml).write(filename,xml_declaration=True)
-       #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
-       print("GDML file written")
+       FreeCAD.Console.PrintMessage("Write to GDML file")
+       # modifs
+       ET.ElementTree(gdml).write(filename, 'utf-8', True)
+       #ET.ElementTree(gdml).write(filename)
+       FreeCAD.Console.PrintMessage("GDML file written")
     
     else :
-       print("Need to select World Part")
+       FreeCAD.Console.PrintMessage("Need to select World Part") 
+
+
 

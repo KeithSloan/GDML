@@ -94,97 +94,48 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
-def getDegrees(flag, r) :
-    import math
-    if flag == True :
-       return r * 180/math.pi
-    else :
-       return r
-
-def getRadians(flag,r) :
-    import math
-    if flag == True :
-        return r
-    else :
-        return r * math.pi / 180
 
 def processPlacement(base,rot) :
-    #setTrace(True)
-    #trace('processPlacement')
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
-    # set rotation matrix
-    noRotate = FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0))
-    if rot == None :
-        return noRotate
-    
-    else :
+    # set angle & axis in case not set by rotation attribute
+    #axis = FreeCAD.Vector(1,0,0)
+    #angle = 0
+    Xangle = Yangle = Zangle = 0.0
+    if rot != None :
         trace("Rotation : ")
         trace(rot.attrib)
-        x = y = z = 0
-
-        if 'name' in rot.attrib :
-            if rot.attrib['name'] == 'identity' :
-                trace('identity')
-                return noRotate
-
-        radianFlg = True
-        if 'unit' in rot.attrib :
-            #print(rot.attrib['unit'][:3])
-            if rot.attrib['unit'][:3] == 'deg' :
-                radianFlg = False
-
-        if 'x' in rot.attrib :
-            trace('x : '+rot.attrib['x'])
-            #print(eval('HALFPI'))
-            trace(eval(rot.attrib['x']))
-            x = getDegrees(radianFlg,float(eval(rot.attrib['x'])))
-            trace('x deg : '+str(x))
-
         if 'y' in rot.attrib :
-            trace('y : '+rot.attrib['y'])
-            y = getDegrees(radianFlg,float(eval(rot.attrib['y'])))
-            trace('y deg : '+str(y))
-        
+            #axis = FreeCAD.Vector(0,1,0)
+            Yangle = float(eval(rot.attrib['y']))
+        if 'x' in rot.attrib :
+            #axis = FreeCAD.Vector(1,0,0)
+            Xangle = float(eval(rot.attrib['x']))
         if 'z' in rot.attrib :
-            trace('z : '+rot.attrib['z'])
-            z = getDegrees(radianFlg,float(eval(rot.attrib['z'])))
-            trace('z deg : '+str(z))
-
-        rotX = FreeCAD.Rotation(FreeCAD.Vector(1,0,0), -x)
-        rotY = FreeCAD.Rotation(FreeCAD.Vector(0,1,0), -y)
-        rotZ = FreeCAD.Rotation(FreeCAD.Vector(0,0,1), -z)
-
-        rot = rotX.multiply(rotY).multiply(rotZ)
-        #rot = rotX
-        c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
-        return FreeCAD.Placement(base, rot,  c_rot)
+            #axis = FreeCAD.Vector(0,0,1)
+            Zangle = float(eval(rot.attrib['z']))
+        rot = FreeCAD.Rotation(Zangle,Yangle,Xangle)
+    else :
+        rot = FreeCAD.Rotation(0,0,0)
+    place = FreeCAD.Placement(base,rot)
+    return place
 
 # Return a FreeCAD placement for positionref & rotateref
-def getBaseFromRefs(ptr) :
-    printverbose = True
-    trace("getBaseFromRef")
+def getPlacementFromRefs(ptr) :
+    trace("getPlacementFromRef")
     pos = define.find("position[@name='%s']" % getRef(ptr,'positionref'))
     trace(pos)
-    x = y = z = 0 
+    base = FreeCAD.Vector(0.0,0.0,0.0)
     if pos != None :
        trace(pos.attrib)
        x = getVal(pos,'x')
        trace(x)
        y = getVal(pos,'y')
        z = getVal(pos,'z')
-    return x,y,z
-
-def getRotFromRefs(ptr) :
-    printverbose = True
-    trace("getRotFromRef")
+       base = FreeCAD.Vector(x,y,z)
     rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
-    print(rot)
-    return rot
+    return(processPlacement(base,rot))
 
-def getVertex(v):
-    trace("Vertex")
-    #print(dir(v))
 
 def getVertex(v):
     trace("Vertex")
