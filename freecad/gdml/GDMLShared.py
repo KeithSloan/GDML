@@ -94,6 +94,17 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
+def getMult(unit) :
+    # Watch for unit and lunit
+    trace('unit : '+unit)
+    if unit == 'mm' or unit == None :
+       return(1)
+    elif unit == 'cm' :
+       return(100)
+    elif unit == 'm' :
+       return(1000)
+    print('unit not handled : '+lunit)
+
 def getDegrees(flag, r) :
     import math
     if flag == True :
@@ -120,7 +131,6 @@ def processPlacement(base,rot) :
     
     else :
         trace("Rotation : ")
-        print(rot.attrib)
         trace(rot.attrib)
         x = y = z = 0
 
@@ -161,48 +171,39 @@ def processPlacement(base,rot) :
         c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
         return FreeCAD.Placement(base, rot,  c_rot)
 
-# Return x,y,z for positionref 
+# Return x,y,z from position definition 
 def getDefinedPosition(name) :
-    printverbose = True
-    trace("getBaseFromRef")
+    # Position unit 
+    #setTrace(True)
+    trace("getDefinedPosition : "+name)
     pos = define.find("position[@name='%s']" % name )
-    trace(pos)
-    x = y = z = 0 
+    trace(pos.attrib)
     if pos != None :
-       trace(pos.attrib)
-       x = getVal(pos,'x')
-       trace(x)
-       y = getVal(pos,'y')
-       z = getVal(pos,'z')
-    return x,y,z
+       #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
+       if 'unit' in  pos.attrib :
+           mul = getMult(pos.get('unit'))
+           px = mul * getVal(pos,'x')
+           py = mul * getVal(pos,'y')
+           pz = mul * getVal(pos,'z')
+       else :     
+           px = getVal(pos,'x')
+           py = getVal(pos,'y')
+           pz = getVal(pos,'z')
+       return px, py, pz     
+
+    else :
+       return 0,0,0
 
 def getPosition(xmlEntity) :
-    trace('GetPosition')
-    posref = getRef(xmlEntity,"positionref")
-    if posref is not None :
-       trace("positionref : "+posref)
-       pos = define.find("position[@name='%s']" % posref )
-       if pos is not None : trace(pos.attrib)
+    # Get position via reference
+    #setTrace(True)
+    trace('GetPosition via Reference if any')
+    posName = getRef(xmlEntity,"positionref")
+    if posName is not None :
+       trace("positionref : "+posName)
+       return(getDefinedPosition(posName))
     else :
-       pos = xmlEntity.find("position")
-    if pos is not None :
-       px = getVal(pos,'x')
-       py = getVal(pos,'y')
-       pz = getVal(pos,'z')
-    else :
-       px = py = pz = 0
-    return px, py, pz
-
-#def getDefinedRotation(name) :
-#    rot = define.find("rotation[@name='%s']" % name )
-#    #if hasattr(pos,'unit')
-#    if rot is not None :
-#       px = getVal(rot,'x')
-#       py = getVal(rot,'y')
-#       pz = getVal(rot,'z')
-#       return px, py, pz
-#    else :
-#       return 0,0,0
+       return 0, 0, 0
 
 def getDefinedRotation(name) :
     # Just get defintion - used by parseMultiUnion passed to create solids
