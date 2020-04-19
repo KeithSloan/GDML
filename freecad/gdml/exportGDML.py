@@ -30,7 +30,6 @@ import FreeCAD, os, Part, math
 from FreeCAD import Vector
 from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 
-
 # modif add 
 from .GDMLObjects import getMult, convertionlisteCharToLunit
 
@@ -47,7 +46,10 @@ except ImportError:
    except ImportError:    
        FreeCAD.Console.PrintMessage('pb xml lib not found')
        sys.exit()
-# end modifs 
+# xml handling
+#import argparse
+import lxml.etree  as ET
+#from   xml.etree.ElementTree import XML 
 #################################
 
 try: import FreeCADGui
@@ -74,11 +76,7 @@ def verifNameUnique(name):
    # need to be done!!
    return True
 
-
 ### end modifs lambda
-
-
-
 
 #################################
 # Switch functions
@@ -461,9 +459,7 @@ def processBoxObject(obj, addVolsFlag) :
                            'x': str(obj.Length.Value),  \
                            'y': str(obj.Width.Value),  \
                            'z': str(obj.Height.Value),  \
-                          'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
+                           'lunit' : 'mm'})
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(obj.Length.Value / 2, \
@@ -481,9 +477,7 @@ def processCylinderObject(obj, addVolsFlag) :
                            'deltaphi': str(float(obj.Angle)), \
                            'aunit': obj.aunit,
                            'z': str(obj.Height.Value),  \
-                          'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
+                           'lunit' : 'mm'})
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(0, 0, obj.Height.Value / 2)
@@ -499,9 +493,7 @@ def processConeObject(obj, addVolsFlag) :
                            'deltaphi': str(float(obj.Angle)), \
                            'aunit': obj.aunit,
                            'z': str(obj.Height.Value),  \
-                          'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
+                           'lunit' : 'mm'})
     if addVolsFlag :
        # Adjustment for position in GDML
        delta = FreeCAD.Vector(0, 0, obj.Height.Value / 2)
@@ -529,9 +521,7 @@ def processSphereObject(obj, addVolsFlag) :
                            'deltatheta': str(float(obj.Angle2-obj.Angle1)), \
                            'deltaphi': str(float(obj.Angle3)), \
                            'aunit': obj.aunit,
-                          'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
+                           'lunit' : 'mm'})
     if addVolsFlag :
        createLVandPV(obj,obj.Name,sphereName)
     return(sphereName)
@@ -552,7 +542,6 @@ def exportPosition(name, xml, pos) :
     POScount += 1
     posxml = ET.SubElement(define,'position',{'name' : name, \
                           'unit': 'mm'})
-
     if x != 0 :
        posxml.attrib['x'] = str(x)
     if y != 0 :
@@ -615,7 +604,6 @@ def testDefaultPlacement(obj) :
 def processGDMLBoxObject(obj, vol, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    
     #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
     #boxName = 'Box' + obj.Name
     boxName =  obj.Name
@@ -628,8 +616,6 @@ def processGDMLBoxObject(obj, vol, flag) :
                           'y': str(obj.y),  \
                           'z': str(obj.z),  \
                           'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
     return (boxName)
 
 def processGDMLConeObject(obj, vol, flag) :
@@ -648,7 +634,6 @@ def processGDMLConeObject(obj, vol, flag) :
                           'z': str(obj.z),  \
                           'lunit' : obj.lunit})
     # modif 'mm' -> obj.lunit
-
     return(coneName)
 
 def processGDMLCutTubeObject(obj, vol, flag) :
@@ -670,8 +655,6 @@ def processGDMLCutTubeObject(obj, vol, flag) :
                           'lowY':str(obj.lowY), \
                           'lowZ':str(obj.lowZ), \
                           'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
     return(cTubeName)
 
 def processGDMLEllipsoidObject(obj, vol, flag) :
@@ -686,8 +669,6 @@ def processGDMLEllipsoidObject(obj, vol, flag) :
                           'zcut1': str(obj.zcut1),  \
                           'zcut2': str(obj.zcut2),  \
                           'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
     return(ellipsoidName)
 
 def processGDMLElTubeObject(obj, vol, flag) :
@@ -700,27 +681,25 @@ def processGDMLElTubeObject(obj, vol, flag) :
                           'dy': str(obj.dy),  \
                           'dz': str(obj.dz),  \
                           'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
     return(eltubeName)
 
+
 def processGDMLPolyconeObject(obj, vol, flag) :
-   # Needs unique Name
-   # flag needed for boolean otherwise parse twice
-   #polyconeName = 'Cone' + obj.Name
-   polyconeName = obj.Name
-   if flag == True :
-       cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    #polyconeName = 'Cone' + obj.Name
+    polyconeName = obj.Name
+    if flag == True :
+        cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
                           'deltaphi': str(obj.deltaphi),  \
                           'aunit': obj.aunit,  \
-                          'lunit' : obj.lunit})
-       # modif 'mm' -> obj.lunit
-       print(obj.OutList)
-       for zplane in obj.OutList :
+                          'lunit' : 'mm'})
+        print(obj.OutList)
+        for zplane in obj.OutList :
             ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
-
    return(polyconeName)
 
 def processGDMLQuadObject(obj, flag) :
@@ -734,7 +713,6 @@ def processGDMLQuadObject(obj, flag) :
 def processGDMLSphereObject(obj, vol, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-
     #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
     #sphereName = 'sphere' + obj.Name
     sphereName =  obj.Name
@@ -752,8 +730,6 @@ def processGDMLSphereObject(obj, vol, flag) :
                            'deltatheta': str(obj.deltatheta), 
                            'aunit': obj.aunit, 
                            'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
-
     return(sphereName)
 
 def processGDMLTessellatedObject(obj, vol, flag) :
@@ -836,7 +812,6 @@ def processGDMLTubeObject(obj, vol, flag) :
                            'aunit': obj.aunit,
                            'z': str(obj.z),  \
                            'lunit' : obj.lunit})
-    # modif 'mm' -> obj.lunit
     return(tubeName)
 
 def processGDMLXtruObject(obj, vol, flag) :
@@ -847,7 +822,6 @@ def processGDMLXtruObject(obj, vol, flag) :
     if flag == True :
         xtru = ET.SubElement(solids, 'xtru',{'name': xtruName, \
                           'lunit' : obj.lunit})
-        # modif 'mm' -> obj.lunit
         for items in obj.OutList :
             if items.Type == 'twoDimVertex' :
                 ET.SubElement(xtru, 'twoDimVertex',{'x': str(items.x), \
@@ -1106,9 +1080,6 @@ def getXmlVolume(volObj) :
     if xmlvol == None :
        print(volObj.Name+' Not Found') 
     return xmlvol
-
-
-
 
 def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
     # obj       - Object

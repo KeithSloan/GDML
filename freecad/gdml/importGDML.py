@@ -336,7 +336,6 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
-
     # modifs
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
@@ -353,6 +352,11 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
                lunit,material)
     # end modifs
 
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
+    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,0,3.00,aunit, \
+               lunit,material)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
@@ -1089,7 +1093,6 @@ def processGDML(doc,filename,prompt):
            print('pb xml lib not found')
            sys.exit()
     # end modifs 
-
     setup     = root.find('setup')
     define    = root.find('define')
     if define != None :

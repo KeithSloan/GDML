@@ -152,40 +152,10 @@ def getMult(lunit) :
     if lunit == 'mm' or lunit == None :
        return(1)
     elif lunit == 'cm' :
-       return(10)
-    ## not 100   
+       return(100)
     elif lunit == 'm' :
        return(1000)
-    ## modif begin
-    elif lunit == 'dm' :
-       return(100)
-    elif lunit == 'km' :
-       return(1000000)
-    elif lunit == 'um' :
-       return(0.001)
-    elif lunit == 'nm' :
-       return(0.000001)
-
-    else:
-       print('lunit not handled : '+lunit)
-       FreeCAD.Console.PrintMessage("lunit not handled : "+lunit + "\n")
-       return 0
-    ## modif end
-
-## modif begin
-def convertionlisteCharToLunit(listeChar, lunitIn) :
-    if(' ' not in str(listeChar)):
-       return 0
-    else:
-       llisteChar = str(listeChar).split(' ')
-       while( '' in llisteChar ): llisteChar.remove('')
-       if len(llisteChar)<2:
-           return 0
-       else:
-           thisUnit = getMult(llisteChar[1])
-           unitOut = getMult(lunitIn)
-           return float(llisteChar[0])*float(thisUnit)/float(unitOut)
-## modif end
+    print('lunit not handled : '+lunit)
 
 
 class GDMLcommon :
@@ -938,7 +908,6 @@ class GDMLSphere(GDMLcommon) :
        # Need to add code to check values make a valid sphere
        cp = FreeCAD.Vector(0,0,0)
        axis_dir = FreeCAD.Vector(0,0,1)
-
        # modifs
        v_startAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta)
        v_endAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta + fp.deltatheta)
@@ -962,16 +931,6 @@ class GDMLSphere(GDMLcommon) :
        FreeCAD.Console.PrintMessage('create Sphere file : '+ 
                                  str(v_startAngle)+ ' '+
                                  str(v_endAngle)+' '+str(u_angle)+'\n')
-       #sphere1 = Part.makeSphere(fp.rmin, cp, axis_dir, fp.startphi, \
-       #            fp.startphi+fp.deltaphi, fp.deltatheta)
-       sphere2 = Part.makeSphere(fp.rmax, cp, axis_dir, v_startAngle, \
-                   v_endAngle, u_angle)
-       #sphere2 = Part.makeSphere((fp.rmax )* mul, cp, axis_dir)
-       if(fp.rmin == 0.0 or fp.rmin>=fp.rmax):
-           fp.Shape = sphere2 
-       else:          
-           sphere1 = Part.makeSphere(fp.rmin, cp, axis_dir, v_startAngle, \
-                   v_endAngle, u_angle)
        
            sphere3 = sphere2.cut(sphere1)
            fp.Shape = sphere3
