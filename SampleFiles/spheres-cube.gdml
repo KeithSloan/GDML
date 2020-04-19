@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="pi" value="3.1415926" />
+  <constant name="HALFPI" value="pi/2." />
+  <constant name="PI" value="1.*pi" />
+  <constant name="TWOPI" value="2.*pi" />
+  <position name="Target_sol003" unit="mm" x="-840.0" y="840.0" z="-1340.0" />
+  <position name="Target_sol002" unit="mm" x="-840.0" y="840.0" />
+  <position name="Target_sol001" unit="mm" y="840.0" />
+  </define>
+<materials>
+    <element name="ele_Hydrogen" Z="1" />
+  <element name="ele_Carbon" Z="6" />
+  <element name="ele_Nitrogen" Z="7" />
+  <element name="ele_Oxygen" Z="8" />
+  <element name="ele_Aluminium" Z="13" />
+  <element name="ele_Silicon" Z="14" />
+  <element name="ele_Fluor" Z="9" />
+  <element name="ele_Tungsten" Z="74" />
+  <element name="ele_Tantalum" Z="73" />
+  <element name="ele_Titanium" Z="22" />
+  <element name="ele_Molybdenum" Z="42" />
+  <element name="ele_Iron" Z="26" />
+  <material name="mat_Lead" Z="82.">
+      <D unit="" value="11.35" />
+    </material>
+  <material name="mat_Aluminium" Z="1">
+      <D unit="" value="2.7" />
+    </material>
+  <material name="mat_Water" Z="1">
+      <D unit="" value="1.0" />
+    </material>
+  <material name="mat_Silicon" Z="1">
+      <D unit="" value="2.33" />
+    </material>
+  <material name="mat_Tungsten" Z="1">
+      <D unit="" value="19.25" />
+    </material>
+  <material name="mat_Tantalum" Z="1">
+      <D unit="" value="16.65" />
+    </material>
+  <material name="mat_Titanium" Z="1">
+      <D unit="" value="4.507" />
+    </material>
+  <material name="mat_Vacuum" Z="1">
+      <D unit="g/cm3" value="1e-12" />
+    </material>
+  </materials>
+<solids>
+    <box name="World_sol" x="10000.0" y="10000.0" z="10000.0" lunit="mm" />
+  <box name="Spacecraft_Outer_Box_solide" x="2003.24" y="2003.24" z="3003.24" lunit="mm" />
+  <box name="Spacecraft_Inner_Box_solide" x="2000.0" y="2000.0" z="3000.0" lunit="mm" />
+  <sphere name="Target_sol003" rmin="49.99" rmax="50.0" startphi="0.0" deltaphi="360.0" starttheta="0.0" deltatheta="180.0" aunit="deg" lunit="mm" />
+  <sphere name="Target_sol002" rmin="49.99" rmax="50.0" startphi="0.0" deltaphi="360.0" starttheta="0.0" deltatheta="180.0" aunit="deg" lunit="mm" />
+  <sphere name="Target_sol001" rmin="49.99" rmax="50.0" startphi="0.0" deltaphi="360.0" starttheta="0.0" deltatheta="180.0" aunit="deg" lunit="mm" />
+  <sphere name="Target_sol" rmin="49.99" rmax="50.0" startphi="0.0" deltaphi="360.0" starttheta="0.0" deltatheta="180.0" aunit="deg" lunit="mm" />
+  </solids>
+<structure>
+    <volume name="Target_000">
+      <solidref ref="Target_sol" />
+    <materialref ref="mat_Silicon" />
+    </volume>
+  <volume name="Target_001">
+      <solidref ref="Target_sol001" />
+    <materialref ref="mat_Silicon" />
+    </volume>
+  <volume name="Target_011">
+      <solidref ref="Target_sol002" />
+    <materialref ref="mat_Silicon" />
+    </volume>
+  <volume name="Target_111">
+      <solidref ref="Target_sol003" />
+    <materialref ref="mat_Silicon" />
+    </volume>
+  <volume name="Spacecraft_Inner_Box">
+      <solidref ref="Spacecraft_Inner_Box_solide" />
+    <materialref ref="mat_Vacuum" />
+    <physvol>
+        <volumeref ref="Target_111" />
+      <positionref ref="Target_sol003" />
+      </physvol>
+    <physvol>
+        <volumeref ref="Target_011" />
+      <positionref ref="Target_sol002" />
+      </physvol>
+    <physvol>
+        <volumeref ref="Target_001" />
+      <positionref ref="Target_sol001" />
+      </physvol>
+    <physvol>
+        <volumeref ref="Target_000" />
+      </physvol>
+    </volume>
+  <volume name="Spacecraft">
+      <solidref ref="Spacecraft_Outer_Box_solide" />
+    <materialref ref="mat_Tantalum" />
+    <physvol>
+        <volumeref ref="Spacecraft_Inner_Box" />
+      </physvol>
+    </volume>
+  <volume name="World">
+      <solidref ref="World_sol" />
+    <materialref ref="mat_Vacuum" />
+    <physvol>
+        <volumeref ref="Spacecraft" />
+      </physvol>
+    </volume>
+  </structure>
+<setup name="Default" version="1.0">
+    <world ref="World" />
+  </setup>
+</gdml>
