@@ -133,6 +133,7 @@ def setDisplayMode(obj,mode):
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLBox, ViewProvider
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
@@ -573,36 +574,37 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     return myTess
 
 def parseMultiUnion(part,solid,material,px,py,pz,rot,displayMode) :
-    print('Multi Union - MultiFuse')
-    print(solid.tag)
-    print(solid.attrib)
+    GDMLShared.setTrace(True)
+    GDMLShared.trace('Multi Union - MultiFuse')
     muName = solid.attrib.get('name')
-    print('multi Union : '+muName)
+    GDMLShared.trace('multi Union : '+muName)
+    myMUobj = part.newObject('Part::MultiFuse',muName)
     #for s in solid.findall('multiUnionNode') :
     objList = []
     for s in solid :
+        # each solid may change x,y,z,rot
+        nx = px
+        ny = py
+        nz = pz
+        nrot = rot
         if s.tag == 'multiUnionNode' :
-            # each solid may change x,y,z,rot
-            nx = px
-            ny = py
-            nz = pz
-            nrot = rot
             for t in s :
                 if t.tag == 'solid' :
                     sname = t.get('ref')
-                    print('solid : '+sname)
+                    GDMLShared.trace('solid : '+sname)
                     ssolid  = solids.find("*[@name='%s']" % sname )
                 if t.tag == 'positionref' :
                     pname = t.get('ref')
                     nx, ny, nz = GDMLShared.getDefinedPosition(pname)
+                    GDMLShared.trace('nx : '+str(nx))
                 if t.tag == 'rotationref' :
                     rname = t.get('ref')
-                    print('rotation ref : '+rname)
+                    GDMLShared.trace('rotation ref : '+rname)
                     nrot = GDMLShared.getDefinedRotation(rname)
             if sname != None :        # Did we find at least one solid
                 objList.append(createSolid(part,ssolid,material,nx,ny,nz, \
                     nrot,displayMode))
-    myMUobj = part.newObject('Part::MultiFuse',muName)
+    #myMUobj = part.newObject('Part::MultiFuse',muName)
     myMUobj.Shapes = objList
 
 
@@ -643,7 +645,8 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
 def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
     # parent,solid, material
     # returns created Object
-    GDMLShared.trace(solid.tag)
+    GDMLShared.trace('createSolid '+solid.tag)
+    GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
         if case('box'):
            return(createBox(part,solid,material,px,py,pz,rot,displayMode)) 

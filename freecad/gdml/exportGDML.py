@@ -31,7 +31,7 @@ from FreeCAD import Vector
 from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 
 # modif add 
-from .GDMLObjects import getMult, convertionlisteCharToLunit
+#from .GDMLObjects import getMult, convertionlisteCharToLunit
 
 import sys
 try:
@@ -700,7 +700,7 @@ def processGDMLPolyconeObject(obj, vol, flag) :
             ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
-   return(polyconeName)
+    return(polyconeName)
 
 def processGDMLQuadObject(obj, flag) :
     print("GDMLQuadrangular")
@@ -1092,7 +1092,7 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
     # addVolsFlag = True then create Logical & Physical Volumes
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
-    print("Process Object : "+obj.Name)
+    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     while switch(obj.TypeId) :
 
       # App::Part dealt with by processVol
@@ -1200,16 +1200,16 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          print("   Multifuse") 
          # test and fix
          multName = 'MultiFuse'+obj.Name
-         multUnion = ET.Element('multiUnion',{'name': multName })
-         for subobj in obj.Shapes:
-            boolFlg, solidName = processObject(subobj, xmlVol, xmlParent, \
-                       parentName, False)
-            node = ET.SubElement(multUnion,'multiUnionNode', \
-               {'MF-Node' : 'Node-'+solidName})
-            ET.SubElement(node,'solid', {'ref': solidName})
-            addBooleanPositionAndRotation(node,subobj.Base,subobj.Tool)
-            #addPositionAndRotation(node,subobj)
-         solids.append(multUnion) 
+         #multUnion = ET.Element('multiUnion',{'name': multName })
+         #for subobj in obj.Shapes:
+         #   boolFlg, solidName = processObject(subobj, xmlVol, xmlParent, \
+         #              parentName, False)
+         #   node = ET.SubElement(multUnion,'multiUnionNode', \
+         #      {'MF-Node' : 'Node-'+solidName})
+         #   ET.SubElement(node,'solid', {'ref': solidName})
+         #   addBooleanPositionAndRotation(node,subobj.Base,subobj.Tool)
+         #   #addPositionAndRotation(node,subobj)
+         #solids.append(multUnion) 
          return multName
          break
 
