@@ -157,6 +157,7 @@ def getMult(lunit) :
        return(1000)
     print('lunit not handled : '+lunit)
 
+
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
@@ -186,6 +187,11 @@ class GDMLBox(GDMLcommon) :
       #obj.addProperty("Part::PropertyPartShape","Shape","GDMLBox", "Shape of the Box")
       self.Type = 'GDMLBox'
       obj.Proxy = self
+
+   ### modif add
+   def getMaterial(self):
+       return obj.material
+   ## end modif
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -902,14 +908,33 @@ class GDMLSphere(GDMLcommon) :
        # Need to add code to check values make a valid sphere
        cp = FreeCAD.Vector(0,0,0)
        axis_dir = FreeCAD.Vector(0,0,1)
-       #sphere1 = Part.makeSphere(fp.rmin, cp, axis_dir, fp.startphi, \
-       #            fp.startphi+fp.deltaphi, fp.deltatheta)
-       #sphere2 = Part.makeSphere(fp.rmax, cp, axis_dir, fp.startphi, \
-       #            fp.startphi+fp.deltaphi, fp.deltatheta)
-       sphere2 = Part.makeSphere(fp.rmax * mul, cp, axis_dir)
+       # modifs
+       v_startAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta)
+       v_endAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta + fp.deltatheta)
+       u_angle = getAngleDeg(fp.aunit, fp.deltaphi) 
+
+       if(v_startAngle>90.0): v_startAngle=90.0
+       elif(v_startAngle<-90.0): v_startAngle=-90.0
+
+       if(v_endAngle>90.0): v_endAngle=90.0
+       elif(v_endAngle<-90.0): v_endAngle=-90.0
+
+       if(u_angle>360.0): u_angle=360.0
+       elif(u_angle<0.0): u_angle=0.0
+
+       if(v_endAngle<v_startAngle): 
+           tmp=v_startAngle
+           v_startAngle = v_endAngle
+           v_endAngle=tmp
+          
+
+       FreeCAD.Console.PrintMessage('create Sphere file : '+ 
+                                 str(v_startAngle)+ ' '+
+                                 str(v_endAngle)+' '+str(u_angle)+'\n')
        
-       #sphere3 = sphere2.cut(sphere1)
-       fp.Shape = sphere2
+           sphere3 = sphere2.cut(sphere1)
+           fp.Shape = sphere3
+       # end modifs
 
 class GDMLTrap(GDMLcommon) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \

@@ -136,7 +136,10 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
-    mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
+
+    # modifs lambda (otherwise each time we open the gdml file, the part name will have one more GDMLBox added  
+    #mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
+    mycube=part.newObject("Part::FeaturePython",getName(solid))
     x = GDMLShared.getVal(solid,'x')
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
@@ -333,6 +336,22 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    # modifs
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    #aunit = GDMLShared.getRef(solid,'aunit')
+    #lunit = GDMLShared.getRef(solid,'lunit')
+    starttheta = GDMLShared.getVal(solid,'starttheta')
+    deltatheta = GDMLShared.getVal(solid,'deltatheta')
+
+    # modifs lambda (otherwise each time we open the gdml file, the part name will have one more GDMLSphere added     
+    #mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
+    mysphere=part.newObject("Part::FeaturePython",getName(solid))
+
+    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta,deltatheta,aunit, \
+               lunit,material)
+    # end modifs
+
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
@@ -897,16 +916,26 @@ def processElements(doc) :
 
 
         GDMLelement(elementObj,name)
-        for fraction in element.findall('fraction') :
-            ref = fraction.get('ref')
-            #print('fraction ref : '+ref)
-            n = float(fraction.get('n'))
-            #fractObj = elementObj.newObject("App::FeaturePython",ref)
-            fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
-            #print('fraction obj : '+fractObj.Name)
-            GDMLfraction(fractObj,ref,n)
-            #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
-            #fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
+        # modifs 
+        if( len(element.findall('fraction'))>0 ):
+           for fraction in element.findall('fraction') :
+               ref = fraction.get('ref')
+               n = float(fraction.get('n'))
+               #fractObj = elementObj.newObject("App::FeaturePython",ref)
+               fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
+               GDMLfraction(fractObj,ref,n)
+               #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
+               fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
+        elif(len(element.findall('composite'))>0 ):
+           for fraction in element.findall('composite') :
+               ref = fraction.get('ref')
+               n = float(fraction.get('n'))
+               #fractObj = elementObj.newObject("App::FeaturePython",ref)
+               compositeObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
+               GDMLcomposite(compositeObj,ref,n)
+               #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
+               fractComposite.Label = ref+' : ' + str(n) 
+        # end modifs 
 
 def processMaterials(doc) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
@@ -1037,23 +1066,47 @@ def processGDML(doc,filename,prompt):
 
     global setup, define, materials, solids, structure, volDict
   
-  # Add files object so user can change to organise files
-  #  from GDMLObjects import GDMLFiles, ViewProvider
-  #  myfiles = doc.addObject("App::FeaturePython","Export_Files")
+    # Add files object so user can change to organise files
+    #  from GDMLObjects import GDMLFiles, ViewProvider
+    #  myfiles = doc.addObject("App::FeaturePython","Export_Files")
     #myfiles = doc.addObject("App::DocumentObjectGroupPython","Export_Files")
     #GDMLFiles(myfiles,FilesEntity,sectionDict)
 
-    from lxml import etree
-    #root = etree.fromstring(currentString)
-    parser = etree.XMLParser(resolve_entities=True)
-    root = etree.parse(filename, parser=parser)
+    # modifs
+    #before from lxml import etree
+    try:
+       from lxml import etree
+       FreeCAD.Console.PrintMessage("running with lxml.etree")
+       parser = etree.XMLParser(resolve_entities=True)
+       root = etree.parse(filename, parser=parser)
 
+    except ImportError:
+       try:
+           import xml.etree.ElementTree as etree
+           FreeCAD.Console.PrintMessage("running with etree.ElementTree (import limitations)\n")
+           FreeCAD.Console.PrintMessage(" for full import add lxml library \n")
+           tree = etree.parse(filename)
+           FreeCAD.Console.PrintMessage(tree)
+           root = tree.getroot()
+
+       except ImportError:
+           print('pb xml lib not found')
+           sys.exit()
+    # end modifs 
     setup     = root.find('setup')
     define    = root.find('define')
     if define != None :
        GDMLShared.trace("Call set Define")
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
+
+       # modif
+       GDMLShared.processPosition(doc)
+       GDMLShared.processExpression(doc)
+       GDMLShared.processRotation(doc)
+       GDMLShared.processQuantity(doc)
+       # end modif
+
        GDMLShared.trace(setup.attrib)
 
     materials = root.find('materials')

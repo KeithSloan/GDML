@@ -51,6 +51,25 @@ def processConstants(doc):
     #print("Globals")
     #print(globals())
 
+
+### modif
+def processPosition(doc):
+    # need to be done
+    trace("Process Position (not taken into account in this version)")
+
+def processExpression(doc):
+    # need to be done
+    trace("Process expression (not taken into account in this version)")
+
+def processRotation(doc):
+    # need to be done
+    trace("Process rotation (not taken into account in this version)")
+
+def processQuantity(doc):
+    # need to be done 
+    trace("Process quantity (not taken into account in this version)" )
+###  end modif
+
 def getVal(ptr,var,vtype = 1) :
     # vtype 1 - float vtype 2 int
     # get value for var variable var
