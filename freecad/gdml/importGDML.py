@@ -612,7 +612,7 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -626,14 +626,17 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
        GDMLShared.trace("second : "+name2nd)
        x,y,z = GDMLShared.getPosition(solid)
        #rot = GDMLShared.getRotFromRefs(solid)
-       rotBool = getRotation(solid)
+       rotBool = GDMLShared.getRotation(solid)
        mybool = part.newObject(objType,solid.tag+':'+getName(solid))
        #mybool = part.newObject('Part::Fuse',solid.tag+':'+getName(solid))
+       GDMLShared.trace('Create Base Object')
        mybool.Base = createSolid(part,base,material,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
+       GDMLShared.trace('Create Tool Object')
        mybool.Tool = createSolid(part,tool,material,x,y,z,rotBool,displayMode)
        #mybool.Tool = createSolid(part,tool,material,x,y,z,None,displayMode)
        # Okay deal with position of boolean
+       GDMLShared.trace('Boolean Position and rotation')
        GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
        #base = FreeCAD.Vector(0,0,0)
        base = FreeCAD.Vector(px,py,pz)
@@ -740,22 +743,11 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-
-def getRotation(xmlEntity) :
-    GDMLShared.trace('GetRotation')
-    rotref = GDMLShared.getRef(xmlEntity,"rotationref")
-    if rotref is not None :
-       rot = GDMLShared.define.find("rotation[@name='%s']" % rotref )
-    else :
-       rot = xmlEntity.find("rotation")
-    GDMLShared.trace(rot)
-    return rot
-
 def parsePhysVol(parent,physVol,phylvl,displayMode):
     # physvol is xml entity
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     px, py, pz = GDMLShared.getPosition(physVol)
-    rot = getRotation(physVol)
+    rot = GDMLShared.getRotation(physVol)
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
        GDMLShared.trace("Volume ref : "+volref)

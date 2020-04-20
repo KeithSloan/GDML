@@ -190,26 +190,38 @@ def processPlacement(base,rot) :
         c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
         return FreeCAD.Placement(base, rot,  c_rot)
 
-# Return x,y,z from position definition 
-def getDefinedPosition(name) :
-    # Position unit 
-    #setTrace(True)
-    trace("getDefinedPosition : "+name)
-    pos = define.find("position[@name='%s']" % name )
-    trace(pos.attrib)
-    if pos != None :
-       #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
-       if 'unit' in  pos.attrib :
-           mul = getMult(pos.get('unit'))
-           px = mul * getVal(pos,'x')
-           py = mul * getVal(pos,'y')
-           pz = mul * getVal(pos,'z')
-       else :     
-           px = getVal(pos,'x')
-           py = getVal(pos,'y')
-           pz = getVal(pos,'z')
-       return px, py, pz     
 
+def getPositionFromAttrib(pos) :        
+    #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
+    if 'unit' in  pos.attrib :
+        mul = getMult(pos.get('unit'))
+        px = mul * getVal(pos,'x')
+        py = mul * getVal(pos,'y')
+        pz = mul * getVal(pos,'z')
+    else :     
+        px = getVal(pos,'x')
+        py = getVal(pos,'y')
+        pz = getVal(pos,'z')
+    return px, py, pz     
+
+# Return x,y,z from position definition 
+def getElementPosition(xmlElem) :
+    # get Position from local element 
+    #setTrace(True)
+    trace("Get Element Position : ")
+    pos = xmlElem.find("position")
+    if pos != None :
+        trace(pos.attrib)
+        return(getPositionFromAttrib(pos))
+    else :
+       return 0,0,0
+
+def getDefinedPosition(name) :
+    # get Position from define section 
+    pos = define.find("position[@name='%s']" % name )
+    if pos != None :
+        trace(pos.attrib)
+        return(getPositionFromAttrib(pos))
     else :
        return 0,0,0
 
@@ -222,17 +234,30 @@ def getPosition(xmlEntity) :
        trace("positionref : "+posName)
        return(getDefinedPosition(posName))
     else :
-       return 0, 0, 0
+       return(getElementPosition(xmlEntity))
 
 def getDefinedRotation(name) :
     # Just get defintion - used by parseMultiUnion passed to create solids
     return(define.find("rotation[@name='%s']" % name ))
 
+def getRotation(xmlEntity) :
+    trace('GetRotation')
+    rotref = getRef(xmlEntity,"rotationref")
+    print(rotref)
+    if rotref is not None :
+       rot = define.find("rotation[@name='%s']" % rotref )
+    else :
+       rot = xmlEntity.find("rotation")
+    if rot != None :
+       trace(rot.attrib)
+    return rot
+
 def getRotFromRefs(ptr) :
     printverbose = True
     trace("getRotFromRef")
     rot = define.find("rotation[@name='%s']" % getRef(ptr,'rotationref'))
-    print(rot)
+    if rot != None :
+        trace(rot.attrib)
     return rot
 
 def getVertex(v):
