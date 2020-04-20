@@ -574,7 +574,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     return myTess
 
 def parseMultiUnion(part,solid,material,px,py,pz,rot,displayMode) :
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace('Multi Union - MultiFuse')
     muName = solid.attrib.get('name')
     GDMLShared.trace('multi Union : '+muName)
@@ -612,7 +612,7 @@ def parseBoolean(part,solid,objType,material,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
