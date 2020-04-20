@@ -601,7 +601,7 @@ def testDefaultPlacement(obj) :
     else :
        return False
 
-def processGDMLBoxObject(obj, vol, flag) :
+def processGDMLBoxObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
@@ -618,7 +618,7 @@ def processGDMLBoxObject(obj, vol, flag) :
                           'lunit' : obj.lunit})
     return (boxName)
 
-def processGDMLConeObject(obj, vol, flag) :
+def processGDMLConeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     coneName = 'Cone' + obj.Name
@@ -636,7 +636,7 @@ def processGDMLConeObject(obj, vol, flag) :
     # modif 'mm' -> obj.lunit
     return(coneName)
 
-def processGDMLCutTubeObject(obj, vol, flag) :
+def processGDMLCutTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     cTubeName = 'CutTube' + obj.Name
@@ -657,7 +657,7 @@ def processGDMLCutTubeObject(obj, vol, flag) :
                           'lunit' : obj.lunit})
     return(cTubeName)
 
-def processGDMLEllipsoidObject(obj, vol, flag) :
+def processGDMLEllipsoidObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     ellipsoidName = 'Ellipsoid' + obj.Name
@@ -671,7 +671,7 @@ def processGDMLEllipsoidObject(obj, vol, flag) :
                           'lunit' : obj.lunit})
     return(ellipsoidName)
 
-def processGDMLElTubeObject(obj, vol, flag) :
+def processGDMLElTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     eltubeName = 'Cone' + obj.Name
@@ -684,7 +684,7 @@ def processGDMLElTubeObject(obj, vol, flag) :
     return(eltubeName)
 
 
-def processGDMLPolyconeObject(obj, vol, flag) :
+def processGDMLPolyconeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
@@ -710,7 +710,7 @@ def processGDMLQuadObject(obj, flag) :
             'type': obj.vtype})
     
 
-def processGDMLSphereObject(obj, vol, flag) :
+def processGDMLSphereObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
@@ -732,7 +732,7 @@ def processGDMLSphereObject(obj, vol, flag) :
                            'lunit' : obj.lunit})
     return(sphereName)
 
-def processGDMLTessellatedObject(obj, vol, flag) :
+def processGDMLTessellatedObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     # Need to output unique define positions
@@ -757,7 +757,7 @@ def processGDMLTessellatedObject(obj, vol, flag) :
     return(tessName)
 
 
-def processGDMLTrapObject(obj, vol, flag) :
+def processGDMLTrapObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     trapName = 'Trap' + obj.Name
@@ -778,7 +778,7 @@ def processGDMLTrapObject(obj, vol, flag) :
                            'lunit': obj.lunit})
     return(trapName)
 
-def processGDMLTrdObject(obj, vol, flag) :
+def processGDMLTrdObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     trdName = 'Trd' + obj.Name
@@ -799,7 +799,7 @@ def processGDMLTriangle(obj, flag) :
             'vertex2': obj.v2, 'vertex3': obj.v3,  \
             'type': obj.vtype})
 
-def processGDMLTubeObject(obj, vol, flag) :
+def processGDMLTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     tubeName = 'Tube' + obj.Name
@@ -814,7 +814,7 @@ def processGDMLTubeObject(obj, vol, flag) :
                            'lunit' : obj.lunit})
     return(tubeName)
 
-def processGDMLXtruObject(obj, vol, flag) :
+def processGDMLXtruObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #tubeName = 'Tube' + obj.Name
@@ -999,73 +999,107 @@ def processMaterialObject(obj) :
        return False
        break
 
-def processGDMLsolid(obj, vol, addVolsFlag) :
-    # flag needed for boolean otherwise parse twice
+def processGDMLSolid(obj, addVolsFlag) :
+    # Deal with GDML Solids first
+    # Deal with FC Objects that convert
     print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLBox") :
           print("      GDMLBox") 
-          return(processGDMLBoxObject(obj, vol, addVolsFlag))
+          return(processGDMLBoxObject(obj, addVolsFlag))
           break
 
        if case("GDMLcutTube") :
           print("      GDMLcutTube") 
-          return(processGDMLCutTubeObject(obj, vol, addVolsFlag))
+          return(processGDMLCutTubeObject(obj, addVolsFlag))
           break
 
        if case("GDMLEllipsoid") :
           print("      GDMLEllipsoid") 
-          return(processGDMLEllipsoidObject(obj, vol, addVolsFlag))
+          return(processGDMLEllipsoidObject(obj, addVolsFlag))
           break
 
        if case("GDMLElTube") :
           print("      GDMLElTube") 
-          return(processGDMLElTubeObject(obj, vol, addVolsFlag))
+          return(processGDMLElTubeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLCone") :
           print("      GDMLCone") 
-          return(processGDMLConeObject(obj, vol, addVolsFlag))
+          return(processGDMLConeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLPolycone") :
           print("      GDMLPolycone") 
-          return(processGDMLPolyconeObject(obj, vol, addVolsFlag))
+          return(processGDMLPolyconeObject(obj, addVolsFlag))
           break
              
        if case("GDMLSphere") :
           print("      GDMLSphere") 
-          return(processGDMLSphereObject(obj, vol, addVolsFlag))
+          return(processGDMLSphereObject(obj, addVolsFlag))
           break
 
        if case("GDMLTessellated") :
           print("      GDMLTessellated") 
-          return(processGDMLTessellatedObject(obj, vol, addVolsFlag))
+          return(processGDMLTessellatedObject(obj, addVolsFlag))
           break
 
        if case("GDMLTrap") :
           print("      GDMLTrap") 
-          return(processGDMLTrapObject(obj, vol, addVolsFlag))
+          return(processGDMLTrapObject(obj,  addVolsFlag))
           break
 
        if case("GDMLTrd") :
           print("      GDMLTrd") 
-          return(processGDMLTrdObject(obj, vol, addVolsFlag))
+          return(processGDMLTrdObject(obj,  addVolsFlag))
           break
 
        if case("GDMLTube") :
           print("      GDMLTube") 
-          return(processGDMLTubeObject(obj, vol, addVolsFlag))
+          return(processGDMLTubeObject(obj, addVolsFlag))
           print("GDML Tube processed")
           break
 
        if case("GDMLXtru") :
           print("      GDMLXtru") 
-          return(processGDMLXtruObject(flag, obj, vol, addVolsFlag))
+          return(processGDMLXtruObject(obj, addVolsFlag))
           break
 
        print("Not yet Handled")
        break  
+
+def processSolid(obj, addVolsFlag) :
+    # export solid & return Name
+    while switch(obj.TypeId) :
+
+        if case("Part::FeaturePython"):
+            #print("   Python Feature")
+            if hasattr(obj.Proxy, 'Type') :
+                #print(obj.Proxy.Type) 
+                return(processGDMLSolid(obj, True))
+        #
+        #  Now deal with objects that map to GDML solids
+        #
+        if case("Part::Box") :
+            print("    Box")
+            return(processBoxObject(obj, addVolsFlag))
+            break
+
+        if case("Part::Cylinder") :
+            print("    Cylinder")
+            return(processCylinderObject(obj, addVolsFlag))
+            break
+
+        if case("Part::Cone") :
+            print("    Cone")
+            return(processConeObject(obj, addVolsFlag))
+            break
+
+        if case("Part::Sphere") :
+            print("    Sphere")
+            return(processSphereObject(obj, addVolsFlag))
+            break
+   
 
 import collections
 from itertools import islice
@@ -1081,119 +1115,105 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
-def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
-    # obj       - Object
-    # boolFlg   - True once boolean found in volume
+def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
+                  addVolsFlag) :
+    # idx - index into OutList
+    # OutList - OutList 
     # xmlVol    - xmlVol
     # xmlParent - xmlParent Volume
     # parenName - Parent Name
     # addVolsFlag - Add physical Vol
-    # return solid or boolean reference name or None
+    # return idx of next Object to be processed
+    # solid or boolean reference name or None
     # addVolsFlag = True then create Logical & Physical Volumes
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
+    obj = OutList[idx]
     print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     while switch(obj.TypeId) :
 
-      # App::Part dealt with by processVol
-      # but need to avoid dropping through to Tessellate
-      #
       if case("App::Part") :
-          return
-      #   xmlParent = xmlVol
-      #   pName = obj.Name
-      #   xmlVol = exportVol(obj, xmlParent, pName)
-      #if hasattr(obj,'OutList') :
-      #   name = obj.Label
-      #   vol = newVol
-      #   newVOL = ET.SubElement(structure,'volume',{'name':name}) 
-      #   global lst
-      #   lst = iter(obj.OutList)
-      #   for sub in lst :
-      #       print(sub.Name)
-      #       ret = processObject(sub, vol, newVOL, name, addVolsFlag) 
-      #       # once first solid is processed set flag to add PV
-      #       if ret != None :
-      #          print("First Solid : "+ret)
-      #          addVolsFlag = True 
-      #return    
-      #   break
+          subXMLvol = insertXMLvol(obj.Name)
+          if hasattr(obj,'OutList') :
+                #print('Process '+obj.Name)
+                processVols(obj, subXMLvol, xmlVol, obj.Name, True)
+          return idx + 1
          
       if case("App::Origin") :
          #print("App Origin")
-         return boolFlg
+         return idx + 1
          break
 
-      if case("App::GeoFeature") :
-         #print("App GeoFeature")
-         return
-         break
+      #if case("App::GeoFeature") :
+      #   #print("App GeoFeature")
+      #   return
+      #   break
 
-      if case("App::Line") :
-         #print("App Line")
-         return
-         break
+      #if case("App::Line") :
+      #   #print("App Line")
+      #   return
+      #   break
 
-      if case("App::Plane") :
-         #print("App Plane")
-         return
-         break
+      #f case("App::Plane") :
+      #   #print("App Plane")
+      #   return
+      #   break
 
       if case("Part::Cut") :
          # Maybe Booleans could be grouped with GDML solids 
          #print("   Cut")
          #print(boolFlg)
          cutName = 'Cut'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
+         ref1 = processSolid(obj.Base, True)
+         ref2 = processSolid(obj.Tool, True)
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         if boolFlg == False :  # True once boolean found
-            addVolRef(xmlVol,cutName,obj.Base.material)
+         addVolRef(xmlVol,cutName,obj.Base.material)
          pvol = addPhysVol(obj,xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,subtract)
-         processRotation(obj.Tool,subtract)   
-         return True, cutName
+         processRotation(obj.Tool,subtract)
+         return idx + 3
+         #return True, cutName
          break
 
       if case("Part::Fuse") :
          #print("   Union")
          unionName = 'Union'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
+         ref1 = processSolid(obj.Base, True)
+         ref2 = processSolid(obj.Tool, True)
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         if boolFlg == False :  # True once boolean found
-            addVolRef(xmlVol,unionName,obj.Base.material)
+         addVolRef(xmlVol,unionName,obj.Base.material)
          pvol = addPhysVol(obj,xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,union)
-         processRotation(obj.Tool,union)   
-         return True, unionName
+         processRotation(obj.Tool,union)
+         return idx + 3
+         #return True, unionName
          break
 
       if case("Part::Common") :
          #print("   Intersection")
          intersectName = 'Intersect'+obj.Name
-         ref1 = processGDMLsolid(obj.Base, xmlVol, True)
-         ref2 = processGDMLsolid(obj.Tool, xmlVol, True)
+         ref1 = processSolid(obj.Base, True)
+         ref2 = processSolid(obj.Tool, True)
          intersect = ET.SubElement(solids,'intersection',{'name': \
                      intersectName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
-         if boolFlg == False :  # true once boolean found
-            addVolRef(xmlVol,intersectName,obj.Base.material)
+         addVolRef(xmlVol,intersectName,obj.Base.material)
          pvol = addPhysVol(obj,xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,intersect)
          processRotation(obj.Tool,intersect)
-         return True, intersectName
+         return idx + 3
+         #return True, intersectName
          break
 
       if case("Part::MultiFuse") :
@@ -1210,7 +1230,9 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          #   addBooleanPositionAndRotation(node,subobj.Base,subobj.Tool)
          #   #addPositionAndRotation(node,subobj)
          #solids.append(multUnion) 
-         return multName
+
+         #return multName
+         return idx + 1 + len(obj.OutList)
          break
 
       if case("Part::MultiCommon") :
@@ -1229,18 +1251,16 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
           #print("   Python Feature")
           if hasattr(obj.Proxy, 'Type') :
              #print(obj.Proxy.Type) 
-             solidName = processGDMLsolid(obj, xmlVol, True)
-             if boolFlg == False :      # True once boolean found
-                addVolRef(xmlVol,solidName,obj.material)
-                if addVolsFlag == True :
-                   pvol = addPhysVol(obj,xmlParent,parentName)
-                   processPosition(obj,pvol)
-                   processRotation(obj,pvol)
-                boolFlg = True 
-             return boolFlg 
+             solidName = processSolid(obj, True)
+             addVolRef(xmlVol,solidName,obj.material)
+             if xmlParent != None :
+                pvol = addPhysVol(obj,xmlParent,parentName)
+                processPosition(obj,pvol)
+                processRotation(obj,pvol)
           else :
              print("Not a GDML Feature")
-             break  
+          return idx + 1 
+          break  
 
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
@@ -1263,6 +1283,7 @@ def processObject(obj, boolFlg, xmlVol, xmlParent, parentName, addVolsFlag) :
          #if isinstance(obj.Proxy, GDMLSection) :
          #   return(processGDMLSection(obj, addVolsFlag))
          #   break
+         return idx + 1
          break  
 
       #
@@ -1311,20 +1332,26 @@ def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
 def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
+    # App::Part will have Booleans & Multifuse objects also in the list
+    # So for s in list is not so good
     print('processVol : '+vol.Name)
     # xmlVol could be created dummy volume
 
-    #print('Number of Objects : '+str(len(vol.OutList)))
+    num = len(vol.OutList)
+    idx = 0
     boolflg = False
-    for obj in vol.OutList :
-        if obj.TypeId == 'App::Part' :
-            subXMLvol = insertXMLvol(obj.Name)
-            if hasattr(obj,'OutList') :
-                #print('Process '+obj.Name)
-                processVols(obj, subXMLvol, xmlVol, obj.Name, True)
+    while idx < num :
+        idx  = processObject(idx, vol.OutList, xmlVol, \
+                xmlParent, parentName, addVolsFlag)
 
-        boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
-                      parentName, addVolsFlag)
+    #for obj in vol.OutList :
+    #    if obj.TypeId == 'App::Part' :
+    #        subXMLvol = insertXMLvol(obj.Name)
+    #        if hasattr(obj,'OutList') :
+    #            #print('Process '+obj.Name)
+    #            processVols(obj, subXMLvol, xmlVol, obj.Name, True)
+    #    boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
+    #                  parentName, addVolsFlag)
 
 def createDummyVol() :
     print("Need to create Dummy Volume and World Box ")
@@ -1338,11 +1365,9 @@ def createDummyVol() :
 
 def checkGDMLstructure(objList) :
     # Should be 
+    # World Vol - App::Part
     # App::Origin
     # GDML Object
-    # World Vol - App::Part
-    if len(objList) != 3 :
-        return False
     if objList[0].TypeId != 'App::Origin' \
         or objList[2].TypeId != 'App::Part' :
             return False
