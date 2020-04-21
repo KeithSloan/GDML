@@ -526,7 +526,7 @@ def processSphereObject(obj, addVolsFlag) :
        createLVandPV(obj,obj.Name,sphereName)
     return(sphereName)
 
-def addPhysVol(obj, xmlVol, volName) :
+def addPhysVol(xmlVol, volName) :
     print("Add PhysVol to Vol") 
     pvol = ET.SubElement(xmlVol,'physvol')
     ET.SubElement(pvol,'volumeref',{'ref':volName})
@@ -538,9 +538,9 @@ def exportPosition(name, xml, pos) :
     x = pos[0]
     y = pos[1]
     z = pos[2]
-    posName = 'PS'+name+str(POScount)
+    posName = 'P-'+name+str(POScount)
     POScount += 1
-    posxml = ET.SubElement(define,'position',{'name' : name, \
+    posxml = ET.SubElement(define,'position',{'name' : posName, \
                           'unit': 'mm'})
     if x != 0 :
        posxml.attrib['x'] = str(x)
@@ -548,7 +548,7 @@ def exportPosition(name, xml, pos) :
        posxml.attrib['y'] = str(y)
     if z != 0 :
        posxml.attrib['z'] = str(z)
-    ET.SubElement(xml,'positionref',{'ref' : name})
+    ET.SubElement(xml,'positionref',{'ref' : posName})
 
 def exportRotation(name, xml, Rotation) :
     global ROTcount
@@ -560,9 +560,9 @@ def exportRotation(name, xml, Rotation) :
         a1 = angles[1]
         a2 = angles[2]
         if a0!=0 or a1!=0 or a2!=0 :
-            rotName = 'Rot'+name+str(ROTcount)
+            rotName = 'R-'+name+str(ROTcount)
             ROTcount += 1
-            rotxml = ET.SubElement(define, 'rotation', {'name': name, \
+            rotxml = ET.SubElement(define, 'rotation', {'name': rotName, \
                     'unit': 'deg'})
             if abs(a2) != 0 :
                 rotxml.attrib['x']=str(-a2)
@@ -570,7 +570,7 @@ def exportRotation(name, xml, Rotation) :
                 rotxml.attrib['y']=str(-a1)
             if abs(a0) != 0 :
                 rotxml.attrib['z']=str(-a0)
-            ET.SubElement(xml, 'rotationref', {'ref': name})
+            ET.SubElement(xml, 'rotationref', {'ref': rotName})
 
 def processPosition(obj, solid) :
     if obj.Placement.Base == FreeCAD.Vector(0,0,0) :
@@ -578,16 +578,17 @@ def processPosition(obj, solid) :
     print("Define position & references to Solid")
     exportPosition(obj.Name, solid, obj.Placement.Base)
 
-def processRotation(obj2, solid) :
-    if obj2.Placement.Rotation.Angle == 0 :
+def processRotation(obj, solid) :
+    if obj.Placement.Rotation.Angle == 0 :
        return
     print('Deal with Rotation')
-    exportRotation(obj2.Name,solid,obj2.Placement.Rotation)
+    exportRotation(obj.Name,solid,obj.Placement.Rotation)
 
 
 def addVolRef(vol,solidName,material) :
     ET.SubElement(vol,'solidref',{'ref': solidName})
-    ET.SubElement(vol,'materialref',{'ref': material})
+    if material != None :   # MultiUnion no material
+        ET.SubElement(vol,'materialref',{'ref': material})
 
 def testDefaultPlacement(obj) :
     #print(dir(obj.Placement.Rotation))
@@ -1100,6 +1101,9 @@ def processSolid(obj, addVolsFlag) :
             return(processSphereObject(obj, addVolsFlag))
             break
    
+def processMuNod(xmlelem, name) :
+    node = ET.SubElement(xmlelem,'multiUnionNode',{'name' : name})
+    return node
 
 import collections
 from itertools import islice
@@ -1170,7 +1174,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
          addVolRef(xmlVol,cutName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
+         pvol = addPhysVol(xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,subtract)
@@ -1188,7 +1192,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
          addVolRef(xmlVol,unionName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
+         pvol = addPhysVol(xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,union)
@@ -1207,7 +1211,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
          addVolRef(xmlVol,intersectName,obj.Base.material)
-         pvol = addPhysVol(obj,xmlParent,parentName)
+         pvol = addPhysVol(xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
          processPosition(obj.Tool,intersect)
@@ -1220,19 +1224,26 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          print("   Multifuse") 
          # test and fix
          multName = 'MultiFuse'+obj.Name
-         #multUnion = ET.Element('multiUnion',{'name': multName })
-         #for subobj in obj.Shapes:
-         #   boolFlg, solidName = processObject(subobj, xmlVol, xmlParent, \
-         #              parentName, False)
-         #   node = ET.SubElement(multUnion,'multiUnionNode', \
-         #      {'MF-Node' : 'Node-'+solidName})
-         #   ET.SubElement(node,'solid', {'ref': solidName})
-         #   addBooleanPositionAndRotation(node,subobj.Base,subobj.Tool)
-         #   #addPositionAndRotation(node,subobj)
-         #solids.append(multUnion) 
+         addVolRef(xmlVol,multName,None)
+         # First add solids in list before reference
+         print('Output Solids')
+         for sub in obj.OutList:
+             processSolid(sub,False)
+         print('Output Solids Complete')
+         multUnion = ET.SubElement(solids,'multiUnion',{'name': multName })
+         num = 1
+
+         for sub in obj.OutList:
+             print(sub.Name)
+             node = processMuNod(multUnion, 'node-'+str(num))
+             ET.SubElement(node,'solid',{'ref':sub.Name})
+             processPosition(sub,node)
+             processRotation(sub,node)
+             num += 1
 
          #return multName
-         return idx + 1 + len(obj.OutList)
+         print('Return MultiUnion')
+         return idx + num 
          break
 
       if case("Part::MultiCommon") :
@@ -1254,7 +1265,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
              solidName = processSolid(obj, True)
              addVolRef(xmlVol,solidName,obj.material)
              if xmlParent != None :
-                pvol = addPhysVol(obj,xmlParent,parentName)
+                pvol = addPhysVol(xmlParent,parentName)
                 processPosition(obj,pvol)
                 processRotation(obj,pvol)
           else :
@@ -1341,6 +1352,7 @@ def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     idx = 0
     boolflg = False
     while idx < num :
+        print(idx)
         idx  = processObject(idx, vol.OutList, xmlVol, \
                 xmlParent, parentName, addVolsFlag)
 
@@ -1353,15 +1365,15 @@ def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     #    boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
     #                  parentName, addVolsFlag)
 
-def createDummyVol() :
+def createWorldVol(volName) :
     print("Need to create Dummy Volume and World Box ")
     bbox = FreeCAD.BoundBox()
-    name = defineWorldBox(bbox)
-    dummyVol = ET.SubElement(structure,'volume',{'name': 'Dummy'}) 
-    ET.SubElement(dummyVol, 'solidref',{'ref': name})
+    boxName = defineWorldBox(bbox)
+    worldVol = ET.SubElement(structure,'volume',{'name': volName}) 
+    ET.SubElement(worldVol, 'solidref',{'ref': boxName})
     print("Need to FIX !!!! To use defined gas")
-    ET.SubElement(dummyVol, 'materialref',{'ref': 'G4_Galactic'})
-    return dummyVol
+    ET.SubElement(worldVol, 'materialref',{'ref': 'G4_Galactic'})
+    return worldVol
 
 def checkGDMLstructure(objList) :
     # Should be 
@@ -1385,8 +1397,9 @@ def exportWorldVol(vol) :
 
     if hasattr(vol,'OutList') :
         if checkGDMLstructure(vol.OutList) == False :
-            xmlParent = createXMLvol(vol.Name) 
-            xmlVol = createDummyVol()
+            xmlVol = createXMLvol('dummy') 
+            xmlParent = createWorldVol(vol.Name)
+            addPhysVol(xmlParent,'dummy')
         else :
             xmlParent = None
             xmlVol = createXMLvol(vol.Name)

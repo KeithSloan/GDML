@@ -119,7 +119,7 @@ def getMult(unit) :
     if unit == 'mm' or unit == None :
        return(1)
     elif unit == 'cm' :
-       return(100)
+       return(10)
     elif unit == 'm' :
        return(1000)
     print('unit not handled : '+lunit)
