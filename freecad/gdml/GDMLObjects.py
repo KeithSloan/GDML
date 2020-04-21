@@ -335,8 +335,8 @@ class GDMLElCone(GDMLcommon) :
        mat.unity()
        mul = GDMLShared.getMult(fp.lunit)
        # Semi axis values so need to double
-       dx = dx * mul
-       dy = dy * mul
+       dx = fp.dx * mul
+       dy = fp.dy * mul
        zcut = fp.zcut * mul
        zmax = fp.zmax * mul
        mat.A11 = dx / 100
@@ -1145,7 +1145,7 @@ class GDMLTube(GDMLcommon) :
           cyl2 = Part.makeCylinder(rmin, z)
           cyl3 = cyl1.cut(cyl2)
        else :
-          print('Single Cylinder') 
+          #print('Single Cylinder') 
           cyl3 = cyl1
 
        if checkFullCircle(fp.aunit,fp.deltaphi) == False :

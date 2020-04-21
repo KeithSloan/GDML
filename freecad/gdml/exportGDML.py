@@ -658,6 +658,19 @@ def processGDMLCutTubeObject(obj, flag) :
                           'lunit' : obj.lunit})
     return(cTubeName)
 
+def processGDMLElConeObject(obj, flag) :
+    print('Elliptical Cone')
+    elconeName = 'Elc-'+obj.Name
+    if flag == True :
+        ET.SubElement(solids,'elcone',{'name': elconeName, \
+                'dx': str(obj.dx), \
+                'dy': str(obj.dy), \
+                'zcut' : str(obj.zcut), \
+                'zmax' : str(obj.zmax), \
+                'lunit' : str(obj.lunit)})
+
+    return(elconeName)
+
 def processGDMLEllipsoidObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
@@ -1013,6 +1026,11 @@ def processGDMLSolid(obj, addVolsFlag) :
        if case("GDMLcutTube") :
           print("      GDMLcutTube") 
           return(processGDMLCutTubeObject(obj, addVolsFlag))
+          break
+       
+       if case("GDMLElCone") :
+          print("      GDMLElCone") 
+          return(processGDMLElConeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLEllipsoid") :

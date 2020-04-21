@@ -243,7 +243,7 @@ def getDefinedRotation(name) :
 def getRotation(xmlEntity) :
     trace('GetRotation')
     rotref = getRef(xmlEntity,"rotationref")
-    print(rotref)
+    trace(rotref)
     if rotref is not None :
        rot = define.find("rotation[@name='%s']" % rotref )
     else :
