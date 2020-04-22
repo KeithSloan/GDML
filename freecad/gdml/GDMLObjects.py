@@ -70,14 +70,14 @@ def make_face4(v1,v2,v3,v4):
 
 def makeFrustrum(num,poly0,poly1) :
     # return list of faces
-    print("Make Frustrum : "+str(num)+" Faces")
+    #print("Make Frustrum : "+str(num)+" Faces")
     faces = []
     for i in range(num) :
        j = i + 1
        #print([poly0[i],poly0[j],poly1[j],poly1[i]])
        w = Part.makePolygon([poly0[i],poly0[j],poly1[j],poly1[i],poly0[i]])
        faces.append(Part.Face(w))
-    print("Number of Faces : "+str(len(faces)))
+    #print("Number of Faces : "+str(len(faces)))
     return(faces)
 
 def angleSectionSolid(fp, rmax, z, shape) :
@@ -514,7 +514,8 @@ class GDMLPolyhedra(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       #print("Execute Polyhedra")
+       #GDMLShared.setTrace(True)
+       GDMLShared.trace("Execute Polyhedra")
        parms = fp.OutList
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        numsides = fp.numsides
@@ -529,12 +530,14 @@ class GDMLPolyhedra(GDMLcommon) :
        inner_faces = []
        outer_faces = []
        # Deal with Inner Top Face
+       # Could be point rmin0 = rmax0 = 0
        if rmin0 > 0 :
-          inner_poly0 = makeRegularPolygon(numsides,rmin0,z0)
-          inner_faces.append(Part.Face(Part.makePolygon(inner_poly0)))
+           inner_poly0 = makeRegularPolygon(numsides,rmin0,z0)
+           inner_faces.append(Part.Face(Part.makePolygon(inner_poly0)))
        # Deal with Outer Top Face 
        outer_poly0 = makeRegularPolygon(numsides,rmax0,z0)
-       outer_faces.append(Part.Face(Part.makePolygon(outer_poly0)))
+       if rmax0 > 0 :        # Only make polygon if not a point
+            outer_faces.append(Part.Face(Part.makePolygon(outer_poly0)))
        for ptr in parms[1:] :
            z1 = ptr.z * mul
            rmin1 = ptr.rmin * mul

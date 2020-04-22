@@ -113,7 +113,7 @@ def indent(elem, level=0):
 #  Setup GDML environment
 #################################
 def GDMLstructure() :
-    print("Setup GDML structure")
+    #print("Setup GDML structure")
     #################################
     # globals
     ################################
@@ -125,7 +125,7 @@ def GDMLstructure() :
     NS = 'http://www.w3.org/2001/XMLSchema-instance'
     location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
     gdml = ET.Element('gdml',attrib={location_attribute: 'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
-    print(gdml.tag)
+    #print(gdml.tag)
 
           #'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
           #'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"
@@ -203,8 +203,8 @@ def createLVandPV(obj, name, solidName):
        ET.SubElement(define, 'position', {'name': posName, 'unit': 'mm', \
                   'x': str(x), 'y': str(y), 'z': str(z) })
     angles = obj.Placement.Rotation.toEuler()
-    print ("Angles")
-    print (angles)
+    GDMLShared.trace("Angles")
+    GDMLShared.trace(angles)
     a0 = angles[0]
     a1 = angles[1]
     a2 = angles[2]
@@ -534,7 +534,8 @@ def addPhysVol(xmlVol, volName) :
 
 def exportPosition(name, xml, pos) :
     global POScount
-    print(pos)
+    GDMLShared.trace('export Position')
+    GDMLShared.trace(pos)
     x = pos[0]
     y = pos[1]
     z = pos[2]
@@ -554,8 +555,8 @@ def exportRotation(name, xml, Rotation) :
     global ROTcount
     if Rotation.Angle != 0 :
         angles = Rotation.toEuler()
-        print ("Angles")
-        print (angles)
+        GDMLShared.trace("Angles")
+        GDMLShared.trace(angles)
         a0 = angles[0]
         a1 = angles[1]
         a2 = angles[2]
@@ -575,13 +576,13 @@ def exportRotation(name, xml, Rotation) :
 def processPosition(obj, solid) :
     if obj.Placement.Base == FreeCAD.Vector(0,0,0) :
         return
-    print("Define position & references to Solid")
+    GDMLShared.trace("Define position & references to Solid")
     exportPosition(obj.Name, solid, obj.Placement.Base)
 
 def processRotation(obj, solid) :
     if obj.Placement.Rotation.Angle == 0 :
        return
-    print('Deal with Rotation')
+    GDMLShared.trace('Deal with Rotation')
     exportRotation(obj.Name,solid,obj.Placement.Rotation)
 
 
@@ -659,7 +660,7 @@ def processGDMLCutTubeObject(obj, flag) :
     return(cTubeName)
 
 def processGDMLElConeObject(obj, flag) :
-    print('Elliptical Cone')
+    GDMLShared.trace('Elliptical Cone')
     elconeName = 'Elc-'+obj.Name
     if flag == True :
         ET.SubElement(solids,'elcone',{'name': elconeName, \
@@ -708,16 +709,33 @@ def processGDMLPolyconeObject(obj, flag) :
                           'startphi': str(obj.startphi),  \
                           'deltaphi': str(obj.deltaphi),  \
                           'aunit': obj.aunit,  \
-                          'lunit' : 'mm'})
-        print(obj.OutList)
+                          'lunit' : obj.lunit })
         for zplane in obj.OutList :
             ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
     return(polyconeName)
 
+def processGDMLPolyhedraObject(obj, flag) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    #polyconeName = 'Cone' + obj.Name
+    polyhedraName = obj.Name
+    if flag == True :
+        cone = ET.SubElement(solids, 'polyhedra',{'name': polyhedraName, \
+                          'startphi': str(obj.startphi),  \
+                          'deltaphi': str(obj.deltaphi),  \
+                          'numsides': str(obj.numsides), \
+                          'aunit': obj.aunit,  \
+                          'lunit' : obj.lunit })
+        for zplane in obj.OutList :
+            ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
+                               'rmax' : str(zplane.rmax), \
+                               'z' : str(zplane.z)})
+    return(polyhedraName)
+
 def processGDMLQuadObject(obj, flag) :
-    print("GDMLQuadrangular")
+    GDMLShared.trace("GDMLQuadrangular")
     if flag == True :
         ET.SubElement(solids, 'quadrangular',{'vertex1': obj.v1, \
             'vertex2': obj.v2, 'vertex3': obj.v3, 'vertex4': obj.v4, \
@@ -852,25 +870,6 @@ def processGDML2dVertex(obj, flag) :
     if flag == True :
         print("Process 2d Vertex")
         ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
-
-
-# Need to add position of object2 relative to object1
-# Need to add rotation ??? !!!!
-def addBooleanPositionAndRotation(element,obj1,obj2):
-    print ("addBooleanPosition")
-    print ("Position obj1")
-    print (obj1.Placement.Base)
-    print ("Position obj2")
-    print (obj2.Placement.Base)
-    global defineCnt
-    positionName = 'Pos'+str(defineCnt)
-    pos = obj2.Placement.Base - obj1.Placement.Base
-    # Need to add rotation ??? !!!!
-    ET.SubElement(define, 'position', {'name': positionName, \
-            'x': str(pos[0]), 'y': str(pos[1]), 'z': str(pos[2]), \
-            'unit': 'mm'})
-    defineCnt += 1
-    ET.SubElement(element,'positionref', {'ref': positionName})
 
 def processElement(obj, item): # maybe part of material or element (common code)
     if hasattr(obj,'Z') :
@@ -1051,6 +1050,11 @@ def processGDMLSolid(obj, addVolsFlag) :
        if case("GDMLPolycone") :
           print("      GDMLPolycone") 
           return(processGDMLPolyconeObject(obj, addVolsFlag))
+          break
+             
+       if case("GDMLPolyhedra") :
+          print("      GDMLPolyhedra") 
+          return(processGDMLPolyhedraObject(obj, addVolsFlag))
           break
              
        if case("GDMLSphere") :
