@@ -138,9 +138,11 @@ def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
 
-    # modifs lambda (otherwise each time we open the gdml file, the part name will have one more GDMLBox added  
-    #mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
-    mycube=part.newObject("Part::FeaturePython",getName(solid))
+    # modifs lambda (otherwise each time we open the gdml file, 
+    # the part name will have one more GDMLBox added
+    # No - need to remove leading GDMLBox on export
+    mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
+    #mycube=part.newObject("Part::FeaturePython",getName(solid))
     x = GDMLShared.getVal(solid,'x')
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
@@ -344,20 +346,16 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     #lunit = GDMLShared.getRef(solid,'lunit')
     starttheta = GDMLShared.getVal(solid,'starttheta')
     deltatheta = GDMLShared.getVal(solid,'deltatheta')
-
-    # modifs lambda (otherwise each time we open the gdml file, the part name will have one more GDMLSphere added     
-    #mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
-    mysphere=part.newObject("Part::FeaturePython",getName(solid))
-
+    mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
     GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta,deltatheta,aunit, \
                lunit,material)
     # end modifs
 
-    aunit = getText(solid,'aunit','rad')
-    lunit = getText(solid,'lunit',"mm")
-    mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
-    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,0,3.00,aunit, \
-               lunit,material)
+    #aunit = getText(solid,'aunit','rad')
+    #lunit = getText(solid,'lunit',"mm")
+    #mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
+    #GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,0,3.00,aunit, \
+    #           lunit,material)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)

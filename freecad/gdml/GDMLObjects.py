@@ -900,33 +900,18 @@ class GDMLSphere(GDMLcommon) :
        # Need to add code to check values make a valid sphere
        cp = FreeCAD.Vector(0,0,0)
        axis_dir = FreeCAD.Vector(0,0,1)
-       # modifs
-       v_startAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta)
-       v_endAngle = 90.0 - getAngleDeg(fp.aunit, fp.starttheta + fp.deltatheta)
-       u_angle = getAngleDeg(fp.aunit, fp.deltaphi) 
-
-       if(v_startAngle>90.0): v_startAngle=90.0
-       elif(v_startAngle<-90.0): v_startAngle=-90.0
-
-       if(v_endAngle>90.0): v_endAngle=90.0
-       elif(v_endAngle<-90.0): v_endAngle=-90.0
-
-       if(u_angle>360.0): u_angle=360.0
-       elif(u_angle<0.0): u_angle=0.0
-
-       if(v_endAngle<v_startAngle): 
-           tmp=v_startAngle
-           v_startAngle = v_endAngle
-           v_endAngle=tmp
-          
-
-           FreeCAD.Console.PrintMessage('create Sphere file : '+ 
-                                 str(v_startAngle)+ ' '+
-                                 str(v_endAngle)+' '+str(u_angle)+'\n')
-       
-           sphere3 = sphere2.cut(sphere1)
-           fp.Shape = sphere3
-       # end modifs
+       rmin = mul * fp.rmin
+       rmax = mul * fp.rmax
+       sphere = Part.makeSphere(rmax)
+       if rmin > 0 :
+           sphere2 = Part.makeSphere(rmin)
+           sphere = sphere.cut(sphere2)
+       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
+          print('Angled section') 
+          sphere = angleSectionSolid(fp, rmax, rmax, sphere)
+       #base = FreeCAD.Vector(0,0,-z/2)
+       fp.Shape = sphere
+           
 
 class GDMLTrap(GDMLcommon) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \

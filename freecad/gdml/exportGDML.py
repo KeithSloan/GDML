@@ -448,12 +448,9 @@ def processObjectShape(obj) :
 
 def processBoxObject(obj, addVolsFlag) :
     # Needs unique Name
+    # This for non GDML Box
  
-    #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
-    #boxName = 'Box' + obj.Name
     boxName =  obj.Name
-    while( verifNameUnique(boxName) != True ):
-       boxName = boxName + '_'
 
     ET.SubElement(solids, 'box',{'name': boxName, \
                            'x': str(obj.Length.Value),  \
@@ -471,7 +468,8 @@ def processBoxObject(obj, addVolsFlag) :
 
 def processCylinderObject(obj, addVolsFlag) :
     # Needs unique Name
-    cylName = 'Cyl-' + obj.Name
+    # This is for non GDML cylinder/tube
+    cylName = obj.Name
     ET.SubElement(solids, 'tube',{'name': cylName, \
                            'rmax': str(obj.Radius.Value), \
                            'deltaphi': str(float(obj.Angle)), \
@@ -486,7 +484,7 @@ def processCylinderObject(obj, addVolsFlag) :
 
 def processConeObject(obj, addVolsFlag) :
     # Needs unique Name
-    coneName = 'Cone' + obj.Name
+    coneName = obj.Name
     ET.SubElement(solids, 'cone',{'name': coneName, \
                            'rmax1': str(obj.Radius1.Value),  \
                            'rmax2': str(obj.Radius2.Value),  \
@@ -512,8 +510,6 @@ def processSphereObject(obj, addVolsFlag) :
     #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
     #sphereName = 'Sphere' + obj.Name
     sphereName = obj.Name
-    while( verifNameUnique(sphereName) != True ):
-       sphereName = sphereName + '_'
 
     ET.SubElement(solids, 'sphere',{'name': sphereName, \
                            'rmax': str(obj.Radius.Value), \
@@ -605,12 +601,8 @@ def testDefaultPlacement(obj) :
 
 def processGDMLBoxObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
-    #boxName = 'Box' + obj.Name
-    boxName =  obj.Name
-    while( verifNameUnique(boxName) != True ):
-       boxName = boxName + '_'
+    # Remove leading GDMLBox_ from name on export 
+    boxName = obj.Name.split('_',1)[1] 
 
     if flag == True :
         ET.SubElement(solids, 'box',{'name': boxName, \
@@ -622,8 +614,8 @@ def processGDMLBoxObject(obj, flag) :
 
 def processGDMLConeObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    coneName = 'Cone' + obj.Name
+    # Remove leading GDMLTube_ from name on export 
+    coneName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'cone',{'name': coneName, \
                           'rmin1': str(obj.rmin1),  \
@@ -640,8 +632,8 @@ def processGDMLConeObject(obj, flag) :
 
 def processGDMLCutTubeObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    cTubeName = 'CutTube' + obj.Name
+    # Remove leading GDML text from name
+    cTubeName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'cutTube',{'name': cTubeName, \
                           'rmin': str(obj.rmin),  \
@@ -661,7 +653,7 @@ def processGDMLCutTubeObject(obj, flag) :
 
 def processGDMLElConeObject(obj, flag) :
     GDMLShared.trace('Elliptical Cone')
-    elconeName = 'Elc-'+obj.Name
+    elconeName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids,'elcone',{'name': elconeName, \
                 'dx': str(obj.dx), \
@@ -674,8 +666,7 @@ def processGDMLElConeObject(obj, flag) :
 
 def processGDMLEllipsoidObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    ellipsoidName = 'Ellipsoid' + obj.Name
+    ellipsoidName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'ellipsoid',{'name': ellipsoidName, \
                           'ax': str(obj.ax),  \
@@ -689,7 +680,7 @@ def processGDMLEllipsoidObject(obj, flag) :
 def processGDMLElTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    eltubeName = 'Cone' + obj.Name
+    eltubeName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'eltube',{'name': eltubeName, \
                           'dx': str(obj.dx),  \
@@ -703,7 +694,7 @@ def processGDMLPolyconeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
-    polyconeName = obj.Name
+    polyconeName = obj.Name.split('_',1)[1]
     if flag == True :
         cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
@@ -720,7 +711,7 @@ def processGDMLPolyhedraObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
-    polyhedraName = obj.Name
+    polyhedraName = obj.Name.split('_',1)[1]
     if flag == True :
         cone = ET.SubElement(solids, 'polyhedra',{'name': polyhedraName, \
                           'startphi': str(obj.startphi),  \
@@ -744,14 +735,8 @@ def processGDMLQuadObject(obj, flag) :
 
 def processGDMLSphereObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    #modif lambda (if we change the name here, each time we import and export the file, the name will be change 
-    #sphereName = 'sphere' + obj.Name
-    sphereName =  obj.Name
-    while( verifNameUnique(sphereName) != True ):
-       sphereName = sphereName + '_'
-
-    # modif lambda add starttheta and 
+    sphereName =  obj.Name.split('_',1)[1]
+    
     if flag == True :
         ET.SubElement(solids, 'sphere',{'name': sphereName, 
                            'rmin': str(obj.rmin),  
@@ -766,14 +751,13 @@ def processGDMLSphereObject(obj, flag) :
 
 def processGDMLTessellatedObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
     # Need to output unique define positions
     # Need to create set of positions
     #for items in obj.Outlist :
     #    ET.SubElement(GDMLShared.define,'position',{'name': obj.Name + 'v1', \
     #            'x':items.x , 'y':items.y, 'z':items.z,'unit':'mm')
 
-    tessName = 'Tess' + obj.Name
+    tessName = obj.Name.split('_',1)[1]
     if flag == True :
         tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
         print(len(obj.OutList))
@@ -791,8 +775,7 @@ def processGDMLTessellatedObject(obj, flag) :
 
 def processGDMLTrapObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    trapName = 'Trap' + obj.Name
+    trapName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'trap',{'name': trapName, \
                            'z': str(obj.z),  \
@@ -812,8 +795,7 @@ def processGDMLTrapObject(obj, flag) :
 
 def processGDMLTrdObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    trdName = 'Trd' + obj.Name
+    trdName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'trd',{'name': trdName, \
                            'z': str(obj.z),  \
@@ -834,7 +816,7 @@ def processGDMLTriangle(obj, flag) :
 def processGDMLTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    tubeName = 'Tube' + obj.Name
+    tubeName = obj.Name.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'tube',{'name': tubeName, \
                            'rmin': str(obj.rmin),  \
@@ -848,9 +830,8 @@ def processGDMLTubeObject(obj, flag) :
 
 def processGDMLXtruObject(obj, flag) :
     # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    #tubeName = 'Tube' + obj.Name
-    xtruName = obj.Name
+    xtruName = obj.Name.split('_',1)[1]
+
     if flag == True :
         xtru = ET.SubElement(solids, 'xtru',{'name': xtruName, \
                           'lunit' : obj.lunit})
@@ -1456,6 +1437,6 @@ def export(exportList,filename) :
     
     else :
        print("Need to a Part for export")
-       from PyQt5 import QtGui
+       from PyQt4 import QtGui
        QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
 
