@@ -84,26 +84,9 @@ def angleSectionSolid(fp, rmax, z, shape) :
     # Different Solids have different rmax and height
     import math
     #print("angleSectionSolid")
+    #print('rmax : '+str(rmax))
+    #print('z : '+str(z))
     #print("aunit : "+fp.aunit)
-    #print("startphi : "+str(fp.startphi))
-    #print("deltaphi : "+str(fp.deltaphi))
-    #
-    # Old code
-    #
-    #startphirad = getAngle(fp.aunit,fp.startphi)
-    #deltaphirad = getAngle(fp.aunit,fp.deltaphi)
-    #print("startphirad : "+str(startphirad))
-    #print("deltaphirad : "+str(deltaphirad))
-    #x1 = rmax*math.cos(startphirad)
-    #y1 = rmax*math.sin(startphirad)
-    #x2 = rmax*math.cos(startphirad+deltaphirad)
-    #y2 = rmax*math.sin(startphirad+deltaphirad)
-    #v1 = FreeCAD.Vector(0,0,0)
-    #v2 = FreeCAD.Vector(x1,y1,0)
-    #v3 = FreeCAD.Vector(x2,y2,0)
-    #v4 = FreeCAD.Vector(0,0,z)
-    #v5 = FreeCAD.Vector(x1,y1,z)
-    #v6 = FreeCAD.Vector(x2,y2,z)
     startPhiDeg = getAngleDeg(fp.aunit,fp.startphi)
     deltaPhiDeg = getAngleDeg(fp.aunit,fp.deltaphi)
     #print('delta')
@@ -119,25 +102,14 @@ def angleSectionSolid(fp, rmax, z, shape) :
     s1 = f1.revolve(v1,v4,deltaPhiDeg)
     s2 = s1.rotate(v1,v4,startPhiDeg)
 
-    #
-    # Old code
-    #
-    # Make the wires/faces
-    #f1 = make_face3(v1,v2,v3)
-    #f2 = make_face4(v1,v3,v6,v4)
-    #f3 = make_face3(v4,v6,v5)
-    #f4 = make_face4(v5,v2,v1,v4)
-    #shell=Part.makeShell([f1,f2,f3,f4])
-    #solid=Part.makeSolid(shell)
+    #Part.show(s2)
+    #return(shape.cut(s2))
+    #return(s2)
+    
     if deltaPhiDeg > 90 :
        return(shape.common(s2))
     else :   
        return(shape.cut(s2))
-    #return(shape.cut(s2))
-    #return(shape.common(s2))
-    #return(shape)
-    #return(solid)
-    #return(s2)
 
 def setMaterial(obj, m) :
     #print('setMaterial')
@@ -805,51 +777,59 @@ class GDMLPolycone(GDMLcommon) :
    def execute(self, fp):
        self.createGeometry(fp)
 
-   def createGeometry(self,fp) :    
-       zplanes = fp.OutList
-       cones = []
+   def createGeometry(self,fp) :
+
        #GDMLShared.setTrace(True)
+       zplanes = fp.OutList
        GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
        mul = GDMLShared.getMult(fp.lunit)
-       # Running height
-       rh = 0
+       fullHeight = mul * (zplanes[-1].z - zplanes[0].z) 
+       # Running Height
+       rh = 0.0
+       maxR = 0
        for i in range(0,len(zplanes)-1) :
            GDMLShared.trace('index : '+str(i))
-           h = zplanes[i+1].z - zplanes[i].z * mul
-           rm1 = zplanes[i].rmin * mul
-           rm2 = zplanes[i+1].rmin * mul
-           rM1 = zplanes[i].rmax * mul
-           rM2 = zplanes[i+1].rmax * mul
-           GDMLShared.trace('height :'+str(h))
-           GDMLShared.trace('rm1 :'+str(rm1)+' rm2 :'+str(rm2))
-           GDMLShared.trace('rM1 :'+str(rM1)+' rM2 :'+str(rM2))
-           v = FreeCAD.Vector(0,0,rh)
-           if rm1 != rm2 :
-              coneInner = Part.makeCone(rm1,rm2,h)
+           dh = (zplanes[i+1].z - zplanes[i].z) * mul
+           rmin1 = zplanes[i].rmin * mul
+           rmin2 = zplanes[i+1].rmin * mul
+           rmax1 = zplanes[i].rmax * mul
+           rmax2 = zplanes[i+1].rmax * mul
+           if rmax1 > maxR : maxR = rmax1
+           if rmax2 > maxR : maxR = rmax2
+           rmax2 = zplanes[i+1].rmax * mul
+           GDMLShared.trace('del height : '+str(dh))
+           GDMLShared.trace('rmin1 : '+str(rmin1)+' rmin2 : '+str(rmin2))
+           GDMLShared.trace('rmax1 : '+str(rmax1)+' rmax2 : '+str(rmax2))
+           if rmax1 != rmax2 :
+                cone1 = Part.makeCone(rmax1,rmax2,dh)
            else :
-              coneInner = Part.makeCylinder(rm1,h)
-           coneInner.translate(v)
-           if rM1 != rM2 :
-              coneOuter = Part.makeCone(rM1,rM2,h) 
+                cone1 = Part.makeCylinder(rmax1,dh)
+           if (rmin1 != 0 and rmin2 != 0 ) :
+                if rmin1 != rmin2 :
+                    cone2 = Part.makeCone(rmin1,rmin2,dh)
+                else :
+                    cone2 = Part.makeCylinder(rmin1,dh)
+                if rmax1 > rmin1 :
+                    cone = cone1.cut(cone2)
+                else :
+                    cone = cone2.cut(cone1)
            else :
-              coneOuter = Part.makeCylinder(rM1,h)
-           coneOuter.translate(v)
-           rh = rh + h
-           cones.append(coneOuter.cut(coneInner))
+                cone = cone1
+           #cone = cone1
+           vec = FreeCAD.Vector(0,0,rh)
+           rh = rh + dh
+           if i > 0 :
+               fusionCone = fusionCone.fuse(translate(cone,vec))
+           else :
+               fusionCone = cone
 
-       cone = cones[0]
-       GDMLShared.trace("Number of cones : "+str(len(cones)))
-       if len(cones) > 1 :
-          for merge in cones[1:] :
-              cone = cone.fuse(merge)
        if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          pCone  = angleSectionSolid(fp, rM1, h, cone)
+          shape = angleSectionSolid(fp, maxR, fullHeight, fusionCone)
        else :
-          pCone = cone    
-       #fp.Shape = cone
-       #fp.Shape = cones[0].fuse(cones[1])
-       base = FreeCAD.Vector(0,0,-rh/2)
-       fp.Shape = translate(pCone,base)
+          shape = fusionCone
+
+       fp.Shape = shape.translate(FreeCAD.Vector(0,0,-fullHeight/2.))
+       #fp.Shape = fusionCone
 
 class GDMLSphere(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
