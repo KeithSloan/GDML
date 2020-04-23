@@ -118,10 +118,13 @@ def getMult(unit) :
     trace('unit : '+unit)
     if unit == 'mm' or unit == None :
        return(1)
-    elif unit == 'cm' :
-       return(10)
-    elif unit == 'm' :
-       return(1000)
+    elif unit == 'cm' : return(10)
+    elif unit == 'm' : return(1000)
+    elif unit == 'um' : return(0.001)
+    elif unit == 'nm' : return(0.000001)
+    elif unit == 'dm' : return(100)
+    elif unit == 'm' : return(1000)
+    elif unit == 'km' : return(1000000)
     print('unit not handled : '+lunit)
 
 def getDegrees(flag, r) :
