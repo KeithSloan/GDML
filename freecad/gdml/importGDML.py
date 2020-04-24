@@ -253,6 +253,25 @@ def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(myeltube,displayMode)
     return myeltube
 
+def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLOrb, ViewProvider
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace(solid.attrib)
+    r = GDMLShared.getVal(solid,'r')
+    lunit = getText(solid,'lunit',"mm")
+    myorb=part.newObject("Part::FeaturePython","GDMLOrb:"+getName(solid))
+    GDMLOrb(myorb,r,lunit,material)
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myorb.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myorb.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myorb.ViewObject)
+       setDisplayMode(myorb,displayMode)
+    return myorb
+
 def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
             ViewProvider, ViewProviderExtension
@@ -667,6 +686,10 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
 
         if case('eltube'):
            return(createEltube(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
+        if case('orb'):
+           return(createOrb(part,solid,material,px,py,pz,rot,displayMode)) 
            break
 
         if case('polycone'):

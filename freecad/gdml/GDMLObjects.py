@@ -113,11 +113,14 @@ def angleSectionSolid(fp, rmax, z, shape) :
 
 def setMaterial(obj, m) :
     #print('setMaterial')
-    obj.material = MaterialsList
-    obj.material = 0
-    if len(MaterialsList) > 0 :
-       if not ( m == 0 or m == None ) : 
-          obj.material = MaterialsList.index(m)
+    if MaterialsList != None :
+        obj.material = MaterialsList
+        obj.material = 0
+        if len(MaterialsList) > 0 :
+            if not ( m == 0 or m == None ) : 
+                obj.material = MaterialsList.index(m)
+    else :
+        obj.Material = 0
 
 class GDMLcommon :
    def __init__(self, obj):
@@ -448,6 +451,87 @@ class GDMLElTube(GDMLcommon) :
        newtube = tube.transformGeometry(mat)
        base = FreeCAD.Vector(0,0,(fp.dz*mul)/2)
        fp.Shape = translate(newtube,base)
+
+class GDMLOrb(GDMLcommon) :
+   def __init__(self, obj, r, lunit, material) :
+      '''Add some custom properties for Polyhedra feature'''
+      obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
+      obj.addProperty("App::PropertyString","lunit","GDMLOrb", 
+                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
+                       "Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLOrb'
+      self.Object = obj
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['r', 'lunit'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       #GDMLShared.setTrace(True)
+       GDMLShared.trace("Execute Orb")
+       mul = GDMLShared.getMult(fp.lunit)
+       r = mul * fp.r
+       fp.Shape = Part.makeSphere(r)
+
+class GDMLParapiped(GDMLcommon) :
+   def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
+      '''Add some custom properties for Polyhedra feature'''
+      obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
+      obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
+      obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").z=z
+      obj.addProperty("App::PropertyFloat","alphi","GDMLParapiped", \
+                      "Angle with y axis").alphi=alphi
+      obj.addProperty("App::PropertyFloat","theta","GDMLParapiped", \
+                      "Polar Angle with faces").theta=theta
+      obj.addProperty("App::PropertyFloat","phi","GDMLParapiped", \
+                      "Azimuthal Angle with faces").phi=phi
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLParapiped", \
+                       "aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyString","lunit","GDMLParapiped", \
+                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
+                       "Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLParapiped'
+      self.Object = obj
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       #GDMLShared.setTrace(True)
+       GDMLShared.trace("Execute Polyparallepiped")
+       mul = GDMLShared.getMult(fp.lunit)
+       x = mul * fp.x
+       y = mul * fp.y
+       z = mul * fp.z
+       alpha = getAngleDeg(fp.aunit,fp.alpha)
+       theta = getAngleDeg(fp.aunit,fp.theta)
+       phi   = getAngleDeg(fp.aunit,fp.phi)
+
 
 class GDMLPolyhedra(GDMLcommon) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, material) :

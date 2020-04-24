@@ -689,6 +689,16 @@ def processGDMLElTubeObject(obj, flag) :
                           'lunit' : obj.lunit})
     return(eltubeName)
 
+def processGDMLOrbObject(obj, flag) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    orbName = obj.Name.split('_',1)[1]
+    if flag == True :
+        ET.SubElement(solids, 'orb',{'name': orbName, \
+                          'r': str(obj.r),  \
+                          'lunit' : obj.lunit})
+    return(orbName)
+
 
 def processGDMLPolyconeObject(obj, flag) :
     # Needs unique Name
@@ -1003,6 +1013,11 @@ def processGDMLSolid(obj, addVolsFlag) :
           return(processGDMLBoxObject(obj, addVolsFlag))
           break
 
+       if case("GDMLCone") :
+          print("      GDMLCone") 
+          return(processGDMLConeObject(obj,  addVolsFlag))
+          break
+
        if case("GDMLcutTube") :
           print("      GDMLcutTube") 
           return(processGDMLCutTubeObject(obj, addVolsFlag))
@@ -1023,9 +1038,9 @@ def processGDMLSolid(obj, addVolsFlag) :
           return(processGDMLElTubeObject(obj,  addVolsFlag))
           break
 
-       if case("GDMLCone") :
-          print("      GDMLCone") 
-          return(processGDMLConeObject(obj,  addVolsFlag))
+       if case("GDMLOrb") :
+          print("      GDMLOrb") 
+          return(processGDMLOrbObject(obj, addVolsFlag))
           break
 
        if case("GDMLPolycone") :
