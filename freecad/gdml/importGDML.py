@@ -741,17 +741,22 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(parent,physVol,phylvl,displayMode):
+def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     # physvol is xml entity
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    px, py, pz = GDMLShared.getPosition(physVol)
+    nx, ny, nz = GDMLShared.getPosition(physVol)
     rot = GDMLShared.getRotation(physVol)
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
+       #print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
+       part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
+       #print('New Vol : '+volref)
+       #print('px '+str(px)+' py '+str(py)+' pz '+str(pz))
+       #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
        GDMLShared.trace("px : "+str(px)+" : "+str(py)+" : "+str(pz))
-       expandVolume(part,volref,px,py,pz,rot,phylvl,displayMode)
+       expandVolume(part,volref,nx,ny,nz,rot,phylvl,displayMode)
 
 # ParseVolume name - structure is global
 # We get passed position and rotation
@@ -809,7 +814,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               if phylvl >= 0 :
                  phylvl += 1 
               # If negative always parse otherwise increase level    
-              parsePhysVol(parent,pv,phylvl,displayMode)
+              parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
            else :  # Just Add to structure 
               from PySide import QtGui, QtCore 
               volref = GDMLShared.getRef(pv,"volumeref")
@@ -855,7 +860,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               # create solids at pos & rot in physvols
               #parsePhysVol(part,pv,displayMode)
               #obj = parent.newObject("App::Part",name)
-              parsePhysVol(parent,pv,phylvl,displayMode)
+              parsePhysVol(parent,pv,phylvl,px,py,pz,displayMode)
        else :
            print("Not Volume or Assembly") 
 
