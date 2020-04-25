@@ -333,29 +333,21 @@ def createPolyhedra(part,solid,material,px,py,pz,rot,displayMode) :
 
 def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLSphere, ViewProvider
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateSphere : ")
+    GDMLShared.trace("Display Mode : "+str(displayMode))
     GDMLShared.trace(solid.attrib)
     rmin = GDMLShared.getVal(solid,'rmin')
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
-    # modifs
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    #aunit = GDMLShared.getRef(solid,'aunit')
-    #lunit = GDMLShared.getRef(solid,'lunit')
     starttheta = GDMLShared.getVal(solid,'starttheta')
     deltatheta = GDMLShared.getVal(solid,'deltatheta')
     mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
-    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta,deltatheta,aunit, \
-               lunit,material)
-    # end modifs
-
-    #aunit = getText(solid,'aunit','rad')
-    #lunit = getText(solid,'lunit',"mm")
-    #mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
-    #GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,0,3.00,aunit, \
-    #           lunit,material)
+    GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta, \
+            deltatheta,aunit, lunit,material)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
@@ -1069,7 +1061,7 @@ def processGDML(doc,filename,prompt):
     #before from lxml import etree
     try:
        from lxml import etree
-       FreeCAD.Console.PrintMessage("running with lxml.etree")
+       FreeCAD.Console.PrintMessage("running with lxml.etree \n")
        parser = etree.XMLParser(resolve_entities=True)
        root = etree.parse(filename, parser=parser)
 
@@ -1114,16 +1106,15 @@ def processGDML(doc,filename,prompt):
     # volDict dictionary of volume names and associated FreeCAD part
     volDict = {}
 
-    #part =doc.addObject("App::Part","Volumes")
     world = GDMLShared.getRef(setup,"world")
     part =doc.addObject("App::Part",world)
     #print(world)
-    global volCount
-    volCount = 0
     #scanVolume(part,world)
     parseVolume(part,world,0,0,0,None,phylvl,3)
-
-    doc.recompute()
+    # If only single volume reset Display Mode
+    if len(part.OutList) == 2 :
+        worldGDMLobj = part.OutList[1]
+        worldGDMLobj.ViewObject.DisplayMode = 'Shaded'
     if FreeCAD.GuiUp :
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')

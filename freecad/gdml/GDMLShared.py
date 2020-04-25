@@ -52,23 +52,21 @@ def processConstants(doc):
     #print(globals())
 
 
-### modif
 def processPosition(doc):
-    # need to be done
-    trace("Process Position (not taken into account in this version)")
+    # need to be done ?
+    trace("Position Not processed & Displayed")
 
 def processExpression(doc):
-    # need to be done
-    trace("Process expression (not taken into account in this version)")
+    # need to be done ?
+    trace("Expressions Not processed & Displayed")
 
 def processRotation(doc):
-    # need to be done
-    trace("Process rotation (not taken into account in this version)")
+    # need to be done ?
+    trace("Rotations Not processed & Displayed")
 
 def processQuantity(doc):
     # need to be done 
     trace("Process quantity (not taken into account in this version)" )
-###  end modif
 
 def getVal(ptr,var,vtype = 1) :
     # vtype 1 - float vtype 2 int
@@ -113,11 +111,17 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
-def getMult(unit) :
+def getMult(fp) :
     # Watch for unit and lunit
-    trace('unit : '+unit)
-    if unit == 'mm' or unit == None :
-       return(1)
+    if hasattr(fp,'lunit') :
+        trace('lunit : '+fp.lunit)
+        unit = fp.lunit
+    elif hasattr(fp,'unit') :
+        trace('unit : '+fp.unit)
+        unit = fp.unit
+    else :
+        return 1
+    if unit == 'mm' : return(1)
     elif unit == 'cm' : return(10)
     elif unit == 'm' : return(1000)
     elif unit == 'um' : return(0.001)
@@ -194,17 +198,13 @@ def processPlacement(base,rot) :
         return FreeCAD.Placement(base, rot,  c_rot)
 
 
-def getPositionFromAttrib(pos) :        
+def getPositionFromAttrib(pos) :
+    #print(pos.attrib)
     #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
-    if 'unit' in  pos.attrib :
-        mul = getMult(pos.get('unit'))
-        px = mul * getVal(pos,'x')
-        py = mul * getVal(pos,'y')
-        pz = mul * getVal(pos,'z')
-    else :     
-        px = getVal(pos,'x')
-        py = getVal(pos,'y')
-        pz = getVal(pos,'z')
+    mul = getMult(pos)
+    px = mul * getVal(pos,'x')
+    py = mul * getVal(pos,'y')
+    pz = mul * getVal(pos,'z')
     return px, py, pz     
 
 # Return x,y,z from position definition 
