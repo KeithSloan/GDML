@@ -100,16 +100,26 @@ def angleSectionSolid(fp, rmax, z, shape) :
 
     f1 = make_face4(v1,v2,v3,v4)
     s1 = f1.revolve(v1,v4,deltaPhiDeg)
-    s2 = s1.rotate(v1,v4,startPhiDeg)
+    # Problem with FreeCAD 0.18
+    #s2 = s1.rotate(v1,v4,startPhiDeg)
 
     #Part.show(s2)
     #return(shape.cut(s2))
     #return(s2)
     
+    #if deltaPhiDeg > 90 :
+    #   return(shape.common(s2))
+    #else :   
+    #   return(shape.cut(s2))
+
     if deltaPhiDeg > 90 :
-       return(shape.common(s2))
+        shape = shape.common(s1)
     else :   
-       return(shape.cut(s2))
+        shape = shape.cut(s1)
+    if startPhiDeg != 0 :
+        shape.rotate(FreeCAD.Vector(0,0,0), \
+                            FreeCAD.Vector(0,0,1),startPhiDeg)
+    return shape
 
 def setMaterial(obj, m) :
     #print('setMaterial')
