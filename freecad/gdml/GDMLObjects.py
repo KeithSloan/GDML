@@ -892,17 +892,15 @@ class GDMLSphere(GDMLcommon) :
        if hasattr(fp,'rmin') :
             rmin = mul * fp.rmin
             if rmin > 0 :
-                print('Make & Cut Inner')
+                #print('Make & Cut Inner')
                 sphere2 = Part.makeSphere(rmin)
                 sphere = sphere.cut(sphere2)
 
-       #if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-       #   print('Angled section') 
-       #   sphere = angleSectionSolid(fp, rmax, rmax, sphere)
-       #base = FreeCAD.Vector(0,0,-z/2)
+       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
+          print('Angled section') 
+          sphere = angleSectionSolid(fp, rmax, rmax, sphere)
        #Part.show(sphere)
-       #fp.Shape = sphere
-       fp.Shape = Part.makeSphere(100)
+       fp.Shape = sphere
            
 
 class GDMLTrap(GDMLcommon) :
