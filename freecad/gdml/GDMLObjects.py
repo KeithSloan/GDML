@@ -878,29 +878,56 @@ class GDMLSphere(GDMLcommon) :
        import math
        mul = GDMLShared.getMult(fp)
        # Need to add code to check values make a valid sphere
-       #cp = FreeCAD.Vector(0,0,0)
-       #axis_dir = FreeCAD.Vector(0,0,1)
+       spos = FreeCAD.Vector(0,0,0)
+       sdir = FreeCAD.Vector(0,0,1)
+       if hasattr(fp,'starttheta') :
+           starttheta = getAngleDeg(fp.aunit, fp.starttheta)
+       else :
+           starttheta = 0
+       if hasattr(fp,'deltatheta') :
+           deltatheta = getAngleDeg(fp.aunit, fp.deltatheta)
+       else :
+           deltatheta = 180
+       if hasattr(fp,'startphi') :
+           startphi = getAngleDeg(fp.aunit, fp.startphi)
+       else :
+           starttphi = 0
+       if hasattr(fp,'deltaphi') :
+           deltaphi = getAngleDeg(fp.aunit, fp.deltaphi)
+       else :
+           deltaphi = 180
+
+       #print('starttheta : '+str(starttheta))    
+       #print('startphi : '+str(startphi))    
+       #print('deltatheta : '+str(deltatheta))    
+       #print('deltaphi : '+str(deltaphi))    
+       deltatheta = deltatheta - starttheta - 90
+       starttheta = starttheta - 90
+       #print('starttheta : '+str(starttheta))    
+       #print('startphi : '+str(startphi))    
+       #print('deltatheta : '+str(deltatheta))    
+       #print('deltaphi : '+str(deltaphi))    
+
        if hasattr(fp,'rmax') :
-            rmax = mul * fp.rmax
-            if rmax > 0 :
-                sphere = Part.makeSphere(rmax)
-                #Part.show(sphere)
-            else :
-                print('Radius invalid')
+           rmax = mul * fp.rmax
+           if rmax > 0 :
+              sphere = Part.makeSphere(rmax,spos,sdir,starttheta, \
+                                 deltatheta, deltaphi)
+           else :
+              print('Radius invalid')
        else :
            print('Radius not set')
+
        if hasattr(fp,'rmin') :
             rmin = mul * fp.rmin
             if rmin > 0 :
-                #print('Make & Cut Inner')
-                sphere2 = Part.makeSphere(rmin)
-                sphere = sphere.cut(sphere2)
-
-       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          print('Angled section') 
-          sphere = angleSectionSolid(fp, rmax, rmax, sphere)
-       #Part.show(sphere)
-       fp.Shape = sphere
+              sphere2 = Part.makeSphere(rmin,spos,sdir,starttheta, \
+                                 deltatheta, deltaphi)
+              sphere = sphere.cut(sphere2)
+       if startphi != 0 :
+          fp.Shape = sphere.rotate(spos,sdir,startphi)
+       else :
+          fp.Shape = sphere
            
 
 class GDMLTrap(GDMLcommon) :
