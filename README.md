@@ -13,6 +13,11 @@ Needs lxml which should be installed as part of FreeCAD
    * FreeCAD_0.19.19424 and above.
    * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
    
+## FreeCAD version 0.18
+
+There are known problems with FreeCAD 0.18 it is recommended that you use FreeCAD 0.19 as above.
+( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+   
 ## No module named 'lxml'
 
 If you get an error message No module named 'lxml' then on Linux you can diagnose as follows.
