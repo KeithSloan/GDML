@@ -511,6 +511,7 @@ class GDMLPolyhedra(GDMLcommon) :
        GDMLShared.trace("Top rmax : "+str(rmax0))
        inner_faces = []
        outer_faces = []
+       numsides = int(numsides * 360 / getAngleDeg(fp.aunit,fp.deltaphi))
        # Deal with Inner Top Face
        # Could be point rmin0 = rmax0 = 0
        if rmin0 > 0 :
