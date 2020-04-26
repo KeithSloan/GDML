@@ -886,59 +886,73 @@ class GDMLSphere(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       # Based on code by Dam Lamb
        import math
        mul = GDMLShared.getMult(fp)
-       # Need to add code to check values make a valid sphere
+       rmax = mul * fp.rmax
+       Rmax = 2 * rmax
+       rmin = mul * fp.rmin
        spos = FreeCAD.Vector(0,0,0)
        sdir = FreeCAD.Vector(0,0,1)
-       if hasattr(fp,'starttheta') :
-           starttheta = getAngleDeg(fp.aunit, fp.starttheta)
+       HalfPi = math.pi / 2.0
+       TwoPi = 2 * math.pi
+       deltaphi = getAngleDeg(fp.aunit, fp.deltaphi)
+       if deltaphi != 360 :
+            sphere2 = Part.makeSphere(rmax,spos,sdir, \
+                     -90.0, 90.0, \
+                     getAngleDeg(fp.aunit, fp.deltaphi))
+            if fp.startphi != 0 :
+                sphere2.rotate(spos, sdir, getAngleDeg(fp.aunit,fp.startphi))
        else :
-           starttheta = 0
-       if hasattr(fp,'deltatheta') :
-           deltatheta = getAngleDeg(fp.aunit, fp.deltatheta)
-       else :
-           deltatheta = 180
-       if hasattr(fp,'startphi') :
-           startphi = getAngleDeg(fp.aunit, fp.startphi)
-       else :
-           starttphi = 0
-       if hasattr(fp,'deltaphi') :
-           deltaphi = getAngleDeg(fp.aunit, fp.deltaphi)
-       else :
-           deltaphi = 180
+            sphere2 = Part.makeSphere(rmax)
 
-       #print('starttheta : '+str(starttheta))    
-       #print('startphi : '+str(startphi))    
-       #print('deltatheta : '+str(deltatheta))    
-       #print('deltaphi : '+str(deltaphi))    
-       deltatheta = deltatheta - starttheta - 90
-       starttheta = starttheta - 90
-       #print('starttheta : '+str(starttheta))    
-       #print('startphi : '+str(startphi))    
-       #print('deltatheta : '+str(deltatheta))    
-       #print('deltaphi : '+str(deltaphi))    
+       # if starttheta > 0 cut the upper cone     
+       if fp.starttheta != 0 :
+            startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
 
-       if hasattr(fp,'rmax') :
-           rmax = mul * fp.rmax
-           if rmax > 0 :
-              sphere = Part.makeSphere(rmax,spos,sdir,starttheta, \
-                                 deltatheta, deltaphi)
-           else :
-              print('Radius invalid')
-       else :
-           print('Radius not set')
+            if startthetaRad > 0.0 :
+                if startthetaRad < HalfPi :
+                    sphere2 = sphere2.cut(Part.makeCone(0.0, \
+                            rmax/math.cos(startthetaRad), rmax))
+                elif startthetaRad == HalfPi :
+                    sphere2.cut(Part.makeBox(Rmax,Rmax,Rmax, \
+                                FreeCAD.Vector(-rmax,-rmax,-rmax)))
+                elif startthetaRad <= math.pi :
+                    sphere2 = sphere2.common(Part.makeCone(0.0, \
+                        rmax/math.cos(pi-startthetaRad),rmax, spos, \
+                        FreeCAD.Vector(0,0,-1.0)))
 
-       if hasattr(fp,'rmin') :
-            rmin = mul * fp.rmin
-            if rmin > 0 :
-              sphere2 = Part.makeSphere(rmin,spos,sdir,starttheta, \
-                                 deltatheta, deltaphi)
-              sphere = sphere.cut(sphere2)
-       if startphi != 0 :
-          fp.Shape = sphere.rotate(spos,sdir,startphi)
+       # if starttheta > 0 cut upper cone
+       startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
+       if startthetaRad > 0.0 :
+            if startthetaRad < HalfPi :
+                sphere2 = sphere2.cut(Part.makeCone(0.0, \
+                        rmax/math.cos(startthetaRad),rmax))
+            elif startthetaRad == HalfPi :
+                sphere2 = sphere2.common(Part.makeCone(0.0, \
+                    rmax/math.cos(pi-startthetaRad),rmax, spos, \
+                            FreeCAD(0,0,-1.0)))
+       # if deltatheta -> cut the down cone
+       deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
+       startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
+       thetaSum= startthetaRad + deltathetaRad
+       if thetaSum < math.pi :
+            if thetaSum > HalfPi :
+                sphere2 = sphere2.cut(Part.makeCone(0.0, \
+                    rmax/math.cos(math.pi - thetaSum), rmax, \
+                    spos, FreeCAD.Vector(0,0,-1.0)))
+            elif thetaSum == math.pi :
+                sphere2 = sphere.cut(Part.makeBox(Rmax,Rmax,Rmax, \
+                                    FreeCAD.Vector(-rmax,-rmax,-Rmax)))
+            elif thetaSum > 0 :
+                sphere2 = sphere2.common(Part.makeCone(0.0, \
+                    rmax/math.cos(math.pi-thetadeltaRad), \
+                    rmax, spos,sdir))
+       # if rmin -> cut the rmin sphere
+       if rmin <= 0 or rmin > rmax :
+           fp.Shape = sphere2
        else :
-          fp.Shape = sphere
+           fp.Shape = sphere2.cut(Part.makeSphere(rmin))
            
 
 class GDMLTrap(GDMLcommon) :
@@ -1146,39 +1160,27 @@ class GDMLTube(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       # Need to add code to check values make a valid Tube
-       # Define six vetices for the shape
        mul  = GDMLShared.getMult(fp)
        rmax = mul * fp.rmax
        rmin = mul * fp.rmin
-       z = fp.z * mul
+       z = mul * fp.z 
+       spos = FreeCAD.Vector(0,0,0)
+       sdir = FreeCAD.Vector(0,0,1)
        #print('mul : '+str(mul))
        #print('rmax : '+str(rmax))
        #print('z    : '+str(z))
        #print('deltaPhi : '+str(fp.deltaphi))
-       cyl1 = Part.makeCylinder(rmax, z)
-       if fp.rmin > 0 :
-          cyl2 = Part.makeCylinder(rmin, z)
-          cyl3 = cyl1.cut(cyl2)
-       else :
-          #print('Single Cylinder') 
-          cyl3 = cyl1
-
-       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          #print('Angled section') 
-          tube = angleSectionSolid(fp, rmax, z, cyl3)
-       else :
-          #print('Full arc') 
-          tube = cyl3
+       tube = Part.makeCylinder(rmax, z, spos, sdir,
+                    getAngleDeg(fp.aunit, fp.deltaphi))
+       
+       if fp.startphi != 0 :
+           tube.rotate(spos, sdir, getAngleDeg(fp.aunit,fp.startphi))
+       
+       if rmin > 0 :
+          tube = tube.cut(Part.makeCylinder(rmin, z))
+       
        base = FreeCAD.Vector(0,0,-z/2)
        fp.Shape = translate(tube,base)
-       #print(fp.Shape.isClosed())
-       #print(fp.Shape.isValid())
-       #print(fp.Shape.isClosed())
-       #print(fp.Shape.Solids)
-       #print(dir(fp.Shape.Solids))
-
-       #fp.Shape = solid
 
 class GDMLcutTube(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
