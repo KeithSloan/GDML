@@ -1,0 +1,3 @@
+python listSolids.py ../SampleFiles/CERN/lhcbvelo.gdml 
+python listSolids.py ../SampleFiles/CERN/Alice/alice.gdml 
+#python listSolids.py /home/keith/MEGAsync/GDML/Louis/luxe.gdml 
