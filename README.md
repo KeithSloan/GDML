@@ -216,7 +216,7 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 #### Usage
 
 * **Select** a volume/Part i.e. the first Part which is the GDML world volume and **click on** the `compound` icon **'C'**
-  1. Create an object named **Compound** under the selected Volume
+  1. Creates an object named **Compound** under the selected Volume
   2. Create an FEM Analysis Object.
   3. All the materials of the objects in the Volume/Part/Compound are added to the Analysis Object.
   
