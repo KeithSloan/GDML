@@ -490,8 +490,8 @@ class GDMLParapiped(GDMLcommon) :
       obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
       obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
       obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").z=z
-      obj.addProperty("App::PropertyFloat","alphi","GDMLParapiped", \
-                      "Angle with y axis").alphi=alphi
+      obj.addProperty("App::PropertyFloat","alpha","GDMLParapiped", \
+                      "Angle with y axis").alpha=alpha
       obj.addProperty("App::PropertyFloat","theta","GDMLParapiped", \
                       "Polar Angle with faces").theta=theta
       obj.addProperty("App::PropertyFloat","phi","GDMLParapiped", \
@@ -523,14 +523,23 @@ class GDMLParapiped(GDMLcommon) :
    
    def createGeometry(self,fp):
        #GDMLShared.setTrace(True)
+       import math
        GDMLShared.trace("Execute Polyparallepiped")
-       mul = GDMLShared.getMult(fp.lunit)
+       mul = GDMLShared.getMult(fp)
        x = mul * fp.x
        y = mul * fp.y
        z = mul * fp.z
-       alpha = getAngleDeg(fp.aunit,fp.alpha)
-       theta = getAngleDeg(fp.aunit,fp.theta)
-       phi   = getAngleDeg(fp.aunit,fp.phi)
+       alpha = getAngleRad(fp.aunit,fp.alpha)
+       theta = getAngleRad(fp.aunit,fp.theta)
+       phi   = getAngleRad(fp.aunit,fp.phi)
+       #adir = FreeCAD.Vector(x, x * tan(alpha), 0)
+       tdir = FreeCAD.Vector(x , x * math.tan(theta), 0)
+       print(tdir)
+       #pdir = FreeCAD.Vector(z,0,z* tan(phi))
+       para = Part.Vertex(0,0,0)
+       para.extrude(tdir)
+       Part.show(para)
+       fp.Shape = para
 
 
 class GDMLPolyhedra(GDMLcommon) :

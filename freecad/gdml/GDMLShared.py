@@ -113,11 +113,17 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
-def getMult(unit) :
+def getMult(fp) :
     # Watch for unit and lunit
-    trace('unit : '+unit)
-    if unit == 'mm' or unit == None :
-       return(1)
+    if hasattr(fp,'lunit') :
+        trace('lunit : '+fp.lunit)
+        unit = fp.lunit
+    elif hasattr(fp,'unit') :
+        trace('unit : '+fp.unit)
+        unit = fp.unit
+    else :
+        return 1
+    if unit == 'mm' : return(1)
     elif unit == 'cm' : return(10)
     elif unit == 'm' : return(1000)
     elif unit == 'um' : return(0.001)
