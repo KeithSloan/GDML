@@ -537,8 +537,7 @@ class GDMLParapiped(GDMLcommon) :
        print(tdir)
        #pdir = FreeCAD.Vector(z,0,z* tan(phi))
        para = Part.Vertex(0,0,0)
-       para.extrude(tdir)
-       Part.show(para)
+       para = para.extrude(tdir)
        fp.Shape = para
 
 
