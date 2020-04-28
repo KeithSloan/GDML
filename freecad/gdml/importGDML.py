@@ -735,11 +735,11 @@ def getVolSolid(name):
 
 def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     # physvol is xml entity
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     nx, ny, nz = GDMLShared.getPosition(physVol)
     nrot = GDMLShared.getRotation(physVol)
-    print('rot : '+str(rot))
+    #print('rot : '+str(rot)+' nrot : '+nrot)
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
        #print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
@@ -750,7 +750,7 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
        #print('px '+str(px)+' py '+str(py)+' pz '+str(pz))
        #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
        GDMLShared.trace("px : "+str(px)+" : "+str(py)+" : "+str(pz))
-       GDMLShared.setTrace(False)
+       #GDMLShared.setTrace(False)
        expandVolume(part,volref,nx,ny,nz,nrot,phylvl,displayMode)
 
 # ParseVolume name - structure is global
@@ -1052,7 +1052,7 @@ def processGDML(doc,filename,prompt):
     print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
-    FreeCAD.Console.PrintMessage('ImportGDML Version 0.2\n')
+    FreeCAD.Console.PrintMessage('ImportGDML Version 0.3\n')
     
     global pathName
     pathName = os.path.dirname(os.path.normpath(filename))
