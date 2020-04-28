@@ -890,6 +890,7 @@ class GDMLSphere(GDMLcommon) :
        import math
        mul = GDMLShared.getMult(fp)
        rmax = mul * fp.rmax
+       if rmax <= 0.0: return
        Rmax = 2 * rmax
        rmin = mul * fp.rmin
        spos = FreeCAD.Vector(0,0,0)
@@ -922,16 +923,6 @@ class GDMLSphere(GDMLcommon) :
                         rmax/math.cos(pi-startthetaRad),rmax, spos, \
                         FreeCAD.Vector(0,0,-1.0)))
 
-       # if starttheta > 0 cut upper cone
-       startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
-       if startthetaRad > 0.0 :
-            if startthetaRad < HalfPi :
-                sphere2 = sphere2.cut(Part.makeCone(0.0, \
-                        rmax/math.cos(startthetaRad),rmax))
-            elif startthetaRad == HalfPi :
-                sphere2 = sphere2.common(Part.makeCone(0.0, \
-                    rmax/math.cos(pi-startthetaRad),rmax, spos, \
-                            FreeCAD(0,0,-1.0)))
        # if deltatheta -> cut the down cone
        deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
        startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
@@ -946,7 +937,7 @@ class GDMLSphere(GDMLcommon) :
                                     FreeCAD.Vector(-rmax,-rmax,-Rmax)))
             elif thetaSum > 0 :
                 sphere2 = sphere2.common(Part.makeCone(0.0, \
-                    rmax/math.cos(math.pi-thetadeltaRad), \
+                    rmax/math.cos(math.pi-thetaSum), \
                     rmax, spos,sdir))
        # if rmin -> cut the rmin sphere
        if rmin <= 0 or rmin > rmax :
