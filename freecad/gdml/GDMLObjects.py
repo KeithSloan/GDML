@@ -532,13 +532,17 @@ class GDMLParapiped(GDMLcommon) :
        alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
-       #adir = FreeCAD.Vector(x, x * tan(alpha), 0)
-       tdir = FreeCAD.Vector(x , x * math.tan(theta), 0)
+       adir = FreeCAD.Vector(y * math.tan(alpha), y, 0)
+       tdir = FreeCAD.Vector(x , 0, math.tan(theta))
+       pdir = FreeCAD.Vector(z * math.tan(phi),0,z)
        print(tdir)
        #pdir = FreeCAD.Vector(z,0,z* tan(phi))
-       para = Part.Vertex(0,0,0)
-       para = para.extrude(tdir)
-       fp.Shape = para
+       para0 = Part.Vertex(0,0,0)
+       para1 = para0.extrude(tdir)
+       para2 = para1.extrude(pdir)
+       para3 = para2.extrude(adir)
+
+       fp.Shape = para3
 
 
 class GDMLPolyhedra(GDMLcommon) :
