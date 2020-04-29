@@ -239,6 +239,18 @@ def getPosition(xmlEntity) :
     else :
        return(getElementPosition(xmlEntity))
 
+def testPosition(xmlEntity,px,py,pz) :
+    posName = getRef(xmlEntity,"positionref")
+    if posName is not None :
+       trace("positionref : "+posName)
+       return(getDefinedPosition(posName))
+    pos = xmlEntity.find("position")
+    if pos != None :
+        trace(pos.attrib)
+        return(getPositionFromAttrib(pos))
+    else :
+       return px,py,pz 
+
 def getDefinedRotation(name) :
     # Just get defintion - used by parseMultiUnion passed to create solids
     return(define.find("rotation[@name='%s']" % name ))

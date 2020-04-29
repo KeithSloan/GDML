@@ -735,9 +735,10 @@ def getVolSolid(name):
 
 def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     # physvol is xml entity
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    nx, ny, nz = GDMLShared.getPosition(physVol)
+    #nx, ny, nz = GDMLShared.getPosition(physVol)
+    nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
     nrot = GDMLShared.getRotation(physVol)
     #print('rot : '+str(rot)+' nrot : '+nrot)
     volref = GDMLShared.getRef(physVol,"volumeref")
@@ -745,12 +746,13 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
        #print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
-       part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
+       #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
        #print('New Vol : '+volref)
        #print('px '+str(px)+' py '+str(py)+' pz '+str(pz))
        #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
        GDMLShared.trace("px : "+str(px)+" : "+str(py)+" : "+str(pz))
        #GDMLShared.setTrace(False)
+       # pass on position & rot to GDMLsolid etc
        expandVolume(part,volref,nx,ny,nz,nrot,phylvl,displayMode)
 
 # ParseVolume name - structure is global
