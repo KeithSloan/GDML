@@ -325,6 +325,7 @@ class ExpandFeature :
             print("Selected")
             print(obj.Label[:12])
             if obj.Label[:12] == "NOT_Expanded" :
+               import lxml.etree  as ET 
                #parent = obj.InList[0]
                name = obj.Label[13:]
                obj.Label = name
@@ -340,7 +341,15 @@ class ExpandFeature :
                x = obj.Placement.Base[0]
                y = obj.Placement.Base[1]
                z = obj.Placement.Base[2]
-               expandVolume(obj,name,x,y,z,None,0,3)
+               # Need to update importGDML to use Placement.Rotation
+               # bot for now create a appropriate GDML rotation
+               angles = obj.Placement.Rotation.toEuler()
+               rot = ET.Element('rotation',{'name':'dummy', \
+                       'x':str(angles[0]), \
+                       'y':str(angles[1]), \
+                       'z':str(angles[2]), \
+                       'aunit' : 'deg'})
+               expandVolume(obj,name,x,y,z,rot,0,3)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_ExpandVol', 'MenuText': \
