@@ -358,6 +358,31 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(mysphere,displayMode)
     return mysphere
 
+def createTorus(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLTorus, ViewProvider
+    #GDMLShared.setTrace(True)
+    GDMLShared.trace("CreateTorus : ")
+    GDMLShared.trace(solid.attrib)
+    rmin = GDMLShared.getVal(solid,'rmin')
+    rmax = GDMLShared.getVal(solid,'rmax')
+    rtor = GDMLShared.getVal(solid,'rtor')
+    startphi = GDMLShared.getVal(solid,'startphi')
+    deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    mytorus=part.newObject("Part::FeaturePython","GDMLTorus:"+getName(solid))
+    GDMLTorus(mytorus,rmin,rmax,rtor,startphi,deltaphi, \
+              aunit, lunit,material)
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mytorus.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mytorus.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytorus.ViewObject)
+       setDisplayMode(mytorus,displayMode)
+    return mytorus
+
 def createTrap(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTrap, ViewProvider
     GDMLShared.trace("CreateTrap : ")
@@ -673,6 +698,10 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
            return(createSphere(part,solid,material,px,py,pz,rot,displayMode)) 
            break
 
+        if case('torus'):
+           return(createTorus(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
         if case('trap'):
            return(createTrap(part,solid,material,px,py,pz,rot,displayMode)) 
            break
@@ -735,7 +764,7 @@ def getVolSolid(name):
 
 def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     # physvol is xml entity
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     #nx, ny, nz = GDMLShared.getPosition(physVol)
     nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)

@@ -772,6 +772,22 @@ def processGDMLTessellatedObject(obj, flag) :
 
     return(tessName)
 
+def processGDMLTorusObject(obj, flag) :
+    # Needs unique Name
+
+    torusName = obj.Name.split('_',1)[1]
+    if flag == True :
+        torus = ET.SubElement(solids, 'torus',{'name': torusName,
+                    'rmin': str(obj.rmin), \
+                    'rmax': str(obj.rmax), \
+                    'rtor': str(obj.rtor), \
+                    'startphi': str(obj.startphi), \
+                    'deltaphi': str(obj.deltaphi), \
+                    'aunit': obj.aunit, \
+                    'lunit': obj.lunit})
+
+    return(torusName)
+
 
 def processGDMLTrapObject(obj, flag) :
     # Needs unique Name
@@ -1046,6 +1062,11 @@ def processGDMLSolid(obj, addVolsFlag) :
        if case("GDMLTessellated") :
           print("      GDMLTessellated") 
           return(processGDMLTessellatedObject(obj, addVolsFlag))
+          break
+
+       if case("GDMLTorus") :
+          print("      GDMLTorus") 
+          return(processGDMLTorusObject(obj, addVolsFlag))
           break
 
        if case("GDMLTrap") :

@@ -561,6 +561,62 @@ class GDMLPolyhedra(GDMLcommon) :
        else :
           fp.Shape = translate(shape,base)
 
+class GDMLTorus(GDMLcommon) :
+   def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
+                aunit, lunit, material) :
+      obj.addProperty("App::PropertyFloat","rmin","GDMLTorus", \
+                      "rmin").rmin=rmin
+      obj.addProperty("App::PropertyFloat","rmax","GDMLTorus", \
+                      "rmax").rmax=rmax
+      obj.addProperty("App::PropertyFloat","rtor","GDMLTorus", \
+                      "rtor").rtor=rtor
+      obj.addProperty("App::PropertyFloat","startphi","GDMLTorus", \
+                      "startphi").startphi=startphi
+      obj.addProperty("App::PropertyFloat","deltaphi","GDMLTorus", \
+                      "deltaphi").deltaphi=deltaphi
+      obj.addProperty("App::PropertyString","aunit","GDMLTorus", \
+                      "aunit").aunit=aunit
+      obj.addProperty("App::PropertyString","lunit","GDMLTorus", \
+                      "lunit").lunit=lunit
+
+      obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
+                       "Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLTorus'
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['rmin', 'rmax', 'rtor','startphi','deltaphi', \
+                   'aunit','lunit'] :
+          self.createGeometry(fp)
+            
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       GDMLShared.trace("Create Torus")
+       mul = GDMLShared.getMult(fp)
+       rmin = mul*fp.rmin
+       rmax = mul*fp.rmax
+       rtor = mul*fp.rtor
+
+       spnt = FreeCAD.Vector(0,0,0)
+       sdir = FreeCAD.Vector(0,0,1)
+
+       innerTorus = Part.makeTorus(rtor,rmin,spnt,sdir,0,360,  \
+                    getAngleDeg(fp.aunit, fp.deltaphi))
+       outerTorus = Part.makeTorus(rtor,rmax,spnt,sdir,0,360,  \
+                    getAngleDeg(fp.aunit, fp.deltaphi))
+       torus = outerTorus.cut(innerTorus)
+       if fp.startphi != 0 :
+            torus.rotate(spnt,sdir,getAngle(fp.aunit,fp.startphi))
+       fp.Shape = torus     
+
 class GDMLXtru(GDMLcommon) :
    def __init__(self, obj, lunit, material) :
       obj.addExtension('App::OriginGroupExtensionPython', self)
