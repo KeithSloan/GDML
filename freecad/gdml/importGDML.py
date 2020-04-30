@@ -843,26 +843,13 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               # If negative always parse otherwise increase level    
               parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
            else :  # Just Add to structure 
-              from PySide import QtGui, QtCore 
               volref = GDMLShared.getRef(pv,"volumeref")
-              print(volref)
-              posref = GDMLShared.getRef(pv,'positionref')
-              print(posref)
-              GDMLShared.trace("Volume ref : "+volref)
-              GDMLShared.trace("Position ref : "+posref)
-              pos = define.find("position[@name='%s']" % posref )
-              print(pos)
-              if pos is not None :
-                 px = GDMLShared.getVal(pos,'x')
-                 py = GDMLShared.getVal(pos,'y')
-                 pz = GDMLShared.getVal(pos,'z')
-              else :
-                 px = py = pz = 0 
+              nx, ny, nz = GDMLShared.getPosition(physVol)
+              #nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
+              nrot = GDMLShared.getRotation(physVol)
               part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
-              base = FreeCAD.Vector(px,py,pz)
-              # For now ignore rotation
-              #part.Placement = GDMLShared.processPlacement(base,rot)
-              part.Placement = GDMLShared.processPlacement(base,None)
+              base = FreeCAD.Vector(nx,ny,nz)
+              part.Placement = GDMLShared.processPlacement(base,nrot)
               #print(dir(part))
               #
               #obj = part.newObject("App::Annotation","Not Expanded")
