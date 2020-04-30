@@ -253,6 +253,69 @@ def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(myeltube,displayMode)
     return myeltube
 
+def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLOrb, ViewProvider
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace(solid.attrib)
+    r = GDMLShared.getVal(solid,'r')
+    lunit = getText(solid,'lunit',"mm")
+    myorb=part.newObject("Part::FeaturePython","GDMLOrb:"+getName(solid))
+    GDMLOrb(myorb,r,lunit,material)
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myorb.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myorb.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myorb.ViewObject)
+       setDisplayMode(myorb,displayMode)
+    return myorb
+
+def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLOrb, ViewProvider
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace(solid.attrib)
+    r = GDMLShared.getVal(solid,'r')
+    lunit = getText(solid,'lunit',"mm")
+    myorb=part.newObject("Part::FeaturePython","GDMLOrb:"+getName(solid))
+    GDMLOrb(myorb,r,lunit,material)
+    GDMLShared.trace("CreateOrb : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myorb.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myorb.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myorb.ViewObject)
+       setDisplayMode(myorb,displayMode)
+    return myorb
+
+def createPara(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLPara, ViewProvider
+    GDMLShared.trace("CreatePara : ")
+    GDMLShared.trace(solid.attrib)
+    aunit = getText(solid,'aunit',"rad")
+    lunit = getText(solid,'lunit',"mm")
+    x = GDMLShared.getVal(solid,'x')
+    y = GDMLShared.getVal(solid,'y')
+    z = GDMLShared.getVal(solid,'z')
+    alpha = GDMLShared.getVal(solid,'alpha')
+    theta = GDMLShared.getVal(solid,'theta')
+    phi = GDMLShared.getVal(solid,'phi')
+    mypara=part.newObject("Part::FeaturePython","GDMLPara:"+getName(solid))
+    GDMLPara(mypara,x,y,z,alpha,theta,phi,aunit,lunit,material)
+    GDMLShared.trace("CreatePara : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mypara.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mypara.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mypara.ViewObject)
+       setDisplayMode(mypara,displayMode)
+    return mypara
+
 def createPolycone(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
             ViewProvider, ViewProviderExtension
@@ -684,6 +747,14 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
 
         if case('eltube'):
            return(createEltube(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
+        if case('orb'):
+           return(createOrb(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
+        if case('para'):
+           return(createPara(part,solid,material,px,py,pz,rot,displayMode)) 
            break
 
         if case('polycone'):

@@ -123,11 +123,14 @@ def angleSectionSolid(fp, rmax, z, shape) :
 
 def setMaterial(obj, m) :
     #print('setMaterial')
-    obj.material = MaterialsList
-    obj.material = 0
-    if len(MaterialsList) > 0 :
-       if not ( m == 0 or m == None or m == '') : 
-          obj.material = MaterialsList.index(m)
+    if MaterialsList != None :
+        obj.material = MaterialsList
+        obj.material = 0
+        if len(MaterialsList) > 0 :
+            if not ( m == 0 or m == None ) : 
+                obj.material = MaterialsList.index(m)
+    else :
+        obj.Material = 0
 
 class GDMLcommon :
    def __init__(self, obj):
@@ -458,6 +461,107 @@ class GDMLElTube(GDMLcommon) :
        newtube = tube.transformGeometry(mat)
        base = FreeCAD.Vector(0,0,(fp.dz*mul)/2)
        fp.Shape = translate(newtube,base)
+
+class GDMLOrb(GDMLcommon) :
+   def __init__(self, obj, r, lunit, material) :
+      '''Add some custom properties for Polyhedra feature'''
+      obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
+      obj.addProperty("App::PropertyString","lunit","GDMLOrb", 
+                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
+                       "Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLOrb'
+      self.Object = obj
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['r', 'lunit'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       #GDMLShared.setTrace(True)
+       GDMLShared.trace("Execute Orb")
+       mul = GDMLShared.getMult(fp.lunit)
+       r = mul * fp.r
+       fp.Shape = Part.makeSphere(r)
+
+class GDMLPara(GDMLcommon) :
+   def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
+      '''Add some custom properties for Polyhedra feature'''
+      obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
+      obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
+      obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").z=z
+      obj.addProperty("App::PropertyFloat","alpha","GDMLParapiped", \
+                      "Angle with y axis").alpha=alpha
+      obj.addProperty("App::PropertyFloat","theta","GDMLParapiped", \
+                      "Polar Angle with faces").theta=theta
+      obj.addProperty("App::PropertyFloat","phi","GDMLParapiped", \
+                      "Azimuthal Angle with faces").phi=phi
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLParapiped", \
+                       "aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyString","lunit","GDMLParapiped", \
+                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
+                       "Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLPara'
+      self.Object = obj
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       #GDMLShared.setTrace(True)
+       import math
+       GDMLShared.trace("Execute Polyparallepiped")
+       mul = GDMLShared.getMult(fp)
+       x = mul * fp.x
+       y = mul * fp.y
+       z = mul * fp.z
+       alpha = getAngleRad(fp.aunit,fp.alpha)
+       theta = getAngleRad(fp.aunit,fp.theta)
+       phi   = getAngleRad(fp.aunit,fp.phi)
+       #dir1 = FreeCAD.Vector(400,0,0)
+       dir1 = FreeCAD.Vector(x,0,0)
+       #dir2 = FreeCAD.Vector(400*math.tan(alpha),400,0)
+       dir2 = FreeCAD.Vector(y*math.tan(alpha),y,0)
+       #dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
+       #dir3 = FreeCAD.Vector(z/math.tan(30*math.pi/180),0,z)
+       if phi != 0 :
+            dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
+       else : 
+            dir3 = FreeCAD.Vector(0,0,z)
+       #print(dir1)
+       #print(dir2)
+       #print(dir3)
+       para0 = Part.Vertex(0,0,0)
+       para1 = para0.extrude(dir1)
+       para2 = para1.extrude(dir2)
+       para3 = para2.extrude(dir3)
+       base = FreeCAD.Vector(-x/2,-y/2,-z/2)
+       fp.Shape = translate(para3,base)
+
 
 class GDMLPolyhedra(GDMLcommon) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, material) :
