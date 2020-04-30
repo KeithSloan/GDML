@@ -844,9 +844,9 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
            else :  # Just Add to structure 
               volref = GDMLShared.getRef(pv,"volumeref")
-              nx, ny, nz = GDMLShared.getPosition(physVol)
-              #nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
-              nrot = GDMLShared.getRotation(physVol)
+              nx, ny, nz = GDMLShared.getPosition(pv)
+              #nx, ny, nz = GDMLShared.testPosition(pv,px,py,pz)
+              nrot = GDMLShared.getRotation(pv)
               part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
