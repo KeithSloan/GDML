@@ -292,7 +292,7 @@ def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
     return myorb
 
 def createPara(part,solid,material,px,py,pz,rot,displayMode) :
-    from .GDMLObjects import GDMLParapiped, ViewProvider
+    from .GDMLObjects import GDMLPara, ViewProvider
     GDMLShared.trace("CreatePara : ")
     GDMLShared.trace(solid.attrib)
     aunit = getText(solid,'aunit',"rad")
@@ -304,7 +304,7 @@ def createPara(part,solid,material,px,py,pz,rot,displayMode) :
     theta = GDMLShared.getVal(solid,'theta')
     phi = GDMLShared.getVal(solid,'phi')
     mypara=part.newObject("Part::FeaturePython","GDMLPara:"+getName(solid))
-    GDMLParapiped(mypara,x,y,z,alpha,theta,phi,aunit,lunit,material)
+    GDMLPara(mypara,x,y,z,alpha,theta,phi,aunit,lunit,material)
     GDMLShared.trace("CreatePara : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)

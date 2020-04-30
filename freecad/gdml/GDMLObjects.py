@@ -484,7 +484,7 @@ class GDMLOrb(GDMLcommon) :
        r = mul * fp.r
        fp.Shape = Part.makeSphere(r)
 
-class GDMLParapiped(GDMLcommon) :
+class GDMLPara(GDMLcommon) :
    def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
@@ -505,7 +505,7 @@ class GDMLParapiped(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
-      self.Type = 'GDMLParapiped'
+      self.Type = 'GDMLPara'
       self.Object = obj
       obj.Proxy = self
 
@@ -532,17 +532,25 @@ class GDMLParapiped(GDMLcommon) :
        alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
-       adir = FreeCAD.Vector(y * math.tan(alpha), y, 0)
-       tdir = FreeCAD.Vector(x , 0, math.tan(theta))
-       pdir = FreeCAD.Vector(z * math.tan(phi),0,z)
-       print(tdir)
-       #pdir = FreeCAD.Vector(z,0,z* tan(phi))
+       #dir1 = FreeCAD.Vector(400,0,0)
+       dir1 = FreeCAD.Vector(x,0,0)
+       #dir2 = FreeCAD.Vector(400*math.tan(alpha),400,0)
+       dir2 = FreeCAD.Vector(y*math.tan(alpha),y,0)
+       #dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
+       #dir3 = FreeCAD.Vector(z/math.tan(30*math.pi/180),0,z)
+       if phi != 0 :
+            dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
+       else : 
+            dir3 = FreeCAD.Vector(0,0,z)
+       #print(dir1)
+       #print(dir2)
+       #print(dir3)
        para0 = Part.Vertex(0,0,0)
-       para1 = para0.extrude(tdir)
-       para2 = para1.extrude(pdir)
-       para3 = para2.extrude(adir)
-
-       fp.Shape = para3
+       para1 = para0.extrude(dir1)
+       para2 = para1.extrude(dir2)
+       para3 = para2.extrude(dir3)
+       base = FreeCAD.Vector(-x/2,-y/2,-z/2)
+       fp.Shape = translate(para3,base)
 
 
 class GDMLPolyhedra(GDMLcommon) :

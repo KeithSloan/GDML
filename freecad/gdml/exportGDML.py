@@ -143,7 +143,7 @@ def GDMLstructure() :
 
 def defineMaterials():
     # Replaced by loading Default
-    print("Define Materials")
+    #print("Define Materials")
     global materials
    
 def defineWorldBox(bbox):
@@ -224,10 +224,10 @@ def createAdjustedLVandPV(obj, name, solidName, delta):
 
 def reportObject(obj) :
     
-    print("Report Object")
-    print(obj)
-    print("Name : "+obj.Name)
-    print("Type : "+obj.TypeId) 
+    GDMLShared.trace("Report Object")
+    GDMLShared.trace(obj)
+    GDMLShared.trace("Name : "+obj.Name)
+    GDMLShared.trace("Type : "+obj.TypeId) 
     if hasattr(obj,'Placement') :
        print("Placement")
        print("Pos   : "+str(obj.Placement.Base))
@@ -240,7 +240,7 @@ def reportObject(obj) :
       # FreeCAD GDML Parts                      #
       ###########################################
       if case("Part::FeaturePython") : 
-         print("Part::FeaturePython")
+         GDMLShared.trace("Part::FeaturePython")
          #
          #if hasattr(obj.Proxy,'Type'):
          #   print (obj.Proxy.Type)
@@ -311,9 +311,9 @@ def processPlanar(obj, shape, name ) :
     print ('Polyhedron ????')
     global defineCnt
     #
-    print("Add tessellated Solid")
+    #print("Add tessellated Solid")
     tess = ET.SubElement(solids,'tessellated',{'name': name})
-    print("Add Vertex positions")
+    #print("Add Vertex positions")
     for f in shape.Faces :
        baseVrt = defineCnt
        for vrt in f.Vertexes :
@@ -324,7 +324,7 @@ def processPlanar(obj, shape, name ) :
               'z': str(vrt.Point.z), \
               'unit': 'mm'})
            defineCnt += 1
-       print("Add vertex to tessellated Solid")
+       #print("Add vertex to tessellated Solid")
        vrt1 = 'v'+str(baseVrt)
        vrt2 = 'v'+str(baseVrt+1)
        vrt3 = 'v'+str(baseVrt+2)
@@ -417,8 +417,8 @@ def processObjectShape(obj) :
     if not hasattr(obj,'Shape') :
        return 
     shape = obj.Shape
-    print (shape)
-    print(shape.ShapeType)
+    #print (shape)
+    #print(shape.ShapeType)
     while switch(shape.ShapeType) : 
       if case("Mesh::Feature") :
          print("Mesh - Should not occur should have been handled")
@@ -499,7 +499,7 @@ def processConeObject(obj, addVolsFlag) :
     return(coneName)
 
 def processSection(obj, addVolsflag) :
-    print("Process Section")
+    #print("Process Section")
     ET.SubElement(solids, 'section',{'vertex1': obj.v1, \
             'vertex2': obj.v2, 'vertex3': obj.v3, 'vertex4': obj.v4, \
             'type': obj.vtype})
@@ -523,7 +523,7 @@ def processSphereObject(obj, addVolsFlag) :
     return(sphereName)
 
 def addPhysVol(xmlVol, volName) :
-    print("Add PhysVol to Vol") 
+    #print("Add PhysVol to Vol") 
     pvol = ET.SubElement(xmlVol,'physvol')
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
@@ -699,6 +699,21 @@ def processGDMLOrbObject(obj, flag) :
                           'lunit' : obj.lunit})
     return(orbName)
 
+def processGDMLParaObject(obj, flag) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    paraName = obj.Name.split('_',1)[1]
+    if flag == True :
+        ET.SubElement(solids, 'para',{'name': paraName, \
+                          'x': str(obj.x),  \
+                          'y': str(obj.y),  \
+                          'z': str(obj.z),  \
+                          'alpha':str(obj.alpha), \
+                          'theta':str(obj.theta), \
+                          'phi':str(obj.phi), \
+                          'lunit' : obj.lunit})
+    return(paraName)
+
 
 def processGDMLPolyconeObject(obj, flag) :
     # Needs unique Name
@@ -818,7 +833,7 @@ def processGDMLTrdObject(obj, flag) :
 
 def processGDMLTriangle(obj, flag) :
     if flag == True :
-        print("Process GDML Triangle")
+        #print("Process GDML Triangle")
         ET.SubElement(solids, 'triangular',{'vertex1': obj.v1, \
             'vertex2': obj.v2, 'vertex3': obj.v3,  \
             'type': obj.vtype})
@@ -859,7 +874,7 @@ def processGDMLXtruObject(obj, flag) :
 
 def processGDML2dVertex(obj, flag) :
     if flag == True :
-        print("Process 2d Vertex")
+        #print("Process 2d Vertex")
         ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
 
 def processElement(obj, item): # maybe part of material or element (common code)
@@ -885,11 +900,11 @@ def processElement(obj, item): # maybe part of material or element (common code)
           atom.set('value',str(obj.atom_value)) 
 
 def processMaterials() :
-    print("\nProcess Materials")
+    #print("\nProcess Materials")
     global materials
    
     for obj in FreeCAD.ActiveDocument.Objects:
-        print(obj.TypeId+" : "+obj.Label)
+        #print(obj.TypeId+" : "+obj.Label)
 
         #processMaterialObject(obj)
         if processMaterialObject(obj) == False :
@@ -897,24 +912,24 @@ def processMaterials() :
 
 def processMaterialObject(obj) :
     global item
-    print(obj.Label)
+    #print(obj.Label)
     while switch(obj.TypeId) :
        if case("App::DocumentObjectGroupPython"):
-          print("   Object List : "+obj.Name)
+          #print("   Object List : "+obj.Name)
           #print(obj)
           while switch(obj.Name) :
              if case("Materials") : 
-                print("Materials")
+                #print("Materials")
                 #return True
                 break
 
              if case("Isotopes") :
-                print("Isotopes")
+                #print("Isotopes")
                 #return True
                 break
             
              if case("Elements") :
-                print("Elements")
+                #print("Elements")
                 #return True
                 break
          
@@ -930,7 +945,7 @@ def processMaterialObject(obj) :
           #return   
             
           if isinstance(obj.Proxy,GDMLmaterial) :
-             print("GDML material")
+             #print("GDML material")
              #print(dir(obj))
 
              item = ET.SubElement(materials,'material',{'name': obj.Name})
@@ -959,7 +974,7 @@ def processMaterialObject(obj) :
 
           if isinstance(obj.Proxy,GDMLfraction) :
 
-             print("GDML fraction :" + obj.Name)
+             #print("GDML fraction :" + obj.Name)
              # need to strip number making it unique
              ET.SubElement(item,'fraction',{'n': str(obj.n), \
                      'ref': obj.Name[:-3]})
@@ -968,7 +983,7 @@ def processMaterialObject(obj) :
              break
 
           if isinstance(obj.Proxy,GDMLcomposite) :
-             print("GDML Composite")
+             #print("GDML Composite")
              ET.SubElement(item,'composite',{'n': str(obj.n), \
              #        'ref': obj.Name[:obj.Name.index('_')]})
              'ref': obj.Name[:-3]})
@@ -976,7 +991,7 @@ def processMaterialObject(obj) :
              break
 
           if isinstance(obj.Proxy,GDMLisotope) :
-             print("GDML isotope")
+             #print("GDML isotope")
              item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
                                                       'Z': str(obj.Z), \
                                                       'name' : obj.Name})
@@ -986,7 +1001,7 @@ def processMaterialObject(obj) :
              break
 
           if isinstance(obj.Proxy,GDMLelement) :
-             print("GDML element")
+             #print("GDML element")
              item = ET.SubElement(materials,'element',{'name': obj.Name})
              processElement(obj,item)
              #return True
@@ -1006,81 +1021,85 @@ def processMaterialObject(obj) :
 def processGDMLSolid(obj, addVolsFlag) :
     # Deal with GDML Solids first
     # Deal with FC Objects that convert
-    print(obj.Proxy.Type)
+    #print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLBox") :
-          print("      GDMLBox") 
+          #print("      GDMLBox") 
           return(processGDMLBoxObject(obj, addVolsFlag))
           break
 
        if case("GDMLCone") :
-          print("      GDMLCone") 
+          #print("      GDMLCone") 
           return(processGDMLConeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLcutTube") :
-          print("      GDMLcutTube") 
+          #print("      GDMLcutTube") 
           return(processGDMLCutTubeObject(obj, addVolsFlag))
           break
        
        if case("GDMLElCone") :
-          print("      GDMLElCone") 
+          #print("      GDMLElCone") 
           return(processGDMLElConeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLEllipsoid") :
-          print("      GDMLEllipsoid") 
+          #print("      GDMLEllipsoid") 
           return(processGDMLEllipsoidObject(obj, addVolsFlag))
           break
 
        if case("GDMLElTube") :
-          print("      GDMLElTube") 
+          #print("      GDMLElTube") 
           return(processGDMLElTubeObject(obj,  addVolsFlag))
           break
 
        if case("GDMLOrb") :
-          print("      GDMLOrb") 
+          #print("      GDMLOrb") 
           return(processGDMLOrbObject(obj, addVolsFlag))
           break
 
+       if case("GDMLPara") :
+          #print("      GDMLPara") 
+          return(processGDMLParaObject(obj, addVolsFlag))
+          break
+             
        if case("GDMLPolycone") :
-          print("      GDMLPolycone") 
+          #print("      GDMLPolycone") 
           return(processGDMLPolyconeObject(obj, addVolsFlag))
           break
              
        if case("GDMLPolyhedra") :
-          print("      GDMLPolyhedra") 
+          #print("      GDMLPolyhedra") 
           return(processGDMLPolyhedraObject(obj, addVolsFlag))
           break
              
        if case("GDMLSphere") :
-          print("      GDMLSphere") 
+          #print("      GDMLSphere") 
           return(processGDMLSphereObject(obj, addVolsFlag))
           break
 
        if case("GDMLTessellated") :
-          print("      GDMLTessellated") 
+          #print("      GDMLTessellated") 
           return(processGDMLTessellatedObject(obj, addVolsFlag))
           break
 
        if case("GDMLTrap") :
-          print("      GDMLTrap") 
+          #print("      GDMLTrap") 
           return(processGDMLTrapObject(obj,  addVolsFlag))
           break
 
        if case("GDMLTrd") :
-          print("      GDMLTrd") 
+          #print("      GDMLTrd") 
           return(processGDMLTrdObject(obj,  addVolsFlag))
           break
 
        if case("GDMLTube") :
-          print("      GDMLTube") 
+          #print("      GDMLTube") 
           return(processGDMLTubeObject(obj, addVolsFlag))
-          print("GDML Tube processed")
           break
 
        if case("GDMLXtru") :
-          print("      GDMLXtru") 
+          #print("      GDMLXtru") 
           return(processGDMLXtruObject(obj, addVolsFlag))
           break
 
@@ -1151,7 +1170,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     obj = OutList[idx]
-    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    #print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1363,14 +1382,14 @@ def createXMLvol(name):
 def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
-    print('processVol : '+vol.Name)
+    ##print('processVol : '+vol.Name)
     # xmlVol could be created dummy volume
 
     num = len(vol.OutList)
     idx = 0
     boolflg = False
     while idx < num :
-        print(idx)
+        #print(idx)
         idx  = processObject(idx, vol.OutList, xmlVol, \
                 xmlParent, parentName, addVolsFlag)
 
