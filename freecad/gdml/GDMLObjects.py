@@ -914,8 +914,7 @@ class GDMLzplane(GDMLcommon) :
 
    def execute(self, fp):
        pass
-      
-class GDMLPolycone(GDMLcommon) :
+class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material) :
       '''Add some custom properties to our Polycone feature'''
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -949,58 +948,53 @@ class GDMLPolycone(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp) :
-
-       #GDMLShared.setTrace(True)
        zplanes = fp.OutList
-       GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
-       mul = GDMLShared.getMult(fp)
-       fullHeight = mul * (zplanes[-1].z - zplanes[0].z) 
-       # Running Height
-       rh = 0.0
-       maxR = 0
-       for i in range(0,len(zplanes)-1) :
+
+       #GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
+       mul = GDMLShared.getMult(fp.lunit)
+       angleDeltaPhiDeg = 360.0
+       if (hasattr(fp,'deltaphi')) :
+           angleDeltaPhiDeg = min([getAngleDeg(fp.aunit,fp.deltaphi), angleDeltaPhiDeg])
+       if(angleDeltaPhiDeg <=0.0): return
+
+       listShape = [0 for i in range((len(zplanes)-1))]
+
+       sinPhi = 0.0
+       cosPhi = 1.0
+       if fp.startphi != 0 :
+           angleRad = getAngleRad(fp.aunit,fp.startphi)
+           sinPhi = math.sin(angleRad)
+           cosPhi = math.cos(angleRad)
+
+       # loops on each z level
+       for i in range(len(zplanes)-1) :
            GDMLShared.trace('index : '+str(i))
-           dh = (zplanes[i+1].z - zplanes[i].z) * mul
-           rmin1 = zplanes[i].rmin * mul
+           if i ==0:
+               rmin1 = zplanes[i].rmin * mul
+               rmax1 = zplanes[i].rmax * mul
+               z1 =zplanes[i].z* mul
+           else:
+               rmin1 = rmin2
+               rmax1 = rmax2
+               z1 =z2
+
            rmin2 = zplanes[i+1].rmin * mul
-           rmax1 = zplanes[i].rmax * mul
            rmax2 = zplanes[i+1].rmax * mul
-           if rmax1 > maxR : maxR = rmax1
-           if rmax2 > maxR : maxR = rmax2
-           rmax2 = zplanes[i+1].rmax * mul
-           GDMLShared.trace('del height : '+str(dh))
-           GDMLShared.trace('rmin1 : '+str(rmin1)+' rmin2 : '+str(rmin2))
-           GDMLShared.trace('rmax1 : '+str(rmax1)+' rmax2 : '+str(rmax2))
-           if rmax1 != rmax2 :
-                cone1 = Part.makeCone(rmax1,rmax2,dh)
-           else :
-                cone1 = Part.makeCylinder(rmax1,dh)
-           if (rmin1 != 0 and rmin2 != 0 ) :
-                if rmin1 != rmin2 :
-                    cone2 = Part.makeCone(rmin1,rmin2,dh)
-                else :
-                    cone2 = Part.makeCylinder(rmin1,dh)
-                if rmax1 > rmin1 :
-                    cone = cone1.cut(cone2)
-                else :
-                    cone = cone2.cut(cone1)
-           else :
-                cone = cone1
-           #cone = cone1
-           vec = FreeCAD.Vector(0,0,rh)
-           rh = rh + dh
-           if i > 0 :
-               fusionCone = fusionCone.fuse(translate(cone,vec))
-           else :
-               fusionCone = cone
+           z2 =zplanes[i+1].z* mul
 
-       if checkFullCircle(fp.aunit,fp.deltaphi) == False :
-          shape = angleSectionSolid(fp, maxR, fullHeight, fusionCone)
-       else :
-          shape = fusionCone
+           # def of one face to rotate
+           face = Part.Face(Part.makePolygon( [FreeCAD.Vector(rmin1*cosPhi,rmin1*sinPhi,z1),
+                   FreeCAD.Vector(rmax1*cosPhi,rmax1*sinPhi,z1),
+                   FreeCAD.Vector(rmax2*cosPhi,rmax2*sinPhi,z2),
+                   FreeCAD.Vector(rmin2*cosPhi,rmin2*sinPhi,z2),
+                   FreeCAD.Vector(rmin1*cosPhi,rmin1*sinPhi,z1)]))
+           # rotation of the face
+           listShape[i] = face.revolve(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),angleDeltaPhiDeg)
+       # compound of all faces
+       fp.Shape = Part.makeCompound(listShape)
 
-       fp.Shape = shape.translate(FreeCAD.Vector(0,0,-fullHeight/2.))
-       #fp.Shape = fusionCone
+
+
 
 class GDMLSphere(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
