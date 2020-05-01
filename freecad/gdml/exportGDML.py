@@ -48,7 +48,6 @@ except ImportError:
        sys.exit()
 # xml handling
 #import argparse
-import lxml.etree  as ET
 #from   xml.etree.ElementTree import XML 
 #################################
 
