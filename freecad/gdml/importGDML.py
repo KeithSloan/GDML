@@ -130,6 +130,47 @@ def setDisplayMode(obj,mode):
     if mode == 3 :
        obj.ViewObject.DisplayMode = 'Wireframe'
 
+def createArb8(part,solid,material,px,py,pz,rot,displayMode) :
+    # parent, sold
+    from .GDMLObjects import GDMLArb8, ViewProvider
+    #GDMLShared.setTrace(True)
+    GDMLShared.trace("CreateArb8 : ")
+    #GDMLShared.trace("material : "+material)
+    GDMLShared.trace(solid.attrib)
+
+    myArb8=part.newObject("Part::FeaturePython","GDMLArb8:"+getName(solid))
+    v1x = GDMLShared.getVal(solid,'v1x')
+    v1y = GDMLShared.getVal(solid,'v1y')
+    v2x = GDMLShared.getVal(solid,'v2x')
+    v2y = GDMLShared.getVal(solid,'v2y')
+    v3x = GDMLShared.getVal(solid,'v3x')
+    v3y = GDMLShared.getVal(solid,'v3y')
+    v4x = GDMLShared.getVal(solid,'v4x')
+    v4y = GDMLShared.getVal(solid,'v4y')
+    v5x = GDMLShared.getVal(solid,'v5x')
+    v5y = GDMLShared.getVal(solid,'v5y')
+    v6x = GDMLShared.getVal(solid,'v6x')
+    v6y = GDMLShared.getVal(solid,'v6y')
+    v7x = GDMLShared.getVal(solid,'v7x')
+    v7y = GDMLShared.getVal(solid,'v7y')
+    v8x = GDMLShared.getVal(solid,'v8x')
+    v8y = GDMLShared.getVal(solid,'v8y')
+    dz = GDMLShared.getVal(solid,'dz')
+    lunit = getText(solid,'lunit',"mm")
+
+    GDMLArb8(myArb8,v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,  \
+                v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz, \
+                lunit, material)
+    GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myArb8.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myArb8.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myArb8.ViewObject)
+       setDisplayMode(myArb8,displayMode)
+    return myArb8
+
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLBox, ViewProvider
@@ -252,25 +293,6 @@ def createEltube(part,solid,material,px,py,pz,rot,displayMode) :
        ViewProvider(myeltube.ViewObject)
        setDisplayMode(myeltube,displayMode)
     return myeltube
-
-def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
-    from .GDMLObjects import GDMLOrb, ViewProvider
-    GDMLShared.trace("CreateOrb : ")
-    GDMLShared.trace(solid.attrib)
-    r = GDMLShared.getVal(solid,'r')
-    lunit = getText(solid,'lunit',"mm")
-    myorb=part.newObject("Part::FeaturePython","GDMLOrb:"+getName(solid))
-    GDMLOrb(myorb,r,lunit,material)
-    GDMLShared.trace("CreateOrb : ")
-    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
-    base = FreeCAD.Vector(px,py,pz)
-    myorb.Placement = GDMLShared.processPlacement(base,rot)
-    GDMLShared.trace(myorb.Placement.Rotation)
-    if FreeCAD.GuiUp :
-       # set ViewProvider before setDisplay
-       ViewProvider(myorb.ViewObject)
-       setDisplayMode(myorb,displayMode)
-    return myorb
 
 def createOrb(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLOrb, ViewProvider
@@ -729,6 +751,10 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
     GDMLShared.trace('createSolid '+solid.tag)
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
+        if case('arb8'):
+           return(createArb8(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
         if case('box'):
            return(createBox(part,solid,material,px,py,pz,rot,displayMode)) 
            break

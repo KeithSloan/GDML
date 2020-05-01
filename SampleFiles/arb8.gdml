@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+ <define>
+  <constant name="HALFPI" value="pi/2."/>
+  <constant name="PI" value="1.*pi"/>
+  <constant name="TWOPI" value="2.*pi"/>
+  <expression name="customangle">2*(HALFPI+0.2*PI)</expression>
+  <position name="center" x="0" y="0" z="0"/>
+  <rotation name="identity" x="0" y="0" z="0" />
+  <position name="shiftbyx" x="-500"/>
+  <position name="pos1" x="-250"/>
+  <position name="pos2" x="-125"/>
+  <position name="pos3" x="125"/>
+  <position name="pos4" x="250"/>
+  <position name="pos11"  x="-250" y=" 125"/>
+  <position name="pos21"  x="-125" y=" 125"/>
+  <position name="pos31"  x=" 125" y=" 125"/>
+  <position name="pos41"  x=" 250" y=" 125"/>
+  <position name="pos412"  x=" 250" y=" 225"/>
+  <position name="pos51"  x=" 550" y=" 125"/>
+  <position name="pos61"  x=" 550" y="-125"/>
+  <position name="pos71"  x=" 550" y=" 0"/>
+  <position name="pos81"  x="-550" y=" 125"/>
+  <position name="pos91"  x="-550" y="-125"/>
+  <position name="pos101" x="-550" />
+  <position name="pos201"  x=" 750" y=" 0"/>
+  <position name="pos301"  x=" 750" y=" 125"/>
+  <position name="pos401"  x=" 750" y="-125"/>
+  <position name="pos501"  x="-750" y="-125"/>
+  <position name="pos502"  x="-750" y="-225"/>
+  <position name="pos601"  x="-750" y=" 125"/>
+  <position name="pos701"  x="-750" y=" 0"/>
+  <position name="pos801"  x="950"  y=" 125"/>
+  <position name="pos901"  x="950"  y="-125"/>
+  <position name="pos1001"  x="950" y="0"/>
+  <position name="pos1002"  x="950" y="125"/>
+  <position name="pos1003"  x="950" y="-125"/>
+  <rotation name="rotatebyx" x="HALFPI"/>
+  <rotation name="rotatebyall" x="HALFPI" y="PI" z="TWOPI"/>
+  <position name="v0" unit="mm" x="10" y="10" z="0" />
+  <position name="v1" unit="mm" x="-10" y="10" z="0" />
+  <position name="v2" unit="mm" x="0" y="0" z="20" />
+  <position name="v3" unit="mm" x="-10" y="-10" z="0" />
+  <position name="v4" unit="mm" x="10" y="-10" z="0" />
+  <quantity name="ro" type="density" unit="g/cm3" value="1234.00"/>
+  <quantity name="sizeoft500" type="length" unit="mm" value="500.0"/>
+  <quantity name="wextent" type="length" value="10000.0" unit="mm"/>
+  <position name="shiftbysizeoft500" x="500.0"/>
+  <position name="unionidentitypos" x="25."/>
+ </define>
+
+ <materials>
+  <element name="Hydrogen" formula="H"  Z="1.">  <atom value="1.01"/>   </element>
+  <element name="Oxygen"   formula="O"  Z="8.">  <atom value="16.0"/>   </element>
+  <element name="Nitrogen" formula="N"  Z="7.">  <atom value="14.01"/>  </element>
+  <element name="Lead"     formula="Pb" Z="82."> <atom value="207.20"/> </element>
+  <material name="Al" Z="13.0"> <D value="2.70"/> <atom value="26.98"/> </material>
+  <material name="Water" formula="H20">
+   <D value="1.0"/>
+   <composite n="2" ref="Hydrogen"/>
+   <composite n="1" ref="Oxygen"/>
+  </material>
+  <material name="Air">
+   <D value="1.290" unit="mg/cm3"/>
+   <fraction n="0.7" ref="Nitrogen"/>
+   <fraction n="0.3" ref="Oxygen"/>
+  </material>
+ </materials>
+
+ <solids> 
+  <box name="WorldBox" x="10000.0" y="10000.0" z="10000.0"/>
+
+  <box name="b100" x="10.0" y="10.0" z="10.0"/>
+  <box name="b500" x="50.0" y="50.0" z="50.0"/>
+
+  <cone name="c1" z="111.0" rmax1="22.0" rmax2="33.0" deltaphi="TWOPI" aunit="rad"/>
+
+  <para name="pa1" x="10.0" y="10.0" z="10.0" alpha="30.0" theta="30.0" phi="30.0" aunit="deg"/>
+
+  <sphere name="s1" rmax="50.0" deltaphi="TWOPI" deltatheta="PI" aunit="rad"/>
+
+  <arb8 name="arb81" dz="50.0" v1x="-45.0" v1y="-45.0" v2x="-45.0" v2y="45.0" 
+             v3x="45.0"  v3y="45.0" v4x="45.0" v4y="-45.0" v5x="-35.0" v5y="-35.0" 
+	     v6x="-35.0" v6y="35.0" v7x="35.0" v7y="35.0"  v8x="35.0"  v8y="-35.0" />
+  <arb8 name="arb82" dz="50.0" v1x="-45.0" v1y="-45.0" v2x="-45.0" v2y="45.0" 
+             v3x="45.0"  v3y="45.0" v4x="45.0" v4y="-45.0" v5x="-35.0" v5y="-35.0" 
+	     v6x="-35.0" v6y="35.0" v7x="35.0" v7y="35.0"  v8x="35.0"  v8y="-15.0" />
+  
+  
+ </solids>
+
+ <structure>  
+
+  <volume name="vol1002">
+   <materialref ref="Water"/>
+   <solidref ref="arb81"/>
+  </volume>
+  <volume name="vol1003">
+   <materialref ref="Water"/>
+   <solidref ref="arb82"/>
+  </volume>
+  <volume name="World">
+   <materialref ref="Air"/>
+   <solidref ref="WorldBox"/>
+
+ 
+   <physvol>
+     <volumeref ref="vol1002"/>
+     <positionref ref="pos1002"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+   <physvol>
+     <volumeref ref="vol1003"/>
+     <positionref ref="pos1003"/>
+     <rotationref ref="identity"/>
+   </physvol> 
+  </volume>
+
+ </structure>
+
+ <setup name="Default" version="1.0">
+  <world ref="World"/>
+ </setup>
+</gdml> 

@@ -147,6 +147,96 @@ class GDMLcommon :
                 Since no data were serialized nothing needs to be done here.'''
         return None
 
+
+class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
+   def __init__(self, obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,  \
+                v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz, \
+                lunit, material):
+      '''Add some custom properties to our Tube feature'''
+      obj.addProperty("App::PropertyFloat","v1x","GDMLArb8","vertex 1 x position").v1x=v1x
+      obj.addProperty("App::PropertyFloat","v1y","GDMLArb8","vertex 1 y position").v1y=v1y
+      obj.addProperty("App::PropertyFloat","v2x","GDMLArb8","vertex 2 x position").v2x=v2x
+      obj.addProperty("App::PropertyFloat","v2y","GDMLArb8","vertex 2 y position").v2y=v2y
+      obj.addProperty("App::PropertyFloat","v3x","GDMLArb8","vertex 3 x position").v3x=v3x
+      obj.addProperty("App::PropertyFloat","v3y","GDMLArb8","vertex 3 y position").v3y=v3y
+      obj.addProperty("App::PropertyFloat","v4x","GDMLArb8","vertex 4 x position").v4x=v4x
+      obj.addProperty("App::PropertyFloat","v4y","GDMLArb8","vertex 4 y position").v4y=v4y
+      obj.addProperty("App::PropertyFloat","v5x","GDMLArb8","vertex 5 x position").v5x=v5x
+      obj.addProperty("App::PropertyFloat","v5y","GDMLArb8","vertex 5 y position").v5y=v5y
+      obj.addProperty("App::PropertyFloat","v6x","GDMLArb8","vertex 6 x position").v6x=v6x
+      obj.addProperty("App::PropertyFloat","v6y","GDMLArb8","vertex 6 y position").v6y=v6y
+      obj.addProperty("App::PropertyFloat","v7x","GDMLArb8","vertex 7 x position").v7x=v7x
+      obj.addProperty("App::PropertyFloat","v7y","GDMLArb8","vertex 7 y position").v7y=v7y
+      obj.addProperty("App::PropertyFloat","v8x","GDMLArb8","vertex 8 x position").v8x=v8x
+      obj.addProperty("App::PropertyFloat","v8y","GDMLArb8","vertex 8 y position").v8y=v8y
+      obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").dz=dz
+      obj.addProperty("App::PropertyString","lunit","GDMLArb8","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
+
+      setMaterial(obj, material)
+
+      obj.Proxy = self
+      self.Type = 'GDMLArb8'
+
+   def onChanged(self, fp, prop):
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['v1x', 'v1y', 'v2x','v2y', 'v3x', 'v3y', 'v4x', 'v4y',  \
+                'v5x', 'v5y', 'v6x', 'v6y', 'v7x', 'v7y', 'v8x', 'v8y', 'dz','lunit'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+
+# http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
+# The order of specification of the coordinates for the vertices in G4GenericTrap is important. The first four points are the vertices sitting on the -hz plane; the last four points are the vertices sitting on the +hz plane.
+#
+#The order of defining the vertices of the solid is the following:
+#
+#    point 0 is connected with points 1,3,4
+#    point 1 is connected with points 0,2,5
+#    point 2 is connected with points 1,3,6
+#    point 3 is connected with points 0,2,7
+#    point 4 is connected with points 0,5,7
+#    point 5 is connected with points 1,4,6
+#    point 6 is connected with points 2,5,7
+#    point 7 is connected with points 3,4,6
+
+   def createGeometry(self,fp):
+
+        mul  = GDMLShared.getMult(fp)
+
+        pt1 = FreeCAD.Vector(fp.v1x*mul,fp.v1y*mul,-fp.dz*mul)
+        pt2 = FreeCAD.Vector(fp.v2x*mul,fp.v2y*mul,-fp.dz*mul)
+        pt3 = FreeCAD.Vector(fp.v3x*mul,fp.v3y*mul,-fp.dz*mul)
+        pt4 = FreeCAD.Vector(fp.v4x*mul,fp.v4y*mul,-fp.dz*mul)
+        pt5 = FreeCAD.Vector(fp.v5x*mul,fp.v5y*mul,fp.dz*mul)
+        pt6 = FreeCAD.Vector(fp.v6x*mul,fp.v6y*mul,fp.dz*mul)
+        pt7 = FreeCAD.Vector(fp.v7x*mul,fp.v7y*mul,fp.dz*mul)
+        pt8 = FreeCAD.Vector(fp.v8x*mul,fp.v8y*mul,fp.dz*mul)
+
+        faceZmin = Part.Face(Part.makePolygon([pt1,pt2,pt3,pt4,pt1]))
+        faceZmax = Part.Face(Part.makePolygon([pt5,pt6,pt7,pt8,pt5]))
+
+        faceXminA = Part.Face(Part.makePolygon([pt1,pt2,pt6,pt1]))
+        faceXminB = Part.Face(Part.makePolygon([pt6,pt5,pt1,pt6]))
+        faceXmaxA = Part.Face(Part.makePolygon([pt4,pt3,pt7,pt4])) 
+        faceXmaxB = Part.Face(Part.makePolygon([pt8,pt4,pt7,pt8])) 
+
+        faceYminA = Part.Face(Part.makePolygon([pt1,pt8,pt4,pt1]))
+        faceYminB = Part.Face(Part.makePolygon([pt1,pt5,pt8,pt1]))
+
+        faceYmaxA = Part.Face(Part.makePolygon([pt2,pt3,pt7,pt2]))
+        faceYmaxB = Part.Face(Part.makePolygon([pt2,pt7,pt6,pt2]))
+        
+        
+        fp.Shape = Part.makeSolid(Part.makeShell([faceXminA,faceXminB,faceXmaxA,faceXmaxB,
+                                                  faceYminA,faceYminB,faceYmaxA,faceYmaxB,
+                                                  faceZmin,faceZmax]))
+        
+
 class GDMLBox(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit, material, flag = False):
       '''Add some custom properties to our Box feature'''
@@ -992,9 +1082,6 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
            listShape[i] = face.revolve(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),angleDeltaPhiDeg)
        # compound of all faces
        fp.Shape = Part.makeCompound(listShape)
-
-
-
 
 class GDMLSphere(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \

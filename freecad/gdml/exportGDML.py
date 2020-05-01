@@ -64,6 +64,8 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDMLcomposite, GDMLisotope, \
                         GDMLelement, GDMLconstant
 
+from . import GDMLShared
+
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
 # no doubt there will be a problem when they do implement Value
@@ -599,6 +601,33 @@ def testDefaultPlacement(obj) :
     else :
        return False
 
+def processGDMLArb8Object(obj, flag) :
+    # Needs unique Name
+    # Remove leading GDMLArb8 from name on export 
+    arb8Name = obj.Name.split('_',1)[1]
+
+    if flag == True :
+        ET.SubElement(solids, 'arb8',{'name': arb8Name, \
+                          'v1x': str(obj.v1x),  \
+                          'v1y': str(obj.v1y),  \
+                          'v2x': str(obj.v2x),  \
+                          'v2y': str(obj.v2y),  \
+                          'v3x': str(obj.v3x),  \
+                          'v3y': str(obj.v3y),  \
+                          'v4x': str(obj.v4x),  \
+                          'v4y': str(obj.v4y),  \
+                          'v5x': str(obj.v5x),  \
+                          'v5y': str(obj.v5y),  \
+                          'v6x': str(obj.v6x),  \
+                          'v6y': str(obj.v6y),  \
+                          'v7x': str(obj.v7x),  \
+                          'v7y': str(obj.v7y),  \
+                          'v8x': str(obj.v8x),  \
+                          'v8y': str(obj.v8y),  \
+                          'dz': str(obj.dz),  \
+                          'lunit' : obj.lunit})
+    return (arb8Name)
+
 def processGDMLBoxObject(obj, flag) :
     # Needs unique Name
     # Remove leading GDMLBox_ from name on export 
@@ -1039,6 +1068,11 @@ def processGDMLSolid(obj, addVolsFlag) :
     # Deal with FC Objects that convert
     #print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
+       if case("GDMLArb8") :
+          print("      GDMLArb8") 
+          return(processGDMLArb8Object(obj, addVolsFlag))
+          break
+
        if case("GDMLBox") :
           #print("      GDMLBox") 
           return(processGDMLBoxObject(obj, addVolsFlag))
