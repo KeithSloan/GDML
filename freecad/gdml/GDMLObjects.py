@@ -206,6 +206,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
 
    def createGeometry(self,fp):
 
+        currPlacement = fp.Placement
         mul  = GDMLShared.getMult(fp)
 
         pt1 = FreeCAD.Vector(fp.v1x*mul,fp.v1y*mul,-fp.dz*mul)
@@ -235,7 +236,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
         fp.Shape = Part.makeSolid(Part.makeShell([faceXminA,faceXminB,faceXmaxA,faceXmaxB,
                                                   faceYminA,faceYminB,faceYmaxA,faceYmaxB,
                                                   faceZmin,faceZmax]))
-        
+        fp.Placement = currPlacement 
 
 class GDMLBox(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit, material, flag = False):
@@ -275,6 +276,7 @@ class GDMLBox(GDMLcommon) :
        #print('createGeometry')
        #print(fp)
        if all((fp.x,fp.y,fp.z)) :
+          currPlacement = fp.Placement
        #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
           mul = GDMLShared.getMult(fp)
           GDMLShared.trace('mul : '+str(mul))
@@ -284,6 +286,7 @@ class GDMLBox(GDMLcommon) :
           box = Part.makeBox(x,y,z)
           base = FreeCAD.Vector(-x/2,-y/2,-z/2)
           fp.Shape = translate(box,base)
+          fp.Placement = currPlacement
     
    def OnDocumentRestored(self,obj) :
        print('Doc Restored')
@@ -335,6 +338,7 @@ class GDMLCone(GDMLcommon) :
        # Need to add code to check variables will make a valid cone
        # i.e.max > min etc etc
           #print("execute cone")
+          currPlacement = fp.Placement
           mul = GDMLShared.getMult(fp)
           rmin1 = mul * fp.rmin1
           rmin2 = mul * fp.rmin2
@@ -371,6 +375,7 @@ class GDMLCone(GDMLcommon) :
              fp.Shape = translate(cone,base)
           else :   
              fp.Shape = translate(cone3,base)
+          fp.Placement = currPlacement   
 
 class GDMLElCone(GDMLcommon) :
    def __init__(self, obj, dx, dy, zmax, zcut, lunit, material) :
@@ -405,6 +410,7 @@ class GDMLElCone(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        cone1 = Part.makeCone(100,0,100)
        mat = FreeCAD.Matrix()
        mat.unity()
@@ -428,6 +434,7 @@ class GDMLElCone(GDMLcommon) :
           fp.Shape = cone2.cut(box)
        else :
           fp.Shape = cone2
+       fp.Placement = currPlacement   
 
 class GDMLEllipsoid(GDMLcommon) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material) :
@@ -467,6 +474,7 @@ class GDMLEllipsoid(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        mul = GDMLShared.getMult(fp)
        sphere = Part.makeSphere(100)
        ax = fp.ax * mul
@@ -503,7 +511,8 @@ class GDMLEllipsoid(GDMLcommon) :
           shape = t2ellipsoid
        
        base = FreeCAD.Vector(0,0,cz/4)
-       fp.Shape = translate(shape,base)   
+       fp.Shape = translate(shape,base)
+       fp.Placement = currPlacement
 
 class GDMLElTube(GDMLcommon) :
    def __init__(self, obj, dx, dy, dz, lunit, material) :
@@ -539,6 +548,7 @@ class GDMLElTube(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        mul = GDMLShared.getMult(fp)
        tube = Part.makeCylinder(100,100)
        mat = FreeCAD.Matrix()
@@ -551,6 +561,7 @@ class GDMLElTube(GDMLcommon) :
        newtube = tube.transformGeometry(mat)
        base = FreeCAD.Vector(0,0,(fp.dz*mul)/2)
        fp.Shape = translate(newtube,base)
+       fp.Placement = currPlacement
 
 class GDMLOrb(GDMLcommon) :
    def __init__(self, obj, r, lunit, material) :
@@ -572,17 +583,20 @@ class GDMLOrb(GDMLcommon) :
           return
 
        if prop in ['r', 'lunit'] :
+          #print(dir(fp))
           self.createGeometry(fp)
 
    def execute(self, fp):
        self.createGeometry(fp)
-   
+
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
        GDMLShared.trace("Execute Orb")
        mul = GDMLShared.getMult(fp.lunit)
        r = mul * fp.r
        fp.Shape = Part.makeSphere(r)
+       fp.Placement = currPlacement
 
 class GDMLPara(GDMLcommon) :
    def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
@@ -622,6 +636,7 @@ class GDMLPara(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
        import math
        GDMLShared.trace("Execute Polyparallepiped")
@@ -651,6 +666,7 @@ class GDMLPara(GDMLcommon) :
        para3 = para2.extrude(dir3)
        base = FreeCAD.Vector(-x/2,-y/2,-z/2)
        fp.Shape = translate(para3,base)
+       fp.Placement = currPlacement
 
 
 class GDMLPolyhedra(GDMLcommon) :
@@ -690,6 +706,7 @@ class GDMLPolyhedra(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
        GDMLShared.trace("Execute Polyhedra")
        parms = fp.OutList
@@ -754,6 +771,7 @@ class GDMLPolyhedra(GDMLcommon) :
           fp.Shape = translate(newShape,base)
        else :
           fp.Shape = translate(shape,base)
+       fp.Placement = currPlacement   
 
 class GDMLTorus(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
@@ -793,6 +811,7 @@ class GDMLTorus(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        GDMLShared.trace("Create Torus")
        mul = GDMLShared.getMult(fp)
        rmin = mul*fp.rmin
@@ -810,6 +829,7 @@ class GDMLTorus(GDMLcommon) :
        if fp.startphi != 0 :
             torus.rotate(spnt,sdir,getAngle(fp.aunit,fp.startphi))
        fp.Shape = torus     
+       fp.Placement = currPlacement
 
 class GDMLXtru(GDMLcommon) :
    def __init__(self, obj, lunit, material) :
@@ -837,7 +857,8 @@ class GDMLXtru(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       print("Create Geometry")
+       currPlacement = fp.Placement
+       #print("Create Geometry")
        parms = fp.OutList
        #print("OutList")
        #print(parms)
@@ -929,6 +950,7 @@ class GDMLXtru(GDMLcommon) :
        #print(dir(fp))       
        #solid.exportBrep("/tmp/"+fp.Label+".brep")       
        fp.Shape = solid
+       fp.Placement = currPlacement
 
 class GDML2dVertex(GDMLcommon) :
    def __init__(self, obj, x, y):
@@ -1004,6 +1026,7 @@ class GDMLzplane(GDMLcommon) :
 
    def execute(self, fp):
        pass
+
 class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material) :
       '''Add some custom properties to our Polycone feature'''
@@ -1038,8 +1061,9 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
        self.createGeometry(fp)
 
    def createGeometry(self,fp) :
-       zplanes = fp.OutList
 
+       currPlacement = fp.Placement
+       zplanes = fp.OutList
        #GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
        mul = GDMLShared.getMult(fp.lunit)
        angleDeltaPhiDeg = 360.0
@@ -1082,6 +1106,7 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
            listShape[i] = face.revolve(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),angleDeltaPhiDeg)
        # compound of all faces
        fp.Shape = Part.makeCompound(listShape)
+       fp.Placement = currPlacement
 
 class GDMLSphere(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
@@ -1129,6 +1154,7 @@ class GDMLSphere(GDMLcommon) :
    def createGeometry(self,fp):
        # Based on code by Dam Lamb
        import math
+       currPlacement = fp.Placement
        mul = GDMLShared.getMult(fp)
        rmax = mul * fp.rmax
        if rmax <= 0.0: return
@@ -1185,6 +1211,7 @@ class GDMLSphere(GDMLcommon) :
            fp.Shape = sphere2
        else :
            fp.Shape = sphere2.cut(Part.makeSphere(rmin))
+       fp.Placement = currPlacement    
            
 
 class GDMLTrap(GDMLcommon) :
@@ -1235,6 +1262,7 @@ class GDMLTrap(GDMLcommon) :
    
    def createGeometry(self,fp):
        import math
+       currPlacement = fp.Placement
        # Define six vetices for the shape
        alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
@@ -1294,6 +1322,7 @@ class GDMLTrap(GDMLcommon) :
        #solid = Part.makePolygon([v1,v2,v3,v4,v5,v6,v7,v1])
 
        fp.Shape = solid
+       fp.Placement = currPlacement
 
 class GDMLTrd(GDMLcommon) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material) :
@@ -1329,6 +1358,7 @@ class GDMLTrd(GDMLcommon) :
    
    def createGeometry(self,fp):
        import math
+       currPlacement = fp.Placement
        GDMLShared.trace("x2  : "+str(fp.x2))
 
        mul = GDMLShared.getMult(fp)
@@ -1359,6 +1389,7 @@ class GDMLTrd(GDMLcommon) :
        #solid = Part.makePolygon([v1,v2,v3,v4,v5,v6,v7,v1])
 
        fp.Shape = solid
+       fp.Placement = currPlacement
 
 class GDMLTube(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
@@ -1392,6 +1423,7 @@ class GDMLTube(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        mul  = GDMLShared.getMult(fp)
        rmax = mul * fp.rmax
        rmin = mul * fp.rmin
@@ -1413,6 +1445,7 @@ class GDMLTube(GDMLcommon) :
        
        base = FreeCAD.Vector(0,0,-z/2)
        fp.Shape = translate(tube,base)
+       fp.Placement = currPlacement
 
 class GDMLcutTube(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
@@ -1474,6 +1507,7 @@ class GDMLcutTube(GDMLcommon) :
         return cut
 
    def createGeometry(self,fp):
+        currPlacement = fp.Placement
         angle = getAngleDeg(fp.aunit,fp.deltaphi)
         pntC = FreeCAD.Vector(0,0,0)
         dirC = FreeCAD.Vector(0,0,1)
@@ -1519,6 +1553,7 @@ class GDMLcutTube(GDMLcommon) :
         fp.Shape = translate(cutTube2,base)
         #fp.Shape = topPlane
         #fp.Shape = botPlane
+        fp.Placement = currPlacement
 
    def createGeometry_hardcoded(self,fp):
         angle = getAngleDeg(fp.aunit,fp.deltaphi)
@@ -1652,6 +1687,7 @@ class GDMLTessellated(GDMLcommon) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       currPlacement = fp.Placement
        print("Tessellated")
        parms = fp.OutList
        GDMLShared.trace("Number of parms : "+str(len(parms)))
@@ -1710,6 +1746,7 @@ class GDMLTessellated(GDMLcommon) :
        fp.Shape = translate(solid,base)
        #fp.Shape = faces[0]
        #fp.Shape = Part.makeBox(10,10,10)
+       fp.Placement = currPlacement
 
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :
