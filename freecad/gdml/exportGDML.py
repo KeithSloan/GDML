@@ -146,7 +146,15 @@ def defineMaterials():
     # Replaced by loading Default
     #print("Define Materials")
     global materials
-   
+
+def exportDefine(name, v) :
+    global define
+    #print('define : '+name)
+    #print(v)
+    #print(v[0])
+    ET.SubElement(define,'position',{'name' : name, 'unit': 'mm',   \
+                'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
+
 def defineWorldBox(bbox):
     for obj in FreeCAD.ActiveDocument.Objects :
         # print("{} + {} = ".format(bbox, obj.Shape.BoundBox))
@@ -563,11 +571,11 @@ def exportRotation(name, xml, Rotation) :
             rotxml = ET.SubElement(define, 'rotation', {'name': rotName, \
                     'unit': 'deg'})
             if abs(a2) != 0 :
-                rotxml.attrib['x']=str(-a2)
+                rotxml.attrib['x']=str(a2)
             if abs(a1) != 0 :
-                rotxml.attrib['y']=str(-a1)
+                rotxml.attrib['y']=str(a1)
             if abs(a0) != 0 :
-                rotxml.attrib['z']=str(-a0)
+                rotxml.attrib['z']=str(a0)
             ET.SubElement(xml, 'rotationref', {'ref': rotName})
 
 def processPosition(obj, solid) :
@@ -813,21 +821,50 @@ def processGDMLTessellatedObject(obj, flag) :
     tessName = obj.Name.split('_',1)[1]
     if flag == True :
         tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
+        index = 1
         print(len(obj.OutList))
-        for items in obj.OutList :
-            if hasattr(items,'v4' ) :
-                ET.SubElement(tess,'quadrangular',{'vertex1':'v1', \
-                    'vertex2':'v2', 'vertex3':'v3', 'vertex4':'v4',
+        for ptr in obj.OutList :
+            v1Name = tessName+str(index)+'v1'
+            v2Name = tessName+str(index)+'v2'
+            v3Name = tessName+str(index)+'v3'
+            exportDefine(v1Name,ptr.v1)
+            exportDefine(v2Name,ptr.v2)
+            exportDefine(v3Name,ptr.v3)
+
+            if hasattr(ptr,'v4' ) :
+                v4Name = tessName+str(index)+'v4'
+                exportDefine(v4Name,ptr.v4)
+                ET.SubElement(tess,'quadrangular',{'vertex1':v1Name, \
+                    'vertex2':v2Name, 'vertex3':v3Name, 'vertex4':v4Name,
                                  'type':'ABSOLUTE'})
             else :    
-                ET.SubElement(tess,'triangular',{'vertex1':'v1', 'vertex2':'v2', \
-                                 'vertex3':'v3','type':'ABSOLUTE'})
+                ET.SubElement(tess,'triangular',{'vertex1':v1Name, \
+                        'vertex2': v2Name, \
+                        'vertex3': v3Name,'type':'ABSOLUTE'})
+            index += 1    
 
     return(tessName)
 
-def processGDMLTorusObject(obj, flag) :
-    # Needs unique Name
+def processGDMLTetraObject(obj, flag) :
+    tetraName = obj.Name.split('_',1)[1]
+    if flag == True :
+        v1Name = tetraName + 'v1'
+        v2Name = tetraName + 'v2'
+        v3Name = tetraName + 'v3'
+        v4Name = tetraName + 'v4'
+        exportDefine(v1Name,obj.v1)
+        exportDefine(v2Name,obj.v2)
+        exportDefine(v3Name,obj.v3)
+        exportDefine(v4Name,obj.v4)
 
+        tetra = ET.SubElement(solids, 'tet',{'name': tetraName, \
+                    'vertex1': v1Name, \
+                    'vertex2': v2Name, \
+                    'vertex3': v3Name, \
+                    'vertex4': v4Name})
+    return tetraName    
+
+def processGDMLTorusObject(obj, flag) :
     torusName = obj.Name.split('_',1)[1]
     if flag == True :
         torus = ET.SubElement(solids, 'torus',{'name': torusName,
@@ -980,7 +1017,7 @@ def processMaterialObject(obj) :
              break
           
           if isinstance(obj.Proxy,GDMLconstant) :
-             print("GDML constant")
+             #print("GDML constant")
              #print(dir(obj))
 
              item = ET.SubElement(define,'constant',{'name': obj.Name, \
@@ -1130,6 +1167,11 @@ def processGDMLSolid(obj, addVolsFlag) :
        if case("GDMLTessellated") :
           #print("      GDMLTessellated") 
           return(processGDMLTessellatedObject(obj, addVolsFlag))
+          break
+
+       if case("GDMLTetra") :
+          #print("      GDMLTetra") 
+          return(processGDMLTetraObject(obj, addVolsFlag))
           break
 
        if case("GDMLTorus") :

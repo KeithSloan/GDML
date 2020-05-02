@@ -249,7 +249,6 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLBox", "Shape of the Box")
       self.Type = 'GDMLBox'
       obj.Proxy = self
 
@@ -307,8 +306,6 @@ class GDMLCone(GDMLcommon) :
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
       obj.addProperty("App::PropertyString","lunit","GDMLCone","lunit").lunit=lunit
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLCone", \
-      #                "Shape of the Cone")
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
@@ -390,8 +387,6 @@ class GDMLElCone(GDMLcommon) :
                       "z cut").zcut = zcut
       obj.addProperty("App::PropertyString","lunit","GDMLElCone", \
                       "lunit").lunit=lunit
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLElCone", \
-      #                "Shape of the Cone")
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
                        "Material")
       setMaterial(obj, material)
@@ -451,8 +446,6 @@ class GDMLEllipsoid(GDMLcommon) :
                        "z axis1 cut2").zcut2=zcut2
       obj.addProperty("App::PropertyString","lunit","GDMLEllipsoid","lunit"). \
                         lunit=lunit
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLEllipsoid", \
-      #                "Shape of the Ellipsoid")
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
                        "Material")
       setMaterial(obj, material)
@@ -530,8 +523,6 @@ class GDMLElTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
                        "Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLElTube", \
-      #                "Shape of the ElTube")
       self.Type = 'GDMLElTube'
       obj.Proxy = self
 
@@ -687,8 +678,6 @@ class GDMLPolyhedra(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLPolyhedra", \
-      #                 "Shape of the Polyhedra")
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
       obj.Proxy = self
@@ -839,8 +828,6 @@ class GDMLXtru(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLXtru", \
-      #                "Shape of the Xtru")
       self.Type = 'GDMLXtru'
       obj.Proxy = self
 
@@ -1043,8 +1030,6 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLPolycone", \
-      #                "Shape of the Polycone")
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
 
@@ -1133,8 +1118,6 @@ class GDMLSphere(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLSphere", \
-      #                "Shape of the Sphere")
       obj.Proxy = self
       self.Type = 'GDMLSphere'
 
@@ -1243,8 +1226,6 @@ class GDMLTrap(GDMLcommon) :
                        lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTrap", \
-      #                "Shape of the Trap")
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
@@ -1340,8 +1321,6 @@ class GDMLTrd(GDMLcommon) :
                        lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTrd", \
-      #                "Shape of the Trap")
       obj.Proxy = self
       self.Type = 'GDMLTrd'
 
@@ -1611,15 +1590,15 @@ class GDMLVertex(GDMLcommon) :
 
 class GDMLTriangular(GDMLcommon) :
    def __init__(self, obj, v1, v2, v3, vtype):
-      obj.addProperty("App::PropertyString","v1","Triangular", \
+      obj.addProperty("App::PropertyVector","v1","Triangular", \
               "v1").v1=v1
-      obj.addProperty("App::PropertyString","v2","Triangular", \
+      obj.addProperty("App::PropertyVector","v2","Triangular", \
               "v1").v2=v2
-      obj.addProperty("App::PropertyString","v3","Triangular", \
+      obj.addProperty("App::PropertyVector","v3","Triangular", \
               "v1").v3=v3
       obj.addProperty("App::PropertyEnumeration","vtype","Triangular","vtype")
-      obj.vtype=["Absolute", "Relative"]
-      obj.vtype=["Absolute", "Relative"].index(vtype)
+      obj.vtype=["ABSOLUTE", "RELATIVE"]
+      obj.vtype=["ABSOLUTE", "RELATIVE"].index(vtype)
       self.Type = 'GDMLTriangular'
       obj.Proxy = self
 
@@ -1637,25 +1616,27 @@ class GDMLTriangular(GDMLcommon) :
        
 class GDMLQuadrangular(GDMLcommon) :
    def __init__(self, obj, v1, v2, v3, v4, vtype):
-      obj.addProperty("App::PropertyString","v1","Quadrang", \
+      obj.addProperty("App::PropertyVector","v1","Quadrang", \
               "v1").v1=v1
-      obj.addProperty("App::PropertyString","v2","Quadrang", \
+      obj.addProperty("App::PropertyVector","v2","Quadrang", \
               "v2").v2=v2
-      obj.addProperty("App::PropertyString","v3","Quadrang", \
+      obj.addProperty("App::PropertyVector","v3","Quadrang", \
               "v3").v3=v3
-      obj.addProperty("App::PropertyString","v4","Quadrang", \
+      obj.addProperty("App::PropertyVector","v4","Quadrang", \
               "v4").v4=v4
       obj.addProperty("App::PropertyEnumeration","vtype","Quadrang","vtype")
-      obj.vtype=["Absolute", "Relative"]
+      obj.vtype=["ABSOLUTE", "RELATIVE"]
       obj.vtype=0
       self.Type = 'GDMLQuadrangular'
       obj.Proxy = self
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
-       print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       #if not ('Restore' in fp.State) :
-       #   if prop in ['v1','v2','v3','v4','type'] :
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+           return
+
+       #if prop in ['v1','v2','v3','v4','type'] :
        #      self.execute(fp)
        #GDMLShared.trace("Change property: " + str(prop) + "\n")
        pass
@@ -1693,29 +1674,28 @@ class GDMLTessellated(GDMLcommon) :
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        faces = []
        mul = GDMLShared.getMult(fp)
-       v1 = ptr.v1 * mul
-       v2 = ptr.v2 * mul
-       v3 = ptr.v3 * mul
-       v4 = ptr.v4 * mul
        for ptr in parms :
-           #print(dir(ptr))
-           if hasattr(ptr,'v4') :
-              print("Quad")
-              print(v1)
-              print(v2)
-              print(v3)
-              print(v4)
-              faces.append(GDMLShared.quad(v1,v2,v3,v4))
+            v1 = ptr.v1 * mul
+            v2 = ptr.v2 * mul
+            v3 = ptr.v3 * mul
+            v4 = ptr.v4 * mul
+            if hasattr(ptr,'v4') :
+                print("Quad")
+                print(v1)
+                print(v2)
+                print(v3)
+                print(v4)
+                faces.append(GDMLShared.quad(v1,v2,v3,v4))
 
-           else :   
-              print("Triangle")
-              print("Vertex 1")
-              print(v1)
-              print("Vertex 2")
-              print(v2)
-              print("Vertex 3")
-              print(v3)
-              faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
+            else :   
+                print("Triangle")
+                print("Vertex 1")
+                print(v1)
+                print("Vertex 2")
+                print(v2)
+                print("Vertex 3")
+                print(v3)
+                faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
      
        print(faces)
        shell=Part.makeShell(faces)
@@ -1747,6 +1727,134 @@ class GDMLTessellated(GDMLcommon) :
        #fp.Shape = faces[0]
        #fp.Shape = Part.makeBox(10,10,10)
        fp.Placement = currPlacement
+
+class GDMLTetra(GDMLcommon) :         # Tetrahedron
+    
+   def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
+      obj.addProperty("App::PropertyVector","v1","GDMLTra", \
+              "v1").v1=v1
+      obj.addProperty("App::PropertyVector","v2","GDMLTra", \
+              "v2").v2=v2
+      obj.addProperty("App::PropertyVector","v3","GDMLTra", \
+              "v3").v3=v3
+      obj.addProperty("App::PropertyVector","v4","GDMLTra", \
+              "v4").v4=v4
+      obj.addProperty("App::PropertyString","lunit","GDMLTra","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
+      setMaterial(obj, material)
+
+      self.Type = 'GDMLTetra'
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+           return
+
+       if prop in ['v1','v2','v3','v4'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+
+   def createGeometry(self,fp) :
+       currPlacement = fp.Placement
+       mul = GDMLShared.getMult(fp)
+       pt1 = mul * fp.v1
+       pt2 = mul * fp.v2
+       pt3 = mul * fp.v3
+       pt4 = mul * fp.v4
+       face1 = Part.Face(Part.makePolygon([pt1,pt2,pt3,pt1]))
+       face2 = Part.Face(Part.makePolygon([pt1,pt2,pt4,pt1]))
+       face3 = Part.Face(Part.makePolygon([pt4,pt2,pt3,pt4]))
+       face4 = Part.Face(Part.makePolygon([pt1,pt3,pt4,pt1]))
+       fp.Shape = Part.makeSolid(Part.makeShell([face1,face2,face3,face4]))
+       fp.Placement = currPlacement
+       
+class GDMLTessellated(GDMLcommon) :
+    
+   def __init__(self, obj, material ) :
+      obj.addExtension('App::OriginGroupExtensionPython', self)
+      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTessellated", "Shape of the Tesssellation")
+      obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
+      setMaterial(obj, material)
+      self.Type = 'GDMLTessellated'
+      self.Object = obj
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+
+       if prop in ['v1','v2','v3','v4','type'] :
+          self.createGeometry(fp)
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       #print("Tessellated")
+       parms = fp.OutList
+       GDMLShared.trace("Number of parms : "+str(len(parms)))
+       faces = []
+       mul = GDMLShared.getMult(fp)
+       for ptr in parms :
+           #print(dir(ptr))
+           #print(ptr.Label)
+           v1 = ptr.v1 * mul
+           v2 = ptr.v2 * mul
+           v3 = ptr.v3 * mul
+           if hasattr(ptr,'v4') :
+              #print("Quad")
+              v4 = ptr.v4 * mul
+              #print(v1)
+              #print(v2)
+              #print(v3)
+              #print(v4)
+              faces.append(GDMLShared.quad(v1,v2,v3,v4))
+
+           else :
+              #print("Triangle")
+              #print("Vertex 1")
+              #print(v1)
+              #print("Vertex 2")
+              #print(v2)
+              #print("Vertex 3")
+              #print(v3)
+              faces.append(GDMLShared.triangle(v1,v2,v3))
+
+       shell=Part.makeShell(faces)
+       #print("Is Valid")
+       #print(shell.isValid())
+       shell.check()
+       #solid=Part.Solid(shell).removeSplitter()
+       solid=Part.Solid(shell)
+       if solid.Volume < 0:
+          solid.reverse()
+       bbox = solid.BoundBox
+       #print(bbox)
+       #print(bbox.XMin)
+       #print(bbox.YMin)
+       #print(bbox.ZMin)
+       #print(bbox.XLength)
+       #print(bbox.YLength)
+       #print(bbox.ZLength)
+       #print(bbox.XMax)
+       #print(bbox.YMax)
+       #print(bbox.ZMax)
+       base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
+                             -(bbox.YMin+bbox.YMax)/2 \
+                             -(bbox.ZMin+bbox.ZMax)/2)
+       #print(base)
+
+       fp.Shape = translate(solid,base)
+       #fp.Shape = faces[0]
+       fp.Placement = currPlacement
+
 
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :

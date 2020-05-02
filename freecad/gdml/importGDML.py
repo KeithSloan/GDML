@@ -443,6 +443,28 @@ def createSphere(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(mysphere,displayMode)
     return mysphere
 
+def createTetra(part,solid,material,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLTetra, ViewProvider
+    #GDMLShared.setTrace(True)
+    GDMLShared.trace("CreateTet : ")
+    GDMLShared.trace(solid.attrib)
+    v1 = GDMLShared.getDefinedVector(solid,'vertex1')
+    v2 = GDMLShared.getDefinedVector(solid,'vertex2')
+    v3 = GDMLShared.getDefinedVector(solid,'vertex3')
+    v4 = GDMLShared.getDefinedVector(solid,'vertex4')
+    lunit = getText(solid,'lunit',"mm")
+    mytetra=part.newObject("Part::FeaturePython","GDMLTetra:"+getName(solid))
+    GDMLTetra(mytetra,v1,v2,v3,v4,lunit,material)
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mytetra.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mytetra.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytetra.ViewObject)
+       setDisplayMode(mytetra,displayMode)
+    return mytetra
+
 def createTorus(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTorus, ViewProvider
     #GDMLShared.setTrace(True)
@@ -642,11 +664,10 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
        ViewProviderExtension(myTess.ViewObject)
        ViewProvider(myTess.ViewObject)
     for elem in solid.getchildren() :
-        GDMLShared.trace(elem)
-        v1 = elem.attrib['vertex1']
-        v2 = elem.attrib['vertex2']
-        v3 = elem.attrib['vertex3']
-        vType = elem.attrib['type']
+        v1 = GDMLShared.getDefinedPosition(elem.get('vertex1'))
+        v2 = GDMLShared.getDefinedPosition(elem.get('vertex2'))
+        v3 = GDMLShared.getDefinedPosition(elem.get('vertex3'))
+        vType = elem.get('type')
         if elem.tag == 'triangular' :
            myTri = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLTriangle')
            GDMLTriangular(myTri,v1,v2,v3,vType) 
@@ -655,7 +676,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
               ViewProvider(myTri)
         
         if elem.tag == 'quadrangular' :
-           v4 = elem.attrib['vertex4']
+           v4 = GDMLShared.getDefinedPosition(elem.get('vertex4'))
            myQuad = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLQuadrangular')
            GDMLQuadrangular(myQuad,v1,v2,v3,v4,vType) 
            myTess.addObject(myQuad)
@@ -793,6 +814,10 @@ def createSolid(part,solid,material,px,py,pz,rot,displayMode) :
 
         if case('sphere'):
            return(createSphere(part,solid,material,px,py,pz,rot,displayMode)) 
+           break
+
+        if case('tet'):
+           return(createTetra(part,solid,material,px,py,pz,rot,displayMode)) 
            break
 
         if case('torus'):

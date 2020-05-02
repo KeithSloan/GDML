@@ -275,7 +275,19 @@ def getRotFromRefs(ptr) :
         trace(rot.attrib)
     return rot
 
+def getDefinedVector(solid, v) :
+    global define
+    #print('get Defined Vector : '+v)
+    name = solid.get(v)
+    pos = define.find("position[@name='%s']" % name)
+    #print(pos.attrib)
+    x = getVal(pos,'x')
+    y = getVal(pos,'y')
+    z = getVal(pos,'z')
+    return(FreeCAD.Vector(x,y,z))
+
 def getVertex(v):
+    global define
     trace("Vertex")
     #print(dir(v))
     pos = define.find("position[@name='%s']" % v)
@@ -291,20 +303,13 @@ def getVertex(v):
 
 def triangle(v1,v2,v3) :
     # passsed vertex return face
-    fc1 = getVertex(v1)
-    fc2 = getVertex(v2)
-    fc3 = getVertex(v3)
-    w1 = Part.makePolygon([fc1,fc2,fc3,fc1])
+    w1 = Part.makePolygon([v1,v2,v3,v1])
     f1 = Part.Face(w1)
     return(f1)
 
 def quad(v1,v2,v3,v4) :
     # passsed vertex return face
-    fc1 = getVertex(v1)
-    fc2 = getVertex(v2)
-    fc3 = getVertex(v3)
-    fc4 = getVertex(v4)
-    w1 = Part.makePolygon([fc1,fc2,fc3,fc4,fc1])
+    w1 = Part.makePolygon([v1,v2,v3,v4,v1])
     f1 = Part.Face(w1)
     return(f1)
 
