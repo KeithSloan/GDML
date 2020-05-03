@@ -264,7 +264,7 @@ class GDMLBox(GDMLcommon) :
        if ('Restore' in fp.State) :
           return
        
-       if prop in ['x','y','z']  :
+       if prop in ['x','y','z','lunit']  :
              self.createGeometry(fp) 
 
    def execute(self, fp):
@@ -1661,7 +1661,7 @@ class GDMLTessellated(GDMLcommon) :
        if 'Restore' in fp.State :
           return
 
-       if prop in ['v1','v2','v3','v4','type'] :
+       if prop in ['v1','v2','v3','v4','type','lunit'] :
           self.createGeometry(fp)
 
    def execute(self, fp):
@@ -1752,7 +1752,7 @@ class GDMLTetra(GDMLcommon) :         # Tetrahedron
        if 'Restore' in fp.State :
            return
 
-       if prop in ['v1','v2','v3','v4'] :
+       if prop in ['v1','v2','v3','v4','lunit'] :
           self.createGeometry(fp)
 
    def execute(self, fp):
@@ -1789,7 +1789,7 @@ class GDMLTessellated(GDMLcommon) :
        if 'Restore' in fp.State :
           return
 
-       if prop in ['v1','v2','v3','v4','type'] :
+       if prop in ['v1','v2','v3','v4','type','lunit'] :
           self.createGeometry(fp)
 
    def execute(self, fp):
