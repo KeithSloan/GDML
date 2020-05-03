@@ -1,7 +1,7 @@
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
-#*             (c) Dam Lamb 2020                                          *
+#*             (c) Dam Lambert 2020                                          *
 #*                                                                        *
 #*   This program is free software; you can redistribute it and/or modify *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)   *
