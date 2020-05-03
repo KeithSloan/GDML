@@ -476,15 +476,15 @@ class GDMLEllipsoid(GDMLcommon) :
        mat = FreeCAD.Matrix()
        mat.unity()
        # Semi axis values so need to double
-       mat.A11 = ax / 100
-       mat.A22 = by / 100
-       mat.A33 = cz / 100
+       mat.A11 = ax / 50
+       mat.A22 = by / 50
+       mat.A33 = cz / 50
        mat.A44 = 1
        zcut1 = abs(fp.zcut1*mul)
        zcut2 = abs(fp.zcut2*mul)
        GDMLShared.trace("zcut2 : "+str(zcut2))
        t1ellipsoid = sphere.transformGeometry(mat) 
-       if zcut2 != None and zcut2 > 0 :   # Remove from upper z
+       if zcut2 != None and zcut2 > 0 and zcut2 < cz:   # Remove from upper z
           box1 = Part.makeBox(2*ax,2*by,zcut2)
           pl = FreeCAD.Placement()
           # Only need to move to semi axis
@@ -493,7 +493,7 @@ class GDMLEllipsoid(GDMLcommon) :
           t2ellipsoid = t1ellipsoid.cut(box1)
        else :
           t2ellipsoid = t1ellipsoid 
-       if zcut1 != None and zcut1 > 0 :
+       if zcut1 != None and zcut1 > 0 and zcut1 < cz:
           # Remove from lower z, seems to be a negative number
           box2 = Part.makeBox(2*ax,2*by,zcut1)
           pl = FreeCAD.Placement()
