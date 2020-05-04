@@ -159,6 +159,46 @@ def setMaterial(obj, m) :
     else :
         obj.Material = 0
 
+def colourMaterial(m):
+
+   if MaterialsList == None :
+        return (0.5,0.5,0.5)
+   else :
+       if ( m == None ) : 
+           return (0.5,0.5,0.5)
+       elif(len(MaterialsList)<=1):
+           return (0.5,0.5,0.5)
+       else:
+           nbreColor=len(MaterialsList)
+
+           coeffRGB = MaterialsList.index(m)
+
+           coeffRGB=float(coeffRGB)/float(nbreColor-1)
+           coeffR=coeffG=coeffB=1.0
+
+           if(coeffRGB<0.2 and coeffRGB>=0.0):
+               coeffR=1.0
+               coeffG=coeffRGB*5.0
+               coeffB=0.0
+           elif(coeffRGB<0.4):
+               coeffR=2.0-(5.0*coeffRGB)
+               coeffG=1.0
+               coeffB=0.0
+           elif(coeffRGB<0.6):
+               coeffR=0.0
+               coeffG=1.0
+               coeffB=coeffRGB*5.0-2.0
+           elif(coeffRGB<0.8):
+               coeffR=1.0
+               coeffG=4.0-(5.0*coeffRGB)
+               coeffB=1.0
+           elif(coeffRGB<=1.0):
+               coeffR=(5.0*coeffRGB)-4.0
+               coeffG=0.0
+               coeffB=1.0
+
+           return (coeffR,coeffG,coeffB)
+
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
@@ -201,7 +241,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
 
       setMaterial(obj, material)
-
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLArb8'
 
@@ -276,6 +316,7 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLBox'
       obj.Proxy = self
 
@@ -336,6 +377,7 @@ class GDMLCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLCone'
       obj.Proxy = self
 
@@ -417,6 +459,7 @@ class GDMLElCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElCone'
       obj.Proxy = self
 
@@ -479,6 +522,7 @@ class GDMLEllipsoid(GDMLcommon) :
       obj.addProperty("Part::PropertyPartShape","Shape","GDMLEllipsoid", \
                       "Shape of the Ellipsoid")
       self.Type = 'GDMLEllipsoid'
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
 
    def onChanged(self, fp, prop):
@@ -550,6 +594,7 @@ class GDMLElTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElTube'
       obj.Proxy = self
 
@@ -590,6 +635,7 @@ class GDMLOrb(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLOrb'
       self.Object = obj
       obj.Proxy = self
@@ -637,6 +683,7 @@ class GDMLPara(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPara'
       self.Object = obj
       obj.Proxy = self
@@ -705,6 +752,7 @@ class GDMLPolyhedra(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
       obj.Proxy = self
@@ -810,6 +858,7 @@ class GDMLTorus(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTorus'
       obj.Proxy = self
 
@@ -855,6 +904,7 @@ class GDMLXtru(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLXtru'
       obj.Proxy = self
 
@@ -1057,6 +1107,7 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
 
@@ -1145,6 +1196,7 @@ class GDMLSphere(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLSphere'
 
@@ -1253,6 +1305,7 @@ class GDMLTrap(GDMLcommon) :
                        lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colouurMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
@@ -1348,6 +1401,7 @@ class GDMLTrd(GDMLcommon) :
                        lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTrd'
 
@@ -1413,6 +1467,7 @@ class GDMLTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTube","Material")
       setMaterial(obj, material)
       obj.addProperty("Part::PropertyPartShape","Shape","GDMLTube", "Shape of the Tube")
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTube'
 
@@ -1477,6 +1532,7 @@ class GDMLcutTube(GDMLcommon) :
       #print('Add material')
       #print(material)
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
       #obj.addProperty("Part::PropertyPartShape","Shape","GDMLcutTube", "Shape of the Tube")
       obj.Proxy = self
@@ -1671,90 +1727,6 @@ class GDMLQuadrangular(GDMLcommon) :
    def execute(self, fp):
        pass
        
-class GDMLTessellated(GDMLcommon) :
-    
-   def __init__(self, obj, material ) :
-      obj.addExtension('App::OriginGroupExtensionPython', self)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTessellated", "Shape of the Tesssellation")
-      obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
-      setMaterial(obj, material)
-      self.Type = 'GDMLTessellated'
-      self.Object = obj
-      obj.Proxy = self
-
-   def onChanged(self, fp, prop):
-       '''Do something when a property has changed'''
-       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       if 'Restore' in fp.State :
-          return
-
-       if prop in ['v1','v2','v3','v4','type','lunit'] :
-          self.createGeometry(fp)
-
-   def execute(self, fp):
-       self.createGeometry(fp)
-   
-   def createGeometry(self,fp):
-       currPlacement = fp.Placement
-       print("Tessellated")
-       parms = fp.OutList
-       GDMLShared.trace("Number of parms : "+str(len(parms)))
-       faces = []
-       mul = GDMLShared.getMult(fp)
-       for ptr in parms :
-            v1 = ptr.v1 * mul
-            v2 = ptr.v2 * mul
-            v3 = ptr.v3 * mul
-            v4 = ptr.v4 * mul
-            if hasattr(ptr,'v4') :
-                print("Quad")
-                print(v1)
-                print(v2)
-                print(v3)
-                print(v4)
-                faces.append(GDMLShared.quad(v1,v2,v3,v4))
-
-            else :   
-                print("Triangle")
-                print("Vertex 1")
-                print(v1)
-                print("Vertex 2")
-                print(v2)
-                print("Vertex 3")
-                print(v3)
-                faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
-     
-       print(faces)
-       shell=Part.makeShell(faces)
-       print("Is Valid")
-       print(shell.isValid())
-       shell.check()
-       #solid=Part.Solid(shell).removeSplitter()
-       solid=Part.Solid(shell)
-       if solid.Volume < 0:
-          solid.reverse()
-       print(dir(solid))   
-       bbox = solid.BoundBox
-       print(bbox)
-       print(bbox.XMin)
-       print(bbox.YMin)
-       print(bbox.ZMin)
-       #print(bbox.XLength)
-       #print(bbox.YLength)
-       #print(bbox.ZLength)
-       print(bbox.XMax)
-       print(bbox.YMax)
-       print(bbox.ZMax)
-       base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
-                             -(bbox.YMin+bbox.YMax)/2 \
-                             -(bbox.ZMin+bbox.ZMax)/2)
-       print(base)
-
-       fp.Shape = translate(solid,base)
-       #fp.Shape = faces[0]
-       #fp.Shape = Part.makeBox(10,10,10)
-       fp.Placement = currPlacement
-
 class GDMLTetra(GDMLcommon) :         # Tetrahedron
     
    def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
@@ -1770,6 +1742,7 @@ class GDMLTetra(GDMLcommon) :         # Tetrahedron
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
       setMaterial(obj, material)
 
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTetra'
       obj.Proxy = self
 
@@ -1807,6 +1780,7 @@ class GDMLTessellated(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
       setMaterial(obj, material)
       self.Type = 'GDMLTessellated'
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Object = obj
       obj.Proxy = self
 
