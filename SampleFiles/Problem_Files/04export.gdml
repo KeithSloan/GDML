@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+  <constant name="PI" value="1.*pi"/>
+  <constant name="TWOPI" value="2.*pi"/>
+  <position name="P-GDMLBox_Box_solid__Overlayers1" unit="mm" z="5e-06"/>
+  <position name="P-GDMLBox_Box_solid__substrat2" unit="mm" z="-5e-06"/>
+  </define>
+<materials>
+    <element name="Hydrogene_nat" Z="1" formula="H">
+      <atom unit="g/mole" value="1.008"/>
+    </element>
+  <element name="Silicium_nat" Z="14" formula="Si">
+      <atom unit="g/mole" value="28.085"/>
+    </element>
+  <element name="Oxygene_nat" Z="8" formula="O">
+      <atom unit="g/mole" value="15.999"/>
+    </element>
+  <material name="Vacuum" formula="Vacuum_Geant4">
+      <D unit="g/cm3" value="1e-25"/>
+    <fraction n="1.0" ref="Hydrogene_nat"/>
+    </material>
+  <material name="Silice" formula="Si-O2">
+      <D unit="g/cm3" value="2.2"/>
+    <composite n="1" ref="Silicium_nat"/>
+    <composite n="2" ref="Oxygene_nat"/>
+    </material>
+  <material name="Silicium" formula="Si">
+      <D unit="g/cm3" value="2.33"/>
+    <fraction n="1.0" ref="Silicium_nat"/>
+    </material>
+  </materials>
+<solids>
+    <box name="World_solid" x="0.05" y="0.05" z="0.05" lunit="um"/>
+  <box name="Box_solid__Overlayers" x="0.02" y="0.02" z="0.01" lunit="um"/>
+  <box name="Box_solid__substrat" x="0.02" y="0.02" z="0.01" lunit="um"/>
+  </solids>
+<structure>
+    <volume name="Box__substrat001"/>
+  <volume name="Box__substrat">
+      <solidref ref="Box_solid__substrat"/>
+    <materialref ref="Silicium"/>
+    </volume>
+  <volume name="Box__Overlayers">
+      <solidref ref="Box_solid__Overlayers"/>
+    <materialref ref="Silice"/>
+    </volume>
+  <volume name="ThisWorld">
+      <solidref ref="World_solid"/>
+    <materialref ref="Vacuum"/>
+    <physvol>
+        <volumeref ref="Box__Overlayers"/>
+      <positionref ref="P-GDMLBox_Box_solid__Overlayers1"/>
+      </physvol>
+    <physvol>
+        <volumeref ref="Box__substrat"/>
+      <positionref ref="P-GDMLBox_Box_solid__substrat2"/>
+      </physvol>
+    </volume>
+  </structure>
+<setup name="Default" version="1.0">
+    <world ref="ThisWorld"/>
+  </setup>
+</gdml>
