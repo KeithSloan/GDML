@@ -242,6 +242,9 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
          
          In theory other file extension should produce a file of the appropriate type,
          e.g. iges, but this is untested.
+         
+## Citing information
+[![DOI](https://zenodo.org/badge/223232841.svg)](https://zenodo.org/badge/latestdoi/223232841)
 
 ## Roadmap
 
