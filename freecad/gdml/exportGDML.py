@@ -612,7 +612,7 @@ def testDefaultPlacement(obj) :
 def processGDMLArb8Object(obj, flag) :
     # Needs unique Name
     # Remove leading GDMLArb8 from name on export 
-    arb8Name = obj.Name.split('_',1)[1]
+    arb8Name = obj.Label.split('_',1)[1]
 
     if flag == True :
         ET.SubElement(solids, 'arb8',{'name': arb8Name, \
@@ -639,7 +639,7 @@ def processGDMLArb8Object(obj, flag) :
 def processGDMLBoxObject(obj, flag) :
     # Needs unique Name
     # Remove leading GDMLBox_ from name on export 
-    boxName = obj.Name.split('_',1)[1] 
+    boxName = obj.Label.split('_',1)[1] 
 
     if flag == True :
         ET.SubElement(solids, 'box',{'name': boxName, \
@@ -652,7 +652,7 @@ def processGDMLBoxObject(obj, flag) :
 def processGDMLConeObject(obj, flag) :
     # Needs unique Name
     # Remove leading GDMLTube_ from name on export 
-    coneName = obj.Name.split('_',1)[1]
+    coneName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'cone',{'name': coneName, \
                           'rmin1': str(obj.rmin1),  \
@@ -670,7 +670,7 @@ def processGDMLConeObject(obj, flag) :
 def processGDMLCutTubeObject(obj, flag) :
     # Needs unique Name
     # Remove leading GDML text from name
-    cTubeName = obj.Name.split('_',1)[1]
+    cTubeName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'cutTube',{'name': cTubeName, \
                           'rmin': str(obj.rmin),  \
@@ -690,7 +690,7 @@ def processGDMLCutTubeObject(obj, flag) :
 
 def processGDMLElConeObject(obj, flag) :
     GDMLShared.trace('Elliptical Cone')
-    elconeName = obj.Name.split('_',1)[1]
+    elconeName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids,'elcone',{'name': elconeName, \
                 'dx': str(obj.dx), \
@@ -703,7 +703,7 @@ def processGDMLElConeObject(obj, flag) :
 
 def processGDMLEllipsoidObject(obj, flag) :
     # Needs unique Name
-    ellipsoidName = obj.Name.split('_',1)[1]
+    ellipsoidName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'ellipsoid',{'name': ellipsoidName, \
                           'ax': str(obj.ax),  \
@@ -717,7 +717,7 @@ def processGDMLEllipsoidObject(obj, flag) :
 def processGDMLElTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    eltubeName = obj.Name.split('_',1)[1]
+    eltubeName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'eltube',{'name': eltubeName, \
                           'dx': str(obj.dx),  \
@@ -729,7 +729,7 @@ def processGDMLElTubeObject(obj, flag) :
 def processGDMLOrbObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    orbName = obj.Name.split('_',1)[1]
+    orbName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'orb',{'name': orbName, \
                           'r': str(obj.r),  \
@@ -739,7 +739,7 @@ def processGDMLOrbObject(obj, flag) :
 def processGDMLParaObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    paraName = obj.Name.split('_',1)[1]
+    paraName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'para',{'name': paraName, \
                           'x': str(obj.x),  \
@@ -756,7 +756,7 @@ def processGDMLPolyconeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
-    polyconeName = obj.Name.split('_',1)[1]
+    polyconeName = obj.Label.split('_',1)[1]
     if flag == True :
         cone = ET.SubElement(solids, 'polycone',{'name': polyconeName, \
                           'startphi': str(obj.startphi),  \
@@ -773,7 +773,7 @@ def processGDMLPolyhedraObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
-    polyhedraName = obj.Name.split('_',1)[1]
+    polyhedraName = obj.Label.split('_',1)[1]
     if flag == True :
         cone = ET.SubElement(solids, 'polyhedra',{'name': polyhedraName, \
                           'startphi': str(obj.startphi),  \
@@ -797,7 +797,7 @@ def processGDMLQuadObject(obj, flag) :
 
 def processGDMLSphereObject(obj, flag) :
     # Needs unique Name
-    sphereName =  obj.Name.split('_',1)[1]
+    sphereName =  obj.Label.split('_',1)[1]
     
     if flag == True :
         ET.SubElement(solids, 'sphere',{'name': sphereName, 
@@ -819,7 +819,7 @@ def processGDMLTessellatedObject(obj, flag) :
     #    ET.SubElement(GDMLShared.define,'position',{'name': obj.Name + 'v1', \
     #            'x':items.x , 'y':items.y, 'z':items.z,'unit':'mm')
 
-    tessName = obj.Name.split('_',1)[1]
+    tessName = obj.Label.split('_',1)[1]
     if flag == True :
         tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
         index = 1
@@ -847,7 +847,7 @@ def processGDMLTessellatedObject(obj, flag) :
     return(tessName)
 
 def processGDMLTetraObject(obj, flag) :
-    tetraName = obj.Name.split('_',1)[1]
+    tetraName = obj.Label.split('_',1)[1]
     if flag == True :
         v1Name = tetraName + 'v1'
         v2Name = tetraName + 'v2'
@@ -866,7 +866,7 @@ def processGDMLTetraObject(obj, flag) :
     return tetraName    
 
 def processGDMLTorusObject(obj, flag) :
-    torusName = obj.Name.split('_',1)[1]
+    torusName = obj.Label.split('_',1)[1]
     if flag == True :
         torus = ET.SubElement(solids, 'torus',{'name': torusName,
                     'rmin': str(obj.rmin), \
@@ -882,7 +882,7 @@ def processGDMLTorusObject(obj, flag) :
 
 def processGDMLTrapObject(obj, flag) :
     # Needs unique Name
-    trapName = obj.Name.split('_',1)[1]
+    trapName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'trap',{'name': trapName, \
                            'z': str(obj.z),  \
@@ -902,7 +902,7 @@ def processGDMLTrapObject(obj, flag) :
 
 def processGDMLTrdObject(obj, flag) :
     # Needs unique Name
-    trdName = obj.Name.split('_',1)[1]
+    trdName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'trd',{'name': trdName, \
                            'z': str(obj.z),  \
@@ -923,7 +923,7 @@ def processGDMLTriangle(obj, flag) :
 def processGDMLTubeObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
-    tubeName = obj.Name.split('_',1)[1]
+    tubeName = obj.Label.split('_',1)[1]
     if flag == True :
         ET.SubElement(solids, 'tube',{'name': tubeName, \
                            'rmin': str(obj.rmin),  \
@@ -937,7 +937,7 @@ def processGDMLTubeObject(obj, flag) :
 
 def processGDMLXtruObject(obj, flag) :
     # Needs unique Name
-    xtruName = obj.Name.split('_',1)[1]
+    xtruName = obj.Label.split('_',1)[1]
 
     if flag == True :
         xtru = ET.SubElement(solids, 'xtru',{'name': xtruName, \
