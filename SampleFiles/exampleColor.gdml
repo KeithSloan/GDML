@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<gdml xmlns:gdml="http://cern.ch/2001/Schemas/GDML"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="/home/lambertd/GDMLSchema/gdml.xsd">
+
+<define>
+	<constant name="HALFPI" value="pi/2."/>
+	<constant name="PI" value="1.*pi"/>
+	<constant name="TWOPI" value="2.*pi"/>
+	<position name="center"/>
+	<rotation name="identity"/>
+</define>
+
+<materials>
+	<element name="Hydrogene_nat" formula="H" Z="1">
+		<atom unit="g/mole" value="1.008"/>
+	</element>
+	<element name="Silicium_nat" formula="Si" Z="14">
+		<atom unit="g/mole" value="28.085"/>
+	</element>
+	<element name="Oxygene_nat" formula="O" Z="8">
+		<atom unit="g/mole" value="15.999"/>
+	</element>
+	<element name="Aluminium_nat" formula="Al" Z="13">
+		<atom unit="g/mole" value="26.982"/>
+	</element>
+
+	<material name="Vacuum" formula="Vacuum_Geant4">
+		<D value ="1e-25" unit="g/cm3"/>
+		<fraction n="1" ref="Hydrogene_nat"/>
+	</material>
+	<material name="Silice" formula="Si-O2">
+		<D value ="2.2" unit="g/cm3"/>
+		<composite n="1" ref="Silicium_nat"/>
+		<composite n="2" ref="Oxygene_nat"/>
+	</material>
+	<material name="Silicium" formula="Si">
+		<D value ="2.33" unit="g/cm3"/>
+		<fraction n="1" ref="Silicium_nat"/>
+	</material>
+	<material name="Aluminium" formula="Al_Geant4">
+		<D value ="2.7" unit="g/cm3"/>
+		<fraction n="1" ref="Aluminium_nat"/>
+	</material>
+
+</materials>
+
+<solids>
+	<box name="World_solid"  lunit="mm" x="0.1" y="0.1" z="0.1"/>
+	<box name="Box_solid_L-1_1_1_2.5e-05_1e-05__Overlayers"  lunit="mm"  x="0.01" y="0.05" z="0.05"/>
+	<box name="Box_solid_L-2_2_1_2.5e-05_1e-05__substrat"  lunit="mm"  x="0.01" y="0.05" z="0.05"/>
+	<box name="Box_solid_L-3_3_1_2.5e-05_1e-05__substrat"  lunit="mm"  x="0.01" y="0.05" z="0.05"/>
+	<box name="Box_solid_L-4_4_1_2.5e-05_1e-05__substrat"  lunit="mm"  x="0.01" y="0.05" z="0.05"/>
+	<box name="Box_solid_L-5_5_1_2.5e-05_1e-05__Overlayers"  lunit="mm"  x="0.01" y="0.05" z="0.05"/>
+</solids>
+
+<structure>
+
+	<volume name="Box_L-1_1_1_2.5e-05_1e-05__Overlayers">
+		<materialref ref="Silice"/>
+		<solidref ref="Box_solid_L-1_1_1_2.5e-05_1e-05__Overlayers"/>
+	</volume>
+	<volume name="Box_L-2_2_1_2.5e-05_1e-05__substrat">
+		<materialref ref="Silicium"/>
+		<solidref ref="Box_solid_L-2_2_1_2.5e-05_1e-05__substrat"/>
+	</volume>
+	<volume name="Box_L-3_3_1_2.5e-05_1e-05__substrat">
+		<materialref ref="Aluminium"/>
+		<solidref ref="Box_solid_L-3_3_1_2.5e-05_1e-05__substrat"/>
+	</volume>
+	<volume name="Box_L-4_4_1_2.5e-05_1e-05__substrat">
+		<materialref ref="Silicium"/>
+		<solidref ref="Box_solid_L-4_4_1_2.5e-05_1e-05__substrat"/>
+	</volume>
+	<volume name="Box_L-5_5_1_2.5e-05_1e-05__Overlayers">
+		<materialref ref="Silice"/>
+		<solidref ref="Box_solid_L-5_5_1_2.5e-05_1e-05__Overlayers"/>
+	</volume>
+
+	<volume name="ThisWorld">
+		<materialref ref="Vacuum"/>
+		<solidref ref="World_solid"/>
+
+		<physvol name="Layer-1">
+			<volumeref ref="Box_L-1_1_1_2.5e-05_1e-05__Overlayers"/>
+			<position name="posRef_1" unit="mm" x="0.005" y="0.0000" z="0.0000"/>
+		</physvol>
+		<physvol name="Layer-2">
+			<volumeref ref="Box_L-2_2_1_2.5e-05_1e-05__substrat"/>
+			<position name="posRef_2" unit="mm" x="0.015" y="0.0000" z="0.0000"/>
+		</physvol>
+		<physvol name="Layer-3">
+			<volumeref ref="Box_L-3_3_1_2.5e-05_1e-05__substrat"/>
+			<position name="posRef_3" unit="mm" x="0.025" y="0.0000" z="0.0000"/>
+		</physvol>
+		<physvol name="Layer-4">
+			<volumeref ref="Box_L-4_4_1_2.5e-05_1e-05__substrat"/>
+			<position name="posRef_4" unit="mm" x="0.035" y="0.0000" z="0.0000"/>
+		</physvol>
+		<physvol name="Layer-5">
+			<volumeref ref="Box_L-5_5_1_2.5e-05_1e-05__Overlayers"/>
+			<position name="posRef_5" unit="mm" x="0.045" y="0.0000" z="0.0000"/>
+		</physvol>
+	</volume>
+</structure>
+
+<setup name="World" version="1.0">
+	<world ref="ThisWorld"/>
+</setup>
+
+</gdml>
