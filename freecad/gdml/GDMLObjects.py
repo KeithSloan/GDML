@@ -210,6 +210,9 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
        if 'Restore' in fp.State :
           return
 
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
        if prop in ['v1x', 'v1y', 'v2x','v2y', 'v3x', 'v3y', 'v4x', 'v4y',  \
                 'v5x', 'v5y', 'v6x', 'v6y', 'v7x', 'v7y', 'v8x', 'v8y', 'dz','lunit'] :
           self.createGeometry(fp)
@@ -291,6 +294,9 @@ class GDMLBox(GDMLcommon) :
        if ('Restore' in fp.State) :
           return
        
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+       
        if prop in ['x','y','z','lunit']  :
              self.createGeometry(fp) 
 
@@ -344,6 +350,9 @@ class GDMLCone(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if  'Restore' in fp.State :
            return
+
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin1','rmax1','rmin2','rmax2','z','startphi','deltaphi' \
                ,'aunit', 'lunit'] :
@@ -425,6 +434,10 @@ class GDMLElCone(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return  
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+       
        if prop in ['dx','dy','zmax','zcut','lunit'] :
           self.createGeometry(fp)
 
@@ -486,6 +499,9 @@ class GDMLEllipsoid(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['ax','by','cz','zcut1','zcut2','lunit'] :
           self.createGeometry(fp)
@@ -559,6 +575,9 @@ class GDMLElTube(GDMLcommon) :
        if 'Restore' in fp.State :
           return
 
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
        if prop in ['dx','dy','dz','lunit'] :
           self.createGeometry(fp)
 
@@ -599,6 +618,9 @@ class GDMLOrb(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['r', 'lunit'] :
           #print(dir(fp))
@@ -646,6 +668,10 @@ class GDMLPara(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+      
 
        if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -714,6 +740,9 @@ class GDMLPolyhedra(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -818,6 +847,9 @@ class GDMLTorus(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin', 'rmax', 'rtor','startphi','deltaphi', \
                    'aunit','lunit'] :
@@ -863,6 +895,9 @@ class GDMLXtru(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1065,6 +1100,9 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1153,6 +1191,9 @@ class GDMLSphere(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','startphi','deltaphi','starttheta', \
                     'deltatheta','aunit','lunit'] :
@@ -1260,6 +1301,9 @@ class GDMLTrap(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','theta','phi','x1','x2','x3','x4','y1','y2','alpha', \
                    'aunit', 'lunit'] :
@@ -1355,6 +1399,9 @@ class GDMLTrd(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','x1','x2','y1','y2','lunit'] :
           self.createGeometry(fp)
@@ -1420,6 +1467,9 @@ class GDMLTube(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                   'lunit'] :
@@ -1486,6 +1536,9 @@ class GDMLcutTube(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                    'lowX', 'lowY', 'lowZ', \
@@ -1687,6 +1740,9 @@ class GDMLTessellated(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1','v2','v3','v4','type','lunit'] :
           self.createGeometry(fp)
@@ -1778,6 +1834,9 @@ class GDMLTetra(GDMLcommon) :         # Tetrahedron
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
            return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1','v2','v3','v4','lunit'] :
           self.createGeometry(fp)
@@ -1815,6 +1874,9 @@ class GDMLTessellated(GDMLcommon) :
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
           return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1','v2','v3','v4','type','lunit'] :
           self.createGeometry(fp)

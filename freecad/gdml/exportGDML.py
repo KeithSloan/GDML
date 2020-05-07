@@ -201,7 +201,7 @@ def createLVandPV(obj, name, solidName):
     ET.SubElement(lvol, 'materialref', {'ref': 'SSteel0x56070ee87d10'})
     ET.SubElement(lvol, 'solidref', {'ref': solidName})
     # Place child physical volume in World Volume
-    phys = ET.SubElement(lvol, 'physvol')
+    phys = ET.SubElement(lvol, 'physvol',{'name':'pv'+name)
     ET.SubElement(phys, 'volumeref', {'ref': pvName})
     x = pos[0]
     y = pos[1]
@@ -534,7 +534,7 @@ def processSphereObject(obj, addVolsFlag) :
 
 def addPhysVol(xmlVol, volName) :
     #print("Add PhysVol to Vol") 
-    pvol = ET.SubElement(xmlVol,'physvol')
+    pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName)
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
 
