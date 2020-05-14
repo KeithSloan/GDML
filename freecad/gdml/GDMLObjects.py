@@ -168,6 +168,8 @@ def colourMaterial(m):
            return (0.5,0.5,0.5)
        elif(len(MaterialsList)<=1):
            return (0.5,0.5,0.5)
+       elif m not in MaterialsList :
+            return (0.5,0.5,0.5)
        else:
            nbreColor=len(MaterialsList)
 
