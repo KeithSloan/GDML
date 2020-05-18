@@ -300,7 +300,8 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Emmanuel Delage
   * Wouter Deconnick
   * Hilden Timo
-
+  * Atanu Quant
+  
 * FreeCAD forum members (Applogies if I left anybody off ) :
 
   * wmayer
