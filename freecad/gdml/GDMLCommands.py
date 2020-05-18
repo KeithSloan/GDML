@@ -75,13 +75,13 @@ class BoxFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLBox, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLBox_Box)
-        print("GDMLBox Object - added")
+        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLBox_Box")
+        #print("GDMLBox Object - added")
         # obj, x, y, z, lunits, material
         GDMLBox(a,10.0,10.0,10.0,"mm",0)
-        print("GDMLBox initiated")
+        #print("GDMLBox initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLBox ViewProvided - added")
+        #print("GDMLBox ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -105,12 +105,12 @@ class ConeFeature:
     def Activated(self):
         from .GDMLObjects import GDMLCone, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLCone_Cone")
-        print("GDMLCone Object - added")
+        #print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
         GDMLCone(a,1,3,4,7,10.0,0,2,"rads","mm",0)
-        print("GDMLCone initiated")
+        #print("GDMLCone initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLCone ViewProvided - added")
+        #print("GDMLCone ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -134,13 +134,13 @@ class EllispoidFeature:
     def Activated(self):
         from .GDMLObjects import GDMLEllipsoid, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                  "GDMLEllipsoid_Ellipsoid)
-        print("GDMLEllipsoid Object - added")
+                  "GDMLEllipsoid_Ellipsoid")
+        #print("GDMLEllipsoid Object - added")
         #  obj,ax, by, cz, zcut1, zcut2, lunit,material
         GDMLEllipsoid(a,10,20,30,0,0,"mm",0)
-        print("GDMLEllipsoid initiated")
+        #print("GDMLEllipsoid initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLEllipsoid ViewProvided - added")
+        #print("GDMLEllipsoid ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -164,13 +164,13 @@ class ElliTubeFeature:
     def Activated(self):
         from .GDMLObjects import GDMLElTube, ViewProvider
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                  "GDMLElTube_Eltube)
-        print("GDMLElTube Object - added")
+                  "GDMLElTube_Eltube")
+        #print("GDMLElTube Object - added")
         #  obj,dx, dy, dz, lunit, material
         GDMLElTube(a,10,20,30,"mm",0)
-        print("GDMLElTube initiated")
+        #print("GDMLElTube initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLElTube ViewProvided - added")
+        #print("GDMLElTube ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -193,14 +193,15 @@ class SphereFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLSphere, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLSphere_Sphere)
-        print("GDMLSphere Object - added")
+        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                    "GDMLSphere_Sphere")
+        #print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
         #       aunit, lunits, material
         GDMLSphere(a,10.0, 20.0, 0.0, 2.02, 0.0, 2.02,"rad","mm",0)
-        print("GDMLSphere initiated")
+        #print("GDMLSphere initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLSphere ViewProvided - added")
+        #print("GDMLSphere ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -223,7 +224,8 @@ class TrapFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLTrap, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLTrap_Trap)
+        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                "GDMLTrap_Trap")
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
         # pAlp2, aunits, lunits, material
@@ -254,13 +256,14 @@ class TubeFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLTube, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLTube_Tube)
-        print("GDMLTube Object - added")
+        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                "GDMLTube_Tube")
+        #print("GDMLTube Object - added")
         # obj, rmin, rmax, z, startphi, deltaphi, aunit, lunits, material
         GDMLTube(a,5.0,8.0,10.0,0.52,1.57,"rad","mm",0)
-        print("GDMLTube initiated")
+        #print("GDMLTube initiated")
         ViewProvider(a.ViewObject)
-        print("GDMLTube ViewProvided - added")
+        #print("GDMLTube ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 

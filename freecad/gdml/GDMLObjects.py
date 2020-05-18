@@ -1348,7 +1348,7 @@ class GDMLTrap(GDMLcommon) :
                        lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colouurMaterial(material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
