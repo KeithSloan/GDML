@@ -74,7 +74,7 @@ def open(filename):
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc,filename,True)
+        processGDML(doc,filename,True,False)
     return doc
 
 def insert(filename,docname):
@@ -86,7 +86,7 @@ def insert(filename,docname):
     except NameError:
         doc=FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc,filename,True)
+        processGDML(doc,filename,True,False)
 
 class switch(object):
     value = None
@@ -1160,7 +1160,7 @@ def processMaterials(doc) :
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 
-def processGDML(doc,filename,prompt):
+def processGDML(doc,filename,prompt,initFlg):
 
     from . import GDMLShared
     from . import GDMLObjects
@@ -1262,7 +1262,7 @@ def processGDML(doc,filename,prompt):
     #scanVolume(part,world)
     parseVolume(part,world,0,0,0,None,phylvl,3)
     # If only single volume reset Display Mode
-    if len(part.OutList) == 2 :
+    if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = 'Shaded'
     if FreeCAD.GuiUp :
