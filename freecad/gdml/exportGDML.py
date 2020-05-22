@@ -37,15 +37,15 @@ from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 import sys
 try:
    import lxml.etree  as ET
-   FreeCAD.Console.PrintMessage("running with lxml.etree")
+   FreeCAD.Console.PrintMessage("running with lxml.etree\n")
    XML_IO_VERSION='lxml'
 except ImportError:
    try:
        import xml.etree.ElementTree as ET 
-       FreeCAD.Console.PrintMessage("running with xml.etree.ElementTree")
+       FreeCAD.Console.PrintMessage("running with xml.etree.ElementTree\n")
        XML_IO_VERSION = 'xml'
    except ImportError:    
-       FreeCAD.Console.PrintMessage('pb xml lib not found')
+       FreeCAD.Console.PrintMessage('pb xml lib not found\n')
        sys.exit()
 # xml handling
 #import argparse
@@ -1540,11 +1540,7 @@ def exportWorldVol(vol) :
 
         processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
-def export(exportList,filename) :
-    "called when FreeCAD exports a file"
-    
-    first = exportList[0]
-    if first.TypeId == "App::Part" :
+def exportGDML(first,filename) :
        # GDML Export
        print("\nStart GDML Export 0.1")
 
@@ -1552,12 +1548,6 @@ def export(exportList,filename) :
        zOrder = 1
        processMaterials()
        exportWorldVol(first)
-       #vol = processVolumes(exportList[0])
-       #print(vol)
-       #for obj in exportList[1:] :
-       #    #reportObject(obj)
-       #    processObject(obj, vol, None, None, False)
-
        # format & write GDML file 
        indent(gdml)
        print("Write to GDML file")
@@ -1565,6 +1555,25 @@ def export(exportList,filename) :
        ET.ElementTree(gdml).write(filename,xml_declaration=True)
        #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
        print("GDML file written")
+
+def exportMaterials(first,filename) :
+	print('Export Materials to XML file : '+filename)
+	global materials
+	xml = ET.Element('xml')
+	materials = ET.SubElement(xml,'materials')
+	processMaterials()
+	indent(xml)
+	ET.ElementTree(xml).write(filename)
+
+def export(exportList,filename) :
+    "called when FreeCAD exports a file"
+    
+    first = exportList[0]
+    if first.TypeId == "App::Part" :
+       exportGDML(first,filename)
+
+    elif first.Name == "Materials" :
+       exportMaterials(first,filename)
     
     else :
        print("Need to a Part for export")

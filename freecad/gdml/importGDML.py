@@ -1222,6 +1222,7 @@ def processGDML(doc,filename,prompt,initFlg):
            FreeCAD.Console.PrintMessage(" for full import add lxml library \n")
            tree = etree.parse(filename)
            FreeCAD.Console.PrintMessage(tree)
+           FreeCAD.Console.PrintMessage('\n')
            root = tree.getroot()
 
        except ImportError:
