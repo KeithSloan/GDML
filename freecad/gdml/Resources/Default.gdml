@@ -90,7 +90,7 @@
     <fraction n="0.02119" ref="Fe570x56070ee8eff0" />
     <fraction n="0.00282" ref="Fe580x56070ee8d300" />
     </element>
-  <element name="Chromium0x56070eea004">
+  <element name="Chromium0x56070eea">
       <fraction n="0.04345" ref="Cr500x56070ee875e0" />
     <fraction n="0.83789" ref="Cr520x56070ee897e0" />
     <fraction n="0.09501" ref="Cr530x56070ee89830" />

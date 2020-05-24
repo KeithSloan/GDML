@@ -111,6 +111,13 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = j
     return elem
+
+def nameFromLabel(label) :
+    if ' ' not in label :
+       return label
+    else :
+       return(label.split(' ')[0])
+
 #################################
 #  Setup GDML environment
 #################################
@@ -138,9 +145,6 @@ def GDMLstructure() :
     solids = ET.SubElement(gdml, 'solids')
     structure = ET.SubElement(gdml, 'structure')
     setup = ET.SubElement(gdml, 'setup', {'name': 'Default', 'version': '1.0'})
-    #worldVOL = None
-    # worldVOL needs to be added after file scanned.
-    #ET.ElementTree(gdml).write("/tmp/test2", 'utf-8', True)
     return structure
 
 def defineMaterials():
@@ -986,7 +990,7 @@ def processMaterials() :
     global materials
    
     for obj in FreeCAD.ActiveDocument.Objects:
-        #print(obj.TypeId+" : "+obj.Label)
+        #print(obj.TypeId+" : "+obj.Name)
 
         #processMaterialObject(obj)
         if processMaterialObject(obj) == False :
@@ -1030,7 +1034,8 @@ def processMaterialObject(obj) :
              #print("GDML material")
              #print(dir(obj))
 
-             item = ET.SubElement(materials,'material',{'name': obj.Name})
+             item = ET.SubElement(materials,'material',{'name': \
+                    nameFromLabel(obj.Label)})
 
              # process common options material / element
              processElement(obj, item)
@@ -1059,7 +1064,7 @@ def processMaterialObject(obj) :
              #print("GDML fraction :" + obj.Name)
              # need to strip number making it unique
              ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                     'ref': obj.Name[:-3]})
+                     'ref': nameFromLabel(obj.Label)})
 
              #return True
              break
@@ -1067,8 +1072,7 @@ def processMaterialObject(obj) :
           if isinstance(obj.Proxy,GDMLcomposite) :
              #print("GDML Composite")
              ET.SubElement(item,'composite',{'n': str(obj.n), \
-             #        'ref': obj.Name[:obj.Name.index('_')]})
-             'ref': obj.Name[:-3]})
+                     'ref': nameFromLabel(obj.Label)})
              #return True
              break
 
@@ -1084,7 +1088,8 @@ def processMaterialObject(obj) :
 
           if isinstance(obj.Proxy,GDMLelement) :
              #print("GDML element")
-             item = ET.SubElement(materials,'element',{'name': obj.Name})
+             item = ET.SubElement(materials,'element',{'name': \
+                    nameFromLabel(obj.Label)})
              processElement(obj,item)
              #return True
              break
@@ -1558,8 +1563,10 @@ def exportGDML(first,filename) :
 
 def exportMaterials(first,filename) :
 	print('Export Materials to XML file : '+filename)
-	global materials
 	xml = ET.Element('xml')
+	global define
+	define = ET.SubElement(xml,'define')
+	global materials
 	materials = ET.SubElement(xml,'materials')
 	processMaterials()
 	indent(xml)
