@@ -201,7 +201,7 @@ If not creates a mesh and then a Tessellated solid with 3 vertex.
 ### Export/Import of Materials as an XML file.
 
 If you select the Materials Group in Tree view and then use the standard FreeCAD export,
-the export will create an xml file of the material defintions. You can then import this
+the export will create an xml file of the material definitions. You can then import this
 file and the material definitions into a separate FreeCAD document. Note: The file extension
 used should be xml NOT gdml
 
