@@ -198,6 +198,13 @@ If not handled as above then objects shapes are checked  to see if planar,
 if yes converts to Tessellated Solid with 3 or 4 vertex as appropriate.
 If not creates a mesh and then a Tessellated solid with 3 vertex. 
 
+### Export/Import of Materials as an XML file.
+
+If you select the Materials Group in Tree view and then use the standard FreeCAD export,
+the export will create an xml file of the material definitions. You can then import this
+file and the material definitions into a separate FreeCAD document. Note: The file extension
+used should be xml NOT gdml
+
 ### Constants / Isotopes / Elements / Materials
 
 Importing a GDML will create FreeCAD objects for the above and export should
