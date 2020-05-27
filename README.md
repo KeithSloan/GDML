@@ -253,6 +253,8 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 ## Citing information
 [![DOI](https://zenodo.org/badge/223232841.svg)](https://zenodo.org/badge/latestdoi/223232841)
 
+![DOI_image](Documentation/DOImage.png)
+
 ## Roadmap
 
   - [ ] Change structure of xml handing to use Python class rather than global variables
