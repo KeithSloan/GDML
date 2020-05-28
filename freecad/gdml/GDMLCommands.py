@@ -294,7 +294,22 @@ class PolyHedraFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup',\
                 'Poly Group'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
-                'Poly Object')}    
+                'PolyHedra Selected Object')}    
+
+class TessellateFeature :
+      
+    def Activated(self) :
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Tessellate')
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tessellate', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tess Group'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                'Tesselate Selected Object')}    
 
 class CycleFeature :
 
@@ -494,3 +509,4 @@ FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
+FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
