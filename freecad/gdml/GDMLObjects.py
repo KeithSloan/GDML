@@ -34,6 +34,14 @@ from . import GDMLShared
 global MaterialsList
 MaterialsList = []
 
+def checkMaterial(material) :
+    global MaterialsList
+    try :
+       i = MaterialsList.index(material)
+    except ValueError:
+       return False
+    return True
+
 def checkFullCircle(aunit, angle) :
     #print(angle)
     if aunit == 'deg' and angle == 360 :

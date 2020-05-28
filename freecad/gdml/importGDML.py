@@ -951,6 +951,7 @@ def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
 
 def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
+    from .GDMLObjects import checkMaterial
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
@@ -960,17 +961,27 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref != None :
           solid  = solids.find("*[@name='%s']" % solidref )
-          GDMLShared.trace(solid.tag)
-          # Material is the materialref value
-          # need to add default
-          #material = GDMLShared.getRef(vol,"materialref")
-          material = GDMLShared.getRef(vol,"materialref")
-          #createSolid(part,solid,material,px,py,pz,rot,displayMode)
-          #print('solid : '+solid.tag)
-          #print('material :'+material)
-          obj = createSolid(parent,solid,material,px,py,pz,rot,displayMode)
+          if solid != None :
+             GDMLShared.trace(solid.tag)
+             # Material is the materialref value
+             # need to add default
+             material = GDMLShared.getRef(vol,"materialref")
+             if material != None :
+                if checkMaterial(material) == True :
+                   obj = createSolid(parent,solid,material,px,py,pz,rot \
+                         ,displayMode)
+                else :
+                   print('Material : '+material+' Not defined')
+                   return None
+             else :
+                print('materialref not defined')
+                return None
+          else :
+             print('Solid : '+solidref+' Not defined')
+             return None
        else :
-          obj = None 
+          print('solidref Not defined')
+          return None 
        # Volume may or maynot contain physvol's
        displayMode = 1
        for pv in vol.findall("physvol") :

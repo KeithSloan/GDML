@@ -1546,6 +1546,7 @@ def exportWorldVol(vol) :
         processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
 def exportGDML(first,filename) :
+    if filename.lower().endswith('.gdml') :
        # GDML Export
        print("\nStart GDML Export 0.1")
 
@@ -1560,17 +1561,22 @@ def exportGDML(first,filename) :
        ET.ElementTree(gdml).write(filename,xml_declaration=True)
        #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
        print("GDML file written")
+    else :
+       print('File extension must be gdml')
 
 def exportMaterials(first,filename) :
-	print('Export Materials to XML file : '+filename)
-	xml = ET.Element('xml')
-	global define
-	define = ET.SubElement(xml,'define')
-	global materials
-	materials = ET.SubElement(xml,'materials')
-	processMaterials()
-	indent(xml)
-	ET.ElementTree(xml).write(filename)
+    if filename.lower().endswith('.xml') :
+       print('Export Materials to XML file : '+filename)
+       xml = ET.Element('xml')
+       global define
+       define = ET.SubElement(xml,'define')
+       global materials
+       materials = ET.SubElement(xml,'materials')
+       processMaterials()
+       indent(xml)
+       ET.ElementTree(xml).write(filename)
+    else :
+       print('File extension must be xml')
 
 def export(exportList,filename) :
     "called when FreeCAD exports a file"
