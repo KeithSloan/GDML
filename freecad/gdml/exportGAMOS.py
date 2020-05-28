@@ -762,16 +762,13 @@ def processGDMLTrapObject(obj, name, fp) :
              ' ' + str(obj.alpha))\
     return(name)
 
-def processGDMLTrdObject(obj, flag) :
-    print('Trd')
-    #    ET.SubElement(solids, 'trd',{'name': trdName, \
-    #                       'z': str(obj.z),  \
-    #
-    #                       'x1': str(obj.x1),  \
-    #                       'x2': str(obj.x2),  \
-    #                       'y1': str(obj.y1),  \
-    #                       'y2': str(obj.y2),  \
-    #                       'lunit': obj.lunit})
+def processGDMLTrdObject(obj, name, fp) :
+    fp.write('TRD: '+name+ \
+             ' ' + str(obj.x1),  \
+             ' ' + str(obj.x2),  \
+             ' ' + str(obj.y1),  \
+             ' ' + str(obj.y2),  \
+             ' ' + str(obj.z))
     return(name)
 
 def processGDMLTriangle(obj, flag) :
@@ -781,20 +778,14 @@ def processGDMLTriangle(obj, flag) :
             'vertex2': obj.v2, 'vertex3': obj.v3,  \
             'type': obj.vtype})
 
-def processGDMLTubeObject(obj, flag) :
-    # Needs unique Name
-    # flag needed for boolean otherwise parse twice
-    tubeName = obj.Label.split('_',1)[1]
-    if flag == True :
-        ET.SubElement(solids, 'tube',{'name': tubeName, \
-                           'rmin': str(obj.rmin),  \
-                           'rmax': str(obj.rmax),  \
-                           'startphi': str(obj.startphi), \
-                           'deltaphi': str(obj.deltaphi), \
-                           'aunit': obj.aunit,
-                           'z': str(obj.z),  \
-                           'lunit' : obj.lunit})
-    return(tubeName)
+def processGDMLTubeObject(obj, name, fp) :
+    fp.write('TUBS: '+name+ \
+             ' ' + str(obj.rmin),  \
+             ' ' + str(obj.rmax),  \
+             ' ' + str(obj.z),  \
+             ' ' + str(obj.startphi), \
+             ' ' + str(obj.deltaphi))
+    return(name)
 
 def processGDMLXtruObject(obj, flag) :
     # Needs unique Name
