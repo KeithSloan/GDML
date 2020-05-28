@@ -74,11 +74,11 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
             return text
         
         #import GDMLCommands, GDMLResources
-        commands=['CycleCommand','ExpandCommand', \
+        commands=['CycleCommand','ExpandCommand', 'PolyHedraCommand', \
                  'BoxCommand','ConeCommand','ElTubeCommand', \
                   'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound']
-        toolbarcommands=['CycleCommand','ExpandCommand', \
+        toolbarcommands=['CycleCommand','ExpandCommand', 'PolyHedraCommand', \
                          'BoxCommand','ConeCommand', \
                   'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound']

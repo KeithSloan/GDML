@@ -280,6 +280,22 @@ class TubeFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDMLTubeFeature',\
                 'Tube Object')}
 
+class PolyHedraFeature :
+      
+    def Activated(self) :
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Poly')
+
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Polyhedra', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup',\
+                'Poly Group'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                'Poly Object')}    
+
 class CycleFeature :
 
     def Activated(self) :
@@ -296,7 +312,6 @@ class CycleFeature :
                   obj.ViewObject.DisplayMode = 'Wireframe'
                else :
                   obj.ViewObject.Visibility = False 
-
 
         def cycle(obj) :
             #print ("Toggle : "+ obj.Label)
@@ -478,3 +493,4 @@ FreeCADGui.addCommand('ConeCommand',ConeFeature())
 FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
+FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
