@@ -1,0 +1,401 @@
+<xml>
+  <define>
+    <constant name="HALFPI" value="pi/2." />
+    <constant name="PI" value="1.*pi" />
+    <constant name="TWOPI" value="2.*pi" />
+    </define>
+  <materials>
+      <material name="G4_H" Z="1" >
+        <D unit="g/cm3" value="0.000083748" />
+        <atom unit="g/mole" value="1.008" />
+      </material>
+      <material name="G4_He" Z="2" >
+        <D unit="g/cm3" value="0.000166322" />
+        <atom unit="g/mole" value="4.002602" />
+      </material>
+      <material name="G4_Li" Z="3" >
+        <D unit="g/cm3" value="0.534" />
+        <atom unit="g/mole" value="6.94" />
+      </material>
+      <material name="G4_Be" Z="4" >
+        <D unit="g/cm3" value="1.848" />
+        <atom unit="g/mole" value="9.0121831" />
+      </material>
+      <material name="G4_B" Z="5" >
+        <D unit="g/cm3" value="2.37" />
+        <atom unit="g/mole" value="10.81" />
+      </material>
+      <material name="G4_C" Z="6" >
+        <D unit="g/cm3" value="2" />
+        <atom unit="g/mole" value="12.011" />
+      </material>
+      <material name="G4_N" Z="7" >
+        <D unit="g/cm3" value="0.0011652" />
+        <atom unit="g/mole" value="14.007" />
+      </material>
+      <material name="G4_O" Z="8" >
+        <D unit="g/cm3" value="0.00133151" />
+        <atom unit="g/mole" value="15.999" />
+      </material>
+      <material name="G4_F" Z="9" >
+        <D unit="g/cm3" value="0.00158029" />
+        <atom unit="g/mole" value="18.998403163" />
+      </material>
+      <material name="G4_Ne" Z="10" >
+        <D unit="g/cm3" value="0.000838505" />
+        <atom unit="g/mole" value="20.1797" />
+      </material>
+      <material name="G4_Na" Z="11" >
+        <D unit="g/cm3" value="0.971" />
+        <atom unit="g/mole" value="22.98976928" />
+      </material>
+      <material name="G4_Mg" Z="12" >
+        <D unit="g/cm3" value="1.74" />
+        <atom unit="g/mole" value="24.305" />
+      </material>
+      <material name="G4_Al" Z="13" >
+        <D unit="g/cm3" value="2.699" />
+        <atom unit="g/mole" value="26.9815384" />
+      </material>
+      <material name="G4_Si" Z="14" >
+        <D unit="g/cm3" value="2.33" />
+        <atom unit="g/mole" value="28.085" />
+      </material>
+      <material name="G4_P" Z="15" >
+        <D unit="g/cm3" value="2.2" />
+        <atom unit="g/mole" value="30.973761998" />
+      </material>
+      <material name="G4_S" Z="16" >
+        <D unit="g/cm3" value="2" />
+        <atom unit="g/mole" value="32.06" />
+      </material>
+      <material name="G4_Cl" Z="17" >
+        <D unit="g/cm3" value="0.00299473" />
+        <atom unit="g/mole" value="35.45" />
+      </material>
+      <material name="G4_Ar" Z="18" >
+        <D unit="g/cm3" value="0.00166201" />
+        <atom unit="g/mole" value="39.95" />
+      </material>
+      <material name="G4_K" Z="19" >
+        <D unit="g/cm3" value="0.862" />
+        <atom unit="g/mole" value="39.0983" />
+      </material>
+      <material name="G4_Ca" Z="20" >
+        <D unit="g/cm3" value="1.55" />
+        <atom unit="g/mole" value="40.078" />
+      </material>
+      <material name="G4_Sc" Z="21" >
+        <D unit="g/cm3" value="2.989" />
+        <atom unit="g/mole" value="44.955908" />
+      </material>
+      <material name="G4_Ti" Z="22" >
+        <D unit="g/cm3" value="4.54" />
+        <atom unit="g/mole" value="47.867" />
+      </material>
+      <material name="G4_V" Z="23" >
+        <D unit="g/cm3" value="6.11" />
+        <atom unit="g/mole" value="50.9415" />
+      </material>
+      <material name="G4_Cr" Z="24" >
+        <D unit="g/cm3" value="7.18" />
+        <atom unit="g/mole" value="51.9961" />
+      </material>
+      <material name="G4_Mn" Z="25" >
+        <D unit="g/cm3" value="7.44" />
+        <atom unit="g/mole" value="54.938043" />
+      </material>
+      <material name="G4_Fe" Z="26" >
+        <D unit="g/cm3" value="7.874" />
+        <atom unit="g/mole" value="55.845" />
+      </material>
+      <material name="G4_Co" Z="27" >
+        <D unit="g/cm3" value="8.9" />
+        <atom unit="g/mole" value="58.933194" />
+      </material>
+      <material name="G4_Ni" Z="28" >
+        <D unit="g/cm3" value="8.902" />
+        <atom unit="g/mole" value="58.6934" />
+      </material>
+      <material name="G4_Cu" Z="29" >
+        <D unit="g/cm3" value="8.96" />
+        <atom unit="g/mole" value="63.546" />
+      </material>
+      <material name="G4_Zn" Z="30" >
+        <D unit="g/cm3" value="7.133" />
+        <atom unit="g/mole" value="65.38" />
+      </material>
+      <material name="G4_Ga" Z="31" >
+        <D unit="g/cm3" value="5.904" />
+        <atom unit="g/mole" value="69.723" />
+      </material>
+      <material name="G4_Ge" Z="32" >
+        <D unit="g/cm3" value="5.323" />
+        <atom unit="g/mole" value="72.630" />
+      </material>
+      <material name="G4_As" Z="33" >
+        <D unit="g/cm3" value="5.73" />
+        <atom unit="g/mole" value="74.921595" />
+      </material>
+      <material name="G4_Se" Z="34" >
+        <D unit="g/cm3" value="4.5" />
+        <atom unit="g/mole" value="78.971" />
+      </material>
+      <material name="G4_Br" Z="35" >
+        <D unit="g/cm3" value="0.0070721" />
+        <atom unit="g/mole" value="79.904" />
+      </material>
+      <material name="G4_Kr" Z="36" >
+        <D unit="g/cm3" value="0.00347832" />
+        <atom unit="g/mole" value="83.798" />
+      </material>
+      <material name="G4_Rb" Z="37" >
+        <D unit="g/cm3" value="1.532" />
+        <atom unit="g/mole" value="85.4678" />
+      </material>
+      <material name="G4_Sr" Z="38" >
+        <D unit="g/cm3" value="2.54" />
+        <atom unit="g/mole" value="87.62" />
+      </material>
+      <material name="G4_Y" Z="39" >
+        <D unit="g/cm3" value="4.469" />
+        <atom unit="g/mole" value="88.90584" />
+      </material>
+      <material name="G4_Zr" Z="40" >
+        <D unit="g/cm3" value="6.506" />
+        <atom unit="g/mole" value="91.224" />
+      </material>
+      <material name="G4_Nb" Z="41" >
+        <D unit="g/cm3" value="8.57" />
+        <atom unit="g/mole" value="92.90637" />
+      </material>
+      <material name="G4_Mo" Z="42" >
+        <D unit="g/cm3" value="10.22" />
+        <atom unit="g/mole" value="95.95" />
+      </material>
+      <material name="G4_Tc" Z="43" >
+        <D unit="g/cm3" value="11.5" />
+        <atom unit="g/mole" value="97" />
+      </material>
+      <material name="G4_Ru" Z="44" >
+        <D unit="g/cm3" value="12.41" />
+        <atom unit="g/mole" value="101.07" />
+      </material>
+      <material name="G4_Rh" Z="45" >
+        <D unit="g/cm3" value="12.41" />
+        <atom unit="g/mole" value="102.90549" />
+      </material>
+      <material name="G4_Pd" Z="46" >
+        <D unit="g/cm3" value="12.02" />
+        <atom unit="g/mole" value="106.42" />
+      </material>
+      <material name="G4_Ag" Z="47" >
+        <D unit="g/cm3" value="10.5" />
+        <atom unit="g/mole" value="107.8682" />
+      </material>
+      <material name="G4_Cd" Z="48" >
+        <D unit="g/cm3" value="8.65" />
+        <atom unit="g/mole" value="112.414" />
+      </material>
+      <material name="G4_In" Z="49" >
+        <D unit="g/cm3" value="7.31" />
+        <atom unit="g/mole" value="114.818" />
+      </material>
+      <material name="G4_Sn" Z="50" >
+        <D unit="g/cm3" value="7.31" />
+        <atom unit="g/mole" value="118.71" />
+      </material>
+      <material name="G4_Sb" Z="51" >
+        <D unit="g/cm3" value="6.691" />
+        <atom unit="g/mole" value="121.76" />
+      </material>
+      <material name="G4_Te" Z="52" >
+        <D unit="g/cm3" value="6.24" />
+        <atom unit="g/mole" value="127.6" />
+      </material>
+      <material name="G4_I" Z="53" >
+        <D unit="g/cm3" value="4.93" />
+        <atom unit="g/mole" value="126.90447" />
+      </material>
+      <material name="G4_Xe" Z="54" >
+        <D unit="g/cm3" value="0.00548536" />
+        <atom unit="g/mole" value="131.293" />
+      </material>
+      <material name="G4_Cs" Z="55" >
+        <D unit="g/cm3" value="1.873" />
+        <atom unit="g/mole" value="132.90545196" />
+      </material>
+      <material name="G4_Ba" Z="56" >
+        <D unit="g/cm3" value="3.5" />
+        <atom unit="g/mole" value="137.327" />
+      </material>
+      <material name="G4_La" Z="57" >
+        <D unit="g/cm3" value="6.154" />
+        <atom unit="g/mole" value="138.90547" />
+      </material>
+      <material name="G4_Ce" Z="58" >
+        <D unit="g/cm3" value="6.657" />
+        <atom unit="g/mole" value="140.116" />
+      </material>
+      <material name="G4_Pr" Z="59" >
+        <D unit="g/cm3" value="6.71" />
+        <atom unit="g/mole" value="140.90766" />
+      </material>
+      <material name="G4_Nd" Z="60" >
+        <D unit="g/cm3" value="6.9" />
+        <atom unit="g/mole" value="144.242" />
+      </material>
+      <material name="G4_Pm" Z="61" >
+        <D unit="g/cm3" value="7.22" />
+        <atom unit="g/mole" value="145" />
+      </material>
+      <material name="G4_Sm" Z="62" >
+        <D unit="g/cm3" value="7.46" />
+        <atom unit="g/mole" value="150.36" />
+      </material>
+      <material name="G4_Eu" Z="63" >
+        <D unit="g/cm3" value="5.243" />
+        <atom unit="g/mole" value="151.964" />
+      </material>
+      <material name="G4_Gd" Z="64" >
+        <D unit="g/cm3" value="7.9004" />
+        <atom unit="g/mole" value="157.25" />
+      </material>
+      <material name="G4_Tb" Z="65" >
+        <D unit="g/cm3" value="8.229" />
+        <atom unit="g/mole" value="158.925354" />
+      </material>
+      <material name="G4_Dy" Z="66" >
+        <D unit="g/cm3" value="8.55" />
+        <atom unit="g/mole" value="162.5" />
+      </material>
+      <material name="G4_Ho" Z="67" >
+        <D unit="g/cm3" value="8.795" />
+        <atom unit="g/mole" value="164.930328" />
+      </material>
+      <material name="G4_Er" Z="68" >
+        <D unit="g/cm3" value="9.066" />
+        <atom unit="g/mole" value="167.259" />
+      </material>
+      <material name="G4_Tm" Z="69" >
+        <D unit="g/cm3" value="9.321" />
+        <atom unit="g/mole" value="168.934218" />
+      </material>
+      <material name="G4_Yb" Z="70" >
+        <D unit="g/cm3" value="6.73" />
+        <atom unit="g/mole" value="173.045" />
+      </material>
+      <material name="G4_Lu" Z="71" >
+        <D unit="g/cm3" value="9.84" />
+        <atom unit="g/mole" value="174.9668" />
+      </material>
+      <material name="G4_Hf" Z="72" >
+        <D unit="g/cm3" value="13.31" />
+        <atom unit="g/mole" value="178.49" />
+      </material>
+      <material name="G4_Ta" Z="73" >
+        <D unit="g/cm3" value="16.654" />
+        <atom unit="g/mole" value="180.94788" />
+      </material>
+      <material name="G4_W" Z="74" >
+        <D unit="g/cm3" value="19.3" />
+        <atom unit="g/mole" value="183.84" />
+      </material>
+      <material name="G4_Re" Z="75" >
+        <D unit="g/cm3" value="21.02" />
+        <atom unit="g/mole" value="186.207" />
+      </material>
+      <material name="G4_Os" Z="76" >
+        <D unit="g/cm3" value="22.57" />
+        <atom unit="g/mole" value="190.23" />
+      </material>
+      <material name="G4_Ir" Z="77" >
+        <D unit="g/cm3" value="22.42" />
+        <atom unit="g/mole" value="192.217" />
+      </material>
+      <material name="G4_Pt" Z="78" >
+        <D unit="g/cm3" value="21.45" />
+        <atom unit="g/mole" value="195.084" />
+      </material>
+      <material name="G4_Au" Z="79" >
+        <D unit="g/cm3" value="19.32" />
+        <atom unit="g/mole" value="196.96657" />
+      </material>
+      <material name="G4_Hg" Z="80" >
+        <D unit="g/cm3" value="13.546" />
+        <atom unit="g/mole" value="200.592" />
+      </material>
+      <material name="G4_Tl" Z="81" >
+        <D unit="g/cm3" value="11.72" />
+        <atom unit="g/mole" value="204.38" />
+      </material>
+      <material name="G4_Pb" Z="82" >
+        <D unit="g/cm3" value="11.35" />
+        <atom unit="g/mole" value="207.2" />
+      </material>
+      <material name="G4_Bi" Z="83" >
+        <D unit="g/cm3" value="9.747" />
+        <atom unit="g/mole" value="208.9804" />
+      </material>
+      <material name="G4_Po" Z="84" >
+        <D unit="g/cm3" value="9.32" />
+        <atom unit="g/mole" value="209" />
+      </material>
+      <material name="G4_At" Z="85" >
+        <D unit="g/cm3" value="9.32" />
+        <atom unit="g/mole" value="210" />
+      </material>
+      <material name="G4_Rn" Z="86" >
+        <D unit="g/cm3" value="0.00900662" />
+        <atom unit="g/mole" value="222" />
+      </material>
+      <material name="G4_Fr" Z="87" >
+        <D unit="g/cm3" value="1" />
+        <atom unit="g/mole" value="223" />
+      </material>
+      <material name="G4_Ra" Z="88" >
+        <D unit="g/cm3" value="5" />
+        <atom unit="g/mole" value="226" />
+      </material>
+      <material name="G4_Ac" Z="89" >
+        <D unit="g/cm3" value="10.07" />
+        <atom unit="g/mole" value="227" />
+      </material>
+      <material name="G4_Th" Z="90" >
+        <D unit="g/cm3" value="11.72" />
+        <atom unit="g/mole" value="232.0377" />
+      </material>
+      <material name="G4_Pa" Z="91" >
+        <D unit="g/cm3" value="15.37" />
+        <atom unit="g/mole" value="231.03588" />
+      </material>
+      <material name="G4_U" Z="92" >
+        <D unit="g/cm3" value="18.95" />
+        <atom unit="g/mole" value="238.02891" />
+      </material>
+      <material name="G4_Np" Z="93" >
+        <D unit="g/cm3" value="20.25" />
+        <atom unit="g/mole" value="237" />
+      </material>
+      <material name="G4_Pu" Z="94" >
+        <D unit="g/cm3" value="19.84" />
+        <atom unit="g/mole" value="244" />
+      </material>
+      <material name="G4_Am" Z="95" >
+        <D unit="g/cm3" value="13.67" />
+        <atom unit="g/mole" value="243" />
+      </material>
+      <material name="G4_Cm" Z="96" >
+        <D unit="g/cm3" value="13.51" />
+        <atom unit="g/mole" value="247" />
+      </material>
+      <material name="G4_Bk" Z="97" >
+        <D unit="g/cm3" value="14" />
+        <atom unit="g/mole" value="247" />
+      </material>
+      <material name="G4_Cf" Z="98" >
+        <D unit="g/cm3" value="10" />
+        <atom unit="g/mole" value="251" />
+      </material>
+  </materials>
+</xml>
