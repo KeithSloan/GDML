@@ -71,14 +71,28 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     global doc
+    print('Open : '+filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
-    doc = FreeCAD.newDocument(docname)
-    if filename.lower().endswith('.gdml'):
-        processGDML(doc,filename,True)
+    if filename.lower().endswith('.gdml') :
+        doc = FreeCAD.newDocument(docname)
+        processGDML(doc,filename,True,False)
+
+    elif filename.lower().endswith('.xml'):
+       try :
+           doc = FreeCAD.ActiveDocument()
+           print('Active Doc')
+
+       except :
+           print('New Doc')
+           doc = FreeCAD.newDocument(docname)
+
+       processXML(doc,filename)
+
     return doc
 
 def insert(filename,docname):
     "called when freecad imports a file"
+    print('Insert filename : '+filename+' docname : '+docname)
     global doc
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
@@ -86,7 +100,10 @@ def insert(filename,docname):
     except NameError:
         doc=FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc,filename,True)
+        processGDML(doc,filename,True,False)
+
+    elif filename.lower().endswith('.xml'):
+        processXML(doc,filename)
 
 class switch(object):
     value = None
@@ -934,6 +951,7 @@ def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
 
 def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
+    from .GDMLObjects import checkMaterial
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
@@ -943,17 +961,27 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref != None :
           solid  = solids.find("*[@name='%s']" % solidref )
-          GDMLShared.trace(solid.tag)
-          # Material is the materialref value
-          # need to add default
-          #material = GDMLShared.getRef(vol,"materialref")
-          material = GDMLShared.getRef(vol,"materialref")
-          #createSolid(part,solid,material,px,py,pz,rot,displayMode)
-          #print('solid : '+solid.tag)
-          #print('material :'+material)
-          obj = createSolid(parent,solid,material,px,py,pz,rot,displayMode)
+          if solid != None :
+             GDMLShared.trace(solid.tag)
+             # Material is the materialref value
+             # need to add default
+             material = GDMLShared.getRef(vol,"materialref")
+             if material != None :
+                if checkMaterial(material) == True :
+                   obj = createSolid(parent,solid,material,px,py,pz,rot \
+                         ,displayMode)
+                else :
+                   print('Material : '+material+' Not defined')
+                   return None
+             else :
+                print('materialref not defined')
+                return None
+          else :
+             print('Solid : '+solidref+' Not defined')
+             return None
        else :
-          obj = None 
+          print('solidref Not defined')
+          return None 
        # Volume may or maynot contain physvol's
        displayMode = 1
        for pv in vol.findall("physvol") :
@@ -1007,7 +1035,12 @@ def getItem(element, attribute) :
 
 def processIsotopes(doc) :
     from .GDMLObjects import GDMLisotope, ViewProvider
-    isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
+    try :
+        isotopesGrp = FreeCAD.ActiveDocument.Isotopes
+    
+    except :
+       isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
+    
     for isotope in materials.findall('isotope') :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
@@ -1021,11 +1054,18 @@ def processIsotopes(doc) :
 
 def processElements(doc) :
     from .GDMLObjects import GDMLelement, GDMLfraction
-    elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
+    try :
+       elementsGrp  = FreeCAD.ActiveDocument.Elements
+
+    except :
+       elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
+    
     elementsGrp.Label = 'Elements'
     for element in materials.findall('element') :
         name = element.get('name')
-        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython", name)
+        #print('element : '+name)
+        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython",  \
+                     name)
         Z = element.get('Z')
         if (Z != None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
@@ -1059,8 +1099,7 @@ def processElements(doc) :
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLfraction(fractObj,ref,n)
-               #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
-               fractObj.Label = ref+' : ' + '{0:0.2f}'.format(n)
+               fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
         elif(len(element.findall('composite'))>0 ):
            for fraction in element.findall('composite') :
                ref = fraction.get('ref')
@@ -1068,18 +1107,24 @@ def processElements(doc) :
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                compositeObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLcomposite(compositeObj,ref,n)
-               #fractObj.Label = ref[0:5]+' : ' + '{0:0.2f}'.format(n)
-               fractComposite.Label = ref+' : ' + str(n) 
+               fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
+               #fractComposite.Label = ref+' : ' + str(n) 
         # end modifs 
 
 def processMaterials(doc) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
                             MaterialsList
 
-    materialGrp = doc.addObject("App::DocumentObjectGroupPython","Materials")
+    try :
+        materialGrp = FreeCAD.ActiveDocument.Materials
+
+    except:
+        materialGrp = doc.addObject("App::DocumentObjectGroupPython", \
+                              "Materials")
     materialGrp.Label = "Materials"
     for material in materials.findall('material') :
         name = material.get('name')
+        #print(name)
         MaterialsList.append(name)
         materialObj = materialGrp.newObject("App::DocumentObjectGroupPython", \
                       name)
@@ -1137,9 +1182,7 @@ def processMaterials(doc) :
             GDMLfraction(fractionObj,ref,n)
             # problems with changing labels if more than one
             #
-            #fractionObj.Label = ref[0:5] +' : '+'{0:0.2f}'.format(n)
-            #print('Fract Label : ' +fractionObj.Label)
-            #fractionObj.Label = ref +' : '+'{0:0.2f}'.format(n)
+            fractionObj.Label = ref+' : '+'{0:0.3f}'.format(n)
             #print('Fract Label : ' +fractionObj.Label)
 
         for composite in material.findall('composite') :
@@ -1160,7 +1203,45 @@ def processMaterials(doc) :
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 
-def processGDML(doc,filename,prompt):
+def setupEtree(filename) :
+    # modifs
+    #before from lxml import etree
+    print('Parse : '+filename)
+    try:
+       from lxml import etree
+       FreeCAD.Console.PrintMessage("running with lxml.etree \n")
+       parser = etree.XMLParser(resolve_entities=True)
+       root = etree.parse(filename, parser=parser)
+
+    except ImportError:
+       try:
+           import xml.etree.ElementTree as etree
+           FreeCAD.Console.PrintMessage("running with etree.ElementTree (import limitations)\n")
+           FreeCAD.Console.PrintMessage(" for full import add lxml library \n")
+           tree = etree.parse(filename)
+           FreeCAD.Console.PrintMessage(tree)
+           FreeCAD.Console.PrintMessage('\n')
+           root = tree.getroot()
+
+       except ImportError:
+           print('pb xml lib not found')
+           sys.exit()
+    # end modifs 
+    return etree, root
+
+def processXML(doc,filename):
+    print('process XML : '+filename)
+    etree, root = setupEtree(filename)
+    #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    global materials
+    materials = root.find('materials')
+    if materials != None :
+       processIsotopes(doc)
+       processElements(doc)
+       processMaterials(doc)
+
+
+def processGDML(doc,filename,prompt,initFlg):
 
     from . import GDMLShared
     from . import GDMLObjects
@@ -1207,27 +1288,7 @@ def processGDML(doc,filename,prompt):
     #myfiles = doc.addObject("App::DocumentObjectGroupPython","Export_Files")
     #GDMLFiles(myfiles,FilesEntity,sectionDict)
 
-    # modifs
-    #before from lxml import etree
-    try:
-       from lxml import etree
-       FreeCAD.Console.PrintMessage("running with lxml.etree \n")
-       parser = etree.XMLParser(resolve_entities=True)
-       root = etree.parse(filename, parser=parser)
-
-    except ImportError:
-       try:
-           import xml.etree.ElementTree as etree
-           FreeCAD.Console.PrintMessage("running with etree.ElementTree (import limitations)\n")
-           FreeCAD.Console.PrintMessage(" for full import add lxml library \n")
-           tree = etree.parse(filename)
-           FreeCAD.Console.PrintMessage(tree)
-           root = tree.getroot()
-
-       except ImportError:
-           print('pb xml lib not found')
-           sys.exit()
-    # end modifs 
+    etree, root = setupEtree(filename)
     setup     = root.find('setup')
     define    = root.find('define')
     if define != None :
@@ -1262,7 +1323,7 @@ def processGDML(doc,filename,prompt):
     #scanVolume(part,world)
     parseVolume(part,world,0,0,0,None,phylvl,3)
     # If only single volume reset Display Mode
-    if len(part.OutList) == 2 :
+    if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = 'Shaded'
     if FreeCAD.GuiUp :

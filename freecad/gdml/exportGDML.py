@@ -37,15 +37,15 @@ from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 import sys
 try:
    import lxml.etree  as ET
-   FreeCAD.Console.PrintMessage("running with lxml.etree")
+   FreeCAD.Console.PrintMessage("running with lxml.etree\n")
    XML_IO_VERSION='lxml'
 except ImportError:
    try:
        import xml.etree.ElementTree as ET 
-       FreeCAD.Console.PrintMessage("running with xml.etree.ElementTree")
+       FreeCAD.Console.PrintMessage("running with xml.etree.ElementTree\n")
        XML_IO_VERSION = 'xml'
    except ImportError:    
-       FreeCAD.Console.PrintMessage('pb xml lib not found')
+       FreeCAD.Console.PrintMessage('pb xml lib not found\n')
        sys.exit()
 # xml handling
 #import argparse
@@ -111,6 +111,13 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = j
     return elem
+
+def nameFromLabel(label) :
+    if ' ' not in label :
+       return label
+    else :
+       return(label.split(' ')[0])
+
 #################################
 #  Setup GDML environment
 #################################
@@ -138,9 +145,6 @@ def GDMLstructure() :
     solids = ET.SubElement(gdml, 'solids')
     structure = ET.SubElement(gdml, 'structure')
     setup = ET.SubElement(gdml, 'setup', {'name': 'Default', 'version': '1.0'})
-    #worldVOL = None
-    # worldVOL needs to be added after file scanned.
-    #ET.ElementTree(gdml).write("/tmp/test2", 'utf-8', True)
     return structure
 
 def defineMaterials():
@@ -986,7 +990,7 @@ def processMaterials() :
     global materials
    
     for obj in FreeCAD.ActiveDocument.Objects:
-        #print(obj.TypeId+" : "+obj.Label)
+        #print(obj.TypeId+" : "+obj.Name)
 
         #processMaterialObject(obj)
         if processMaterialObject(obj) == False :
@@ -1030,7 +1034,8 @@ def processMaterialObject(obj) :
              #print("GDML material")
              #print(dir(obj))
 
-             item = ET.SubElement(materials,'material',{'name': obj.Name})
+             item = ET.SubElement(materials,'material',{'name': \
+                    nameFromLabel(obj.Label)})
 
              # process common options material / element
              processElement(obj, item)
@@ -1059,7 +1064,7 @@ def processMaterialObject(obj) :
              #print("GDML fraction :" + obj.Name)
              # need to strip number making it unique
              ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                     'ref': obj.Name[:-3]})
+                     'ref': nameFromLabel(obj.Label)})
 
              #return True
              break
@@ -1067,8 +1072,7 @@ def processMaterialObject(obj) :
           if isinstance(obj.Proxy,GDMLcomposite) :
              #print("GDML Composite")
              ET.SubElement(item,'composite',{'n': str(obj.n), \
-             #        'ref': obj.Name[:obj.Name.index('_')]})
-             'ref': obj.Name[:-3]})
+                     'ref': nameFromLabel(obj.Label)})
              #return True
              break
 
@@ -1084,7 +1088,8 @@ def processMaterialObject(obj) :
 
           if isinstance(obj.Proxy,GDMLelement) :
              #print("GDML element")
-             item = ET.SubElement(materials,'element',{'name': obj.Name})
+             item = ET.SubElement(materials,'element',{'name': \
+                    nameFromLabel(obj.Label)})
              processElement(obj,item)
              #return True
              break
@@ -1540,11 +1545,8 @@ def exportWorldVol(vol) :
 
         processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
-def export(exportList,filename) :
-    "called when FreeCAD exports a file"
-    
-    first = exportList[0]
-    if first.TypeId == "App::Part" :
+def exportGDML(first,filename) :
+    if filename.lower().endswith('.gdml') :
        # GDML Export
        print("\nStart GDML Export 0.1")
 
@@ -1552,12 +1554,6 @@ def export(exportList,filename) :
        zOrder = 1
        processMaterials()
        exportWorldVol(first)
-       #vol = processVolumes(exportList[0])
-       #print(vol)
-       #for obj in exportList[1:] :
-       #    #reportObject(obj)
-       #    processObject(obj, vol, None, None, False)
-
        # format & write GDML file 
        indent(gdml)
        print("Write to GDML file")
@@ -1565,6 +1561,32 @@ def export(exportList,filename) :
        ET.ElementTree(gdml).write(filename,xml_declaration=True)
        #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
        print("GDML file written")
+    else :
+       print('File extension must be gdml')
+
+def exportMaterials(first,filename) :
+    if filename.lower().endswith('.xml') :
+       print('Export Materials to XML file : '+filename)
+       xml = ET.Element('xml')
+       global define
+       define = ET.SubElement(xml,'define')
+       global materials
+       materials = ET.SubElement(xml,'materials')
+       processMaterials()
+       indent(xml)
+       ET.ElementTree(xml).write(filename)
+    else :
+       print('File extension must be xml')
+
+def export(exportList,filename) :
+    "called when FreeCAD exports a file"
+    
+    first = exportList[0]
+    if first.TypeId == "App::Part" :
+       exportGDML(first,filename)
+
+    elif first.Name == "Materials" :
+       exportMaterials(first,filename)
     
     else :
        print("Need to a Part for export")
