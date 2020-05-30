@@ -1091,7 +1091,6 @@ def processElements(doc) :
 
 
         GDMLelement(elementObj,name)
-        # modifs 
         if( len(element.findall('fraction'))>0 ):
            for fraction in element.findall('fraction') :
                ref = fraction.get('ref')
@@ -1101,15 +1100,13 @@ def processElements(doc) :
                GDMLfraction(fractObj,ref,n)
                fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
         elif(len(element.findall('composite'))>0 ):
-           for fraction in element.findall('composite') :
-               ref = fraction.get('ref')
-               n = float(fraction.get('n'))
+           for composite in element.findall('composite') :
+               ref = composite.get('ref')
+               n = int(composite.get('n'))
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                compositeObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLcomposite(compositeObj,ref,n)
-               fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
-               #fractComposite.Label = ref+' : ' + str(n) 
-        # end modifs 
+               compositeObj.Label = ref+' : ' + str(n) 
 
 def processMaterials(doc) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
@@ -1197,7 +1194,7 @@ def processMaterials(doc) :
             # problems with changing labels if more than one
             #
             #print('Comp Label : ' +compObj.Label)
-            #compObj.Label = ref +' : '+str(n)
+            compObj.Label = ref +' : '+str(n)
             #print('Comp Label : ' +compObj.Label)
 
     GDMLShared.trace("Materials List :")
