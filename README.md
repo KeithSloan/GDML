@@ -196,7 +196,11 @@ The following FreeCAD objects are output as GDML equivalents
 
 If not handled as above then objects shapes are checked  to see if planar,
 if yes converts to Tessellated Solid with 3 or 4 vertex as appropriate.
-If not creates a mesh and then a Tessellated solid with 3 vertex. 
+If not creates a mesh and then a Tessellated solid with 3 vertex.
+
+### Export of STEP version
+
+Standard FreeCAD export facilities are available which includes the ability to create a STEP version
 
 ### Export/Import of Materials as an XML file.
 
