@@ -672,38 +672,33 @@ def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
 
 def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-            GDMLQuadrangular,  ViewProvider, ViewProviderExtension
+          GDMLQuadrangular, ViewProvider, ViewProviderExtension
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
     myTess=part.newObject("Part::FeaturePython","GDMLTessellated:"+getName(solid))
-    #myTess.addExtension("App::OriginGroupExtensionPython", None)
-    GDMLTessellated(myTess,material)
+    tess = GDMLTessellated(myTess,material)
+    print(dir(tess))
+    tess.addProp()
     if FreeCAD.GuiUp :
        ViewProviderExtension(myTess.ViewObject)
        ViewProvider(myTess.ViewObject)
+    vertNames = []
     for elem in solid.getchildren() :
-        v1 = GDMLShared.getDefinedPosition(elem.get('vertex1'))
-        v2 = GDMLShared.getDefinedPosition(elem.get('vertex2'))
-        v3 = GDMLShared.getDefinedPosition(elem.get('vertex3'))
+        v1name = elem.get('vertex1')
+        v1 = tess.processVertex(vertNames, v1name)
+        v2name = elem.get('vertex2')
+        v2 = tess.processVertex(vertNames,v2name)
+        v3name = elem.get('vertex3')
+        v3 = tess.processVertex(vertNames,v3name)
         vType = elem.get('type')
         if elem.tag == 'triangular' :
-           myTri = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLTriangle')
-           GDMLTriangular(myTri,v1,v2,v3,vType) 
-           myTess.addObject(myTri)
-           if FreeCAD.GuiUp :
-              ViewProvider(myTri)
-        
+           tess.addFace(v1,v2,v3)
         if elem.tag == 'quadrangular' :
-           v4 = GDMLShared.getDefinedPosition(elem.get('vertex4'))
-           myQuad = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLQuadrangular')
-           GDMLQuadrangular(myQuad,v1,v2,v3,v4,vType) 
-           myTess.addObject(myQuad)
-           if FreeCAD.GuiUp :
-              ViewProvider(myQuad)
-
+           v4name = elem.get('vertex4')
+           v4 = tess.processVertex(vertNames,v4name)
+           tess.addFace(v1,v2,v3)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
-    #base = FreeCAD.Vector(0,0,0)
     myTess.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myTess.Placement.Rotation)
     if FreeCAD.GuiUp :

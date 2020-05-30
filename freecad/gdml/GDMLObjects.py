@@ -1792,12 +1792,16 @@ class GDMLQuadrangular(GDMLcommon) :
        
 class GDMLTessellated(GDMLcommon) :
     
-   def __init__(self, obj, material ) :
+   def __init__(self, obj, material) :
+      obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
+                      'Editable').editable = False
       obj.addExtension('App::OriginGroupExtensionPython', self)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTessellated", "Shape of the Tesssellation")
-      obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
+      obj.addProperty("App::PropertyEnumeration","material", \
+                      "GDMLTessellated","Material")
       setMaterial(obj, material)
       self.Type = 'GDMLTessellated'
+      self.Vertex = []
+      self.Faces  = []
       self.Object = obj
       obj.Proxy = self
 
@@ -1810,8 +1814,31 @@ class GDMLTessellated(GDMLcommon) :
        if prop in ['material'] :
            fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
+       if prop in ['editable'] :
+           if editable == True :
+              addProperties()
+
        if prop in ['v1','v2','v3','v4','type','lunit'] :
           self.createGeometry(fp)
+
+   def addProp(self) :
+       print('Add Properties')
+
+   def addVertex(self,v) :
+       self.Vertex.append(v)
+
+   def processVertex(self, namesList, name) :
+       try :
+          i = nameList.index(name)
+       except :
+          nameList.append(name)
+          self.Vertex.append(GDMLShared.getDefinedPosition(name))
+          return(len(nameList) - 1)
+       else :
+          return i
+
+   def addFace(self,f) :
+       self.Face.append(f)
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -1819,34 +1846,12 @@ class GDMLTessellated(GDMLcommon) :
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        print("Tessellated")
-       parms = fp.OutList
-       GDMLShared.trace("Number of parms : "+str(len(parms)))
-       faces = []
        mul = GDMLShared.getMult(fp)
-       for ptr in parms :
-            v1 = ptr.v1 * mul
-            v2 = ptr.v2 * mul
-            v3 = ptr.v3 * mul
-            v4 = ptr.v4 * mul
-            if hasattr(ptr,'v4') :
-                print("Quad")
-                print(v1)
-                print(v2)
-                print(v3)
-                print(v4)
-                faces.append(GDMLShared.quad(v1,v2,v3,v4))
-
-            else :   
-                print("Triangle")
-                print("Vertex 1")
-                print(v1)
-                print("Vertex 2")
-                print(v2)
-                print("Vertex 3")
-                print(v3)
-                faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
-     
-       print(faces)
+       faces = []
+       for f in self.Faces :
+           faces.append(mul*self.Vertex[f][0], \
+                        mul*self.Vertex[f][1], \
+                        mul*self.Vertex[f][2])
        shell=Part.makeShell(faces)
        print("Is Valid")
        print(shell.isValid())

@@ -299,10 +299,47 @@ class PolyHedraFeature :
 class TessellateFeature :
       
     def Activated(self) :
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Tessellate')
+            parent = obj.InList[0]
+            #print(dir(parent))
+            myTess=parent.newObject("Part::FeaturePython", \
+                "GDMLTessellate_Tessellate")
+            GDMLTessellated(myTess,0)
+            if FreeCAD.GuiUp :
+               ViewProviderExtension(myTess.ViewObject)
+               ViewProvider(myTess.ViewObject)
+            if hasattr(obj,'Shape') :
+               print(obj.Shape.ShapeType)
+               if hasattr(obj.Shape,'Vertexes') :
+                  print('Num Vertex '+str(len(obj.Shape.Vertexes)))
+               print('About to Tessellate')
+               list = obj.Shape.tessellate(1)
+               print(len(list))
+               print(list)
+               # vertex = list[0] :
+               if len(list) == 2 :
+                  for tri in list[1] :
+                      print(list[0][tri[0]])
+                      v1 = list[0][tri[0]]
+                      v2 = list[0][tri[1]]
+                      v3 = list[0][tri[2]]
+                      myTri = FreeCAD.ActiveDocument.addObject \
+                            ('App::FeaturePython','GDMLTriangular')
+                      GDMLTriangular(myTri,v1,v2,v3,'ABSOLUTE')
+                      myTess.addObject(myTri)
+                      if FreeCAD.GuiUp :
+                         ViewProvider(myTri)
+               else :
+                  print('Just list of vertext')
+            myTess.Placement = obj.Placement
+            FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.recompute()
+            FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate', 'MenuText': \
