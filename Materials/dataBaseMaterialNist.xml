@@ -1,0 +1,1149 @@
+<xml>
+  <define>
+    <constant name="HALFPI" value="pi/2." />
+    <constant name="PI" value="1.*pi" />
+    <constant name="TWOPI" value="2.*pi" />
+    </define>
+  <materials>
+      <material formula="G4_A-150_TISSUE" name="G4_A-150_TISSUE" >
+        <D unit="g/cm3" value="1.127" />
+        <fraction n="0.101327" ref="G4_H"/>
+        <fraction n="0.7755" ref="G4_C"/>
+        <fraction n="0.035057" ref="G4_N"/>
+        <fraction n="0.0523159" ref="G4_O"/>
+        <fraction n="0.017422" ref="G4_F"/>
+        <fraction n="0.018378" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_ACETONE" name="G4_ACETONE" >
+        <D unit="g/cm3" value="0.7899" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_ACETYLENE" name="G4_ACETYLENE" >
+        <D unit="g/cm3" value="0.0010967" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="2" ref="G4_H"/>
+      </material>
+      <material formula="G4_ADENINE" name="G4_ADENINE" >
+        <D unit="g/cm3" value="1.6" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="5" ref="G4_H"/>
+        <composite n="5" ref="G4_N"/>
+      </material>
+      <material formula="G4_ADIPOSE_TISSUE_ICRP" name="G4_ADIPOSE_TISSUE_ICRP" >
+        <D unit="g/cm3" value="0.95" />
+        <fraction n="0.114" ref="G4_H"/>
+        <fraction n="0.598" ref="G4_C"/>
+        <fraction n="0.007" ref="G4_N"/>
+        <fraction n="0.278" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_S"/>
+        <fraction n="0.001" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_AIR" name="G4_AIR" >
+        <D unit="g/cm3" value="0.00120479" />
+        <fraction n="0.000124" ref="G4_C"/>
+        <fraction n="0.755268" ref="G4_N"/>
+        <fraction n="0.231781" ref="G4_O"/>
+        <fraction n="0.012827" ref="G4_Ar"/>
+      </material>
+      <material formula="G4_ALANINE" name="G4_ALANINE" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="7" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_ALUMINUM_OXIDE" name="G4_ALUMINUM_OXIDE" >
+        <D unit="g/cm3" value="3.97" />
+        <composite n="2" ref="G4_Al"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_AMBER" name="G4_AMBER" >
+        <D unit="g/cm3" value="1.1" />
+        <fraction n="0.10593" ref="G4_H"/>
+        <fraction n="0.788974" ref="G4_C"/>
+        <fraction n="0.105096" ref="G4_O"/>
+      </material>
+      <material formula="G4_AMMONIA" name="G4_AMMONIA" >
+        <D unit="g/cm3" value="0.000826019" />
+        <composite n="1" ref="G4_N"/>
+        <composite n="3" ref="G4_H"/>
+      </material>
+      <material formula="G4_ANILINE" name="G4_ANILINE" >
+        <D unit="g/cm3" value="1.0235" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="7" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+      </material>
+      <material formula="G4_ANTHRACENE" name="G4_ANTHRACENE" >
+        <D unit="g/cm3" value="1.283" />
+        <composite n="14" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+      </material>
+      <material formula="G4_B-100_BONE" name="G4_B-100_BONE" >
+        <D unit="g/cm3" value="1.45" />
+        <fraction n="0.0654709" ref="G4_H"/>
+        <fraction n="0.536944" ref="G4_C"/>
+        <fraction n="0.0215" ref="G4_N"/>
+        <fraction n="0.032085" ref="G4_O"/>
+        <fraction n="0.167411" ref="G4_F"/>
+        <fraction n="0.176589" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_BAKELITE" name="G4_BAKELITE" >
+        <D unit="g/cm3" value="1.25" />
+        <fraction n="0.057441" ref="G4_H"/>
+        <fraction n="0.774591" ref="G4_C"/>
+        <fraction n="0.167968" ref="G4_O"/>
+      </material>
+      <material formula="G4_BARIUM_FLUORIDE" name="G4_BARIUM_FLUORIDE" >
+        <D unit="g/cm3" value="4.89" />
+        <composite n="1" ref="G4_Ba"/>
+        <composite n="2" ref="G4_F"/>
+      </material>
+      <material formula="G4_BARIUM_SULFATE" name="G4_BARIUM_SULFATE" >
+        <D unit="g/cm3" value="4.5" />
+        <composite n="1" ref="G4_Ba"/>
+        <composite n="1" ref="G4_S"/>
+        <composite n="4" ref="G4_O"/>
+      </material>
+      <material formula="G4_BENZENE" name="G4_BENZENE" >
+        <D unit="g/cm3" value="0.87865" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+      </material>
+      <material formula="G4_BERYLLIUM_OXIDE" name="G4_BERYLLIUM_OXIDE" >
+        <D unit="g/cm3" value="3.01" />
+        <composite n="1" ref="G4_Be"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_BGO" name="G4_BGO" >
+        <D unit="g/cm3" value="7.13" />
+        <composite n="4" ref="G4_Bi"/>
+        <composite n="3" ref="G4_Ge"/>
+        <composite n="12" ref="G4_O"/>
+      </material>
+      <material formula="G4_BLOOD_ICRP" name="G4_BLOOD_ICRP" >
+        <D unit="g/cm3" value="1.06" />
+        <fraction n="0.102" ref="G4_H"/>
+        <fraction n="0.11" ref="G4_C"/>
+        <fraction n="0.033" ref="G4_N"/>
+        <fraction n="0.745" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.003" ref="G4_Cl"/>
+        <fraction n="0.002" ref="G4_K"/>
+        <fraction n="0.001" ref="G4_Fe"/>
+      </material>
+      <material formula="G4_BONE_COMPACT_ICRU" name="G4_BONE_COMPACT_ICRU" >
+        <D unit="g/cm3" value="1.85" />
+        <fraction n="0.064" ref="G4_H"/>
+        <fraction n="0.278" ref="G4_C"/>
+        <fraction n="0.027" ref="G4_N"/>
+        <fraction n="0.41" ref="G4_O"/>
+        <fraction n="0.002" ref="G4_Mg"/>
+        <fraction n="0.07" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.147" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_BONE_CORTICAL_ICRP" name="G4_BONE_CORTICAL_ICRP" >
+        <D unit="g/cm3" value="1.92" />
+        <fraction n="0.034" ref="G4_H"/>
+        <fraction n="0.155" ref="G4_C"/>
+        <fraction n="0.042" ref="G4_N"/>
+        <fraction n="0.435" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.002" ref="G4_Mg"/>
+        <fraction n="0.103" ref="G4_P"/>
+        <fraction n="0.003" ref="G4_S"/>
+        <fraction n="0.225" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_BORON_CARBIDE" name="G4_BORON_CARBIDE" >
+        <D unit="g/cm3" value="2.52" />
+        <composite n="4" ref="G4_B"/>
+        <composite n="1" ref="G4_C"/>
+      </material>
+      <material formula="G4_BORON_OXIDE" name="G4_BORON_OXIDE" >
+        <D unit="g/cm3" value="1.812" />
+        <composite n="2" ref="G4_B"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_BRAIN_ICRP" name="G4_BRAIN_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.107" ref="G4_H"/>
+        <fraction n="0.145" ref="G4_C"/>
+        <fraction n="0.022" ref="G4_N"/>
+        <fraction n="0.712" ref="G4_O"/>
+        <fraction n="0.002" ref="G4_Na"/>
+        <fraction n="0.004" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.003" ref="G4_Cl"/>
+        <fraction n="0.003" ref="G4_K"/>
+      </material>
+      <material formula="G4_BUTANE" name="G4_BUTANE" >
+        <D unit="g/cm3" value="0.00249343" />
+        <composite n="4" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+      </material>
+      <material formula="G4_N-BUTYL_ALCOHOL" name="G4_N-BUTYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.8098" />
+        <composite n="4" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_C-552" name="G4_C-552" >
+        <D unit="g/cm3" value="1.76" />
+        <fraction n="0.02468" ref="G4_H"/>
+        <fraction n="0.501611" ref="G4_C"/>
+        <fraction n="0.004527" ref="G4_O"/>
+        <fraction n="0.465209" ref="G4_F"/>
+        <fraction n="0.003973" ref="G4_Si"/>
+      </material>
+      <material formula="G4_CADMIUM_TELLURIDE" name="G4_CADMIUM_TELLURIDE" >
+        <D unit="g/cm3" value="6.2" />
+        <composite n="1" ref="G4_Cd"/>
+        <composite n="1" ref="G4_Te"/>
+      </material>
+      <material formula="G4_CADMIUM_TUNGSTATE" name="G4_CADMIUM_TUNGSTATE" >
+        <D unit="g/cm3" value="7.9" />
+        <composite n="1" ref="G4_Cd"/>
+        <composite n="1" ref="G4_W"/>
+        <composite n="4" ref="G4_O"/>
+      </material>
+      <material formula="G4_CALCIUM_CARBONATE" name="G4_CALCIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.8" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="1" ref="G4_C"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_CALCIUM_FLUORIDE" name="G4_CALCIUM_FLUORIDE" >
+        <D unit="g/cm3" value="3.18" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="2" ref="G4_F"/>
+      </material>
+      <material formula="G4_CALCIUM_OXIDE" name="G4_CALCIUM_OXIDE" >
+        <D unit="g/cm3" value="3.3" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_CALCIUM_SULFATE" name="G4_CALCIUM_SULFATE" >
+        <D unit="g/cm3" value="2.96" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="1" ref="G4_S"/>
+        <composite n="4" ref="G4_O"/>
+      </material>
+      <material formula="G4_CALCIUM_TUNGSTATE" name="G4_CALCIUM_TUNGSTATE" >
+        <D unit="g/cm3" value="6.062" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="1" ref="G4_W"/>
+        <composite n="4" ref="G4_O"/>
+      </material>
+      <material formula="G4_CARBON_DIOXIDE" name="G4_CARBON_DIOXIDE" >
+        <D unit="g/cm3" value="0.00184212" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_CARBON_TETRACHLORIDE" name="G4_CARBON_TETRACHLORIDE" >
+        <D unit="g/cm3" value="1.594" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="4" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_CELLULOSE_CELLOPHANE" name="G4_CELLULOSE_CELLOPHANE" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+        <composite n="5" ref="G4_O"/>
+      </material>
+      <material formula="G4_CELLULOSE_BUTYRATE" name="G4_CELLULOSE_BUTYRATE" >
+        <D unit="g/cm3" value="1.2" />
+        <fraction n="0.067125" ref="G4_H"/>
+        <fraction n="0.545403" ref="G4_C"/>
+        <fraction n="0.387472" ref="G4_O"/>
+      </material>
+      <material formula="G4_CELLULOSE_NITRATE" name="G4_CELLULOSE_NITRATE" >
+        <D unit="g/cm3" value="1.49" />
+        <fraction n="0.029216" ref="G4_H"/>
+        <fraction n="0.271296" ref="G4_C"/>
+        <fraction n="0.121276" ref="G4_N"/>
+        <fraction n="0.578212" ref="G4_O"/>
+      </material>
+      <material formula="G4_CERIC_SULFATE" name="G4_CERIC_SULFATE" >
+        <D unit="g/cm3" value="1.03" />
+        <fraction n="0.107596" ref="G4_H"/>
+        <fraction n="0.0008" ref="G4_N"/>
+        <fraction n="0.874976" ref="G4_O"/>
+        <fraction n="0.014627" ref="G4_S"/>
+        <fraction n="0.002001" ref="G4_Ce"/>
+      </material>
+      <material formula="G4_CESIUM_FLUORIDE" name="G4_CESIUM_FLUORIDE" >
+        <D unit="g/cm3" value="4.115" />
+        <composite n="1" ref="G4_Cs"/>
+        <composite n="1" ref="G4_F"/>
+      </material>
+      <material formula="G4_CESIUM_IODIDE" name="G4_CESIUM_IODIDE" >
+        <D unit="g/cm3" value="4.51" />
+        <composite n="1" ref="G4_Cs"/>
+        <composite n="1" ref="G4_I"/>
+      </material>
+      <material formula="G4_CHLOROBENZENE" name="G4_CHLOROBENZENE" >
+        <D unit="g/cm3" value="1.1058" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="5" ref="G4_H"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_CHLOROFORM" name="G4_CHLOROFORM" >
+        <D unit="g/cm3" value="1.4832" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="1" ref="G4_H"/>
+        <composite n="3" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_CONCRETE" name="G4_CONCRETE" >
+        <D unit="g/cm3" value="2.3" />
+        <fraction n="0.01" ref="G4_H"/>
+        <fraction n="0.001" ref="G4_C"/>
+        <fraction n="0.529107" ref="G4_O"/>
+        <fraction n="0.016" ref="G4_Na"/>
+        <fraction n="0.002" ref="G4_Mg"/>
+        <fraction n="0.033872" ref="G4_Al"/>
+        <fraction n="0.337021" ref="G4_Si"/>
+        <fraction n="0.013" ref="G4_K"/>
+        <fraction n="0.044" ref="G4_Ca"/>
+        <fraction n="0.014" ref="G4_Fe"/>
+      </material>
+      <material formula="G4_CYCLOHEXANE" name="G4_CYCLOHEXANE" >
+        <D unit="g/cm3" value="0.779" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="12" ref="G4_H"/>
+      </material>
+      <material formula="G4_1.2-DICHLOROBENZENE" name="G4_1.2-DICHLOROBENZENE" >
+        <D unit="g/cm3" value="1.3048" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+        <composite n="2" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_DICHLORODIETHYL_ETHER" name="G4_DICHLORODIETHYL_ETHER" >
+        <D unit="g/cm3" value="1.2199" />
+        <composite n="4" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+        <composite n="2" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_1.2-DICHLOROETHANE" name="G4_1.2-DICHLOROETHANE" >
+        <D unit="g/cm3" value="1.2351" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+        <composite n="2" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_DIETHYL_ETHER" name="G4_DIETHYL_ETHER" >
+        <D unit="g/cm3" value="0.71378" />
+        <composite n="4" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_N.N-DIMETHYL_FORMAMIDE" name="G4_N.N-DIMETHYL_FORMAMIDE" >
+        <D unit="g/cm3" value="0.9487" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="7" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_DIMETHYL_SULFOXIDE" name="G4_DIMETHYL_SULFOXIDE" >
+        <D unit="g/cm3" value="1.1014" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+        <composite n="1" ref="G4_S"/>
+      </material>
+      <material formula="G4_ETHANE" name="G4_ETHANE" >
+        <D unit="g/cm3" value="0.00125324" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+      </material>
+      <material formula="G4_ETHYL_ALCOHOL" name="G4_ETHYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.7893" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_ETHYL_CELLULOSE" name="G4_ETHYL_CELLULOSE" >
+        <D unit="g/cm3" value="1.13" />
+        <fraction n="0.090027" ref="G4_H"/>
+        <fraction n="0.585182" ref="G4_C"/>
+        <fraction n="0.324791" ref="G4_O"/>
+      </material>
+      <material formula="G4_ETHYLENE" name="G4_ETHYLENE" >
+        <D unit="g/cm3" value="0.00117497" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+      </material>
+      <material formula="G4_EYE_LENS_ICRP" name="G4_EYE_LENS_ICRP" >
+        <D unit="g/cm3" value="1.07" />
+        <fraction n="0.096" ref="G4_H"/>
+        <fraction n="0.195" ref="G4_C"/>
+        <fraction n="0.057" ref="G4_N"/>
+        <fraction n="0.646" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_P"/>
+        <fraction n="0.003" ref="G4_S"/>
+        <fraction n="0.001" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_FERRIC_OXIDE" name="G4_FERRIC_OXIDE" >
+        <D unit="g/cm3" value="5.2" />
+        <composite n="2" ref="G4_Fe"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_FERROBORIDE" name="G4_FERROBORIDE" >
+        <D unit="g/cm3" value="7.15" />
+        <composite n="1" ref="G4_Fe"/>
+        <composite n="1" ref="G4_B"/>
+      </material>
+      <material formula="G4_FERROUS_OXIDE" name="G4_FERROUS_OXIDE" >
+        <D unit="g/cm3" value="5.7" />
+        <composite n="1" ref="G4_Fe"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_FERROUS_SULFATE" name="G4_FERROUS_SULFATE" >
+        <D unit="g/cm3" value="1.024" />
+        <fraction n="0.108259" ref="G4_H"/>
+        <fraction n="2.7e-05" ref="G4_N"/>
+        <fraction n="0.878636" ref="G4_O"/>
+        <fraction n="2.2e-05" ref="G4_Na"/>
+        <fraction n="0.012968" ref="G4_S"/>
+        <fraction n="3.4e-05" ref="G4_Cl"/>
+        <fraction n="5.4e-05" ref="G4_Fe"/>
+      </material>
+      <material formula="G4_FREON-12" name="G4_FREON-12" >
+        <D unit="g/cm3" value="1.12" />
+        <fraction n="0.099335" ref="G4_C"/>
+        <fraction n="0.314247" ref="G4_F"/>
+        <fraction n="0.586418" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_FREON-12B2" name="G4_FREON-12B2" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.057245" ref="G4_C"/>
+        <fraction n="0.181096" ref="G4_F"/>
+        <fraction n="0.761659" ref="G4_Br"/>
+      </material>
+      <material formula="G4_FREON-13" name="G4_FREON-13" >
+        <D unit="g/cm3" value="0.95" />
+        <fraction n="0.114983" ref="G4_C"/>
+        <fraction n="0.545621" ref="G4_F"/>
+        <fraction n="0.339396" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_FREON-13B1" name="G4_FREON-13B1" >
+        <D unit="g/cm3" value="1.5" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="3" ref="G4_F"/>
+        <composite n="1" ref="G4_Br"/>
+      </material>
+      <material formula="G4_FREON-13I1" name="G4_FREON-13I1" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.061309" ref="G4_C"/>
+        <fraction n="0.290924" ref="G4_F"/>
+        <fraction n="0.647767" ref="G4_I"/>
+      </material>
+      <material formula="G4_GADOLINIUM_OXYSULFIDE" name="G4_GADOLINIUM_OXYSULFIDE" >
+        <D unit="g/cm3" value="7.44" />
+        <composite n="2" ref="G4_Gd"/>
+        <composite n="2" ref="G4_O"/>
+        <composite n="1" ref="G4_S"/>
+      </material>
+      <material formula="G4_GALLIUM_ARSENIDE" name="G4_GALLIUM_ARSENIDE" >
+        <D unit="g/cm3" value="5.31" />
+        <composite n="1" ref="G4_Ga"/>
+        <composite n="1" ref="G4_As"/>
+      </material>
+      <material formula="G4_GEL_PHOTO_EMULSION" name="G4_GEL_PHOTO_EMULSION" >
+        <D unit="g/cm3" value="1.2914" />
+        <fraction n="0.08118" ref="G4_H"/>
+        <fraction n="0.41606" ref="G4_C"/>
+        <fraction n="0.11124" ref="G4_N"/>
+        <fraction n="0.38064" ref="G4_O"/>
+        <fraction n="0.01088" ref="G4_S"/>
+      </material>
+      <material formula="G4_Pyrex_Glass" name="G4_Pyrex_Glass" >
+        <D unit="g/cm3" value="2.23" />
+        <fraction n="0.0400639" ref="G4_B"/>
+        <fraction n="0.539561" ref="G4_O"/>
+        <fraction n="0.0281909" ref="G4_Na"/>
+        <fraction n="0.011644" ref="G4_Al"/>
+        <fraction n="0.377219" ref="G4_Si"/>
+        <fraction n="0.00332099" ref="G4_K"/>
+      </material>
+      <material formula="G4_GLASS_LEAD" name="G4_GLASS_LEAD" >
+        <D unit="g/cm3" value="6.22" />
+        <fraction n="0.156453" ref="G4_O"/>
+        <fraction n="0.080866" ref="G4_Si"/>
+        <fraction n="0.008092" ref="G4_Ti"/>
+        <fraction n="0.002651" ref="G4_As"/>
+        <fraction n="0.751938" ref="G4_Pb"/>
+      </material>
+      <material formula="G4_GLASS_PLATE" name="G4_GLASS_PLATE" >
+        <D unit="g/cm3" value="2.4" />
+        <fraction n="0.4598" ref="G4_O"/>
+        <fraction n="0.0964411" ref="G4_Na"/>
+        <fraction n="0.336553" ref="G4_Si"/>
+        <fraction n="0.107205" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_GLUTAMINE" name="G4_GLUTAMINE" >
+        <D unit="g/cm3" value="1.46" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+        <composite n="2" ref="G4_N"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_GLYCEROL" name="G4_GLYCEROL" >
+        <D unit="g/cm3" value="1.2613" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_GUANINE" name="G4_GUANINE" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="5" ref="G4_H"/>
+        <composite n="5" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_GYPSUM" name="G4_GYPSUM" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="1" ref="G4_Ca"/>
+        <composite n="1" ref="G4_S"/>
+        <composite n="6" ref="G4_O"/>
+        <composite n="4" ref="G4_H"/>
+      </material>
+      <material formula="G4_N-HEPTANE" name="G4_N-HEPTANE" >
+        <D unit="g/cm3" value="0.68376" />
+        <composite n="7" ref="G4_C"/>
+        <composite n="16" ref="G4_H"/>
+      </material>
+      <material formula="G4_N-HEXANE" name="G4_N-HEXANE" >
+        <D unit="g/cm3" value="0.6603" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="14" ref="G4_H"/>
+      </material>
+      <material formula="G4_KAPTON" name="G4_KAPTON" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="22" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+        <composite n="2" ref="G4_N"/>
+        <composite n="5" ref="G4_O"/>
+      </material>
+      <material formula="G4_LANTHANUM_OXYBROMIDE" name="G4_LANTHANUM_OXYBROMIDE" >
+        <D unit="g/cm3" value="6.28" />
+        <composite n="1" ref="G4_La"/>
+        <composite n="1" ref="G4_Br"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_LANTHANUM_OXYSULFIDE" name="G4_LANTHANUM_OXYSULFIDE" >
+        <D unit="g/cm3" value="5.86" />
+        <composite n="2" ref="G4_La"/>
+        <composite n="2" ref="G4_O"/>
+        <composite n="1" ref="G4_S"/>
+      </material>
+      <material formula="G4_LEAD_OXIDE" name="G4_LEAD_OXIDE" >
+        <D unit="g/cm3" value="9.53" />
+        <fraction n="0.071682" ref="G4_O"/>
+        <fraction n="0.928318" ref="G4_Pb"/>
+      </material>
+      <material formula="G4_LITHIUM_AMIDE" name="G4_LITHIUM_AMIDE" >
+        <D unit="g/cm3" value="1.178" />
+        <composite n="1" ref="G4_Li"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="2" ref="G4_H"/>
+      </material>
+      <material formula="G4_LITHIUM_CARBONATE" name="G4_LITHIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.11" />
+        <composite n="2" ref="G4_Li"/>
+        <composite n="1" ref="G4_C"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_LITHIUM_FLUORIDE" name="G4_LITHIUM_FLUORIDE" >
+        <D unit="g/cm3" value="2.635" />
+        <composite n="1" ref="G4_Li"/>
+        <composite n="1" ref="G4_F"/>
+      </material>
+      <material formula="G4_LITHIUM_HYDRIDE" name="G4_LITHIUM_HYDRIDE" >
+        <D unit="g/cm3" value="0.82" />
+        <composite n="1" ref="G4_Li"/>
+        <composite n="1" ref="G4_H"/>
+      </material>
+      <material formula="G4_LITHIUM_IODIDE" name="G4_LITHIUM_IODIDE" >
+        <D unit="g/cm3" value="3.494" />
+        <composite n="1" ref="G4_Li"/>
+        <composite n="1" ref="G4_I"/>
+      </material>
+      <material formula="G4_LITHIUM_OXIDE" name="G4_LITHIUM_OXIDE" >
+        <D unit="g/cm3" value="2.013" />
+        <composite n="2" ref="G4_Li"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_LITHIUM_TETRABORATE" name="G4_LITHIUM_TETRABORATE" >
+        <D unit="g/cm3" value="2.44" />
+        <composite n="2" ref="G4_Li"/>
+        <composite n="4" ref="G4_B"/>
+        <composite n="7" ref="G4_O"/>
+      </material>
+      <material formula="G4_LUNG_ICRP" name="G4_LUNG_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.105" ref="G4_H"/>
+        <fraction n="0.083" ref="G4_C"/>
+        <fraction n="0.023" ref="G4_N"/>
+        <fraction n="0.779" ref="G4_O"/>
+        <fraction n="0.002" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.003" ref="G4_Cl"/>
+        <fraction n="0.002" ref="G4_K"/>
+      </material>
+      <material formula="G4_M3_WAX" name="G4_M3_WAX" >
+        <D unit="g/cm3" value="1.05" />
+        <fraction n="0.114318" ref="G4_H"/>
+        <fraction n="0.655824" ref="G4_C"/>
+        <fraction n="0.0921831" ref="G4_O"/>
+        <fraction n="0.134792" ref="G4_Mg"/>
+        <fraction n="0.002883" ref="G4_Ca"/>
+      </material>
+      <material formula="G4_MAGNESIUM_CARBONATE" name="G4_MAGNESIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.958" />
+        <composite n="1" ref="G4_Mg"/>
+        <composite n="1" ref="G4_C"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_MAGNESIUM_FLUORIDE" name="G4_MAGNESIUM_FLUORIDE" >
+        <D unit="g/cm3" value="3" />
+        <composite n="1" ref="G4_Mg"/>
+        <composite n="2" ref="G4_F"/>
+      </material>
+      <material formula="G4_MAGNESIUM_OXIDE" name="G4_MAGNESIUM_OXIDE" >
+        <D unit="g/cm3" value="3.58" />
+        <composite n="1" ref="G4_Mg"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_MAGNESIUM_TETRABORATE" name="G4_MAGNESIUM_TETRABORATE" >
+        <D unit="g/cm3" value="2.53" />
+        <composite n="1" ref="G4_Mg"/>
+        <composite n="4" ref="G4_B"/>
+        <composite n="7" ref="G4_O"/>
+      </material>
+      <material formula="G4_MERCURIC_IODIDE" name="G4_MERCURIC_IODIDE" >
+        <D unit="g/cm3" value="6.36" />
+        <composite n="1" ref="G4_Hg"/>
+        <composite n="2" ref="G4_I"/>
+      </material>
+      <material formula="G4_METHANE" name="G4_METHANE" >
+        <D unit="g/cm3" value="0.000667151" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+      </material>
+      <material formula="G4_METHANOL" name="G4_METHANOL" >
+        <D unit="g/cm3" value="0.7914" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_MIX_D_WAX" name="G4_MIX_D_WAX" >
+        <D unit="g/cm3" value="0.99" />
+        <fraction n="0.13404" ref="G4_H"/>
+        <fraction n="0.77796" ref="G4_C"/>
+        <fraction n="0.03502" ref="G4_O"/>
+        <fraction n="0.038594" ref="G4_Mg"/>
+        <fraction n="0.014386" ref="G4_Ti"/>
+      </material>
+      <material formula="G4_MS20_TISSUE" name="G4_MS20_TISSUE" >
+        <D unit="g/cm3" value="1" />
+        <fraction n="0.081192" ref="G4_H"/>
+        <fraction n="0.583442" ref="G4_C"/>
+        <fraction n="0.017798" ref="G4_N"/>
+        <fraction n="0.186381" ref="G4_O"/>
+        <fraction n="0.130287" ref="G4_Mg"/>
+        <fraction n="0.0009" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_MUSCLE_SKELETAL_ICRP" name="G4_MUSCLE_SKELETAL_ICRP" >
+        <D unit="g/cm3" value="1.05" />
+        <fraction n="0.102" ref="G4_H"/>
+        <fraction n="0.143" ref="G4_C"/>
+        <fraction n="0.034" ref="G4_N"/>
+        <fraction n="0.71" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.002" ref="G4_P"/>
+        <fraction n="0.003" ref="G4_S"/>
+        <fraction n="0.001" ref="G4_Cl"/>
+        <fraction n="0.004" ref="G4_K"/>
+      </material>
+      <material formula="G4_MUSCLE_STRIATED_ICRU" name="G4_MUSCLE_STRIATED_ICRU" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.102102" ref="G4_H"/>
+        <fraction n="0.123123" ref="G4_C"/>
+        <fraction n="0.035035" ref="G4_N"/>
+        <fraction n="0.72973" ref="G4_O"/>
+        <fraction n="0.001001" ref="G4_Na"/>
+        <fraction n="0.002002" ref="G4_P"/>
+        <fraction n="0.004004" ref="G4_S"/>
+        <fraction n="0.003003" ref="G4_K"/>
+      </material>
+      <material formula="G4_MUSCLE_WITH_SUCROSE" name="G4_MUSCLE_WITH_SUCROSE" >
+        <D unit="g/cm3" value="1.11" />
+        <fraction n="0.0982341" ref="G4_H"/>
+        <fraction n="0.156214" ref="G4_C"/>
+        <fraction n="0.035451" ref="G4_N"/>
+        <fraction n="0.710101" ref="G4_O"/>
+      </material>
+      <material formula="G4_MUSCLE_WITHOUT_SUCROSE" name="G4_MUSCLE_WITHOUT_SUCROSE" >
+        <D unit="g/cm3" value="1.07" />
+        <fraction n="0.101969" ref="G4_H"/>
+        <fraction n="0.120058" ref="G4_C"/>
+        <fraction n="0.035451" ref="G4_N"/>
+        <fraction n="0.742522" ref="G4_O"/>
+      </material>
+      <material formula="G4_NAPHTHALENE" name="G4_NAPHTHALENE" >
+        <D unit="g/cm3" value="1.145" />
+        <composite n="10" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+      </material>
+      <material formula="G4_NITROBENZENE" name="G4_NITROBENZENE" >
+        <D unit="g/cm3" value="1.19867" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="5" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_NITROUS_OXIDE" name="G4_NITROUS_OXIDE" >
+        <D unit="g/cm3" value="0.00183094" />
+        <composite n="2" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_NYLON-8062" name="G4_NYLON-8062" >
+        <D unit="g/cm3" value="1.08" />
+        <fraction n="0.103509" ref="G4_H"/>
+        <fraction n="0.648416" ref="G4_C"/>
+        <fraction n="0.0995361" ref="G4_N"/>
+        <fraction n="0.148539" ref="G4_O"/>
+      </material>
+      <material formula="G4_NYLON-6-6" name="G4_NYLON-6-6" >
+        <D unit="g/cm3" value="1.14" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="11" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_NYLON-6-10" name="G4_NYLON-6-10" >
+        <D unit="g/cm3" value="1.14" />
+        <fraction n="0.107062" ref="G4_H"/>
+        <fraction n="0.680449" ref="G4_C"/>
+        <fraction n="0.099189" ref="G4_N"/>
+        <fraction n="0.1133" ref="G4_O"/>
+      </material>
+      <material formula="G4_NYLON-11_RILSAN" name="G4_NYLON-11_RILSAN" >
+        <D unit="g/cm3" value="1.425" />
+        <fraction n="0.115476" ref="G4_H"/>
+        <fraction n="0.720818" ref="G4_C"/>
+        <fraction n="0.0764169" ref="G4_N"/>
+        <fraction n="0.0872889" ref="G4_O"/>
+      </material>
+      <material formula="G4_OCTANE" name="G4_OCTANE" >
+        <D unit="g/cm3" value="0.7026" />
+        <composite n="8" ref="G4_C"/>
+        <composite n="18" ref="G4_H"/>
+      </material>
+      <material formula="G4_PARAFFIN" name="G4_PARAFFIN" >
+        <D unit="g/cm3" value="0.93" />
+        <composite n="25" ref="G4_C"/>
+        <composite n="52" ref="G4_H"/>
+      </material>
+      <material formula="G4_N-PENTANE" name="G4_N-PENTANE" >
+        <D unit="g/cm3" value="0.6262" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="12" ref="G4_H"/>
+      </material>
+      <material formula="G4_PHOTO_EMULSION" name="G4_PHOTO_EMULSION" >
+        <D unit="g/cm3" value="3.815" />
+        <fraction n="0.0141" ref="G4_H"/>
+        <fraction n="0.072261" ref="G4_C"/>
+        <fraction n="0.01932" ref="G4_N"/>
+        <fraction n="0.066101" ref="G4_O"/>
+        <fraction n="0.00189" ref="G4_S"/>
+        <fraction n="0.349103" ref="G4_Br"/>
+        <fraction n="0.474105" ref="G4_Ag"/>
+        <fraction n="0.00312" ref="G4_I"/>
+      </material>
+      <material formula="G4_PLASTIC_SC_VINYLTOLUENE" name="G4_PLASTIC_SC_VINYLTOLUENE" >
+        <D unit="g/cm3" value="1.032" />
+        <composite n="9" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+      </material>
+      <material formula="G4_PLUTONIUM_DIOXIDE" name="G4_PLUTONIUM_DIOXIDE" >
+        <D unit="g/cm3" value="11.46" />
+        <composite n="1" ref="G4_Pu"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYACRYLONITRILE" name="G4_POLYACRYLONITRILE" >
+        <D unit="g/cm3" value="1.17" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="3" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+      </material>
+      <material formula="G4_POLYCARBONATE" name="G4_POLYCARBONATE" >
+        <D unit="g/cm3" value="1.2" />
+        <composite n="16" ref="G4_C"/>
+        <composite n="14" ref="G4_H"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYCHLOROSTYRENE" name="G4_POLYCHLOROSTYRENE" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="8" ref="G4_C"/>
+        <composite n="7" ref="G4_H"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_POLYETHYLENE" name="G4_POLYETHYLENE" >
+        <D unit="g/cm3" value="0.94" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="2" ref="G4_H"/>
+      </material>
+      <material formula="G4_MYLAR" name="G4_MYLAR" >
+        <D unit="g/cm3" value="1.4" />
+        <composite n="10" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+        <composite n="4" ref="G4_O"/>
+      </material>
+      <material formula="G4_PLEXIGLASS" name="G4_PLEXIGLASS" >
+        <D unit="g/cm3" value="1.19" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYOXYMETHYLENE" name="G4_POLYOXYMETHYLENE" >
+        <D unit="g/cm3" value="1.425" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="2" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYPROPYLENE" name="G4_POLYPROPYLENE" >
+        <D unit="g/cm3" value="0.9" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+      </material>
+      <material formula="G4_POLYSTYRENE" name="G4_POLYSTYRENE" >
+        <D unit="g/cm3" value="1.06" />
+        <composite n="8" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+      </material>
+      <material formula="G4_TEFLON" name="G4_TEFLON" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_F"/>
+      </material>
+      <material formula="G4_POLYTRIFLUOROCHLOROETHYLENE" name="G4_POLYTRIFLUOROCHLOROETHYLENE" >
+        <D unit="g/cm3" value="2.1" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="3" ref="G4_F"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_POLYVINYL_ACETATE" name="G4_POLYVINYL_ACETATE" >
+        <D unit="g/cm3" value="1.19" />
+        <composite n="4" ref="G4_C"/>
+        <composite n="6" ref="G4_H"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYVINYL_ALCOHOL" name="G4_POLYVINYL_ALCOHOL" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYVINYL_BUTYRAL" name="G4_POLYVINYL_BUTYRAL" >
+        <D unit="g/cm3" value="1.12" />
+        <composite n="8" ref="G4_C"/>
+        <composite n="14" ref="G4_H"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_POLYVINYL_CHLORIDE" name="G4_POLYVINYL_CHLORIDE" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="3" ref="G4_H"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_POLYVINYLIDENE_CHLORIDE" name="G4_POLYVINYLIDENE_CHLORIDE" >
+        <D unit="g/cm3" value="1.7" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="2" ref="G4_H"/>
+        <composite n="2" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_POLYVINYLIDENE_FLUORIDE" name="G4_POLYVINYLIDENE_FLUORIDE" >
+        <D unit="g/cm3" value="1.76" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="2" ref="G4_H"/>
+        <composite n="2" ref="G4_F"/>
+      </material>
+      <material formula="G4_POLYVINYL_PYRROLIDONE" name="G4_POLYVINYL_PYRROLIDONE" >
+        <D unit="g/cm3" value="1.25" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="9" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_POTASSIUM_IODIDE" name="G4_POTASSIUM_IODIDE" >
+        <D unit="g/cm3" value="3.13" />
+        <composite n="1" ref="G4_K"/>
+        <composite n="1" ref="G4_I"/>
+      </material>
+      <material formula="G4_POTASSIUM_OXIDE" name="G4_POTASSIUM_OXIDE" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="2" ref="G4_K"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_PROPANE" name="G4_PROPANE" >
+        <D unit="g/cm3" value="0.00187939" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+      </material>
+      <material formula="G4_lPROPANE" name="G4_lPROPANE" >
+        <D unit="g/cm3" value="0.43" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+      </material>
+      <material formula="G4_N-PROPYL_ALCOHOL" name="G4_N-PROPYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.8035" />
+        <composite n="3" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_PYRIDINE" name="G4_PYRIDINE" >
+        <D unit="g/cm3" value="0.9819" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="5" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+      </material>
+      <material formula="G4_RUBBER_BUTYL" name="G4_RUBBER_BUTYL" >
+        <D unit="g/cm3" value="0.92" />
+        <fraction n="0.143711" ref="G4_H"/>
+        <fraction n="0.856289" ref="G4_C"/>
+      </material>
+      <material formula="G4_RUBBER_NATURAL" name="G4_RUBBER_NATURAL" >
+        <D unit="g/cm3" value="0.92" />
+        <fraction n="0.118371" ref="G4_H"/>
+        <fraction n="0.881629" ref="G4_C"/>
+      </material>
+      <material formula="G4_RUBBER_NEOPRENE" name="G4_RUBBER_NEOPRENE" >
+        <D unit="g/cm3" value="1.23" />
+        <fraction n="0.05692" ref="G4_H"/>
+        <fraction n="0.542646" ref="G4_C"/>
+        <fraction n="0.400434" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_SILICON_DIOXIDE" name="G4_SILICON_DIOXIDE" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="1" ref="G4_Si"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_SILVER_BROMIDE" name="G4_SILVER_BROMIDE" >
+        <D unit="g/cm3" value="6.473" />
+        <composite n="1" ref="G4_Ag"/>
+        <composite n="1" ref="G4_Br"/>
+      </material>
+      <material formula="G4_SILVER_CHLORIDE" name="G4_SILVER_CHLORIDE" >
+        <D unit="g/cm3" value="5.56" />
+        <composite n="1" ref="G4_Ag"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_SILVER_HALIDES" name="G4_SILVER_HALIDES" >
+        <D unit="g/cm3" value="6.47" />
+        <fraction n="0.422895" ref="G4_Br"/>
+        <fraction n="0.573748" ref="G4_Ag"/>
+        <fraction n="0.003357" ref="G4_I"/>
+      </material>
+      <material formula="G4_SILVER_IODIDE" name="G4_SILVER_IODIDE" >
+        <D unit="g/cm3" value="6.01" />
+        <composite n="1" ref="G4_Ag"/>
+        <composite n="1" ref="G4_I"/>
+      </material>
+      <material formula="G4_SKIN_ICRP" name="G4_SKIN_ICRP" >
+        <D unit="g/cm3" value="1.09" />
+        <fraction n="0.1" ref="G4_H"/>
+        <fraction n="0.204" ref="G4_C"/>
+        <fraction n="0.042" ref="G4_N"/>
+        <fraction n="0.645" ref="G4_O"/>
+        <fraction n="0.002" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.003" ref="G4_Cl"/>
+        <fraction n="0.001" ref="G4_K"/>
+      </material>
+      <material formula="G4_SODIUM_CARBONATE" name="G4_SODIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.532" />
+        <composite n="2" ref="G4_Na"/>
+        <composite n="1" ref="G4_C"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_SODIUM_IODIDE" name="G4_SODIUM_IODIDE" >
+        <D unit="g/cm3" value="3.667" />
+        <composite n="1" ref="G4_Na"/>
+        <composite n="1" ref="G4_I"/>
+      </material>
+      <material formula="G4_SODIUM_MONOXIDE" name="G4_SODIUM_MONOXIDE" >
+        <D unit="g/cm3" value="2.27" />
+        <composite n="2" ref="G4_Na"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_SODIUM_NITRATE" name="G4_SODIUM_NITRATE" >
+        <D unit="g/cm3" value="2.261" />
+        <composite n="1" ref="G4_Na"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="3" ref="G4_O"/>
+      </material>
+      <material formula="G4_STILBENE" name="G4_STILBENE" >
+        <D unit="g/cm3" value="0.9707" />
+        <composite n="14" ref="G4_C"/>
+        <composite n="12" ref="G4_H"/>
+      </material>
+      <material formula="G4_SUCROSE" name="G4_SUCROSE" >
+        <D unit="g/cm3" value="1.5805" />
+        <composite n="12" ref="G4_C"/>
+        <composite n="22" ref="G4_H"/>
+        <composite n="11" ref="G4_O"/>
+      </material>
+      <material formula="G4_TERPHENYL" name="G4_TERPHENYL" >
+        <D unit="g/cm3" value="1.24" />
+        <composite n="18" ref="G4_C"/>
+        <composite n="14" ref="G4_H"/>
+      </material>
+      <material formula="G4_TESTIS_ICRP" name="G4_TESTIS_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.106" ref="G4_H"/>
+        <fraction n="0.099" ref="G4_C"/>
+        <fraction n="0.02" ref="G4_N"/>
+        <fraction n="0.766" ref="G4_O"/>
+        <fraction n="0.002" ref="G4_Na"/>
+        <fraction n="0.001" ref="G4_P"/>
+        <fraction n="0.002" ref="G4_S"/>
+        <fraction n="0.002" ref="G4_Cl"/>
+        <fraction n="0.002" ref="G4_K"/>
+      </material>
+      <material formula="G4_TETRACHLOROETHYLENE" name="G4_TETRACHLOROETHYLENE" >
+        <D unit="g/cm3" value="1.625" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="4" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_THALLIUM_CHLORIDE" name="G4_THALLIUM_CHLORIDE" >
+        <D unit="g/cm3" value="7.004" />
+        <composite n="1" ref="G4_Tl"/>
+        <composite n="1" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_TISSUE_SOFT_ICRP" name="G4_TISSUE_SOFT_ICRP" >
+        <D unit="g/cm3" value="1.03" />
+        <fraction n="0.105" ref="G4_H"/>
+        <fraction n="0.256" ref="G4_C"/>
+        <fraction n="0.027" ref="G4_N"/>
+        <fraction n="0.602" ref="G4_O"/>
+        <fraction n="0.001" ref="G4_Na"/>
+        <fraction n="0.002" ref="G4_P"/>
+        <fraction n="0.003" ref="G4_S"/>
+        <fraction n="0.002" ref="G4_Cl"/>
+        <fraction n="0.002" ref="G4_K"/>
+      </material>
+      <material formula="G4_TISSUE_SOFT_ICRU-4" name="G4_TISSUE_SOFT_ICRU-4" >
+        <D unit="g/cm3" value="1" />
+        <fraction n="0.101" ref="G4_H"/>
+        <fraction n="0.111" ref="G4_C"/>
+        <fraction n="0.026" ref="G4_N"/>
+        <fraction n="0.762" ref="G4_O"/>
+      </material>
+      <material formula="G4_TISSUE-METHANE" name="G4_TISSUE-METHANE" >
+        <D unit="g/cm3" value="0.00106409" />
+        <fraction n="0.101869" ref="G4_H"/>
+        <fraction n="0.456179" ref="G4_C"/>
+        <fraction n="0.035172" ref="G4_N"/>
+        <fraction n="0.40678" ref="G4_O"/>
+      </material>
+      <material formula="G4_TISSUE-PROPANE" name="G4_TISSUE-PROPANE" >
+        <D unit="g/cm3" value="0.00182628" />
+        <fraction n="0.102672" ref="G4_H"/>
+        <fraction n="0.56894" ref="G4_C"/>
+        <fraction n="0.035022" ref="G4_N"/>
+        <fraction n="0.293366" ref="G4_O"/>
+      </material>
+      <material formula="G4_TITANIUM_DIOXIDE" name="G4_TITANIUM_DIOXIDE" >
+        <D unit="g/cm3" value="4.26" />
+        <composite n="1" ref="G4_Ti"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_TOLUENE" name="G4_TOLUENE" >
+        <D unit="g/cm3" value="0.8669" />
+        <composite n="7" ref="G4_C"/>
+        <composite n="8" ref="G4_H"/>
+      </material>
+      <material formula="G4_TRICHLOROETHYLENE" name="G4_TRICHLOROETHYLENE" >
+        <D unit="g/cm3" value="1.46" />
+        <composite n="2" ref="G4_C"/>
+        <composite n="1" ref="G4_H"/>
+        <composite n="3" ref="G4_Cl"/>
+      </material>
+      <material formula="G4_TRIETHYL_PHOSPHATE" name="G4_TRIETHYL_PHOSPHATE" >
+        <D unit="g/cm3" value="1.07" />
+        <composite n="6" ref="G4_C"/>
+        <composite n="15" ref="G4_H"/>
+        <composite n="4" ref="G4_O"/>
+        <composite n="1" ref="G4_P"/>
+      </material>
+      <material formula="G4_TUNGSTEN_HEXAFLUORIDE" name="G4_TUNGSTEN_HEXAFLUORIDE" >
+        <D unit="g/cm3" value="2.4" />
+        <composite n="1" ref="G4_W"/>
+        <composite n="6" ref="G4_F"/>
+      </material>
+      <material formula="G4_URANIUM_DICARBIDE" name="G4_URANIUM_DICARBIDE" >
+        <D unit="g/cm3" value="11.28" />
+        <composite n="1" ref="G4_U"/>
+        <composite n="2" ref="G4_C"/>
+      </material>
+      <material formula="G4_URANIUM_MONOCARBIDE" name="G4_URANIUM_MONOCARBIDE" >
+        <D unit="g/cm3" value="13.63" />
+        <composite n="1" ref="G4_U"/>
+        <composite n="1" ref="G4_C"/>
+      </material>
+      <material formula="G4_URANIUM_OXIDE" name="G4_URANIUM_OXIDE" >
+        <D unit="g/cm3" value="10.96" />
+        <composite n="1" ref="G4_U"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_UREA" name="G4_UREA" >
+        <D unit="g/cm3" value="1.323" />
+        <composite n="1" ref="G4_C"/>
+        <composite n="4" ref="G4_H"/>
+        <composite n="2" ref="G4_N"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_VALINE" name="G4_VALINE" >
+        <D unit="g/cm3" value="1.23" />
+        <composite n="5" ref="G4_C"/>
+        <composite n="11" ref="G4_H"/>
+        <composite n="1" ref="G4_N"/>
+        <composite n="2" ref="G4_O"/>
+      </material>
+      <material formula="G4_VITON" name="G4_VITON" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.009417" ref="G4_H"/>
+        <fraction n="0.280555" ref="G4_C"/>
+        <fraction n="0.710028" ref="G4_F"/>
+      </material>
+      <material formula="G4_WATER" name="G4_WATER" >
+        <D unit="g/cm3" value="1" />
+        <composite n="2" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_WATER_VAPOR" name="G4_WATER_VAPOR" >
+        <D unit="g/cm3" value="0.000756182" />
+        <composite n="2" ref="G4_H"/>
+        <composite n="1" ref="G4_O"/>
+      </material>
+      <material formula="G4_XYLENE" name="G4_XYLENE" >
+        <D unit="g/cm3" value="0.87" />
+        <composite n="8" ref="G4_C"/>
+        <composite n="10" ref="G4_H"/>
+      </material>
+      <material formula="G4_GRAPHITE" name="G4_GRAPHITE" >
+        <D unit="g/cm3" value="2.21" />
+        <composite n="1" ref="G4_C"/>
+      </material>
+  </materials>
+</xml>
