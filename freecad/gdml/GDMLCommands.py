@@ -296,7 +296,7 @@ class PolyHedraFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'PolyHedra Selected Object')}    
 
-class TessellateFeature :
+class TessellatePlanarFeature :
       
     def Activated(self) :
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
@@ -342,11 +342,28 @@ class TessellateFeature :
             FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_Tessellate', 'MenuText': \
+        return {'Pixmap'  : 'GDML_TessellatePlanar', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'ToolTip': \
+                'Tess Group'), 'TessellatePlanar': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
-                'Tesselate Selected Object')}    
+                'Tesselate Selected Planar Object')}    
+
+class TessellateMeshFeature :
+      
+    def Activated(self) :
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Tessellate Mesh')
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_TessellateMesh', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tess Group'), 'TessellateMesh': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                'Mesh & Tesselate Selected Planar Object')}    
 
 class CycleFeature :
 
@@ -546,4 +563,5 @@ FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
-FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
+FreeCADGui.addCommand('TessellatePlanarCommand',TessellatePlanarFeature())
+FreeCADGui.addCommand('TessellateMeshCommand',TessellateMeshFeature())
