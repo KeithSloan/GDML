@@ -205,7 +205,8 @@ the export will create an xml file of the material definitions. You can then imp
 file and the material definitions into a separate FreeCAD document. Note: The file extension
 used should be xml NOT gdml
 
-The Materials directory contains a number of Materials XML files that can be imported.
+The Materials directory contains a number of Materials XML files including NIST Database
+that can be imported.
 
 ### Constants / Isotopes / Elements / Materials
 
@@ -299,6 +300,11 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
  
 
 ## Acknowledgements 
+
+**Developers**
+
+  * Keith Sloan
+  * Damian Lambert
 
 **Graphic Icons** 
 
