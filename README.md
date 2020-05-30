@@ -95,7 +95,7 @@ Upon switching to the GDML workbench, one will notice a number of icons that bec
 * In neccessary, once can then edit the properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
 
-### GDML Objects Currently Supported for cresstion via the GUI are
+### GDML Objects Currently Supported for creation via the GUI are
 
 #### GDMLBox 
 ![GDML_Box-Icon](Source_Icon_Designs/GDML_Box_mauve_blackline.svg)
@@ -125,10 +125,13 @@ _Short decription_
 ![GDML_Tube-Icon](Source_Icon_Designs/GDML_Tube_mauve_blackline.svg)
 _Short decription_
 
+Given a lot more solids are supported for import, it is not too difficult to add more,
+so if you feel you need a particular solid to be added please contact me.
+
 ## GDML Import
 
 A lot more GDML solids are supported for import. For example all Solids
-used by the CERN Alice.gdml srev defined.
+used by the CERN Alice.gdml are defined.
 
 On import or open of a GDML file a Dialog box will open with two options
 
