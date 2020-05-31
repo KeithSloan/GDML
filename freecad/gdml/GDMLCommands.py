@@ -69,6 +69,18 @@ class importPrompt(QtGui.QDialog):
         self.retStatus = 2
         self.close()
 
+def getSelectedMaterial() :
+    from .exportGDML import nameFromLabel
+    from .GDMLObjects import GDMLmaterial
+
+    list = FreeCADGui.Selection.getSelection()
+    if list != None :
+       for obj in list :
+          if isinstance(obj.Proxy,GDMLmaterial) == True :
+             return nameFromLabel(obj.Label)
+
+    return 0
+
 class BoxFeature:
     #    def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -78,7 +90,7 @@ class BoxFeature:
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLBox_Box")
         #print("GDMLBox Object - added")
         # obj, x, y, z, lunits, material
-        GDMLBox(a,10.0,10.0,10.0,"mm",0)
+        GDMLBox(a,10.0,10.0,10.0,"mm",getSelectedMaterial())
         #print("GDMLBox initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLBox ViewProvided - added")
@@ -107,7 +119,7 @@ class ConeFeature:
         a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLCone_Cone")
         #print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
-        GDMLCone(a,1,3,4,7,10.0,0,2,"rads","mm",0)
+        GDMLCone(a,1,3,4,7,10.0,0,2,"rads","mm",getSelectedMaterial())
         #print("GDMLCone initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLCone ViewProvided - added")
@@ -137,7 +149,7 @@ class EllispoidFeature:
                   "GDMLEllipsoid_Ellipsoid")
         #print("GDMLEllipsoid Object - added")
         #  obj,ax, by, cz, zcut1, zcut2, lunit,material
-        GDMLEllipsoid(a,10,20,30,0,0,"mm",0)
+        GDMLEllipsoid(a,10,20,30,0,0,"mm",getSelectedMaterial())
         #print("GDMLEllipsoid initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLEllipsoid ViewProvided - added")
@@ -167,7 +179,7 @@ class ElliTubeFeature:
                   "GDMLElTube_Eltube")
         #print("GDMLElTube Object - added")
         #  obj,dx, dy, dz, lunit, material
-        GDMLElTube(a,10,20,30,"mm",0)
+        GDMLElTube(a,10,20,30,"mm",getSelectedMaterial())
         #print("GDMLElTube initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLElTube ViewProvided - added")
@@ -198,7 +210,8 @@ class SphereFeature:
         #print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
         #       aunit, lunits, material
-        GDMLSphere(a,10.0, 20.0, 0.0, 2.02, 0.0, 2.02,"rad","mm",0)
+        GDMLSphere(a,10.0, 20.0, 0.0, 2.02, 0.0, 2.02,"rad","mm", \
+                  getSelectedMaterial())
         #print("GDMLSphere initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLSphere ViewProvided - added")
@@ -229,7 +242,8 @@ class TrapFeature:
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
         # pAlp2, aunits, lunits, material
-        GDMLTrap(a,10.0,0.0,0.0,6.0,6.0,6.0,6.0,7.0,7.0,0.0,"rad","mm",0)
+        GDMLTrap(a,10.0,0.0,0.0,6.0,6.0,6.0,6.0,7.0,7.0,0.0,"rad","mm", \
+                 getSelectedMaterial())
         print("GDMLTrap initiated")
         ViewProvider(a.ViewObject)
         print("GDMLTrap ViewProvided - added")
@@ -260,7 +274,7 @@ class TubeFeature:
                 "GDMLTube_Tube")
         #print("GDMLTube Object - added")
         # obj, rmin, rmax, z, startphi, deltaphi, aunit, lunits, material
-        GDMLTube(a,5.0,8.0,10.0,0.52,1.57,"rad","mm",0)
+        GDMLTube(a,5.0,8.0,10.0,0.52,1.57,"rad","mm",getSelectedMaterial())
         #print("GDMLTube initiated")
         ViewProvider(a.ViewObject)
         #print("GDMLTube ViewProvided - added")
