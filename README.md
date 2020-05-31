@@ -90,7 +90,11 @@ GDML Solids are implemented as FreeCAD Python Objects and have the same properti
 
 Upon switching to the GDML workbench, one will notice a number of icons that become available on the Workbench bar.
 
-* Clicking on one the icons will create a GDML object with default values.
+* Clicking on one the icons will create a GDML object.
+
+  If at the time a material is selected e.g. in the 'Labels & Attributes' window,
+  then the object will be created with that material, otherwise the material will be set to the first material in the list.
+  
 * It should then be dragged to the appropriate __Part__ (GDML Logical Volume)
 * In neccessary, once can then edit the properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
