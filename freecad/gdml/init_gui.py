@@ -75,12 +75,12 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
         
         #import GDMLCommands, GDMLResources
         commands=['CycleCommand','ExpandCommand', \
-              'TessellatePlanarCommand','TessellateMesh', \
+              'TessellatePlanarCommand','TessellateMeshCommand', \
               'PolyHedraCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand','AddCompound']
         toolbarcommands=['CycleCommand','ExpandCommand',
-               'TessellatePlanarCommand', 'TesselateMesh',\
+               'TessellatePlanarCommand', 'TessellateMeshCommand',\
               'PolyHedraCommand', 'BoxCommand','ConeCommand', \
                   'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound']

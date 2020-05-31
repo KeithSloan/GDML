@@ -305,46 +305,53 @@ class TessellatePlanarFeature :
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Tessellate')
-            parent = obj.InList[0]
-            #print(dir(parent))
-            myTess=parent.newObject("Part::FeaturePython", \
-                "GDMLTessellate_Tessellate")
-            GDMLTessellated(myTess,0)
-            if FreeCAD.GuiUp :
-               ViewProviderExtension(myTess.ViewObject)
-               ViewProvider(myTess.ViewObject)
             if hasattr(obj,'Shape') :
                print(obj.Shape.ShapeType)
                if hasattr(obj.Shape,'Vertexes') :
-                  print('Num Vertex '+str(len(obj.Shape.Vertexes)))
-               print('About to Tessellate')
-               list = obj.Shape.tessellate(1)
-               print(len(list))
-               print(list)
-               # vertex = list[0] :
-               if len(list) == 2 :
-                  for tri in list[1] :
-                      print(list[0][tri[0]])
-                      v1 = list[0][tri[0]]
-                      v2 = list[0][tri[1]]
-                      v3 = list[0][tri[2]]
-                      myTri = FreeCAD.ActiveDocument.addObject \
-                            ('App::FeaturePython','GDMLTriangular')
-                      GDMLTriangular(myTri,v1,v2,v3,'ABSOLUTE')
-                      myTess.addObject(myTri)
-                      if FreeCAD.GuiUp :
-                         ViewProvider(myTri)
-               else :
-                  print('Just list of vertext')
-            myTess.Placement = obj.Placement
-            FreeCAD.ActiveDocument.removeObject(obj.Name)
-            FreeCAD.ActiveDocument.recompute()
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+                  numVert = len(obj.Shape.Vertexes)
+                  print('Number of Vertex : '+str(numVert))
+                  if numVert > 2 :
+                     if hasattr(obj,'InList') :
+                        parent = obj.InList[0]
+                        #print(dir(parent))
+                        myTess=parent.newObject("Part::FeaturePython", \
+                                         "GDMLTessellate_Tessellate")
+                        tess = GDMLTessellated(myTess,0)
+                        print(dir(tess))
+                        if FreeCAD.GuiUp :
+                           ViewProviderExtension(myTess.ViewObject)
+                           ViewProvider(myTess.ViewObject)
+                        print('About to Tessellate')
+                        list = obj.Shape.tessellate(1)
+                        print(len(list))
+                        print(list)
+                        # vertex = list[0] :
+                        if len(list) == 2 :
+                           for tri in list[1] :
+                              print(list[0][tri[0]])
+                              v1 = list[0][tri[0]]
+                              v2 = list[0][tri[1]]
+                              v3 = list[0][tri[2]]
+                              myTri = FreeCAD.ActiveDocument.addObject \
+                                    ('App::FeaturePython','GDMLTriangular')
+                              GDMLTriangular(myTri,v1,v2,v3,'ABSOLUTE')
+                              myTess.addObject(myTri)
+                              if FreeCAD.GuiUp :
+                                 ViewProvider(myTri)
+                              else :
+                                 print('Just list of vertext')
+                        myTess.Placement = obj.Placement
+                        FreeCAD.ActiveDocument.removeObject(obj.Name)
+                        FreeCAD.ActiveDocument.recompute()
+                        FreeCADGui.SendMsgToActiveView("ViewFit")
+    
+                  else :
+                      print('Use Mesh & Tessellate')
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_TessellatePlanar', 'MenuText': \
+        return {'Pixmap'  : 'GDML_Tessellate_Planar', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'TessellatePlanar': \
+                'Tess Group'), 'Tessellate_Planar': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'Tesselate Selected Planar Object')}    
 
@@ -359,9 +366,9 @@ class TessellateMeshFeature :
             print('Action Tessellate Mesh')
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_TessellateMesh', 'MenuText': \
+        return {'Pixmap'  : 'GDML_Tessellate_Mesh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'TessellateMesh': \
+                'Tess Group'), 'Tessellate_Mesh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'Mesh & Tesselate Selected Planar Object')}    
 
