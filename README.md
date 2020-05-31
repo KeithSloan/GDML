@@ -90,12 +90,16 @@ GDML Solids are implemented as FreeCAD Python Objects and have the same properti
 
 Upon switching to the GDML workbench, one will notice a number of icons that become available on the Workbench bar.
 
-* Clicking on one the icons will create a GDML object with default values.
+* Clicking on one the icons will create a GDML object.
+
+  If at the time a material is selected e.g. in the 'Labels & Attributes' window,
+  then the object will be created with that material, otherwise the material will be set to the first material in the list.
+  
 * It should then be dragged to the appropriate __Part__ (GDML Logical Volume)
 * In neccessary, once can then edit the properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
 
-### GDML Objects Currently Supported 
+### GDML Objects Currently Supported for creation via the GUI are
 
 #### GDMLBox 
 ![GDML_Box-Icon](Source_Icon_Designs/GDML_Box_mauve_blackline.svg)
@@ -125,14 +129,20 @@ _Short decription_
 ![GDML_Tube-Icon](Source_Icon_Designs/GDML_Tube_mauve_blackline.svg)
 _Short decription_
 
+Given a lot more solids are supported for import, it is not too difficult to add more,
+so if you feel you need a particular solid to be added please contact me.
+
 ## GDML Import
+
+A lot more GDML solids are supported for import. For example all Solids
+used by the CERN Alice.gdml are defined.
 
 On import or open of a GDML file a Dialog box will open with two options
 
 - Import
 - Scan Vol
 
-Import will do a straight import of GDML Objects etc.
+Import will do a straight import of GDML Objects.
 
 Scan Vol is for large files like Alice.GDML that take far too long to process. 
 
@@ -196,7 +206,11 @@ The following FreeCAD objects are output as GDML equivalents
 
 If not handled as above then objects shapes are checked  to see if planar,
 if yes converts to Tessellated Solid with 3 or 4 vertex as appropriate.
-If not creates a mesh and then a Tessellated solid with 3 vertex. 
+If not creates a mesh and then a Tessellated solid with 3 vertex.
+
+### Export of STEP version
+
+Standard FreeCAD export facilities are available which includes the ability to create a STEP version
 
 ### Export/Import of Materials as an XML file.
 
