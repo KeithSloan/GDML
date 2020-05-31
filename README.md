@@ -83,9 +83,10 @@ GDML Solids are implemented as FreeCAD Python Objects and have the same properti
 **Important Notes:**  
 * Opening a new file when the GDML workbench is active will load a Default file.
 * The Default file is defined in `GDML/Mod/Resources/Default.gdml`.
-* New GDML objects have the material set to `SSteel0x56070ee87d10` i.e. the first material in the Default file.
-* Other materials can be set by editing the material property via the FreeCAD parameters View of the Object after creation.
-
+* If a material is selected in 'Labels & Attributes window at the time a new GDML objects is created
+  then this will set the material of the new Object. If no material is selected the objects material is set to the
+  first material in the Defaults file i.e. `SSteel0x56070ee87d10`
+  
 ## GDML Object Creation
 
 Upon switching to the GDML workbench, one will notice a number of icons that become available on the Workbench bar.
