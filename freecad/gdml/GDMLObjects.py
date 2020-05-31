@@ -1818,27 +1818,11 @@ class GDMLTessellated(GDMLcommon) :
            if editable == True :
               addProperties()
 
-       if prop in ['v1','v2','v3','v4','type','lunit'] :
-          self.createGeometry(fp)
+       #if prop in ['v1','v2','v3','v4','type','lunit'] :
+       #   self.createGeometry(fp)
 
-   def addProp(self) :
+   def addProperties(self) :
        print('Add Properties')
-
-   def addVertex(self,v) :
-       self.Vertex.append(v)
-
-   def processVertex(self, namesList, name) :
-       try :
-          i = nameList.index(name)
-       except :
-          nameList.append(name)
-          self.Vertex.append(GDMLShared.getDefinedPosition(name))
-          return(len(nameList) - 1)
-       else :
-          return i
-
-   def addFace(self,f) :
-       self.Face.append(f)
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -1881,6 +1865,24 @@ class GDMLTessellated(GDMLcommon) :
        #fp.Shape = faces[0]
        #fp.Shape = Part.makeBox(10,10,10)
        fp.Placement = currPlacement
+   
+   #@expose
+   def addVertex(self,v) :
+       self.Vertex.append(v)
+
+   def processVertex(self, namesList, name) :
+       try :
+          i = nameList.index(name)
+       except :
+          nameList.append(name)
+          self.Vertex.append(GDMLShared.getDefinedPosition(name))
+          return(len(nameList) - 1)
+       else :
+          return i
+
+   def addFace(self,f) :
+       self.Face.append(f)
+
 
 class GDMLTetra(GDMLcommon) :         # Tetrahedron
     

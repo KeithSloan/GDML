@@ -287,7 +287,31 @@ class PolyHedraFeature :
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Poly')
+            if hasattr(obj,'Shape') :
+               print(obj.Shape.ShapeType)
+               if hasattr(obj.Shape,'Vertexes') :
+                  numVert = len(obj.Shape.Vertexes)
+                  print('Number of Vertex : '+str(numVert))
+                  #print(obj.Shape.Vertexes)
+               if hasattr(obj.Shape,'Faces') :
+                  print('Faces')
+                  print(dir(obj.Shape.Faces[0]))
+                  print(obj.Shape.Faces)
+                  planar = self.checkPlanar(obj.Shape.Faces)
+                  print(planar)
+               if hasattr(obj.Shape,'Edges') :
+                  print('Edges')
+                  #print(dir(obj.Shape.Edges[0]))
+                  #print(obj.Shape.Edges)
 
+    def checkPlanar(self,faces):
+        print('Check Planar')
+        print(faces[0].curveOnSurface)
+        print(dir(faces[0].curveOnSurface))
+        for f in faces :
+            if f.curveOnSurface == True :
+               return False
+        return True
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Polyhedra', 'MenuText': \
@@ -356,14 +380,18 @@ class TessellatePlanarFeature :
                 'Tesselate Selected Planar Object')}    
 
 class TessellateMeshFeature :
-      
+     
     def Activated(self) :
+        import Fem
+        from femmesh import gmshtools
+     
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Tessellate Mesh')
+            print(dir(gmshtools))
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Mesh', 'MenuText': \
