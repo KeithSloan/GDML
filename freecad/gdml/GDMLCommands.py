@@ -418,8 +418,47 @@ class TessellateMeshFeature :
         return {'Pixmap'  : 'GDML_Tessellate_Mesh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
                 'Tess Group'), 'Tessellate_Mesh': \
-                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Mesh & Tesselate Selected Planar Object')}    
+
+class Mesh2TessFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print('Action Mesh 2 Tessellate')
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Mesh2Tess', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tess Group'), 'Mesh 2 Tess': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessyGroup', \
+                'Create GDML Tessellate from FC Mesh')}    
+
+class Tess2MeshFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print('Action Tessellate 2 Mesh')
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tess Group'), 'Tess 2 Mesh': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Create FC Mesh from GDML Tessellate')}    
+
 
 class CycleFeature :
 
