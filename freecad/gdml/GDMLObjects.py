@@ -1792,10 +1792,12 @@ class GDMLQuadrangular(GDMLcommon) :
        
 class GDMLTessellated(GDMLcommon) :
     
-   def __init__(self, obj, vertex, faces, material) :
+   def __init__(self, obj, vertex, faces, lunit, material) :
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
       obj.addExtension('App::OriginGroupExtensionPython', self)
+      obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
+                      'lunit').lunit = lunit
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)

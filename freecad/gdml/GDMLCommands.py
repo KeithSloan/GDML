@@ -76,8 +76,9 @@ def getSelectedMaterial() :
     list = FreeCADGui.Selection.getSelection()
     if list != None :
        for obj in list :
-          if isinstance(obj.Proxy,GDMLmaterial) == True :
-             return nameFromLabel(obj.Label)
+          if hasattr(obj,'Proxy') :
+             if isinstance(obj.Proxy,GDMLmaterial) == True :
+                return nameFromLabel(obj.Label)
 
     return 0
 
@@ -431,8 +432,30 @@ class Mesh2TessFeature :
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             doc = FreeCAD.ActiveDocument
-            print('Action Mesh 2 Tessellate')
-    
+            print(obj.TypeId)
+            if hasattr(obj,'Mesh') :
+               print('Action Mesh 2 Tessellate')
+               #print(dir(obj))
+               #print(dir(obj.Mesh))
+               print('Points : '+str(obj.Mesh.CountPoints))
+               #print(obj.Mesh.Points)
+               print('Facets : '+str(obj.Mesh.CountFacets))
+               #print(obj.Mesh.Facets)
+               #for f in obj.Mesh.Facets :
+               #    print(f)
+               print(obj.Mesh.Topology[0])
+               print(obj.Mesh.Topology[1])
+               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                 "GDMLTessellate_Mesh2Tess")
+               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
+                              "mm",getSelectedMaterial())
+               if FreeCAD.GuiUp :
+                  obj.ViewObject = False
+                  ViewProvider(a.ViewObject)
+
+               FreeCAD.ActiveDocument.recompute()
+               FreeCADGui.SendMsgToActiveView("ViewFit")
+               
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Mesh2Tess', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
@@ -660,3 +683,5 @@ FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
 FreeCADGui.addCommand('TessellatePlanarCommand',TessellatePlanarFeature())
 FreeCADGui.addCommand('TessellateMeshCommand',TessellateMeshFeature())
+FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
+FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())

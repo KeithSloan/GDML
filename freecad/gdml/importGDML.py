@@ -685,6 +685,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     vertNames = []
     vertex = []
     faces  = []
+    lunit = getText(solid,'lunit',"mm")
     for elem in solid.getchildren() :
         v1name = elem.get('vertex1')
         print(v1name)
@@ -734,7 +735,7 @@ def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     print(vertNames)
     myTess=part.newObject("Part::FeaturePython","GDMLTessellated:" \
                           +getName(solid))
-    tess = GDMLTessellated(myTess,vertex,faces,material)
+    tess = GDMLTessellated(myTess,vertex,faces,lunit,material)
     if FreeCAD.GuiUp :
        ViewProviderExtension(myTess.ViewObject)
        ViewProvider(myTess.ViewObject)
