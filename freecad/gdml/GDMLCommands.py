@@ -450,7 +450,7 @@ class Mesh2TessFeature :
                GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
-                  obj.ViewObject = False
+                  obj.ViewObject.Visibility = False
                   ViewProvider(a.ViewObject)
 
                FreeCAD.ActiveDocument.recompute()
