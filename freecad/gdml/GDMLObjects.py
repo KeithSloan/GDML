@@ -1792,7 +1792,7 @@ class GDMLQuadrangular(GDMLcommon) :
        
 class GDMLTessellated(GDMLcommon) :
     
-   def __init__(self, obj, vertex, faces, lunit, material) :
+   def __init__(self, obj, vertex, facets, lunit, material) :
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -1803,7 +1803,7 @@ class GDMLTessellated(GDMLcommon) :
       setMaterial(obj, material)
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
-      self.Faces  = faces
+      self.Facets = facets
       self.Object = obj
       obj.Proxy = self
 
@@ -1831,12 +1831,12 @@ class GDMLTessellated(GDMLcommon) :
    
    def createGeometry(self,fp):
        currPlacement = fp.Placement
-       print("Tessellated")
+       #print("Tessellated")
        mul = GDMLShared.getMult(fp)
        FCfaces = []
-       print(self.Vertex)
-       for f in self.Faces :
-          print(f)
+       #print(self.Vertex)
+       for f in self.Facets :
+          #print(f)
           if len(f) == 3 : 
              FCfaces.append(GDMLShared.triangle( \
                              mul*self.Vertex[f[0]], \
@@ -1849,8 +1849,8 @@ class GDMLTessellated(GDMLcommon) :
                              mul*self.Vertex[f[2]], \
                              mul*self.Vertex[f[3]]))
        shell=Part.makeShell(FCfaces)
-       print("Is Valid?")
-       print(shell.isValid())
+       #print("Is Valid?")
+       #print(shell.isValid())
        shell.check()
        #solid=Part.Solid(shell).removeSplitter()
        solid=Part.Solid(shell)
@@ -1861,30 +1861,11 @@ class GDMLTessellated(GDMLcommon) :
        base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
                              -(bbox.YMin+bbox.YMax)/2 \
                              -(bbox.ZMin+bbox.ZMax)/2)
-       print(base)
+       #print(base)
 
        fp.Shape = translate(solid,base)
-       #fp.Shape = faces[0]
-       #fp.Shape = Part.makeBox(10,10,10)
        fp.Placement = currPlacement
    
-   #def addVertex(self,v) :
-   #    self.Vertex.append(v)
-
-   #def processVertex(self, namesList, name) :
-   #    try :
-   #       i = nameList.index(name)
-   #    except :
-   #       nameList.append(name)
-   #       self.Vertex.append(GDMLShared.getDefinedPosition(name))
-   #       return(len(nameList) - 1)
-   #    else :
-   #       return i
-
-   #def addFace(self,f) :
-   #    self.Faces.append(f)
-
-
 class GDMLTetra(GDMLcommon) :         # Tetrahedron
     
    def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
