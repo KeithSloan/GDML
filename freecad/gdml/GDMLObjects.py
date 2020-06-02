@@ -1792,12 +1792,16 @@ class GDMLQuadrangular(GDMLcommon) :
        
 class GDMLTessellated(GDMLcommon) :
     
-   def __init__(self, obj, material ) :
+   def __init__(self, obj, vertex, faces, material) :
+      obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
+                      'Editable').editable = False
       obj.addExtension('App::OriginGroupExtensionPython', self)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTessellated", "Shape of the Tesssellation")
-      obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
+      obj.addProperty("App::PropertyEnumeration","material", \
+                      "GDMLTessellated","Material")
       setMaterial(obj, material)
       self.Type = 'GDMLTessellated'
+      self.Vertex = vertex
+      self.Faces  = faces
       self.Object = obj
       obj.Proxy = self
 
@@ -1810,8 +1814,15 @@ class GDMLTessellated(GDMLcommon) :
        if prop in ['material'] :
            fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
-       if prop in ['v1','v2','v3','v4','type','lunit'] :
-          self.createGeometry(fp)
+       if prop in ['editable'] :
+           if fp.editable == True :
+              self.addProperties()
+
+       #if prop in ['v1','v2','v3','v4','type','lunit'] :
+       #   self.createGeometry(fp)
+
+   def addProperties(self) :
+       print('Add Properties')
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -1819,54 +1830,32 @@ class GDMLTessellated(GDMLcommon) :
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        print("Tessellated")
-       parms = fp.OutList
-       GDMLShared.trace("Number of parms : "+str(len(parms)))
-       faces = []
        mul = GDMLShared.getMult(fp)
-       for ptr in parms :
-            v1 = ptr.v1 * mul
-            v2 = ptr.v2 * mul
-            v3 = ptr.v3 * mul
-            v4 = ptr.v4 * mul
-            if hasattr(ptr,'v4') :
-                print("Quad")
-                print(v1)
-                print(v2)
-                print(v3)
-                print(v4)
-                faces.append(GDMLShared.quad(v1,v2,v3,v4))
-
-            else :   
-                print("Triangle")
-                print("Vertex 1")
-                print(v1)
-                print("Vertex 2")
-                print(v2)
-                print("Vertex 3")
-                print(v3)
-                faces.append(GDMLShared.triangle(ptr.v1,ptr.v2,ptr.v3))
-     
-       print(faces)
-       shell=Part.makeShell(faces)
-       print("Is Valid")
+       FCfaces = []
+       print(self.Vertex)
+       for f in self.Faces :
+          print(f)
+          if len(f) == 3 : 
+             FCfaces.append(GDMLShared.triangle( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]]))
+          else : # len should then be 4
+             FCfaces.append(GDMLShared.quad( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]], \
+                             mul*self.Vertex[f[3]]))
+       shell=Part.makeShell(FCfaces)
+       print("Is Valid?")
        print(shell.isValid())
        shell.check()
        #solid=Part.Solid(shell).removeSplitter()
        solid=Part.Solid(shell)
        if solid.Volume < 0:
           solid.reverse()
-       print(dir(solid))   
+       #print(dir(solid))   
        bbox = solid.BoundBox
-       print(bbox)
-       print(bbox.XMin)
-       print(bbox.YMin)
-       print(bbox.ZMin)
-       #print(bbox.XLength)
-       #print(bbox.YLength)
-       #print(bbox.ZLength)
-       print(bbox.XMax)
-       print(bbox.YMax)
-       print(bbox.ZMax)
        base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
                              -(bbox.YMin+bbox.YMax)/2 \
                              -(bbox.ZMin+bbox.ZMax)/2)
@@ -1876,6 +1865,23 @@ class GDMLTessellated(GDMLcommon) :
        #fp.Shape = faces[0]
        #fp.Shape = Part.makeBox(10,10,10)
        fp.Placement = currPlacement
+   
+   #def addVertex(self,v) :
+   #    self.Vertex.append(v)
+
+   #def processVertex(self, namesList, name) :
+   #    try :
+   #       i = nameList.index(name)
+   #    except :
+   #       nameList.append(name)
+   #       self.Vertex.append(GDMLShared.getDefinedPosition(name))
+   #       return(len(nameList) - 1)
+   #    else :
+   #       return i
+
+   #def addFace(self,f) :
+   #    self.Faces.append(f)
+
 
 class GDMLTetra(GDMLcommon) :         # Tetrahedron
     
@@ -1925,94 +1931,6 @@ class GDMLTetra(GDMLcommon) :         # Tetrahedron
        fp.Shape = Part.makeSolid(Part.makeShell([face1,face2,face3,face4]))
        fp.Placement = currPlacement
        
-class GDMLTessellated(GDMLcommon) :
-    
-   def __init__(self, obj, material ) :
-      obj.addExtension('App::OriginGroupExtensionPython', self)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLTessellated", "Shape of the Tesssellation")
-      obj.addProperty("App::PropertyEnumeration","material","GDMLTessellated","Material")
-      setMaterial(obj, material)
-      self.Type = 'GDMLTessellated'
-      obj.ViewObject.ShapeColor = colourMaterial(material)
-      self.Object = obj
-      obj.Proxy = self
-
-   def onChanged(self, fp, prop):
-       '''Do something when a property has changed'''
-       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
-       if 'Restore' in fp.State :
-          return
-       
-       if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
-
-       if prop in ['v1','v2','v3','v4','type','lunit'] :
-          self.createGeometry(fp)
-
-   def execute(self, fp):
-       self.createGeometry(fp)
-   
-   def createGeometry(self,fp):
-       currPlacement = fp.Placement
-       #print("Tessellated")
-       parms = fp.OutList
-       GDMLShared.trace("Number of parms : "+str(len(parms)))
-       faces = []
-       mul = GDMLShared.getMult(fp)
-       for ptr in parms :
-           #print(dir(ptr))
-           #print(ptr.Label)
-           v1 = ptr.v1 * mul
-           v2 = ptr.v2 * mul
-           v3 = ptr.v3 * mul
-           if hasattr(ptr,'v4') :
-              #print("Quad")
-              v4 = ptr.v4 * mul
-              #print(v1)
-              #print(v2)
-              #print(v3)
-              #print(v4)
-              faces.append(GDMLShared.quad(v1,v2,v3,v4))
-
-           else :
-              #print("Triangle")
-              #print("Vertex 1")
-              #print(v1)
-              #print("Vertex 2")
-              #print(v2)
-              #print("Vertex 3")
-              #print(v3)
-              faces.append(GDMLShared.triangle(v1,v2,v3))
-
-       shell=Part.makeShell(faces)
-       #print("Is Valid")
-       #print(shell.isValid())
-       shell.check()
-       #solid=Part.Solid(shell).removeSplitter()
-       solid=Part.Solid(shell)
-       if solid.Volume < 0:
-          solid.reverse()
-       bbox = solid.BoundBox
-       #print(bbox)
-       #print(bbox.XMin)
-       #print(bbox.YMin)
-       #print(bbox.ZMin)
-       #print(bbox.XLength)
-       #print(bbox.YLength)
-       #print(bbox.ZLength)
-       #print(bbox.XMax)
-       #print(bbox.YMax)
-       #print(bbox.ZMax)
-       base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
-                             -(bbox.YMin+bbox.YMax)/2 \
-                             -(bbox.ZMin+bbox.ZMax)/2)
-       #print(base)
-
-       fp.Shape = translate(solid,base)
-       #fp.Shape = faces[0]
-       fp.Placement = currPlacement
-
-
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :
       '''Add some custom properties to our Cone feature'''

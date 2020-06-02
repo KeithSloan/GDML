@@ -75,15 +75,18 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
         
         #import GDMLCommands, GDMLResources
         commands=['CycleCommand','ExpandCommand', \
-                 'BoxCommand','ConeCommand','ElTubeCommand', \
-                  'EllipsoidCommand','SphereCommand', \
-                  'TrapCommand','TubeCommand','AddCompound']
-        toolbarcommands=['CycleCommand','ExpandCommand', \
-                         'BoxCommand','ConeCommand', \
+              'TessellatePlanarCommand','TessellateMeshCommand', \
+              'PolyHedraCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
+              'EllipsoidCommand','SphereCommand', \
+              'TrapCommand','TubeCommand','AddCompound']
+        toolbarcommands=['CycleCommand','ExpandCommand',
+               'TessellatePlanarCommand', 'TessellateMeshCommand',\
+              'PolyHedraCommand', 'BoxCommand','ConeCommand', \
                   'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound']
 
         parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
+        meshtoolbarcommands = ['Mesh_FromPartShape']
 
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','GDMLTools'),toolbarcommands)
         self.appendMenu('GDML',commands)
