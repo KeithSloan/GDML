@@ -86,6 +86,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
                   'TrapCommand','TubeCommand','AddCompound']
 
         parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
+        meshtoolbarcommands = ['Mesh_FromPartShape']
 
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','GDMLTools'),toolbarcommands)
         self.appendMenu('GDML',commands)
