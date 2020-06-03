@@ -94,7 +94,7 @@ def exportDefine(name, v) :
     #ET.SubElement(define,'position',{'name' : name, 'unit': 'mm',   \
     #            'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
-def defineWorldBox(bbox):
+def defineWorldBox(bbox,fp):
     for obj in FreeCAD.ActiveDocument.Objects :
         # print("{} + {} = ".format(bbox, obj.Shape.BoundBox))
         if hasattr(obj,"Shape"):
@@ -106,6 +106,7 @@ def defineWorldBox(bbox):
     #   print(bbox)
     # Solids get added to solids section of gdml ( solids is a global )
     name = 'WorldBox'
+    fp.write(':SOLID '+name+' BOX '+'1000'+'1000'+'1000')
     #ET.SubElement(solids, 'box', {'name': name,
     #                         'x': str(1000), \
     #                         'y': str(1000), \
@@ -551,7 +552,7 @@ def testDefaultPlacement(obj) :
     else :
        return False
 
-def getName(obj) :
+def processGDMLname(obj) :
     return(obj.Label.split('_',1)[1])
 
 def processGDMLArb8Object(obj, name, fp) :
@@ -578,7 +579,7 @@ def processGDMLArb8Object(obj, name, fp) :
     #                      'lunit' : obj.lunit})
     return (arb8Name)
 
-def processGDMLBoxObject(obj, name,fp) :
+def processGDMLBoxObject(obj, name, fp) :
 
     fp.write('BOX: '+name+ \
                           ' ' + str(obj.x) +  \
@@ -586,7 +587,7 @@ def processGDMLBoxObject(obj, name,fp) :
                           ' ' + str(obj.z))
     return (name)
 
-def processGDMLConeObject(obj, fp) :
+def processGDMLConeObject(obj, name, fp) :
    
     # add check 360 delta for shorter output 
     fp.write('CONE: '+name+ \
@@ -788,10 +789,10 @@ def processGDMLTriangle(obj, flag) :
 
 def processGDMLTubeObject(obj, name, fp) :
     fp.write('TUBS: '+name+ \
-             ' ' + str(obj.rmin),  \
-             ' ' + str(obj.rmax),  \
-             ' ' + str(obj.z),  \
-             ' ' + str(obj.startphi), \
+             ' ' + str(obj.rmin)+  \
+             ' ' + str(obj.rmax)+  \
+             ' ' + str(obj.z)+  \
+             ' ' + str(obj.startphi)+ \
              ' ' + str(obj.deltaphi))
     return(name)
 
@@ -873,6 +874,8 @@ def processMaterialsGroupObjects(fp) :
                 break
          
              break
+       else :
+          return
 
 def processConstants(obj,fp):
     print('Process Constants')
@@ -963,7 +966,7 @@ def processGDMLSolid(obj, fp) :
     # Deal with GDML Solids first
     # Deal with FC Objects that convert
     #print(obj.Proxy.Type)
-    name = getName(obj)
+    name = processGDMLname(obj)
     print(fp)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
@@ -1351,15 +1354,12 @@ def processVols(vol, xmlVol, xmlParent, parentName, fp) :
     #    boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
     #                  parentName, addVolsFlag)
 
-def createWorldVol(volName) :
+def createWorldVol(volName,fp) :
     print("Need to create Dummy Volume and World Box ")
     bbox = FreeCAD.BoundBox()
-    boxName = defineWorldBox(bbox)
-    worldVol = ET.SubElement(structure,'volume',{'name': volName}) 
-    ET.SubElement(worldVol, 'solidref',{'ref': boxName})
+    boxName = defineWorldBox(bbox,fp)
+    fp.write(':VOLU '+volName+' '+boxname+' '+'G4_Galactic') 
     print("Need to FIX !!!! To use defined gas")
-    ET.SubElement(worldVol, 'materialref',{'ref': 'G4_Galactic'})
-    return worldVol
 
 def checkGDMLstructure(objList) :
     # Should be 
@@ -1396,13 +1396,44 @@ def exportWorldVol(vol,fp) :
 
         processVols(vol, xmlVol, xmlParent, vol.Name, fp)
 
+def exportSolid(obj, name, fp) :
+    print('export solid - Volume Name '+name+' Part : '+obj.Name)
+
+def processVolPart(obj, fp ) :
+    count = 0
+    if hasattr(obj,'OutList') :
+       for subobj in obj.OutList :
+           if subobj.TypeId == 'Part::FeaturePython' :
+              count = count + 1
+       print('Number of Solids : '+str(count))
+       for subobj in obj.OutList :
+           while switch(subobj.TypeId) :
+              if case('App::Part') :
+                 print('Sub Vol/Part')
+                 processVolPart(subobj, fp)
+                 break
+             
+              if case('App::Origin') :
+                 pass
+                 break
+
+              if count == 1 :
+                 exportSolid(subobj, obj.Name, fp)
+              
+              else :
+                 exportSolid(subobj, subobj.Name, fp)
+
+              break
+
 def exportGAMOS(first,filename) :
        # GAMOS Export
        print("\nStart GDML GAMOS Export 0.1")
 
        fp = pythonopen(filename,'w')
+       print('Process Materials')
        processMaterialsGroupObjects(fp)
-       exportWorldVol(first,fp)
+       print('Process Structure')
+       processVolPart(first,fp)
        print("GAMOS file written")
 
 def export(exportList,filename) :
@@ -1412,6 +1443,6 @@ def export(exportList,filename) :
     if first.TypeId == "App::Part" :
        exportGAMOS(first,filename)
 
-       from PyQt4 import QtGui
-       QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
+       #from PyQt4 import QtGui
+       #QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
 
