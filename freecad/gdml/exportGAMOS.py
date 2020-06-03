@@ -821,28 +821,6 @@ def processGDML2dVertex(obj, flag) :
         print("Process 2d Vertex")
         #ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
 
-def processElement(obj, item): # maybe part of material or element (common code)
-    if hasattr(obj,'Z') :
-       #print(dir(obj))
-       item.set('Z',str(obj.Z)) 
-
-    if hasattr(obj,'N') :
-       #print(dir(obj))
-       item.set('N',str(obj.N)) 
-
-    if hasattr(obj,'formula') :
-       #print(dir(obj))
-       item.set('formula',str(obj.formula)) 
-
-    if hasattr(obj,'atom_unit') or hasattr(obj,'atom_value') :
-       atom = ET.SubElement(item,'atom') 
-    
-       if hasattr(obj,'atom_unit') :
-          atom.set('unit',str(obj.atom_unit)) 
-            
-       if hasattr(obj,'atom_value') :
-          atom.set('value',str(obj.atom_value)) 
-
 def processMaterialsGroupObjects(fp) :
     print("\nProcess Materials Group Objects")
    
@@ -879,63 +857,54 @@ def processMaterialsGroupObjects(fp) :
 
 def processConstants(obj,fp):
     print('Process Constants')
+    for subobj in obj.OutList :
+        if isinstance(subobj.Proxy.GDMLconstant) :
+           fp.write(':P '+subobj.Name+' '+subobj.Value)
 
 def processIsotopes(obj,fp):
     print('Process Isotopes')
-   
+    if isinstance(obj.Proxy,GDMLisotope) :
+       for subobj in obj.OutList :
+           if isinstance(subobj.Proxy,GDMLisotope) :
+              fp.write(':ISOT '+subobj.Name+' '+subobj.Z+' '+subobj.N+ \
+                       ' '+str(subobj.value))
+
+def processElement(obj,fp) :
+    #if isinstance(obj.Proxy,GDMLelement) :
+    if isinstance(obj,GDMLelement) :
+       if hasattr(obj,'OutList') :
+          num = len(obj.OutList)
+          string = ':ELEM_FROM_ISOT '+obj.Name+' '+str(num)
+          for eobj in obj.OutList :
+              string = string +' '+eobj.Name+' '+eobj.n
+          fp.write(string)
+       else :
+          fp.write(':ELEM '+obj.Name+' '+obj.ZZ)
+ 
 def processElements(obj,fp):
     print('Process Elements')
-   
+    if hasattr(obj,'OutList') :
+       for subobj in obj.OutList :
+           processElement(subobj.OutList,fp)
+
+def processMaterial(obj,fp) :
+    if isinstance(obj.Proxy,GDMLmaterial) :
+       if hasattr(obj,'OutList') :
+          num = len(obj.OutList)
+          string = ':MIXT '+obj.Name+' '+str(obj.Dvalue)+str(num)
+          for eobj in obj.OutList :
+              string=string+' '+eobj.Name+' '+str(eobj.n)
+          fp.write(string)
+       else :
+          fp.write('MATE '+obj.Name,' '+obj.Z+' '+obj.A+' '+STR(obj.Dvalue))
+
 def processMaterials(obj,fp):
     print('Process Materials')
+    if hasattr(obj,'OutList') :
+       for subobj in obj.OutList :
+           processMaterial(subobj,fp)
 
 def tobesorted():
-          if isinstance(obj.Proxy,GDMLconstant) :
-             #print("GDML constant")
-             #print(dir(obj))
-
-             item = ET.SubElement(define,'constant',{'name': obj.Name, \
-                                 'value': obj.value })
-             #return True
-          #return   
-            
-          if isinstance(obj.Proxy,GDMLmaterial) :
-             #print("GDML material")
-             #print(dir(obj))
-
-             item = ET.SubElement(materials,'material',{'name': \
-                    nameFromLabel(obj.Label)})
-
-             # process common options material / element
-             processElement(obj, item)
-
-          if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-             D = ET.SubElement(item,'D')
-             if hasattr(obj,'Dunit') :
-                D.set('unit',str(obj.Dunit))
-             
-             if hasattr(obj,'Dvalue') :
-                D.set('value',str(obj.Dvalue))
-
-          if hasattr(obj,'Tunit') :
-             ET.SubElement(item,'T',{'unit': obj.Tunit, \
-                                      'value': str(obj.Tvalue)})
-           
-          if hasattr(obj,'MEEunit') :
-             ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
-                                               'value': str(obj.MEEvalue)})
-
-          #return True
-          #break
-
-          if isinstance(obj.Proxy,GDMLfraction) :
-
-             #print("GDML fraction :" + obj.Name)
-             # need to strip number making it unique
-             #ET.SubElement(item,'fraction',{'n': str(obj.n), \
-             #        'ref': nameFromLabel(obj.Label)})
-
-             return True
 
           if isinstance(obj.Proxy,GDMLcomposite) :
              print("GDML Composite")
@@ -944,23 +913,6 @@ def tobesorted():
              #ET.SubElement(item,'composite',{'n': str(obj.n), \
              #        'ref': nameFromLabel(obj.Label)})
              #return True
-
-          if isinstance(obj.Proxy,GDMLisotope) :
-             print("GDML isotope")
-             fp.write(':ISOT '+obj.Name+' '+obj.Z+' '+obj.N+' '+str(obj.value))
-
-          if isinstance(obj.Proxy,GDMLelement) :
-             print("GDML element")
-             fp.write(':ELEM '+nameFromLabel(obj.Label)+' '+obj.formula+ \
-                      ' '+obj.Z+' '+str(obj.value))
-
-          # Commented out as individual objects will also exist
-          #if len(obj.Group) > 1 :
-          #   for grp in obj.Group :
-          #       processObject(grp, addVolsFlag)
-          # All non Material Objects should terminate Loop
-          #return False
-
 
 def processGDMLSolid(obj, fp) :
     # Deal with GDML Solids first
