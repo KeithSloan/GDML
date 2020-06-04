@@ -337,6 +337,8 @@ class PolyHedraFeature :
 class TessellatePlanarFeature :
       
     def Activated(self) :
+        import Mesh
+        import MeshPart
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
@@ -344,52 +346,38 @@ class TessellatePlanarFeature :
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Tessellate')
             if hasattr(obj,'Shape') :
-               print(obj.Shape.ShapeType)
-               if hasattr(obj.Shape,'Vertexes') :
-                  numVert = len(obj.Shape.Vertexes)
-                  print('Number of Vertex : '+str(numVert))
-                  if numVert > 2 :
-                     if hasattr(obj,'InList') :
-                        parent = obj.InList[0]
-                        #print(dir(parent))
-                        myTess=parent.newObject("Part::FeaturePython", \
-                                         "GDMLTessellate_Tessellate")
-                        tess = GDMLTessellated(myTess,0)
-                        print(dir(tess))
-                        if FreeCAD.GuiUp :
-                           ViewProviderExtension(myTess.ViewObject)
-                           ViewProvider(myTess.ViewObject)
-                        print('About to Tessellate')
-                        list = obj.Shape.tessellate(1)
-                        print(len(list))
-                        print(list)
-                        # vertex = list[0] :
-                        if len(list) == 2 :
-                           for tri in list[1] :
-                              print(list[0][tri[0]])
-                              v1 = list[0][tri[0]]
-                              v2 = list[0][tri[1]]
-                              v3 = list[0][tri[2]]
-                              myTri = FreeCAD.ActiveDocument.addObject \
-                                    ('App::FeaturePython','GDMLTriangular')
-                              GDMLTriangular(myTri,v1,v2,v3,'ABSOLUTE')
-                              myTess.addObject(myTri)
-                              if FreeCAD.GuiUp :
-                                 ViewProvider(myTri)
-                              else :
-                                 print('Just list of vertext')
-                        myTess.Placement = obj.Placement
-                        FreeCAD.ActiveDocument.removeObject(obj.Name)
-                        FreeCAD.ActiveDocument.recompute()
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
-    
-                  else :
-                      print('Use Mesh & Tessellate')
+               shape = obj.Shape.copy(False)
+               mesh = MeshPart.meshFromShape(Shape=shape,Fineness=2,\
+                      SecondOrder=0,Optimize=1,AllowQuad=0)
+               print('Points : '+str(mesh.CountPoints))
+               #print(mesh.Points)
+               print('Facets : '+str(mesh.CountFacets))
+               #print(mesh.Facets)
+               parent = None
+               name ='GDMLTessellate_Tess_'+obj.Name
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     myTess = parent.newObject('Part::FeaturePython',name)
+               if parent == None :
+                  myTess = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
 
+               GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+                              "mm",getSelectedMaterial())
+            
+               myTess.Placement = obj.Placement
+               FreeCAD.ActiveDocument.recompute()
+               if FreeCAD.GuiUp :
+                  ViewProvider(myTess.ViewObject)
+                  obj.ViewObject.Visibility = False
+                  myTess.ViewObject.DisplayMode = 'Flat Lines'
+                  FreeCADGui.SendMsgToActiveView("ViewFit")
+    
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Planar', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'Tessellate_Planar': \
+                'GDML Tessellate Selected Object'), 'Tessellate_Planar': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'Tesselate Selected Planar Object')}    
 
@@ -434,6 +422,13 @@ class Mesh2TessFeature :
             doc = FreeCAD.ActiveDocument
             print(obj.TypeId)
             if hasattr(obj,'Mesh') :
+               #parent = doc
+               #if hasattr(obj,'InList') :
+               #   if len(obj.InList) > 0 :
+               #      parent = obj.InList[0] 
+               print(dir(obj))
+               print(obj.InList)
+               print(obj.InListRecursive)
                print('Action Mesh 2 Tessellate')
                #print(dir(obj))
                #print(dir(obj.Mesh))
@@ -445,12 +440,15 @@ class Mesh2TessFeature :
                #    print(f)
                print(obj.Mesh.Topology[0])
                print(obj.Mesh.Topology[1])
-               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                 "GDMLTessellate_Mesh2Tess")
+               #a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+               #  "GDMLTessellate_Mesh2Tess")
+               a = parent.newObject('Part::FeaturePython', \
+                                   'GDMLTessellate_Mesh2Tess')
                GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
+                  print(dir(obj.ViewObject))
                   ViewProvider(a.ViewObject)
 
                FreeCAD.ActiveDocument.recompute()
