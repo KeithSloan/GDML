@@ -334,7 +334,7 @@ class PolyHedraFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'PolyHedra Selected Object')}    
 
-class TessellatePlanarFeature :
+class TessellateFeature :
       
     def Activated(self) :
         import Mesh
@@ -375,13 +375,13 @@ class TessellatePlanarFeature :
                   FreeCADGui.SendMsgToActiveView("ViewFit")
     
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_Tessellate_Planar', 'MenuText': \
+        return {'Pixmap'  : 'GDML_Tessellate', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
                 'GDML Tessellate Selected Object'), 'Tessellate_Planar': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'Tesselate Selected Planar Object')}    
 
-class TessellateMeshFeature :
+class TessellateGmshFeature :
      
     def Activated(self) :
         import ObjectsFem
@@ -404,9 +404,9 @@ class TessellateMeshFeature :
 
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_Tessellate_Mesh', 'MenuText': \
+        return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'Tessellate_Mesh': \
+                'Gmsh & Tessellate'), 'Tessellate_Gmsh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Mesh & Tesselate Selected Planar Object')}    
 
@@ -422,33 +422,21 @@ class Mesh2TessFeature :
             doc = FreeCAD.ActiveDocument
             print(obj.TypeId)
             if hasattr(obj,'Mesh') :
-               #parent = doc
-               #if hasattr(obj,'InList') :
-               #   if len(obj.InList) > 0 :
-               #      parent = obj.InList[0] 
-               print(dir(obj))
-               print(obj.InList)
-               print(obj.InListRecursive)
+               # Mesh Object difficult to determine parent
                print('Action Mesh 2 Tessellate')
-               #print(dir(obj))
-               #print(dir(obj.Mesh))
                print('Points : '+str(obj.Mesh.CountPoints))
-               #print(obj.Mesh.Points)
                print('Facets : '+str(obj.Mesh.CountFacets))
-               #print(obj.Mesh.Facets)
-               #for f in obj.Mesh.Facets :
-               #    print(f)
-               print(obj.Mesh.Topology[0])
-               print(obj.Mesh.Topology[1])
-               #a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-               #  "GDMLTessellate_Mesh2Tess")
-               a = parent.newObject('Part::FeaturePython', \
-                                   'GDMLTessellate_Mesh2Tess')
+               #print(obj.Mesh.Topology[0])
+               #print(obj.Mesh.Topology[1])
+               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                        "GDMLTessellate_Mesh2Tess")
+               #a = parent.newObject('Part::FeaturePython', \
+               #                    'GDMLTessellate_Mesh2Tess')
                GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
-                  print(dir(obj.ViewObject))
+                  #print(dir(obj.ViewObject))
                   ViewProvider(a.ViewObject)
 
                FreeCAD.ActiveDocument.recompute()
@@ -457,7 +445,7 @@ class Mesh2TessFeature :
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Mesh2Tess', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'Mesh 2 Tess': \
+                'Mesh 2 Tess'), 'Mesh 2 Tess': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessyGroup', \
                 'Create GDML Tessellate from FC Mesh')}    
 
@@ -479,7 +467,6 @@ class Tess2MeshFeature :
                 'Tess Group'), 'Tess 2 Mesh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Create FC Mesh from GDML Tessellate')}    
-
 
 class CycleFeature :
 
@@ -679,7 +666,7 @@ FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
-FreeCADGui.addCommand('TessellatePlanarCommand',TessellatePlanarFeature())
-FreeCADGui.addCommand('TessellateMeshCommand',TessellateMeshFeature())
+FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
+FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())

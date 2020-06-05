@@ -1831,7 +1831,7 @@ class GDMLTessellated(GDMLcommon) :
    
    def createGeometry(self,fp):
        currPlacement = fp.Placement
-       #print("Tessellated")
+       print("Tessellated")
        mul = GDMLShared.getMult(fp)
        FCfaces = []
        #print(self.Vertex)
@@ -1857,13 +1857,15 @@ class GDMLTessellated(GDMLcommon) :
        if solid.Volume < 0:
           solid.reverse()
        #print(dir(solid))   
-       bbox = solid.BoundBox
-       base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
-                             -(bbox.YMin+bbox.YMax)/2 \
-                             -(bbox.ZMin+bbox.ZMax)/2)
+       #bbox = solid.BoundBox
+       #base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
+       #                      -(bbox.YMin+bbox.YMax)/2 \
+       #                      -(bbox.ZMin+bbox.ZMax)/2)
        #print(base)
 
-       fp.Shape = translate(solid,base)
+       #base = FreeCAD.Vector(0,0,0)
+       #fp.Shape = translate(solid,base)
+       fp.Shape = solid
        fp.Placement = currPlacement
    
 class GDMLTetra(GDMLcommon) :         # Tetrahedron
