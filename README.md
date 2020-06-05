@@ -133,6 +133,33 @@ _Short decription_
 Given a lot more solids are supported for import, it is not too difficult to add more,
 so if you feel you need a particular solid to be added please contact me.
 
+## GDML Tessellated Objects
+
+The following icons are available for Tessellated operations
+
+### T - Tessellate
+
+If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using the Meshing
+Workbench default options. If a material is also selected this will determine the GDML material of the
+created GDML Tessellated Object
+
+### M 2 T - Mesh 2 Tessellate
+
+If the selected FreeCAD object is a mesh then a GDML Tessellated Object is created. Again if a material is
+also selected then this will set the GDML material of the GDML Tessellated Object.
+
+   1) FreeCAD Supports a large number of mesh file formats including stl, ply, etc
+      so Mesh 2 Tessellate allows these to be converted to a GDML Tessellate object
+      
+   2) The Mesh Workbench offers a range of meshing facilites with options ( Meshes | create mesh from Shape )
+   
+      * Standard
+      * Mefisto
+      * Netgen
+      
+      So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
+      create GDML Tessellated objects from these.
+
 ## GDML Import
 
 A lot more GDML solids are supported for import. For example all Solids
@@ -149,6 +176,7 @@ Scan Vol is for large files like Alice.GDML that take far too long to process.
 
 Volumes are only processed to a limit depth i.e. volume names are determined but not processed
 For unprocessed volume the names are preceded by **`NOT_Expanded`** so an example volume name would be: `NOT_Expanded_<VolumeName>`
+
 
 #### Expansion of Scanned Volume
 
