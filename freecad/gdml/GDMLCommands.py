@@ -419,7 +419,6 @@ class Mesh2TessFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
-            doc = FreeCAD.ActiveDocument
             print(obj.TypeId)
             if hasattr(obj,'Mesh') :
                # Mesh Object difficult to determine parent

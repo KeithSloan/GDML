@@ -134,7 +134,7 @@ for indiceMat in range(len(listZNameDensityI[0])):
 ##      <D unit="g/cm3" value="0.000166322" />
 ##      <atom unit="g/mole" value="4.002602" />
 
-fileW = open("dataBaseMaterial.xml", 'w')
+fileW = open("dataBaseSingleMaterial.xml", 'w')
 fileW.write('<xml>\n')
 fileW.write('  <define>\n')
 fileW.write('    <constant name="HALFPI" value="pi/2." />\n')
@@ -144,9 +144,9 @@ fileW.write('    </define>\n')
 fileW.write('  <materials>\n')
        
 for indiceM in range(len(lmaterial)):
-    fileW.write('      <material formula="'+str(lmaterial[indiceM][0])+' name="'+str(lmaterial[indiceM][0])+' >\n')
+    fileW.write('      <material formula="'+str(lmaterial[indiceM][0])+'" name="'+str(lmaterial[indiceM][0])+'" />\n')
     fileW.write('        <D unit="g/cm3" value="'+str(lmaterial[indiceM][1])+'" />\n')
-    #fileW.write('        <atom unit="g/mole" value="'+str(lmaterial[indiceM][3])+'" />\n')
+    fileW.write('        <atom unit="g/mole" value="'+str(lmaterial[indiceM][3])+'" />\n')
     fileW.write('      </material>\n')
       
 fileW.write('  </materials>\n')
@@ -186,3 +186,37 @@ fileW.close()
 
 
 print lmaterialNist
+
+
+fileW = open("dataBaseNistAndSingleMaterial.xml", 'w')
+
+fileW.write('<xml>\n')
+fileW.write('  <define>\n')
+fileW.write('    <constant name="HALFPI" value="pi/2." />\n')
+fileW.write('    <constant name="PI" value="1.*pi" />\n')
+fileW.write('    <constant name="TWOPI" value="2.*pi" />\n')
+fileW.write('    </define>\n')
+fileW.write('  <materials>\n')
+      
+for indiceM in range(len(lmaterialNist)):
+    fileW.write('      <material formula="'+str(lmaterialNist[indiceM][0])+'" name="'+str(lmaterialNist[indiceM][0])+'" >\n')
+    fileW.write('        <D unit="g/cm3" value="'+str(lmaterialNist[indiceM][1])+'" />\n')
+    type = lmaterialNist[indiceM][4]
+    for indiceSubM in range(len(lmaterialNist[indiceM][5][0])):
+        Z = lmaterialNist[indiceM][5][0][indiceSubM]
+	
+	
+        indiceZ = listZNameDensityI[0].index(Z)
+        thisname = listZNameDensityI[1][indiceZ]	
+        fileW.write('        <'+type+' n="'+ str(lmaterialNist[indiceM][5][1][indiceSubM])+'" ref="'+str(thisname)+'"/>\n')
+    fileW.write('      </material>\n')
+       
+for indiceM in range(len(lmaterial)):
+    fileW.write('      <material formula="'+str(lmaterial[indiceM][0])+'" name="'+str(lmaterial[indiceM][0])+'" >\n')
+    fileW.write('        <D unit="g/cm3" value="'+str(lmaterial[indiceM][1])+'" />\n')
+    fileW.write('        <atom unit="g/mole" value="'+str(lmaterial[indiceM][3])+'" />\n')
+    fileW.write('      </material>\n')
+      
+fileW.write('  </materials>\n')
+fileW.write('</xml>\n')
+fileW.close()
