@@ -670,40 +670,77 @@ def createCutTube(part,solid,material,px,py,pz,rot,displayMode) :
        setDisplayMode(mycuttube,displayMode)
     return mycuttube
 
+def indexVertex(list,name) :
+    try :
+        i = list.index(name)
+    except:
+        return -1
+    return i 
+
 def createTessellated(part,solid,material,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-            GDMLQuadrangular,  ViewProvider, ViewProviderExtension
+          GDMLQuadrangular, ViewProvider, ViewProviderExtension
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
-    myTess=part.newObject("Part::FeaturePython","GDMLTessellated:"+getName(solid))
-    #myTess.addExtension("App::OriginGroupExtensionPython", None)
-    GDMLTessellated(myTess,material)
+    vertNames = []
+    vertex = []
+    faces  = []
+    lunit = getText(solid,'lunit',"mm")
+    for elem in solid.getchildren() :
+        v1name = elem.get('vertex1')
+        #print(v1name)
+        v1 = GDMLShared.getDefinedPosition(v1name)
+        #print(v1)
+        v1pos = indexVertex(vertNames,v1name)
+        if v1pos < 0 :
+           vertNames.append(v1name)
+           v1pos = len(vertNames) - 1
+           vertex.append(v1)
+        #print(v1pos)
+        v2name = elem.get('vertex2')
+        #print(v2name)
+        v2 = GDMLShared.getDefinedPosition(v2name)
+        #print(v2)
+        v2pos = indexVertex(vertNames,v2name)
+        if v2pos < 0 :
+           vertNames.append(v2name)
+           v2pos = len(vertNames) - 1
+           vertex.append(v2)
+        #print(v2pos)
+        v3name = elem.get('vertex3')
+        #print(v3name)
+        v3 = GDMLShared.getDefinedPosition(v3name)
+        #print(v3)
+        v3pos = indexVertex(vertNames,v3name)
+        if v3pos < 0 :
+           vertNames.append(v3name)
+           v3pos = len(vertNames) - 1
+           vertex.append(v3)
+        #print(v3pos)
+        vType = elem.get('type')
+        if elem.tag == 'triangular' :
+           faces.append([v1pos,v2pos,v3pos])
+        if elem.tag == 'quadrangular' :
+           v4name = elem.get('vertex4')
+           #print(v4name)
+           v4 = GDMLShared.getDefinedPosition(v4name)
+           #print(v4)
+           v4pos = indexVertex(vertNames,v4name)
+           if v4pos < 0 :
+              vertNames.append(v4name)
+              v4pos = len(vertNames) - 1
+              #print(v4pos)
+              vertex.append(v4)
+           faces.append([v1pos,v2pos,v3pos,v4pos])
+    #print(vertNames)
+    myTess=part.newObject("Part::FeaturePython","GDMLTessellated:" \
+                          +getName(solid))
+    tess = GDMLTessellated(myTess,vertex,faces,lunit,material)
     if FreeCAD.GuiUp :
        ViewProviderExtension(myTess.ViewObject)
        ViewProvider(myTess.ViewObject)
-    for elem in solid.getchildren() :
-        v1 = GDMLShared.getDefinedPosition(elem.get('vertex1'))
-        v2 = GDMLShared.getDefinedPosition(elem.get('vertex2'))
-        v3 = GDMLShared.getDefinedPosition(elem.get('vertex3'))
-        vType = elem.get('type')
-        if elem.tag == 'triangular' :
-           myTri = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLTriangle')
-           GDMLTriangular(myTri,v1,v2,v3,vType) 
-           myTess.addObject(myTri)
-           if FreeCAD.GuiUp :
-              ViewProvider(myTri)
-        
-        if elem.tag == 'quadrangular' :
-           v4 = GDMLShared.getDefinedPosition(elem.get('vertex4'))
-           myQuad = FreeCAD.ActiveDocument.addObject('App::FeaturePython','GDMLQuadrangular')
-           GDMLQuadrangular(myQuad,v1,v2,v3,v4,vType) 
-           myTess.addObject(myQuad)
-           if FreeCAD.GuiUp :
-              ViewProvider(myQuad)
-
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
-    #base = FreeCAD.Vector(0,0,0)
     myTess.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myTess.Placement.Rotation)
     if FreeCAD.GuiUp :

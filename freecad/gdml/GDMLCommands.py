@@ -76,8 +76,9 @@ def getSelectedMaterial() :
     list = FreeCADGui.Selection.getSelection()
     if list != None :
        for obj in list :
-          if isinstance(obj.Proxy,GDMLmaterial) == True :
-             return nameFromLabel(obj.Label)
+          if hasattr(obj,'Proxy') :
+             if isinstance(obj.Proxy,GDMLmaterial) == True :
+                return nameFromLabel(obj.Label)
 
     return 0
 
@@ -294,6 +295,179 @@ class TubeFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDMLTubeFeature',\
                 'Tube Object')}
 
+class PolyHedraFeature :
+      
+    def Activated(self) :
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Poly')
+            if hasattr(obj,'Shape') :
+               print(obj.Shape.ShapeType)
+               if hasattr(obj.Shape,'Vertexes') :
+                  numVert = len(obj.Shape.Vertexes)
+                  print('Number of Vertex : '+str(numVert))
+                  #print(obj.Shape.Vertexes)
+               if hasattr(obj.Shape,'Faces') :
+                  print('Faces')
+                  print(dir(obj.Shape.Faces[0]))
+                  print(obj.Shape.Faces)
+                  planar = self.checkPlanar(obj.Shape.Faces)
+                  print(planar)
+               if hasattr(obj.Shape,'Edges') :
+                  print('Edges')
+                  #print(dir(obj.Shape.Edges[0]))
+                  #print(obj.Shape.Edges)
+
+    def checkPlanar(self,faces):
+        import Part
+        print('Check Planar')
+        for f in faces :
+            if not isinstance(f.Surface, Part.Plane) :
+               return False
+        return True
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Polyhedra', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup',\
+                'Poly Group'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                'PolyHedra Selected Object')}    
+
+class TessellateFeature :
+      
+    def Activated(self) :
+        import Mesh
+        import MeshPart
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Tessellate')
+            if hasattr(obj,'Shape') :
+               shape = obj.Shape.copy(False)
+               mesh = MeshPart.meshFromShape(Shape=shape,Fineness=2,\
+                      SecondOrder=0,Optimize=1,AllowQuad=0)
+               print('Points : '+str(mesh.CountPoints))
+               #print(mesh.Points)
+               print('Facets : '+str(mesh.CountFacets))
+               #print(mesh.Facets)
+               parent = None
+               name ='GDMLTessellate_Tess_'+obj.Name
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     myTess = parent.newObject('Part::FeaturePython',name)
+               if parent == None :
+                  myTess = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
+
+               GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+                              "mm",getSelectedMaterial())
+            
+               myTess.Placement = obj.Placement
+               FreeCAD.ActiveDocument.recompute()
+               if FreeCAD.GuiUp :
+                  ViewProvider(myTess.ViewObject)
+                  obj.ViewObject.Visibility = False
+                  myTess.ViewObject.DisplayMode = 'Flat Lines'
+                  FreeCADGui.SendMsgToActiveView("ViewFit")
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tessellate', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'GDML Tessellate Selected Object'), 'Tessellate_Planar': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
+                'Tesselate Selected Planar Object')}    
+
+class TessellateGmshFeature :
+     
+    def Activated(self) :
+        import ObjectsFem
+        from femmesh.gmshtools import GmshTools
+ 
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print('Action Tessellate Mesh')
+            femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
+            femmesh_obj.Part = obj
+            doc.recompute()
+            gm = GmshTools(femmesh_obj)
+            error = gm.create_mesh()
+            print(error)
+            doc.recompute()
+
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Gmsh & Tessellate'), 'Tessellate_Gmsh': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Mesh & Tesselate Selected Planar Object')}    
+
+class Mesh2TessFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print(obj.TypeId)
+            if hasattr(obj,'Mesh') :
+               # Mesh Object difficult to determine parent
+               print('Action Mesh 2 Tessellate')
+               print('Points : '+str(obj.Mesh.CountPoints))
+               print('Facets : '+str(obj.Mesh.CountFacets))
+               #print(obj.Mesh.Topology[0])
+               #print(obj.Mesh.Topology[1])
+               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                        "GDMLTessellate_Mesh2Tess")
+               #a = parent.newObject('Part::FeaturePython', \
+               #                    'GDMLTessellate_Mesh2Tess')
+               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
+                              "mm",getSelectedMaterial())
+               if FreeCAD.GuiUp :
+                  obj.ViewObject.Visibility = False
+                  #print(dir(obj.ViewObject))
+                  ViewProvider(a.ViewObject)
+
+               FreeCAD.ActiveDocument.recompute()
+               FreeCADGui.SendMsgToActiveView("ViewFit")
+               
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Mesh2Tess', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Mesh 2 Tess'), 'Mesh 2 Tess': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessyGroup', \
+                'Create GDML Tessellate from FC Mesh')}    
+
+class Tess2MeshFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print('Action Tessellate 2 Mesh')
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tess Group'), 'Tess 2 Mesh': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Create FC Mesh from GDML Tessellate')}    
+
 class CycleFeature :
 
     def Activated(self) :
@@ -310,7 +484,6 @@ class CycleFeature :
                   obj.ViewObject.DisplayMode = 'Wireframe'
                else :
                   obj.ViewObject.Visibility = False 
-
 
         def cycle(obj) :
             #print ("Toggle : "+ obj.Label)
@@ -492,3 +665,8 @@ FreeCADGui.addCommand('ConeCommand',ConeFeature())
 FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
+FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
+FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
+FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
+FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
+FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())
