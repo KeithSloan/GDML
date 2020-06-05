@@ -1062,7 +1062,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               # create solids at pos & rot in physvols
               #parsePhysVol(part,pv,displayMode)
               #obj = parent.newObject("App::Part",name)
-              parsePhysVol(parent,pv,phylvl,px,py,pz,displayMode)
+              parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
        else :
            print("Not Volume or Assembly") 
 
