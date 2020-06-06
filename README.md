@@ -170,6 +170,7 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       * Mefisto
       * Netgen
       * Gmsh ( Requires FreeCAD 0.19+ )
+      * Gmsh also offers a **Remesh** facility ( Meshes | Refinement )
       
       So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
       create GDML Tessellated objects from these.
