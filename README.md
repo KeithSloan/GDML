@@ -54,6 +54,19 @@ For more information on GDML see
 
 GDML Solids are implemented as FreeCAD Python Objects and have the same properties as defined by GDML. By selecting an Object the properties can be changed via the FreeCAD properties windows and the resulting changes displayed.
 
+### FreeCAD View settings
+
+It is suggested that you have the **View** | **Toolbars**
+set to
+
+* Workbench
+* Structure
+
+and when GDML workbench active
+
+* GDMLTools
+* GDML Part tools
+
 ### Create a new GDML design
 
 1. Start FreeCAD
