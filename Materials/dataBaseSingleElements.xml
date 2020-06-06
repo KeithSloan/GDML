@@ -1,0 +1,695 @@
+<xml>
+  <define>
+    <constant name="HALFPI" value="pi/2." />
+    <constant name="PI" value="1.*pi" />
+    <constant name="TWOPI" value="2.*pi" />
+    </define>
+  <materials>
+      <element Z="1" formula="H" name="H_element" >
+        <atom value="1.008" />
+      </element>
+      <element Z="2" formula="He" name="He_element" >
+        <atom value="4.002602" />
+      </element>
+      <element Z="3" formula="Li" name="Li_element" >
+        <atom value="6.94" />
+      </element>
+      <element Z="4" formula="Be" name="Be_element" >
+        <atom value="9.0121831" />
+      </element>
+      <element Z="5" formula="B" name="B_element" >
+        <atom value="10.81" />
+      </element>
+      <element Z="6" formula="C" name="C_element" >
+        <atom value="12.011" />
+      </element>
+      <element Z="7" formula="N" name="N_element" >
+        <atom value="14.007" />
+      </element>
+      <element Z="8" formula="O" name="O_element" >
+        <atom value="15.999" />
+      </element>
+      <element Z="9" formula="F" name="F_element" >
+        <atom value="18.998403163" />
+      </element>
+      <element Z="10" formula="Ne" name="Ne_element" >
+        <atom value="20.1797" />
+      </element>
+      <element Z="11" formula="Na" name="Na_element" >
+        <atom value="22.98976928" />
+      </element>
+      <element Z="12" formula="Mg" name="Mg_element" >
+        <atom value="24.305" />
+      </element>
+      <element Z="13" formula="Al" name="Al_element" >
+        <atom value="26.9815384" />
+      </element>
+      <element Z="14" formula="Si" name="Si_element" >
+        <atom value="28.085" />
+      </element>
+      <element Z="15" formula="P" name="P_element" >
+        <atom value="30.973761998" />
+      </element>
+      <element Z="16" formula="S" name="S_element" >
+        <atom value="32.06" />
+      </element>
+      <element Z="17" formula="Cl" name="Cl_element" >
+        <atom value="35.45" />
+      </element>
+      <element Z="18" formula="Ar" name="Ar_element" >
+        <atom value="39.95" />
+      </element>
+      <element Z="19" formula="K" name="K_element" >
+        <atom value="39.0983" />
+      </element>
+      <element Z="20" formula="Ca" name="Ca_element" >
+        <atom value="40.078" />
+      </element>
+      <element Z="21" formula="Sc" name="Sc_element" >
+        <atom value="44.955908" />
+      </element>
+      <element Z="22" formula="Ti" name="Ti_element" >
+        <atom value="47.867" />
+      </element>
+      <element Z="23" formula="V" name="V_element" >
+        <atom value="50.9415" />
+      </element>
+      <element Z="24" formula="Cr" name="Cr_element" >
+        <atom value="51.9961" />
+      </element>
+      <element Z="25" formula="Mn" name="Mn_element" >
+        <atom value="54.938043" />
+      </element>
+      <element Z="26" formula="Fe" name="Fe_element" >
+        <atom value="55.845" />
+      </element>
+      <element Z="27" formula="Co" name="Co_element" >
+        <atom value="58.933194" />
+      </element>
+      <element Z="28" formula="Ni" name="Ni_element" >
+        <atom value="58.6934" />
+      </element>
+      <element Z="29" formula="Cu" name="Cu_element" >
+        <atom value="63.546" />
+      </element>
+      <element Z="30" formula="Zn" name="Zn_element" >
+        <atom value="65.38" />
+      </element>
+      <element Z="31" formula="Ga" name="Ga_element" >
+        <atom value="69.723" />
+      </element>
+      <element Z="32" formula="Ge" name="Ge_element" >
+        <atom value="72.630" />
+      </element>
+      <element Z="33" formula="As" name="As_element" >
+        <atom value="74.921595" />
+      </element>
+      <element Z="34" formula="Se" name="Se_element" >
+        <atom value="78.971" />
+      </element>
+      <element Z="35" formula="Br" name="Br_element" >
+        <atom value="79.904" />
+      </element>
+      <element Z="36" formula="Kr" name="Kr_element" >
+        <atom value="83.798" />
+      </element>
+      <element Z="37" formula="Rb" name="Rb_element" >
+        <atom value="85.4678" />
+      </element>
+      <element Z="38" formula="Sr" name="Sr_element" >
+        <atom value="87.62" />
+      </element>
+      <element Z="39" formula="Y" name="Y_element" >
+        <atom value="88.90584" />
+      </element>
+      <element Z="40" formula="Zr" name="Zr_element" >
+        <atom value="91.224" />
+      </element>
+      <element Z="41" formula="Nb" name="Nb_element" >
+        <atom value="92.90637" />
+      </element>
+      <element Z="42" formula="Mo" name="Mo_element" >
+        <atom value="95.95" />
+      </element>
+      <element Z="43" formula="Tc" name="Tc_element" >
+        <atom value="97" />
+      </element>
+      <element Z="44" formula="Ru" name="Ru_element" >
+        <atom value="101.07" />
+      </element>
+      <element Z="45" formula="Rh" name="Rh_element" >
+        <atom value="102.90549" />
+      </element>
+      <element Z="46" formula="Pd" name="Pd_element" >
+        <atom value="106.42" />
+      </element>
+      <element Z="47" formula="Ag" name="Ag_element" >
+        <atom value="107.8682" />
+      </element>
+      <element Z="48" formula="Cd" name="Cd_element" >
+        <atom value="112.414" />
+      </element>
+      <element Z="49" formula="In" name="In_element" >
+        <atom value="114.818" />
+      </element>
+      <element Z="50" formula="Sn" name="Sn_element" >
+        <atom value="118.71" />
+      </element>
+      <element Z="51" formula="Sb" name="Sb_element" >
+        <atom value="121.76" />
+      </element>
+      <element Z="52" formula="Te" name="Te_element" >
+        <atom value="127.6" />
+      </element>
+      <element Z="53" formula="I" name="I_element" >
+        <atom value="126.90447" />
+      </element>
+      <element Z="54" formula="Xe" name="Xe_element" >
+        <atom value="131.293" />
+      </element>
+      <element Z="55" formula="Cs" name="Cs_element" >
+        <atom value="132.90545196" />
+      </element>
+      <element Z="56" formula="Ba" name="Ba_element" >
+        <atom value="137.327" />
+      </element>
+      <element Z="57" formula="La" name="La_element" >
+        <atom value="138.90547" />
+      </element>
+      <element Z="58" formula="Ce" name="Ce_element" >
+        <atom value="140.116" />
+      </element>
+      <element Z="59" formula="Pr" name="Pr_element" >
+        <atom value="140.90766" />
+      </element>
+      <element Z="60" formula="Nd" name="Nd_element" >
+        <atom value="144.242" />
+      </element>
+      <element Z="61" formula="Pm" name="Pm_element" >
+        <atom value="145" />
+      </element>
+      <element Z="62" formula="Sm" name="Sm_element" >
+        <atom value="150.36" />
+      </element>
+      <element Z="63" formula="Eu" name="Eu_element" >
+        <atom value="151.964" />
+      </element>
+      <element Z="64" formula="Gd" name="Gd_element" >
+        <atom value="157.25" />
+      </element>
+      <element Z="65" formula="Tb" name="Tb_element" >
+        <atom value="158.925354" />
+      </element>
+      <element Z="66" formula="Dy" name="Dy_element" >
+        <atom value="162.5" />
+      </element>
+      <element Z="67" formula="Ho" name="Ho_element" >
+        <atom value="164.930328" />
+      </element>
+      <element Z="68" formula="Er" name="Er_element" >
+        <atom value="167.259" />
+      </element>
+      <element Z="69" formula="Tm" name="Tm_element" >
+        <atom value="168.934218" />
+      </element>
+      <element Z="70" formula="Yb" name="Yb_element" >
+        <atom value="173.045" />
+      </element>
+      <element Z="71" formula="Lu" name="Lu_element" >
+        <atom value="174.9668" />
+      </element>
+      <element Z="72" formula="Hf" name="Hf_element" >
+        <atom value="178.49" />
+      </element>
+      <element Z="73" formula="Ta" name="Ta_element" >
+        <atom value="180.94788" />
+      </element>
+      <element Z="74" formula="W" name="W_element" >
+        <atom value="183.84" />
+      </element>
+      <element Z="75" formula="Re" name="Re_element" >
+        <atom value="186.207" />
+      </element>
+      <element Z="76" formula="Os" name="Os_element" >
+        <atom value="190.23" />
+      </element>
+      <element Z="77" formula="Ir" name="Ir_element" >
+        <atom value="192.217" />
+      </element>
+      <element Z="78" formula="Pt" name="Pt_element" >
+        <atom value="195.084" />
+      </element>
+      <element Z="79" formula="Au" name="Au_element" >
+        <atom value="196.96657" />
+      </element>
+      <element Z="80" formula="Hg" name="Hg_element" >
+        <atom value="200.592" />
+      </element>
+      <element Z="81" formula="Tl" name="Tl_element" >
+        <atom value="204.38" />
+      </element>
+      <element Z="82" formula="Pb" name="Pb_element" >
+        <atom value="207.2" />
+      </element>
+      <element Z="83" formula="Bi" name="Bi_element" >
+        <atom value="208.9804" />
+      </element>
+      <element Z="84" formula="Po" name="Po_element" >
+        <atom value="209" />
+      </element>
+      <element Z="85" formula="At" name="At_element" >
+        <atom value="210" />
+      </element>
+      <element Z="86" formula="Rn" name="Rn_element" >
+        <atom value="222" />
+      </element>
+      <element Z="87" formula="Fr" name="Fr_element" >
+        <atom value="223" />
+      </element>
+      <element Z="88" formula="Ra" name="Ra_element" >
+        <atom value="226" />
+      </element>
+      <element Z="89" formula="Ac" name="Ac_element" >
+        <atom value="227" />
+      </element>
+      <element Z="90" formula="Th" name="Th_element" >
+        <atom value="232.0377" />
+      </element>
+      <element Z="91" formula="Pa" name="Pa_element" >
+        <atom value="231.03588" />
+      </element>
+      <element Z="92" formula="U" name="U_element" >
+        <atom value="238.02891" />
+      </element>
+      <element Z="93" formula="Np" name="Np_element" >
+        <atom value="237" />
+      </element>
+      <element Z="94" formula="Pu" name="Pu_element" >
+        <atom value="244" />
+      </element>
+      <element Z="95" formula="Am" name="Am_element" >
+        <atom value="243" />
+      </element>
+      <element Z="96" formula="Cm" name="Cm_element" >
+        <atom value="247" />
+      </element>
+      <element Z="97" formula="Bk" name="Bk_element" >
+        <atom value="247" />
+      </element>
+      <element Z="98" formula="Cf" name="Cf_element" >
+        <atom value="251" />
+      </element>
+      <material formula="H" name="GF_H" >
+        <D unit="g/cm3" value="0.000083748" />
+        <composite n="1" ref="H_element"/>
+      </material>
+      <material formula="He" name="GF_He" >
+        <D unit="g/cm3" value="0.000166322" />
+        <composite n="1" ref="He_element"/>
+      </material>
+      <material formula="Li" name="GF_Li" >
+        <D unit="g/cm3" value="0.534" />
+        <composite n="1" ref="Li_element"/>
+      </material>
+      <material formula="Be" name="GF_Be" >
+        <D unit="g/cm3" value="1.848" />
+        <composite n="1" ref="Be_element"/>
+      </material>
+      <material formula="B" name="GF_B" >
+        <D unit="g/cm3" value="2.37" />
+        <composite n="1" ref="B_element"/>
+      </material>
+      <material formula="C" name="GF_C" >
+        <D unit="g/cm3" value="2" />
+        <composite n="1" ref="C_element"/>
+      </material>
+      <material formula="N" name="GF_N" >
+        <D unit="g/cm3" value="0.0011652" />
+        <composite n="1" ref="N_element"/>
+      </material>
+      <material formula="O" name="GF_O" >
+        <D unit="g/cm3" value="0.00133151" />
+        <composite n="1" ref="O_element"/>
+      </material>
+      <material formula="F" name="GF_F" >
+        <D unit="g/cm3" value="0.00158029" />
+        <composite n="1" ref="F_element"/>
+      </material>
+      <material formula="Ne" name="GF_Ne" >
+        <D unit="g/cm3" value="0.000838505" />
+        <composite n="1" ref="Ne_element"/>
+      </material>
+      <material formula="Na" name="GF_Na" >
+        <D unit="g/cm3" value="0.971" />
+        <composite n="1" ref="Na_element"/>
+      </material>
+      <material formula="Mg" name="GF_Mg" >
+        <D unit="g/cm3" value="1.74" />
+        <composite n="1" ref="Mg_element"/>
+      </material>
+      <material formula="Al" name="GF_Al" >
+        <D unit="g/cm3" value="2.699" />
+        <composite n="1" ref="Al_element"/>
+      </material>
+      <material formula="Si" name="GF_Si" >
+        <D unit="g/cm3" value="2.33" />
+        <composite n="1" ref="Si_element"/>
+      </material>
+      <material formula="P" name="GF_P" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="1" ref="P_element"/>
+      </material>
+      <material formula="S" name="GF_S" >
+        <D unit="g/cm3" value="2" />
+        <composite n="1" ref="S_element"/>
+      </material>
+      <material formula="Cl" name="GF_Cl" >
+        <D unit="g/cm3" value="0.00299473" />
+        <composite n="1" ref="Cl_element"/>
+      </material>
+      <material formula="Ar" name="GF_Ar" >
+        <D unit="g/cm3" value="0.00166201" />
+        <composite n="1" ref="Ar_element"/>
+      </material>
+      <material formula="K" name="GF_K" >
+        <D unit="g/cm3" value="0.862" />
+        <composite n="1" ref="K_element"/>
+      </material>
+      <material formula="Ca" name="GF_Ca" >
+        <D unit="g/cm3" value="1.55" />
+        <composite n="1" ref="Ca_element"/>
+      </material>
+      <material formula="Sc" name="GF_Sc" >
+        <D unit="g/cm3" value="2.989" />
+        <composite n="1" ref="Sc_element"/>
+      </material>
+      <material formula="Ti" name="GF_Ti" >
+        <D unit="g/cm3" value="4.54" />
+        <composite n="1" ref="Ti_element"/>
+      </material>
+      <material formula="V" name="GF_V" >
+        <D unit="g/cm3" value="6.11" />
+        <composite n="1" ref="V_element"/>
+      </material>
+      <material formula="Cr" name="GF_Cr" >
+        <D unit="g/cm3" value="7.18" />
+        <composite n="1" ref="Cr_element"/>
+      </material>
+      <material formula="Mn" name="GF_Mn" >
+        <D unit="g/cm3" value="7.44" />
+        <composite n="1" ref="Mn_element"/>
+      </material>
+      <material formula="Fe" name="GF_Fe" >
+        <D unit="g/cm3" value="7.874" />
+        <composite n="1" ref="Fe_element"/>
+      </material>
+      <material formula="Co" name="GF_Co" >
+        <D unit="g/cm3" value="8.9" />
+        <composite n="1" ref="Co_element"/>
+      </material>
+      <material formula="Ni" name="GF_Ni" >
+        <D unit="g/cm3" value="8.902" />
+        <composite n="1" ref="Ni_element"/>
+      </material>
+      <material formula="Cu" name="GF_Cu" >
+        <D unit="g/cm3" value="8.96" />
+        <composite n="1" ref="Cu_element"/>
+      </material>
+      <material formula="Zn" name="GF_Zn" >
+        <D unit="g/cm3" value="7.133" />
+        <composite n="1" ref="Zn_element"/>
+      </material>
+      <material formula="Ga" name="GF_Ga" >
+        <D unit="g/cm3" value="5.904" />
+        <composite n="1" ref="Ga_element"/>
+      </material>
+      <material formula="Ge" name="GF_Ge" >
+        <D unit="g/cm3" value="5.323" />
+        <composite n="1" ref="Ge_element"/>
+      </material>
+      <material formula="As" name="GF_As" >
+        <D unit="g/cm3" value="5.73" />
+        <composite n="1" ref="As_element"/>
+      </material>
+      <material formula="Se" name="GF_Se" >
+        <D unit="g/cm3" value="4.5" />
+        <composite n="1" ref="Se_element"/>
+      </material>
+      <material formula="Br" name="GF_Br" >
+        <D unit="g/cm3" value="0.0070721" />
+        <composite n="1" ref="Br_element"/>
+      </material>
+      <material formula="Kr" name="GF_Kr" >
+        <D unit="g/cm3" value="0.00347832" />
+        <composite n="1" ref="Kr_element"/>
+      </material>
+      <material formula="Rb" name="GF_Rb" >
+        <D unit="g/cm3" value="1.532" />
+        <composite n="1" ref="Rb_element"/>
+      </material>
+      <material formula="Sr" name="GF_Sr" >
+        <D unit="g/cm3" value="2.54" />
+        <composite n="1" ref="Sr_element"/>
+      </material>
+      <material formula="Y" name="GF_Y" >
+        <D unit="g/cm3" value="4.469" />
+        <composite n="1" ref="Y_element"/>
+      </material>
+      <material formula="Zr" name="GF_Zr" >
+        <D unit="g/cm3" value="6.506" />
+        <composite n="1" ref="Zr_element"/>
+      </material>
+      <material formula="Nb" name="GF_Nb" >
+        <D unit="g/cm3" value="8.57" />
+        <composite n="1" ref="Nb_element"/>
+      </material>
+      <material formula="Mo" name="GF_Mo" >
+        <D unit="g/cm3" value="10.22" />
+        <composite n="1" ref="Mo_element"/>
+      </material>
+      <material formula="Tc" name="GF_Tc" >
+        <D unit="g/cm3" value="11.5" />
+        <composite n="1" ref="Tc_element"/>
+      </material>
+      <material formula="Ru" name="GF_Ru" >
+        <D unit="g/cm3" value="12.41" />
+        <composite n="1" ref="Ru_element"/>
+      </material>
+      <material formula="Rh" name="GF_Rh" >
+        <D unit="g/cm3" value="12.41" />
+        <composite n="1" ref="Rh_element"/>
+      </material>
+      <material formula="Pd" name="GF_Pd" >
+        <D unit="g/cm3" value="12.02" />
+        <composite n="1" ref="Pd_element"/>
+      </material>
+      <material formula="Ag" name="GF_Ag" >
+        <D unit="g/cm3" value="10.5" />
+        <composite n="1" ref="Ag_element"/>
+      </material>
+      <material formula="Cd" name="GF_Cd" >
+        <D unit="g/cm3" value="8.65" />
+        <composite n="1" ref="Cd_element"/>
+      </material>
+      <material formula="In" name="GF_In" >
+        <D unit="g/cm3" value="7.31" />
+        <composite n="1" ref="In_element"/>
+      </material>
+      <material formula="Sn" name="GF_Sn" >
+        <D unit="g/cm3" value="7.31" />
+        <composite n="1" ref="Sn_element"/>
+      </material>
+      <material formula="Sb" name="GF_Sb" >
+        <D unit="g/cm3" value="6.691" />
+        <composite n="1" ref="Sb_element"/>
+      </material>
+      <material formula="Te" name="GF_Te" >
+        <D unit="g/cm3" value="6.24" />
+        <composite n="1" ref="Te_element"/>
+      </material>
+      <material formula="I" name="GF_I" >
+        <D unit="g/cm3" value="4.93" />
+        <composite n="1" ref="I_element"/>
+      </material>
+      <material formula="Xe" name="GF_Xe" >
+        <D unit="g/cm3" value="0.00548536" />
+        <composite n="1" ref="Xe_element"/>
+      </material>
+      <material formula="Cs" name="GF_Cs" >
+        <D unit="g/cm3" value="1.873" />
+        <composite n="1" ref="Cs_element"/>
+      </material>
+      <material formula="Ba" name="GF_Ba" >
+        <D unit="g/cm3" value="3.5" />
+        <composite n="1" ref="Ba_element"/>
+      </material>
+      <material formula="La" name="GF_La" >
+        <D unit="g/cm3" value="6.154" />
+        <composite n="1" ref="La_element"/>
+      </material>
+      <material formula="Ce" name="GF_Ce" >
+        <D unit="g/cm3" value="6.657" />
+        <composite n="1" ref="Ce_element"/>
+      </material>
+      <material formula="Pr" name="GF_Pr" >
+        <D unit="g/cm3" value="6.71" />
+        <composite n="1" ref="Pr_element"/>
+      </material>
+      <material formula="Nd" name="GF_Nd" >
+        <D unit="g/cm3" value="6.9" />
+        <composite n="1" ref="Nd_element"/>
+      </material>
+      <material formula="Pm" name="GF_Pm" >
+        <D unit="g/cm3" value="7.22" />
+        <composite n="1" ref="Pm_element"/>
+      </material>
+      <material formula="Sm" name="GF_Sm" >
+        <D unit="g/cm3" value="7.46" />
+        <composite n="1" ref="Sm_element"/>
+      </material>
+      <material formula="Eu" name="GF_Eu" >
+        <D unit="g/cm3" value="5.243" />
+        <composite n="1" ref="Eu_element"/>
+      </material>
+      <material formula="Gd" name="GF_Gd" >
+        <D unit="g/cm3" value="7.9004" />
+        <composite n="1" ref="Gd_element"/>
+      </material>
+      <material formula="Tb" name="GF_Tb" >
+        <D unit="g/cm3" value="8.229" />
+        <composite n="1" ref="Tb_element"/>
+      </material>
+      <material formula="Dy" name="GF_Dy" >
+        <D unit="g/cm3" value="8.55" />
+        <composite n="1" ref="Dy_element"/>
+      </material>
+      <material formula="Ho" name="GF_Ho" >
+        <D unit="g/cm3" value="8.795" />
+        <composite n="1" ref="Ho_element"/>
+      </material>
+      <material formula="Er" name="GF_Er" >
+        <D unit="g/cm3" value="9.066" />
+        <composite n="1" ref="Er_element"/>
+      </material>
+      <material formula="Tm" name="GF_Tm" >
+        <D unit="g/cm3" value="9.321" />
+        <composite n="1" ref="Tm_element"/>
+      </material>
+      <material formula="Yb" name="GF_Yb" >
+        <D unit="g/cm3" value="6.73" />
+        <composite n="1" ref="Yb_element"/>
+      </material>
+      <material formula="Lu" name="GF_Lu" >
+        <D unit="g/cm3" value="9.84" />
+        <composite n="1" ref="Lu_element"/>
+      </material>
+      <material formula="Hf" name="GF_Hf" >
+        <D unit="g/cm3" value="13.31" />
+        <composite n="1" ref="Hf_element"/>
+      </material>
+      <material formula="Ta" name="GF_Ta" >
+        <D unit="g/cm3" value="16.654" />
+        <composite n="1" ref="Ta_element"/>
+      </material>
+      <material formula="W" name="GF_W" >
+        <D unit="g/cm3" value="19.3" />
+        <composite n="1" ref="W_element"/>
+      </material>
+      <material formula="Re" name="GF_Re" >
+        <D unit="g/cm3" value="21.02" />
+        <composite n="1" ref="Re_element"/>
+      </material>
+      <material formula="Os" name="GF_Os" >
+        <D unit="g/cm3" value="22.57" />
+        <composite n="1" ref="Os_element"/>
+      </material>
+      <material formula="Ir" name="GF_Ir" >
+        <D unit="g/cm3" value="22.42" />
+        <composite n="1" ref="Ir_element"/>
+      </material>
+      <material formula="Pt" name="GF_Pt" >
+        <D unit="g/cm3" value="21.45" />
+        <composite n="1" ref="Pt_element"/>
+      </material>
+      <material formula="Au" name="GF_Au" >
+        <D unit="g/cm3" value="19.32" />
+        <composite n="1" ref="Au_element"/>
+      </material>
+      <material formula="Hg" name="GF_Hg" >
+        <D unit="g/cm3" value="13.546" />
+        <composite n="1" ref="Hg_element"/>
+      </material>
+      <material formula="Tl" name="GF_Tl" >
+        <D unit="g/cm3" value="11.72" />
+        <composite n="1" ref="Tl_element"/>
+      </material>
+      <material formula="Pb" name="GF_Pb" >
+        <D unit="g/cm3" value="11.35" />
+        <composite n="1" ref="Pb_element"/>
+      </material>
+      <material formula="Bi" name="GF_Bi" >
+        <D unit="g/cm3" value="9.747" />
+        <composite n="1" ref="Bi_element"/>
+      </material>
+      <material formula="Po" name="GF_Po" >
+        <D unit="g/cm3" value="9.32" />
+        <composite n="1" ref="Po_element"/>
+      </material>
+      <material formula="At" name="GF_At" >
+        <D unit="g/cm3" value="9.32" />
+        <composite n="1" ref="At_element"/>
+      </material>
+      <material formula="Rn" name="GF_Rn" >
+        <D unit="g/cm3" value="0.00900662" />
+        <composite n="1" ref="Rn_element"/>
+      </material>
+      <material formula="Fr" name="GF_Fr" >
+        <D unit="g/cm3" value="1" />
+        <composite n="1" ref="Fr_element"/>
+      </material>
+      <material formula="Ra" name="GF_Ra" >
+        <D unit="g/cm3" value="5" />
+        <composite n="1" ref="Ra_element"/>
+      </material>
+      <material formula="Ac" name="GF_Ac" >
+        <D unit="g/cm3" value="10.07" />
+        <composite n="1" ref="Ac_element"/>
+      </material>
+      <material formula="Th" name="GF_Th" >
+        <D unit="g/cm3" value="11.72" />
+        <composite n="1" ref="Th_element"/>
+      </material>
+      <material formula="Pa" name="GF_Pa" >
+        <D unit="g/cm3" value="15.37" />
+        <composite n="1" ref="Pa_element"/>
+      </material>
+      <material formula="U" name="GF_U" >
+        <D unit="g/cm3" value="18.95" />
+        <composite n="1" ref="U_element"/>
+      </material>
+      <material formula="Np" name="GF_Np" >
+        <D unit="g/cm3" value="20.25" />
+        <composite n="1" ref="Np_element"/>
+      </material>
+      <material formula="Pu" name="GF_Pu" >
+        <D unit="g/cm3" value="19.84" />
+        <composite n="1" ref="Pu_element"/>
+      </material>
+      <material formula="Am" name="GF_Am" >
+        <D unit="g/cm3" value="13.67" />
+        <composite n="1" ref="Am_element"/>
+      </material>
+      <material formula="Cm" name="GF_Cm" >
+        <D unit="g/cm3" value="13.51" />
+        <composite n="1" ref="Cm_element"/>
+      </material>
+      <material formula="Bk" name="GF_Bk" >
+        <D unit="g/cm3" value="14" />
+        <composite n="1" ref="Bk_element"/>
+      </material>
+      <material formula="Cf" name="GF_Cf" >
+        <D unit="g/cm3" value="10" />
+        <composite n="1" ref="Cf_element"/>
+      </material>
+  </materials>
+</xml>
