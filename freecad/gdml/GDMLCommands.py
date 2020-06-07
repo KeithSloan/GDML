@@ -381,6 +381,22 @@ class TessellateFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'Tesselate Selected Planar Object')}    
 
+def Gmsh(obj) :
+    import ObjectsFem
+    from femmesh.gmshtools import GmshTools
+
+    doc = FreeCAD.ActiveDocument
+    print('Action Tessellate Mesh')
+    femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
+    femmesh_obj.Part = obj
+    femmesh_obj.Algorithm3D = 1
+    doc.recompute()
+    gm = GmshTools(femmesh_obj)
+    error = gm.create_mesh()
+    print(error)
+    doc.recompute()
+
+
 class TessellateGmshFeature :
      
     def Activated(self) :
@@ -391,17 +407,7 @@ class TessellateGmshFeature :
                   ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
-            #if len(obj.InList) == 0: # allowed only for for top level objects
-            doc = FreeCAD.ActiveDocument
-            print('Action Tessellate Mesh')
-            femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
-            femmesh_obj.Part = obj
-            doc.recompute()
-            gm = GmshTools(femmesh_obj)
-            error = gm.create_mesh()
-            print(error)
-            doc.recompute()
-
+            Gmsh(obj)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
