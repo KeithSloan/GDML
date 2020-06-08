@@ -389,7 +389,7 @@ def Gmsh(obj) :
     print('Action Tessellate Mesh')
     femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
     femmesh_obj.Part = obj
-    femmesh_obj.Algorithm3D = 1
+    femmesh_obj.Algorithm2D = 'DelQuad'
     doc.recompute()
     gm = GmshTools(femmesh_obj)
     error = gm.create_mesh()
