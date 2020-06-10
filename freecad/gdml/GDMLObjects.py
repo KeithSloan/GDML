@@ -1795,12 +1795,18 @@ class GDMLTessellated(GDMLcommon) :
    def __init__(self, obj, vertex, facets, lunit, material) :
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
-      obj.addExtension('App::OriginGroupExtensionPython', self)
+      obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
+                      'Facets').facets = len(facets)
+      obj.setEditorMode('facets',1)
+      obj.addProperty('App::PropertyInteger','vertex','GDMLTessellated', \
+                      'Vertex').vertex = len(vertex)
+      obj.setEditorMode('vertex',1)
       obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
                       'lunit').lunit = lunit
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
       self.Facets = facets
