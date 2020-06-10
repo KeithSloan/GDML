@@ -395,7 +395,70 @@ def Gmsh(obj) :
     error = gm.create_mesh()
     print(error)
     doc.recompute()
+    
+def getInfo(gmsh, entities) :
+    for e in entities:
+        print("Entity " + str(e) + " of type " + gmsh.model.getType(e[0], e[1]))
+        # get the mesh nodes for each elementary entity
+        nodeTags, nodeCoords, nodeParams = gmsh.model.mesh.getNodes(e[0], e[1])
+        # get the mesh elements for each elementary entity
+        elemTypes, elemTags, elemNodeTags = \
+            gmsh.model.mesh.getElements(e[0], e[1])
+        # count number of elements
+        numElem = sum(len(i) for i in elemTags)
+        print(" - mesh has " + str(len(nodeTags)) + " nodes and " + \
+              str(numElem) + " elements")
+        boundary = gmsh.model.getBoundary([e])
+        print(" - boundary entities " + str(boundary))
+        partitions = gmsh.model.getPartitions(e[0], e[1])
+        if len(partitions):
+           print(" - Partition tag(s): " + str(partitions) + \
+                 " - parent entity " + str(gmsh.model.getParent(e[0], e[1])))
+        for t in elemTypes:
+            name, dim, order, numv, parv, _ =  \
+                  gmsh.model.mesh.getElementProperties(t) 
+            print(" - Element type: " + name + ", order " + str(order) + \
+                " (" + str(numv) + " nodes in param coord: " + str(parv) + ")")
 
+    # all mesh node coordinates
+    nodeTags, nodeCoords, _ = gmsh.model.mesh.getNodes()
+    x = dict(zip(nodeTags, nodeCoords[0::3]))
+    y = dict(zip(nodeTags, nodeCoords[1::3]))
+    z = dict(zip(nodeTags, nodeCoords[2::3]))
+    print(x)
+    print(y)
+    print(z)
+
+def createMesh(obj) :
+    import sys
+    sys.path.append('/usr/local/lib/python3.7/site-packages/gmsh-4.5.6-MacOSX-sdk/lib')
+    import gmsh
+    print('Create Mesh')
+    gmsh.initialize()
+    gmsh.option.setNumber('Mesh.Algorithm3D',1)
+    gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
+    gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", 2)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 1)
+    gmsh.option.setNumber("Mesh.SaveAll", 0)
+    gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
+    gmsh.option.setNumber("Mesh.MaxNumThreads3D", 4)
+    gmsh.option.setString("Geometry.OCCTargetUnit", 'mm');
+    gmsh.option.setString("General.ErrorFileName", '/tmp/error.log');
+    obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
+    ab = gmsh.open('/tmp/Shape2Mesh.brep')
+    gmsh.model.occ.synchronize()
+    print(dir(ab))
+    #getInfo(gmsh, entities)
+    # 2 surface
+    gmsh.model.mesh.generate(2)
+    print('Mesh Generated')
+    entities = gmsh.model.getEntities()
+    getInfo(gmsh, entities)
+    print(dir(entities))
+    #gmsh.fltk.run()
+    gmsh.finalize()
 
 class TessellateGmshFeature :
      
@@ -407,7 +470,8 @@ class TessellateGmshFeature :
                   ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
-            Gmsh(obj)
+            #Gmsh(obj)
+            createMesh(obj)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
