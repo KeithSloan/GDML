@@ -85,13 +85,15 @@ def getVertexFacets() :
     # Face types 3 triangle 4 quadrangle
     faceNodes = gmsh.model.mesh.getElementFaceNodes(2,3)
     print('Max : ' +str(np.amax(faceNodes)))
+    print('Min : ' +str(np.amin(faceNodes)))
     print(faceNodes)
     nodes, coord, pcords = gmsh.model.mesh.getNodes(2)
     start = int(np.amin(nodes))
     print('Start : '+str(start))
-    faceNodesNorm = np.subtract(faceNodes,start)
+    #faceNodesNorm = np.subtract(faceNodes,1)
+    faceNodesNorm = faceNodes
     faceNodesList = faceNodesNorm.tolist()
-    facets = [faceNodesList[x:x+3] for x in range(0, len(faceNodesList),2)]
+    facets = [faceNodesList[x:x+3] for x in range(0, len(faceNodesList),3)]
     vertex = []
     print('Coord')
     print(len(coord))

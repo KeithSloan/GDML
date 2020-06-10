@@ -1841,9 +1841,13 @@ class GDMLTessellated(GDMLcommon) :
        mul = GDMLShared.getMult(fp)
        FCfaces = []
        #print(self.Vertex)
+       i = 0
        for f in self.Facets :
           #print(f)
           if len(f) == 3 : 
+             print(self.Facets[i])
+             i = i + 1
+             print(i)
              FCfaces.append(GDMLShared.triangle( \
                              mul*self.Vertex[f[0]], \
                              mul*self.Vertex[f[1]], \
