@@ -1927,6 +1927,9 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
        fp.Placement = currPlacement
        
 class GDMLTetrahedron(GDMLcommon) :
+
+   ''' Does not exist as a GDML solid, but export as an Assembly of G4Tet '''
+   ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
    def __init__(self, obj, tetra, lunit, material) :
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \

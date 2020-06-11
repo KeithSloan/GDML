@@ -483,11 +483,15 @@ class TetrahedronFeature :
     def Activated(self) :
  
         from .GDMLObjects import GDMLTetrahedron, ViewProvider
+        from .GmshUtils import initialize, meshObj, \
+              getVertexFacets, printMeshInfo, printMyInfo
 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             doc = FreeCAD.ActiveDocument
             print('Action Tetrahedron')
+            initialize()
+            meshObj(obj)
     
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
