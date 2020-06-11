@@ -396,7 +396,7 @@ class TessellateGmshFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             initialize()
-            meshObj(obj)
+            meshObj(obj,2)
             vertex, facets = getVertexFacets()
             #printMeshInfo()
             #printMyInfo()
@@ -484,15 +484,16 @@ class TetrahedronFeature :
  
         from .GDMLObjects import GDMLTetrahedron, ViewProvider
         from .GmshUtils import initialize, meshObj, \
-              getVertexFacets, printMeshInfo, printMyInfo
+              getTetrahedrons, printMeshInfo, printMyInfo
 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             doc = FreeCAD.ActiveDocument
             print('Action Tetrahedron')
             initialize()
-            meshObj(obj)
-    
+            meshObj(obj,3)
+            getTetrahedrons()
+
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\

@@ -70,12 +70,12 @@ def initialize() :
     gmsh.option.setString("General.ErrorFileName", '/tmp/error.log');
 
 
-def meshObj(obj) :
+def meshObj(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     ab = gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
     print(dir(ab))
-    gmsh.model.mesh.generate(2)
+    gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
     gmsh.model.mesh.renumberNodes()
 
@@ -107,6 +107,20 @@ def getVertexFacets() :
     print(vertex)
     print(facets)
     return vertex, facets
+
+def getTetrahedrons():
+    print('Get Tetrahderons')
+    tags, nodes = gmsh.model.mesh.getElementsByType(4)
+    print('tags  : '+str(len(tags)))
+    print(type(tags[0]))
+    print(tags[0])
+    print('nodes : '+str(len(nodes)))
+    print(type(nodes[0]))
+    print(nodes[0])
+    tagsLst = tags.tolist()
+    tagsList = [tagsLst[x:x+4] for x in range(0, len(tagsLst),4)]
+    print(tagsList[0])
+    print(type(tagsList[0][0]))
 
 def printMyInfo() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
