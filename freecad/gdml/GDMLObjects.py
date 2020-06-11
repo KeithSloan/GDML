@@ -651,7 +651,7 @@ class GDMLElTube(GDMLcommon) :
        mat.A44 = 1
        #trace mat
        newtube = tube.transformGeometry(mat)
-       base = FreeCAD.Vector(0,0,(fp.dz*mul)/2)
+       base = FreeCAD.Vector(0,0,-(fp.dz*mul)/2)
        fp.Shape = translate(newtube,base)
        fp.Placement = currPlacement
 
