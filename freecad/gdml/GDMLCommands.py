@@ -474,9 +474,27 @@ class Tess2MeshFeature :
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'Tess 2 Mesh': \
+                'Tess2Mesh'), 'Tess 2 Mesh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Create FC Mesh from GDML Tessellate')}    
+
+class TetrahedronFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTetrahedron, ViewProvider
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            doc = FreeCAD.ActiveDocument
+            print('Action Tetrahedron')
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tetrahedron'), 'Tetrehedron': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Create Tetrahedron from FC Shape')}    
 
 class CycleFeature :
 
@@ -680,3 +698,4 @@ FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())
+FreeCADGui.addCommand('TetrahedronCommand',TetrahedronFeature())

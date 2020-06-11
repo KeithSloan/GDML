@@ -79,13 +79,16 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand','AddCompound', \
               'TessellateCommand','TessellateGmshCommand', \
-              'Mesh2TessCommand','Tess2MeshCommand']
+              'Mesh2TessCommand','Tess2MeshCommand', \
+              'TetrahedronCommand']
+
         toolbarcommands=['CycleCommand','ExpandCommand',
               'PolyHedraCommand', 'BoxCommand','ConeCommand', \
                   'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound', \
                   'TessellateCommand','TessellateGmshCommand', \
-                  'Mesh2TessCommand','Tess2MeshCommand']
+                  'Mesh2TessCommand','Tess2MeshCommand', \
+                  'TetrahedronCommand']
 
         parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
         meshtoolbarcommands = ['Mesh_FromPartShape']

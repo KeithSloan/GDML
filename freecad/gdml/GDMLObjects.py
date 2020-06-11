@@ -1878,7 +1878,7 @@ class GDMLTessellated(GDMLcommon) :
        fp.Shape = solid
        fp.Placement = currPlacement
    
-class GDMLTetra(GDMLcommon) :         # Tetrahedron
+class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
     
    def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
       obj.addProperty("App::PropertyVector","v1","GDMLTra", \
@@ -1926,6 +1926,54 @@ class GDMLTetra(GDMLcommon) :         # Tetrahedron
        fp.Shape = Part.makeSolid(Part.makeShell([face1,face2,face3,face4]))
        fp.Placement = currPlacement
        
+class GDMLTetrahedron(GDMLcommon) :
+    
+   def __init__(self, obj, tetra, lunit, material) :
+       #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
+       #                'Editable').editable = False
+       obj.addProperty('App::PropertyInteger','tetra','GDMLTetrahedron', \
+                      'Tetra').tetra = len(tetra)
+       obj.setEditorMode('tetra',1)
+       obj.addProperty('App::PropertyString','lunit','GDMLTetrahedron', \
+                      'lunit').lunit = lunit
+       obj.addProperty("App::PropertyEnumeration","material", \
+                      "GDMLTetrahedron","Material")
+       setMaterial(obj, material)
+       #obj.addExtension('App::OriginGroupExtensionPython', self)
+       self.Type = 'GDMLTetrahedron'
+       self.Tetrax = tetra
+       self.Object = obj
+       obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       #if prop in ['editable'] :
+       #    if fp.editable == True :
+       #       self.addProperties()
+
+       if prop in ['lunit'] :
+          self.createGeometry(fp)
+
+       #def addProperties(self) :
+       #print('Add Properties')
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       print("Tetrahedron")
+       mul = GDMLShared.getMult(fp)
+       FCfaces = []
+
+
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :
       '''Add some custom properties to our Cone feature'''
