@@ -1943,9 +1943,9 @@ class GDMLTetrahedron(GDMLcommon) :
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
        #obj.addExtension('App::OriginGroupExtensionPython', self)
-       self.Type = 'GDMLTetrahedron'
        self.Tetrax = tetra
        self.Object = obj
+       self.Type = 'GDMLTetrahedron'
        obj.Proxy = self
 
    def onChanged(self, fp, prop):
@@ -1957,15 +1957,8 @@ class GDMLTetrahedron(GDMLcommon) :
        if prop in ['material'] :
            fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
-       #if prop in ['editable'] :
-       #    if fp.editable == True :
-       #       self.addProperties()
-
        if prop in ['lunit'] :
           self.createGeometry(fp)
-
-       #def addProperties(self) :
-       #print('Add Properties')
 
    def execute(self, fp):
        self.createGeometry(fp)
@@ -1974,9 +1967,20 @@ class GDMLTetrahedron(GDMLcommon) :
        currPlacement = fp.Placement
        print("Tetrahedron")
        mul = GDMLShared.getMult(fp)
-       FCfaces = []
-
-
+       print(len(self.Tetrax))
+       print(self.Tetrax[0])
+       faces = []
+       for t in self.Tetrax :
+           #pt1 = mul * fp.v1
+           #pt2 = mul * fp.v2
+           #pt3 = mul * fp.v3
+           #pt4 = mul * fp.v4
+           print(t)
+           #faces.append(Part.Face(Part.makePolygon([t[0],t[1],t[2],t[3],t[0]])))
+       #fp.Shape = Part.makeSolid(Part.makeShell(faces))
+       fp.Shape = Part.makeShell(faces)
+       fp.Placement = currPlacement
+       
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :
       '''Add some custom properties to our Cone feature'''

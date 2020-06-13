@@ -873,6 +873,26 @@ def processGDMLTetraObject(obj, flag) :
                     'vertex4': v4Name})
     return tetraName    
 
+def processGDMLTetrahedronObject(obj, flag) :
+    tetrahedronName = nameOfGDMLobject(obj)
+    print('Len Tet'+str(len(obj.Tetra)))
+    if flag == True :
+        v1Name = tetraName + 'v1'
+        v2Name = tetraName + 'v2'
+        v3Name = tetraName + 'v3'
+        v4Name = tetraName + 'v4'
+        exportDefine(v1Name,obj.v1)
+        exportDefine(v2Name,obj.v2)
+        exportDefine(v3Name,obj.v3)
+        exportDefine(v4Name,obj.v4)
+
+        tetra = ET.SubElement(solids, 'tet',{'name': tetraName, \
+                    'vertex1': v1Name, \
+                    'vertex2': v2Name, \
+                    'vertex3': v3Name, \
+                    'vertex4': v4Name})
+    return tetrahderonName    
+
 def processGDMLTorusObject(obj, flag) :
     torusName = nameOfGDMLobject(obj)
     if flag == True :
@@ -1112,7 +1132,7 @@ def processMaterialObject(obj) :
 def processGDMLSolid(obj, addVolsFlag) :
     # Deal with GDML Solids first
     # Deal with FC Objects that convert
-    #print(obj.Proxy.Type)
+    print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
           print("      GDMLArb8") 
@@ -1182,6 +1202,11 @@ def processGDMLSolid(obj, addVolsFlag) :
        if case("GDMLTetra") :
           #print("      GDMLTetra") 
           return(processGDMLTetraObject(obj, addVolsFlag))
+          break
+
+       if case("GDMLTetrahedron") :
+          print("      GDMLTetrahedron") 
+          return(processGDMLTetrahedronObject(obj, addVolsFlag))
           break
 
        if case("GDMLTorus") :
@@ -1413,6 +1438,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
                 processRotation(obj,pvol)
           else :
              print("Not a GDML Feature")
+             print(obj.Name)
           return idx + 1 
           break  
 
@@ -1445,22 +1471,30 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       #
       if case("Part::Box") :
          print("    Box")
-         return(processBoxObject(obj, addVolsFlag))
+         #return(processBoxObject(obj, addVolsFlag))
+         processBoxObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Cylinder") :
          print("    Cylinder")
-         return(processCylinderObject(obj, addVolsFlag))
+         #return(processCylinderObject(obj, addVolsFlag))
+         processCylinderObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Cone") :
          print("    Cone")
-         return(processConeObject(obj, addVolsFlag))
+         #return(processConeObject(obj, addVolsFlag))
+         processConeObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Sphere") :
          print("    Sphere")
-         return(processSphereObject(obj, addVolsFlag))
+         #return(processSphereObject(obj, addVolsFlag))
+         processSphereObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       # Not a Solid that translated to GDML solid
@@ -1473,7 +1507,9 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       print(obj.TypeId)
       if hasattr(obj,'Shape') :
          if obj.Shape.isValid() : 
-            return(processObjectShape(obj))
+            #return(processObjectShape(obj))
+            processObjectShape(obj)
+      return idx+1
       break
 
 def insertXMLvol(name):
@@ -1594,6 +1630,6 @@ def export(exportList,filename) :
     
     else :
        print("Need to a Part for export")
-       from PyQt4 import QtGui
+       from PySide import QtGui
        QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
 

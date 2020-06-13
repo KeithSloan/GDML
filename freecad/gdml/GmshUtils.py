@@ -109,18 +109,16 @@ def getVertexFacets() :
     return vertex, facets
 
 def getTetrahedrons():
-    print('Get Tetrahderons')
+    print('Get Tetrahedrons')
     tags, nodes = gmsh.model.mesh.getElementsByType(4)
-    print('tags  : '+str(len(tags)))
-    print(type(tags[0]))
-    print(tags[0])
     print('nodes : '+str(len(nodes)))
-    print(type(nodes[0]))
     print(nodes[0])
-    tagsLst = tags.tolist()
-    tagsList = [tagsLst[x:x+4] for x in range(0, len(tagsLst),4)]
-    print(tagsList[0])
-    print(type(tagsList[0][0]))
+    FCnodes = []
+    for n in nodes :
+        coord, pccord = gmsh.model.mesh.getNode(n)
+        FCnodes.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
+    TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes),4)]
+    return TetList
 
 def printMyInfo() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
