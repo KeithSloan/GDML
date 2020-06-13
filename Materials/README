@@ -5,15 +5,9 @@
 
   dataBaseMaterialNist.xml             Geant4 version of NIST Materials
 
-  dataBaseNistAndSingleMaterial.xml    Geant4 version of NIST Materials
-                                        plus base elements as included
-                                          in Geant4
-
-  dataBaseSingleMaterial.xml           The base element Materials as included
-                                         in Geant4
 
   dataBaseNistAndSingleElements.xml.   Geant4 version of NIST Materials
-                                         plus base elements as gdml elements
+                                       plus base elements as gdml elements
                                          
   dataBaseSingleElemeents.xml          The base elements as gdml elements                                       
 
