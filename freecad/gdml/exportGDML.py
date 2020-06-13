@@ -1594,6 +1594,6 @@ def export(exportList,filename) :
     
     else :
        print("Need to a Part for export")
-       from PyQt4 import QtGui
+       from PySide import QtGui
        QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
 
