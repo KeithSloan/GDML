@@ -329,8 +329,9 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      #obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLBox'
+      self.Fred = 10
       obj.Proxy = self
 
    ### modif add
@@ -396,6 +397,9 @@ class GDMLCone(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLCone'
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -481,6 +485,9 @@ class GDMLElCone(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElCone'
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -547,6 +554,10 @@ class GDMLEllipsoid(GDMLcommon) :
       self.Type = 'GDMLEllipsoid'
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
+
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -623,6 +634,9 @@ class GDMLElTube(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElTube'
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -668,6 +682,9 @@ class GDMLOrb(GDMLcommon) :
       self.Type = 'GDMLOrb'
       self.Object = obj
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -719,6 +736,9 @@ class GDMLPara(GDMLcommon) :
       self.Type = 'GDMLPara'
       self.Object = obj
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -768,7 +788,9 @@ class GDMLPara(GDMLcommon) :
        base = FreeCAD.Vector(-x/2,-y/2,-z/2)
        fp.Shape = translate(para3,base)
        fp.Placement = currPlacement
-
+   
+   def getMaterial(self):
+       return obj.material
 
 class GDMLPolyhedra(GDMLcommon) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, material) :
@@ -792,6 +814,9 @@ class GDMLPolyhedra(GDMLcommon) :
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -900,6 +925,9 @@ class GDMLTorus(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTorus'
       obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -949,6 +977,9 @@ class GDMLXtru(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLXtru'
       obj.Proxy = self
+
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -1156,6 +1187,9 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
 
+   def getMaterial(self):
+       return obj.material
+
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -1247,6 +1281,9 @@ class GDMLSphere(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLSphere'
+
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -1360,6 +1397,9 @@ class GDMLTrap(GDMLcommon) :
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
+   def getMaterial(self):
+       return obj.material
+
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
@@ -1459,6 +1499,9 @@ class GDMLTrd(GDMLcommon) :
       obj.Proxy = self
       self.Type = 'GDMLTrd'
 
+   def getMaterial(self):
+       return obj.material
+
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
@@ -1527,6 +1570,9 @@ class GDMLTube(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTube'
+
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -1597,6 +1643,9 @@ class GDMLcutTube(GDMLcommon) :
       #obj.addProperty("Part::PropertyPartShape","Shape","GDMLcutTube", "Shape of the Tube")
       obj.Proxy = self
       self.Type = 'GDMLcutTube'
+
+   def getMaterial(self):
+       return obj.material
 
    def onChanged(self, fp, prop):
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -1813,6 +1862,9 @@ class GDMLTessellated(GDMLcommon) :
       self.Object = obj
       obj.Proxy = self
 
+   def getMaterial(self):
+       return obj.material
+
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -1897,6 +1949,9 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
       self.Type = 'GDMLTetra'
       obj.Proxy = self
 
+   def getMaterial(self):
+       return obj.material
+
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -1943,10 +1998,13 @@ class GDMLTetrahedron(GDMLcommon) :
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
        #obj.addExtension('App::OriginGroupExtensionPython', self)
-       self.Tetrax = tetra
+       self.Tetra = tetra
        self.Object = obj
        self.Type = 'GDMLTetrahedron'
        obj.Proxy = self
+
+   def getMaterial(self):
+       return self.material
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -1967,10 +2025,10 @@ class GDMLTetrahedron(GDMLcommon) :
        currPlacement = fp.Placement
        print("Tetrahedron")
        mul = GDMLShared.getMult(fp)
-       print(len(self.Tetrax))
-       print(self.Tetrax[0])
+       print(len(self.Tetra))
+       print(self.Tetra[0])
        faces = []
-       for t in self.Tetrax :
+       for t in self.Tetra :
            #pt1 = mul * fp.v1
            #pt2 = mul * fp.v2
            #pt3 = mul * fp.v3
