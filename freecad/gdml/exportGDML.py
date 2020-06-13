@@ -161,6 +161,7 @@ def exportDefine(name, v) :
                 'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
 def defineWorldBox(bbox):
+    global solids
     for obj in FreeCAD.ActiveDocument.Objects :
         # print("{} + {} = ".format(bbox, obj.Shape.BoundBox))
         if hasattr(obj,"Shape"):
