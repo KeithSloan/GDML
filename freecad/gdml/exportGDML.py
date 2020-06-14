@@ -900,6 +900,18 @@ def processGDMLTetrahedronObject(obj, flag) :
         lvol = ET.SubElement(structure,'volume', {'name':lvName})
         ET.SubElement(lvol, 'materialref', {'ref': obj.material})
         ET.SubElement(lvol, 'solidref', {'ref': tetraName})
+        count = count + 1
+
+    # Now put out Assembly
+    assembly = ET.SubElement(structure, 'assembly',{'name':tetrahedronName})
+    count = 0
+    for t in obj.Proxy.Tetra :
+        lvName = 'LVtetra'+str(count)
+        physvol = ET.SubElement(assembly, 'physvol')
+        ET.SubElement(physvol, 'volumeref', {'ref':lvName})
+        #ET.SubElement(physvol, 'position')
+        #ET.SubElement(physvol, 'rotation')
+        count = count + 1
 
     return tetrahedronName    
 
