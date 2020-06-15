@@ -539,7 +539,15 @@ class ExpandFeature :
             print("Selected")
             print(obj.Label[:12])
             if obj.Label[:12] == "NOT_Expanded" :
-               import lxml.etree  as ET 
+               #import lxml.etree  as ET 
+               try :
+                 from lxml.etree as ET
+               except ImportError:
+                     try:
+                        import xml.etree.ElementTree as ET
+                     except ImportError:
+                        print('pb xml lib not found')
+                        sys.exit()
                #parent = obj.InList[0]
                name = obj.Label[13:]
                obj.Label = name
