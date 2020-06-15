@@ -541,7 +541,7 @@ class ExpandFeature :
             if obj.Label[:12] == "NOT_Expanded" :
                #import lxml.etree  as ET 
                try :
-                 from lxml.etree as ET
+                 from lxml.etree import ET
                except ImportError:
                      try:
                         import xml.etree.ElementTree as ET
