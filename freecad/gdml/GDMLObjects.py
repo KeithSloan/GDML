@@ -2020,23 +2020,28 @@ class GDMLTetrahedron(GDMLcommon) :
 
    def execute(self, fp):
        self.createGeometry(fp)
-   
+  
+   def makeTetra(self,pt1,pt2,pt3,pt4) :
+       face1 = Part.Face(Part.makePolygon([pt1,pt2,pt3,pt1]))
+       face2 = Part.Face(Part.makePolygon([pt1,pt2,pt4,pt1]))
+       face3 = Part.Face(Part.makePolygon([pt4,pt2,pt3,pt4]))
+       face4 = Part.Face(Part.makePolygon([pt1,pt3,pt4,pt1]))
+       return(Part.makeShell([face1,face2,face3,face4]))
+       #return(face1,face2,face3,face4)
+ 
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        print("Tetrahedron")
        mul = GDMLShared.getMult(fp)
        print(len(self.Tetra))
-       print(self.Tetra[0])
-       faces = []
+       tetraShells = []
        for t in self.Tetra :
-           #pt1 = mul * fp.v1
-           #pt2 = mul * fp.v2
-           #pt3 = mul * fp.v3
-           #pt4 = mul * fp.v4
-           print(t)
-           #faces.append(Part.Face(Part.makePolygon([t[0],t[1],t[2],t[3],t[0]])))
-       #fp.Shape = Part.makeSolid(Part.makeShell(faces))
-       fp.Shape = Part.makeShell(faces)
+           pt1 = mul * t[0]
+           pt2 = mul * t[1]
+           pt3 = mul * t[2]
+           pt4 = mul * t[3]
+           tetraShells.append(self.makeTetra(pt1,pt2,pt3,pt4))
+       fp.Shape = Part.makeCompound(tetraShells)
        fp.Placement = currPlacement
        
 class GDMLFiles(GDMLcommon) :
