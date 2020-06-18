@@ -60,20 +60,30 @@ def initialize() :
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
     gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", 2)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
     gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
     gmsh.option.setNumber("Mesh.MaxNumThreads3D", 4)
-    gmsh.option.setString("Geometry.OCCTargetUnit", 'mm');
-    gmsh.option.setString("General.ErrorFileName", '/tmp/error.log');
+    gmsh.option.setString("Geometry.OCCTargetUnit", 'mm')
+    gmsh.option.setString("General.ErrorFileName", '/tmp/error.log')
+    gmsh.option.setNumber('General.Terminal',1)
+
+def maxCord(bbox) :
+    maxList = [bbox.XLength, bbox.YLength, bbox.ZLength]
+    print(maxList)
+    return max(maxList)
 
 
 def meshObj(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
+    bbox = obj.Shape.BoundBox
+    print(bbox)
+    ml = maxCord(bbox) / 10
+    print('Mesh length : '+str(ml))
     ab = gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 1)
     print(dir(ab))
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
