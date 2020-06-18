@@ -493,16 +493,18 @@ class TetrahedronFeature :
             initialize()
             meshObj(obj,3)
             tetraheds = getTetrahedrons()
-            print('done')
-            a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+            if tetraheds != None :
+               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
                         "GDMLTetrahedrons_TetraHed")
-            GDMLTetrahedron(a,tetraheds,"mm",getSelectedMaterial())
-            if FreeCAD.GuiUp :
-               obj.ViewObject.Visibility = False
-               ViewProvider(a.ViewObject)
-               a.ViewObject.DisplayMode = "Wireframe"
-            FreeCAD.ActiveDocument.recompute()
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+               GDMLTetrahedron(a,tetraheds,"mm",getSelectedMaterial())
+               if FreeCAD.GuiUp :
+                  obj.ViewObject.Visibility = False
+                  ViewProvider(a.ViewObject)
+                  a.ViewObject.DisplayMode = "Wireframe"
+               FreeCAD.ActiveDocument.recompute()
+               FreeCADGui.SendMsgToActiveView("ViewFit")
+            else :
+               print('Not able to produce quandrants for this shape')
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \

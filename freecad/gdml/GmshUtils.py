@@ -82,8 +82,8 @@ def meshObj(obj, dim) :
     ab = gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 1)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
     print(dir(ab))
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
@@ -121,14 +121,17 @@ def getVertexFacets() :
 def getTetrahedrons():
     print('Get Tetrahedrons')
     tags, nodes = gmsh.model.mesh.getElementsByType(4)
-    print('nodes : '+str(len(nodes)))
-    print(nodes[0])
-    FCnodes = []
-    for n in nodes :
-        coord, pccord = gmsh.model.mesh.getNode(n)
-        FCnodes.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
-    TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes),4)]
-    return TetList
+    if nodes != 0 :
+       print('nodes : '+str(len(nodes)))
+       print(nodes[0])
+       FCnodes = []
+       for n in nodes :
+           coord, pccord = gmsh.model.mesh.getNode(n)
+           FCnodes.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
+       TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes),4)]
+       return TetList
+    else :
+       return None
 
 def printMyInfo() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
