@@ -504,7 +504,7 @@ class TetrahedronFeature :
                FreeCAD.ActiveDocument.recompute()
                FreeCADGui.SendMsgToActiveView("ViewFit")
             else :
-               print('Not able to produce quandrants for this shape')
+               FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \

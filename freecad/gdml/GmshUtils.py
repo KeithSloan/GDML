@@ -72,11 +72,9 @@ def maxCord(bbox) :
     print(maxList)
     return max(maxList)
 
-
 def meshObj(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     bbox = obj.Shape.BoundBox
-    print(bbox)
     ml = maxCord(bbox) / 10
     print('Mesh length : '+str(ml))
     ab = gmsh.open('/tmp/Shape2Mesh.brep')
@@ -84,7 +82,6 @@ def meshObj(obj, dim) :
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
-    print(dir(ab))
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
     gmsh.model.mesh.renumberNodes()
@@ -94,36 +91,36 @@ def getVertexFacets() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
     faceNodes = gmsh.model.mesh.getElementFaceNodes(2,3)
-    print('Max : ' +str(np.amax(faceNodes)))
-    print('Min : ' +str(np.amin(faceNodes)))
-    print(faceNodes)
+    #print('Max : ' +str(np.amax(faceNodes)))
+    #print('Min : ' +str(np.amin(faceNodes)))
+    #print(faceNodes)
     nodes, coord, pcords = gmsh.model.mesh.getNodes(2)
     start = int(np.amin(nodes))
-    print('Start : '+str(start))
+    #print('Start : '+str(start))
     #faceNodesNorm = np.subtract(faceNodes,1)
     faceNodesNorm = faceNodes
     faceNodesList = faceNodesNorm.tolist()
     facets = [faceNodesList[x:x+3] for x in range(0, len(faceNodesList),3)]
     vertex = []
-    print('Coord')
-    print(len(coord))
-    print(coord[0])
-    print(type(coord))
-    print(coord)
+    #print('Coord')
+    #print(len(coord))
+    #print(coord[0])
+    #print(type(coord))
+    #print(coord)
     for n in coord :
         n3 = 3 * int(n)
         vertex.append(FreeCAD.Vector(coord[n3],coord[n3+1], \
                                coord[n3 + 2]))
-    print(vertex)
-    print(facets)
+    #print(vertex)
+    #print(facets)
     return vertex, facets
 
 def getTetrahedrons():
-    print('Get Tetrahedrons')
+    #print('Get Tetrahedrons')
     tags, nodes = gmsh.model.mesh.getElementsByType(4)
-    if nodes != 0 :
+    if len(nodes) > 0 :
        print('nodes : '+str(len(nodes)))
-       print(nodes[0])
+       #print(nodes[0])
        FCnodes = []
        for n in nodes :
            coord, pccord = gmsh.model.mesh.getNode(n)
