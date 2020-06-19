@@ -69,7 +69,7 @@ def initialize() :
 
 def maxCord(bbox) :
     maxList = [bbox.XLength, bbox.YLength, bbox.ZLength]
-    print(maxList)
+    #print(maxList)
     return max(maxList)
 
 def meshObj(obj, dim) :
@@ -137,11 +137,9 @@ def printMyInfo() :
     faces = gmsh.model.mesh.getElementFaceNodes(2,3)
     print('Face Nodes')
     print(len(faces))
-    #print(faces)
     nodes, coords, parm = gmsh.model.mesh.getNodes(-1,2)
     print('Nodes with tag = 2')
     print(len(nodes))
-    #print(nodes)
     enodes, coords, parms = gmsh.model.mesh.getNodesByElementType(2)
     print('Nodes of type 2')
     print(len(enodes))
@@ -153,12 +151,12 @@ def printMyInfo() :
     print('Get Nodes 2')
     print(len(nodeTags))
     #print(nodeTags)
-    print('Get Elements')
+    #print('Get Elements')
     elem, tags = gmsh.model.mesh.getElementsByType(2)
-    print(len(elem))
-    print(elem)
-    print(len(tags))
-    print(tags)
+    #print(len(elem))
+    #print(elem)
+    #print(len(tags))
+    #print(tags)
 
 def printMeshInfo() :
     entities = gmsh.model.getEntities()
