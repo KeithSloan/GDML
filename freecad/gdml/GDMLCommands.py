@@ -487,20 +487,24 @@ class TetrahedronFeature :
               getTetrahedrons, printMeshInfo, printMyInfo
 
         for obj in FreeCADGui.Selection.getSelection():
-            #if len(obj.InList) == 0: # allowed only for for top level objects
-            doc = FreeCAD.ActiveDocument
             print('Action Tetrahedron')
             initialize()
             meshObj(obj,3)
             tetraheds = getTetrahedrons()
             if tetraheds != None :
-               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                        "GDMLTetrahedrons_TetraHed")
-               GDMLTetrahedron(a,tetraheds,"mm",getSelectedMaterial())
+               name ='GDMLTetrahedron_'+obj.Name
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     myTet = parent.newObject('Part::FeaturePython',name)
+               if parent == None :
+                  myTet = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
+               GDMLTetrahedron(myTet,tetraheds,"mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
-                  ViewProvider(a.ViewObject)
-                  a.ViewObject.DisplayMode = "Wireframe"
+                  ViewProvider(myTet.ViewObject)
+                  myTet.ViewObject.DisplayMode = "Wireframe"
                FreeCAD.ActiveDocument.recompute()
                FreeCADGui.SendMsgToActiveView("ViewFit")
             else :
