@@ -384,25 +384,35 @@ class TessellateFeature :
 class TessellateGmshFeature :
      
     def Activated(self) :
+    
         import ObjectsFem
+        from .GmshUtils import initialize, meshObj, \
+              getVertexFacets, printMeshInfo, printMyInfo
+
         from femmesh.gmshtools import GmshTools
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
-            #if len(obj.InList) == 0: # allowed only for for top level objects
-            doc = FreeCAD.ActiveDocument
-            print('Action Tessellate Mesh')
-            femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
-            femmesh_obj.Part = obj
-            doc.recompute()
-            gm = GmshTools(femmesh_obj)
-            error = gm.create_mesh()
-            print(error)
-            doc.recompute()
+            initialize()
+            meshObj(obj,2)
+            vertex, facets = getVertexFacets()
+            #printMeshInfo()
+            #printMyInfo()
+            a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
+                     "GDMLTessellate_GmshTess")
+            #a = parent.newObject('Part::FeaturePython', \
+            #                    'GDMLTessellate_Mesh2Tess')
+            GDMLTessellated(a,vertex, facets, "mm",getSelectedMaterial())
+            if FreeCAD.GuiUp :
+               obj.ViewObject.Visibility = False
+               #print(dir(obj.ViewObject))
+               ViewProvider(a.ViewObject)
 
-
+            FreeCAD.ActiveDocument.recompute()
+            FreeCADGui.SendMsgToActiveView("ViewFit")
+               
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
@@ -463,9 +473,48 @@ class Tess2MeshFeature :
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Tess Group'), 'Tess 2 Mesh': \
+                'Tess2Mesh'), 'Tess 2 Mesh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Create FC Mesh from GDML Tessellate')}    
+
+class TetrahedronFeature :
+     
+    def Activated(self) :
+ 
+        from .GDMLObjects import GDMLTetrahedron, ViewProvider
+        from .GmshUtils import initialize, meshObj, \
+              getTetrahedrons, printMeshInfo, printMyInfo
+
+        for obj in FreeCADGui.Selection.getSelection():
+            print('Action Tetrahedron')
+            initialize()
+            meshObj(obj,3)
+            tetraheds = getTetrahedrons()
+            if tetraheds != None :
+               name ='GDMLTetrahedron_'+obj.Name
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     myTet = parent.newObject('Part::FeaturePython',name)
+               if parent == None :
+                  myTet = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
+               GDMLTetrahedron(myTet,tetraheds,"mm",getSelectedMaterial())
+               if FreeCAD.GuiUp :
+                  obj.ViewObject.Visibility = False
+                  ViewProvider(myTet.ViewObject)
+                  myTet.ViewObject.DisplayMode = "Wireframe"
+               FreeCAD.ActiveDocument.recompute()
+               FreeCADGui.SendMsgToActiveView("ViewFit")
+            else :
+               FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Tetrahedron'), 'Tetrehedron': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Create Tetrahedron from FC Shape')}    
 
 class CycleFeature :
 
@@ -677,3 +726,4 @@ FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())
+FreeCADGui.addCommand('TetrahedronCommand',TetrahedronFeature())

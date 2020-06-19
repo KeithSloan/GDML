@@ -2,11 +2,8 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(4.47233,0,0,4.04487,-119.13,-56.316)">
-        <g transform="matrix(0.223597,0,0,0.247227,28.5232,22.0793)">
-            <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:18px;">M</text>
-        </g>
-        <g transform="matrix(0.287389,0,0,0.31776,22.4967,13.822)">
-            <text x="33.374px" y="25.311px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">-&gt; <tspan x="47.495px " y="25.311px ">T</tspan></text>
+        <g transform="matrix(0.49327,0,0,0.545399,20.9655,12.8822)">
+            <text x="16.816px" y="18.398px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">T<tspan x="22.816px 29.49px " y="18.398px 18.398px ">et</tspan></text>
         </g>
     </g>
 </svg>

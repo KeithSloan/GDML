@@ -161,6 +161,7 @@ def exportDefine(name, v) :
                 'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
 def defineWorldBox(bbox):
+    global solids
     for obj in FreeCAD.ActiveDocument.Objects :
         # print("{} + {} = ".format(bbox, obj.Shape.BoundBox))
         if hasattr(obj,"Shape"):
@@ -873,6 +874,47 @@ def processGDMLTetraObject(obj, flag) :
                     'vertex4': v4Name})
     return tetraName    
 
+def processGDMLTetrahedronObject(obj, flag) :
+    global structure
+    global solids
+    tetrahedronName = nameOfGDMLobject(obj)
+    print('Len Tet'+str(len(obj.Proxy.Tetra)))
+    print(dir(obj))
+    count = 0
+    for t in obj.Proxy.Tetra :
+        tetraName = 'Tetra_'+str(count)
+        v1Name = tetraName + 'v1'
+        v2Name = tetraName + 'v2'
+        v3Name = tetraName + 'v3'
+        v4Name = tetraName + 'v4'
+        exportDefine(v1Name,t[0])
+        exportDefine(v2Name,t[1])
+        exportDefine(v3Name,t[2])
+        exportDefine(v4Name,t[3])
+        tetsolid = ET.SubElement(solids, 'tet',{'name': tetraName, \
+                    'vertex1': v1Name, \
+                    'vertex2': v2Name, \
+                    'vertex3': v3Name, \
+                    'vertex4': v4Name})
+        lvName = 'LVtetra'+str(count)
+        lvol = ET.SubElement(structure,'volume', {'name':lvName})
+        ET.SubElement(lvol, 'materialref', {'ref': obj.material})
+        ET.SubElement(lvol, 'solidref', {'ref': tetraName})
+        count = count + 1
+
+    # Now put out Assembly
+    assembly = ET.SubElement(structure, 'assembly',{'name':tetrahedronName})
+    count = 0
+    for t in obj.Proxy.Tetra :
+        lvName = 'LVtetra'+str(count)
+        physvol = ET.SubElement(assembly, 'physvol')
+        ET.SubElement(physvol, 'volumeref', {'ref':lvName})
+        #ET.SubElement(physvol, 'position')
+        #ET.SubElement(physvol, 'rotation')
+        count = count + 1
+
+    return tetrahedronName    
+
 def processGDMLTorusObject(obj, flag) :
     torusName = nameOfGDMLobject(obj)
     if flag == True :
@@ -1112,7 +1154,9 @@ def processMaterialObject(obj) :
 def processGDMLSolid(obj, addVolsFlag) :
     # Deal with GDML Solids first
     # Deal with FC Objects that convert
-    #print(obj.Proxy.Type)
+    print(dir(obj))
+    print(dir(obj.Proxy))
+    print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
           print("      GDMLArb8") 
@@ -1184,6 +1228,11 @@ def processGDMLSolid(obj, addVolsFlag) :
           return(processGDMLTetraObject(obj, addVolsFlag))
           break
 
+       if case("GDMLTetrahedron") :
+          print("      GDMLTetrahedron") 
+          return(processGDMLTetrahedronObject(obj, addVolsFlag))
+          break
+
        if case("GDMLTorus") :
           print("      GDMLTorus") 
           return(processGDMLTorusObject(obj, addVolsFlag))
@@ -1214,13 +1263,15 @@ def processGDMLSolid(obj, addVolsFlag) :
 
 def processSolid(obj, addVolsFlag) :
     # export solid & return Name
+    print('Process Solid')
     while switch(obj.TypeId) :
 
         if case("Part::FeaturePython"):
-            #print("   Python Feature")
-            if hasattr(obj.Proxy, 'Type') :
-                #print(obj.Proxy.Type) 
-                return(processGDMLSolid(obj, True))
+            print("   Python Feature")
+            #if hasattr(obj.Proxy, 'Type') :
+            #    #print(obj.Proxy.Type) 
+            #    return(processGDMLSolid(obj, True))
+            return(processGDMLSolid(obj, True))
         #
         #  Now deal with objects that map to GDML solids
         #
@@ -1276,7 +1327,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     obj = OutList[idx]
-    #print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1398,23 +1449,25 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       if case("Mesh::Feature") :
          print("   Mesh Feature") 
          # test and Fix
-         return(processMesh(obj, obj.Mesh, obj.Name))
+         processMesh(obj, obj.Mesh, obj.Name)
+         return idx + 1
          break
 
       if case("Part::FeaturePython"):
-          #print("   Python Feature")
-          if hasattr(obj.Proxy, 'Type') :
-             #print(obj.Proxy.Type) 
-             solidName = processSolid(obj, True)
-             addVolRef(xmlVol,solidName,obj.material)
-             if xmlParent != None :
-                pvol = addPhysVol(xmlParent,parentName)
-                processPosition(obj,pvol)
-                processRotation(obj,pvol)
-          else :
-             print("Not a GDML Feature")
-          return idx + 1 
-          break  
+              print("   Python Feature")
+              if hasattr(obj.Proxy, 'Type') :
+                 print(obj.Proxy.Type) 
+              solidName = processSolid(obj, True)
+              addVolRef(xmlVol,solidName,obj.material)
+              if xmlParent != None :
+                 pvol = addPhysVol(xmlParent,parentName)
+                 processPosition(obj,pvol)
+                 processRotation(obj,pvol)
+              #else :
+              #print("Not a GDML Feature")
+              #print(obj.Name)
+              return idx + 1 
+              break  
 
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
@@ -1445,22 +1498,30 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       #
       if case("Part::Box") :
          print("    Box")
-         return(processBoxObject(obj, addVolsFlag))
+         #return(processBoxObject(obj, addVolsFlag))
+         processBoxObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Cylinder") :
          print("    Cylinder")
-         return(processCylinderObject(obj, addVolsFlag))
+         #return(processCylinderObject(obj, addVolsFlag))
+         processCylinderObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Cone") :
          print("    Cone")
-         return(processConeObject(obj, addVolsFlag))
+         #return(processConeObject(obj, addVolsFlag))
+         processConeObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       if case("Part::Sphere") :
          print("    Sphere")
-         return(processSphereObject(obj, addVolsFlag))
+         #return(processSphereObject(obj, addVolsFlag))
+         processSphereObject(obj, addVolsFlag)
+         return idx + 1
          break
 
       # Not a Solid that translated to GDML solid
@@ -1473,7 +1534,9 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       print(obj.TypeId)
       if hasattr(obj,'Shape') :
          if obj.Shape.isValid() : 
-            return(processObjectShape(obj))
+            #return(processObjectShape(obj))
+            processObjectShape(obj)
+      return idx+1
       break
 
 def insertXMLvol(name):
