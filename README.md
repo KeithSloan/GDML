@@ -17,6 +17,18 @@ Needs lxml which should be installed as part of FreeCAD
 
 There are known problems with FreeCAD 0.18 it is recommended that you use FreeCAD 0.19 as above.
 ( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+
+## Checking required python libraries available to FreeCAD
+
+To check path FreeCAD uses from a command line.
+
+    freecad -c
+    import sys
+    print(sys.path)
+
+## gmsh - Python library
+
+Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above
    
 ## No module named 'lxml'
 
