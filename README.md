@@ -174,6 +174,18 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       
       So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
       create GDML Tessellated objects from these.
+      
+### T gmsh
+
+If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using gmsh
+
+### Tet
+
+If the selected FreeCAD object has a Shape then a Tetrahedera Object is created by using gmsh.
+This will be exported as an Assembly of GDML Tetra
+
+
+
 
 ## GDML Import
 
