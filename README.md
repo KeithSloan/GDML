@@ -17,6 +17,18 @@ Needs lxml which should be installed as part of FreeCAD
 
 There are known problems with FreeCAD 0.18 it is recommended that you use FreeCAD 0.19 as above.
 ( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+
+## Checking required python libraries available to FreeCAD
+
+To check path FreeCAD uses from a command line.
+
+    freecad -c
+    import sys
+    print(sys.path)
+
+## gmsh - Python library
+
+Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above
    
 ## No module named 'lxml'
 
@@ -174,6 +186,18 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       
       So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
       create GDML Tessellated objects from these.
+      
+### T gmsh
+
+If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using gmsh
+
+### Tet
+
+If the selected FreeCAD object has a Shape then a Tetrahedera Object is created by using gmsh.
+This will be exported as an Assembly of GDML Tetra
+
+
+
 
 ## GDML Import
 
