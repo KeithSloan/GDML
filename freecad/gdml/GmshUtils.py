@@ -116,7 +116,7 @@ def getVertexFacets() :
     return vertex, facets
 
 def getTetrahedrons():
-    #print('Get Tetrahedrons')
+    print('Get Tetrahedrons')
     tags, nodes = gmsh.model.mesh.getElementsByType(4)
     if len(nodes) > 0 :
        print('nodes : '+str(len(nodes)))
