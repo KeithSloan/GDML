@@ -87,10 +87,65 @@ def meshObjShape(obj, dim) :
     gmsh.model.mesh.renumberNodes()
     return True
 
+def meshObjSTL(obj, dim) :
+    obj.Mesh.write('/tmp/transfer.stl')
+    bbox = obj.Mesh.BoundBox
+    ml = maxCord(bbox) / 10
+    print('Mesh length : '+str(ml))
+    gmsh.option.setNumber("Mesh.Algorithm",8)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
+    gmsh.option.setNumber("Mesh.Optimize",1)
+    gmsh.option.setNumber("Mesh.QualityType",2)
+    gmsh.merge('/tmp/transfer.stl')
+    n = gmsh.model.getDimension()
+    s = gmsh.model.getEntities(n)
+    l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
+    gmsh.model.geo.addVolume([l])
+    print("Volume added")
+    gmsh.model.geo.synchronize()
+    gmsh.model.mesh.generate(dim)
+    print('Mesh Generated '+str(dim))
+    gmsh.model.mesh.renumberNodes()
+    #printMyInfo()
+    return True
+
+def createGmshModelFromFC(fcMesh):
+    gmsh.model.add('X2')
+    gmsh.logger.start()
+    print(dir(fcMesh.Points[0]))
+    print(fcMesh.Points)
+    nodes = range(0,fcMesh.CountPoints)
+    coords = []
+    for p in fcMesh.Points :
+        coords.append([p.x, p.y, p.z])
+    
+    #gmsh.model.mesh.addNodes(2, 1, nodes, coords)
+    for v in fcMesh.Facets :
+        print('\n Facet')
+        print(dir(v))
+        print('Index : '+str(v.Index))
+        print('PointIndices : '+str(v.PointIndices))
+        print(v.Points)
+        print(dir(v.Points))
+        # Type 2 for 3-node triangle elements:
+        try :
+           gmsh.model.mesh.addElementsByType(v.Index, 2, [], v.PointIndices)
+        except :
+           log = gmsh.logger.get()
+           print("Logger has recorded " + str(len(log)) + " lines")
+           print(log)
+           gmsh.logger.stop()
+
 def meshObjMesh(obj,dim) :
     'Create Tetrahedra Mesh from Mesh'
     print('Create Tetrahedra Mesh from Mesh')
-    return False
+    print('Facets : '+str(obj.Mesh.CountFacets))
+    print(dir(obj.Mesh))
+    meshObjSTL(obj,dim)
+    #createGmshModelFromFC(obj.Mesh)
+    return True
 
 def meshObj(obj, dim) :
     if hasattr(obj,'Shape') :

@@ -488,27 +488,27 @@ class TetrahedronFeature :
             print('Action Tetrahedron')
             initialize()
             parent = None
-            print(dir(obj))
             if meshObj(obj,3) == True :
                tetraheds = getTetrahedrons()
+               print('tetraheds : '+str(tetraheds))
                if tetraheds != None :
                   name ='GDMLTetrahedron_'+obj.Name
                   if hasattr(obj,'InList') :
                      if len(obj.InList) > 0 :
                         parent = obj.InList[0]
                         myTet = parent.newObject('Part::FeaturePython',name)
-               if parent == None :
-                  myTet = FreeCAD.ActiveDocument.addObject( \
+                  if parent == None :
+                     myTet = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               GDMLTetrahedron(myTet,tetraheds,"mm",getSelectedMaterial())
-               if FreeCAD.GuiUp :
-                  obj.ViewObject.Visibility = False
-                  ViewProvider(myTet.ViewObject)
-                  myTet.ViewObject.DisplayMode = "Wireframe"
-                  FreeCAD.ActiveDocument.recompute()
-                  FreeCADGui.SendMsgToActiveView("ViewFit")
-               else :
-                  FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
+                  GDMLTetrahedron(myTet,tetraheds,"mm",getSelectedMaterial())
+                  if FreeCAD.GuiUp :
+                     obj.ViewObject.Visibility = False
+                     ViewProvider(myTet.ViewObject)
+                     myTet.ViewObject.DisplayMode = "Wireframe"
+                     FreeCAD.ActiveDocument.recompute()
+                     FreeCADGui.SendMsgToActiveView("ViewFit")
+                  else :
+                     FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
