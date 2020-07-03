@@ -57,11 +57,13 @@ import numpy as np
 
 def initialize() :
     gmsh.initialize()
+    gmsh.option.setNumber('Mesh.Algorithm',6)
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
     gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
-    gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
+    #gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
+    # Netgen crashes
     gmsh.option.setNumber("Mesh.MaxNumThreads3D", 4)
     gmsh.option.setString("Geometry.OCCTargetUnit", 'mm')
     gmsh.option.setString("General.ErrorFileName", '/tmp/error.log')
@@ -90,14 +92,14 @@ def meshObjShape(obj, dim) :
 def meshObjSTL(obj, dim) :
     obj.Mesh.write('/tmp/transfer.stl')
     bbox = obj.Mesh.BoundBox
-    ml = maxCord(bbox) / 10
+    ml = maxCord(bbox) / 5
     print('Mesh length : '+str(ml))
-    gmsh.option.setNumber("Mesh.Algorithm",8)
+    gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
-    gmsh.option.setNumber("Mesh.Optimize",1)
-    gmsh.option.setNumber("Mesh.QualityType",2)
+    #gmsh.option.setNumber("Mesh.Optimize",1)
+    #gmsh.option.setNumber("Mesh.QualityType",2)
     gmsh.merge('/tmp/transfer.stl')
     n = gmsh.model.getDimension()
     s = gmsh.model.getEntities(n)
