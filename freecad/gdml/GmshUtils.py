@@ -72,7 +72,7 @@ def maxCord(bbox) :
     #print(maxList)
     return max(maxList)
 
-def meshObj(obj, dim) :
+def meshObjShape(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     bbox = obj.Shape.BoundBox
     ml = maxCord(bbox) / 10
@@ -85,6 +85,19 @@ def meshObj(obj, dim) :
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
     gmsh.model.mesh.renumberNodes()
+    return True
+
+def meshObjMesh(obj,dim) :
+    'Create Tetrahedra Mesh from Mesh'
+    print('Create Tetrahedra Mesh from Mesh')
+    return False
+
+def meshObj(obj, dim) :
+    if hasattr(obj,'Shape') :
+       return(meshObjShape(obj, dim))
+
+    elif hasattr(obj,'Mesh') :
+       return(meshObjMesh(obj,dim))
 
 def getVertexFacets() :
     print('Get Vertex Facets')

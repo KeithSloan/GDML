@@ -94,7 +94,6 @@ class BoxFeature:
         GDMLBox(a,10.0,10.0,10.0,"mm",getSelectedMaterial())
         #print("GDMLBox initiated")
         ViewProvider(a.ViewObject)
-        #print("GDMLBox ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -488,14 +487,16 @@ class TetrahedronFeature :
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tetrahedron')
             initialize()
-            meshObj(obj,3)
-            tetraheds = getTetrahedrons()
-            if tetraheds != None :
-               name ='GDMLTetrahedron_'+obj.Name
-               if hasattr(obj,'InList') :
-                  if len(obj.InList) > 0 :
-                     parent = obj.InList[0]
-                     myTet = parent.newObject('Part::FeaturePython',name)
+            parent = None
+            print(dir(obj))
+            if meshObj(obj,3) == True :
+               tetraheds = getTetrahedrons()
+               if tetraheds != None :
+                  name ='GDMLTetrahedron_'+obj.Name
+                  if hasattr(obj,'InList') :
+                     if len(obj.InList) > 0 :
+                        parent = obj.InList[0]
+                        myTet = parent.newObject('Part::FeaturePython',name)
                if parent == None :
                   myTet = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
@@ -504,10 +505,10 @@ class TetrahedronFeature :
                   obj.ViewObject.Visibility = False
                   ViewProvider(myTet.ViewObject)
                   myTet.ViewObject.DisplayMode = "Wireframe"
-               FreeCAD.ActiveDocument.recompute()
-               FreeCADGui.SendMsgToActiveView("ViewFit")
-            else :
-               FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
+                  FreeCAD.ActiveDocument.recompute()
+                  FreeCADGui.SendMsgToActiveView("ViewFit")
+               else :
+                  FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tetrahedron', 'MenuText': \
