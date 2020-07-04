@@ -143,13 +143,13 @@ def createGmshModelFromFC(fcMesh):
 def meshObjMesh(obj,dim) :
     'Create Tetrahedra Mesh from Mesh'
     print('Create Tetrahedra Mesh from Mesh')
-    print('Facets : '+str(obj.Mesh.CountFacets))
-    print(dir(obj.Mesh))
     meshObjSTL(obj,dim)
     #createGmshModelFromFC(obj.Mesh)
     return True
 
 def meshObj(obj, dim) :
+    # Clear any previous models
+    gmsh.clear()
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
