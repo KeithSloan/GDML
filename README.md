@@ -193,10 +193,8 @@ If the selected FreeCAD object has a Shape then a GDML Tesselated Object is crea
 
 ### Tet
 
-If the selected FreeCAD object has a Shape then a Tetrahedera Object is created by using gmsh.
-This will be exported as an Assembly of GDML Tetra
-
-
+If the selected FreeCAD object has a Shape or is a Mesh then a Tetrahedera Object is created by using gmsh.
+This can then be exported as an Assembly of GDML Tetra
 
 
 ## GDML Import
