@@ -168,7 +168,7 @@ If the selected FreeCAD object has a Shape then a GDML Tesselated Object is crea
 Workbench default options. If a material is also selected this will determine the GDML material of the
 created GDML Tessellated Object
 
-### M 2 T - Mesh 2 Tessellate
+### M 2 T - FC Mesh to GDML Tessellated
 
 If the selected FreeCAD object is a mesh then a GDML Tessellated Object is created. Again if a material is
 also selected then this will set the GDML material of the GDML Tessellated Object.
@@ -186,6 +186,8 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       
       So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
       create GDML Tessellated objects from these.
+      
+### T 2 M - GDML Tessellated to FC Mesh
       
 ### T gmsh
 
