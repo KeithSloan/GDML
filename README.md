@@ -28,7 +28,13 @@ To check path FreeCAD uses from a command line.
 
 ## gmsh - Python library
 
-Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above
+Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above.
+
+    pip install --upgrade --target <Full path to directory> gmsh
+  
+Windows: if no --target option upgrade pip   
+
+    python -m pip install -U pip
    
 ## No module named 'lxml'
 
