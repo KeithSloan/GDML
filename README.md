@@ -188,6 +188,8 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       create GDML Tessellated objects from these.
       
 ### T 2 M - GDML Tessellated to FC Mesh
+
+If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.
       
 ### T gmsh
 
