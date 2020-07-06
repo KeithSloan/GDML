@@ -1738,7 +1738,7 @@ class GDMLcutTube(GDMLcommon) :
         tube1 = Part.makeCylinder(20,60,pntC,dirC,angle)
         tube2 = Part.makeCylinder(12,60,pntC,dirC,angle)
         tube = tube1.cut(tube2)
-        Part.show(tube1)
+        #Part.show(tube1)
         #print('Create top Plane')
         topPlane = Part.makePlane(100, 100, \
                 FreeCAD.Vector(-20,-20,60),FreeCAD.Vector(0.7,0,0.71))
@@ -1895,7 +1895,8 @@ class GDMLTessellated(GDMLcommon) :
        #print(self.Vertex)
        i = 0
        for f in self.Facets :
-          #print(f)
+          print('Facet')
+          print(f)
           if len(f) == 3 : 
              print(self.Facets[i])
              i = i + 1
@@ -1905,19 +1906,28 @@ class GDMLTessellated(GDMLcommon) :
                              mul*self.Vertex[f[1]], \
                              mul*self.Vertex[f[2]]))
           else : # len should then be 4
+             i = i + 1
+             print(i)
              FCfaces.append(GDMLShared.quad( \
                              mul*self.Vertex[f[0]], \
                              mul*self.Vertex[f[1]], \
                              mul*self.Vertex[f[2]], \
                              mul*self.Vertex[f[3]]))
        shell=Part.makeShell(FCfaces)
-       #print("Is Valid?")
-       #print(shell.isValid())
-       shell.check()
+       if shell.isValid == False :
+          FreeCAD.Console.PrintWarning('Not a valid Shell/n')
+ 
+       #shell.check()
        #solid=Part.Solid(shell).removeSplitter()
-       solid=Part.Solid(shell)
-       if solid.Volume < 0:
-          solid.reverse()
+       try :
+          solid=Part.Solid(shell)
+       except : 
+          # make compound rather than just barf
+          # visualy able to view at least
+          FreeCAD.Console.PrintWarning('Problem making Solid/n')
+          solid = Part.makeCompound(FCfaces)
+       #if solid.Volume < 0:
+       #   solid.reverse()
        #print(dir(solid))   
        #bbox = solid.BoundBox
        #base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \

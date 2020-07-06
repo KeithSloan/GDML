@@ -36,6 +36,7 @@ import sys
 sys.path.append('/usr/local/lib/python3.7/site-packages/gmsh-4.5.6-MacOSX-sdk/lib')
 
 def Gmsh(obj) :
+    # Uses FreeCAD FEM 
     import ObjectsFem
     from femmesh.gmshtools import GmshTools
 
@@ -49,8 +50,6 @@ def Gmsh(obj) :
     error = gm.create_mesh()
     print(error)
     doc.recompute()
-
-#class GmshUtils :
 
 import gmsh
 import numpy as np
@@ -78,8 +77,9 @@ def meshObjShape(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     bbox = obj.Shape.BoundBox
     ml = maxCord(bbox) / 10
+    ml = 5 * ml
     print('Mesh length : '+str(ml))
-    ab = gmsh.open('/tmp/Shape2Mesh.brep')
+    gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
@@ -87,6 +87,7 @@ def meshObjShape(obj, dim) :
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
     gmsh.model.mesh.renumberNodes()
+    gmsh.write('/tmp/test.msh')
     return True
 
 def meshObjSTL(obj, dim) :
@@ -114,6 +115,7 @@ def meshObjSTL(obj, dim) :
     return True
 
 def createGmshModelFromFC(fcMesh):
+    # Not currently used
     gmsh.model.add('X2')
     gmsh.logger.start()
     print(dir(fcMesh.Points[0]))
@@ -141,13 +143,13 @@ def createGmshModelFromFC(fcMesh):
            gmsh.logger.stop()
 
 def meshObjMesh(obj,dim) :
-    'Create Tetrahedra Mesh from Mesh'
-    print('Create Tetrahedra Mesh from Mesh')
+    'Create GMSH from Mesh'
+    print('Create gmsh from Mesh')
     meshObjSTL(obj,dim)
-    #createGmshModelFromFC(obj.Mesh)
     return True
 
 def meshObj(obj, dim) :
+    # Create gmsh from shape or mesh
     # Clear any previous models
     gmsh.clear()
     if hasattr(obj,'Shape') :
@@ -160,27 +162,26 @@ def getVertexFacets() :
     print('Get Vertex Facets')
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
-    faceNodes = gmsh.model.mesh.getElementFaceNodes(2,3)
-    #print('Max : ' +str(np.amax(faceNodes)))
-    #print('Min : ' +str(np.amin(faceNodes)))
-    #print(faceNodes)
-    nodes, coord, pcords = gmsh.model.mesh.getNodes(2)
-    start = int(np.amin(nodes))
-    #print('Start : '+str(start))
-    #faceNodesNorm = np.subtract(faceNodes,1)
-    faceNodesNorm = faceNodes
-    faceNodesList = faceNodesNorm.tolist()
-    facets = [faceNodesList[x:x+3] for x in range(0, len(faceNodesList),3)]
+    nodes, coordLst, pcords = gmsh.model.mesh.getNodes(2)
+    faceNodes = gmsh.model.mesh.getElementFaceNodes(2,3,-1,True)
+    # nodes, coords are numpy arrays
+    print('Max : ' +str(np.amax(nodes)))
+    minIdx = int(np.amin(nodes))
+    print('Min : ' +str(minIdx))
+    print('faceNodes : '+str(len(faceNodes)))
+    # gmsh index starts 1
+    # fc index starts 0
+    facetList = np.subtract(faceNodes,minIdx-1)
+    facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
+    coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
+    #print(type(facets))
+    print('Number of facets : '+str(len(facets)))
     vertex = []
-    #print('Coord')
-    #print(len(coord))
-    #print(coord[0])
-    #print(type(coord))
-    #print(coord)
-    for n in coord :
-        n3 = 3 * int(n)
-        vertex.append(FreeCAD.Vector(coord[n3],coord[n3+1], \
-                               coord[n3 + 2]))
+    print('Number coords : '+str(len(coords)))
+    print('Number pcords : '+str(len(pcords)))
+    for n in coords :
+        print(n)
+        vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
     #print(vertex)
     #print(facets)
     return vertex, facets
@@ -199,6 +200,40 @@ def getTetrahedrons():
        return TetList
     else :
        return None
+
+def addFacet(msh, v0,v1,v2) :
+    c = v0 + v1 + v2
+    print(c)
+    msh.addFacet(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8])
+
+def Tessellated2Mesh(obj) :
+    import Mesh
+
+    print('Tessellated 2 Mesh')
+    if hasattr(obj.Proxy,'Facets') :
+       print('Create Mesh')
+       msh = Mesh.Mesh()
+       v = obj.Proxy.Vertex
+       print(v)
+       for f in obj.Proxy.Facets :
+           print(f)
+           print(type(v[0]))
+           ln = len(f)
+           if ln == 3 :
+              addFacet(msh,v[f[0]], v[f[1]],  v[f[2]])
+
+           elif ln == 4 :
+              addFacet(msh,v[f[0]], v[f[1]],  v[f[2]])
+              addFacet(msh,v[f[0]], v[f[2]],  v[f[3]])
+
+           else :
+              FreeCAD.Console.PrintError('Invalid Facet length '+str(ln))
+
+       return msh
+
+
+def Tetrahedron2Mesh(obj) :
+    print('Tetrahedron 2 Mesh')
 
 def printMyInfo() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron

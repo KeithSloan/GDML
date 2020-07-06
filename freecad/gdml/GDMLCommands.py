@@ -351,7 +351,7 @@ class TessellateFeature :
                print('Points : '+str(mesh.CountPoints))
                #print(mesh.Points)
                print('Facets : '+str(mesh.CountFacets))
-               #print(mesh.Facets)
+               print(mesh.Facets)
                parent = None
                name ='GDMLTessellate_Tess_'+obj.Name
                if hasattr(obj,'InList') :
@@ -464,10 +464,37 @@ class Tess2MeshFeature :
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
+        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
+
         for obj in FreeCADGui.Selection.getSelection():
-            #if len(obj.InList) == 0: # allowed only for for top level objects
-            doc = FreeCAD.ActiveDocument
             print('Action Tessellate 2 Mesh')
+            print(dir(obj.Proxy))
+            print(obj.Proxy.Type)
+            mesh = None
+            if obj.Proxy.Type == 'GDMLTessellated' :
+               print('Tessellated2Mesh')
+               mesh = Tessellated2Mesh(obj)
+    
+            if obj.Proxy.Type == 'GDMLTetrahedron' :
+               print('Tetrahedron2Mesh')
+               mesh = Tetrahedron2Mesh(obj)
+
+            if mesh != None :
+               print('Add Mesh')
+               parent = None
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     mshObj = parent.newObject('Mesh::Feature',obj.Name)
+               if parent == None :
+                     mshObj = FreeCAD.ActiveDocument.addObject( \
+                           'Mesh::Feature',obj.Name)
+               mshObj.Mesh = mesh
+               if FreeCAD.GuiUp :
+                  obj.ViewObject.Visibility = False
+                  mshObj.ViewObject.DisplayMode = "Wireframe"
+                  FreeCAD.ActiveDocument.recompute()
+                  FreeCADGui.SendMsgToActiveView("ViewFit")
     
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \
