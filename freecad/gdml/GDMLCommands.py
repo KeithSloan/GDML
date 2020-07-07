@@ -395,22 +395,24 @@ class TessellateGmshFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             initialize()
-            meshObj(obj,2)
-            vertex, facets = getVertexFacets()
-            #printMeshInfo()
-            #printMyInfo()
-            a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                     "GDMLTessellate_GmshTess")
-            #a = parent.newObject('Part::FeaturePython', \
-            #                    'GDMLTessellate_Mesh2Tess')
-            GDMLTessellated(a,vertex, facets, "mm",getSelectedMaterial())
-            if FreeCAD.GuiUp :
-               obj.ViewObject.Visibility = False
-               #print(dir(obj.ViewObject))
-               ViewProvider(a.ViewObject)
-
-            FreeCAD.ActiveDocument.recompute()
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            parent = None
+            if meshObj(obj,2) == True :
+               vertex, facets = getVertexFacets()
+               name ='GDMLTessellate_'+obj.Name
+               if hasattr(obj,'InList') :
+                  if len(obj.InList) > 0 :
+                     parent = obj.InList[0]
+                     myTes = parent.newObject('Part::FeaturePython',name)
+               if parent == None :
+                  myTes = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
+               GDMLTessellated(myTes,vertex, facets, "mm",getSelectedMaterial())
+               if FreeCAD.GuiUp :
+                  obj.ViewObject.Visibility = False
+                  ViewProvider(myTes.ViewObject)
+                  myTes.ViewObject.DisplayMode = "Wireframe"
+                  FreeCAD.ActiveDocument.recompute()
+                  FreeCADGui.SendMsgToActiveView("ViewFit")
                
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \

@@ -115,6 +115,7 @@ def meshObjSTL(obj, dim) :
     return True
 
 def createGmshModelFromFC(fcMesh):
+    print('CreateGsmhModelFromFC')
     # Not currently used
     gmsh.model.add('X2')
     gmsh.logger.start()
@@ -162,28 +163,46 @@ def getVertexFacets() :
     print('Get Vertex Facets')
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
-    nodes, coordLst, pcords = gmsh.model.mesh.getNodes(2)
-    faceNodes = gmsh.model.mesh.getElementFaceNodes(2,3,-1,True)
+    # Get Triangle Facets
+    tags, faceNodes = gmsh.model.mesh.getElementsByType(2)
+    #print('faceNodes datatype : '+str(faceNodes.dtype))
+    faceNodes = faceNodes.astype('int32')
     # nodes, coords are numpy arrays
-    print('Max : ' +str(np.amax(nodes)))
-    minIdx = int(np.amin(nodes))
+    maxIdx = np.amax(faceNodes)
+    print('Max : ' +str(np.amax(faceNodes)))
+    minIdx = int(np.amin(faceNodes))
     print('Min : ' +str(minIdx))
     print('faceNodes : '+str(len(faceNodes)))
     # gmsh index starts 1
     # fc index starts 0
-    facetList = np.subtract(faceNodes,minIdx-1)
+    facetList = np.subtract(faceNodes,minIdx)
     facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
-    coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
-    #print(type(facets))
     print('Number of facets : '+str(len(facets)))
-    vertex = []
-    print('Number coords : '+str(len(coords)))
-    print('Number pcords : '+str(len(pcords)))
-    for n in coords :
-        print(n)
-        vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
+    #print('Facets')
+    #for f in facets :
+    #    print(f)
+
+    # Attempt at bulk getting coordinate
+    #nodes, coordLst, pcords = gmsh.model.mesh.getNodes(2)
+    #print('coords datatype : '+str(coordLst.dtype))
+    #coordLst = coordLst.astype('int32')
+    #coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
+    #print('Number coords : '+str(len(coords)))
+    #print('Number pcords : '+str(len(pcords)))
+    #print(type(facets))
+    #vertex = []
+    #for n in coords :
+    #    print(n)
+    #    vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
     #print(vertex)
-    #print(facets)
+    
+    # Get coords for individual nodes 
+    vertex = []
+    # range assumes start at 0
+    for n in range(minIdx,maxIdx+1) :
+        coord, pccord = gmsh.model.mesh.getNode(n)
+        vertex.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
+    print('Vertex : '+str(len(vertex)))
     return vertex, facets
 
 def getTetrahedrons():

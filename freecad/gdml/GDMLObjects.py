@@ -1895,19 +1895,14 @@ class GDMLTessellated(GDMLcommon) :
        #print(self.Vertex)
        i = 0
        for f in self.Facets :
-          print('Facet')
-          print(f)
+          #print('Facet')
+          #print(f)
           if len(f) == 3 : 
-             print(self.Facets[i])
-             i = i + 1
-             print(i)
              FCfaces.append(GDMLShared.triangle( \
                              mul*self.Vertex[f[0]], \
                              mul*self.Vertex[f[1]], \
                              mul*self.Vertex[f[2]]))
           else : # len should then be 4
-             i = i + 1
-             print(i)
              FCfaces.append(GDMLShared.quad( \
                              mul*self.Vertex[f[0]], \
                              mul*self.Vertex[f[1]], \
