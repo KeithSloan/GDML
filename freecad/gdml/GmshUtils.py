@@ -77,7 +77,6 @@ def meshObjShape(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     bbox = obj.Shape.BoundBox
     ml = maxCord(bbox) / 10
-    ml = 5 * ml
     print('Mesh length : '+str(ml))
     gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
@@ -93,7 +92,7 @@ def meshObjShape(obj, dim) :
 def meshObjSTL(obj, dim) :
     obj.Mesh.write('/tmp/transfer.stl')
     bbox = obj.Mesh.BoundBox
-    ml = maxCord(bbox) / 5
+    ml = maxCord(bbox) / 10
     print('Mesh length : '+str(ml))
     gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)

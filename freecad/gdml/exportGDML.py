@@ -1154,9 +1154,9 @@ def processMaterialObject(obj) :
 def processGDMLSolid(obj, addVolsFlag) :
     # Deal with GDML Solids first
     # Deal with FC Objects that convert
-    print(dir(obj))
-    print(dir(obj.Proxy))
-    print(obj.Proxy.Type)
+    #print(dir(obj))
+    #print(dir(obj.Proxy))
+    #print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
           print("      GDMLArb8") 
@@ -1263,11 +1263,11 @@ def processGDMLSolid(obj, addVolsFlag) :
 
 def processSolid(obj, addVolsFlag) :
     # export solid & return Name
-    print('Process Solid')
+    #print('Process Solid')
     while switch(obj.TypeId) :
 
         if case("Part::FeaturePython"):
-            print("   Python Feature")
+            #print("   Python Feature")
             #if hasattr(obj.Proxy, 'Type') :
             #    #print(obj.Proxy.Type) 
             #    return(processGDMLSolid(obj, True))
@@ -1454,7 +1454,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          break
 
       if case("Part::FeaturePython"):
-              print("   Python Feature")
+              #print("   Python Feature")
               if hasattr(obj.Proxy, 'Type') :
                  print(obj.Proxy.Type) 
               solidName = processSolid(obj, True)
