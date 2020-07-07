@@ -329,7 +329,7 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
-      #obj.ViewObject.ShapeColor = colourMaterial(material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLBox'
       self.Fred = 10
       obj.Proxy = self
