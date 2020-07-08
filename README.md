@@ -6,9 +6,9 @@ FreeCAD's python Importer & Exporter for GDML files.
 
 Install by use of FreeCAD Addon Manager
 
-### Needs python libraries - lxml & gmsh
+Required python libraries - lxml & gmsh
 
-## lxml
+## lxml - python library
 
 lxml which should be installed as part of FreeCAD
 
@@ -40,7 +40,7 @@ To check path FreeCAD uses from a command line/window.
 There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended that you use FreeCAD 0.19 as above.
 ( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
 
-## gmsh - Python library
+## gmsh - python library
 
 Must be installed in a location that FreeCAD sees to check path FreeCAD uses from a command line/window.
 
