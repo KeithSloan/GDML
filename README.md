@@ -1,63 +1,72 @@
 ## Installable FreeCAD Python Workbench
 
-
 FreeCAD's python Importer & Exporter for GDML files.
-
 
 ## Installation 
 
 Install by use of FreeCAD Addon Manager
 
-Needs lxml which should be installed as part of FreeCAD
+### Needs python libraries - lxml & gmsh
+
+## lxml
+
+lxml which should be installed as part of FreeCAD
 
    * FreeCAD_0.19.19424 and above.
    * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
    
-## FreeCAD version 0.18
 
-There are known problems with FreeCAD 0.18 it is recommended that you use FreeCAD 0.19 as above.
-( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+### Checking required python libraries available to FreeCAD
 
-## Checking required python libraries available to FreeCAD
-
-To check path FreeCAD uses from a command line.
+To check path FreeCAD uses from a command line/window.
 
     freecad -c
     import sys
     print(sys.path)
 
+### Manual install of lxml
+
+    pip3 install lxml -t < directory >
+  
+### Check lxml correctly installed
+
+    freecad -c
+    import lxml
+    from lxml import etree
+    print(etree.LXML_VERSION)
+
+### FreeCAD version 0.18
+
+There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended that you use FreeCAD 0.19 as above.
+( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+
 ## gmsh - Python library
 
 Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above.
+
+to check path FreeCAD uses from a command line/window.
+
+    freecad -c
+    import sys
+    print(sys.path)
+
+In a command window / line
 
     pip install --upgrade --target <Full path to directory> gmsh
   
 Windows: if no --target option upgrade pip   
 
     python -m pip install -U pip
-   
-## No module named 'lxml'
+        
+For example on Windows system where FreeCAD is installed on the D drive
 
-If you get an error message No module named 'lxml' then on Linux you can diagnose as follows.
-
-To check path FreeCAD uses from a command line.
-
-    freecad -c
-    import sys
-    print(sys.path)
+    pip install --target="D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages" gmsh
     
-To check lxml correctly installed for freecad
+will create 
 
-    freecad -c
-    import lxml
-    from lxml import etree
-    print(etree.LXML_VERSION)
-    
- On linux to install lxml to a specific directory
- 
-    pip3 install lxml -t <directory>
-    
-   
+    D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\gmsh-4.6.0-py3.8.egg-info
+    D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\Lib\site-packages\gmsh-4.6.0-Windows64-sdk
+     
 ## Details of GDML
 
 For more information on GDML see
