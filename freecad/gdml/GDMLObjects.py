@@ -1905,9 +1905,10 @@ class GDMLTessellated(GDMLcommon) :
        meshObj(fp.Proxy.SourceObj,2,True,fp.Proxy.Object)
        vertex, facets = getVertexFacets()
        fp.Proxy.Vertex = vertex
-       fp.Proxy.vertex = len(vertex)
+       self.Object.vertex = len(vertex)
        fp.Proxy.Facets = facets
-       fp.Proxy.facets = len(facets)
+       self.Object.facets = len(facets)
+       FreeCADGui.updateGui()
 
    def execute(self, fp):
        self.createGeometry(fp)
