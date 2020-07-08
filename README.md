@@ -4,7 +4,7 @@ FreeCAD's python Importer & Exporter for GDML files.
 
 ## Installation 
 
-Install by use of FreeCAD Addon Manager
+Install by use of FreeCAD Addon Manager ==> GDML ==> update
 
 Required python libraries - lxml & gmsh
 
