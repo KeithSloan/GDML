@@ -42,9 +42,7 @@ There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended th
 
 ## gmsh - Python library
 
-Must be installed in a location that FreeCAD sees i.e. in the printed sys.path above.
-
-to check path FreeCAD uses from a command line/window.
+Must be installed in a location that FreeCAD sees to check path FreeCAD uses from a command line/window.
 
     freecad -c
     import sys
