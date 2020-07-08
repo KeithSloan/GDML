@@ -1841,7 +1841,7 @@ class GDMLQuadrangular(GDMLcommon) :
        
 class GDMLTessellated(GDMLcommon) :
     
-   def __init__(self, obj, vertex, facets, lunit, material) :
+   def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, material) :
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
       obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
@@ -1850,6 +1850,14 @@ class GDMLTessellated(GDMLcommon) :
       obj.addProperty('App::PropertyInteger','vertex','GDMLTessellated', \
                       'Vertex').vertex = len(vertex)
       obj.setEditorMode('vertex',1)
+      obj.addProperty('App::PropertyFloat','maxLength','GDMLTessellated', \
+                      'Max Length').maxLength = meshLen
+      obj.addProperty('App::PropertyFloat','curveLen','GDMLTessellated', \
+                      'Curve Length').curveLen = meshLen
+      obj.addProperty('App::PropertyFloat','pointLen','GDMLTessellated', \
+                      'Point Length').pointLen = meshLen
+      obj.addProperty('App::PropertyBool','Remesh','GDMLTessellated', \
+                      'ReMesh').Remesh = False
       obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
                       'lunit').lunit = lunit
       obj.addProperty("App::PropertyEnumeration","material", \
@@ -1857,6 +1865,7 @@ class GDMLTessellated(GDMLcommon) :
       setMaterial(obj, material)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLTessellated'
+      self.SourceObj = sourceObj
       self.Vertex = vertex
       self.Facets = facets
       self.Object = obj
@@ -1878,11 +1887,27 @@ class GDMLTessellated(GDMLcommon) :
            if fp.editable == True :
               self.addProperties()
 
+       if prop in ['Remesh'] :
+           if fp.Remesh == True :
+              self.reMesh(fp)
+              self.execute(fp)
+
        #if prop in ['v1','v2','v3','v4','type','lunit'] :
        #   self.createGeometry(fp)
 
    def addProperties(self) :
        print('Add Properties')
+
+   def reMesh(self,fp) :
+       from .GmshUtils import initialize, meshObj, getVertexFacets
+ 
+       initialize()
+       meshObj(fp.Proxy.SourceObj,2,True,fp.Proxy.Object)
+       vertex, facets = getVertexFacets()
+       fp.Proxy.Vertex = vertex
+       fp.Proxy.vertex = len(vertex)
+       fp.Proxy.Facets = facets
+       fp.Proxy.facets = len(facets)
 
    def execute(self, fp):
        self.createGeometry(fp)

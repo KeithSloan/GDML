@@ -386,7 +386,7 @@ class TessellateGmshFeature :
     
         import ObjectsFem
         from .GmshUtils import initialize, meshObj, \
-              getVertexFacets, printMeshInfo, printMyInfo
+              getVertexFacets, getMeshLen, printMeshInfo, printMyInfo
 
         from femmesh.gmshtools import GmshTools
  
@@ -406,7 +406,8 @@ class TessellateGmshFeature :
                if parent == None :
                   myTes = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               GDMLTessellated(myTes,vertex, facets, "mm",getSelectedMaterial())
+               GDMLTessellated(myTes,obj,getMeshLen(obj),vertex, facets, "mm",\
+                               getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
                   ViewProvider(myTes.ViewObject)

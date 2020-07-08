@@ -73,31 +73,41 @@ def maxCord(bbox) :
     #print(maxList)
     return max(maxList)
 
-def meshObjShape(obj, dim) :
-    obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
-    bbox = obj.Shape.BoundBox
+def getMeshLen(obj):
+    if hasattr(obj,'Shape') :
+       bbox = obj.Shape.BoundBox
+
+    elif hasattr(obj,'Mesh') :
+       bbox = obj.Mesh.Boundbox
     ml = maxCord(bbox) / 10
     print('Mesh length : '+str(ml))
+    return ml
+
+def setMeshParms(meshParms, obj, tessObj) :
+    if meshParms == False :
+       ml = getMeshLen(obj)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
+    else :
+       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", tessObj.maxLength)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", \
+               tessObj.curveLen)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", \
+               tessObj.pointLen)
+
+def meshObjShape(obj, dim) :
+    obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
     gmsh.open('/tmp/Shape2Mesh.brep')
     gmsh.model.occ.synchronize()
-    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
     gmsh.model.mesh.renumberNodes()
-    gmsh.write('/tmp/test.msh')
     return True
 
 def meshObjSTL(obj, dim) :
     obj.Mesh.write('/tmp/transfer.stl')
-    bbox = obj.Mesh.BoundBox
-    ml = maxCord(bbox) / 10
-    print('Mesh length : '+str(ml))
     gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
     #gmsh.option.setNumber("Mesh.Optimize",1)
     #gmsh.option.setNumber("Mesh.QualityType",2)
     gmsh.merge('/tmp/transfer.stl')
@@ -110,7 +120,6 @@ def meshObjSTL(obj, dim) :
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated '+str(dim))
     gmsh.model.mesh.renumberNodes()
-    #printMyInfo()
     return True
 
 def createGmshModelFromFC(fcMesh):
@@ -148,10 +157,11 @@ def meshObjMesh(obj,dim) :
     meshObjSTL(obj,dim)
     return True
 
-def meshObj(obj, dim) :
+def meshObj(obj, dim, meshParms=False, tessObj=None) :
     # Create gmsh from shape or mesh
     # Clear any previous models
     gmsh.clear()
+    setMeshParms(meshParms,obj,tessObj)
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
