@@ -199,12 +199,24 @@ If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is cr
       
 ### T gmsh
 
-If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using gmsh
+If the selected FreeCAD object has a Shape or Mesh then a GDML Tesselated Object is created by using gmsh.
+
+The initial mesh size is determined by the shapes bounding box divided by 10.
+
+You can **remesh** a copy of the original object by changing the properties of the created GDMLTesselate Object
+    
+    max Length - CharacteristicLengthMax
+    curve Len  - CharacteristicLengthFromCurvature
+    point Len  - CharacteristicLengthFromPoints
+    
+and then changing the **Remesh** property to True
 
 ### Tet
 
 If the selected FreeCAD object has a Shape or is a Mesh then a Tetrahedera Object is created by using gmsh.
 This can then be exported as an Assembly of GDML Tetra
+
+If you would like to see support of remeshing of Tetrahedra the same as Tessellated then please contact me or raise as an issue.
 
 
 ## GDML Import
