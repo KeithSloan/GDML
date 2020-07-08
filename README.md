@@ -438,27 +438,6 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 * OpenCascade Forum members:
   *  Sergey Slyadnev
     
-## Future Development Road Map
-
-  * Workbench Dialog for initial GDML Object values(?)
-  * Handle different Positioning between GDML & FreeCAD
-  * Add support for quantity
-  * Add further GDML Objects
-  * Add facility to add Volume
-  * Add facility to edit Materials
-  * Add facility to edit Isotopes
-  * Add facility to edit Elements 
-
-* Workbench
-
-  * Analize FreeCAD file for direct conversion of object to GDML solid
-  * Display mesh for objects that will not directly convert
-  * Provide options to control meshing objects that will be Tessellated
-  * Icons to Analize and Export
-* Tidy softLink script
-* Make FreeCAD an installable workbench 
-* Documentation
-* Investigate handling of Materials
 
 ## For NIST Materials database see http://physics.nist.gov/PhysRefData
 
