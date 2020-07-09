@@ -386,7 +386,7 @@ class TessellateGmshFeature :
     
         import ObjectsFem
         from .GmshUtils import initialize, meshObj, \
-              getVertexFacets, getMeshLen, printMeshInfo, printMyInfo
+              getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
 
         from femmesh.gmshtools import GmshTools
  
@@ -397,7 +397,8 @@ class TessellateGmshFeature :
             initialize()
             parent = None
             if meshObj(obj,2) == True :
-               vertex, facets = getVertexFacets()
+               facets = getFacets()
+               vertex = getVertex()
                name ='GDMLTessellate_'+obj.Name
                if hasattr(obj,'InList') :
                   if len(obj.InList) > 0 :

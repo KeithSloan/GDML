@@ -90,11 +90,12 @@ def setMeshParms(meshParms, obj, tessObj) :
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
     else :
-       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", tessObj.maxLength)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", \
+             tessObj.m_maxLength)
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", \
-               tessObj.curveLen)
+             tessObj.m_curveLen)
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", \
-               tessObj.pointLen)
+             tessObj.m_pointLen)
 
 def meshObjShape(obj, dim) :
     obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
@@ -168,7 +169,21 @@ def meshObj(obj, dim, meshParms=False, tessObj=None) :
     elif hasattr(obj,'Mesh') :
        return(meshObjMesh(obj,dim))
 
-def getVertexFacets() :
+def getVertex() :
+    # Attempt at bulk getting coordinate
+    nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
+    #print('coords datatype : '+str(coordLst.dtype))
+    coordLst = coordLst.astype('int32')
+    coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
+    print('Number coords : '+str(len(coords)))
+    #vertex = [0,0,0]	# Dummy vertex as gmsh indexs from 1
+    vertex = []
+    for n in coords :
+    #    print(n)
+        vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
+    return vertex
+
+def getFacets() :
     print('Get Vertex Facets')
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
@@ -184,46 +199,32 @@ def getVertexFacets() :
     print('faceNodes : '+str(len(faceNodes)))
     # gmsh index starts 1
     # fc index starts 0
+    #if minIdx > 1 :
+    #   facetList = np.subtract(faceNodes,minIdx-1)
+    #else :
+    #   facetList = faceNodes
+    #
     facetList = np.subtract(faceNodes,minIdx)
+
     facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
     print('Number of facets : '+str(len(facets)))
     #print('Facets')
     #for f in facets :
-    #    print(f)
-
-    # Attempt at bulk getting coordinate
-    #nodes, coordLst, pcords = gmsh.model.mesh.getNodes(2)
-    #print('coords datatype : '+str(coordLst.dtype))
-    #coordLst = coordLst.astype('int32')
-    #coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
-    #print('Number coords : '+str(len(coords)))
-    #print('Number pcords : '+str(len(pcords)))
-    #print(type(facets))
-    #vertex = []
-    #for n in coords :
-    #    print(n)
-    #    vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
-    #print(vertex)
-    
-    # Get coords for individual nodes 
-    vertex = []
-    # range assumes start at 0
-    for n in range(minIdx,maxIdx+1) :
-        coord, pccord = gmsh.model.mesh.getNode(n)
-        vertex.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
-    print('Vertex : '+str(len(vertex)))
-    return vertex, facets
+    #   print(f)
+    return facets
 
 def getTetrahedrons():
     print('Get Tetrahedrons')
-    tags, nodes = gmsh.model.mesh.getElementsByType(4)
+    tags, nodesLst = gmsh.model.mesh.getElementsByType(4)
+    nodes = np.subtract(nodesLst,1)
+
+    vertex = getVertex()
     if len(nodes) > 0 :
        print('nodes : '+str(len(nodes)))
-       #print(nodes[0])
        FCnodes = []
        for n in nodes :
-           coord, pccord = gmsh.model.mesh.getNode(n)
-           FCnodes.append(FreeCAD.Vector(coord[0],coord[1],coord[2]))
+           #print('n : '+str(n))
+           FCnodes.append(vertex[n])
        TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes),4)]
        return TetList
     else :
