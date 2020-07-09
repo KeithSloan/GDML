@@ -330,9 +330,9 @@ The Ability to change to change these maybe implemented in the future.
 
 There is now an option to toggle `Printverbose` flag to reduce printing to the python console.
 
-## New facility compound
+## Compound & FEM - Finite Element Analysis
 
-### Use of `compound` to facilitate preperation for FEM analysis
+### Use of `compound` icon **'C'** to facilitate preperation for FEM analysis
 
 #### Usage
 
