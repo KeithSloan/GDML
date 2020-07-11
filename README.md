@@ -212,11 +212,13 @@ The initial mesh size is determined by the shapes bounding box divided by 10.
 
 You can **remesh** a copy of the original object by changing the properties of the created GDMLTesselate Object
     
-    max Length - CharacteristicLengthMax
-    curve Len  - CharacteristicLengthFromCurvature
-    point Len  - CharacteristicLengthFromPoints
+    m_max Length - CharacteristicLengthMax
+    m_curve Len  - CharacteristicLengthFromCurvature
+    m_point Len  - CharacteristicLengthFromPoints
     
-and then changing the **Remesh** property to True
+and then changing the **m_Remesh** property to True.
+
+Note: For some reason there appears to be a delay in updating the new number of vertex. facets counts displayed.
 
 ### Tet
 
@@ -328,9 +330,9 @@ The Ability to change to change these maybe implemented in the future.
 
 There is now an option to toggle `Printverbose` flag to reduce printing to the python console.
 
-## New facility compound
+## Compound & FEM - Finite Element Analysis
 
-### Use of `compound` to facilitate preperation for FEM analysis
+### Use of `compound` icon **'C'** to facilitate preperation for FEM analysis
 
 #### Usage
 
