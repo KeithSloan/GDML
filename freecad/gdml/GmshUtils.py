@@ -98,8 +98,11 @@ def setMeshParms(meshParms, obj, tessObj) :
              tessObj.m_pointLen)
 
 def meshObjShape(obj, dim) :
-    obj.Shape.exportBrep("/tmp/Shape2Mesh.brep")
-    gmsh.open('/tmp/Shape2Mesh.brep')
+    import tempfile
+
+    tmpFile = tempfile.NamedTemporaryFile(suffix='.brep').name
+    obj.Shape.exportBrep(tmpFile)
+    gmsh.open(tmpFile)
     gmsh.model.occ.synchronize()
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
@@ -107,11 +110,15 @@ def meshObjShape(obj, dim) :
     return True
 
 def meshObjSTL(obj, dim) :
-    obj.Mesh.write('/tmp/transfer.stl')
+
+    import tempfile
+
+    tmpFile = tempfile.NamedTemporaryFile(suffix='.stl').name
+    obj.Mesh.write(tmpFile)
     gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
     #gmsh.option.setNumber("Mesh.Optimize",1)
     #gmsh.option.setNumber("Mesh.QualityType",2)
-    gmsh.merge('/tmp/transfer.stl')
+    gmsh.merge(tmpFile)
     n = gmsh.model.getDimension()
     s = gmsh.model.getEntities(n)
     l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
