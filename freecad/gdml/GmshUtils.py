@@ -78,7 +78,7 @@ def getMeshLen(obj):
        bbox = obj.Shape.BoundBox
 
     elif hasattr(obj,'Mesh') :
-       bbox = obj.Mesh.Boundbox
+       bbox = obj.Mesh.BoundBox
     ml = maxCord(bbox) / 10
     print('Mesh length : '+str(ml))
     return ml
@@ -115,19 +115,19 @@ def meshObjSTL(obj, dim) :
 
     tmpFile = tempfile.NamedTemporaryFile(suffix='.stl').name
     obj.Mesh.write(tmpFile)
-    gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
+    #gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
     #gmsh.option.setNumber("Mesh.Optimize",1)
     #gmsh.option.setNumber("Mesh.QualityType",2)
     gmsh.merge(tmpFile)
     n = gmsh.model.getDimension()
     s = gmsh.model.getEntities(n)
-    l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
-    gmsh.model.geo.addVolume([l])
-    print("Volume added")
+    #l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
+    #gmsh.model.geo.addVolume([l])
+    #print("Volume added")
     gmsh.model.geo.synchronize()
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated '+str(dim))
-    gmsh.model.mesh.renumberNodes()
+    #gmsh.model.mesh.renumberNodes()
     return True
 
 def createGmshModelFromFC(fcMesh):
@@ -180,13 +180,15 @@ def getVertex() :
     # Attempt at bulk getting coordinate
     nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
     #print('coords datatype : '+str(coordLst.dtype))
-    coordLst = coordLst.astype('int32')
+    # int does not work needs to be float at least
+    #coordLst = coordLst.astype('int32')
     coords = [coordLst[x:x+3] for x in range(0, len(coordLst),3)]
     print('Number coords : '+str(len(coords)))
-    #vertex = [0,0,0]	# Dummy vertex as gmsh indexs from 1
     vertex = []
+    #print('Coords')
     for n in coords :
-    #    print(n)
+        #print(n)
+        #print(n[0],n[1],n[2])
         vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
     return vertex
 
