@@ -1839,32 +1839,33 @@ class GDMLQuadrangular(GDMLcommon) :
    def execute(self, fp):
        pass
        
-class GDMLTessellated(GDMLcommon) :
+class GDMLGmshTessellated(GDMLcommon) :
     
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, material) :
-      obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
+      obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
                       'Editable').editable = False
-      obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
+      obj.addProperty('App::PropertyInteger','facets','GDMLGmshTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
-      obj.addProperty('App::PropertyInteger','vertex','GDMLTessellated', \
+      obj.addProperty('App::PropertyInteger','vertex','GDMLGmshTessellated', \
                       'Vertex').vertex = len(vertex)
       obj.setEditorMode('vertex',1)
-      obj.addProperty('App::PropertyFloat','m_maxLength','GDMLTessellated', \
+      obj.addProperty('App::PropertyFloat','m_maxLength', \
+                      'GDMLGmshTessellated', \
                       'Max Length').m_maxLength = meshLen
-      obj.addProperty('App::PropertyFloat','m_curveLen','GDMLTessellated', \
+      obj.addProperty('App::PropertyFloat','m_curveLen','GDMLGmshTessellated', \
                       'Curve Length').m_curveLen = meshLen
-      obj.addProperty('App::PropertyFloat','m_pointLen','GDMLTessellated', \
+      obj.addProperty('App::PropertyFloat','m_pointLen','GDMLGmshTessellated', \
                       'Point Length').m_pointLen = meshLen
-      obj.addProperty('App::PropertyBool','m_Remesh','GDMLTessellated', \
+      obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
                       'ReMesh').m_Remesh = False
-      obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
+      obj.addProperty('App::PropertyString','lunit','GDMLGmshTessellated', \
                       'lunit').lunit = lunit
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
       obj.addExtension('App::OriginGroupExtensionPython', self)
-      self.Type = 'GDMLTessellated'
+      self.Type = 'GDMLGmshTessellated'
       self.SourceObj = sourceObj
       self.Vertex = vertex
       self.Facets = facets
@@ -1910,6 +1911,101 @@ class GDMLTessellated(GDMLcommon) :
        fp.Proxy.Facets = facets
        self.Object.facets = len(facets)
        FreeCADGui.updateGui()
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       print("Tessellated")
+       mul = GDMLShared.getMult(fp)
+       FCfaces = []
+       #print(self.Vertex)
+       i = 0
+       for f in self.Facets :
+          #print('Facet')
+          #print(f)
+          if len(f) == 3 : 
+             FCfaces.append(GDMLShared.triangle( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]]))
+          else : # len should then be 4
+             FCfaces.append(GDMLShared.quad( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]], \
+                             mul*self.Vertex[f[3]]))
+       shell=Part.makeShell(FCfaces)
+       if shell.isValid == False :
+          FreeCAD.Console.PrintWarning('Not a valid Shell/n')
+ 
+       #shell.check()
+       #solid=Part.Solid(shell).removeSplitter()
+       try :
+          solid=Part.Solid(shell)
+       except : 
+          # make compound rather than just barf
+          # visualy able to view at least
+          FreeCAD.Console.PrintWarning('Problem making Solid/n')
+          solid = Part.makeCompound(FCfaces)
+       #if solid.Volume < 0:
+       #   solid.reverse()
+       #print(dir(solid))   
+       #bbox = solid.BoundBox
+       #base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
+       #                      -(bbox.YMin+bbox.YMax)/2 \
+       #                      -(bbox.ZMin+bbox.ZMax)/2)
+       #print(base)
+
+       #base = FreeCAD.Vector(0,0,0)
+       #fp.Shape = translate(solid,base)
+       fp.Shape = solid
+       fp.Placement = currPlacement
+   
+class GDMLTessellated(GDMLcommon) :
+    
+   def __init__(self, obj, vertex, facets, lunit, material) :
+      obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
+                      'Editable').editable = False
+      obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
+                      'Facets').facets = len(facets)
+      obj.setEditorMode('facets',1)
+      obj.addProperty('App::PropertyInteger','vertex','GDMLTessellated', \
+                      'Vertex').vertex = len(vertex)
+      obj.setEditorMode('vertex',1)
+      obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
+                      'lunit').lunit = lunit
+      obj.addProperty("App::PropertyEnumeration","material", \
+                      "GDMLTessellated","Material")
+      setMaterial(obj, material)
+      obj.addExtension('App::OriginGroupExtensionPython', self)
+      self.Type = 'GDMLTessellated'
+      self.Vertex = vertex
+      self.Facets = facets
+      obj.Proxy = self
+
+   def getMaterial(self):
+       return obj.material
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       if prop in ['editable'] :
+           if fp.editable == True :
+              self.addProperties()
+
+       #if prop in ['v1','v2','v3','v4','type','lunit'] :
+       #   self.createGeometry(fp)
+
+   def addProperties(self) :
+       print('Add Properties')
 
    def execute(self, fp):
        self.createGeometry(fp)

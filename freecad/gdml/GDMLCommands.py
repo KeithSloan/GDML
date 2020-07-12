@@ -351,7 +351,7 @@ class TessellateFeature :
                print('Points : '+str(mesh.CountPoints))
                #print(mesh.Points)
                print('Facets : '+str(mesh.CountFacets))
-               print(mesh.Facets)
+               #print(mesh.Facets)
                parent = None
                name ='GDMLTessellate_Tess_'+obj.Name
                if hasattr(obj,'InList') :
@@ -361,10 +361,8 @@ class TessellateFeature :
                if parent == None :
                   myTess = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-
                GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
-                              "mm",getSelectedMaterial())
-            
+                      "mm", getSelectedMaterial())
                myTess.Placement = obj.Placement
                FreeCAD.ActiveDocument.recompute()
                if FreeCAD.GuiUp :
@@ -390,7 +388,7 @@ class TessellateGmshFeature :
 
         from femmesh.gmshtools import GmshTools
  
-        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
@@ -407,8 +405,8 @@ class TessellateGmshFeature :
                if parent == None :
                   myTes = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               GDMLTessellated(myTes,obj,getMeshLen(obj),vertex, facets, "mm",\
-                               getSelectedMaterial())
+               GDMLGmshTessellated(myTes,obj,getMeshLen(obj),vertex, facets, \
+                  "mm", getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
                   ViewProvider(myTes.ViewObject)

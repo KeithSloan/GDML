@@ -879,7 +879,6 @@ def processGDMLTetrahedronObject(obj, flag) :
     global solids
     tetrahedronName = nameOfGDMLobject(obj)
     print('Len Tet'+str(len(obj.Proxy.Tetra)))
-    print(dir(obj))
     count = 0
     for t in obj.Proxy.Tetra :
         tetraName = 'Tetra_'+str(count)
@@ -1220,6 +1219,12 @@ def processGDMLSolid(obj, addVolsFlag) :
 
        if case("GDMLTessellated") :
           #print("      GDMLTessellated") 
+          return(processGDMLTessellatedObject(obj, addVolsFlag))
+          break
+
+       if case("GDMLGmshTessellated") :
+          #print("      GDMLGmshTessellated")
+          # export GDMLTessellated & GDMLGmshTesssellated should be the same
           return(processGDMLTessellatedObject(obj, addVolsFlag))
           break
 
