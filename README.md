@@ -175,13 +175,16 @@ so if you feel you need a particular solid to be added please contact me.
 
 The following icons are available for Tessellated operations
 
-### T - Tessellate
+### Tessellate
+![GDML Tessellate-Icon](freecad/gdml/Resources/icons/GDML_Tessellate.svg) Tessellate
 
 If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using the Meshing
 Workbench default options. If a material is also selected this will determine the GDML material of the
 created GDML Tessellated Object
 
-### M 2 T - FC Mesh to GDML Tessellated
+### FC Mesh to GDML Tessellated
+![GDML FC-Mesh2Tess-Icon](freecad/gdml/Resources/icons/GDML_Mesh2Tess.svg) Mesh to GDML Tessellated
+
 
 If the selected FreeCAD object is a mesh then a GDML Tessellated Object is created. Again if a material is
 also selected then this will set the GDML material of the GDML Tessellated Object.
@@ -200,7 +203,9 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
       So having created a mesh using the Mesh workbench, one can then switch to the GDML Workbench to
       create GDML Tessellated objects from these.
       
-### T 2 M - GDML Tessellated to FC Mesh
+### GDML Tessellated to FC Mesh
+![GDML Tess2FC-Mesh](freecad/gdml/Resources/icons/GDML_Tess2Mesh.svg) GDML Tessellated to FC Mesh
+
 
 If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.
       
