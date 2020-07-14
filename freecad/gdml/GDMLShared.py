@@ -144,6 +144,10 @@ def getMult(fp) :
     elif hasattr(fp,'unit') :
         trace('unit : '+fp.unit)
         unit = fp.unit
+    elif 'unit' in fp.attrib :
+        unit = fp.attrib['unit']
+    elif 'lunit' in fp.attrib :
+        unit = fp.attrib['lunit']
     else :
         return 1
     if unit == 'mm' : return(1)
