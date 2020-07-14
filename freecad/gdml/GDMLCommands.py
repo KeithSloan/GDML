@@ -519,8 +519,8 @@ class TetrahedronFeature :
             parent = None
             if meshObj(obj,3) == True :
                tetraheds = getTetrahedrons()
-               print('tetraheds : '+str(len(tetraheds)))
                if tetraheds != None :
+                  print('tetraheds : '+str(len(tetraheds)))
                   name ='GDMLTetrahedron_'+obj.Name
                   if hasattr(obj,'InList') :
                      if len(obj.InList) > 0 :

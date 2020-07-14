@@ -237,6 +237,7 @@ def getTetrahedrons():
        TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes),4)]
        return TetList
     else :
+       FreeCAD.Console.PrintWarning('Unable to create quad faces for this shape')
        return None
 
 def addFacet(msh, v0,v1,v2) :
