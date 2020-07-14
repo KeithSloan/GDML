@@ -182,6 +182,23 @@ If the selected FreeCAD object has a Shape then a GDML Tesselated Object is crea
 Workbench default options. If a material is also selected this will determine the GDML material of the
 created GDML Tessellated Object
 
+### Tessellate with Gmsh
+![GDML Tessellate_Gmsh](freecad/gdml/Resources/icons/GDML_Tessellate_Gmsh.svg)
+
+If the selected FreeCAD object has a Shape or Mesh then a GDML Tesselated Object is created by using gmsh.
+
+The initial mesh size is determined by the shapes bounding box divided by 10.
+
+You can **remesh** a copy of the original object by changing the properties of the created GDMLTesselate Object
+    
+    m_max Length - CharacteristicLengthMax
+    m_curve Len  - CharacteristicLengthFromCurvature
+    m_point Len  - CharacteristicLengthFromPoints
+    
+and then changing the **m_Remesh** property to True.
+
+Note: For some reason there appears to be a delay in updating the new number of vertex. facets counts displayed.
+
 ### FC Mesh to GDML Tessellated
 ![GDML FC-Mesh2Tess-Icon](freecad/gdml/Resources/icons/GDML_Mesh2Tess.svg) Mesh to GDML Tessellated
 
@@ -209,21 +226,6 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
 
 If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.
       
-### T gmsh
-
-If the selected FreeCAD object has a Shape or Mesh then a GDML Tesselated Object is created by using gmsh.
-
-The initial mesh size is determined by the shapes bounding box divided by 10.
-
-You can **remesh** a copy of the original object by changing the properties of the created GDMLTesselate Object
-    
-    m_max Length - CharacteristicLengthMax
-    m_curve Len  - CharacteristicLengthFromCurvature
-    m_point Len  - CharacteristicLengthFromPoints
-    
-and then changing the **m_Remesh** property to True.
-
-Note: For some reason there appears to be a delay in updating the new number of vertex. facets counts displayed.
 
 ### Tet
 
