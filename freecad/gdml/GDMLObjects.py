@@ -34,6 +34,24 @@ from . import GDMLShared
 global MaterialsList
 MaterialsList = []
 
+global LengthQuantityList
+LengthQuantityList =  ['nm','um', 'mm','cm', 'dm','m', 'km']
+# cf definition https://wiki.freecadweb.org/Quantity
+
+
+def setLengthQuantity(obj, m) :
+    #print('setMaterial')
+    if LengthQuantityList != None :
+        obj.lunit = LengthQuantityList
+        obj.lunit = 0
+        if len(LengthQuantityList) > 0 :
+            if not ( m == 0 or m == None ) : 
+                obj.lunit = LengthQuantityList.index(m)
+    else :
+        obj.lunit = 2
+
+
+
 def checkMaterial(material) :
     global MaterialsList
     try :
@@ -208,6 +226,11 @@ def colourMaterial(m):
                coeffB=1.0
 
            return (coeffR,coeffG,coeffB)
+	   
+
+    
+   
+
 
 class GDMLcommon :
    def __init__(self, obj):
@@ -248,8 +271,9 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.addProperty("App::PropertyFloat","v8y","GDMLArb8","vertex 8 y position").v8y=v8y
       obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").dz=dz
       obj.addProperty("App::PropertyString","lunit","GDMLArb8","lunit").lunit=lunit
-      obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
-
+      #obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLArb8","lunit")
+      setLengthQuantity(obj, lunit)      
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
@@ -326,7 +350,14 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyFloat","x","GDMLBox","Length x").x=x
       obj.addProperty("App::PropertyFloat","y","GDMLBox","Length y").y=y
       obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").z=z
-      obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
+      #print(obj.x)
+      #obj.x;.setDecimals(8);
+      
+      #obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLBox","lunit")
+      setLengthQuantity(obj, lunit)
+
+      
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -390,7 +421,11 @@ class GDMLCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLCone","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLCone","lunit").lunit=lunit
+      #obj.addProperty("App::PropertyString","lunit","GDMLCone","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLCone","lunit")
+      setLengthQuantity(obj, lunit)      
+
+      
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
@@ -477,8 +512,10 @@ class GDMLElCone(GDMLcommon) :
                       "z length").zmax = zmax
       obj.addProperty("App::PropertyFloat","zcut","GDMLElCone", \
                       "z cut").zcut = zcut
-      obj.addProperty("App::PropertyString","lunit","GDMLElCone", \
-                      "lunit").lunit=lunit
+      #obj.addProperty("App::PropertyString","lunit","GDMLElCone", \
+      #                "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLElCone","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
                        "Material")
       setMaterial(obj, material)
