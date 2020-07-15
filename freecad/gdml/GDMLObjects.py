@@ -2152,8 +2152,8 @@ class GDMLTetrahedron(GDMLcommon) :
        obj.addProperty('App::PropertyInteger','tetra','GDMLTetrahedron', \
                       'Tetra').tetra = len(tetra)
        obj.setEditorMode('tetra',1)
-      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTetrahedron","lunit")
-      setLengthQuantity(obj, lunit) 		      
+       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTetrahedron","lunit")
+       setLengthQuantity(obj, lunit) 		      
        obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
