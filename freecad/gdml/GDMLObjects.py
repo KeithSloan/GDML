@@ -40,7 +40,6 @@ LengthQuantityList =  ['nm','um', 'mm','cm', 'dm','m', 'km']
 
 
 def setLengthQuantity(obj, m) :
-    #print('setMaterial')
     if LengthQuantityList != None :
         obj.lunit = LengthQuantityList
         obj.lunit = 0
@@ -49,8 +48,6 @@ def setLengthQuantity(obj, m) :
                 obj.lunit = LengthQuantityList.index(m)
     else :
         obj.lunit = 2
-
-
 
 def checkMaterial(material) :
     global MaterialsList
