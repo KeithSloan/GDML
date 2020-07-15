@@ -270,8 +270,6 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.addProperty("App::PropertyFloat","v8x","GDMLArb8","vertex 8 x position").v8x=v8x
       obj.addProperty("App::PropertyFloat","v8y","GDMLArb8","vertex 8 y position").v8y=v8y
       obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").dz=dz
-      obj.addProperty("App::PropertyString","lunit","GDMLArb8","lunit").lunit=lunit
-      #obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLArb8","lunit")
       setLengthQuantity(obj, lunit)      
       setMaterial(obj, material)
@@ -353,11 +351,9 @@ class GDMLBox(GDMLcommon) :
       #print(obj.x)
       #obj.x;.setDecimals(8);
       
-      #obj.addProperty("App::PropertyString","lunit","GDMLBox","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLBox","lunit")
       setLengthQuantity(obj, lunit)
 
-      
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -421,7 +417,6 @@ class GDMLCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLCone","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      #obj.addProperty("App::PropertyString","lunit","GDMLCone","lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLCone","lunit")
       setLengthQuantity(obj, lunit)      
 
@@ -512,8 +507,6 @@ class GDMLElCone(GDMLcommon) :
                       "z length").zmax = zmax
       obj.addProperty("App::PropertyFloat","zcut","GDMLElCone", \
                       "z cut").zcut = zcut
-      #obj.addProperty("App::PropertyString","lunit","GDMLElCone", \
-      #                "lunit").lunit=lunit
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElCone","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
@@ -581,8 +574,8 @@ class GDMLEllipsoid(GDMLcommon) :
                        "z axis cut1").zcut1=zcut1
       obj.addProperty("App::PropertyFloat","zcut2","GDMLEllipsoid", \
                        "z axis1 cut2").zcut2=zcut2
-      obj.addProperty("App::PropertyString","lunit","GDMLEllipsoid","lunit"). \
-                        lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLEllipsoid","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
                        "Material")
       setMaterial(obj, material)
@@ -661,8 +654,8 @@ class GDMLElTube(GDMLcommon) :
                        "y semi axis1").dy=dy
       obj.addProperty("App::PropertyFloat","dz","GDMLElTube", \
                        "z semi axis1").dz=dz
-      obj.addProperty("App::PropertyString","lunit","GDMLElTube","lunit"). \
-                        lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLElTube","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("Part::PropertyPartShape","Shape","GDMLElTube", \
                       "Shape of the Cone")
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
@@ -710,8 +703,8 @@ class GDMLOrb(GDMLcommon) :
    def __init__(self, obj, r, lunit, material) :
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
-      obj.addProperty("App::PropertyString","lunit","GDMLOrb", 
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLOrb","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
                        "Material")
       setMaterial(obj, material)
@@ -764,8 +757,8 @@ class GDMLPara(GDMLcommon) :
                        "aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLParapiped", \
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLParapiped","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
@@ -842,8 +835,8 @@ class GDMLPolyhedra(GDMLcommon) :
                        "aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLPolyhedra", \
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLPolyhdera","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
@@ -953,9 +946,8 @@ class GDMLTorus(GDMLcommon) :
                       "deltaphi").deltaphi=deltaphi
       obj.addProperty("App::PropertyString","aunit","GDMLTorus", \
                       "aunit").aunit=aunit
-      obj.addProperty("App::PropertyString","lunit","GDMLTorus", \
-                      "lunit").lunit=lunit
-
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTorus","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
                        "Material")
       setMaterial(obj, material)
@@ -1006,8 +998,8 @@ class GDMLTorus(GDMLcommon) :
 class GDMLXtru(GDMLcommon) :
    def __init__(self, obj, lunit, material) :
       obj.addExtension('App::OriginGroupExtensionPython', self)
-      obj.addProperty("App::PropertyString","lunit","GDMLXtru", \
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLXtru","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
@@ -1215,8 +1207,8 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLPolycone","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLPolycone", \
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLPolycone","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
@@ -1310,8 +1302,8 @@ class GDMLSphere(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLSphere","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLSphere", \
-                      "lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLSphere","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
@@ -1426,8 +1418,8 @@ class GDMLTrap(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTrap","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLTrap","lunit"). \
-                       lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrap","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -1528,8 +1520,8 @@ class GDMLTrd(GDMLcommon) :
                       "Length y at face -z").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrd", \
                       "Length y at face +z").y2=y2
-      obj.addProperty("App::PropertyString","lunit","GDMLTrd","lunit"). \
-                       lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrd","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -1600,7 +1592,8 @@ class GDMLTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTube","aunit")
       obj.aunit=['rad','deg']
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyString","lunit","GDMLTube","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTube","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTube","Material")
       setMaterial(obj, material)
       obj.addProperty("Part::PropertyPartShape","Shape","GDMLTube", "Shape of the Tube")
@@ -1670,7 +1663,8 @@ class GDMLcutTube(GDMLcommon) :
       obj.addProperty("App::PropertyFloat","highX","GDMLcutTube","high X").highX=highX
       obj.addProperty("App::PropertyFloat","highY","GDMLcutTube","high Y").highY=highY
       obj.addProperty("App::PropertyFloat","highZ","GDMLcutTube","high Z").highZ=highZ
-      obj.addProperty("App::PropertyString","lunit","GDMLcutTube","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLcutTube","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLcutTube","Material")
       #print('Add material')
       #print(material)
@@ -1896,8 +1890,8 @@ class GDMLGmshTessellated(GDMLcommon) :
                       'Point Length').m_pointLen = meshLen
       obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
                       'ReMesh').m_Remesh = False
-      obj.addProperty('App::PropertyString','lunit','GDMLGmshTessellated', \
-                      'lunit').lunit = lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLGmshTessellated","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
@@ -2011,8 +2005,8 @@ class GDMLTessellated(GDMLcommon) :
       obj.addProperty('App::PropertyInteger','vertex','GDMLTessellated', \
                       'Vertex').vertex = len(vertex)
       obj.setEditorMode('vertex',1)
-      obj.addProperty('App::PropertyString','lunit','GDMLTessellated', \
-                      'lunit').lunit = lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTessellated","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
@@ -2106,7 +2100,8 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
               "v3").v3=v3
       obj.addProperty("App::PropertyVector","v4","GDMLTra", \
               "v4").v4=v4
-      obj.addProperty("App::PropertyString","lunit","GDMLTra","lunit").lunit=lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTra","lunit")
+      setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
       setMaterial(obj, material)
 
@@ -2157,8 +2152,8 @@ class GDMLTetrahedron(GDMLcommon) :
        obj.addProperty('App::PropertyInteger','tetra','GDMLTetrahedron', \
                       'Tetra').tetra = len(tetra)
        obj.setEditorMode('tetra',1)
-       obj.addProperty('App::PropertyString','lunit','GDMLTetrahedron', \
-                      'lunit').lunit = lunit
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTetrahedron","lunit")
+      setLengthQuantity(obj, lunit) 		      
        obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
