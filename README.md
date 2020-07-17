@@ -227,10 +227,12 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
 If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.
       
 
-### Tet
+### GDML Tetrahedron (GDML Assembly of GDML Tetra)
+[GDML Tetrahderon](freecad/gdml/Resources/icons/GDML_Tetrahedron.svg)
+
 
 If the selected FreeCAD object has a Shape or is a Mesh then a Tetrahedera Object is created by using gmsh.
-This can then be exported as an Assembly of GDML Tetra
+This can then be exported as a GDML Assembly of GDML Tetra
 
 If you would like to see support of remeshing of Tetrahedra the same as Tessellated then please contact me or raise as an issue.
 
