@@ -228,7 +228,7 @@ If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is cr
       
 
 ### GDML Tetrahedron (GDML Assembly of GDML Tetra)
-[GDML Tetrahderon](freecad/gdml/Resources/icons/GDML_Tetrahedron.svg)
+![GDML_Tetrahedron](freecad/gdml/Resources/icons/GDML_Tetrahedron.svg) GDML Tetrahedron
 
 
 If the selected FreeCAD object has a Shape or is a Mesh then a Tetrahedera Object is created by using gmsh.
