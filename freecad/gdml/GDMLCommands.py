@@ -82,6 +82,113 @@ def getSelectedMaterial() :
 
     return 0
 
+#class GDMLColourMap(QtGui.QDialog) :
+class GDMLColourMap(QtGui.QMainWindow) :
+#class GDMLColourMap(QtGui.QWidget) :
+
+   #   from .GDMLObjects import GDMLColourMapEntry
+
+   def __init__(self, parent) :
+      super(GDMLColourMap, self).__init__(parent)
+      #super().__init__()
+      self.parent = parent
+      self.initUI()
+
+   def initUI(self):
+      #self.result = userCancelled
+      layout = QtGui.QVBoxLayout(self)
+      # create our window
+      # define window           xLoc,yLoc,xDim,yDim
+      self.setGeometry( 250, 250, 400, 150)
+      self.setWindowTitle("Our Example Nonmodal Program Window")
+      self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+      self.setMouseTracking(True)
+      # create Labels
+      self.label4 = QtGui.QLabel("can you see this?", self)
+      self.label4.move(20, 20)
+      self.label5 = QtGui.QLabel("Mouse position:", self)
+      self.label5.move(20, 70)
+      self.label6 = QtGui.QLabel("               ", self)
+      self.label6.move(135, 70)
+      # toggle visibility button
+      pushButton1 = QtGui.QPushButton('Toggle visibility', self)
+      pushButton1.clicked.connect(self.onPushButton1)
+      pushButton1.setMinimumWidth(150)
+      #pushButton1.setAutoDefault(False)
+      pushButton1.move(210, 20)
+      #  cancel button
+      cancelButton = QtGui.QPushButton('Cancel', self)
+      cancelButton.clicked.connect(self.onCancel)
+      cancelButton.setAutoDefault(True)
+      cancelButton.move(150, 110)
+      # OK button
+      okButton = QtGui.QPushButton('OK', self)
+      okButton.clicked.connect(self.onOk)
+      okButton.move(260, 110)
+      # now make the window visible
+      self.show()
+      #
+
+   def onPushButton1(self):
+      if self.label4.isVisible():
+         self.label4.hide()
+      else:
+         self.label4.show()
+
+   def onCancel(self):
+       self.result = userCancelled
+       self.close()
+
+   def onOk(self):
+       self.result = userOK
+       self.close()
+
+   def mouseMoveEvent(self,event):
+       self.label6.setText("X: "+str(event.x()) + " Y: "+str(event.y()))
+
+# Class definitions
+
+# Function definitions
+
+# Constant definitions
+global userCancelled, userOK
+userCancelled           = "Cancelled"
+userOK                  = "OK"
+
+class ColourMapFeature:
+
+  def Activated(self):
+      from PySide import QtGui, QtCore
+      import sys
+
+      print('Add colour Map')
+
+      myWidget = QtGui.QDockWidget()
+      mainWin = FreeCADGui.getMainWindow()
+      #mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
+      mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea, \
+         myWidget)
+      #mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
+      myWidget.setObjectName("ColourMap")
+      myWidget.resize(QtCore.QSize(300,100))
+      title = QtGui.QLabel("Colour Mapping to GDML Materials")
+      title.setIndent(100)
+      myWidget.setTitleBarWidget(title)
+      #label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
+
+  def IsActive(self):
+      if FreeCAD.ActiveDocument == None:
+         return False
+      else:
+         return True
+
+  def GetResources(self):
+      return {'Pixmap'  : 'GDMLColourMapFeature', 'MenuText': \
+              QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
+             'Add Colour Map'), 'ToolTip': \
+              QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
+              'Add Colour Map')}
+
 class BoxFeature:
     #    def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -741,9 +848,9 @@ class CompoundFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_Compound', \
                 'Add a Compound of Volume')}    
 
-FreeCADGui.addCommand('AddCompound',CompoundFeature())
-FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
 FreeCADGui.addCommand('CycleCommand',CycleFeature())
+FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
+FreeCADGui.addCommand('ColourMapCommand',ColourMapFeature())
 FreeCADGui.addCommand('BoxCommand',BoxFeature())
 FreeCADGui.addCommand('EllipsoidCommand',EllispoidFeature())
 FreeCADGui.addCommand('ElTubeCommand',ElliTubeFeature())
@@ -752,6 +859,7 @@ FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
+FreeCADGui.addCommand('AddCompound',CompoundFeature())
 FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
