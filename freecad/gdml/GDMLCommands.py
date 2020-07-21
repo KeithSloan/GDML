@@ -83,55 +83,59 @@ def getSelectedMaterial() :
     return 0
 
 #class GDMLColourMap(QtGui.QDialog) :
-class GDMLColourMap(QtGui.QMainWindow) :
+#class GDMLColourMap(QtGui.QMainWindow) :
 #class GDMLColourMap(QtGui.QWidget) :
 
-   #   from .GDMLObjects import GDMLColourMapEntry
+#from PySide2 import QtGui, QtCore
+from PySide import QtGui, QtCore
 
-   def __init__(self, parent) :
-      super(GDMLColourMap, self).__init__(parent)
-      #super().__init__()
-      self.parent = parent
+class GDMLColourMap(QtGui.QDialog) :
+#class GDMLColourMap(QtGui.QMainWindow) :
+   def __init__(self) :
+      super(GDMLColourMap, self).__init__(FreeCADGui.getMainWindow(), QtCore.Qt.Tool)
       self.initUI()
 
-   def initUI(self):
-      #self.result = userCancelled
-      layout = QtGui.QVBoxLayout(self)
+   def initUI(self):   
+      self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
       self.setGeometry( 250, 250, 400, 150)
       self.setWindowTitle("Our Example Nonmodal Program Window")
-      self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
       self.setMouseTracking(True)
+      lay = QtGui.QGridLayout(self)
       # create Labels
       self.label4 = QtGui.QLabel("can you see this?", self)
-      self.label4.move(20, 20)
+      self.label4.setMouseTracking(True)
+      lay.addWidget(self.label4, 0, 0)
       self.label5 = QtGui.QLabel("Mouse position:", self)
-      self.label5.move(20, 70)
-      self.label6 = QtGui.QLabel("               ", self)
-      self.label6.move(135, 70)
+      self.label5.setMouseTracking(True)
+      lay.addWidget(self.label5, 1, 0)
+      self.label6 = QtGui.QLabel(self)
+      self.label6.setMouseTracking(True)
+      lay.addWidget(self.label6, 1, 1)
       # toggle visibility button
       pushButton1 = QtGui.QPushButton('Toggle visibility', self)
       pushButton1.clicked.connect(self.onPushButton1)
+      pushButton1.setMouseTracking(True)
       pushButton1.setMinimumWidth(150)
-      #pushButton1.setAutoDefault(False)
-      pushButton1.move(210, 20)
+      lay.addWidget(pushButton1, 0, 1)
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
       cancelButton.clicked.connect(self.onCancel)
       cancelButton.setAutoDefault(True)
-      cancelButton.move(150, 110)
+      lay.addWidget(cancelButton, 2, 0)
       # OK button
       okButton = QtGui.QPushButton('OK', self)
       okButton.clicked.connect(self.onOk)
-      okButton.move(260, 110)
+      lay.addWidget(okButton, 2, 1)
       # now make the window visible
+      self.setLayout(lay)
       self.show()
       #
 
    def onPushButton1(self):
       if self.label4.isVisible():
-         self.label4.hide()
+         self.label4.hide()      
       else:
          self.label4.show()
 
@@ -162,6 +166,8 @@ class ColourMapFeature:
       import sys
 
       print('Add colour Map')
+      gcm = GDMLColourMap()
+      return      
 
       myWidget = QtGui.QDockWidget()
       mainWin = FreeCADGui.getMainWindow()
