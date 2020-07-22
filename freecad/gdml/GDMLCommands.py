@@ -86,6 +86,17 @@ def getSelectedMaterial() :
 #from PySide2 import QtGui, QtCore
 from PySide import QtGui, QtCore
 
+class GDMLColour(QtGui.QWidget):
+  
+   def __init__(self,colour):
+      super().__init__()
+      self.setAutoFillBackground(True)
+
+      palette = self.palette()
+      palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
+      self.setPalette(palette)
+
+
 class GDMLColourMapEntry(QtGui.QWidget) :
 
    def __init__(self,colour,material) :
@@ -94,12 +105,35 @@ class GDMLColourMapEntry(QtGui.QWidget) :
       self.material = material
       layout = QtGui.QHBoxLayout()
       layout.addWidget(QtGui.QLabel(colour))
+      layout.addWidget(GDMLColour(QtGui.QColor(255,0,0)))
       layout.addWidget(QtGui.QLabel(material))
       self.setLayout(layout)
 
    def dataPicker():
       print('DataPicker')
- 
+
+class GDMLColourMapList(QtGui.QScrollArea) :
+
+   def __init__(self) :
+      super().__init__()
+      # Scroll Area which contains the widgets, set as the centralWidget
+      # Widget that contains the collection of Vertical Box
+      self.widget = QtGui.QWidget()
+      # The Vertical Box that contains the Horizontal Boxes of  labels and buttons
+      self.vbox = QtGui.QVBoxLayout()
+
+      for i in range(1,50):
+          object = QtGui.QLabel("TextLabel")
+          self.vbox.addWidget(object)
+
+      self.widget.setLayout(self.vbox)
+
+      #Scroll Area Properties
+      self.setVerticalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOn)
+      self.setHorizontalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOff)
+      self.setWidgetResizable(True)
+      self.setWidget(self.widget)
+
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
    def __init__(self) :
@@ -114,42 +148,30 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setWindowTitle("Our Example Nonmodal Program Window")
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
+      
       # create Labels
-      #self.label4 = QtGui.QLabel("can you see this?", self)
+      self.label1 = GDMLColourMapList()
+      lay.addWidget(self.label1,0,0)
+      self.label1.setMouseTracking(True)
+
       self.label4 = GDMLColourMapEntry('red','steel')
       self.label4.setMouseTracking(True)
-      lay.addWidget(self.label4, 0, 0)
-      self.label5 = QtGui.QLabel("Mouse position:", self)
-      self.label5.setMouseTracking(True)
-      lay.addWidget(self.label5, 1, 0)
-      self.label6 = QtGui.QLabel(self)
-      self.label6.setMouseTracking(True)
-      lay.addWidget(self.label6, 1, 1)
-      # toggle visibility button
-      pushButton1 = QtGui.QPushButton('Toggle visibility', self)
-      pushButton1.clicked.connect(self.onPushButton1)
-      pushButton1.setMouseTracking(True)
-      pushButton1.setMinimumWidth(150)
-      lay.addWidget(pushButton1, 0, 1)
+      lay.addWidget(self.label4, 1, 0)
+
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
       cancelButton.clicked.connect(self.onCancel)
       cancelButton.setAutoDefault(True)
-      lay.addWidget(cancelButton, 2, 0)
+      lay.addWidget(cancelButton, 2, 1)
+
       # OK button
       okButton = QtGui.QPushButton('OK', self)
       okButton.clicked.connect(self.onOk)
-      lay.addWidget(okButton, 2, 1)
+      lay.addWidget(okButton, 2, 0)
       # now make the window visible
       self.setLayout(lay)
       self.show()
       #
-
-   def onPushButton1(self):
-      if self.label4.isVisible():
-         self.label4.hide()      
-      else:
-         self.label4.show()
 
    def onCancel(self):
        self.result = userCancelled
@@ -158,9 +180,6 @@ class GDMLColourMap(QtGui.QDialog) :
    def onOk(self):
        self.result = userOK
        self.close()
-
-   def mouseMoveEvent(self,event):
-       self.label6.setText("X: "+str(event.x()) + " Y: "+str(event.y()))
 
 # Class definitions
 
