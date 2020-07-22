@@ -98,13 +98,12 @@ class GDMLColour(QtGui.QWidget):
 
 class GDMLMaterial(QtGui.QComboBox):
     
-   def __init__(self) :
+   def __init__(self,matList) :
       super().__init__()
-      self.materialList = None
+      print('matList')
+      print(matList)
+      self.addItems(matList)
       self.setEditable(False)
-
-   def setItems(self, matList):
-      self.materialList = matList
 
    def getItem(self):
       return str(self.currentText)
@@ -112,15 +111,13 @@ class GDMLMaterial(QtGui.QComboBox):
 
 class GDMLColourMapEntry(QtGui.QWidget) :
 
-   def __init__(self,colour,materialList) :
+   def __init__(self,colour,material) :
       super().__init__()
       self.colour = colour
-      self.materialList = materialList
       layout = QtGui.QHBoxLayout()
       layout.addWidget(GDMLColour(colour))
-      self.material = GDMLMaterial()
-      self.material.setItems(materialList)
-      layout.addWidget(self.material)
+      print('Map Entry')
+      layout.addWidget(material)
       self.setLayout(layout)
 
    def dataPicker(self):
@@ -146,8 +143,8 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       self.setWidget(self.widget)
 
    def addEntry(self, colour) :
-      mat = GDMLMaterial()
-      mat.setItems(self.matList)
+      print('Add Entry')
+      mat = GDMLMaterial(self.matList)
       self.vbox.addWidget(GDMLColourMapEntry(colour,mat))
 
 class GDMLColourMap(QtGui.QDialog) :
@@ -218,17 +215,17 @@ class ColourMapFeature:
       gcm = GDMLColourMap()
       return      
 
-      myWidget = QtGui.QDockWidget()
-      mainWin = FreeCADGui.getMainWindow()
+      #myWidget = QtGui.QDockWidget()
+      #mainWin = FreeCADGui.getMainWindow()
       #mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
       mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea, \
          myWidget)
       #mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
-      myWidget.setObjectName("ColourMap")
-      myWidget.resize(QtCore.QSize(300,100))
-      title = QtGui.QLabel("Colour Mapping to GDML Materials")
-      title.setIndent(100)
-      myWidget.setTitleBarWidget(title)
+      #myWidget.setObjectName("ColourMap")
+      #myWidget.resize(QtCore.QSize(300,100))
+      #title = QtGui.QLabel("Colour Mapping to GDML Materials")
+      #title.setIndent(100)
+      #myWidget.setTitleBarWidget(title)
       #label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
 
   def IsActive(self):
