@@ -1323,7 +1323,7 @@ def processGDML(doc,filename,prompt,initFlg):
     #GDMLFiles(myfiles,FilesEntity,sectionDict)
 
     # Reserve place for Colour Map at start of Document
-    FreeCAD.ActiveDocument.addObject("App::FeaturePython","ColourMap")
+    #FreeCAD.ActiveDocument.addObject("App::FeaturePython","ColourMap")
 
     etree, root = setupEtree(filename)
     setup     = root.find('setup')

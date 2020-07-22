@@ -145,7 +145,7 @@ class GDMLColourMap(QtGui.QDialog) :
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
       self.setGeometry( 250, 250, 400, 150)
-      self.setWindowTitle("Our Example Nonmodal Program Window")
+      self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
       
