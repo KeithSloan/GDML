@@ -96,35 +96,46 @@ class GDMLColour(QtGui.QWidget):
       palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
       self.setPalette(palette)
 
+class GDMLMaterial(QtGui.QComboBox):
+    
+   def __init__(self) :
+      super().__init__()
+      self.materialList = None
+      self.setEditable(False)
+
+   def setItems(self, matList):
+      self.materialList = matList
+
+   def getItem(self):
+      return str(self.currentText)
+ 
 
 class GDMLColourMapEntry(QtGui.QWidget) :
 
-   def __init__(self,colour,material) :
+   def __init__(self,colour,materialList) :
       super().__init__()
       self.colour = colour
-      self.material = material
+      self.materialList = materialList
       layout = QtGui.QHBoxLayout()
-      layout.addWidget(QtGui.QLabel(colour))
-      layout.addWidget(GDMLColour(QtGui.QColor(255,0,0)))
-      layout.addWidget(QtGui.QLabel(material))
+      layout.addWidget(GDMLColour(colour))
+      self.material = GDMLMaterial()
+      self.material.setItems(materialList)
+      layout.addWidget(self.material)
       self.setLayout(layout)
 
-   def dataPicker():
+   def dataPicker(self):
       print('DataPicker')
 
 class GDMLColourMapList(QtGui.QScrollArea) :
 
-   def __init__(self) :
+   def __init__(self,matList) :
       super().__init__()
       # Scroll Area which contains the widgets, set as the centralWidget
       # Widget that contains the collection of Vertical Box
       self.widget = QtGui.QWidget()
+      self.matList = matList
       # The Vertical Box that contains the Horizontal Boxes of  labels and buttons
       self.vbox = QtGui.QVBoxLayout()
-
-      for i in range(1,50):
-          object = QtGui.QLabel("TextLabel")
-          self.vbox.addWidget(object)
 
       self.widget.setLayout(self.vbox)
 
@@ -133,6 +144,11 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       self.setHorizontalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOff)
       self.setWidgetResizable(True)
       self.setWidget(self.widget)
+
+   def addEntry(self, colour) :
+      mat = GDMLMaterial()
+      mat.setItems(self.matList)
+      self.vbox.addWidget(GDMLColourMapEntry(colour,mat))
 
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
@@ -144,20 +160,22 @@ class GDMLColourMap(QtGui.QDialog) :
       self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
-      self.setGeometry( 250, 250, 400, 150)
+      self.setGeometry( 250, 250, 400, 350)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
       
+      materialList = ["air","steel","bronze"]
+      mapList = GDMLColourMapList(materialList)
+      red = QtGui.QColor(255,0,0)
+      green = QtGui.QColor(0,255,0)
+      blue = QtGui.QColor(0,0,255)
+      mapList.addEntry(red)
+      mapList.addEntry(green)
+      mapList.addEntry(blue)
       # create Labels
-      self.label1 = GDMLColourMapList()
+      self.label1 = mapList 
       lay.addWidget(self.label1,0,0)
-      self.label1.setMouseTracking(True)
-
-      self.label4 = GDMLColourMapEntry('red','steel')
-      self.label4.setMouseTracking(True)
-      lay.addWidget(self.label4, 1, 0)
-
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
       cancelButton.clicked.connect(self.onCancel)
