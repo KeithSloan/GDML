@@ -82,13 +82,24 @@ def getSelectedMaterial() :
 
     return 0
 
-#class GDMLColourMap(QtGui.QDialog) :
-#class GDMLColourMap(QtGui.QMainWindow) :
-#class GDMLColourMap(QtGui.QWidget) :
 
 #from PySide2 import QtGui, QtCore
 from PySide import QtGui, QtCore
 
+class GDMLColourMapEntry(QtGui.QWidget) :
+
+   def __init__(self,colour,material) :
+      super().__init__()
+      self.colour = colour
+      self.material = material
+      layout = QtGui.QHBoxLayout()
+      layout.addWidget(QtGui.QLabel(colour))
+      layout.addWidget(QtGui.QLabel(material))
+      self.setLayout(layout)
+
+   def dataPicker():
+      print('DataPicker')
+ 
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
    def __init__(self) :
@@ -104,7 +115,8 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
       # create Labels
-      self.label4 = QtGui.QLabel("can you see this?", self)
+      #self.label4 = QtGui.QLabel("can you see this?", self)
+      self.label4 = GDMLColourMapEntry('red','steel')
       self.label4.setMouseTracking(True)
       lay.addWidget(self.label4, 0, 0)
       self.label5 = QtGui.QLabel("Mouse position:", self)
