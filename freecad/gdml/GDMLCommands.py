@@ -101,8 +101,6 @@ class GDMLMaterial(QtGui.QComboBox):
     
    def __init__(self,matList) :
       super().__init__()
-      print('matList')
-      print(matList)
       self.addItems(matList)
       self.setEditable(False)
 
@@ -114,10 +112,10 @@ class GDMLColourMapEntry(QtGui.QWidget) :
 
    def __init__(self,colour,material) :
       super().__init__()
+      print('Map Entry : '+str(colour))
       self.colour = colour
       layout = QtGui.QHBoxLayout()
       layout.addWidget(GDMLColour(colour))
-      print('Map Entry')
       layout.addWidget(material)
       self.setLayout(layout)
 
