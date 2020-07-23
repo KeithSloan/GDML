@@ -91,6 +91,7 @@ class GDMLColour(QtGui.QWidget):
    def __init__(self,colour):
       super().__init__()
       self.setAutoFillBackground(True)
+      self.resize(50, 20)
 
       palette = self.palette()
       palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
@@ -133,7 +134,6 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       self.matList = matList
       # The Vertical Box that contains the Horizontal Boxes of  labels and buttons
       self.vbox = QtGui.QVBoxLayout()
-
       self.widget.setLayout(self.vbox)
 
       #Scroll Area Properties
@@ -162,7 +162,7 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
       
-      materialList = ["air","steel","bronze"]
+      materialList = self.getGDMLMaterials()
       mapList = GDMLColourMapList(materialList)
       red = QtGui.QColor(255,0,0)
       green = QtGui.QColor(0,255,0)
@@ -195,6 +195,31 @@ class GDMLColourMap(QtGui.QDialog) :
    def onOk(self):
        self.result = userOK
        self.close()
+
+   def getGDMLMaterials(self):
+       matList = []
+       doc = FreeCAD.activeDocument()
+       try :
+          materials = doc.Materials
+       except :
+          from .importGDML import processXML
+          from .init_gui   import joinDir
+
+          print('Load Geant4 Materials XML')
+          processXML(doc,joinDir("Resources/Geant4Materials.xml"))
+          materials = doc.Materials
+
+       if materials != None :
+          print(dir(materials))
+          for m in materials.OutList :
+              matList.append(m.Label)
+          print(matList)
+
+       else :
+          print('Materials Not Found')
+
+       return matList      
+
 
 # Class definitions
 
