@@ -162,12 +162,30 @@ class GDMLColourMap(QtGui.QDialog) :
       
       materialList = self.getGDMLMaterials()
       mapList = GDMLColourMapList(materialList)
-      red = QtGui.QColor(255,0,0)
-      green = QtGui.QColor(0,255,0)
-      blue = QtGui.QColor(0,0,255)
-      mapList.addEntry(red)
-      mapList.addEntry(green)
-      mapList.addEntry(blue)
+      doc = FreeCAD.ActiveDocument
+      print('Active')
+      print(doc)
+      if doc != None :
+         #print(dir(doc))
+         if hasattr(doc,'Objects') :
+            #print(doc.Objects)
+            colorList = []
+            for obj in doc.Objects :
+                #print(dir(obj))
+                if hasattr(obj,'ViewObject') :
+                   print(dir(obj.ViewObject))
+                   if hasattr(obj.ViewObject,'isVisible') :
+                      if obj.ViewObject.isVisible :
+                         if hasattr(obj.ViewObject,'ShapeColor') :
+                            colour = obj.ViewObject.ShapeColor
+                            print(colour)
+                            try:
+                               col = colorList.index(colour)
+                            except ValueError:
+                               colorList.append(colour)
+      print(colorList)
+      for c in colorList :
+          mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
       # create Labels
       self.label1 = mapList 
       lay.addWidget(self.label1,0,0)
@@ -208,10 +226,9 @@ class GDMLColourMap(QtGui.QDialog) :
           materials = doc.Materials
 
        if materials != None :
-          print(dir(materials))
           for m in materials.OutList :
               matList.append(m.Label)
-          print(matList)
+          #print(matList)
 
        else :
           print('Materials Not Found')
