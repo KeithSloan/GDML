@@ -223,12 +223,16 @@ def colourMaterial(m):
                coeffB=1.0
 
            return (coeffR,coeffG,coeffB)
+
+class GDMLColourMapEntry :
+   def __init__(self,obj,colour,material) :
+      obj.addProperty("App::PropertyColor","colour", \
+          "GDMLColourMapEntry","colour").colour=colour
+      obj.addProperty("App::PropertyEnumeration","material", \
+          "GDMLColourMapEntry","Material")
+      setMaterial(obj, material)
+
 	   
-
-    
-   
-
-
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
@@ -269,6 +273,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").dz=dz
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLArb8","lunit")
       setLengthQuantity(obj, lunit)      
+      obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
@@ -345,17 +350,12 @@ class GDMLBox(GDMLcommon) :
       obj.addProperty("App::PropertyFloat","x","GDMLBox","Length x").x=x
       obj.addProperty("App::PropertyFloat","y","GDMLBox","Length y").y=y
       obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").z=z
-      #print(obj.x)
-      #obj.x;.setDecimals(8);
-      
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLBox","lunit")
       setLengthQuantity(obj, lunit)
-
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLBox'
-      self.Fred = 10
       obj.Proxy = self
 
    ### modif add
