@@ -87,10 +87,11 @@ class ColourMapFeature:
   def Activated(self):
       from PySide import QtGui, QtCore
       #import sys
-      from .GDMLColourMap import GDMLColourMap
+      from .GDMLColourMap import resetGDMLColourMap, showGDMLColourMap
 
       print('Add colour Map')
-      gcm = GDMLColourMap()
+      resetGDMLColourMap()
+      showGDMLColourMap()
       return      
 
       #myWidget = QtGui.QDockWidget()

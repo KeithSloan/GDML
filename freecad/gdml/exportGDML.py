@@ -317,7 +317,6 @@ def reportObject(obj) :
          #print dir(obj.Mesh)
          break
 
-
       print("Other")
       print(obj.TypeId)
       break
@@ -1640,6 +1639,9 @@ def exportGDML(first,filename,type = 1) :
        print('File extension must be gdml')
 
 def scanForStl(first, gxml, path, flag ):
+
+   from .GDMLColourMap import lookupColour
+
    # if flag == True ignore Parts that convert
    print('scanForStl') 
    print(first.Name+' : '+first.Label+' : '+first.TypeId)
@@ -1715,6 +1717,11 @@ def scanForStl(first, gxml, path, flag ):
       newpath = os.path.join(path,first.Label+'.stl')
       print('Exporting : '+newpath)
       first.Shape.exportStl(newpath)
+      if hasattr(first.ViewObject,'ShapeColor') :
+         colour = first.ViewObject.ShapeColor
+         print('===> Colour '+str(colour))
+         print(lookupColour(colour))
+    
 
 def exportGXML(first, path, flag) :
     print('Path : '+path)

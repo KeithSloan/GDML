@@ -33,6 +33,25 @@ import FreeCADGui
 #from PySide2 import QtGui, QtCore
 from PySide import QtGui, QtCore
 
+def resetGDMLColourMap():
+    print('Reset Colour Map')
+    global workBenchColourMap
+    try :
+       del workBenchColourMap
+    except NameError:
+       pass
+
+    workBenchColourMap = GDMLColourMap(FreeCADGui.getMainWindow())
+
+def showGDMLColourMap():
+    print('Display Colour Map')
+    workBenchColourMap.show()
+
+def lookupColour(col) :
+    global workBenchColourMap
+    print('Lookup Colour')
+    return workBenchColourMap.lookupColour(col)
+
 class GDMLColour(QtGui.QWidget):
   
    def __init__(self,colour):
@@ -61,10 +80,10 @@ class GDMLColourMapEntry(QtGui.QWidget) :
       super().__init__()
       print('Map Entry : '+str(colour))
       self.colour = colour
-      layout = QtGui.QHBoxLayout()
-      layout.addWidget(GDMLColour(colour))
-      layout.addWidget(material)
-      self.setLayout(layout)
+      self.hbox = QtGui.QHBoxLayout()
+      self.hbox.addWidget(GDMLColour(colour))
+      self.hbox.addWidget(material)
+      self.setLayout(self.hbox)
 
    def dataPicker(self):
       print('DataPicker')
@@ -94,21 +113,21 @@ class GDMLColourMapList(QtGui.QScrollArea) :
 
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
-   def __init__(self) :
-      super(GDMLColourMap, self).__init__(FreeCADGui.getMainWindow(), QtCore.Qt.Tool)
+   def __init__(self, parent) :
+      super(GDMLColourMap, self).__init__(parent, QtCore.Qt.Tool)
       self.initUI()
 
    def initUI(self):   
       self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
-      self.setGeometry( 250, 250, 550, 350)
+      self.setGeometry( 250, 450, 550, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       lay = QtGui.QGridLayout(self)
       
       materialList = self.getGDMLMaterials()
-      mapList = GDMLColourMapList(materialList)
+      self.mapList = GDMLColourMapList(materialList)
       doc = FreeCAD.ActiveDocument
       print('Active')
       print(doc)
@@ -116,25 +135,25 @@ class GDMLColourMap(QtGui.QDialog) :
          #print(dir(doc))
          if hasattr(doc,'Objects') :
             #print(doc.Objects)
-            colorList = []
+            self.colorList = []
             for obj in doc.Objects :
                 #print(dir(obj))
                 if hasattr(obj,'ViewObject') :
-                   print(dir(obj.ViewObject))
+                   #print(dir(obj.ViewObject))
                    if hasattr(obj.ViewObject,'isVisible') :
                       if obj.ViewObject.isVisible :
                          if hasattr(obj.ViewObject,'ShapeColor') :
                             colour = obj.ViewObject.ShapeColor
                             print(colour)
                             try:
-                               col = colorList.index(colour)
+                               col = self.colorList.index(colour)
                             except ValueError:
-                               colorList.append(colour)
-      print(colorList)
-      for c in colorList :
-          mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
+                               self.colorList.append(colour)
+      print(self.colorList)
+      for c in self.colorList :
+          self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
       # create Labels
-      self.label1 = mapList 
+      self.label1 = self.mapList 
       lay.addWidget(self.label1,0,0)
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
@@ -149,7 +168,16 @@ class GDMLColourMap(QtGui.QDialog) :
       # now make the window visible
       self.setLayout(lay)
       self.show()
-      #
+      
+   def lookupColour(self, col) :
+       print('Lookup Colour')
+       idx = self.colorList.index(col)
+       print(idx)
+       entry = self.mapList.vbox.itemAt(idx).widget()
+       print(entry)
+       mat = entry.hbox.itemAt(1).widget().currentText()
+       print(mat)
+       return mat
 
    def onCancel(self):
        self.result = userCancelled
