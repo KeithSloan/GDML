@@ -1617,7 +1617,9 @@ def exportWorldVol(vol) :
 
         processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
-def exportGDML(first,filename) :
+def exportGDML(first,filename,type = 1) :
+    # type = 1 - Straight GDML export Tessellate
+    # type = 2 - Ignore Tessellate
     if filename.lower().endswith('.gdml') :
        # GDML Export
        print("\nStart GDML Export 0.1")
@@ -1625,16 +1627,92 @@ def exportGDML(first,filename) :
        GDMLstructure()
        zOrder = 1
        processMaterials()
-       exportWorldVol(first)
+       exportWorldVol(first, type)
        # format & write GDML file 
        indent(gdml)
        print("Write to GDML file")
        #ET.ElementTree(gdml).write(filename, 'utf-8', True)
        ET.ElementTree(gdml).write(filename,xml_declaration=True)
-       #ET.ElementTree(gdml).write(filename, pretty_print=True, xml_declaration=True)
+       #ET.ElementTree(gdml).write(filename, pretty_print=True, \
+       #xml_declaration=True)
        print("GDML file written")
     else :
        print('File extension must be gdml')
+
+def scanForStl(first, gxml, flag ):
+    # if flag == True ignore Parts that convert
+    
+   print('Scan For STL')    
+   while switch(first.TypeId) :
+      if case("Part::FeaturePython") : 
+         break
+
+      if case("App::Origin") :
+         #print("App Origin")
+         break
+
+      if case("App::GeoFeature") :
+         #print("App GeoFeature")
+         break
+
+      if case("App::Line") :
+         #print("App Line")
+         break
+
+      if case("App::Plane") :
+         #print("App Plane")
+         break
+      
+      break
+
+   if flag == True :
+      #
+      #  Now deal with objects that map to GDML solids
+      #
+      while switch(first.TypeId) :
+         if case("Part::Box") :
+            print("    Box")
+            break
+
+         if case("Part::Cylinder") :
+            print("    Cylinder")
+            break
+
+         if case("Part::Cone") :
+            print("    Cone")
+            break
+
+         if case("Part::Sphere") :
+            print("    Sphere")
+            break
+
+         break
+
+   # Deal with Booleans which will have Tool
+   if hasattr(first,'Tool') :
+      print(first.TypeId)
+      scanForStl(first.Base, gxml, flag)
+      scanForStl(first.Tool, gxml, flag)
+
+   if hasattr(first,'OutList') :
+      for obj in first.OutList :
+          scanForStl(obj, gxml, flag)
+
+   print('Write out stl')
+   print(first.Name)
+   print(first.Label)
+   print(first.TypeId)
+
+def exportGXML(first, path, flag) :
+    print('Path : '+path)
+    basename = os.path.basename(path)
+    gxml = ET.Element('gxml')
+    scanForStl(first, gxml, flag)
+    # format & write gxml file 
+    indent(gxml)
+    print("Write to gxml file")
+    ET.ElementTree(gxml).write(os.path.join(path,basename+'.gxml'))
+    print("gxml file written")
 
 def exportMaterials(first,filename) :
     if filename.lower().endswith('.xml') :
@@ -1650,18 +1728,69 @@ def exportMaterials(first,filename) :
     else :
        print('File extension must be xml')
 
-def export(exportList,filename) :
-    "called when FreeCAD exports a file"
-    
-    first = exportList[0]
-    if first.TypeId == "App::Part" :
-       exportGDML(first,filename)
+def create_gcard(path, flag) :
+    basename = os.path.basename(path)
+    print('Create gcard : '+basename)
+    print('Path : '+path)
+    gcard = ET.Element('gcard')
+    ET.SubElement(gcard,'detector',{'name':'target_cad','factory':'CAD'})
+    if flag == True :
+       ET.SubElement(gcard,'detector',{'name':'target_gdml','factory':'GDML'})
+    indent(gcard)
+    path = os.path.join(path,basename+'.gcard')
+    ET.ElementTree(gcard).write(path)
 
-    elif first.Name == "Materials" :
-       exportMaterials(first,filename)
-    
+def checkDirectory(path) :    
+    if not os.path.exists(path):
+       print('Creating Directory : '+path)
+       os.mkdir(path)
+
+def exportGEMC(first, path, flag) :
+    # flag = True  GEMC - GDML
+    # flag = false just CAD
+    print('Export GEMC')
+    print(flag)
+    print(path)
+    checkDirectory(path)
+    # Create CAD directory
+    cadPath = os.path.join(path,'cad')
+    checkDirectory(cadPath)
+    # Create gcard
+    create_gcard(path, flag)
+    exportGXML(first,cadPath,flag)
+    if flag == True :
+       print('Create GDML directory')
+       gdmlPath = os.path.join(path,'gdml')
+       checkDirectory(gdmlPath)
+       exportGDML(first, gdmlPath, 2)
+
+def export(exportList,filepath) :
+    "called when FreeCAD exports a file"
+  
+    print('Export')
+    first = exportList[0]
+ 
+    import os
+    path, fileExt = os.path.splitext(filepath)
+    print('filepath : '+path)
+    print('file extension : '+fileExt)
+
+    if fileExt == '.gemc' :
+       exportGEMC(first, path, False)
+
+    elif fileExt == '.GEMC' :
+       exportGEMC(first, path, True)
+
     else :
-       print("Need to a Part for export")
-       from PySide import QtGui
-       QtGui.QMessageBox.critical(None,'Need to select a Part for export','Press OK')
+       if first.TypeId == "App::Part" :
+          exportGDML(first,filepath)
+
+       elif first.Name == "Materials" :
+          exportMaterials(first,filepath)
+    
+       else :
+          print("Needs to be a Part for export")
+          from PySide import QtGui
+          QtGui.QMessageBox.critical(None,'Need to select a Part for export', \
+                 'Press OK')
 
