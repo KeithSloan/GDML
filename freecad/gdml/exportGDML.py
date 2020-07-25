@@ -1639,28 +1639,33 @@ def exportGDML(first,filename,type = 1) :
     else :
        print('File extension must be gdml')
 
-def scanForStl(first, gxml, flag ):
-    # if flag == True ignore Parts that convert
-    
-   print('Scan For STL')    
+def scanForStl(first, gxml, path, flag ):
+   # if flag == True ignore Parts that convert
+   print('scanForStl') 
+   print(first.Name+' : '+first.Label+' : '+first.TypeId)
    while switch(first.TypeId) :
       if case("Part::FeaturePython") : 
+         return
          break
 
       if case("App::Origin") :
          #print("App Origin")
+         return
          break
 
       if case("App::GeoFeature") :
          #print("App GeoFeature")
+         return
          break
 
       if case("App::Line") :
          #print("App Line")
+         return
          break
 
       if case("App::Plane") :
          #print("App Plane")
+         return
          break
       
       break
@@ -1672,18 +1677,22 @@ def scanForStl(first, gxml, flag ):
       while switch(first.TypeId) :
          if case("Part::Box") :
             print("    Box")
+            return
             break
 
          if case("Part::Cylinder") :
             print("    Cylinder")
+            return
             break
 
          if case("Part::Cone") :
             print("    Cone")
+            return
             break
 
          if case("Part::Sphere") :
             print("    Sphere")
+            return
             break
 
          break
@@ -1691,23 +1700,28 @@ def scanForStl(first, gxml, flag ):
    # Deal with Booleans which will have Tool
    if hasattr(first,'Tool') :
       print(first.TypeId)
-      scanForStl(first.Base, gxml, flag)
-      scanForStl(first.Tool, gxml, flag)
+      scanForStl(first.Base, gxml, path, flag)
+      scanForStl(first.Tool, gxml, path, flag)
 
    if hasattr(first,'OutList') :
       for obj in first.OutList :
-          scanForStl(obj, gxml, flag)
+          scanForStl(obj, gxml, path, flag)
 
    print('Write out stl')
-   print(first.Name)
-   print(first.Label)
-   print(first.TypeId)
+   print('===> Name : '+first.Name+' Label : '+first.Label+' \
+          Type :'+first.TypeId+' : '+str(hasattr(first,'Shape')))
+   if hasattr(first,'Shape') :
+      ET.SubElement(gxml,'volume',{'name':first.Label})
+      newpath = os.path.join(path,first.Label+'.stl')
+      print('Exporting : '+newpath)
+      first.Shape.exportStl(newpath)
 
 def exportGXML(first, path, flag) :
     print('Path : '+path)
-    basename = os.path.basename(path)
+    basename = 'target_'+os.path.basename(path)
     gxml = ET.Element('gxml')
-    scanForStl(first, gxml, flag)
+    print('ScanForStl')
+    scanForStl(first, gxml, path, flag)
     # format & write gxml file 
     indent(gxml)
     print("Write to gxml file")
