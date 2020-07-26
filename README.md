@@ -330,7 +330,7 @@ used should be xml NOT gdml
 The Materials directory contains a number of Materials XML files including NIST Database
 that can be imported.
 
-## Export for GEMC
+## GEMC
 
 This is still at an early stage of development and has some rough edges, extra support will be added over time
 
@@ -343,12 +343,19 @@ so the FreeCAD Import/Export Preferences for STEP Import should be set as follow
 
 1) Make sure Import/Export Preferences are set. (Avoid Compound and LinkGroup)
 2) Open the STEP File
-3) Switch to the GDML workbench if not the current workbench
-4) Click on colourMap Icon ![GDML ColourMap-Icon](freecad/gdml/Resources/icons/GDMLColourMapFeature.svg) ColourMap
-5) Allocate Materials to Colours
-6) Select Export on the Toolbar
-7) Enter directory path ( No file extension )
-8) Export type GEMC (*.gemc) ( Filetype is Not used )
+
+### Export for GEMC
+
+1) Switch to the GDML workbench if not the current workbench
+2) Click on colourMap Icon ![GDML ColourMap-Icon](freecad/gdml/Resources/icons/GDMLColourMapFeature.svg) ColourMap
+3) Allocate Materials to Colours
+4) Select Export on the Toolbar
+5) Enter directory path ( No file extension )
+6) Export type GEMC (*.gemc) ( Filetype is Not used )
+
+### Export type GEMC (*.gemc)
+
+This creates a directory structure for a CAD Factory - Where all FreeCAD Objects with Shapes are exported as stl files
 
 ### Constants / Isotopes / Elements / Materials
 
