@@ -317,7 +317,6 @@ def reportObject(obj) :
          #print dir(obj.Mesh)
          break
 
-
       print("Other")
       print(obj.TypeId)
       break
@@ -1639,7 +1638,13 @@ def exportGDML(first,filename,type = 1) :
     else :
        print('File extension must be gdml')
 
+def hexInt(f) :
+    return hex(int(f*255))[2:].zfill(2)
+
 def scanForStl(first, gxml, path, flag ):
+
+   from .GDMLColourMap import lookupColour
+
    # if flag == True ignore Parts that convert
    print('scanForStl') 
    print(first.Name+' : '+first.Label+' : '+first.TypeId)
@@ -1707,15 +1712,26 @@ def scanForStl(first, gxml, path, flag ):
       for obj in first.OutList :
           scanForStl(obj, gxml, path, flag)
 
-   print('Write out stl')
-   print('===> Name : '+first.Name+' Label : '+first.Label+' \
+   if first.TypeId != 'App::Part' :
+      print('Write out stl')
+      print('===> Name : '+first.Name+' Label : '+first.Label+' \
           Type :'+first.TypeId+' : '+str(hasattr(first,'Shape')))
-   if hasattr(first,'Shape') :
-      ET.SubElement(gxml,'volume',{'name':first.Label})
-      newpath = os.path.join(path,first.Label+'.stl')
-      print('Exporting : '+newpath)
-      first.Shape.exportStl(newpath)
-
+      if hasattr(first,'Shape') :
+         newpath = os.path.join(path,first.Label+'.stl')
+         print('Exporting : '+newpath)
+         first.Shape.exportStl(newpath)
+         # Set Defaults
+         colHex = 'ff0000'
+         mat = 'G4Si'
+         if hasattr(first.ViewObject,'ShapeColor') :
+            col = first.ViewObject.ShapeColor
+            colHex = hexInt(col[0]) + hexInt(col[1]) + hexInt(col[2])
+            print('===> Colour '+str(col) + ' '+colHex)
+            mat = lookupColour(col)
+            print('Material : '+mat)
+            ET.SubElement(gxml,'volume',{'name':first.Label, \
+                'color': colHex, 'material':mat})
+    
 def exportGXML(first, path, flag) :
     print('Path : '+path)
     basename = 'target_'+os.path.basename(path)
