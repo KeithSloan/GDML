@@ -128,6 +128,7 @@ def GDMLstructure() :
     ################################
     global gdml, define, materials, solids, structure, setup, worldVOL
     global defineCnt, LVcount, PVcount, POScount, ROTcount
+    global gxml
 
     defineCnt = LVcount = PVcount = POScount =  ROTcount = 1
 
@@ -145,6 +146,7 @@ def GDMLstructure() :
     solids = ET.SubElement(gdml, 'solids')
     structure = ET.SubElement(gdml, 'structure')
     setup = ET.SubElement(gdml, 'setup', {'name': 'Default', 'version': '1.0'})
+    gxml = ET.Element('gxml')
     return structure
 
 def defineMaterials():
@@ -183,10 +185,11 @@ def defineWorldBox(bbox):
                      'lunit': 'mm'})
     return(name)
 
-def addObjectToVol(obj, lvol, name, solidName, material) :
-    #lvol = ET.SubElement(vol,'volume', {'name':name})
-    ET.SubElement(lvol, 'materialref', {'ref': material})
-    ET.SubElement(lvol, 'solidref', {'ref': solidName})
+#def addObjectToVol(obj, lvol, name, solidName, material) :
+#    #lvol = ET.SubElement(vol,'volume', {'name':name})
+#    ET.SubElement(lvol, 'materialref', {'ref': material})
+#    ET.SubElement(lvol, 'solidref', {'ref': solidName})
+#    ET.SubElement(gxml, 'volume', {'name': name, 'material':material})
 
 def createLVandPV(obj, name, solidName):
     #
@@ -544,7 +547,7 @@ def addPhysVol(xmlVol, volName) :
 
 def exportPosition(name, xml, pos) :
     global POScount
-    GDMLShared.trace('export Position')
+    GDMLShared.trace('expor tPosition')
     GDMLShared.trace(pos)
     x = pos[0]
     y = pos[1]
@@ -596,11 +599,12 @@ def processRotation(obj, solid) :
     exportRotation(obj.Name,solid,obj.Placement.Rotation)
 
 
-def addVolRef(vol,solidName,material) :
-    ET.SubElement(vol,'solidref',{'ref': solidName})
+def addVolRef(volxml, volName, solidName, material) :
+    ET.SubElement(volxml,'solidref',{'ref': solidName})
     if material != None :   # MultiUnion no material
-        ET.SubElement(vol,'materialref',{'ref': material})
-
+        ET.SubElement(volxml,'materialref',{'ref': material})
+    ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
+    
 def testDefaultPlacement(obj) :
     #print(dir(obj.Placement.Rotation))
     print('Test Default Placement : '+obj.Name)
@@ -1323,7 +1327,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     # OutList - OutList 
     # xmlVol    - xmlVol
     # xmlParent - xmlParent Volume
-    # parenName - Parent Name
+    # parentName - Parent Name
     # addVolsFlag - Add physical Vol
     # return idx of next Object to be processed
     # solid or boolean reference name or None
@@ -1335,12 +1339,12 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     while switch(obj.TypeId) :
 
       if case("App::Part") :
-          subXMLvol = insertXMLvol(obj.Name)
-          if hasattr(obj,'OutList') :
-                #print('Process '+obj.Name)
-                processVols(obj, subXMLvol, xmlVol, obj.Name, True)
-          return idx + 1
-         
+         subXMLvol = insertXMLvol(obj.Name)
+         if hasattr(obj,'OutList') :
+            #print('Process '+obj.Name)
+            processVols(obj, subXMLvol, xmlVol, obj.Name, True)
+         return idx + 1
+
       if case("App::Origin") :
          #print("App Origin")
          return idx + 1
@@ -1371,7 +1375,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          subtract = ET.SubElement(solids,'subtraction',{'name': cutName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         addVolRef(xmlVol,cutName,obj.Base.material)
+         addVolRef(xmlVol,parentName,cutName,obj.Base.material)
          pvol = addPhysVol(xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
@@ -1389,7 +1393,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          union = ET.SubElement(solids,'union',{'name': unionName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         addVolRef(xmlVol,unionName,obj.Base.material)
+         addVolRef(xmlVol,parentName,unionName,obj.Base.material)
          pvol = addPhysVol(xmlParent,parentName)
          processPosition(obj,pvol)
          processRotation(obj,pvol)
@@ -1422,7 +1426,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          print("   Multifuse") 
          # test and fix
          multName = 'MultiFuse'+obj.Name
-         addVolRef(xmlVol,multName,None)
+         addVolRef(xmlVol,parentName,multName,None)
          # First add solids in list before reference
          print('Output Solids')
          for sub in obj.OutList:
@@ -1462,7 +1466,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
               if hasattr(obj.Proxy, 'Type') :
                  print(obj.Proxy.Type) 
               solidName = processSolid(obj, True)
-              addVolRef(xmlVol,solidName,obj.material)
+              addVolRef(xmlVol,parentName,solidName,obj.material)
               if xmlParent != None :
                  pvol = addPhysVol(xmlParent,parentName)
                  processPosition(obj,pvol)
@@ -1556,6 +1560,7 @@ def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
     ##print('processVol : '+vol.Name)
+    # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
     num = len(vol.OutList)
@@ -1583,6 +1588,7 @@ def createWorldVol(volName) :
     ET.SubElement(worldVol, 'solidref',{'ref': boxName})
     print("Need to FIX !!!! To use defined gas")
     ET.SubElement(worldVol, 'materialref',{'ref': 'G4_Galactic'})
+    ET.SubElement(gxml,'volume',{'name': volName, 'material':'G4_AIR'})
     return worldVol
 
 def checkGDMLstructure(objList) :
@@ -1616,9 +1622,7 @@ def exportWorldVol(vol) :
 
         processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
-def exportGDML(first,filename,type = 1) :
-    # type = 1 - Straight GDML export Tessellate
-    # type = 2 - Ignore Tessellate
+def exportGDML(first,filename) :
     if filename.lower().endswith('.gdml') :
        # GDML Export
        print("\nStart GDML Export 0.1")
@@ -1626,7 +1630,7 @@ def exportGDML(first,filename,type = 1) :
        GDMLstructure()
        zOrder = 1
        processMaterials()
-       exportWorldVol(first, type)
+       exportWorldVol(first)
        # format & write GDML file 
        indent(gdml)
        print("Write to GDML file")
@@ -1654,9 +1658,6 @@ def scanForStl(first, gxml, path, flag ):
    print('scanForStl') 
    print(first.Name+' : '+first.Label+' : '+first.TypeId)
    while switch(first.TypeId) :
-      #if case("Part::FeaturePython") : 
-      #   return
-      #   break
 
       if case("App::Origin") :
          #print("App Origin")
@@ -1685,6 +1686,10 @@ def scanForStl(first, gxml, path, flag ):
       #  Now deal with objects that map to GDML solids
       #
       while switch(first.TypeId) :
+         if case("Part::FeaturePython") : 
+            return
+            break
+
          if case("Part::Box") :
             print("    Box")
             return
@@ -1718,10 +1723,10 @@ def scanForStl(first, gxml, path, flag ):
           scanForStl(obj, gxml, path, flag)
 
    if first.TypeId != 'App::Part' :
-      print('Write out stl')
-      print('===> Name : '+first.Name+' Label : '+first.Label+' \
-          Type :'+first.TypeId+' : '+str(hasattr(first,'Shape')))
       if hasattr(first,'Shape') :
+         print('Write out stl')
+         print('===> Name : '+first.Name+' Label : '+first.Label+' \
+             Type :'+first.TypeId+' : '+str(hasattr(first,'Shape')))
          newpath = os.path.join(path,first.Label+'.stl')
          print('Exporting : '+newpath)
          first.Shape.exportStl(newpath)
@@ -1738,19 +1743,20 @@ def scanForStl(first, gxml, path, flag ):
             if hasattr(first,'Placement') :
                print(first.Placement.Base)
                pos = formatPosition(first.Placement.Base)
-            ET.SubElement(gxml,'volume',{'name':first.Label, \
-                'color': colHex, 'material':mat, 'position': pos})
+               ET.SubElement(gxml,'volume',{'name':first.Label, \
+                   'color': colHex, 'material':mat, 'position': pos})
     
 def exportGXML(first, path, flag) :
     print('Path : '+path)
-    basename = 'target_'+os.path.basename(path)
+    #basename = 'target_'+os.path.basename(path)
     gxml = ET.Element('gxml')
     print('ScanForStl')
     scanForStl(first, gxml, path, flag)
     # format & write gxml file 
     indent(gxml)
     print("Write to gxml file")
-    ET.ElementTree(gxml).write(os.path.join(path,basename+'.gxml'))
+    #ET.ElementTree(gxml).write(os.path.join(path,basename+'.gxml'))
+    ET.ElementTree(gxml).write(os.path.join(path,'target_cad.gxml'))
     print("gxml file written")
 
 def exportMaterials(first,filename) :
@@ -1786,22 +1792,31 @@ def checkDirectory(path) :
 
 def exportGEMC(first, path, flag) :
     # flag = True  GEMC - GDML
-    # flag = false just CAD
+    # flag = False just CAD
+    global gxml
+
     print('Export GEMC')
-    print(flag)
+    #basename = os.path.basename(path)
     print(path)
+    print(flag)
     checkDirectory(path)
     # Create CAD directory
     cadPath = os.path.join(path,'cad')
     checkDirectory(cadPath)
     # Create gcard
     create_gcard(path, flag)
-    exportGXML(first,cadPath,flag)
+    exportGXML(first, cadPath, flag)
     if flag == True :
        print('Create GDML directory')
        gdmlPath = os.path.join(path,'gdml')
        checkDirectory(gdmlPath)
-       exportGDML(first, gdmlPath, 2)
+       #gdmlFilePath  = os.path.join(gdmlPath,basename+'.gdml')
+       gdmlFilePath  = os.path.join(gdmlPath,'target_gdml.gdml')
+       exportGDML(first, gdmlFilePath)
+       #newpath = os.path.join(gdmlPath,basename+'.gxml')
+       newpath = os.path.join(gdmlPath,'target_gdml.gxml')
+       indent(gxml)
+       ET.ElementTree(gxml).write(newpath)
 
 def export(exportList,filepath) :
     "called when FreeCAD exports a file"
