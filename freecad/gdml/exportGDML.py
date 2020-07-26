@@ -1641,6 +1641,11 @@ def exportGDML(first,filename,type = 1) :
 def hexInt(f) :
     return hex(int(f*255))[2:].zfill(2)
 
+def formatPosition(pos):
+    s = str(pos[0])+'*mm '+str(pos[1])+'*mm '+str(pos[2])+'*mm'
+    print(s)
+    return s
+
 def scanForStl(first, gxml, path, flag ):
 
    from .GDMLColourMap import lookupColour
@@ -1649,9 +1654,9 @@ def scanForStl(first, gxml, path, flag ):
    print('scanForStl') 
    print(first.Name+' : '+first.Label+' : '+first.TypeId)
    while switch(first.TypeId) :
-      if case("Part::FeaturePython") : 
-         return
-         break
+      #if case("Part::FeaturePython") : 
+      #   return
+      #   break
 
       if case("App::Origin") :
          #print("App Origin")
@@ -1724,13 +1729,17 @@ def scanForStl(first, gxml, path, flag ):
          colHex = 'ff0000'
          mat = 'G4Si'
          if hasattr(first.ViewObject,'ShapeColor') :
+            #print(dir(first))
             col = first.ViewObject.ShapeColor
             colHex = hexInt(col[0]) + hexInt(col[1]) + hexInt(col[2])
             print('===> Colour '+str(col) + ' '+colHex)
             mat = lookupColour(col)
             print('Material : '+mat)
+            if hasattr(first,'Placement') :
+               print(first.Placement.Base)
+               pos = formatPosition(first.Placement.Base)
             ET.SubElement(gxml,'volume',{'name':first.Label, \
-                'color': colHex, 'material':mat})
+                'color': colHex, 'material':mat, 'position': pos})
     
 def exportGXML(first, path, flag) :
     print('Path : '+path)
