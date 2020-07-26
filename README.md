@@ -339,7 +339,7 @@ This is still at an early stage of development and has some rough edges, extra s
 The FreeCAD default settings for Import of a STEP file is to create a single Compound,
 so the FreeCAD Import/Export Preferences for STEP Import should be set as follows
 
-![Import STEP](/images/Step-Import-Options.png)
+![Import STEP](/Images/Step-import-Options.png)
 
 1) Make sure Import/Export Preferences are set. (Avoid Compound and LinkGroup)
 2) Open the STEP File
