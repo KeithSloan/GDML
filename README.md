@@ -1,3 +1,5 @@
+## New experimental export for GEMC
+
 ## Installable FreeCAD Python Workbench
 
 FreeCAD's python Importer & Exporter for GDML files.
@@ -327,6 +329,26 @@ used should be xml NOT gdml
 
 The Materials directory contains a number of Materials XML files including NIST Database
 that can be imported.
+
+## Export for GEMC
+
+This is still at an early stage of development and has some rough edges, extra support will be added over time
+
+### Import of STEP file for GEMC
+
+The FreeCAD default settings for Import of a STEP file is to create a single Compound,
+so the FreeCAD Import/Export Preferences for STEP Import should be set as follows
+
+![Import STEP](/images/Step-Import-Options.png)
+
+1) Make sure Import/Export Preferences are set. (Avoid Compound and LinkGroup)
+2) Open the STEP File
+3) Switch to the GDML workbench if not the current workbench
+4) Click on colourMap Icon ![GDML ColourMap-Icon](freecad/gdml/Resources/icons/GDMLColourMapFeature.svg) ColourMap
+5) Allocate Materials to Colours
+6) Select Export on the Toolbar
+7) Enter directory path ( No file extension )
+8) Export type GEMC (*.gemc) ( Filetype is Not used )
 
 ### Constants / Isotopes / Elements / Materials
 
