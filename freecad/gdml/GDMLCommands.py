@@ -82,6 +82,44 @@ def getSelectedMaterial() :
 
     return 0
 
+class ColourMapFeature:
+
+  def Activated(self):
+      from PySide import QtGui, QtCore
+      #import sys
+      from .GDMLColourMap import resetGDMLColourMap, showGDMLColourMap
+
+      print('Add colour Map')
+      resetGDMLColourMap()
+      showGDMLColourMap()
+      return      
+
+      #myWidget = QtGui.QDockWidget()
+      #mainWin = FreeCADGui.getMainWindow()
+      #mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
+      mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea, \
+         myWidget)
+      #mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
+      #myWidget.setObjectName("ColourMap")
+      #myWidget.resize(QtCore.QSize(300,100))
+      #title = QtGui.QLabel("Colour Mapping to GDML Materials")
+      #title.setIndent(100)
+      #myWidget.setTitleBarWidget(title)
+      #label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
+
+  def IsActive(self):
+      if FreeCAD.ActiveDocument == None:
+         return False
+      else:
+         return True
+
+  def GetResources(self):
+      return {'Pixmap'  : 'GDMLColourMapFeature', 'MenuText': \
+              QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
+             'Add Colour Map'), 'ToolTip': \
+              QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
+              'Add Colour Map')}
+
 class BoxFeature:
     #    def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -741,9 +779,9 @@ class CompoundFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_Compound', \
                 'Add a Compound of Volume')}    
 
-FreeCADGui.addCommand('AddCompound',CompoundFeature())
-FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
 FreeCADGui.addCommand('CycleCommand',CycleFeature())
+FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
+FreeCADGui.addCommand('ColourMapCommand',ColourMapFeature())
 FreeCADGui.addCommand('BoxCommand',BoxFeature())
 FreeCADGui.addCommand('EllipsoidCommand',EllispoidFeature())
 FreeCADGui.addCommand('ElTubeCommand',ElliTubeFeature())
@@ -752,6 +790,7 @@ FreeCADGui.addCommand('SphereCommand',SphereFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
+FreeCADGui.addCommand('AddCompound',CompoundFeature())
 FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
