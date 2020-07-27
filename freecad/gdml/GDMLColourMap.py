@@ -50,7 +50,14 @@ def showGDMLColourMap():
 def lookupColour(col) :
     global workBenchColourMap
     print('Lookup Colour')
-    return workBenchColourMap.lookupColour(col)
+    try :
+        mat = workBenchColourMap.lookupColour(col)
+     
+    except NameError:
+        workBenchColourMap = GDMLColourMap(FreeCADGui.getMainWindow())
+        mat = workBenchColourMap.lookupColour(col)
+      
+    return mat
 
 class GDMLColour(QtGui.QWidget):
   
