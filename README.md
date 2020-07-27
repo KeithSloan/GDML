@@ -375,7 +375,8 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 
 ## Compound & FEM - Finite Element Analysis
 
-### Use of `compound` icon **'C'** to facilitate preperation for FEM analysis
+### Use of `compound` icon     ![GDML_MakeCompund ](freecad/gdml/Resources/icons/GDML_Compound.svg)   GDML Compound
+to facilitate preperation for FEM analysis
 
 #### Usage
 
