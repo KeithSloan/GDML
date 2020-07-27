@@ -1,4 +1,4 @@
-## New experimental export for GEMC
+## **** New experimental export for GEMC ****
 
 ## Installable FreeCAD Python Workbench
 
@@ -351,12 +351,17 @@ so the FreeCAD Import/Export Preferences for STEP Import should be set as follow
 3) Allocate Materials to Colours
 4) Select Export on the Toolbar
 5) Enter directory path ( No file extension )
-6) Export type GEMC (*.gemc) ( Filetype is Not used )
+6) Select the Export type ( Note: Filetype is Not used )
 
-### Export type GEMC (*.gemc)
+   * Selecting GEMC lower case option GEMC - stp (*.gemc) 
+       
+     This creates a directory structure for a CAD Factory - Where all FreeCAD Objects with Shapes are exported as stl files
 
-This creates a directory structure for a CAD Factory - Where all FreeCAD Objects with Shapes are exported as stl files
-
+   * Selecting GEMC upper case otion GEMC - gdml (*.GEMC)
+     
+     Then GDML objects and FreeCAD Object that directly convert are output in a GDML file of a GDML Factory,
+     Other Objects with a Shape are output as STL files in a CAD Factory.
+       
 ### Constants / Isotopes / Elements / Materials
 
 Importing a GDML will create FreeCAD objects for the above and export should
@@ -370,7 +375,8 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 
 ## Compound & FEM - Finite Element Analysis
 
-### Use of `compound` icon **'C'** to facilitate preperation for FEM analysis
+### Use of `compound` icon     ![GDML_MakeCompund ](freecad/gdml/Resources/icons/GDML_Compound.svg)   GDML Compound
+to facilitate preperation for FEM analysis
 
 #### Usage
 
