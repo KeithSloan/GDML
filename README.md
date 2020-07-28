@@ -9,7 +9,7 @@ see https://wiki.freecadweb.org/Installing#Choose_Your_Operating_System
 
 ## Installation of Workbench
 
-GDML can be insatlled via the Addon Manager 
+GDML can be installed via the Addon Manager 
 https://wiki.freecadweb.org/Std_AddonMgr
 
 Install by use of FreeCAD Addon Manager ==> GDML ==> update
