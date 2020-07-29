@@ -1,6 +1,6 @@
 ## **** New experimental export for GEMC ****
    
-##   **** IMPORTANT - Needs FreeCAD 0.19 ****
+##   **** IMPORTANT - Needs FreeCAD 0.19 due to different version of Qt ****
 
 ## Installable FreeCAD Python Workbench
 
