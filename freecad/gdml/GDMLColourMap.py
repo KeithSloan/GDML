@@ -108,8 +108,8 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       self.widget.setLayout(self.vbox)
 
       #Scroll Area Properties
-      self.setVerticalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOn)
-      self.setHorizontalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOff)
+      self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+      self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
       self.setWidgetResizable(True)
       self.setWidget(self.widget)
 
