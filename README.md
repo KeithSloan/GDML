@@ -1,16 +1,24 @@
 ## **** New experimental export for GEMC ****
+   
+##   **** IMPORTANT - Needs FreeCAD 0.19 due to different version of Qt ****
 
 ## Installable FreeCAD Python Workbench
 
 FreeCAD's python Importer & Exporter for GDML files.
 
-## Installation 
+## Installation of FreeCAD
+see https://wiki.freecadweb.org/Installing#Choose_Your_Operating_System
+
+## Installation of Workbench
+
+GDML can be installed via the Addon Manager 
+https://wiki.freecadweb.org/Std_AddonMgr
 
 Install by use of FreeCAD Addon Manager ==> GDML ==> update
 
-Required python libraries - lxml & gmsh
+## Required python libraries - lxml & gmsh
 
-## lxml - python library
+### lxml - python library
 
 lxml which should be installed as part of FreeCAD
 
@@ -18,7 +26,7 @@ lxml which should be installed as part of FreeCAD
    * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
    
 
-### Checking required python libraries available to FreeCAD
+#### Checking required python libraries available to FreeCAD
 
 To check path FreeCAD uses from a command line/window.
 
@@ -26,23 +34,23 @@ To check path FreeCAD uses from a command line/window.
     import sys
     print(sys.path)
 
-### Manual install of lxml
+#### Manual install of lxml
 
     pip3 install lxml -t < directory >
   
-### Check lxml correctly installed
+#### Check lxml correctly installed
 
     freecad -c
     import lxml
     from lxml import etree
     print(etree.LXML_VERSION)
 
-### FreeCAD version 0.18
+#### FreeCAD version 0.18
 
 There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended that you use FreeCAD 0.19 as above.
 ( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
 
-## gmsh - python library
+### gmsh - python library
 
 Must be installed in a location that FreeCAD sees to check path FreeCAD uses from a command line/window.
 
@@ -204,7 +212,6 @@ Note: For some reason there appears to be a delay in updating the new number of 
 ### FC Mesh to GDML Tessellated
 ![GDML FC-Mesh2Tess-Icon](freecad/gdml/Resources/icons/GDML_Mesh2Tess.svg) Mesh to GDML Tessellated
 
-
 If the selected FreeCAD object is a mesh then a GDML Tessellated Object is created. Again if a material is
 also selected then this will set the GDML material of the GDML Tessellated Object.
 
@@ -225,19 +232,15 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
 ### GDML Tessellated to FC Mesh
 ![GDML Tess2FC-Mesh](freecad/gdml/Resources/icons/GDML_Tess2Mesh.svg) GDML Tessellated to FC Mesh
 
-
-If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.
-      
+If the selected FreeCAD object is a GDML Tessellated Object a FreeCAD Mesh is created.      
 
 ### GDML Tetrahedron (GDML Assembly of GDML Tetra)
 ![GDML_Tetrahedron](freecad/gdml/Resources/icons/GDML_Tetrahedron.svg) GDML Tetrahedron
-
 
 If the selected FreeCAD object has a Shape or is a Mesh then a Tetrahedera Object is created by using gmsh.
 This can then be exported as a GDML Assembly of GDML Tetra
 
 If you would like to see support of remeshing of Tetrahedra the same as Tessellated then please contact me or raise as an issue.
-
 
 ## GDML Import
 
@@ -255,7 +258,6 @@ Scan Vol is for large files like Alice.GDML that take far too long to process.
 
 Volumes are only processed to a limit depth i.e. volume names are determined but not processed
 For unprocessed volume the names are preceded by **`NOT_Expanded`** so an example volume name would be: `NOT_Expanded_<VolumeName>`
-
 
 #### Expansion of Scanned Volume
 
@@ -343,6 +345,17 @@ so the FreeCAD Import/Export Preferences for STEP Import should be set as follow
 
 1) Make sure Import/Export Preferences are set. (Avoid Compound and LinkGroup)
 2) Open the STEP File
+
+#### To access FreeCAD STEP Preferences
+
+ 1) Select **FreeCAD-version-number** from the Tool bar
+ 2) Then **Preference**
+ 3) In left hand column select Import/Export
+ 
+ ![Import Export|30x30.20%](/Images/Import-Export.png)
+ 
+ 4) Then from top TAB = STEP
+ 5) This displays the Export options followed by the Import Options
 
 ### Export for GEMC
 
@@ -434,7 +447,6 @@ to facilitate preperation for FEM analysis
   - [ ] Provide options to control meshing objects that will be Tessellated
   - [ ] Icons to Analize and Export
 
-
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData
 
@@ -453,7 +465,6 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
      * May contain **position** or **position ref**
      * May contain **rotation** or **rotation ref**
  
-
 ## Acknowledgements 
 
 **Developers**
@@ -491,11 +502,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 * OpenCascade Forum members:
   *  Sergey Slyadnev
     
-
 ## For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 ## Need to sort out AIR definition
-
 
 ## Feedback
 
