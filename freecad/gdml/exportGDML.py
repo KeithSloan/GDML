@@ -1596,6 +1596,8 @@ def checkGDMLstructure(objList) :
     # World Vol - App::Part
     # App::Origin
     # GDML Object
+    if len(objList) < 3 :
+       return False
     if objList[0].TypeId != 'App::Origin' \
         or objList[2].TypeId != 'App::Part' :
             return False
