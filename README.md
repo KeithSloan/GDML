@@ -1,6 +1,4 @@
 ## **** New experimental export for GEMC ****
-   
-##   **** IMPORTANT - Needs FreeCAD 0.19 due to different version of Qt ****
 
 ## Installable FreeCAD Python Workbench
 
@@ -498,6 +496,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * vocx
   * sgrogan
   * onekk (Carlo D)
+  * OpenBrain
 
 * OpenCascade Forum members:
   *  Sergey Slyadnev
