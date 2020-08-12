@@ -1339,10 +1339,10 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     while switch(obj.TypeId) :
 
       if case("App::Part") :
-         subXMLvol = insertXMLvol(obj.Name)
+         subXMLvol = insertXMLvol(obj.Label)
          if hasattr(obj,'OutList') :
             #print('Process '+obj.Name)
-            processVols(obj, subXMLvol, xmlVol, obj.Name, True)
+            processVols(obj, subXMLvol, xmlVol, obj.Label, True)
          return idx + 1
 
       if case("App::Origin") :
@@ -1557,6 +1557,9 @@ def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
 def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
+    # vol - Volume Object
+    # xmlVol - xml of this volume
+    # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
     ##print('processVol : '+vol.Name)
@@ -1596,6 +1599,8 @@ def checkGDMLstructure(objList) :
     # World Vol - App::Part
     # App::Origin
     # GDML Object
+    print('check GDML strcuture')
+    print(objList)
     if len(objList) < 3 :
        return False
     if objList[0].TypeId != 'App::Origin' \
