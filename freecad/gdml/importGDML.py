@@ -1286,7 +1286,7 @@ def processGDML(doc,filename,prompt,initFlg):
     if FreeCAD.GuiUp :
        from . import GDMLCommands
        if prompt :
-          from   .GDMLCommands import importPrompt
+          from   .GDMLQtDialogs import importPrompt
           dialog = importPrompt()
           dialog.exec_()
           #FreeCADGui.Control.showDialog(dialog)

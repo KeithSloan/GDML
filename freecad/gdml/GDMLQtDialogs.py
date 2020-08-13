@@ -37,13 +37,13 @@ class importPrompt(QtGui.QDialog):
         self.retStatus = 2
         self.close()
 
-class showInvalidWorldVol(QWidget) :
+class showInvalidWorldVol(QtGui.QWidget) :
 
     def __init__(self):
         super().__init__()
         self.title = 'Invalid World messagebox'
-        self.left = 10
-        self.top = 10
+        self.left = 200
+        self.top = 200
         self.width = 320
         self.height = 200
         self.initUI()
@@ -52,12 +52,8 @@ class showInvalidWorldVol(QWidget) :
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        buttonReply = QMessageBox.question(self, 'Invalid World Volume', \ 
-                  'World Volume must only contain one GDML Object',  \ 
-                  MessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if buttonReply == QMessageBox.Yes:
-            print('Yes clicked.')
-        else:
-            print('No clicked.')
-
+        box = QtGui.QMessageBox.information(self, 'Invalid World Volume', \
+         'World Vol must only contain one GDML Object, correct and try again', \
+        #QtGui.QMessageBox.Yes | QtGui.QMessageBox.Ok)
+        QtGui.QMessageBox.Ok)
         self.show()
