@@ -1594,12 +1594,19 @@ def createWorldVol(volName) :
     ET.SubElement(gxml,'volume',{'name': volName, 'material':'G4_AIR'})
     return worldVol
 
+def countGDMLObj(objList):
+    count = 0
+    for obj in objList :
+        if obj.TypeId == 'Part::FeaturePython' :
+           count += 1
+    return count
+
 def checkGDMLstructure(objList) :
     # Should be 
     # World Vol - App::Part
     # App::Origin
     # GDML Object
-    print('check GDML strcuture')
+    print('check GDML structure')
     print(objList)
     if len(objList) < 3 :
        return False
@@ -1614,38 +1621,42 @@ def locateXMLvol(vol) :
     return xmlVol
 
 def exportWorldVol(vol) :
-
     print('Export World Process Volume')
     ET.SubElement(setup,'world',{'ref':vol.Name}) 
 
-    if hasattr(vol,'OutList') :
-        if checkGDMLstructure(vol.OutList) == False :
-            xmlVol = createXMLvol('dummy') 
-            xmlParent = createWorldVol(vol.Name)
-            addPhysVol(xmlParent,'dummy')
-        else :
-            xmlParent = None
-            xmlVol = createXMLvol(vol.Name)
+    if checkGDMLstructure(vol.OutList) == False :
+       xmlVol = createXMLvol('dummy') 
+       xmlParent = createWorldVol(vol.Name)
+       addPhysVol(xmlParent,'dummy')
+    else :
+       xmlParent = None
+       xmlVol = createXMLvol(vol.Name)
 
-        processVols(vol, xmlVol, xmlParent, vol.Name, False)
+    processVols(vol, xmlVol, xmlParent, vol.Name, False)
 
 def exportGDML(first,filename) :
     if filename.lower().endswith('.gdml') :
        # GDML Export
-       print("\nStart GDML Export 0.1")
+       if hasattr(first,'OutList') :
+          if countGDMLObj(first.OutList) > 1 :
+             from .GDMLQtDialogs import showInvalidWorldVol
+             showInvalidWorldVol()
+       
+          else :
+             print("\nStart GDML Export 0.1")
 
-       GDMLstructure()
-       zOrder = 1
-       processMaterials()
-       exportWorldVol(first)
-       # format & write GDML file 
-       indent(gdml)
-       print("Write to GDML file")
-       #ET.ElementTree(gdml).write(filename, 'utf-8', True)
-       ET.ElementTree(gdml).write(filename,xml_declaration=True)
-       #ET.ElementTree(gdml).write(filename, pretty_print=True, \
-       #xml_declaration=True)
-       print("GDML file written")
+             GDMLstructure()
+             zOrder = 1
+             processMaterials()
+             exportWorldVol(first)
+             # format & write GDML file 
+             indent(gdml)
+             print("Write to GDML file")
+             #ET.ElementTree(gdml).write(filename, 'utf-8', True)
+             ET.ElementTree(gdml).write(filename,xml_declaration=True)
+             #ET.ElementTree(gdml).write(filename, pretty_print=True, \
+             #xml_declaration=True)
+             print("GDML file written")
     else :
        print('File extension must be gdml')
 
