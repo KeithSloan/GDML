@@ -540,7 +540,7 @@ def processSphereObject(obj, addVolsFlag) :
     return(sphereName)
 
 def addPhysVol(xmlVol, volName) :
-    #print("Add PhysVol to Vol") 
+    print("Add PhysVol to Vol") 
     pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName})
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
@@ -784,6 +784,7 @@ def processGDMLPolyhedraObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
+    print('export Polyhedra')
     polyhedraName = nameOfGDMLobject(obj)
     if flag == True :
         cone = ET.SubElement(solids, 'polyhedra',{'name': polyhedraName, \
@@ -1335,14 +1336,18 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
     #             = False needed for booleans
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     obj = OutList[idx]
-    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    if obj.Label[:12] != 'NOT_Expanded' :
+       print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    
     while switch(obj.TypeId) :
 
       if case("App::Part") :
-         subXMLvol = insertXMLvol(obj.Label)
-         if hasattr(obj,'OutList') :
-            #print('Process '+obj.Name)
-            processVols(obj, subXMLvol, xmlVol, obj.Label, True)
+         if obj.Label[:12] != 'NOT_Expanded' :
+            if hasattr(obj,'OutList') :
+               cnt = countGDMLObj(obj.OutList)
+               subXMLvolAss= insertXMLvolAss(cnt, obj.Label)
+               #print('Process '+obj.Label)
+               processVols(obj, subXMLvolAss, xmlVol, obj.Label, True)
          return idx + 1
 
       if case("App::Origin") :
@@ -1462,7 +1467,7 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
          break
 
       if case("Part::FeaturePython"):
-              #print("   Python Feature")
+              print("   Python Feature")
               if hasattr(obj.Proxy, 'Type') :
                  print(obj.Proxy.Type) 
               solidName = processSolid(obj, True)
@@ -1471,9 +1476,6 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
                  pvol = addPhysVol(xmlParent,parentName)
                  processPosition(obj,pvol)
                  processRotation(obj,pvol)
-              #else :
-              #print("Not a GDML Feature")
-              #print(obj.Name)
               return idx + 1 
               break  
 
@@ -1547,9 +1549,13 @@ def processObject(idx, OutList, xmlVol, xmlParent, parentName, \
       return idx+1
       break
 
-def insertXMLvol(name):
+def insertXMLvolAss(cnt, name):
     # Insert at beginning for sub volumes
-    elem =  ET.Element('volume',{'name': name})
+    # cnt is count of GDML Objects
+    if cnt != 0 :
+       elem =  ET.Element('volume',{'name': name})
+    else :
+       elem =  ET.Element('assembly',{'name': name})
     structure.insert(0,elem)
     return elem
 
@@ -1566,6 +1572,8 @@ def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
+    print('Process Vols : '+vol.Name)
+
     num = len(vol.OutList)
     idx = 0
     boolflg = False
@@ -1573,15 +1581,6 @@ def processVols(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
         #print(idx)
         idx  = processObject(idx, vol.OutList, xmlVol, \
                 xmlParent, parentName, addVolsFlag)
-
-    #for obj in vol.OutList :
-    #    if obj.TypeId == 'App::Part' :
-    #        subXMLvol = insertXMLvol(obj.Name)
-    #        if hasattr(obj,'OutList') :
-    #            #print('Process '+obj.Name)
-    #            processVols(obj, subXMLvol, xmlVol, obj.Name, True)
-    #    boolflg = processObject(obj, boolflg, xmlVol, xmlParent, \
-    #                  parentName, addVolsFlag)
 
 def createWorldVol(volName) :
     print("Need to create Dummy Volume and World Box ")
@@ -1621,14 +1620,16 @@ def locateXMLvol(vol) :
     return xmlVol
 
 def exportWorldVol(vol) :
-    print('Export World Process Volume')
+    print('Export World Process Volume : '+vol.Name)
     ET.SubElement(setup,'world',{'ref':vol.Name}) 
 
     if checkGDMLstructure(vol.OutList) == False :
+       print('Insert Dummy Volume')
        xmlVol = createXMLvol('dummy') 
        xmlParent = createWorldVol(vol.Name)
        addPhysVol(xmlParent,'dummy')
     else :
+       print('Valid Structure')
        xmlParent = None
        xmlVol = createXMLvol(vol.Name)
 
@@ -1637,6 +1638,9 @@ def exportWorldVol(vol) :
 def exportGDML(first,filename) :
     if filename.lower().endswith('.gdml') :
        # GDML Export
+       if hasattr(first,'InList') :
+          print(len(first.InList))
+
        if hasattr(first,'OutList') :
           if countGDMLObj(first.OutList) > 1 :
              from .GDMLQtDialogs import showInvalidWorldVol

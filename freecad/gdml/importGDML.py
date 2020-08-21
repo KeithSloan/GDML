@@ -1035,7 +1035,9 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               nx, ny, nz = GDMLShared.getPosition(pv)
               #nx, ny, nz = GDMLShared.testPosition(pv,px,py,pz)
               nrot = GDMLShared.getRotation(pv)
-              part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
+              #part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
+              part = parent.newObject("App::Part",volref)
+              part.Label = "NOT_Expanded_"+volref
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
               #print(dir(part))

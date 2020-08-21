@@ -670,13 +670,13 @@ class ExpandFeature :
                obj.Label = name
                # Get original volume name i.e. loose _ or _nnn
                print('Name : '+name)
-               l = len(name) - 1
-               print(name[l])
-               if name[l] == '_' :
-                   name = name[:-1]
-               else :   
-                   name = name[:-4]
-               print("Name : "+name)
+               #l = len(name) - 1
+               #print(name[l])
+               #if name[l] == '_' :
+               #    name = name[:-1]
+               #else :   
+               #    name = name[:-4]
+               #print("Name : "+name)
                x = obj.Placement.Base[0]
                y = obj.Placement.Base[1]
                z = obj.Placement.Base[2]
