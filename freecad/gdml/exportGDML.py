@@ -541,6 +541,8 @@ def processSphereObject(obj, addVolsFlag) :
 
 def addPhysVol(xmlVol, volName) :
     print("Add PhysVol to Vol") 
+    print(ET.tostring(xmlVol))
+    print('volName : '+volName)
     pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName})
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
