@@ -243,10 +243,9 @@ def getTetrahedrons():
 def addFacet(msh, v0,v1,v2) :
     print('Add Facet')
     #msh.addFacet(v0[0],v0[1],v0[2],v1[0],v1[1],v1[2],v2[0],v2[1],v2[2])
-    print(v0)
-    print(v1)
-    print(v2)
-
+    #print(v0)
+    #print(v1)
+    #print(v2)
     msh.addFacet(v0,v1,v2)
 
 def Tessellated2Mesh(obj) :
@@ -254,24 +253,16 @@ def Tessellated2Mesh(obj) :
 
     print('Tessellated 2 Mesh')
     if hasattr(obj.Proxy,'Facets') :
-       print('Create Mesh')
+       #print('Create Mesh')
        msh = Mesh.Mesh()
        v = obj.Proxy.Vertex
-       print(v)
+       #print(v)
        for f in obj.Proxy.Facets :
-           print(f)
-           print(type(v[0]))
-           ln = len(f)
-           if ln == 3 :
-              addFacet(msh,v[f[0]], v[f[1]],  v[f[2]])
-
-           elif ln == 4 :
-              addFacet(msh,v[f[0]], v[f[1]],  v[f[2]])
+           #print(f)
+           #print(type(v[0]))
+           addFacet(msh,v[f[0]], v[f[1]],  v[f[2]])
+           if len(f) == 4 :
               addFacet(msh,v[f[0]], v[f[2]],  v[f[3]])
-
-           else :
-              FreeCAD.Console.PrintError('Invalid Facet length '+str(ln))
-
        return msh
 
 def Tetrahedron2Mesh(obj) :
@@ -280,17 +271,16 @@ def Tetrahedron2Mesh(obj) :
     print(dir(obj.Proxy))
     print(obj.Proxy.Tetra[:10])
     tetList = obj.Proxy.Tetra 
-    print('Len tetra : '+str(len(tetList)))
-    print(tetList[:8])
-    print('Create Mesh')
+    #print('Len tetra : '+str(len(tetList)))
+    #print(tetList[:8])
+    #print('Create Mesh')
     msh = Mesh.Mesh()
     for tet in tetList :
-        print('tet')
-        print(tet)
+        #print('tet')
+        #print(tet)
         addFacet(msh,tet[0],tet[1],tet[2])
         if len(tet) == 4 :
            addFacet(msh,tet[0],tet[2],tet[3])
-
     return msh   
 
 def printMyInfo() :

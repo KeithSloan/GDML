@@ -515,6 +515,10 @@ class Tess2MeshFeature :
                print('Tessellated2Mesh')
                mesh = Tessellated2Mesh(obj)
     
+            if obj.Proxy.Type == 'GDMLGmshTessellated' :
+               print('GmshTessellated2Mesh')
+               mesh = Tessellated2Mesh(obj)
+    
             if obj.Proxy.Type == 'GDMLTetrahedron' :
                print('Tetrahedron2Mesh')
                mesh = Tetrahedron2Mesh(obj)
