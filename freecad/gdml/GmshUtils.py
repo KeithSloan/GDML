@@ -241,9 +241,13 @@ def getTetrahedrons():
        return None
 
 def addFacet(msh, v0,v1,v2) :
-    c = v0 + v1 + v2
-    print(c)
-    msh.addFacet(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8])
+    print('Add Facet')
+    #msh.addFacet(v0[0],v0[1],v0[2],v1[0],v1[1],v1[2],v2[0],v2[1],v2[2])
+    print(v0)
+    print(v1)
+    print(v2)
+
+    msh.addFacet(v0,v1,v2)
 
 def Tessellated2Mesh(obj) :
     import Mesh
@@ -270,9 +274,24 @@ def Tessellated2Mesh(obj) :
 
        return msh
 
-
 def Tetrahedron2Mesh(obj) :
+    import Mesh
     print('Tetrahedron 2 Mesh')
+    print(dir(obj.Proxy))
+    print(obj.Proxy.Tetra[:10])
+    tetList = obj.Proxy.Tetra 
+    print('Len tetra : '+str(len(tetList)))
+    print(tetList[:8])
+    print('Create Mesh')
+    msh = Mesh.Mesh()
+    for tet in tetList :
+        print('tet')
+        print(tet)
+        addFacet(msh,tet[0],tet[1],tet[2])
+        if len(tet) == 4 :
+           addFacet(msh,tet[0],tet[2],tet[3])
+
+    return msh   
 
 def printMyInfo() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
