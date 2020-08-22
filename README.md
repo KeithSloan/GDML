@@ -1,5 +1,7 @@
 ## **** New experimental export for GEMC ****
 
+## **** Wiki Under Construction ****
+
 ## Installable FreeCAD Python Workbench
 
 FreeCAD's python Importer & Exporter for GDML files.
@@ -77,7 +79,7 @@ will create
 
 For more information on GDML see
 
-[GDML User Guide](http://lcgapp.cern.ch/project/simu/framework/GDML/doc/GDMLmanual.pdf)
+[GDML User Guide](https://gdml.web.cern.ch/GDML/doc/GDMLmanual.pdf)
 
 [GDML Solids](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html)
 
