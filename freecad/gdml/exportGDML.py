@@ -1323,7 +1323,7 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
-def addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+def addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName):
     if cnt == 1 :
        addVolRef(xmlVol,parentName,parentName,obj.material)
        # 2nd parm used by gxml
@@ -1336,18 +1336,17 @@ def addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
        else :
           print('Root/World Volume')
 
-def processObject(cnt, idx, OutList, xmlVol, xmlParent, parentName) :
+def processObject(cnt, idx, obj, xmlVol, xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
     # idx - index into OutList
-    # OutList - OutList 
+    # obj - This object 
     # xmlVol    - xmlVol
     # xmlParent - xmlParent Volume
     # parentName - Parent Name
     # addVolsFlag - Add physical Vo return idx of next Object to be processed
     # solid or boolean reference name or None
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
-    obj = OutList[idx]
     if obj.Label[:12] != 'NOT_Expanded' :
        print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     
@@ -1462,7 +1461,7 @@ def processObject(cnt, idx, OutList, xmlVol, xmlParent, parentName) :
          # test and Fix
          processMesh(obj, obj.Mesh, obj.Name)
          # return solid ???
-         return idx + 1. None
+         return idx + 1, None
          break
 
       if case("Part::FeaturePython"):
@@ -1470,7 +1469,8 @@ def processObject(cnt, idx, OutList, xmlVol, xmlParent, parentName) :
          if hasattr(obj.Proxy, 'Type') :
             print(obj.Proxy.Type) 
          solid, solidName = processSolid(obj, True)
-         addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         return idx + 1, None
 
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
@@ -1564,30 +1564,32 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
-    print('Process Volume : '+vol.Name)
+    print('Process Volume : '+vol.Name+' Parent : '+parentName)
 
+    idx = cnt = 0
     if hasattr(vol,'OutList') :
-       num = len(vol.OutList)
-       idx, cnt = countGDMLObj(vol.OutList,num)
-       if cnt > 0 :             # No Assembly
+       pos, cnt = countGDMLObj(vol.OutList)
+       if cnt == 1 :  # GDML Volume with just one Object
           obj = vol.OutList[pos]
+          print(obj.Label)
+          print(obj.TypeId)
           # process first GDML object Boolean? more than one??
           # cnt == 1 - No need to create Volume and PhysVol
-          idx, solid = processObject(cnt, pos, vol.OutList, xmlVol, \
+          idx, solid = processObject(cnt, pos, obj, xmlVol, \
                              xmlParent, parentName)
-          if testDefautPlacement(obj) == False :
-             # Need solid
-             # Need to Add Phys Vol
-             print('Need to Add Phys Vol')
-             processPosition(obj, solid)
-             processRotation(obj, solid)
+          #if testDefautPlacement(obj) == False :
+          # Need solid
+          # Need to Add Phys Vol
+          #   print('Need to Add Phys Vol')
+          #   processPosition(obj, solid)
+          #   processRotation(obj, solid)
 
-       if flg == True or cnt == 0 :
+       else :   
+          num = len(vol.OutList)
           while idx < num :
              #print(idx)
-             # Pass PhysVol to processObject ????
-             idx, solid  = processObject(cnt, idx, vol.OutList, xmlVol, \
-                   xmlParent, parentName)
+             idx, solid  = processObject(cnt, idx, vol.OutList[idx],  \
+                               xmlVol, xmlParent, parentName)
 
 def createWorldVol(volName) :
     print("Need to create Dummy Volume and World Box ")
@@ -1600,10 +1602,13 @@ def createWorldVol(volName) :
     ET.SubElement(gxml,'volume',{'name': volName, 'material':'G4_AIR'})
     return worldVol
 
-def countGDMLObj(objList, length):
+def countGDMLObj(objList):
     # Return position of first GDML object and count
+    print('countGDMLObj')
     pos = count = 0
-    for idx in range(length, 0, -1) :
+    print(range(len(objList)))
+    for idx in range(len(objList)) :
+        #print('idx : '+str(idx))
         obj = objList[idx]
         if obj.TypeId == 'Part::FeaturePython' :
            pos = idx
@@ -1661,11 +1666,13 @@ def exportWorldVol(vol) :
 def exportGDML(first,filename) :
     if filename.lower().endswith('.gdml') :
        # GDML Export
+       print('GDML Export')
        if hasattr(first,'InList') :
           print(len(first.InList))
 
        if hasattr(first,'OutList') :
-          cnt = countGDMLObj(first.OutList,len(first.OutList)
+          print('Count')
+          idx, cnt = countGDMLObj(first.OutList)
           if cnt > 1 :
              from .GDMLQtDialogs import showInvalidWorldVol
              showInvalidWorldVol()
