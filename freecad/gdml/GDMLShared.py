@@ -141,7 +141,7 @@ def getRef(ptr, name) :
 def getMult(fp) :
     unit = 'mm'  # set default
     # Watch for unit and lunit
-    print('getMult : '+str(fp))
+    #print('getMult : '+str(fp))
     if hasattr(fp,'lunit') :
         trace('lunit : '+fp.lunit)
         unit = fp.lunit
@@ -233,10 +233,9 @@ def processPlacement(base,rot) :
 
 
 def getPositionFromAttrib(pos) :
-    print('getPositionFromAttrib')
-    print('pos : '+str(ET.tostring(pos)))
-    print(pos.attrib)
-    #print('pos attrib : '+str(ET.tostring(pos.attrib)))
+    #print('getPositionFromAttrib')
+    #print('pos : '+str(ET.tostring(pos)))
+    #print(pos.attrib)
     #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
     #if hasattr(pos.attrib,'name') :
     #   name = pos.get('name')
@@ -264,7 +263,7 @@ def getDefinedPosition(name) :
     # get Position from define section 
     pos = define.find("position[@name='%s']" % name )
     if pos != None :
-        print('Position : '+str(ET.tostring(pos)))
+        #print('Position : '+str(ET.tostring(pos)))
         trace(pos.attrib)
         return(getPositionFromAttrib(pos))
     else :
