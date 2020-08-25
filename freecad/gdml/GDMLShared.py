@@ -31,6 +31,8 @@
 from math import *
 import FreeCAD, Part
 
+from lxml import etree as ET
+
 global define
 
 global printverbose
@@ -137,7 +139,9 @@ def getRef(ptr, name) :
     return wrk
 
 def getMult(fp) :
+    unit = 'mm'  # set default
     # Watch for unit and lunit
+    print('getMult : '+str(fp))
     if hasattr(fp,'lunit') :
         trace('lunit : '+fp.lunit)
         unit = fp.lunit
@@ -159,7 +163,7 @@ def getMult(fp) :
     elif unit == 'dm' : return(100)
     elif unit == 'm' : return(1000)
     elif unit == 'km' : return(1000000)
-    print('unit not handled : '+lunit)
+    print('unit not handled : '+unit)
 
 def getDegrees(flag, r) :
     import math
@@ -229,8 +233,15 @@ def processPlacement(base,rot) :
 
 
 def getPositionFromAttrib(pos) :
-    #print(pos.attrib)
+    print('getPositionFromAttrib')
+    print('pos : '+str(ET.tostring(pos)))
+    print(pos.attrib)
+    #print('pos attrib : '+str(ET.tostring(pos.attrib)))
     #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
+    #if hasattr(pos.attrib,'name') :
+    #   name = pos.get('name')
+    #   if name == 'center' :
+    #      return(0,0,0)
     mul = getMult(pos)
     px = mul * getVal(pos,'x')
     py = mul * getVal(pos,'y')
@@ -253,6 +264,7 @@ def getDefinedPosition(name) :
     # get Position from define section 
     pos = define.find("position[@name='%s']" % name )
     if pos != None :
+        print('Position : '+str(ET.tostring(pos)))
         trace(pos.attrib)
         return(getPositionFromAttrib(pos))
     else :
