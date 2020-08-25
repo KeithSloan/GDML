@@ -594,28 +594,34 @@ def processRotation(obj, solid) :
     GDMLShared.trace('Deal with Rotation')
     exportRotation(obj.Name,solid,obj.Placement.Rotation)
 
-
-def addVolRef(cnt, volxml, volName, solidName, material) :
-    print('AddVolRef : '+str(cnt)+' : '+volName+' : '+solidName)
-    if cnt == 1 :     # Just add info
-       ET.SubElement(volxml,'solidref',{'ref': solidName})
-       if material != None :   # MultiUnion no material
-          ET.SubElement(volxml,'materialref',{'ref': material})
-    ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
-    print(ET.tostring(volxml))
-    
 def testDefaultPlacement(obj) :
     #print(dir(obj.Placement.Rotation))
-    print('Test Default Placement : '+obj.Name)
-    print('No longer used ??')
-    print(obj.Placement.Base)
-    print(obj.Placement.Rotation.Angle)
+    #print('Test Default Placement : '+obj.Name)
+    #print(obj.Placement.Base)
+    #print(obj.Placement.Rotation.Angle)
     if obj.Placement.Base == FreeCAD.Vector(0,0,0) and \
        obj.Placement.Rotation.Angle == 0 :
        return True
     else :
        return False
 
+def testAddPhysVol(obj, xmlParent, parentName):
+    if testDefaultPlacement(obj) == False :
+       if xmlParent != None :
+          pvol = addPhysVol(xmlParent,parentName)
+          processPosition(obj,pvol)
+          processRotation(obj,pvol)
+       else :
+          print('Root/World Volume')
+
+def addVolRef(volxml, volName, solidName, material) :
+    print('AddVolRef : '+volName+' : '+solidName)
+    ET.SubElement(volxml,'solidref',{'ref': solidName})
+    if material != None :   # MultiUnion no material
+       ET.SubElement(volxml,'materialref',{'ref': material})
+    ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
+    print(ET.tostring(volxml))
+    
 def nameOfGDMLobject(obj) :
     return(obj.Label.split('_',1)[1])
 
@@ -1321,19 +1327,6 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
-def addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName):
-    #if cnt == 1 :
-    #   addVolRef(xmlVol,parentName,parentName,obj.material)
-    #   # 2nd parm used by gxml
-    #else :
-       addVolRef(xmlVol,parentName,solidName,obj.material)
-       if xmlParent != None :
-          pvol = addPhysVol(xmlParent,parentName)
-          processPosition(obj,pvol)
-          processRotation(obj,pvol)
-       else :
-          print('Root/World Volume')
-
 def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
@@ -1365,10 +1358,9 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
       if case("App::Part") :
          if obj.Label[:12] != 'NOT_Expanded' :
             if hasattr(obj,'OutList') :
+               cnt = countGDMLObj(obj.OutList)
                subXMLvolAss= insertXMLvolAss(cnt, obj.Label)
-               #print('Process '+obj.Label)
-               # processVolume( volObj, volXML, parentXML, name, addflg )
-               processVolume(obj, subXMLvolAss, xmlVol, obj.Label, True)
+               processVolume(obj, cnt, subXMLvolAss, xmlVol, obj.Label, True)
                addPhysVol(xmlVol,obj.Label)
          return idx + 1
 
@@ -1402,7 +1394,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,subtract)
          processRotation(obj.Tool,subtract)
          return idx + 3
@@ -1416,7 +1408,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          union = ET.SubElement(solids,'union',{'name': solidName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,union)
          processRotation(obj.Tool,union)
          return idx + 3
@@ -1430,7 +1422,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          intersect = ET.SubElement(solids,'intersection',{'name': solidName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
-         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,intersect)
          processRotation(obj.Tool,intersect)
          return idx + 3
@@ -1440,7 +1432,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("   Multifuse") 
          # test and fix
          solidName = 'MultiFuse'+obj.Name
-         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         testAddPhysVol(obj, xmlParent, parentName)
          # First add solids in list before reference
          print('Output Solids')
          for sub in obj.OutList:
@@ -1471,6 +1463,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("   Mesh Feature") 
          # test and Fix
          processMesh(obj, obj.Mesh, obj.Name)
+         #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
          return idx + 1
          break
@@ -1480,8 +1473,11 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          if hasattr(obj.Proxy, 'Type') :
             print(obj.Proxy.Type) 
          solidName = processSolid(obj, True)
-         addVolRef(cnt, xmlVol, volName, solidName, obj.material)
-         #addRefandPhysVols(cnt, obj, xmlVol, xmlParent, parentName, solidName)
+         if cnt > 1 :
+            volName = 'LV-'+solidName
+            xmlVol = insertXMLVolAss(cnt, volName)
+         addVolRef(xmlVol, volName, solidName, obj.material)
+         testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
 
       # Same as Part::Feature but no position
@@ -1515,6 +1511,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("    Box")
          #return(processBoxObject(obj, addVolsFlag))
          processBoxObject(obj, addVolsFlag)
+         #testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
          break
 
@@ -1522,6 +1519,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("    Cylinder")
          #return(processCylinderObject(obj, addVolsFlag))
          processCylinderObject(obj, addVolsFlag)
+         #testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
          break
 
@@ -1529,6 +1527,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("    Cone")
          #return(processConeObject(obj, addVolsFlag))
          processConeObject(obj, addVolsFlag)
+         #testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
          break
 
@@ -1536,6 +1535,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("    Sphere")
          #return(processSphereObject(obj, addVolsFlag))
          processSphereObject(obj, addVolsFlag)
+         #testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
          break
 
@@ -1551,6 +1551,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          if obj.Shape.isValid() : 
             #return(processObjectShape(obj))
             processObjectShape(obj)
+      #testAddPhysVol(obj, xmlParent, parentName)
       return idx+1
       break
 
@@ -1569,7 +1570,7 @@ def insertXMLvolAss(cnt, name):
 def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
-def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
+def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
     # xmlVol - xml of this volume
     # xmlParent - xml of this volumes Paretnt
@@ -1590,9 +1591,8 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
        xmlstr ='None'
     print('        Parent : '+parentName+' : '+ str(xmlstr))
 
-    idx = cnt = 0
+    idx = 0
     if hasattr(vol,'OutList') :
-       cnt = countGDMLObj(vol.OutList)
        num = len(vol.OutList)
        while idx < num :
           #print(idx)
@@ -1627,13 +1627,6 @@ def countGDMLObj(objList):
     print('countGDMLObj - Count : '+str(count))
     return count
 
-def testNullPlacement(obj):
-    if obj.Placement.Base == FreeCAD.Vector(0,0,0) and \
-       obj.Placement.Rotation.Angle == 0 :
-       return True
-    else :
-       return False
-
 def checkGDMLstructure(objList) :
     # Should be 
     # World Vol - App::Part
@@ -1667,7 +1660,8 @@ def exportWorldVol(vol) :
        xmlParent = None
        xmlVol = createXMLvol(vol.Name)
 
-    processVolume(vol, xmlVol, xmlParent, vol.Name, False)
+    cnt = countGDMLObj(vol.OutList)
+    processVolume(vol, cnt, xmlVol, xmlParent, vol.Name, False)
 
 def exportGDML(first,filename) :
     if filename.lower().endswith('.gdml') :
