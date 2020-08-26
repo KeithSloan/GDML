@@ -1646,25 +1646,72 @@ def locateXMLvol(vol) :
     xmlVol = structure.find("volume[@name='%s']" % vol.Name)
     return xmlVol
 
-def exportWorldVol(vol) :
-    print('Export World Process Volume : '+vol.Name)
-    ET.SubElement(setup,'world',{'ref':vol.Name}) 
+def exportWorldVol(vol, fileExt) :
+    if fileExt != '.xml' :
+       print('Export World Process Volume : '+vol.Name)
+       ET.SubElement(setup,'world',{'ref':vol.Name}) 
 
-    if checkGDMLstructure(vol.OutList) == False :
-       print('Insert Dummy Volume')
-       xmlVol = createXMLvol('dummy') 
-       xmlParent = createWorldVol(vol.Name)
-       addPhysVol(xmlParent,'dummy')
+       if checkGDMLstructure(vol.OutList) == False :
+          print('Insert Dummy Volume')
+          xmlVol = createXMLvol('dummy') 
+          xmlParent = createWorldVol(vol.Name)
+          addPhysVol(xmlParent,'dummy')
+       else :
+          print('Valid Structure')
+          xmlParent = None
+          xmlVol = createXMLvol(vol.Name)
     else :
-       print('Valid Structure')
-       xmlParent = None
-       xmlVol = createXMLvol(vol.Name)
+          xmlParent = None
+          xmlVol = createXMLvol(vol.Name)
 
     cnt = countGDMLObj(vol.OutList)
     processVolume(vol, cnt, xmlVol, xmlParent, vol.Name, False)
 
-def exportGDML(first,filename) :
-    if filename.lower().endswith('.gdml') :
+def exportGDML(first, filepath, fileExt) :
+
+    print("\nStart GDML Export 0.1")
+    print('File extension : '+fileExt)
+
+    GDMLstructure()
+    zOrder = 1
+    processMaterials()
+    exportWorldVol(first, fileExt)
+    # format & write GDML file 
+    #xmlstr = ET.tostring(structure)
+    #print('Structure : '+str(xmlstr))
+    if fileExt == '.gdml' :
+       indent(gdml)
+       print("Write to gdml file")
+       #ET.ElementTree(gdml).write(filepath, 'utf-8', True)
+       ET.ElementTree(gdml).write(filepath,xml_declaration=True)
+       #ET.ElementTree(gdml).write(filepath, pretty_print=True, \
+       #xml_declaration=True)
+       print("GDML file written")
+
+    if fileExt == '.GDML' :
+       filePath = os.path.split(filepath)
+       print('File Path : '+filepath)
+       fileName = os.path.splitext(filePath[1])[0]
+       print('File Name : '+fileName)
+       dirName = os.path.join(filePath[0],fileName)
+       print('Directory : '+dirName)
+       filePath = os.path.join(dirName,fileName)+'.gdml'
+       print('GDML Path :'+filePath)
+
+
+
+       print("GDML file structure written")
+
+    if fileExt == '.xml' :
+       xmlElem = ET.Element('xml')
+       xmlElem.append(solids)
+       xmlElem.append(structure)
+       indent(xmlElem)
+       ET.ElementTree(xmlElem).write(filepath)
+       print("XML file written")
+
+def exportGDMLworld(first,filepath,fileExt) :
+    if filepath.lower().endswith('.gdml') :
        # GDML Export
        print('GDML Export')
        if hasattr(first,'InList') :
@@ -1678,24 +1725,7 @@ def exportGDML(first,filename) :
              showInvalidWorldVol()
        
           else :
-             print("\nStart GDML Export 0.1")
-
-             GDMLstructure()
-             zOrder = 1
-             processMaterials()
-             exportWorldVol(first)
-             # format & write GDML file 
-             xmlstr = ET.tostring(structure)
-             print('Structure : '+str(xmlstr))
-             indent(gdml)
-             print("Write to GDML file")
-             #ET.ElementTree(gdml).write(filename, 'utf-8', True)
-             ET.ElementTree(gdml).write(filename,xml_declaration=True)
-             #ET.ElementTree(gdml).write(filename, pretty_print=True, \
-             #xml_declaration=True)
-             print("GDML file written")
-    else :
-       print('File extension must be gdml')
+             exportGDML(first,filepath,fileExt)
 
 def hexInt(f) :
     return hex(int(f*255))[2:].zfill(2)
@@ -1867,7 +1897,7 @@ def exportGEMC(first, path, flag) :
        checkDirectory(gdmlPath)
        #gdmlFilePath  = os.path.join(gdmlPath,basename+'.gdml')
        gdmlFilePath  = os.path.join(gdmlPath,'target_gdml.gdml')
-       exportGDML(first, gdmlFilePath)
+       exportGDML(first, gdmlFilePath,'gdml')
        #newpath = os.path.join(gdmlPath,basename+'.gxml')
        newpath = os.path.join(gdmlPath,'target_gdml.gxml')
        indent(gxml)
@@ -1892,7 +1922,12 @@ def export(exportList,filepath) :
 
     else :
        if first.TypeId == "App::Part" :
-          exportGDML(first,filepath)
+          if hasattr(first,'InList') :
+             if len(first.InList) == 0 : 
+                exportGDMLworld(first,filepath,fileExt)
+             else :
+                print('Export XML stucture & solids')
+                exportGDML(first,filepath,'.xml')
 
        elif first.Name == "Materials" :
           exportMaterials(first,filepath)
