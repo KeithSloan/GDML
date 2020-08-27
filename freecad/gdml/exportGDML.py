@@ -118,20 +118,7 @@ def nameFromLabel(label) :
     else :
        return(label.split(' ')[0])
 
-#################################
-#  Setup GDML environment
-#################################
-def GDMLstructure() :
-    #print("Setup GDML structure")
-    #################################
-    # globals
-    ################################
-    global gdml, define, materials, solids, structure, setup, worldVOL
-    global defineCnt, LVcount, PVcount, POScount, ROTcount
-    global gxml
-
-    defineCnt = LVcount = PVcount = POScount =  ROTcount = 1
-
+def initGDML() :
     NS = 'http://www.w3.org/2001/XMLSchema-instance'
     location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
     gdml = ET.Element('gdml',attrib={location_attribute: 'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
@@ -141,6 +128,24 @@ def GDMLstructure() :
           #'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"
 #})
     #gdml = ET.Element('gdml')
+    return gdml
+
+#################################
+#  Setup GDML environment
+#################################
+def GDMLstructure() :
+    #print("Setup GDML structure")
+    #################################
+    # globals
+    ################################
+    global gdml, constants, define, materials, solids, structure, setup
+    global worldVOL
+    global defineCnt, LVcount, PVcount, POScount, ROTcount
+    global gxml
+
+    defineCnt = LVcount = PVcount = POScount =  ROTcount = 1
+
+    gdml = initGDML()
     define = ET.SubElement(gdml, 'define')
     materials = ET.SubElement(gdml, 'materials')
     solids = ET.SubElement(gdml, 'solids')
@@ -1327,6 +1332,14 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
+def getMaterial(obj) :
+    if hasattr(obj,'material') :
+       return obj.material
+    if hasattr(obj,'Tool') :
+       return(getMaterial(obj.Base))
+    else :
+       return None
+
 def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
@@ -1394,6 +1407,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
+         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,subtract)
          processRotation(obj.Tool,subtract)
@@ -1408,6 +1422,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          union = ET.SubElement(solids,'union',{'name': solidName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
+         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,union)
          processRotation(obj.Tool,union)
@@ -1422,6 +1437,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          intersect = ET.SubElement(solids,'intersection',{'name': solidName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
+         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,intersect)
          processRotation(obj.Tool,intersect)
@@ -1432,6 +1448,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("   Multifuse") 
          # test and fix
          solidName = 'MultiFuse'+obj.Name
+         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
          testAddPhysVol(obj, xmlParent, parentName)
          # First add solids in list before reference
          print('Output Solids')
@@ -1463,6 +1480,8 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("   Mesh Feature") 
          # test and Fix
          processMesh(obj, obj.Mesh, obj.Name)
+         #addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
+         #addVolRef(xmlVol, volName, solidName, obj.material)
          #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
          return idx + 1
@@ -1667,6 +1686,34 @@ def exportWorldVol(vol, fileExt) :
     cnt = countGDMLObj(vol.OutList)
     processVolume(vol, cnt, xmlVol, xmlParent, vol.Name, False)
 
+def exportElementAsXML( dirPath, fileName, flag, elemName, elem) :
+    # gdml is a global
+    if elem != None :
+       xmlElem = ET.Element('xml')
+       xmlElem.append(elem)
+       indent(xmlElem)
+       if flag == True :
+          filename = fileName+'-'+elemName+'.xml'
+       else :
+          filename = elemName+'.xml'
+       #entity = ET.Element('!ENTITY',{elemName+' SYSTEM "'+filename+'"'})
+       #gdml.insert(2,elem)
+       ET.ElementTree(xmlElem).write(os.path.join(dirPath,filename))
+       #body = '&'+filename+';'
+       #gdml.append(body)
+
+def exportGDMLstructure(dirPath, fileName) :
+    print("Write GDML structure to Directory")
+    gdml = initGDML()
+    #exportElementAsXML(dirPath, fileName, False, 'constants',constants)
+    exportElementAsXML(dirPath, fileName, False, 'define',define)
+    exportElementAsXML(dirPath, fileName, False, 'materials',materials)
+    exportElementAsXML(dirPath, fileName, True, 'solids',solids)
+    exportElementAsXML(dirPath, fileName, True, 'structure',structure)
+    indent(gdml)
+    ET.ElementTree(gdml).write(os.path.join(dirPath,fileName+'.gdml'))
+    print("GDML file structure written")
+
 def exportGDML(first, filepath, fileExt) :
 
     print("\nStart GDML Export 0.1")
@@ -1690,17 +1737,19 @@ def exportGDML(first, filepath, fileExt) :
 
     if fileExt == '.GDML' :
        filePath = os.path.split(filepath)
-       print('File Path : '+filepath)
+       print('Input File Path : '+filepath)
        fileName = os.path.splitext(filePath[1])[0]
        print('File Name : '+fileName)
-       dirName = os.path.join(filePath[0],fileName)
-       print('Directory : '+dirName)
-       filePath = os.path.join(dirName,fileName)+'.gdml'
-       print('GDML Path :'+filePath)
-
-
-
-       print("GDML file structure written")
+       dirPath = os.path.join(filePath[0],fileName)
+       print('Directory Path : '+dirPath)
+       if os.path.exists(dirPath) == False :
+          if os.path.isdir(dirPath) == False :
+             os.makedirs(dirPath)
+       if os.path.isdir(dirPath) == True :
+          exportGDMLstructure(dirPath, fileName)
+       else :
+          print('Invalid Path')
+          # change to Qt Warning
 
     if fileExt == '.xml' :
        xmlElem = ET.Element('xml')

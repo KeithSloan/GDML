@@ -137,6 +137,7 @@ def getRef(ptr, name) :
     return wrk
 
 def getMult(fp) :
+    unit = 'mm' # set default
     # Watch for unit and lunit
     if hasattr(fp,'lunit') :
         trace('lunit : '+fp.lunit)
