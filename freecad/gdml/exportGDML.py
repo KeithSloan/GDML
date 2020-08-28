@@ -121,13 +121,13 @@ def nameFromLabel(label) :
 def initGDML() :
     NS = 'http://www.w3.org/2001/XMLSchema-instance'
     location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
-    gdml = ET.Element('gdml',attrib={location_attribute: 'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
+    gdml = ET.Element('gdml',attrib={location_attribute: \
+      'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
     #print(gdml.tag)
 
           #'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
           #'xsi:noNamespaceSchemaLocation': "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd"
 #})
-    #gdml = ET.Element('gdml')
     return gdml
 
 #################################
@@ -1686,8 +1686,9 @@ def exportWorldVol(vol, fileExt) :
     cnt = countGDMLObj(vol.OutList)
     processVolume(vol, cnt, xmlVol, xmlParent, vol.Name, False)
 
-def exportElementAsXML( dirPath, fileName, flag, elemName, elem) :
+def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
     # gdml is a global
+    global gdml, docString, importStr
     if elem != None :
        xmlElem = ET.Element('xml')
        xmlElem.append(elem)
@@ -1696,22 +1697,30 @@ def exportElementAsXML( dirPath, fileName, flag, elemName, elem) :
           filename = fileName+'-'+elemName+'.xml'
        else :
           filename = elemName+'.xml'
-       #entity = ET.Element('!ENTITY',{elemName+' SYSTEM "'+filename+'"'})
-       #gdml.insert(2,elem)
        ET.ElementTree(xmlElem).write(os.path.join(dirPath,filename))
-       #body = '&'+filename+';'
-       #gdml.append(body)
+       docString += '<!ENTITY '+elemName+' SYSTEM "'+filename+'">'
+       gdml.append(ET.Entity(elemName))
+
 
 def exportGDMLstructure(dirPath, fileName) :
+    global gdml, docString, importStr
     print("Write GDML structure to Directory")
     gdml = initGDML()
+    docString = '<!DOCTYPE gdml ['
     #exportElementAsXML(dirPath, fileName, False, 'constants',constants)
     exportElementAsXML(dirPath, fileName, False, 'define',define)
     exportElementAsXML(dirPath, fileName, False, 'materials',materials)
     exportElementAsXML(dirPath, fileName, True, 'solids',solids)
     exportElementAsXML(dirPath, fileName, True, 'structure',structure)
+    exportElementAsXML(dirPath, fileName, False, 'setup',setup)
+    #docString += ']>'+ET.tostring(gdml).decode('UTF-8')
+    docString += ']>'
+    print(docString)
+    print(len(docString))
+    #gdml = ET.fromstring(docString.encode("UTF-8"))
     indent(gdml)
-    ET.ElementTree(gdml).write(os.path.join(dirPath,fileName+'.gdml'))
+    ET.ElementTree(gdml).write(os.path.join(dirPath,fileName+'.gdml'), \
+               doctype=docString.encode('UTF-8'))
     print("GDML file structure written")
 
 def exportGDML(first, filepath, fileExt) :
