@@ -1690,17 +1690,17 @@ def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
     # gdml is a global
     global gdml, docString, importStr
     if elem != None :
-       xmlElem = ET.Element('xml')
-       xmlElem.append(elem)
-       indent(xmlElem)
+       #xmlElem = ET.Element('xml')
+       #xmlElem.append(elem)
+       #indent(xmlElem)
        if flag == True :
           filename = fileName+'-'+elemName+'.xml'
        else :
           filename = elemName+'.xml'
-       ET.ElementTree(xmlElem).write(os.path.join(dirPath,filename))
+       #ET.ElementTree(xmlElem).write(os.path.join(dirPath,filename))
+       ET.ElementTree(elem).write(os.path.join(dirPath,filename))
        docString += '<!ENTITY '+elemName+' SYSTEM "'+filename+'">'
        gdml.append(ET.Entity(elemName))
-
 
 def exportGDMLstructure(dirPath, fileName) :
     global gdml, docString, importStr

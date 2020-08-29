@@ -1247,7 +1247,9 @@ def setupEtree(filename) :
        from lxml import etree
        FreeCAD.Console.PrintMessage("running with lxml.etree \n")
        parser = etree.XMLParser(resolve_entities=True)
-       root = etree.parse(filename, parser=parser)
+       root= etree.parse(filename, parser=parser)
+       #print('error log')
+       #print(parser.error_log)
 
     except ImportError:
        try:
