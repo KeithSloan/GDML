@@ -502,6 +502,10 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 * OpenCascade Forum members:
   *  Sergey Slyadnev
+  
+* Stack Overflow
+
+  * Daniel Haley
     
 ## For NIST Materials database see http://physics.nist.gov/PhysRefData
 
