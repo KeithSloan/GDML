@@ -540,7 +540,7 @@ def processSphereObject(obj, addVolsFlag) :
 
 def addPhysVol(xmlVol, volName) :
     print("Add PhysVol to Vol") 
-    print(ET.tostring(xmlVol))
+    #print(ET.tostring(xmlVol))
     print('volName : '+volName)
     pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
     ET.SubElement(pvol,'volumeref',{'ref':volName})
@@ -625,7 +625,7 @@ def addVolRef(volxml, volName, solidName, material) :
     if material != None :   # MultiUnion no material
        ET.SubElement(volxml,'materialref',{'ref': material})
     ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
-    print(ET.tostring(volxml))
+    #print(ET.tostring(volxml))
     
 def nameOfGDMLobject(obj) :
     return(obj.Label.split('_',1)[1])
@@ -1340,6 +1340,19 @@ def getMaterial(obj) :
     else :
        return None
 
+def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
+    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    if xmlVol != None :
+       xmlstr = ET.tostring(xmlVol) 
+    else :
+       xmlstr = 'None'
+    print('Volume : '+volName+' : '+str(xmlstr))
+    if xmlParent != None :
+       xmlstr = ET.tostring(xmlParent) 
+    else :
+       xmlstr = 'None'
+    print('Parent : '+str(parentName)+' : '+str(xmlstr))
+
 def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
@@ -1351,29 +1364,21 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     # addVolsFlag - Add physical Vo return idx of next Object to be processed
     # solid or boolean reference name or None
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
-    if obj.Label[:12] != 'NOT_Expanded' :
-       print("Process Object : "+obj.Name+' Type '+obj.TypeId)
-       if xmlVol != None :
-          xmlstr = ET.tostring(xmlVol) 
-       else :
-          xmlstr = 'None'
-       print('Volume : '+volName+' : '+str(xmlstr))
-       if xmlParent != None :
-          xmlstr = ET.tostring(xmlParent) 
-       else :
-          xmlstr = 'None'
-       print('Parent : '+parentName+' : '+str(xmlstr))
-   
-    xmlstr = ET.tostring(structure)
-    print('structure : '+str(xmlstr)) 
+    #if obj.Label[:12] != 'NOT_Expanded' :
+    #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
+    #print('structure : '+str(xmlstr)) 
     while switch(obj.TypeId) :
 
       if case("App::Part") :
          if obj.Label[:12] != 'NOT_Expanded' :
+            if hasattr(obj,'InList') :
+               parentName = obj.InList[0].Label
+            else :
+               parentName = None
             if hasattr(obj,'OutList') :
                cnt = countGDMLObj(obj.OutList)
                subXMLvolAss= insertXMLvolAss(cnt, obj.Label)
-               processVolume(obj, cnt, subXMLvolAss, xmlVol, obj.Label, True)
+               processVolume(obj, cnt, subXMLvolAss, xmlVol, parentName, True)
                addPhysVol(xmlVol,obj.Label)
          return idx + 1
 
@@ -1577,7 +1582,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
 def insertXMLvolAss(cnt, name):
     # Insert at beginning for sub volumes
     # cnt is count of GDML Objects
-    print('insert into xml volume : '+name)
+    #print('insert into xml volume : '+name)
     if cnt != 0 :
        elem =  ET.Element('volume',{'name': name})
     else :
@@ -1589,15 +1594,7 @@ def insertXMLvolAss(cnt, name):
 def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
-def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
-    # vol - Volume Object
-    # xmlVol - xml of this volume
-    # xmlParent - xml of this volumes Paretnt
-    # App::Part will have Booleans & Multifuse objects also in the list
-    # So for s in list is not so good
-    # type 1 straight GDML type = 2 for GEMC
-    # xmlVol could be created dummy volume
-
+def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
     if xmlVol != None :
        xmlstr = ET.tostring(xmlVol)
     else :
@@ -1608,8 +1605,18 @@ def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
-    print('        Parent : '+parentName+' : '+ str(xmlstr))
+    print('        Parent : '+str(parentName)+' : '+ str(xmlstr))
 
+def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
+    # vol - Volume Object
+    # xmlVol - xml of this volume
+    # xmlParent - xml of this volumes Paretnt
+    # App::Part will have Booleans & Multifuse objects also in the list
+    # So for s in list is not so good
+    # type 1 straight GDML type = 2 for GEMC
+    # xmlVol could be created dummy volume
+
+    #printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
     idx = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)
@@ -1631,9 +1638,9 @@ def createWorldVol(volName) :
 
 def countGDMLObj(objList):
     # Return position of first GDML object and count
-    print('countGDMLObj')
+    #print('countGDMLObj')
     count = 0
-    print(range(len(objList)))
+    #print(range(len(objList)))
     for idx in range(len(objList)) :
         #print('idx : '+str(idx))
         obj = objList[idx]
@@ -1643,7 +1650,7 @@ def countGDMLObj(objList):
            or obj.TypeId == 'Part::Fuse' \
            or obj.TypeId == 'Part::Common' :
            count -= 1
-    print('countGDMLObj - Count : '+str(count))
+    #print('countGDMLObj - Count : '+str(count))
     return count
 
 def checkGDMLstructure(objList) :
@@ -1674,17 +1681,20 @@ def exportWorldVol(vol, fileExt) :
           print('Insert Dummy Volume')
           xmlVol = createXMLvol('dummy') 
           xmlParent = createWorldVol(vol.Name)
+          parentName = vol.Name
           addPhysVol(xmlParent,'dummy')
        else :
           print('Valid Structure')
           xmlParent = None
+          parentName = None
           xmlVol = createXMLvol(vol.Name)
     else :
           xmlParent = None
           xmlVol = createXMLvol(vol.Name)
+          parentName = None
 
     cnt = countGDMLObj(vol.OutList)
-    processVolume(vol, cnt, xmlVol, xmlParent, vol.Name, False)
+    processVolume(vol, cnt, xmlVol, xmlParent, parentName, False)
 
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
     # gdml is a global
@@ -1699,24 +1709,23 @@ def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
           filename = elemName+'.xml'
        #ET.ElementTree(xmlElem).write(os.path.join(dirPath,filename))
        ET.ElementTree(elem).write(os.path.join(dirPath,filename))
-       docString += '<!ENTITY '+elemName+' SYSTEM "'+filename+'">'
+       docString += '<!ENTITY '+elemName+' SYSTEM "'+filename+'">\n'
        gdml.append(ET.Entity(elemName))
 
 def exportGDMLstructure(dirPath, fileName) :
     global gdml, docString, importStr
     print("Write GDML structure to Directory")
     gdml = initGDML()
-    docString = '<!DOCTYPE gdml ['
+    docString = '\n<!DOCTYPE gdml [\n'
     #exportElementAsXML(dirPath, fileName, False, 'constants',constants)
     exportElementAsXML(dirPath, fileName, False, 'define',define)
     exportElementAsXML(dirPath, fileName, False, 'materials',materials)
     exportElementAsXML(dirPath, fileName, True, 'solids',solids)
     exportElementAsXML(dirPath, fileName, True, 'structure',structure)
     exportElementAsXML(dirPath, fileName, False, 'setup',setup)
-    #docString += ']>'+ET.tostring(gdml).decode('UTF-8')
-    docString += ']>'
-    print(docString)
-    print(len(docString))
+    docString += ']>\n'
+    #print(docString)
+    #print(len(docString))
     #gdml = ET.fromstring(docString.encode("UTF-8"))
     indent(gdml)
     ET.ElementTree(gdml).write(os.path.join(dirPath,fileName+'.gdml'), \
