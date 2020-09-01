@@ -75,7 +75,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
         
         #import GDMLCommands, GDMLResources
         commands=['CycleCommand','ColourMapCommand','ExpandCommand', \
-              'PolyHedraCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
+              'ExpandMaxCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand','AddCompound', \
               'TessellateCommand','TessellateGmshCommand', \
@@ -83,7 +83,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'TetrahedronCommand']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
-              'PolyHedraCommand', 'BoxCommand','ConeCommand', \
+              'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
                   'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
                   'TrapCommand','TubeCommand','AddCompound', \
                   'TessellateCommand','TessellateGmshCommand', \

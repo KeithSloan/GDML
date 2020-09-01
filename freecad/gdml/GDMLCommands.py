@@ -646,6 +646,7 @@ class CycleFeature :
                 'Cycle Object and all children display')}    
 
 def expandFunction(obj, eNum) :
+    print('Expand Function')
     #import lxml.etree  as ET 
     try :
        from lxml.etree import ET
@@ -655,34 +656,35 @@ def expandFunction(obj, eNum) :
        except ImportError:
           print('pb xml lib not found')
           sys.exit()
-       name = obj.Label[13:]
-       obj.Label = name
-       # Get original volume name i.e. loose _ or _nnn
-       print('Name : '+name)
-       #l = len(name) - 1
-       #print(name[l])
-       #if name[l] == '_' :
-       #    name = name[:-1]
-       #else :   
-       #    name = name[:-4]
-       #print("Name : "+name)
-       x = obj.Placement.Base[0]
-       y = obj.Placement.Base[1]
-       z = obj.Placement.Base[2]
-       # Need to update importGDML to use Placement.Rotation
-       # bot for now create a appropriate GDML rotation
-       angles = obj.Placement.Rotation.toEuler()
-       rot = ET.Element('rotation',{'name':'dummy', \
-                       'x':str(angles[0]), \
-                       'y':str(angles[1]), \
-                       'z':str(angles[2]), \
-                       'aunit' : 'deg'})
-       expandVolume(obj,name,x,y,z,rot,eNum,3)
+    name = obj.Label[13:]
+    obj.Label = name
+    # Get original volume name i.e. loose _ or _nnn
+    print('Name : '+name)
+    #l = len(name) - 1
+    #print(name[l])
+    #if name[l] == '_' :
+    #    name = name[:-1]
+    #else :   
+    #    name = name[:-4]
+    #print("Name : "+name)
+    x = obj.Placement.Base[0]
+    y = obj.Placement.Base[1]
+    z = obj.Placement.Base[2]
+    # Need to update importGDML to use Placement.Rotation
+    # bot for now create a appropriate GDML rotation
+    angles = obj.Placement.Rotation.toEuler()
+    rot = ET.Element('rotation',{'name':'dummy', \
+                     'x':str(angles[0]), \
+                     'y':str(angles[1]), \
+                     'z':str(angles[2]), \
+                     'aunit' : 'deg'})
+    expandVolume(obj,name,x,y,z,rot,eNum,3)
 
 class ExpandFeature :
 
     def Activated(self) :
-       
+      
+        print('Expand Feature') 
         for obj in FreeCADGui.Selection.getSelection():
             from .importGDML import expandVolume
             #if len(obj.InList) == 0: # allowed only for for top level objects
@@ -803,6 +805,7 @@ class CompoundFeature :
 
 FreeCADGui.addCommand('CycleCommand',CycleFeature())
 FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
+FreeCADGui.addCommand('ExpandMaxCommand',ExpandMaxFeature())
 FreeCADGui.addCommand('ColourMapCommand',ColourMapFeature())
 FreeCADGui.addCommand('BoxCommand',BoxFeature())
 FreeCADGui.addCommand('EllipsoidCommand',EllispoidFeature())
