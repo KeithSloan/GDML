@@ -646,6 +646,7 @@ class CycleFeature :
                 'Cycle Object and all children display')}    
 
 def expandFunction(obj, eNum) :
+    from .importGDML import expandVolume
     print('Expand Function')
     #import lxml.etree  as ET 
     try :
@@ -686,7 +687,6 @@ class ExpandFeature :
       
         print('Expand Feature') 
         for obj in FreeCADGui.Selection.getSelection():
-            from .importGDML import expandVolume
             #if len(obj.InList) == 0: # allowed only for for top level objects
             # add check for Part i.e. Volume
             print("Selected")
@@ -706,7 +706,6 @@ class ExpandMaxFeature :
     def Activated(self) :
        
         for obj in FreeCADGui.Selection.getSelection():
-            from .importGDML import expandVolume
             #if len(obj.InList) == 0: # allowed only for for top level objects
             # add check for Part i.e. Volume
             print("Selected")
