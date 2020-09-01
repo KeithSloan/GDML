@@ -645,6 +645,40 @@ class CycleFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_CycleGroup', \
                 'Cycle Object and all children display')}    
 
+def expandFunction(obj, eNum) :
+    #import lxml.etree  as ET 
+    try :
+       from lxml.etree import ET
+    except ImportError:
+       try:
+          import xml.etree.ElementTree as ET
+       except ImportError:
+          print('pb xml lib not found')
+          sys.exit()
+       name = obj.Label[13:]
+       obj.Label = name
+       # Get original volume name i.e. loose _ or _nnn
+       print('Name : '+name)
+       #l = len(name) - 1
+       #print(name[l])
+       #if name[l] == '_' :
+       #    name = name[:-1]
+       #else :   
+       #    name = name[:-4]
+       #print("Name : "+name)
+       x = obj.Placement.Base[0]
+       y = obj.Placement.Base[1]
+       z = obj.Placement.Base[2]
+       # Need to update importGDML to use Placement.Rotation
+       # bot for now create a appropriate GDML rotation
+       angles = obj.Placement.Rotation.toEuler()
+       rot = ET.Element('rotation',{'name':'dummy', \
+                       'x':str(angles[0]), \
+                       'y':str(angles[1]), \
+                       'z':str(angles[2]), \
+                       'aunit' : 'deg'})
+       expandVolume(obj,name,x,y,z,rot,eNum,3)
+
 class ExpandFeature :
 
     def Activated(self) :
@@ -656,39 +690,7 @@ class ExpandFeature :
             print("Selected")
             print(obj.Label[:12])
             if obj.Label[:12] == "NOT_Expanded" :
-               #import lxml.etree  as ET 
-               try :
-                 from lxml.etree import ET
-               except ImportError:
-                     try:
-                        import xml.etree.ElementTree as ET
-                     except ImportError:
-                        print('pb xml lib not found')
-                        sys.exit()
-               #parent = obj.InList[0]
-               name = obj.Label[13:]
-               obj.Label = name
-               # Get original volume name i.e. loose _ or _nnn
-               print('Name : '+name)
-               #l = len(name) - 1
-               #print(name[l])
-               #if name[l] == '_' :
-               #    name = name[:-1]
-               #else :   
-               #    name = name[:-4]
-               #print("Name : "+name)
-               x = obj.Placement.Base[0]
-               y = obj.Placement.Base[1]
-               z = obj.Placement.Base[2]
-               # Need to update importGDML to use Placement.Rotation
-               # bot for now create a appropriate GDML rotation
-               angles = obj.Placement.Rotation.toEuler()
-               rot = ET.Element('rotation',{'name':'dummy', \
-                       'x':str(angles[0]), \
-                       'y':str(angles[1]), \
-                       'z':str(angles[2]), \
-                       'aunit' : 'deg'})
-               expandVolume(obj,name,x,y,z,rot,0,3)
+               expandFunction(obj,0) 
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_ExpandVol', 'MenuText': \
@@ -696,6 +698,26 @@ class ExpandFeature :
                 'Expand Volume'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_ExpandVol', \
                 'Expand Volume')}    
+
+class ExpandMaxFeature :
+
+    def Activated(self) :
+       
+        for obj in FreeCADGui.Selection.getSelection():
+            from .importGDML import expandVolume
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            # add check for Part i.e. Volume
+            print("Selected")
+            print(obj.Label[:12])
+            if obj.Label[:12] == "NOT_Expanded" :
+               expandFunction(obj,-1) 
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_ExpandMaxVol', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandMaxVol',\
+                'Max Expand Volume'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandMaxVol', \
+                'Max Expand Volume')}    
 
 class CompoundFeature :
     
