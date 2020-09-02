@@ -1095,8 +1095,8 @@ class GDMLXtru(GDMLcommon) :
                sideList.append(topList[i])
                # Close SideList polygon
                sideList.append(baseList[i])
-               print("sideList")
-               print(sideList)
+               #print("sideList")
+               #print(sideList)
                w1 = Part.makePolygon(sideList)
                f1 = Part.Face(w1)
                faces_list.append(f1)
@@ -1110,7 +1110,7 @@ class GDMLXtru(GDMLcommon) :
            shell=Part.makeShell(faces_list)
            #solid=Part.Solid(shell).removeSplitter()
            solid=Part.Solid(shell)
-           print("Valid Solid : "+str(solid.isValid()))
+           #print("Valid Solid : "+str(solid.isValid()))
            if solid.Volume < 0:
               solid.reverse()
        #print(dir(fp))       

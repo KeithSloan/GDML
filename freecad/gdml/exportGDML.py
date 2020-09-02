@@ -548,7 +548,7 @@ def addPhysVol(xmlVol, volName) :
 
 def exportPosition(name, xml, pos) :
     global POScount
-    GDMLShared.trace('expor tPosition')
+    GDMLShared.trace('export Position')
     GDMLShared.trace(pos)
     x = pos[0]
     y = pos[1]
@@ -1332,11 +1332,25 @@ def getXmlVolume(volObj) :
        print(volObj.Name+' Not Found') 
     return xmlvol
 
+def getCount(obj) :
+    GDMLShared.trace('get Count : '+obj.Name)
+    if hasattr(obj,'Tool') :
+       GDMLShared.trace('Has tool - check Base')
+       baseCnt = getCount(obj.Base)
+       toolCnt = getCount(obj.Tool)
+       GDMLShared.trace('Count is : '+str(baseCnt + toolCnt))
+       return (baseCnt + toolCnt)
+    else :
+       return 1
+
 def getMaterial(obj) :
+    GDMLShared.trace('get Material : '+obj.Name)
     if hasattr(obj,'material') :
        return obj.material
     if hasattr(obj,'Tool') :
-       return(getMaterial(obj.Base))
+       GDMLShared.trace('Has tool - check Base')
+       material = getMaterial(obj.Base)
+       return material
     else :
        return None
 
@@ -1367,6 +1381,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     #if obj.Label[:12] != 'NOT_Expanded' :
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
+    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx))
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1405,6 +1420,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
       if case("Part::Cut") :
          # Maybe Booleans could be grouped with GDML solids 
          #print("   Cut")
+         GDMLShared.trace("Cut - subtraction")
          #print(boolFlg)
          solidName = 'Cut'+obj.Name
          ref1 = processSolid(obj.Base, True)
@@ -1412,11 +1428,16 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(subtract,'first', {'ref': ref1})
          ET.SubElement(subtract,'second',{'ref': ref2})
-         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
+         if hasattr(obj,'Base') :
+            GDMLShared.trace('Has Base')
+            boolCount = getCount(obj.Base)
+            material  = getMaterial(obj.Base)
+            GDMLShared.trace('Count : '+str(boolCount))
+         addVolRef(xmlVol, volName, solidName, material)
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,subtract)
          processRotation(obj.Tool,subtract)
-         return idx + 3
+         return idx + boolCount
          break
 
       if case("Part::Fuse") :
@@ -1427,11 +1448,14 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          union = ET.SubElement(solids,'union',{'name': solidName })
          ET.SubElement(union,'first', {'ref': ref1})
          ET.SubElement(union,'second',{'ref': ref2})
-         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
+         boolCount = getCount(obj.Base)
+         material  = getMaterial(obj.Base)
+         GDMLShared.trace('Count : '+str(boolCount))
+         addVolRef(xmlVol, volName, solidName, material)
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,union)
          processRotation(obj.Tool,union)
-         return idx + 3
+         return idx + boolCount
          break
 
       if case("Part::Common") :
@@ -1442,18 +1466,24 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          intersect = ET.SubElement(solids,'intersection',{'name': solidName })
          ET.SubElement(intersect,'first', {'ref': ref1})
          ET.SubElement(intersect,'second',{'ref': ref2})
-         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
+         boolCount = getCount(obj.Base)
+         material  = getMaterial(obj.Base)
+         GDMLShared.trace('Count : '+str(boolCount))
+         addVolRef(xmlVol, volName, solidName, material)
          testAddPhysVol(obj, xmlParent, parentName)
          processPosition(obj.Tool,intersect)
          processRotation(obj.Tool,intersect)
-         return idx + 3
+         return idx + boolCount
          break
 
       if case("Part::MultiFuse") :
          print("   Multifuse") 
          # test and fix
          solidName = 'MultiFuse'+obj.Name
-         addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
+         boolCount = getCount(obj.Base)
+         material  = getMaterial(obj.Base)
+         GDMLShared.trace('Count : '+str(boolCount))
+         addVolRef(xmlVol, volName, solidName, material(obj.Base))
          testAddPhysVol(obj, xmlParent, parentName)
          # First add solids in list before reference
          print('Output Solids')
@@ -1601,11 +1631,13 @@ def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
        xmlstr ='None'
     print(xmlstr)
     print('Process Volume : '+vol.Name+' : ' + str(xmlstr))
+    GDMLShared.trace('Process Volume : '+vol.Name+' : ' + str(xmlstr))
     if xmlParent != None :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
     print('        Parent : '+str(parentName)+' : '+ str(xmlstr))
+    GDMLShared.trace('        Parent : '+str(parentName)+' : '+ str(xmlstr))
 
 def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
@@ -1616,10 +1648,12 @@ def processVolume(vol, cnt, xmlVol, xmlParent, parentName, addVolsFlag) :
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
-    #printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
+    if GDMLShared.getTrace() == True :
+       printVolumeInfo(vol, xmlVol, xmlParent, parentName)
     idx = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)
+       GDMLShared.trace('OutList length : '+str(num))
        while idx < num :
           #print(idx)
           idx = processObject(cnt, idx, vol.OutList[idx],  \
@@ -1639,6 +1673,7 @@ def createWorldVol(volName) :
 def countGDMLObj(objList):
     # Return position of first GDML object and count
     #print('countGDMLObj')
+    GDMLShared.trace('countGDMLObj')
     count = 0
     #print(range(len(objList)))
     for idx in range(len(objList)) :
@@ -1651,6 +1686,7 @@ def countGDMLObj(objList):
            or obj.TypeId == 'Part::Common' :
            count -= 1
     #print('countGDMLObj - Count : '+str(count))
+    GDMLShared.trace('countGDMLObj - Count : '+str(count))
     return count
 
 def checkGDMLstructure(objList) :
@@ -1659,6 +1695,7 @@ def checkGDMLstructure(objList) :
     # App::Origin
     # GDML Object
     print('check GDML structure')
+    GDMLShared.trace('check GDML structure')
     print(objList)
     if len(objList) < 3 :
        return False
@@ -1675,6 +1712,7 @@ def locateXMLvol(vol) :
 def exportWorldVol(vol, fileExt) :
     if fileExt != '.xml' :
        print('Export World Process Volume : '+vol.Name)
+       GDMLShared.trace('Export Word Process Volume'+vol.Name)
        ET.SubElement(setup,'world',{'ref':vol.Name}) 
 
        if checkGDMLstructure(vol.OutList) == False :
@@ -1733,7 +1771,10 @@ def exportGDMLstructure(dirPath, fileName) :
     print("GDML file structure written")
 
 def exportGDML(first, filepath, fileExt) :
+    from . import GDMLShared
 
+    GDMLShared.setTrace(True)
+    GDMLShared.trace('exportGDML')
     print("\nStart GDML Export 0.1")
     print('File extension : '+fileExt)
 

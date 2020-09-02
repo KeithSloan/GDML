@@ -947,9 +947,11 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
     nrot = GDMLShared.getRotation(physVol)
     #print('rot : '+str(rot)+' nrot : '+nrot)
+    copyNum = physVol.get('copynumber')
+    print('Copynumber : '+str(copyNum))
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
-       #print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
+       print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
        #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
