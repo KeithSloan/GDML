@@ -668,7 +668,7 @@ def processGDMLBoxObject(obj, flag) :
                           'y': str(obj.y),  \
                           'z': str(obj.z),  \
                           'lunit' : obj.lunit})
-    return boxName
+    return solid, boxName
 
 def processGDMLConeObject(obj, flag) :
     # Needs unique Name
@@ -686,7 +686,7 @@ def processGDMLConeObject(obj, flag) :
                           'z': str(obj.z),  \
                           'lunit' : obj.lunit})
     # modif 'mm' -> obj.lunit
-    return coneName
+    return solid, coneName
 
 def processGDMLCutTubeObject(obj, flag) :
     # Needs unique Name
@@ -707,7 +707,7 @@ def processGDMLCutTubeObject(obj, flag) :
                           'lowY':str(obj.lowY), \
                           'lowZ':str(obj.lowZ), \
                           'lunit' : obj.lunit})
-    return cTubeName
+    return solid, cTubeName
 
 def processGDMLElConeObject(obj, flag) :
     GDMLShared.trace('Elliptical Cone')
@@ -720,7 +720,7 @@ def processGDMLElConeObject(obj, flag) :
                 'zmax' : str(obj.zmax), \
                 'lunit' : str(obj.lunit)})
 
-    return elconeName
+    return solid, elconeName
 
 def processGDMLEllipsoidObject(obj, flag) :
     # Needs unique Name
@@ -733,7 +733,7 @@ def processGDMLEllipsoidObject(obj, flag) :
                           'zcut1': str(obj.zcut1),  \
                           'zcut2': str(obj.zcut2),  \
                           'lunit' : obj.lunit})
-    return ellipsoidName
+    return solid, ellipsoidName
 
 def processGDMLElTubeObject(obj, flag) :
     # Needs unique Name
@@ -745,7 +745,7 @@ def processGDMLElTubeObject(obj, flag) :
                           'dy': str(obj.dy),  \
                           'dz': str(obj.dz),  \
                           'lunit' : obj.lunit})
-    return eltubeName
+    return solid, ltubeName
 
 def processGDMLOrbObject(obj, flag) :
     # Needs unique Name
@@ -755,7 +755,7 @@ def processGDMLOrbObject(obj, flag) :
        solid = ET.SubElement(solids, 'orb',{'name': orbName, \
                           'r': str(obj.r),  \
                           'lunit' : obj.lunit})
-    return orbName
+    return solid, orbName
 
 def processGDMLParaObject(obj, flag) :
     # Needs unique Name
@@ -770,7 +770,7 @@ def processGDMLParaObject(obj, flag) :
                           'theta':str(obj.theta), \
                           'phi':str(obj.phi), \
                           'lunit' : obj.lunit})
-    return paraName
+    return solid, paraName
 
 
 def processGDMLPolyconeObject(obj, flag) :
@@ -788,7 +788,7 @@ def processGDMLPolyconeObject(obj, flag) :
            ET.SubElement(cone, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
-    return polyconeName
+    return cone, polyconeName
 
 def processGDMLPolyhedraObject(obj, flag) :
     # Needs unique Name
@@ -807,7 +807,7 @@ def processGDMLPolyhedraObject(obj, flag) :
            ET.SubElement(poly, 'zplane',{'rmin': str(zplane.rmin), \
                                'rmax' : str(zplane.rmax), \
                                'z' : str(zplane.z)})
-    return polyhedraName
+    return poly, polyhedraName
 
 def processGDMLQuadObject(obj, flag) :
     GDMLShared.trace("GDMLQuadrangular")
@@ -831,7 +831,7 @@ def processGDMLSphereObject(obj, flag) :
                            'deltatheta': str(obj.deltatheta), 
                            'aunit': obj.aunit, 
                            'lunit' : obj.lunit})
-    return sphereName
+    return solid, sphereName
 
 def processGDMLTessellatedObject(obj, flag) :
     # Needs unique Name
@@ -867,7 +867,7 @@ def processGDMLTessellatedObject(obj, flag) :
                         'vertex4': tessVname+str(f[3]), \
                                   'type':'ABSOLUTE'})
 
-    return tessName
+    return tess, tessName
 
 def processGDMLTetraObject(obj, flag) :
     tetraName = nameOfGDMLobject(obj)
@@ -886,7 +886,7 @@ def processGDMLTetraObject(obj, flag) :
                     'vertex2': v2Name, \
                     'vertex3': v3Name, \
                     'vertex4': v4Name})
-    return tetraName    
+    return tetra, tetraName    
 
 def processGDMLTetrahedronObject(obj, flag) :
     global structure
@@ -926,7 +926,7 @@ def processGDMLTetrahedronObject(obj, flag) :
         #ET.SubElement(physvol, 'rotation')
         count += 1
 
-    return tetrahedronName    
+    return assembly, tetrahedronName    
 
 def processGDMLTorusObject(obj, flag) :
     torusName = nameOfGDMLobject(obj)
@@ -940,7 +940,7 @@ def processGDMLTorusObject(obj, flag) :
                     'aunit': obj.aunit, \
                     'lunit': obj.lunit})
 
-    return torusName
+    return torus, torusName
 
 def processGDMLTrapObject(obj, flag) :
     # Needs unique Name
@@ -960,7 +960,7 @@ def processGDMLTrapObject(obj, flag) :
                            'alpha2': str(obj.alpha), \
                            'aunit': obj.aunit, \
                            'lunit': obj.lunit})
-    return trapName
+    return trap, trapName
 
 def processGDMLTrdObject(obj, flag) :
     # Needs unique Name
@@ -973,7 +973,7 @@ def processGDMLTrdObject(obj, flag) :
                            'y1': str(obj.y1),  \
                            'y2': str(obj.y2),  \
                            'lunit': obj.lunit})
-    return trdName
+    return trd, trdName
 
 def processGDMLTriangle(obj, flag) :
     if flag == True :
@@ -995,7 +995,7 @@ def processGDMLTubeObject(obj, flag) :
                            'aunit': obj.aunit,
                            'z': str(obj.z),  \
                            'lunit' : obj.lunit})
-    return tubeName
+    return tube, tubeName
 
 def processGDMLXtruObject(obj, flag) :
     # Needs unique Name
@@ -1014,7 +1014,7 @@ def processGDMLXtruObject(obj, flag) :
                                   'xOffset' : str(items.xOffset), \
                                   'yOffset' : str(items.yOffset), \
                                   'scalingFactor' : str(items.scalingFactor)})
-    return xtruName
+    return xtru, xtruName
 
 def processGDML2dVertex(obj, flag) :
     if flag == True :
@@ -1281,6 +1281,9 @@ def processGDMLSolid(obj, addVolsFlag) :
 
 def processSolid(obj, addVolsFlag) :
     # export solid & return Name
+    # Needs to deal with Boolean solids
+    # separate from Boolean Objects
+    # return count, solidxml, solidName
     #print('Process Solid')
     while switch(obj.TypeId) :
 
@@ -1289,8 +1292,86 @@ def processSolid(obj, addVolsFlag) :
             #if hasattr(obj.Proxy, 'Type') :
             #    #print(obj.Proxy.Type) 
             #    return(processGDMLSolid(obj, True))
-            return(processGDMLSolid(obj, True))
+            solidxml, solidName = processGDMLSolid(obj, True)
+            return 1, solidxml, solidName
         #
+        #  Now deal with Boolean solids
+        #  Note handle different from Bookean Objects
+        #  that need volume, physvol etc
+        #  i.e. just details needed to be added to Solids 
+        #
+        if case("Part::Cut") :
+           GDMLShared.trace("Cut - subtraction")
+           solidName = 'Cut'+obj.Name
+           baseCnt, basexml, ref1 = processSolid(obj.Base, True)
+           toolCnt, toolxml, ref2 = processSolid(obj.Tool, True)
+           subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
+           ET.SubElement(subtract,'first', {'ref': ref1})
+           ET.SubElement(subtract,'second',{'ref': ref2})
+           # process position & rotationt ?
+           processPosition(obj.Tool,subtract)
+           processRotation(obj.Tool,subtract)
+           return 1 + baseCnt + toolCnt, subtract, solidName
+           break
+
+        if case("Part::Fuse") :
+           GDMLShared.trace("Fuse - union")
+           solidName = 'Union'+obj.Name
+           baseCnt, basexml, ref1 = processSolid(obj.Base, True)
+           toolCnt, toolxml, ref2 = processSolid(obj.Tool, True)
+           union = ET.SubElement(solids,'union',{'name': solidName })
+           ET.SubElement(union,'first', {'ref': ref1})
+           ET.SubElement(union,'second',{'ref': ref2})
+           # process position & rotation ?
+           processPosition(obj.Tool,union)
+           processRotation(obj.Tool,union)
+           return baseCnt + toolCnt, union, solidName
+           break
+
+        if case("Part::Common") :
+           GDMLShared.trace("Common - intersection")
+           solidName = 'Intersect'+obj.Name
+           baseCnt, basexml, ref1 = processSolid(obj.Base, True)
+           toolCnt, toolxml, ref2 = processSolid(obj.Tool, True)
+           intersect = ET.SubElement(solids,'intersection',{'name': solidName })
+           ET.SubElement(intersect,'first', {'ref': ref1})
+           ET.SubElement(intersect,'second',{'ref': ref2})
+           processPosition(obj.Tool,intersect)
+           processRotation(obj.Tool,intersect)
+           return baseCnt + toolCnt, intersect, solidName
+           break
+
+        if case("Part::MultiFuse") :
+           GDMLShared.trace("Multifuse - multiunion")
+           # test and fix
+           solidName = 'MultiFuse'+obj.Name
+           # First add solids in list before reference
+           print('Output Solids')
+           for sub in obj.OutList:
+                processSolid(sub,False)
+           GDMLShared.trace('Output Solids Complete')
+           multUnion = ET.SubElement(solids,'multiUnion',{'name': SolidName })
+           num = 1
+
+           for sub in obj.OutList:
+               GDMLShared.trace(sub.Name)
+               node = processMuNod(multUnion, 'node-'+str(num))
+               ET.SubElement(node,'solid',{'ref':sub.Name})
+               processPosition(sub,node)
+               processRotation(sub,node)
+               num += 1
+
+           GDMLShared.trace('Return MultiUnion')
+           #return idx + num
+           return solidName
+           break
+
+        if case("Part::MultiCommon") :
+           print("   Multi Common / intersection")
+           print("   Not available in GDML")
+           exit(-3)
+           break
+
         #  Now deal with objects that map to GDML solids
         #
         if case("Part::Box") :
@@ -1367,6 +1448,24 @@ def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
        xmlstr = 'None'
     print('Parent : '+str(parentName)+' : '+str(xmlstr))
 
+def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
+    print('Process Boolean Object')
+    cnt, boolxml, solidName = processSolid(obj, True)
+    print('Count : '+str(cnt))
+    print('Solid Name : '+solidName)
+    if hasattr(obj,'Base') :
+       GDMLShared.trace('Has Base')
+       boolCount = getCount(obj.Base)
+       material  = getMaterial(obj.Base)
+       GDMLShared.trace('Count : '+str(boolCount))
+    material  = getMaterial(obj.Base)
+    addVolRef(xmlVol, volName, solidName, material)
+    testAddPhysVol(obj, xmlParent, parentName)
+    #processPosition(obj.Tool,boolxml)
+    #processRotation(obj.Tool,boolxml)
+    return cnt
+
+
 def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
@@ -1418,65 +1517,32 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
       #   break
 
       if case("Part::Cut") :
-         # Maybe Booleans could be grouped with GDML solids 
-         #print("   Cut")
          GDMLShared.trace("Cut - subtraction")
-         #print(boolFlg)
-         solidName = 'Cut'+obj.Name
-         ref1 = processSolid(obj.Base, True)
-         ref2 = processSolid(obj.Tool, True)
-         subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
-         ET.SubElement(subtract,'first', {'ref': ref1})
-         ET.SubElement(subtract,'second',{'ref': ref2})
-         if hasattr(obj,'Base') :
-            GDMLShared.trace('Has Base')
-            boolCount = getCount(obj.Base)
-            material  = getMaterial(obj.Base)
-            GDMLShared.trace('Count : '+str(boolCount))
-         addVolRef(xmlVol, volName, solidName, material)
-         testAddPhysVol(obj, xmlParent, parentName)
-         processPosition(obj.Tool,subtract)
-         processRotation(obj.Tool,subtract)
-         return idx + boolCount
+         return idx + processBooleanObject(obj, xmlVol, volName, \
+                                xmlParent, parentName)
+         # ??? return
+         #return idx + 3
          break
 
       if case("Part::Fuse") :
-         #print("   Union")
-         solidName = 'Union'+obj.Name
-         ref1 = processSolid(obj.Base, True)
-         ref2 = processSolid(obj.Tool, True)
-         union = ET.SubElement(solids,'union',{'name': solidName })
-         ET.SubElement(union,'first', {'ref': ref1})
-         ET.SubElement(union,'second',{'ref': ref2})
-         boolCount = getCount(obj.Base)
-         material  = getMaterial(obj.Base)
-         GDMLShared.trace('Count : '+str(boolCount))
-         addVolRef(xmlVol, volName, solidName, material)
-         testAddPhysVol(obj, xmlParent, parentName)
-         processPosition(obj.Tool,union)
-         processRotation(obj.Tool,union)
-         return idx + boolCount
+         GDMLShared.trace("Fuse - union")
+         return idx + processBooleanObject(obj, xmlVol, volName, \
+                                xmlParent, parentName)
+         # ??? return
+         #return idx + 3
          break
 
       if case("Part::Common") :
-         #print("   Intersection")
-         solidName = 'Intersect'+obj.Name
-         ref1 = processSolid(obj.Base, True)
-         ref2 = processSolid(obj.Tool, True)
-         intersect = ET.SubElement(solids,'intersection',{'name': solidName })
-         ET.SubElement(intersect,'first', {'ref': ref1})
-         ET.SubElement(intersect,'second',{'ref': ref2})
-         boolCount = getCount(obj.Base)
-         material  = getMaterial(obj.Base)
-         GDMLShared.trace('Count : '+str(boolCount))
-         addVolRef(xmlVol, volName, solidName, material)
-         testAddPhysVol(obj, xmlParent, parentName)
-         processPosition(obj.Tool,intersect)
-         processRotation(obj.Tool,intersect)
-         return idx + boolCount
+         GDMLShared.trace("Common - Intersection")
+         processBooleanObject(obj, xmlVol, volName, xmlParent, parentName)
+         return idx + processBooleanObject(obj, xmlVol, volName, \
+                                xmlParent, parentName)
+         # ??? return
+         #return idx + 3
          break
 
       if case("Part::MultiFuse") :
+         GDMLShared.trace("   Multifuse") 
          print("   Multifuse") 
          # test and fix
          solidName = 'MultiFuse'+obj.Name
@@ -1526,7 +1592,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
          print("   Python Feature")
          if hasattr(obj.Proxy, 'Type') :
             print(obj.Proxy.Type) 
-         solidName = processSolid(obj, True)
+         solidCnt, solidxml, solidName = processSolid(obj, True)
          if cnt > 1 :
             volName = 'LV-'+solidName
             xmlVol = insertXMLVolAss(cnt, volName)
