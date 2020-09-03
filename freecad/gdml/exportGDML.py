@@ -1311,6 +1311,7 @@ def processSolid(obj, addVolsFlag) :
            # process position & rotationt ?
            processPosition(obj.Tool,subtract)
            processRotation(obj.Tool,subtract)
+           GDMLShared.trace('baseCnt: '+str(baseCnt)+' toolCnt: '+str(toolCnt))
            return 1 + baseCnt + toolCnt, subtract, solidName
            break
 
@@ -1325,7 +1326,7 @@ def processSolid(obj, addVolsFlag) :
            # process position & rotation ?
            processPosition(obj.Tool,union)
            processRotation(obj.Tool,union)
-           return baseCnt + toolCnt, union, solidName
+           return 1 + baseCnt + toolCnt, union, solidName
            break
 
         if case("Part::Common") :
@@ -1338,7 +1339,7 @@ def processSolid(obj, addVolsFlag) :
            ET.SubElement(intersect,'second',{'ref': ref2})
            processPosition(obj.Tool,intersect)
            processRotation(obj.Tool,intersect)
-           return baseCnt + toolCnt, intersect, solidName
+           return  1 + baseCnt + toolCnt, intersect, solidName
            break
 
         if case("Part::MultiFuse") :
@@ -1455,9 +1456,6 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     print('Solid Name : '+solidName)
     if hasattr(obj,'Base') :
        GDMLShared.trace('Has Base')
-       boolCount = getCount(obj.Base)
-       material  = getMaterial(obj.Base)
-       GDMLShared.trace('Count : '+str(boolCount))
     material  = getMaterial(obj.Base)
     addVolRef(xmlVol, volName, solidName, material)
     testAddPhysVol(obj, xmlParent, parentName)
@@ -1518,27 +1516,26 @@ def processObject(cnt, idx, obj, xmlVol, volName, xmlParent, parentName) :
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
-         return idx + processBooleanObject(obj, xmlVol, volName, \
+         retval = idx + processBooleanObject(obj, xmlVol, volName, \
                                 xmlParent, parentName)
-         # ??? return
-         #return idx + 3
+         GDMLShared.trace('Return Count : '+str(retval))
+         return retval
          break
 
       if case("Part::Fuse") :
          GDMLShared.trace("Fuse - union")
-         return idx + processBooleanObject(obj, xmlVol, volName, \
+         retval = idx + processBooleanObject(obj, xmlVol, volName, \
                                 xmlParent, parentName)
-         # ??? return
-         #return idx + 3
+         GDMLShared.trace('Return Count : '+str(retval))
+         return retval
          break
 
       if case("Part::Common") :
          GDMLShared.trace("Common - Intersection")
-         processBooleanObject(obj, xmlVol, volName, xmlParent, parentName)
-         return idx + processBooleanObject(obj, xmlVol, volName, \
+         retval = idx + processBooleanObject(obj, xmlVol, volName, \
                                 xmlParent, parentName)
-         # ??? return
-         #return idx + 3
+         GDMLShared.trace('Return Count : '+str(retval))
+         return retval
          break
 
       if case("Part::MultiFuse") :
