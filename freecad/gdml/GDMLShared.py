@@ -34,14 +34,20 @@ import FreeCAD, Part
 from lxml import etree as ET
 
 global define
+global tracefp
 
 global printverbose
 printverbose = False
 
 def setTrace(flag) :
+    global tracefp
     print('Trace set to : '+str(flag))
     global printverbose
     printverbose = flag
+    if flag == True :
+       tracePath = FreeCAD.getUserAppDataDir()
+       tracefp = open(tracePath+'FC-trace','w')
+       print('Trace path : '+tracePath)
 
 def getTrace() :
     global printverbose
@@ -49,7 +55,11 @@ def getTrace() :
     return(printverbose)
 
 def trace(s):
-    if printverbose == True : print(s)
+    global tracefp
+    if printverbose == True : 
+       print(s)
+       print(s,file = tracefp)
+       tracefp.flush()
     return
 
 def setDefine(val) :
@@ -139,7 +149,7 @@ def getRef(ptr, name) :
     return wrk
 
 def getMult(fp) :
-    unit = 'mm'  # set default
+    unit = 'mm' # set default
     # Watch for unit and lunit
     #print('getMult : '+str(fp))
     if hasattr(fp,'lunit') :

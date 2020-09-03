@@ -947,9 +947,11 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
     nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
     nrot = GDMLShared.getRotation(physVol)
     #print('rot : '+str(rot)+' nrot : '+nrot)
+    copyNum = physVol.get('copynumber')
+    print('Copynumber : '+str(copyNum))
     volref = GDMLShared.getRef(physVol,"volumeref")
     if volref != None :
-       #print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
+       print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
        #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
@@ -1035,7 +1037,9 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               nx, ny, nz = GDMLShared.getPosition(pv)
               #nx, ny, nz = GDMLShared.testPosition(pv,px,py,pz)
               nrot = GDMLShared.getRotation(pv)
-              part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
+              #part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
+              part = parent.newObject("App::Part",volref)
+              part.Label = "NOT_Expanded_"+volref
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
               #print(dir(part))
@@ -1245,7 +1249,9 @@ def setupEtree(filename) :
        from lxml import etree
        FreeCAD.Console.PrintMessage("running with lxml.etree \n")
        parser = etree.XMLParser(resolve_entities=True)
-       root = etree.parse(filename, parser=parser)
+       root= etree.parse(filename, parser=parser)
+       #print('error log')
+       #print(parser.error_log)
 
     except ImportError:
        try:
