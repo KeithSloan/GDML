@@ -939,7 +939,9 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
+def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
+    # if volAsmFlag == True : Volume
+    # if volAsmFlag == False : Assembly 
     # physvol is xml entity
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
@@ -954,11 +956,10 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
        print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
        GDMLShared.trace("Volume ref : "+volref)
        part = parent.newObject("App::Part",volref)
-       #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
-       #print('New Vol : '+volref)
-       #print('px '+str(px)+' py '+str(py)+' pz '+str(pz))
-       #part.Placement = GDMLShared.processPlacement(FreeCAD.Vector(px,py,pz),rot)
-       GDMLShared.trace("px : "+str(px)+" : "+str(py)+" : "+str(pz))
+       if volAsmFlg == False :    # If Assembly # checks with Alice.gdml
+          part.Placement = GDMLShared.processPlacement( \
+                               FreeCAD.Vector(nx,ny,nz),nrot)
+          GDMLShared.trace("nx : "+str(nx)+" : "+str(ny)+" : "+str(nz))
        #GDMLShared.setTrace(False)
        # pass on position & rot to GDMLsolid etc
        expandVolume(part,volref,nx,ny,nz,nrot,phylvl,displayMode)
@@ -967,22 +968,22 @@ def parsePhysVol(parent,physVol,phylvl,px,py,pz,rot,displayMode):
 # We get passed position and rotation
 # displayMode 1 normal 2 hide 3 wireframe
 def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
-    global volDict
+    #global volDict
 
     # Has the volume already been parsed i.e in Assembly etc
-    obj = volDict.get(name)
-    if obj != None :
-       newobj = Draft.clone(obj)
-       #print(dir(newobj))
-       #print(newobj.TypeId)
-       #print(newobj.Name)
-       #print(newobj.Label)
-       parent.addObject(newobj)
-       base = FreeCAD.Vector(px,py,pz)
-       newobj.Placement = GDMLShared.processPlacement(base,rot)
-       return
+    #obj = volDict.get(name)
+    #if obj != None :
+    #   newobj = Draft.clone(obj)
+    #   #print(dir(newobj))
+    #   #print(newobj.TypeId)
+    #   #print(newobj.Name)
+    #   #print(newobj.Label)
+    #   parent.addObject(newobj)
+    #   base = FreeCAD.Vector(px,py,pz)
+    #   newobj.Placement = GDMLShared.processPlacement(base,rot)
+    #   return
 
-    else :
+    #else :
         GDMLShared.trace("ParseVolume : "+name)
         #part = parent.newObject("App::Part",name)
         #expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
@@ -992,7 +993,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
     from .GDMLObjects import checkMaterial
     # also used in ScanCommand
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
     GDMLShared.trace("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
     vol = structure.find("volume[@name='%s']" % name )
@@ -1031,7 +1032,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               if phylvl >= 0 :
                  phylvl += 1 
               # If negative always parse otherwise increase level    
-              parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(True,parent,pv,phylvl,px,py,pz,rot,displayMode)
            else :  # Just Add to structure 
               volref = GDMLShared.getRef(pv,"volumeref")
               nx, ny, nz = GDMLShared.getPosition(pv)
@@ -1054,7 +1055,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               # 100% red, 0% Green, 0% Blue
               #vpart.TextColor = (100., 0., 0., 0.)
        # Add parsed Volume to dict
-       volDict[name] = obj
+       #volDict[name] = obj
        App.ActiveDocument.recompute() 
        return obj
 
@@ -1063,10 +1064,8 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
        print("Assembly : "+name)
        if asm != None :
           for pv in asm.findall("physvol") :
-              # create solids at pos & rot in physvols
-              #parsePhysVol(part,pv,displayMode)
               #obj = parent.newObject("App::Part",name)
-              parsePhysVol(parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(False,parent,pv,phylvl,px,py,pz,rot,displayMode)
        else :
            print("Not Volume or Assembly") 
 
