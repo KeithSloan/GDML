@@ -1490,7 +1490,8 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
     #if obj.Label[:12] != 'NOT_Expanded' :
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
-    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx))
+    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx) + \
+             'assemby flag '+str(asmFlg))
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1703,19 +1704,18 @@ def insertXMLvolAss(cnt, name):
 def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
-def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
+def printVolumeInfo(vol, asmFlg, cnt, xmlVol, xmlParent, parentName) :
     if xmlVol != None :
        xmlstr = ET.tostring(xmlVol)
     else :
        xmlstr ='None'
     print(xmlstr)
-    print('Process Volume : '+vol.Name+' : ' + str(xmlstr))
-    GDMLShared.trace('Process Volume : '+vol.Name+' : ' + str(xmlstr))
+    GDMLShared.trace('Process Volume : '+vol.Name+' : assembly '+str(asmFlg) \
+            + 'count : ' +str(cnt) +str(xmlstr))
     if xmlParent != None :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
-    print('        Parent : '+str(parentName)+' : '+ str(xmlstr))
     GDMLShared.trace('        Parent : '+str(parentName)+' : '+ str(xmlstr))
 
 def processVolume(asmFlg, vol, cnt, xmlVol, xmlParent, \
@@ -1729,7 +1729,7 @@ def processVolume(asmFlg, vol, cnt, xmlVol, xmlParent, \
     # xmlVol could be created dummy volume
 
     if GDMLShared.getTrace() == True :
-       printVolumeInfo(vol, xmlVol, xmlParent, parentName)
+       printVolumeInfo(vol, asmFlg, cnt, xmlVol, xmlParent, parentName)
     idx = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)

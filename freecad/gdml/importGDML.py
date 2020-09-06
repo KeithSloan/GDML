@@ -993,7 +993,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
     import FreeCAD as App
     from .GDMLObjects import checkMaterial
     # also used in ScanCommand
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
     GDMLShared.trace("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
     vol = structure.find("volume[@name='%s']" % name )
