@@ -1459,23 +1459,23 @@ def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
        xmlstr = 'None'
     print('Parent : '+str(parentName)+' : '+str(xmlstr))
 
-def processBooleanObject(asmFlg, obj, xmlVol, volName, xmlParent, parentName) :
-    print('Process Boolean Object - Boolean Flag '+str(asmFlg))
-    cnt, boolxml, solidName = processSolid(obj, True)
-    print('Count : '+str(cnt))
+def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
+    print('Process Boolean Object')
+    boolCnt, boolxml, solidName = processSolid(obj, True)
+    print('Count : '+str(boolCnt))
     print('Solid Name : '+solidName)
     if hasattr(obj,'Base') :
        GDMLShared.trace('Has Base')
     material  = getMaterial(obj.Base)
     addVolRef(xmlVol, volName, solidName, material)
-    if asmFlg == False :  # Don't add physvol if boolean is an assembly
-       testAddPhysVol(obj, xmlParent, parentName)
+    #if asmFlg == False :  # Don't add physvol if boolean is an assembly
+    #   testAddPhysVol(obj, xmlParent, parentName)
     #processPosition(obj.Tool,boolxml)
     #processRotation(obj.Tool,boolxml)
-    return cnt
+    return boolCnt
 
 
-def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
+def processObject(cnt, idx, obj, xmlVol, volName, \
                     xmlParent, parentName) :
     # cnt - number of GDML objects in Part/Volume
     # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
@@ -1490,8 +1490,7 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
     #if obj.Label[:12] != 'NOT_Expanded' :
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
-    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx) + \
-             'assemby flag '+str(asmFlg))
+    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx))
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1503,10 +1502,14 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
             if hasattr(obj,'OutList') :
                cnt = countGDMLObj(obj.OutList)
                subXMLvolAss= insertXMLvolAss(cnt, obj.Label)
-               processVolume(cnt == 0, obj, cnt, subXMLvolAss, xmlVol, \
-                              parentName, True)
-               #   Volumes can have position - AfaWTube2-4 alice.gdml
-               addPhysVolPlacement(obj, xmlVol, obj.Label)
+               if cnt != 0 :
+                   processVolume(cnt, obj, subXMLvolAss, xmlVol, \
+                                 parentName, True)
+                   #   Volumes can have position - AfaWTube2-4 alice.gdml
+                   # Add physVol and also deal with non zero placement
+                   addPhysVolPlacement(obj, xmlVol, obj.Label)
+               else :
+                   processAssembly(obj, subXMLvolAss, xmlVol, parentName, True)
     
          return idx + 1
 
@@ -1532,7 +1535,7 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
-         retval = idx + processBooleanObject(asmFlg, obj, xmlVol, volName, \
+         retval = idx + processBooleanObject(obj, xmlVol, volName, \
                                 xmlParent, parentName)
          GDMLShared.trace('Return Count : '+str(retval))
          return retval
@@ -1540,7 +1543,7 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
 
       if case("Part::Fuse") :
          GDMLShared.trace("Fuse - union")
-         retval = idx + processBooleanObject(asmFlg, obj, xmlVol, volName, \
+         retval = idx + processBooleanObject(obj, xmlVol, volName, \
                                 xmlParent, parentName)
          GDMLShared.trace('Return Count : '+str(retval))
          return retval
@@ -1548,7 +1551,7 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
 
       if case("Part::Common") :
          GDMLShared.trace("Common - Intersection")
-         retval = idx + processBooleanObject(asmFlg, obj, xmlVol, volName, \
+         retval = idx + processBooleanObject( obj, xmlVol, volName, \
                                 xmlParent, parentName)
          GDMLShared.trace('Return Count : '+str(retval))
          return retval
@@ -1610,8 +1613,8 @@ def processObject(asmFlg, cnt, idx, obj, xmlVol, volName, \
             volName = 'LV-'+solidName
             xmlVol = insertXMLVolAss(cnt, volName)
          addVolRef(xmlVol, volName, solidName, obj.material)
-         if asmFlg == True :  # Don't add physvol if GDML object in an assembly
-            testAddPhysVol(obj, xmlParent, parentName)
+         #if asmFlg == True :  # Don't add physvol if GDML object in an assembly
+         #   testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
 
       # Same as Part::Feature but no position
@@ -1701,25 +1704,37 @@ def insertXMLvolAss(cnt, name):
     structure.insert(0,elem)
     return elem
 
+def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
+    # vol - Volume Object
+    # xmlVol - xml of this volume
+    # xmlParent - xml of this volumes Paretnt
+    # App::Part will have Booleans & Multifuse objects also in the list
+    # So for s in list is not so good
+    # type 1 straight GDML type = 2 for GEMC
+    # xmlVol could be created dummy volume
+
+    print('Process Assembly')
+    if GDMLShared.getTrace() == True :
+       printVolumeInfo(0, vol, xmlVol, xmlParent, parentName) 
+
 def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
 
-def printVolumeInfo(vol, asmFlg, cnt, xmlVol, xmlParent, parentName) :
+def printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName) :
     if xmlVol != None :
        xmlstr = ET.tostring(xmlVol)
     else :
        xmlstr ='None'
     print(xmlstr)
-    GDMLShared.trace('Process Volume : '+vol.Name+' : assembly '+str(asmFlg) \
-            + 'count : ' +str(cnt) +str(xmlstr))
+    GDMLShared.trace('Process Volume : '+vol.Name+ ' : count '+str(cnt) \
+           +' : ' +str(xmlstr))
     if xmlParent != None :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
     GDMLShared.trace('        Parent : '+str(parentName)+' : '+ str(xmlstr))
 
-def processVolume(asmFlg, vol, cnt, xmlVol, xmlParent, \
-                    parentName, addVolsFlag) :
+def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
     # xmlVol - xml of this volume
     # xmlParent - xml of this volumes Paretnt
@@ -1729,14 +1744,14 @@ def processVolume(asmFlg, vol, cnt, xmlVol, xmlParent, \
     # xmlVol could be created dummy volume
 
     if GDMLShared.getTrace() == True :
-       printVolumeInfo(vol, asmFlg, cnt, xmlVol, xmlParent, parentName)
+       printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName)
     idx = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)
        GDMLShared.trace('OutList length : '+str(num))
        while idx < num :
           #print(idx)
-          idx = processObject(asmFlg, cnt, idx, vol.OutList[idx],  \
+          idx = processObject(cnt, idx, vol.OutList[idx],  \
                             xmlVol, vol.Label, xmlParent, parentName)
 
 def createWorldVol(volName) :
@@ -1812,7 +1827,7 @@ def exportWorldVol(vol, fileExt) :
           parentName = None
 
     cnt = countGDMLObj(vol.OutList)
-    processVolume(False, vol, cnt, xmlVol, xmlParent, parentName, False)
+    processVolume( cnt, vol, xmlVol, xmlParent, parentName, False)
 
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
     # gdml is a global
