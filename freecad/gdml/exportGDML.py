@@ -550,11 +550,12 @@ def addPhysVolPlacement(obj, xmlVol, volName) :
     print("Add PhysVol to Vol") 
     #print(ET.tostring(xmlVol))
     print('volName : '+volName)
-    pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
-    ET.SubElement(pvol,'volumeref',{'ref':volName})
-    processPosition(obj,pvol)
-    processRotation(obj,pvol)
-    return pvol
+    if xmlVol != None :
+       pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
+       ET.SubElement(pvol,'volumeref',{'ref':volName})
+       processPosition(obj,pvol)
+       processRotation(obj,pvol)
+       return pvol
 
 def exportPosition(name, xml, pos) :
     global POScount
@@ -1501,15 +1502,16 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
                parentName = None
             if hasattr(obj,'OutList') :
                cnt = countGDMLObj(obj.OutList)
-               subXMLvolAss= insertXMLvolAss(cnt, obj.Label)
                if cnt != 0 :
-                   processVolume(cnt, obj, subXMLvolAss, xmlVol, \
+                   subXMLvol = insertXMLvolume( obj.Label)
+                   processVolume(cnt, obj, subXMLvol, xmlVol, \
                                  parentName, True)
                    #   Volumes can have position - AfaWTube2-4 alice.gdml
                    # Add physVol and also deal with non zero placement
                    addPhysVolPlacement(obj, xmlVol, obj.Label)
                else :
-                   processAssembly(obj, subXMLvolAss, xmlVol, parentName, True)
+                   subXMLassem = insertXMLassembly( obj.Label)
+                   processAssembly(obj, subXMLassem, xmlVol, parentName, True)
     
          return idx + 1
 
@@ -1611,7 +1613,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          solidCnt, solidxml, solidName = processSolid(obj, True)
          if cnt > 1 :
             volName = 'LV-'+solidName
-            xmlVol = insertXMLVolAss(cnt, volName)
+            xmlVol = insertXMLvolume(volName)
          addVolRef(xmlVol, volName, solidName, obj.material)
          #if asmFlg == True :  # Don't add physvol if GDML object in an assembly
          #   testAddPhysVol(obj, xmlParent, parentName)
@@ -1692,17 +1694,24 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       return idx+1
       break
 
-def insertXMLvolAss(cnt, name):
+def insertXMLvolume(name):
     # Insert at beginning for sub volumes
-    # cnt is count of GDML Objects
-    #print('insert into xml volume : '+name)
-    if cnt != 0 :
-       elem =  ET.Element('volume',{'name': name})
-    else :
-       elem =  ET.Element('assembly',{'name': name})
+    #print('insert xml volume : '+name)
+    elem =  ET.Element('volume',{'name': name})
     global structure
     structure.insert(0,elem)
     return elem
+
+def insertXMLassembly(name):
+    # Insert at beginning for sub volumes
+    print('insert xml assembly : '+name)
+    elem =  ET.Element('assembly',{'name': name})
+    global structure
+    structure.insert(0,elem)
+    return elem
+
+def createXMLvol(name):
+    return ET.SubElement(structure,'volume',{'name': name})
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
@@ -1713,12 +1722,26 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
-    print('Process Assembly')
+    GDMLShared.setTrace(True)
+    GDMLShared.trace('Process Assembly : '+vol.Label)
     if GDMLShared.getTrace() == True :
-       printVolumeInfo(0, vol, xmlVol, xmlParent, parentName) 
+       printVolumeInfo(0, vol, xmlVol, xmlParent, parentName)
+    if hasattr(vol,'OutList') :
+       for obj in vol.OutList :
+           if obj.TypeId == 'App::Part' :
+              if hasattr(obj,'OutList') :
+                 cnt = countGDMLObj(obj.OutList)
+                 if cnt != 0 :
+                    newXmlVol = insertXMLvolume(obj.Label)
+                    processVolume(cnt, obj, newXmlVol, xmlVol, vol.Label, \
+                              addVolsFlag)
+                 else :
+                    newXmlVol = insertXMLassembly(obj.Label)
+                    processAssembly(obj, newXmlVol, xmlVol, vol.Label, \
+                              addVolsFlag)
 
-def createXMLvol(name):
-    return ET.SubElement(structure,'volume',{'name': name})
+       addPhysVolPlacement(obj,xmlParent,vol.Label)
+
 
 def printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName) :
     if xmlVol != None :
@@ -1726,13 +1749,13 @@ def printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName) :
     else :
        xmlstr ='None'
     print(xmlstr)
-    GDMLShared.trace('Process Volume : '+vol.Name+ ' : count '+str(cnt) \
+    GDMLShared.trace('     '+vol.Name+ ' : count '+str(cnt) \
            +' : ' +str(xmlstr))
     if xmlParent != None :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
-    GDMLShared.trace('        Parent : '+str(parentName)+' : '+ str(xmlstr))
+    GDMLShared.trace('     Parent : '+str(parentName)+' : '+ str(xmlstr))
 
 def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
@@ -1744,6 +1767,7 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # xmlVol could be created dummy volume
 
     if GDMLShared.getTrace() == True :
+       GDMLShared.trace('Process Volume : '+vol.Label)
        printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName)
     idx = 0
     if hasattr(vol,'OutList') :
@@ -1753,6 +1777,7 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
           #print(idx)
           idx = processObject(cnt, idx, vol.OutList[idx],  \
                             xmlVol, vol.Label, xmlParent, parentName)
+       addPhysVolPlacement(vol,xmlParent,vol.Label)
 
 def createWorldVol(volName) :
     print("Need to create Dummy Volume and World Box ")
@@ -1868,7 +1893,7 @@ def exportGDMLstructure(dirPath, fileName) :
 def exportGDML(first, filepath, fileExt) :
     from . import GDMLShared
 
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
     print("\nStart GDML Export 0.1")
     print('File extension : '+fileExt)
