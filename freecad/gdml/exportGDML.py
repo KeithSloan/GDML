@@ -539,17 +539,15 @@ def processSphereObject(obj, addVolsFlag) :
     return(sphereName)
 
 def addPhysVol(xmlVol, volName) :
-    print("Add PhysVol to Vol") 
+    GDMLShared.trace("Add PhysVol to Vol : "+volName) 
     #print(ET.tostring(xmlVol))
-    print('volName : '+volName)
     pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
 
 def addPhysVolPlacement(obj, xmlVol, volName) :
-    print("Add PhysVol to Vol") 
+    GDMLShared.trace("Add PhysVol to Vol : "+volName) 
     #print(ET.tostring(xmlVol))
-    print('volName : '+volName)
     if xmlVol != None :
        pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
        ET.SubElement(pvol,'volumeref',{'ref':volName})
@@ -631,7 +629,7 @@ def testAddPhysVol(obj, xmlParent, volName):
           print('Root/World Volume')
 
 def addVolRef(volxml, volName, solidName, material) :
-    print('AddVolRef : '+volName+' : '+solidName)
+    GDMLShared.trace('AddVolRef : '+volName+' : '+solidName)
     ET.SubElement(volxml,'solidref',{'ref': solidName})
     if material != None :   # MultiUnion no material
        ET.SubElement(volxml,'materialref',{'ref': material})
@@ -805,7 +803,7 @@ def processGDMLPolyhedraObject(obj, flag) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
     #polyconeName = 'Cone' + obj.Name
-    print('export Polyhedra')
+    GDMLShared.trace('export Polyhedra')
     polyhedraName = nameOfGDMLobject(obj)
     if flag == True :
        poly = ET.SubElement(solids, 'polyhedra',{'name': polyhedraName, \
@@ -1461,10 +1459,10 @@ def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
     print('Parent : '+str(parentName)+' : '+str(xmlstr))
 
 def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
-    print('Process Boolean Object')
+    GDMLShared.trace('Process Boolean Object')
     boolCnt, boolxml, solidName = processSolid(obj, True)
-    print('Count : '+str(boolCnt))
-    print('Solid Name : '+solidName)
+    GDMLShared.trace('Count : '+str(boolCnt))
+    GDMLShared.trace('Solid Name : '+solidName)
     if hasattr(obj,'Base') :
        GDMLShared.trace('Has Base')
     material  = getMaterial(obj.Base)
@@ -1508,7 +1506,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
                                  parentName, True)
                    #   Volumes can have position - AfaWTube2-4 alice.gdml
                    # Add physVol and also deal with non zero placement
-                   addPhysVolPlacement(obj, xmlVol, obj.Label)
+                   # addPhysVolPlacement(obj, xmlVol, obj.Label)
                else :
                    subXMLassem = insertXMLassembly( obj.Label)
                    processAssembly(obj, subXMLassem, xmlVol, parentName, True)
@@ -1607,9 +1605,10 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          break
 
       if case("Part::FeaturePython"):
-         print("   Python Feature")
-         if hasattr(obj.Proxy, 'Type') :
-            print(obj.Proxy.Type) 
+         GDMLShared.trace("   Python Feature")
+         if GDMLShared.getTrace == True :
+            if hasattr(obj.Proxy, 'Type') :
+               print(obj.Proxy.Type) 
          solidCnt, solidxml, solidName = processSolid(obj, True)
          if cnt > 1 :
             volName = 'LV-'+solidName
@@ -1696,7 +1695,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
 
 def insertXMLvolume(name):
     # Insert at beginning for sub volumes
-    #print('insert xml volume : '+name)
+    GDMLShared.trace('insert xml volume : '+name)
     elem =  ET.Element('volume',{'name': name})
     global structure
     structure.insert(0,elem)
@@ -1704,7 +1703,7 @@ def insertXMLvolume(name):
 
 def insertXMLassembly(name):
     # Insert at beginning for sub volumes
-    print('insert xml assembly : '+name)
+    GDMLShared.trace('insert xml assembly : '+name)
     elem =  ET.Element('assembly',{'name': name})
     global structure
     structure.insert(0,elem)
@@ -1722,7 +1721,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
 
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace('Process Assembly : '+vol.Label)
     if GDMLShared.getTrace() == True :
        printVolumeInfo(0, vol, xmlVol, xmlParent, parentName)
@@ -1814,9 +1813,8 @@ def checkGDMLstructure(objList) :
     # World Vol - App::Part
     # App::Origin
     # GDML Object
-    print('check GDML structure')
     GDMLShared.trace('check GDML structure')
-    print(objList)
+    GDMLShared.trace(objList)
     if len(objList) < 3 :
        return False
     if objList[0].TypeId != 'App::Origin' \
@@ -1836,13 +1834,13 @@ def exportWorldVol(vol, fileExt) :
        ET.SubElement(setup,'world',{'ref':vol.Name}) 
 
        if checkGDMLstructure(vol.OutList) == False :
-          print('Insert Dummy Volume')
+          GDMLShared.trace('Insert Dummy Volume')
           xmlVol = createXMLvol('dummy') 
           xmlParent = createWorldVol(vol.Name)
           parentName = vol.Name
           addPhysVol(xmlParent,'dummy')
        else :
-          print('Valid Structure')
+          GDMLShared.trace('Valid Structure')
           xmlParent = None
           parentName = None
           xmlVol = createXMLvol(vol.Name)
