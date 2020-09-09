@@ -337,6 +337,17 @@ def getDefinedVector(solid, v) :
     z = getVal(pos,'z')
     return(FreeCAD.Vector(x,y,z))
 
+def getScale(pvXML) :
+    #print(ET.tostring(pvXML))
+    scale = pvXML.find('scale')
+    x = y = z = 1.
+    if scale is not None :
+       #print(ET.tostring(scale))
+       x = getVal(scale,'x')
+       y = getVal(scale,'y')
+       z = getVal(scale,'z')
+    return(FreeCAD.Vector(x,y,z))
+
 def getVertex(v):
     global define
     trace("Vertex")

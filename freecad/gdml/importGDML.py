@@ -949,20 +949,46 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
     nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
     nrot = GDMLShared.getRotation(physVol)
     #print('rot : '+str(rot)+' nrot : '+nrot)
-    copyNum = physVol.get('copynumber')
-    print('Copynumber : '+str(copyNum))
-    volref = GDMLShared.getRef(physVol,"volumeref")
-    if volref != None :
-       print(volref+ 'px '+str(px)+' py '+str(py)+' pz '+str(pz))
-       GDMLShared.trace("Volume ref : "+volref)
-       part = parent.newObject("App::Part",volref)
-       if volAsmFlg == False :    # If Assembly # checks with Alice.gdml
-          part.Placement = GDMLShared.processPlacement( \
+    volBase = GDMLShared.getRef(physVol,"volumeref")
+    if volBase != None :
+       copyNum = physVol.get('copynumber')
+       copyStr = '_'+str(copyNum)
+       GDMLShared.trace('Copynumber : '+copyStr)
+       if copyNum is None or copyNum == '1' :
+          if copyNum is None :
+             volRef = volBase 
+          else :
+             volRef = volBase + copyStr
+          print(volRef+ ' px '+str(px)+' py '+str(py)+' pz '+str(pz))
+          GDMLShared.trace("Volume Ref : "+volRef)
+          part = parent.newObject("App::Part",volRef)
+          if volAsmFlg == False :    # If Assembly # checks with Alice.gdml
+             part.Placement = GDMLShared.processPlacement( \
                                FreeCAD.Vector(nx,ny,nz),nrot)
-          GDMLShared.trace("nx : "+str(nx)+" : "+str(ny)+" : "+str(nz))
-       #GDMLShared.setTrace(False)
-       # pass on position & rot to GDMLsolid etc
-       expandVolume(part,volref,nx,ny,nz,nrot,phylvl,displayMode)
+             GDMLShared.trace("nx : "+str(nx)+" : "+str(ny)+" : "+str(nz))
+          # pass on position & rot to GDMLsolid etc
+          expandVolume(part,volBase,nx,ny,nz,nrot,phylvl,displayMode)
+       else :  # copynum > 1 create a Linked Object
+          volRef = volBase + '_1'
+          GDMLShared.trace('====> Create Link to : '+volRef)
+          part = parent.newObject('App::Link',volBase + copyStr)
+          part.LinkedObject = FreeCAD.ActiveDocument.getObject(volRef)
+          part.Placement.Base = FreeCAD.Vector(GDMLShared.getPosition(physVol))
+          #print(dir(part))
+          scale = GDMLShared.getScale(physVol)
+          #print(scale)
+          part.ScaleVector = scale
+          if scale != FreeCAD.Vector(1.,1.,1.) :
+             part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+                "GDML Scale Vector")
+             part.GDMLscale = scale
+           
+       if copyNum is not None :
+          part.addProperty("App::PropertyInteger","Copynumber", \
+                               "GDML").Copynumber=int(copyNum)
+          # Should we also be handling rotation
+    #GDMLShared.setTrace(False)
+ 
 
 # ParseVolume name - structure is global
 # We get passed position and rotation

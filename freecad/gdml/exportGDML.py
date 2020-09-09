@@ -545,14 +545,38 @@ def addPhysVol(xmlVol, volName) :
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
 
+def cleanVolName(obj, volName) :
+    # Get proper Volume Name
+    print('clean name : '+volName)
+    if hasattr(obj,'Copynumber') :
+       print('Has copynumber')
+       i = len(volName)
+       if '_' in volName and i > 2 :
+          volName = volName[:-2] 
+    print('returning name : '+volName)
+    return volName
+
 def addPhysVolPlacement(obj, xmlVol, volName) :
-    GDMLShared.trace("Add PhysVol to Vol : "+volName) 
+    # ??? Is volName not obj.Label after correction
+    # Get proper Volume Name
+    refName = cleanVolName(obj, volName)
+    GDMLShared.trace("Add PhysVol to Vol : "+refName) 
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
        pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
-       ET.SubElement(pvol,'volumeref',{'ref':volName})
+       ET.SubElement(pvol,'volumeref',{'ref':refName})
        processPosition(obj,pvol)
        processRotation(obj,pvol)
+       if hasattr(obj,'Copynumber') :
+          GDMLShared.trace('Copynumber : '+str(obj.Copynumber))
+          pvol.attrib['copynumber'] = str(obj.Copynumber)
+       if hasattr(obj,'GDMLscale') :
+          scaleName = refName+'scl'
+          ET.SubElement(pvol,'scale',{'name':scaleName,\
+                        'x':str(obj.GDMLscale[0]), \
+                        'y':str(obj.GDMLscale[1]), \
+                        'z':str(obj.GDMLscale[2])})
+          
        return pvol
 
 def exportPosition(name, xml, pos) :
@@ -1501,14 +1525,18 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             if hasattr(obj,'OutList') :
                cnt = countGDMLObj(obj.OutList)
                if cnt != 0 :
-                   subXMLvol = insertXMLvolume( obj.Label)
+                   #subXMLvol = insertXMLvolObj(obj, obj.Label)
+                   #subXMLvol = insertXMLvolObj(obj)
+                   subXMLvol = insertXMLvolume(cleanVolName(obj,obj.Label))
                    processVolume(cnt, obj, subXMLvol, xmlVol, \
                                  parentName, True)
                    #   Volumes can have position - AfaWTube2-4 alice.gdml
                    # Add physVol and also deal with non zero placement
                    # addPhysVolPlacement(obj, xmlVol, obj.Label)
                else :
-                   subXMLassem = insertXMLassembly( obj.Label)
+                   #subXMLassem = insertXMLassemObj(obj, obj.Label)
+                   #subXMLassem = insertXMLassemObj(obj)
+                   subXMLassem = insertXMLassembly(cleanVolName(obj,obj.Label))
                    processAssembly(obj, subXMLassem, xmlVol, parentName, True)
     
          return idx + 1
@@ -1701,6 +1729,10 @@ def insertXMLvolume(name):
     structure.insert(0,elem)
     return elem
 
+def insertXMLvolObj(obj) :
+    name = cleanVolName(obj, obj.Label)
+    return insertXMLvolume(name)
+
 def insertXMLassembly(name):
     # Insert at beginning for sub volumes
     GDMLShared.trace('insert xml assembly : '+name)
@@ -1708,6 +1740,10 @@ def insertXMLassembly(name):
     global structure
     structure.insert(0,elem)
     return elem
+
+def insertXMLassemObj(obj) :
+    name = cleanVolName(obj, obj.Label)
+    return insertXMLassembly(name)
 
 def createXMLvol(name):
     return ET.SubElement(structure,'volume',{'name': name})
@@ -1720,26 +1756,32 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
-
+    volName = cleanVolName(vol, vol.Label)
     #GDMLShared.setTrace(True)
-    GDMLShared.trace('Process Assembly : '+vol.Label)
+    GDMLShared.trace('Process Assembly : '+volName)
     if GDMLShared.getTrace() == True :
        printVolumeInfo(0, vol, xmlVol, xmlParent, parentName)
     if hasattr(vol,'OutList') :
        for obj in vol.OutList :
+           objName = cleanVolName(obj, obj.Label)
            if obj.TypeId == 'App::Part' :
               if hasattr(obj,'OutList') :
                  cnt = countGDMLObj(obj.OutList)
                  if cnt != 0 :
-                    newXmlVol = insertXMLvolume(obj.Label)
-                    processVolume(cnt, obj, newXmlVol, xmlVol, vol.Label, \
+                    #newXmlVol = insertXMLvolObj(obj, obj.Label)
+                    newXmlVol = insertXMLvolume(objName)
+                    processVolume(cnt, obj, newXmlVol, xmlVol, volName, \
                               addVolsFlag)
                  else :
-                    newXmlVol = insertXMLassembly(obj.Label)
-                    processAssembly(obj, newXmlVol, xmlVol, vol.Label, \
+                    #newXmlVol = insertXMLassemObj(obj, obj.Label)
+                    newXmlVol = insertXMLassembly(objName)
+                    processAssembly(obj, newXmlVol, xmlVol, volName, \
                               addVolsFlag)
 
-       addPhysVolPlacement(obj,xmlParent,vol.Label)
+           elif obj.TypeId == 'App::Link' :
+                addPhysVolPlacement(obj,xmlVol,objName)
+
+       addPhysVolPlacement(vol,xmlParent,volName)
 
 
 def printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName) :
@@ -1764,9 +1806,9 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
-
+    volName = cleanVolName(vol, vol.Label)
     if GDMLShared.getTrace() == True :
-       GDMLShared.trace('Process Volume : '+vol.Label)
+       GDMLShared.trace('Process Volume : '+volName)
        printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName)
     idx = 0
     if hasattr(vol,'OutList') :
@@ -1775,8 +1817,8 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
        while idx < num :
           #print(idx)
           idx = processObject(cnt, idx, vol.OutList[idx],  \
-                            xmlVol, vol.Label, xmlParent, parentName)
-       addPhysVolPlacement(vol,xmlParent,vol.Label)
+                            xmlVol, volName, xmlParent, parentName)
+       addPhysVolPlacement(vol,xmlParent,volName)
 
 def createWorldVol(volName) :
     print("Need to create Dummy Volume and World Box ")
@@ -1893,7 +1935,7 @@ def exportGDML(first, filepath, fileExt) :
 
     #GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
-    print("\nStart GDML Export 0.1")
+    print("====> Start GDML Export 0.1")
     print('File extension : '+fileExt)
 
     GDMLstructure()
@@ -1940,12 +1982,12 @@ def exportGDMLworld(first,filepath,fileExt) :
     if filepath.lower().endswith('.gdml') :
        # GDML Export
        print('GDML Export')
-       if hasattr(first,'InList') :
-          print(len(first.InList))
+       #if hasattr(first,'InList') :
+       #   print(len(first.InList))
 
        if hasattr(first,'OutList') :
-          print('Count')
           cnt = countGDMLObj(first.OutList)
+          GDMLShared.trace('Count : '+str(cnt))
           if cnt > 1 :
              from .GDMLQtDialogs import showInvalidWorldVol
              showInvalidWorldVol()
