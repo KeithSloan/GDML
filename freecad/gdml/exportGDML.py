@@ -1440,10 +1440,10 @@ def consume(iterator) :
 
 def getXmlVolume(volObj) :
     global structure
-    if volObj == None :
+    if volObj is None :
        return None 
     xmlvol = structure.find("volume[@name='%s']" % volObj.Name)
-    if xmlvol == None :
+    if xmlvol is None :
        print(volObj.Name+' Not Found') 
     return xmlvol
 

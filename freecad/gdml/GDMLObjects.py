@@ -344,6 +344,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
 
 class GDMLBox(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit, material, flag = False):
+      super().__init__(obj)
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
       #GDMLShared.trace("material : "+material)
@@ -354,6 +355,9 @@ class GDMLBox(GDMLcommon) :
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      #obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLBox'
       obj.Proxy = self
@@ -403,6 +407,7 @@ class GDMLBox(GDMLcommon) :
 class GDMLCone(GDMLcommon) :
    def __init__(self, obj, rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit, \
                 lunit, material):
+      super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
       obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").rmin1=rmin1
       obj.addProperty("App::PropertyFloat","rmax1","GDMLCone","Max Radius 1").rmax1=rmax1
@@ -421,6 +426,9 @@ class GDMLCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLCone'
       obj.Proxy = self
@@ -495,6 +503,7 @@ class GDMLCone(GDMLcommon) :
 
 class GDMLElCone(GDMLcommon) :
    def __init__(self, obj, dx, dy, zmax, zcut, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties to our ElCone feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElCone", \
                       "x semi axis").dx = dx
@@ -510,6 +519,9 @@ class GDMLElCone(GDMLcommon) :
                        "Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLElCone'
       obj.Proxy = self
    
@@ -560,6 +572,7 @@ class GDMLElCone(GDMLcommon) :
 
 class GDMLEllipsoid(GDMLcommon) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
       obj.addProperty("App::PropertyFloat","ax","GDMLEllipsoid", \
                        "x semi axis").ax=ax
@@ -576,15 +589,15 @@ class GDMLEllipsoid(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
                        "Material")
       setMaterial(obj, material)
-      obj.addProperty("Part::PropertyPartShape","Shape","GDMLEllipsoid", \
-                      "Shape of the Ellipsoid")
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLEllipsoid'
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
    
    def getMaterial(self):
        return obj.material
-
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -644,6 +657,7 @@ class GDMLEllipsoid(GDMLcommon) :
 
 class GDMLElTube(GDMLcommon) :
    def __init__(self, obj, dx, dy, dz, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElTube", \
                        "x semi axis1").dx=dx
@@ -653,11 +667,12 @@ class GDMLElTube(GDMLcommon) :
                        "z semi axis1").dz=dz
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElTube","lunit")
       setLengthQuantity(obj, lunit) 		      
-      obj.addProperty("Part::PropertyPartShape","Shape","GDMLElTube", \
-                      "Shape of the Cone")
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElTube'
       obj.Proxy = self
@@ -698,6 +713,7 @@ class GDMLElTube(GDMLcommon) :
 
 class GDMLOrb(GDMLcommon) :
    def __init__(self, obj, r, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLOrb","lunit")
@@ -740,6 +756,7 @@ class GDMLOrb(GDMLcommon) :
 
 class GDMLPara(GDMLcommon) :
    def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
       obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
@@ -759,6 +776,9 @@ class GDMLPara(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPara'
       self.Object = obj
@@ -816,11 +836,10 @@ class GDMLPara(GDMLcommon) :
        fp.Shape = translate(para3,base)
        fp.Placement = currPlacement
    
-   def getMaterial(self):
-       return obj.material
 
 class GDMLPolyhedra(GDMLcommon) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolyhedra", \
                       "Start Angle").startphi=startphi
@@ -837,6 +856,9 @@ class GDMLPolyhedra(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
@@ -931,6 +953,7 @@ class GDMLPolyhedra(GDMLcommon) :
 class GDMLTorus(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
                 aunit, lunit, material) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyFloat","rmin","GDMLTorus", \
                       "rmin").rmin=rmin
       obj.addProperty("App::PropertyFloat","rmax","GDMLTorus", \
@@ -948,6 +971,9 @@ class GDMLTorus(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTorus'
       obj.Proxy = self
@@ -994,12 +1020,16 @@ class GDMLTorus(GDMLcommon) :
 
 class GDMLXtru(GDMLcommon) :
    def __init__(self, obj, lunit, material) :
+      super().__init__(obj)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLXtru","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLXtru'
       obj.Proxy = self
@@ -1120,6 +1150,7 @@ class GDMLXtru(GDMLcommon) :
 
 class GDML2dVertex(GDMLcommon) :
    def __init__(self, obj, x, y):
+      super().__init__(obj)
       obj.addProperty("App::PropertyString","Type","Vertex", \
               "twoDimVertex").Type='twoDimVertex'
       obj.addProperty("App::PropertyFloat","x","Vertex", \
@@ -1144,6 +1175,7 @@ class GDML2dVertex(GDMLcommon) :
       
 class GDMLSection(GDMLcommon) :
    def __init__(self, obj, zOrder,zPosition,xOffset,yOffset,scalingFactor):
+      super().__init__(obj)
       obj.addProperty("App::PropertyString","Type","section", \
               "section").Type='section'
       obj.addProperty("App::PropertyInteger","zOrder","section", \
@@ -1173,6 +1205,7 @@ class GDMLSection(GDMLcommon) :
       
 class GDMLzplane(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z):
+      super().__init__(obj)
       obj.addProperty("App::PropertyFloat","rmin","zplane", \
               "Inside Radius").rmin=rmin
       obj.addProperty("App::PropertyFloat","rmax","zplane", \
@@ -1195,6 +1228,7 @@ class GDMLzplane(GDMLcommon) :
 
 class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material) :
+      super().__init__(obj)
       '''Add some custom properties to our Polycone feature'''
       obj.addExtension('App::OriginGroupExtensionPython', self)
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolycone", \
@@ -1209,6 +1243,9 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
@@ -1282,6 +1319,7 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
 class GDMLSphere(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
                 deltatheta, aunit, lunit, material):
+      super().__init__(obj)
       '''Add some custom properties to our Sphere feature'''
       GDMLShared.trace("GDMLSphere init")
       obj.addProperty("App::PropertyFloat","rmin","GDMLSphere", \
@@ -1304,6 +1342,9 @@ class GDMLSphere(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLSphere'
@@ -1393,6 +1434,7 @@ class GDMLSphere(GDMLcommon) :
 class GDMLTrap(GDMLcommon) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \
                 aunit, lunit, material):
+      super().__init__(obj)
       "General Trapezoid"
       obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").z=z
       obj.addProperty("App::PropertyFloat","theta","GDMLTrap","theta"). \
@@ -1507,6 +1549,7 @@ class GDMLTrap(GDMLcommon) :
 
 class GDMLTrd(GDMLcommon) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material) :
+      super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
       obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
       obj.addProperty("App::PropertyFloat","x1","GDMLTrd", \
@@ -1521,6 +1564,9 @@ class GDMLTrd(GDMLcommon) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTrd'
@@ -1580,6 +1626,7 @@ class GDMLTrd(GDMLcommon) :
 class GDMLTube(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
                 lunit, material):
+      super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
       obj.addProperty("App::PropertyFloat","rmin","GDMLTube","Inside Radius").rmin=rmin
       obj.addProperty("App::PropertyFloat","rmax","GDMLTube","Outside Radius").rmax=rmax
@@ -1593,7 +1640,9 @@ class GDMLTube(GDMLcommon) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTube","Material")
       setMaterial(obj, material)
-      obj.addProperty("Part::PropertyPartShape","Shape","GDMLTube", "Shape of the Tube")
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTube'
@@ -1645,6 +1694,7 @@ class GDMLcutTube(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
                 lowX, lowY, lowZ, highX, highY, highZ, \
                 lunit, material):
+      super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
       obj.addProperty("App::PropertyFloat","rmin","GDMLcutTube","Inside Radius").rmin=rmin
       obj.addProperty("App::PropertyFloat","rmax","GDMLcutTube","Outside Radius").rmax=rmax
@@ -1666,9 +1716,11 @@ class GDMLcutTube(GDMLcommon) :
       #print('Add material')
       #print(material)
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
-      #obj.addProperty("Part::PropertyPartShape","Shape","GDMLcutTube", "Shape of the Tube")
       obj.Proxy = self
       self.Type = 'GDMLcutTube'
 
@@ -1789,6 +1841,7 @@ class GDMLcutTube(GDMLcommon) :
 
 class GDMLVertex(GDMLcommon) :
    def __init__(self, obj, x, y, z, lunit):
+      super().__init__(obj)
       obj.addProperty("App::PropertyFloat","x","GDMLVertex", \
               "x").x=x
       obj.addProperty("App::PropertyFloat","y","GDMLVertex", \
@@ -1813,6 +1866,7 @@ class GDMLVertex(GDMLcommon) :
 
 class GDMLTriangular(GDMLcommon) :
    def __init__(self, obj, v1, v2, v3, vtype):
+      super().__init__(obj)
       obj.addProperty("App::PropertyVector","v1","Triangular", \
               "v1").v1=v1
       obj.addProperty("App::PropertyVector","v2","Triangular", \
@@ -1839,6 +1893,7 @@ class GDMLTriangular(GDMLcommon) :
        
 class GDMLQuadrangular(GDMLcommon) :
    def __init__(self, obj, v1, v2, v3, v4, vtype):
+      super().__init__(obj)
       obj.addProperty("App::PropertyVector","v1","Quadrang", \
               "v1").v1=v1
       obj.addProperty("App::PropertyVector","v2","Quadrang", \
@@ -1870,6 +1925,7 @@ class GDMLQuadrangular(GDMLcommon) :
 class GDMLGmshTessellated(GDMLcommon) :
     
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, material) :
+      super().__init__(obj)
       obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
                       'Editable').editable = False
       obj.addProperty('App::PropertyInteger','facets','GDMLGmshTessellated', \
@@ -1892,6 +1948,9 @@ class GDMLGmshTessellated(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLGmshTessellated'
       self.SourceObj = sourceObj
@@ -1994,6 +2053,7 @@ class GDMLGmshTessellated(GDMLcommon) :
 class GDMLTessellated(GDMLcommon) :
     
    def __init__(self, obj, vertex, facets, lunit, material) :
+      super().__init__(obj)
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
       obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
@@ -2007,6 +2067,9 @@ class GDMLTessellated(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
@@ -2089,6 +2152,7 @@ class GDMLTessellated(GDMLcommon) :
 class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
     
    def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
+      super().__init__(obj)
       obj.addProperty("App::PropertyVector","v1","GDMLTra", \
               "v1").v1=v1
       obj.addProperty("App::PropertyVector","v2","GDMLTra", \
@@ -2101,6 +2165,9 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
       setMaterial(obj, material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      obj.setEditorMode("Placement",2)
 
       obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTetra'
@@ -2144,6 +2211,7 @@ class GDMLTetrahedron(GDMLcommon) :
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
    def __init__(self, obj, tetra, lunit, material) :
+      super().__init__(obj)
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
        #                'Editable').editable = False
        obj.addProperty('App::PropertyInteger','tetra','GDMLTetrahedron', \
@@ -2154,6 +2222,9 @@ class GDMLTetrahedron(GDMLcommon) :
        obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
+       # Suppress Placement - position & Rotation via parent App::Part
+       # this makes Placement via Phyvol easier and allows copies etc
+       obj.setEditorMode("Placement",2)
        #obj.addExtension('App::OriginGroupExtensionPython', self)
        self.Tetra = tetra
        self.Object = obj
@@ -2203,6 +2274,7 @@ class GDMLTetrahedron(GDMLcommon) :
        
 class GDMLFiles(GDMLcommon) :
    def __init__(self,obj,FilesEntity,sectionDict) :
+      super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
       GDMLShared.trace("GDML Files")
       GDMLShared.trace(FilesEntity)
@@ -2236,6 +2308,7 @@ class GDMLvolume :
 
 class GDMLconstant(GDMLcommon) :
    def __init__(self,obj,name,value) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyString","name",'GDMLconstant','name').name = name
       obj.addProperty("App::PropertyString","value",'GDMLconstant','value').value = value
       obj.Proxy = self
@@ -2243,6 +2316,7 @@ class GDMLconstant(GDMLcommon) :
 
 class GDMLmaterial(GDMLcommon) :
    def __init__(self,obj,name,density=1.0,conduct=2.0,expand=3.0,specific=4.0) :
+      super().__init__(obj)
       # Add most properties later 
       obj.addProperty("App::PropertyString","name",'GDMLmaterial','name').name = name
       obj.addProperty("App::PropertyFloat","density","GDMLmaterial", \
@@ -2259,12 +2333,14 @@ class GDMLmaterial(GDMLcommon) :
 
 class GDMLfraction(GDMLcommon) :
    def __init__(self,obj,ref,n) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyFloat",'n',ref).n = n 
       obj.Proxy = self
       self.Object = obj
 
 class GDMLcomposite(GDMLcommon) :
    def __init__(self,obj,name,n,ref) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyInteger","n",name).n = n 
       obj.addProperty("App::PropertyString","ref",name).ref = ref 
       obj.Proxy = self
@@ -2272,12 +2348,14 @@ class GDMLcomposite(GDMLcommon) :
 
 class GDMLelement(GDMLcommon) :
    def __init__(self,obj,name) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyString","name",name).name = name 
       obj.Proxy = self
       self.Object = obj
 
 class GDMLisotope(GDMLcommon) :
    def __init__(self,obj,name,N,Z,unit,value) :
+      super().__init__(obj)
       obj.addProperty("App::PropertyString","name",name).name = name 
       obj.addProperty("App::PropertyInteger","N",name).N=N
       obj.addProperty("App::PropertyInteger","Z",name).Z=Z
@@ -2288,6 +2366,7 @@ class GDMLisotope(GDMLcommon) :
 
 class ViewProviderExtension(GDMLcommon) :
    def __init__(self, obj):
+      super().__init__(obj)
        obj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
        obj.Proxy = self
 
@@ -2315,6 +2394,7 @@ class ViewProviderExtension(GDMLcommon) :
 # use general ViewProvider if poss
 class ViewProvider(GDMLcommon):
    def __init__(self, obj):
+      super().__init__(obj)
        '''Set this object to the proxy object of the actual view provider'''
        obj.Proxy = self
  

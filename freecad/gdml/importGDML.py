@@ -192,7 +192,7 @@ def createArb8(part,solid,material,px,py,pz,rot,displayMode) :
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLBox, ViewProvider
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
@@ -935,7 +935,7 @@ def getVolSolid(name):
     vol = structure.find("/volume[@name='%s']" % name )
     sr = vol.find("solidref")
     GDMLShared.trace(sr.attrib)
-    name = GDMLShared.getRef(sr)
+    name = GDMLShared.getRef(sr,'name')
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
