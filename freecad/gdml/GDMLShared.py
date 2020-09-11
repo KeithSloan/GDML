@@ -31,7 +31,7 @@
 from math import *
 import FreeCAD, Part
 
-from lxml import etree as ET
+#from lxml import etree as ET
 
 global define
 global tracefp
