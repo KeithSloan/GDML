@@ -2211,7 +2211,7 @@ class GDMLTetrahedron(GDMLcommon) :
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
    def __init__(self, obj, tetra, lunit, material) :
-      super().__init__(obj)
+       super().__init__(obj)
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
        #                'Editable').editable = False
        obj.addProperty('App::PropertyInteger','tetra','GDMLTetrahedron', \
@@ -2366,7 +2366,7 @@ class GDMLisotope(GDMLcommon) :
 
 class ViewProviderExtension(GDMLcommon) :
    def __init__(self, obj):
-      super().__init__(obj)
+       super().__init__(obj)
        obj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
        obj.Proxy = self
 
@@ -2394,7 +2394,7 @@ class ViewProviderExtension(GDMLcommon) :
 # use general ViewProvider if poss
 class ViewProvider(GDMLcommon):
    def __init__(self, obj):
-      super().__init__(obj)
+       super().__init__(obj)
        '''Set this object to the proxy object of the actual view provider'''
        obj.Proxy = self
  
