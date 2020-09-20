@@ -348,7 +348,7 @@ def getPlacement(pvXML) :
     base = FreeCAD.Vector(getPosition(pvXML))
     print('base: '+str(base))
     rot  = getRotation(pvXML)
-    processPlacement(base,rot)
+    return(processPlacement(base,rot))
 
 def getScale(pvXML) :
     #print(ET.tostring(pvXML))

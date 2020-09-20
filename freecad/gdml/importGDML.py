@@ -965,15 +965,15 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
              GDMLShared.trace('====> Create Link to : '+volRef)
              part = parent.newObject('App::Link',volBase + copyStr)
              part.LinkedObject = objName 
+             scale = GDMLShared.getScale(physVol)
+             #print(scale)
+             part.ScaleVector = scale
+             if scale != FreeCAD.Vector(1.,1.,1.) :
+                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+                   "GDML Scale Vector")
+                part.GDMLscale = scale
+           
           part.Placement = GDMLShared.getPlacement(physVol)
-          #print(dir(part))
-          scale = GDMLShared.getScale(physVol)
-          #print(scale)
-          part.ScaleVector = scale
-          if scale != FreeCAD.Vector(1.,1.,1.) :
-             part.addProperty("App::PropertyVector","GDMLscale","GDML", \
-                "GDML Scale Vector")
-             part.GDMLscale = scale
            
        if copyNum is not None :
           part.addProperty("App::PropertyInteger","Copynumber", \
