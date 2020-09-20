@@ -939,41 +939,33 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
+def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     # if volAsmFlag == True : Volume
     # if volAsmFlag == False : Assembly 
     # physvol is xml entity
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    #nx, ny, nz = GDMLShared.getPosition(physVol)
-    nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
-    nrot = GDMLShared.getRotation(physVol)
-    #print('rot : '+str(rot)+' nrot : '+nrot)
     volBase = GDMLShared.getRef(physVol,"volumeref")
     if volBase != None :
        copyNum = physVol.get('copynumber')
        copyStr = '_'+str(copyNum)
        GDMLShared.trace('Copynumber : '+copyStr)
-       if copyNum is None or copyNum == '1' :
+       if copyNum is not None :
+          # Test if exists
+          objName =FreeCAD.ActiveDocument.getObject(volBase)
           if copyNum is None :
              volRef = volBase 
           else :
              volRef = volBase + copyStr
-          print(volRef+ ' px '+str(px)+' py '+str(py)+' pz '+str(pz))
           GDMLShared.trace("Volume Ref : "+volRef)
-          part = parent.newObject("App::Part",volRef)
-          if volAsmFlg == False :    # If Assembly # checks with Alice.gdml
-             part.Placement = GDMLShared.processPlacement( \
-                               FreeCAD.Vector(nx,ny,nz),nrot)
-             GDMLShared.trace("nx : "+str(nx)+" : "+str(ny)+" : "+str(nz))
-          # pass on position & rot to GDMLsolid etc
-          expandVolume(part,volBase,nx,ny,nz,nrot,phylvl,displayMode)
-       else :  # copynum > 1 create a Linked Object
-          volRef = volBase + '_1'
-          GDMLShared.trace('====> Create Link to : '+volRef)
-          part = parent.newObject('App::Link',volBase + copyStr)
-          part.LinkedObject = FreeCAD.ActiveDocument.getObject(volRef)
-          part.Placement.Base = FreeCAD.Vector(GDMLShared.getPosition(physVol))
+          if objName is None :
+             part = parent.newObject("App::Part",volRef)
+             expandVolume(part,volBase,phylvl,displayMode)
+          else :  # iObject exists create a Linked Object
+             GDMLShared.trace('====> Create Link to : '+volRef)
+             part = parent.newObject('App::Link',volBase + copyStr)
+             part.LinkedObject = objName 
+          part.Placement = GDMLShared.getPlacement(physVol)
           #print(dir(part))
           scale = GDMLShared.getScale(physVol)
           #print(scale)
@@ -991,37 +983,17 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
  
 
 # ParseVolume name - structure is global
-# We get passed position and rotation
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
-    #global volDict
+def parseVolume(parent,name,phylvl,displayMode) :
+    GDMLShared.trace("ParseVolume : "+name)
+    expandVolume(parent,name,phylvl,displayMode)
 
-    # Has the volume already been parsed i.e in Assembly etc
-    #obj = volDict.get(name)
-    #if obj != None :
-    #   newobj = Draft.clone(obj)
-    #   #print(dir(newobj))
-    #   #print(newobj.TypeId)
-    #   #print(newobj.Name)
-    #   #print(newobj.Label)
-    #   parent.addObject(newobj)
-    #   base = FreeCAD.Vector(px,py,pz)
-    #   newobj.Placement = GDMLShared.processPlacement(base,rot)
-    #   return
-
-    #else :
-        GDMLShared.trace("ParseVolume : "+name)
-        #part = parent.newObject("App::Part",name)
-        #expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
-        expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode)
-
-def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
+def expandVolume(parent,name,phylvl,displayMode) :
     import FreeCAD as App
     from .GDMLObjects import checkMaterial
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
-    GDMLShared.trace("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
     vol = structure.find("volume[@name='%s']" % name )
     if vol != None : # If not volume test for assembly
        solidref = GDMLShared.getRef(vol,"solidref")
@@ -1034,8 +1006,8 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
              material = GDMLShared.getRef(vol,"materialref")
              if material != None :
                 if checkMaterial(material) == True :
-                   obj = createSolid(parent,solid,material,px,py,pz,rot \
-                         ,displayMode)
+                   obj = createSolid(parent,solid,material,0,0,0,None, \
+                                 displayMode)
                 else :
                    print('Material : '+material+' Not defined')
                    return None
@@ -1058,7 +1030,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               if phylvl >= 0 :
                  phylvl += 1 
               # If negative always parse otherwise increase level    
-              parsePhysVol(True,parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(True,parent,pv,phylvl,displayMode)
            else :  # Just Add to structure 
               volref = GDMLShared.getRef(pv,"volumeref")
               nx, ny, nz = GDMLShared.getPosition(pv)
@@ -1091,7 +1063,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
        if asm != None :
           for pv in asm.findall("physvol") :
               #obj = parent.newObject("App::Part",name)
-              parsePhysVol(False,parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(False,parent,pv,phylvl,displayMode)
        else :
            print("Not Volume or Assembly") 
 
@@ -1387,9 +1359,7 @@ def processGDML(doc,filename,prompt,initFlg):
 
     world = GDMLShared.getRef(setup,"world")
     part =doc.addObject("App::Part",world)
-    #print(world)
-    #scanVolume(part,world)
-    parseVolume(part,world,0,0,0,None,phylvl,3)
+    parseVolume(part,world,phylvl,3)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]

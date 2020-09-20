@@ -195,7 +195,8 @@ def processPlacement(base,rot) :
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
     # set rotation matrix
-    noRotate = FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0))
+    print('process Placement : '+str(base))
+    noRotate = FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
     if rot == None :
         return noRotate
     
@@ -239,7 +240,13 @@ def processPlacement(base,rot) :
         rot = rotX.multiply(rotY).multiply(rotZ)
         #rot = rotX
         c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
-        return FreeCAD.Placement(base, rot,  c_rot)
+        print('base : '+str(base))
+        print('rot  : '+str(rot))
+        #return FreeCAD.Placement(base, rot,  c_rot)
+      
+        placement = FreeCAD.Placement(base, FreeCAD.Rotation(rot))
+        print('placement : '+str(placement))
+        return FreeCAD.Placement(base, FreeCAD.Rotation(rot))
 
 
 def getPositionFromAttrib(pos) :
@@ -309,7 +316,7 @@ def getDefinedRotation(name) :
 def getRotation(xmlEntity) :
     trace('GetRotation')
     rotref = getRef(xmlEntity,"rotationref")
-    trace(rotref)
+    trace('rotref : '+str(rotref))
     if rotref is not None :
        rot = define.find("rotation[@name='%s']" % rotref )
     else :
@@ -336,6 +343,12 @@ def getDefinedVector(solid, v) :
     y = getVal(pos,'y')
     z = getVal(pos,'z')
     return(FreeCAD.Vector(x,y,z))
+
+def getPlacement(pvXML) :
+    base = FreeCAD.Vector(getPosition(pvXML))
+    print('base: '+str(base))
+    rot  = getRotation(pvXML)
+    processPlacement(base,rot)
 
 def getScale(pvXML) :
     #print(ET.tostring(pvXML))

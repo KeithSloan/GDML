@@ -672,23 +672,11 @@ def expandFunction(obj, eNum) :
     #else :   
     #    name = name[:-4]
     #print("Name : "+name)
-    x = obj.Placement.Base[0]
-    y = obj.Placement.Base[1]
-    z = obj.Placement.Base[2]
-    # Need to update importGDML to use Placement.Rotation
-    # bot for now create a appropriate GDML rotation
-    angles = obj.Placement.Rotation.toEuler()
-    rot = ET.Element('rotation',{'name':'dummy', \
-                     'x':str(angles[0]), \
-                     'y':str(angles[1]), \
-                     'z':str(angles[2]), \
-                     'aunit' : 'deg'})
-    expandVolume(obj,name,x,y,z,rot,eNum,3)
+    expandVolume(obj,name,eNum,3)
 
 class ExpandFeature :
 
     def Activated(self) :
-      
         print('Expand Feature') 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects

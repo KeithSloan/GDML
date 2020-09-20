@@ -276,6 +276,10 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
+      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLArb8'
 
@@ -343,7 +347,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
         fp.Placement = currPlacement 
 
 class GDMLBox(GDMLcommon) :
-   def __init__(self, obj, x, y, z, lunit, material, flag = False):
+   def __init__(self, obj, x, y, z, lunit, material):
       super().__init__(obj)
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
@@ -355,10 +359,11 @@ class GDMLBox(GDMLcommon) :
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      #obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      # If a tool part of a Boolean need to enable Placement
+      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLBox'
       obj.Proxy = self
 
@@ -426,10 +431,11 @@ class GDMLCone(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to re-enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLCone'
       obj.Proxy = self
    
@@ -521,6 +527,7 @@ class GDMLElCone(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to re-enable Placement
       obj.setEditorMode("Placement",2)
       self.Type = 'GDMLElCone'
       obj.Proxy = self
@@ -589,8 +596,10 @@ class GDMLEllipsoid(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
       self.Type = 'GDMLEllipsoid'
       obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -670,10 +679,11 @@ class GDMLElTube(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLElTube'
       obj.Proxy = self
    
@@ -722,6 +732,10 @@ class GDMLOrb(GDMLcommon) :
                        "Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
+      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLOrb'
       self.Object = obj
       obj.Proxy = self
@@ -776,10 +790,11 @@ class GDMLPara(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPara'
       self.Object = obj
       obj.Proxy = self
@@ -856,10 +871,11 @@ class GDMLPolyhedra(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
       obj.Proxy = self
@@ -971,10 +987,11 @@ class GDMLTorus(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTorus'
       obj.Proxy = self
    
@@ -1027,10 +1044,11 @@ class GDMLXtru(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLXtru'
       obj.Proxy = self
 
@@ -1243,10 +1261,11 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
 
@@ -1342,10 +1361,11 @@ class GDMLSphere(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLSphere'
 
@@ -1462,6 +1482,10 @@ class GDMLTrap(GDMLcommon) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
       obj.ViewObject.ShapeColor = colourMaterial(material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
+      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
@@ -1564,10 +1588,11 @@ class GDMLTrd(GDMLcommon) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTrd'
 
@@ -1640,10 +1665,11 @@ class GDMLTube(GDMLcommon) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTube","Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
       self.Type = 'GDMLTube'
 
@@ -1716,11 +1742,12 @@ class GDMLcutTube(GDMLcommon) :
       #print('Add material')
       #print(material)
       setMaterial(obj, material)
-      # Suppress Placement - position & Rotation via parent App::Part
-      # this makes Placement via Phyvol easier and allows copies etc
-      obj.setEditorMode("Placement",2)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
+      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLcutTube'
 
@@ -2165,11 +2192,11 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
       setMaterial(obj, material)
+      obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
+      # If a tool part of a Boolean need to enable Placement
       obj.setEditorMode("Placement",2)
-
-      obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTetra'
       obj.Proxy = self
 
