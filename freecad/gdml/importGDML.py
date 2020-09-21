@@ -954,37 +954,35 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
        copyNum = physVol.get('copynumber')
        copyStr = '_'+str(copyNum)
        GDMLShared.trace('Copynumber : '+copyStr)
-       if copyNum is None or copyNum == '1' :
-          if copyNum is None :
-             volRef = volBase 
-          else :
-             volRef = volBase + copyStr
-          print(volRef+ ' px '+str(px)+' py '+str(py)+' pz '+str(pz))
+       objName = None
+       if copyNum is not None :
+          # Test if exists
+          objName =FreeCAD.ActiveDocument.getObject(volBase)
+       if copyNum is None :
+          volRef = volBase 
+       else :
+          volRef = volBase + copyStr
           GDMLShared.trace("Volume Ref : "+volRef)
+       if objName is None :
           part = parent.newObject("App::Part",volRef)
-          if volAsmFlg == False :    # If Assembly # checks with Alice.gdml
-             part.Placement = GDMLShared.processPlacement( \
-                               FreeCAD.Vector(nx,ny,nz),nrot)
-             GDMLShared.trace("nx : "+str(nx)+" : "+str(ny)+" : "+str(nz))
-          # pass on position & rot to GDMLsolid etc
           expandVolume(part,volBase,nx,ny,nz,nrot,phylvl,displayMode)
-       else :  # copynum > 1 create a Linked Object
-          volRef = volBase + '_1'
+       else :  # Object exists create a Linked Object
           GDMLShared.trace('====> Create Link to : '+volRef)
           part = parent.newObject('App::Link',volBase + copyStr)
-          part.LinkedObject = FreeCAD.ActiveDocument.getObject(volRef)
-          part.Placement.Base = FreeCAD.Vector(GDMLShared.getPosition(physVol))
-          #print(dir(part))
+          part.LinkedObject = objName 
           scale = GDMLShared.getScale(physVol)
           #print(scale)
           part.ScaleVector = scale
           if scale != FreeCAD.Vector(1.,1.,1.) :
              try :  # try as not working FC 0.18
-                 part.addProperty("App::PropertyVector","GDMLscale","GDML", \
-                    "GDML Scale Vector")
-                 part.GDMLscale = scale
+                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+                   "GDML Scale Vector")
+                part.GDMLscale = scale
              except:
-                 pass
+                pass
+    
+       # This would be for Placement of Part need FC 0.19 Fix       
+       #part.Placement = GDMLShared.getPlacement(physVol)
           
        if copyNum is not None :
           try : # try as not working FC 0.18
@@ -993,7 +991,6 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
           except:
              pass
 
-    # Should we also be handling rotation
     #GDMLShared.setTrace(False)
  
 

@@ -337,6 +337,12 @@ def getDefinedVector(solid, v) :
     z = getVal(pos,'z')
     return(FreeCAD.Vector(x,y,z))
 
+def getPlacement(pvXML) :
+    base = FreeCAD.Vector(getPosition(pvXML))
+    print('base: '+str(base))
+    rot  = getRotation(pvXML)
+    return(processPlacement(base,rot))
+
 def getScale(pvXML) :
     #print(ET.tostring(pvXML))
     scale = pvXML.find('scale')
