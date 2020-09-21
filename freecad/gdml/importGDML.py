@@ -946,39 +946,43 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     volBase = GDMLShared.getRef(physVol,"volumeref")
+    print('VolBase : '+volBase)
     if volBase != None :
        copyNum = physVol.get('copynumber')
        copyStr = '_'+str(copyNum)
        GDMLShared.trace('Copynumber : '+copyStr)
+       objName = None
        if copyNum is not None :
           # Test if exists
-          objName =FreeCAD.ActiveDocument.getObject(volBase)
-          if copyNum is None :
-             volRef = volBase 
-          else :
-             volRef = volBase + copyStr
-          GDMLShared.trace("Volume Ref : "+volRef)
-          if objName is None :
-             part = parent.newObject("App::Part",volRef)
-             expandVolume(part,volBase,phylvl,displayMode)
-          else :  # iObject exists create a Linked Object
-             GDMLShared.trace('====> Create Link to : '+volRef)
-             part = parent.newObject('App::Link',volBase + copyStr)
-             part.LinkedObject = objName 
-             scale = GDMLShared.getScale(physVol)
-             #print(scale)
-             part.ScaleVector = scale
-             if scale != FreeCAD.Vector(1.,1.,1.) :
-                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+          #print('Test : '+volBase)
+          objName = FreeCAD.ActiveDocument.getObject(volBase)
+          #print('Returned : '+str(objName))
+       if copyNum is None :
+          volRef = volBase 
+       else :
+          volRef = volBase + copyStr
+       GDMLShared.trace("Volume Ref : "+volRef)
+       if objName is None :
+          part = parent.newObject("App::Part",volBase)
+          GDMLShared.trace('===== Expand : '+volBase)
+          expandVolume(part,volBase,phylvl,displayMode)
+       else :  # Object exists create a Linked Object
+          GDMLShared.trace('====> Create Link to : '+volRef)
+          part = parent.newObject('App::Link',volBase + copyStr)
+          part.LinkedObject = objName 
+          scale = GDMLShared.getScale(physVol)
+          #print(scale)
+          part.ScaleVector = scale
+          if scale != FreeCAD.Vector(1.,1.,1.) :
+             part.addProperty("App::PropertyVector","GDMLscale","GDML", \
                    "GDML Scale Vector")
-                part.GDMLscale = scale
+             part.GDMLscale = scale
            
-          part.Placement = GDMLShared.getPlacement(physVol)
+       part.Placement = GDMLShared.getPlacement(physVol)
            
        if copyNum is not None :
           part.addProperty("App::PropertyInteger","Copynumber", \
                                "GDML").Copynumber=int(copyNum)
-          # Should we also be handling rotation
     #GDMLShared.setTrace(False)
  
 

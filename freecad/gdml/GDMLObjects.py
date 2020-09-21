@@ -392,8 +392,10 @@ class GDMLBox(GDMLcommon) :
    def createGeometry(self,fp):
        #print('createGeometry')
        #print(fp)
+
        if all((fp.x,fp.y,fp.z)) :
           currPlacement = fp.Placement
+
        #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
           mul = GDMLShared.getMult(fp)
           GDMLShared.trace('mul : '+str(mul))
