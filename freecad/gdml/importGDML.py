@@ -957,7 +957,7 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
        objName = None
        if copyNum is not None :
           # Test if exists
-          objName =FreeCAD.ActiveDocument.getObject(volBase)
+          objName =FreeCAD.ActiveDocument.getObject(volBase+'_1')
        if copyNum is None :
           volRef = volBase 
        else :
