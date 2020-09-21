@@ -979,14 +979,21 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
           #print(scale)
           part.ScaleVector = scale
           if scale != FreeCAD.Vector(1.,1.,1.) :
-             part.addProperty("App::PropertyVector","GDMLscale","GDML", \
-                "GDML Scale Vector")
-             part.GDMLscale = scale
-           
+             try :  # try as not working FC 0.18
+                 part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+                    "GDML Scale Vector")
+                 part.GDMLscale = scale
+             except:
+                 pass
+          
        if copyNum is not None :
-          part.addProperty("App::PropertyInteger","Copynumber", \
+          try : # try as not working FC 0.18
+             part.addProperty("App::PropertyInteger","Copynumber", \
                                "GDML").Copynumber=int(copyNum)
-          # Should we also be handling rotation
+          except:
+             pass
+
+    # Should we also be handling rotation
     #GDMLShared.setTrace(False)
  
 
