@@ -563,6 +563,8 @@ def addPhysVolPlacement(obj, xmlVol, volName) :
     GDMLShared.trace("Add PhysVol to Vol : "+refName) 
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
+       if hasattr(obj,'Copynumber') :
+          volName = volName + '_' + str(obj.Copynumber)
        pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
        ET.SubElement(pvol,'volumeref',{'ref':refName})
        processPosition(obj,pvol)
@@ -1560,6 +1562,14 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       #   #print("App Plane")
       #   return
       #   break
+
+      # Okay this is duplicate  Volume cpynum > 1 - parent is a Volume
+      if case("App::Link") :
+         print('App::Link :'+obj.Label)
+         #print(dir(obj))
+         print(obj.LinkedObject.Label)
+         addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
+         return idx + 1
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
