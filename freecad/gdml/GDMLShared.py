@@ -207,7 +207,7 @@ def processPlacement(base,rot) :
         if 'name' in rot.attrib :
             if rot.attrib['name'] == 'identity' :
                 trace('identity')
-                return noRotate
+                return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
 
         radianFlg = True
         if 'unit' in rot.attrib :
@@ -239,12 +239,12 @@ def processPlacement(base,rot) :
         rot = rotX.multiply(rotY).multiply(rotZ)
         #rot = rotX
         c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
-        print('base : '+str(base))
-        print('rot  : '+str(rot))
+        #print('base : '+str(base))
+        #print('rot  : '+str(rot))
         #return FreeCAD.Placement(base, rot,  c_rot)
       
         placement = FreeCAD.Placement(base, FreeCAD.Rotation(rot))
-        print('placement : '+str(placement))
+        #print('placement : '+str(placement))
         return FreeCAD.Placement(base, FreeCAD.Rotation(rot))
 
 
