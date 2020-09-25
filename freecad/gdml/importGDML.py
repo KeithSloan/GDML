@@ -192,7 +192,7 @@ def createArb8(part,solid,material,px,py,pz,rot,displayMode) :
 def createBox(part,solid,material,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLBox, ViewProvider
-    GDMLShared.setTrace(True)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateBox : ")
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
@@ -945,44 +945,43 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     # physvol is xml entity
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    volBase = GDMLShared.getRef(physVol,"volumeref")
-    print('VolBase : '+volBase)
-    if volBase != None :
+    volRef = GDMLShared.getRef(physVol,"volumeref")
+    GDMLShared.trace("Volume Ref : "+volRef)
+    if volRef != None :
        copyNum = physVol.get('copynumber')
-       copyStr = '_'+str(copyNum)
-       GDMLShared.trace('Copynumber : '+copyStr)
+       GDMLShared.trace('Copynumber : '+str(copyNum))
        objName = None
        if copyNum is not None :
           # Test if exists
-          #print('Test : '+volBase)
-          objName = FreeCAD.ActiveDocument.getObject(volBase)
-          #print('Returned : '+str(objName))
-       if copyNum is None :
-          volRef = volBase 
-       else :
-          volRef = volBase + copyStr
-       GDMLShared.trace("Volume Ref : "+volRef)
+          objName =FreeCAD.ActiveDocument.getObject(volRef)
        if objName is None :
-          part = parent.newObject("App::Part",volBase)
-          GDMLShared.trace('===== Expand : '+volBase)
-          expandVolume(part,volBase,phylvl,displayMode)
+          part = parent.newObject("App::Part",volRef)
+          expandVolume(part,volRef,phylvl,displayMode)
        else :  # Object exists create a Linked Object
           GDMLShared.trace('====> Create Link to : '+volRef)
-          part = parent.newObject('App::Link',volBase + copyStr)
+          part = parent.newObject('App::Link',volRef + '_' + copyNum)
           part.LinkedObject = objName 
           scale = GDMLShared.getScale(physVol)
           #print(scale)
           part.ScaleVector = scale
           if scale != FreeCAD.Vector(1.,1.,1.) :
-             part.addProperty("App::PropertyVector","GDMLscale","GDML", \
+             try :  # try as not working FC 0.18
+                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
                    "GDML Scale Vector")
-             part.GDMLscale = scale
-           
+                part.GDMLscale = scale
+             except:
+                print('Scale not supported with FreeCAD 0.18')
+    
+       # This would be for Placement of Part need FC 0.19 Fix       
        part.Placement = GDMLShared.getPlacement(physVol)
-           
+          
        if copyNum is not None :
-          part.addProperty("App::PropertyInteger","Copynumber", \
+          try : # try as not working FC 0.18
+             part.addProperty("App::PropertyInteger","Copynumber", \
                                "GDML").Copynumber=int(copyNum)
+          except:
+             print('Copynumber not supported in FreeCAD 0.18')
+
     #GDMLShared.setTrace(False)
  
 
