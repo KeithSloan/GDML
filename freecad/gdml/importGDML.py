@@ -1037,11 +1037,21 @@ def expandVolume(parent,name,phylvl,displayMode) :
            else :  # Just Add to structure 
               volref = GDMLShared.getRef(pv,"volumeref")
               nx, ny, nz = GDMLShared.getPosition(pv)
-              #nx, ny, nz = GDMLShared.testPosition(pv,px,py,pz)
               nrot = GDMLShared.getRotation(pv)
-              #part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
-              part = parent.newObject("App::Part",volref)
-              part.Label = "NOT_Expanded_"+volref
+              linkObj = None
+              cpynum = pv.get('copynumber')
+              if cpynum is not None :
+                 if int(cpynum) > 1 :
+                    linkObj = FreeCAD.ActiveDocument.getObject(volref)
+                    if linkObj is not None :
+                       pvname = pv.get('name')
+                       print('PV Name : '+pvname)
+                       part = parent.newObject("App::Link",pvname)
+                       part.LinkedObject = linkObj
+                       part.Label = "NOT_Expanded_"+pvname
+              if linkObj is None :
+                 part = parent.newObject("App::Part",volref)
+                 part.Label = "NOT_Expanded_"+volref
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
               #print(dir(part))
