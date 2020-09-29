@@ -961,16 +961,22 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
           GDMLShared.trace('====> Create Link to : '+volRef)
           part = parent.newObject('App::Link',volRef + '_' + copyNum)
           part.LinkedObject = objName 
+          try :
+             print('Adding property to Link : '+volRef)
+             part.addProperty("App::PropertyString","Volref","GDML", \
+                   "volref").Volref = volRef
+          except:
+             print(volRef+' : volref not supported with FreeCAD 0.18')
+
           scale = GDMLShared.getScale(physVol)
           #print(scale)
           part.ScaleVector = scale
-          if scale != FreeCAD.Vector(1.,1.,1.) :
-             try :  # try as not working FC 0.18
-                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
-                   "GDML Scale Vector")
-                part.GDMLscale = scale
-             except:
-                print('Scale not supported with FreeCAD 0.18')
+          #if scale != FreeCAD.Vector(1.,1.,1.) :
+          #   try :  # try as not working FC 0.18
+          #      part.addProperty("App::PropertyVector","GDMLscale","Link", \
+          #         "GDML Scale Vector").GDMLscale = scale
+          #   except:
+          #      print('Scale not supported with FreeCAD 0.18')
     
        # This would be for Placement of Part need FC 0.19 Fix       
        part.Placement = GDMLShared.getPlacement(physVol)
@@ -1052,21 +1058,14 @@ def expandVolume(parent,name,phylvl,displayMode) :
               if linkObj is None :
                  part = parent.newObject("App::Part",volref)
                  part.Label = "NOT_Expanded_"+volref
+              try :
+                 part.addProperty("App::PropertyString","Volref","GDML", \
+                     "volref name")
+                 part.Volref = volref
+              except:
+                 print(volref+' : volref not supported with FreeCAD 0.18')
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
-              #print(dir(part))
-              #
-              #obj = part.newObject("App::Annotation","Not Expanded")
-              #obj.LabelText="Annotation"
-              #view = obj.ViewObject
-              #print(dir(view))
-              #part = parent.newObject("App::DocumentObjectGroup",volref)
-              #vpart2 = part2.ViewObject
-              #print(dir(vpart2))
-              # 100% red, 0% Green, 0% Blue
-              #vpart.TextColor = (100., 0., 0., 0.)
-       # Add parsed Volume to dict
-       #volDict[name] = obj
        App.ActiveDocument.recompute() 
        return obj
 
@@ -1330,7 +1329,7 @@ def processGDML(doc,filename,prompt,initFlg):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, define, materials, solids, structure, volDict
+    global setup, define, materials, solids, structure 
   
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
@@ -1366,9 +1365,6 @@ def processGDML(doc,filename,prompt,initFlg):
 
     solids    = root.find('solids')
     structure = root.find('structure')
-
-    # volDict dictionary of volume names and associated FreeCAD part
-    volDict = {}
 
     world = GDMLShared.getRef(setup,"world")
     part =doc.addObject("App::Part",world)
