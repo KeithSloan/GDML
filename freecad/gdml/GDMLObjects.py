@@ -381,7 +381,7 @@ class GDMLBox(GDMLcommon) :
        self.createGeometry(fp)
 
    def createGeometry(self,fp):
-       print('createGeometry')
+       #print('createGeometry')
        #print(fp)
        if all((fp.x,fp.y,fp.z)) :
           currPlacement = fp.Placement
