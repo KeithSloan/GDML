@@ -31,17 +31,23 @@
 from math import *
 import FreeCAD, Part
 
-from lxml import etree as ET
+#from lxml import etree as ET
 
 global define
+global tracefp
 
 global printverbose
 printverbose = False
 
 def setTrace(flag) :
+    global tracefp
     print('Trace set to : '+str(flag))
     global printverbose
     printverbose = flag
+    if flag == True :
+       tracePath = FreeCAD.getUserAppDataDir()
+       tracefp = open(tracePath+'FC-trace','w')
+       print('Trace path : '+tracePath)
 
 def getTrace() :
     global printverbose
@@ -49,7 +55,11 @@ def getTrace() :
     return(printverbose)
 
 def trace(s):
-    if printverbose == True : print(s)
+    global tracefp
+    if printverbose == True : 
+       print(s)
+       print(s,file = tracefp)
+       tracefp.flush()
     return
 
 def setDefine(val) :
@@ -139,7 +149,7 @@ def getRef(ptr, name) :
     return wrk
 
 def getMult(fp) :
-    unit = 'mm'  # set default
+    unit = 'mm' # set default
     # Watch for unit and lunit
     #print('getMult : '+str(fp))
     if hasattr(fp,'lunit') :
@@ -325,6 +335,23 @@ def getDefinedVector(solid, v) :
     x = getVal(pos,'x')
     y = getVal(pos,'y')
     z = getVal(pos,'z')
+    return(FreeCAD.Vector(x,y,z))
+
+def getPlacement(pvXML) :
+    base = FreeCAD.Vector(getPosition(pvXML))
+    print('base: '+str(base))
+    rot  = getRotation(pvXML)
+    return(processPlacement(base,rot))
+
+def getScale(pvXML) :
+    #print(ET.tostring(pvXML))
+    scale = pvXML.find('scale')
+    x = y = z = 1.
+    if scale is not None :
+       #print(ET.tostring(scale))
+       x = getVal(scale,'x')
+       y = getVal(scale,'y')
+       z = getVal(scale,'z')
     return(FreeCAD.Vector(x,y,z))
 
 def getVertex(v):
