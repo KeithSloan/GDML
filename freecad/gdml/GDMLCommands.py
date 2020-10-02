@@ -665,18 +665,12 @@ def expandFunction(obj, eNum) :
     obj.Label = name
     # Get original volume name i.e. loose _ or _nnn
     print('Name : '+name)
-    #l = len(name) - 1
-    #print(name[l])
-    #if name[l] == '_' :
-    #    name = name[:-1]
-    #else :   
-    #    name = name[:-4]
-    #print("Name : "+name)
     expandVolume(obj,name,eNum,3)
 
 class ExpandFeature :
 
     def Activated(self) :
+      
         print('Expand Feature') 
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
@@ -687,10 +681,10 @@ class ExpandFeature :
                expandFunction(obj,0) 
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_ExpandVol', 'MenuText': \
-                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandVol',\
+        return {'Pixmap'  : 'GDML_Expand_One', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_Expand_One',\
                 'Expand Volume'), 'ToolTip': \
-                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandVol', \
+                QtCore.QT_TRANSLATE_NOOP('GDML_Expand_One', \
                 'Expand Volume')}    
 
 class ExpandMaxFeature :
@@ -706,10 +700,10 @@ class ExpandMaxFeature :
                expandFunction(obj,-1) 
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML_ExpandMaxVol', 'MenuText': \
-                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandMaxVol',\
+        return {'Pixmap'  : 'GDML_Expand_Max', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_Expand_Max',\
                 'Max Expand Volume'), 'ToolTip': \
-                QtCore.QT_TRANSLATE_NOOP('GDML_ExpandMaxVol', \
+                QtCore.QT_TRANSLATE_NOOP('GDML_Expand_Max', \
                 'Max Expand Volume')}    
 
 class CompoundFeature :
