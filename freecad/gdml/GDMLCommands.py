@@ -653,19 +653,36 @@ def expandFunction(obj, eNum) :
     from .importGDML import expandVolume
     print('Expand Function')
     #import lxml.etree  as ET 
-    try :
-       from lxml.etree import ET
-    except ImportError:
-       try:
-          import xml.etree.ElementTree as ET
-       except ImportError:
-          print('pb xml lib not found')
-          sys.exit()
+    #try :
+    #   from lxml.etree import ET
+    #except ImportError:
+    #   try:
+    #      import xml.etree.ElementTree as ET
+    #   except ImportError:
+    #      print('pb xml lib not found')
+    #      sys.exit()
     name = obj.Label[13:]
     obj.Label = name
     # Get original volume name i.e. loose _ or _nnn
     print('Name : '+name)
-    expandVolume(obj,name,eNum,3)
+    if obj.TypeId != 'App::Link' :
+       expandVolume(obj,name,eNum,3)
+    else :
+       if hasattr(obj,'LinkedObject') :
+          linkName = obj.LinkedObject.Label
+          if linkName[0:12] != 'NOT_Expanded' :
+             obj.Label = name
+          else :
+             print('Find object : '+linkName)
+             obj = FreeCAD.ActiveDocument.getObject(linkName)
+             if obj is not None : 
+                print(obj.Label)
+             else :
+                print('Linked Object Not Found')
+             print('Expand')
+       else :
+          print('No Linked Object Found')
+
 
 class ExpandFeature :
 
