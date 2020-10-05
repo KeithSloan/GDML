@@ -954,16 +954,19 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
     if volRef != None :
        copyNum = physVol.get('copynumber')
        GDMLShared.trace('Copynumber : '+str(copyNum))
-       objName = None
-       if copyNum is not None :
-          # Test if exists
-          objName =FreeCAD.ActiveDocument.getObject(volRef)
+       # lhcbvelo has duplicate with no copynumber§
+       # Test if exists
+       objName =FreeCAD.ActiveDocument.getObject(volRef)
        if objName is None :
           part = parent.newObject("App::Part",volRef)
           expandVolume(part,volRef,nx,ny,nz,nrot,phylvl,displayMode)
        else :  # Object exists create a Linked Object
           GDMLShared.trace('====> Create Link to : '+volRef)
-          part = parent.newObject('App::Link',volRef + '_' + copyNum)
+          if copyNum is not None :
+             linkName = volRef + '_' + copyNum
+          else :
+             linkName = volRef
+          part = parent.newObject('App::Link',linkName)
           part.LinkedObject = objName 
           scale = GDMLShared.getScale(physVol)
           #print(scale)
