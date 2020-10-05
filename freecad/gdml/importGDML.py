@@ -1067,7 +1067,7 @@ def expandVolume(parent,name,phylvl,displayMode) :
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
        App.ActiveDocument.recompute() 
-       return obj
+       #return obj
 
     else :
        asm = structure.find("assembly[@name='%s']" % name)
