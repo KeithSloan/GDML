@@ -60,7 +60,6 @@
    <fraction n="0.3" ref="Oxygen"/>
   </material>
  </materials>
- <materials>
   
 <solids>
   <define>
