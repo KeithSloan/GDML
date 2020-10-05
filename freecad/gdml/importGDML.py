@@ -1307,6 +1307,7 @@ def processXML(doc,filename):
 
 def processGDML(doc,filename,prompt,initFlg):
 
+    import time
     from . import GDMLShared
     from . import GDMLObjects
     
@@ -1338,7 +1339,8 @@ def processGDML(doc,filename,prompt,initFlg):
     print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
-    FreeCAD.Console.PrintMessage('ImportGDML Version 0.3\n')
+    FreeCAD.Console.PrintMessage('ImportGDML Version 0.4\n')
+    startTime = time.perf_counter()
     
     global pathName
     pathName = os.path.dirname(os.path.normpath(filename))
@@ -1396,3 +1398,5 @@ def processGDML(doc,filename,prompt,initFlg):
     if FreeCAD.GuiUp :
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
+    endTime = time.perf_counter()
+    print(f'time : {endTime - startTime:0.4f} seconds')
