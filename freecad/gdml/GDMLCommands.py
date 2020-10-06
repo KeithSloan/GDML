@@ -652,15 +652,6 @@ class CycleFeature :
 def expandFunction(obj, eNum) :
     from .importGDML import expandVolume
     print('Expand Function')
-    #import lxml.etree  as ET 
-    try :
-       from lxml.etree import ET
-    except ImportError:
-       try:
-          import xml.etree.ElementTree as ET
-       except ImportError:
-          print('pb xml lib not found')
-          sys.exit()
     name = obj.Label[13:]
     obj.Label = name
     # Get original volume name i.e. loose _ or _nnn
