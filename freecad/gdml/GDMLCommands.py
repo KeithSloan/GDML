@@ -652,23 +652,23 @@ class CycleFeature :
 def expandFunction(obj, eNum) :
     from .importGDML import expandVolume
     print('Expand Function')
-    name = obj.Label[13:]
-    obj.Label = name
     # Get original volume name i.e. loose _ or _nnn
-    print('Name : '+name)
+    name = obj.Label[13:]
+    if hasattr(obj,'VolRef') :
+       volRef = obj.VolRef
+    else :
+       volRef = name
     if obj.TypeId != 'App::Link' :
-       expandVolume(obj,name,eNum,3)
+       expandVolume(obj,volRef,eNum,3)
     else :
        if hasattr(obj,'LinkedObject') :
           if obj.LinkedObject.Label[0:12] == 'NOT_Expanded' :
-             #name = obj.LinkedObject.Label[13:]
-             linkedName = name[0:len(name)-2]
-             print('Expand : '+linkedName)
-             expandVolume(obj.LinkedObject,linkedName,eNum,3)
-             obj.LinkedObject.Label = linkedName
-          obj.Label = name
+             print('Expand : '+volRef)
+             expandVolume(obj.LinkedObject,volRef,eNum,3)
+             obj.LinkedObject.Label = volRef
        else :
           print('No Linked Object Found')
+    obj.Label = name
 
 
 class ExpandFeature :

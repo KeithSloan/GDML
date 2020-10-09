@@ -232,10 +232,51 @@ class GDMLColourMapEntry :
           "GDMLColourMapEntry","Material")
       setMaterial(obj, material)
 
+def indexBoolean(list,ln) :
+    #print('Length : '+str(ln))
+    if ln > 3 :
+       #print(range(ln-3))
+       for r in range(ln-2) :
+          t = list[r].TypeId
+          #print(t)
+          if t == 'Part::Cut' or t == 'Part::Fuse' or t == 'Part::Common' :
+             return r 
+    return -1 
 	   
-class GDMLcommon :
+class GDMLsolid :
    def __init__(self, obj):
        '''Init'''
+       #print('>>>>>')
+       #if hasattr(obj,'Label') :
+       #   print('Label : '+obj.Label)
+       #print('TypeId : '+obj.TypeId)
+       #print(dir(obj))
+       #if hasattr(obj,'InList') :
+       #   print('InList')
+       #   print(obj.InList)
+       #   for i in obj.InList :
+       #       print(i.TypeId)
+       #       if hasattr(i,'Label') :
+       #          print('Label : '+i.Label)
+       #       if i.TypeId == 'App::Part' :
+       #          print(i.OutList)
+       #          for j in i.OutList :
+       #             print('   ==> Typeid'+str(j.TypeId))
+       #             if hasattr(j,'Label') :
+       #                print('    ==> Label'+j.Label)
+       #                
+       #print('<<<<<')    
+       if hasattr(obj,'InList') :
+          for j in obj.InList :
+              if hasattr(j,'OutList') :
+                 ln = len(j.OutList)
+                 r = indexBoolean(j.OutList,ln)
+                 #print('index : '+str(r))
+              if r >= 0 : 
+                 if (ln - r) >= 2 :
+                    #print('Tool : '+obj.Label)
+                    return   # Let Placement default to 0
+       obj.setEditorMode('Placement',2)
 
    def __getstate__(self):
         '''When saving the document this object gets stored using Python's json module.\
@@ -249,7 +290,23 @@ class GDMLcommon :
         return None
 
 
-class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
+class GDMLcommon :
+   def __init__(self, obj):
+       '''Init'''
+   
+   def __getstate__(self):
+        '''When saving the document this object gets stored using Python's json module.\
+                Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
+                to return a tuple of all serializable objects or None.'''
+        return None
+ 
+   def __setstate__(self,state):
+        '''When restoring the serialized object from document we have the chance to set some internals here.\
+                Since no data were serialized nothing needs to be done here.'''
+        return None
+
+
+class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
    def __init__(self, obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,  \
                 v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz, \
                 lunit, material):
@@ -278,8 +335,6 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLArb8'
 
@@ -346,7 +401,7 @@ class GDMLArb8(GDMLcommon) :        # Thanks to Dam Lamb
                                                   faceZmin,faceZmax]))
         fp.Placement = currPlacement 
 
-class GDMLBox(GDMLcommon) :
+class GDMLBox(GDMLsolid) :
    def __init__(self, obj, x, y, z, lunit, material):
       super().__init__(obj)
       '''Add some custom properties to our Box feature'''
@@ -362,8 +417,6 @@ class GDMLBox(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLBox'
       obj.Proxy = self
 
@@ -411,7 +464,7 @@ class GDMLBox(GDMLcommon) :
        print('Doc Restored')
           
 
-class GDMLCone(GDMLcommon) :
+class GDMLCone(GDMLsolid) :
    def __init__(self, obj, rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit, \
                 lunit, material):
       super().__init__(obj)
@@ -436,8 +489,6 @@ class GDMLCone(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to re-enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLCone'
       obj.Proxy = self
    
@@ -509,7 +560,7 @@ class GDMLCone(GDMLcommon) :
              fp.Shape = translate(cone3,base)
           fp.Placement = currPlacement   
 
-class GDMLElCone(GDMLcommon) :
+class GDMLElCone(GDMLsolid) :
    def __init__(self, obj, dx, dy, zmax, zcut, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties to our ElCone feature'''
@@ -529,8 +580,6 @@ class GDMLElCone(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to re-enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLElCone'
       obj.Proxy = self
    
@@ -579,7 +628,7 @@ class GDMLElCone(GDMLcommon) :
           fp.Shape = cone2
        fp.Placement = currPlacement   
 
-class GDMLEllipsoid(GDMLcommon) :
+class GDMLEllipsoid(GDMLsolid) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
@@ -601,8 +650,6 @@ class GDMLEllipsoid(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLEllipsoid'
       obj.ViewObject.ShapeColor = colourMaterial(material)
       obj.Proxy = self
@@ -666,7 +713,7 @@ class GDMLEllipsoid(GDMLcommon) :
        fp.Shape = translate(shape,base)
        fp.Placement = currPlacement
 
-class GDMLElTube(GDMLcommon) :
+class GDMLElTube(GDMLsolid) :
    def __init__(self, obj, dx, dy, dz, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
@@ -684,8 +731,6 @@ class GDMLElTube(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLElTube'
       obj.Proxy = self
    
@@ -723,7 +768,7 @@ class GDMLElTube(GDMLcommon) :
        fp.Shape = translate(newtube,base)
        fp.Placement = currPlacement
 
-class GDMLOrb(GDMLcommon) :
+class GDMLOrb(GDMLsolid) :
    def __init__(self, obj, r, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
@@ -736,8 +781,6 @@ class GDMLOrb(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLOrb'
       self.Object = obj
       obj.Proxy = self
@@ -770,7 +813,7 @@ class GDMLOrb(GDMLcommon) :
        fp.Shape = Part.makeSphere(r)
        fp.Placement = currPlacement
 
-class GDMLPara(GDMLcommon) :
+class GDMLPara(GDMLsolid) :
    def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
@@ -795,8 +838,6 @@ class GDMLPara(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLPara'
       self.Object = obj
       obj.Proxy = self
@@ -854,7 +895,7 @@ class GDMLPara(GDMLcommon) :
        fp.Placement = currPlacement
    
 
-class GDMLPolyhedra(GDMLcommon) :
+class GDMLPolyhedra(GDMLsolid) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
@@ -876,8 +917,6 @@ class GDMLPolyhedra(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLPolyhedra'
       self.Object = obj
       obj.Proxy = self
@@ -968,7 +1007,7 @@ class GDMLPolyhedra(GDMLcommon) :
           fp.Shape = translate(shape,base)
        fp.Placement = currPlacement   
 
-class GDMLTorus(GDMLcommon) :
+class GDMLTorus(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
                 aunit, lunit, material) :
       super().__init__(obj)
@@ -992,8 +1031,6 @@ class GDMLTorus(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLTorus'
       obj.Proxy = self
    
@@ -1037,7 +1074,7 @@ class GDMLTorus(GDMLcommon) :
        fp.Shape = torus     
        fp.Placement = currPlacement
 
-class GDMLXtru(GDMLcommon) :
+class GDMLXtru(GDMLsolid) :
    def __init__(self, obj, lunit, material) :
       super().__init__(obj)
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -1049,8 +1086,6 @@ class GDMLXtru(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLXtru'
       obj.Proxy = self
 
@@ -1246,7 +1281,7 @@ class GDMLzplane(GDMLcommon) :
    def execute(self, fp):
        pass
 
-class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
+class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material) :
       super().__init__(obj)
       '''Add some custom properties to our Polycone feature'''
@@ -1266,8 +1301,6 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLPolycone'
       obj.Proxy = self
 
@@ -1337,7 +1370,7 @@ class GDMLPolycone(GDMLcommon) : # Thanks to Dam Lamb
        fp.Shape = Part.makeCompound(listShape)
        fp.Placement = currPlacement
 
-class GDMLSphere(GDMLcommon) :
+class GDMLSphere(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
                 deltatheta, aunit, lunit, material):
       super().__init__(obj)
@@ -1366,8 +1399,6 @@ class GDMLSphere(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLSphere'
 
@@ -1453,7 +1484,7 @@ class GDMLSphere(GDMLcommon) :
        fp.Placement = currPlacement    
            
 
-class GDMLTrap(GDMLcommon) :
+class GDMLTrap(GDMLsolid) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \
                 aunit, lunit, material):
       super().__init__(obj)
@@ -1486,8 +1517,6 @@ class GDMLTrap(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLTrap'
 
@@ -1573,7 +1602,7 @@ class GDMLTrap(GDMLcommon) :
        fp.Shape = solid
        fp.Placement = currPlacement
 
-class GDMLTrd(GDMLcommon) :
+class GDMLTrd(GDMLsolid) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
@@ -1593,8 +1622,6 @@ class GDMLTrd(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLTrd'
 
@@ -1650,7 +1677,7 @@ class GDMLTrd(GDMLcommon) :
        fp.Shape = solid
        fp.Placement = currPlacement
 
-class GDMLTube(GDMLcommon) :
+class GDMLTube(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
                 lunit, material):
       super().__init__(obj)
@@ -1670,8 +1697,6 @@ class GDMLTube(GDMLcommon) :
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLTube'
 
@@ -1718,7 +1743,7 @@ class GDMLTube(GDMLcommon) :
        fp.Shape = translate(tube,base)
        fp.Placement = currPlacement
 
-class GDMLcutTube(GDMLcommon) :
+class GDMLcutTube(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
                 lowX, lowY, lowZ, highX, highY, highZ, \
                 lunit, material):
@@ -1748,8 +1773,6 @@ class GDMLcutTube(GDMLcommon) :
       #print(MaterialsList)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       obj.Proxy = self
       self.Type = 'GDMLcutTube'
 
@@ -1951,7 +1974,7 @@ class GDMLQuadrangular(GDMLcommon) :
    def execute(self, fp):
        pass
        
-class GDMLGmshTessellated(GDMLcommon) :
+class GDMLGmshTessellated(GDMLsolid) :
     
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, material) :
       super().__init__(obj)
@@ -1979,7 +2002,6 @@ class GDMLGmshTessellated(GDMLcommon) :
       setMaterial(obj, material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      obj.setEditorMode("Placement",2)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLGmshTessellated'
       self.SourceObj = sourceObj
@@ -2079,7 +2101,7 @@ class GDMLGmshTessellated(GDMLcommon) :
        fp.Shape = solid
        fp.Placement = currPlacement
    
-class GDMLTessellated(GDMLcommon) :
+class GDMLTessellated(GDMLsolid) :
     
    def __init__(self, obj, vertex, facets, lunit, material) :
       super().__init__(obj)
@@ -2098,7 +2120,6 @@ class GDMLTessellated(GDMLcommon) :
       setMaterial(obj, material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      obj.setEditorMode("Placement",2)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
@@ -2178,7 +2199,7 @@ class GDMLTessellated(GDMLcommon) :
        fp.Shape = solid
        fp.Placement = currPlacement
    
-class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
+class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
     
    def __init__(self, obj, v1, v2, v3, v4, lunit, material ):
       super().__init__(obj)
@@ -2197,8 +2218,6 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      # If a tool part of a Boolean need to enable Placement
-      obj.setEditorMode("Placement",2)
       self.Type = 'GDMLTetra'
       obj.Proxy = self
 
@@ -2234,7 +2253,7 @@ class GDMLTetra(GDMLcommon) :         # 4 point Tetrahedron
        fp.Shape = Part.makeSolid(Part.makeShell([face1,face2,face3,face4]))
        fp.Placement = currPlacement
        
-class GDMLTetrahedron(GDMLcommon) :
+class GDMLTetrahedron(GDMLsolid) :
 
    ''' Does not exist as a GDML solid, but export as an Assembly of G4Tet '''
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
@@ -2253,7 +2272,6 @@ class GDMLTetrahedron(GDMLcommon) :
        setMaterial(obj, material)
        # Suppress Placement - position & Rotation via parent App::Part
        # this makes Placement via Phyvol easier and allows copies etc
-       obj.setEditorMode("Placement",2)
        #obj.addExtension('App::OriginGroupExtensionPython', self)
        self.Tetra = tetra
        self.Object = obj

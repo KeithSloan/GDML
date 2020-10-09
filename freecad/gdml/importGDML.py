@@ -986,8 +986,8 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
        # Louis gdml file copynumber on non duplicate   
        if copyNum is not None :
           try : # try as not working FC 0.18
-             part.addProperty("App::PropertyInteger","Copynumber", \
-                               "GDML").Copynumber=int(copyNum)
+             part.addProperty("App::PropertyInteger","CopyNumber", \
+                               "GDML").CopyNumber=int(copyNum)
           except:
              print('Copynumber not supported in FreeCAD 0.18')
 
@@ -1047,31 +1047,25 @@ def expandVolume(parent,name,phylvl,displayMode) :
               volRef = GDMLShared.getRef(pv,"volumeref")
               nx, ny, nz = GDMLShared.getPosition(pv)
               nrot = GDMLShared.getRotation(pv)
-<<<<<<< HEAD
-              linkObj = None
-              cpynum = pv.get('copynumber')
-              if cpynum is not None :
-                 if int(cpynum) > 1 :
-                    linkObj = FreeCAD.ActiveDocument.getObject(volref)
-                    if linkObj is not None :
-                       pvname = pv.get('name')
-                       print('PV Name : '+pvname)
-                       part = parent.newObject("App::Link",pvname)
-                       part.LinkedObject = linkObj
-                       part.Label = "NOT_Expanded_"+pvname
-              if linkObj is None :
-                 part = parent.newObject("App::Part",volref)
-                 if part.Name != volRef :
-                    ln = len(volRef)
-                    part.Label = "NOT_Expanded_"+volRef+'_'+part.Name[ln:]
-                 else :
-                    part.Label = "NOT_Expanded_"+volRef
+              cpyNum = pv.get('copynumber')
+              linkObj = FreeCAD.ActiveDocument.getObject(volRef)
+              if linkObj is not None :
+                 part = parent.newObject("App::Link",volRef)
+                 part.LinkedObject = linkObj
+              else :
+                 part = parent.newObject("App::Part",volRef)
+              if part.Name != volRef :
+                 ln = len(volRef)
+                 part.Label = "NOT_Expanded_"+volRef+'_'+part.Name[ln:]
+              else :
+                 part.Label = "NOT_Expanded_"+volRef
               try :
-                 part.addProperty("App::PropertyString","Volref","GDML", \
-                     "volref name")
-                 part.Volref = volref
+                 part.addProperty("App::PropertyString","VolRef","GDML", \
+                     "volref name").VolRef = volRef
+                 part.addProperty("App::PropertyInteger","CopyNumber","GDML", \
+                     "copynumber").CopyNumber = int(cpyNum)
               except:
-                 print(volref+' : volref not supported with FreeCAD 0.18')
+                 print(volRef+' : volref not supported with FreeCAD 0.18')
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
        App.ActiveDocument.recompute() 
