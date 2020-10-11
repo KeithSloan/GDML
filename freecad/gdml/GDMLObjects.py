@@ -1298,6 +1298,8 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
                        "Material")
       setMaterial(obj, material)
+      # For debugging
+      #obj.setEditorMode('Placement',0)
       obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
@@ -1328,6 +1330,7 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
        zplanes = fp.OutList
        #GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
        mul = GDMLShared.getMult(fp.lunit)
+       offset = zplanes[0].z * mul
        angleDeltaPhiDeg = 360.0
        if (hasattr(fp,'deltaphi')) :
            angleDeltaPhiDeg = min([getAngleDeg(fp.aunit,fp.deltaphi), angleDeltaPhiDeg])
@@ -1345,21 +1348,22 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
        # loops on each z level
        for i in range(len(zplanes)-1) :
            GDMLShared.trace('index : '+str(i))
-           if i ==0:
+           if i == 0:
                rmin1 = zplanes[i].rmin * mul
                rmax1 = zplanes[i].rmax * mul
-               z1 =zplanes[i].z* mul
+               z1 = zplanes[i].z * mul - offset
            else:
                rmin1 = rmin2
                rmax1 = rmax2
-               z1 =z2
+               z1 = z2
 
            rmin2 = zplanes[i+1].rmin * mul
            rmax2 = zplanes[i+1].rmax * mul
-           z2 =zplanes[i+1].z* mul
+           z2 = zplanes[i+1].z * mul - offset
 
            # def of one face to rotate
-           face = Part.Face(Part.makePolygon( [FreeCAD.Vector(rmin1*cosPhi,rmin1*sinPhi,z1),
+           face = Part.Face(Part.makePolygon( [ \
+                   FreeCAD.Vector(rmin1*cosPhi,rmin1*sinPhi,z1),
                    FreeCAD.Vector(rmax1*cosPhi,rmax1*sinPhi,z1),
                    FreeCAD.Vector(rmax2*cosPhi,rmax2*sinPhi,z2),
                    FreeCAD.Vector(rmin2*cosPhi,rmin2*sinPhi,z2),
