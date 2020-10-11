@@ -13,7 +13,7 @@ In order to support copies of GDML Volumes the following changes have been made
 There was a regression in FreeCAD 0.19 that affected the above changes, so you need to
 update to a later version of FreeCAD 0.19. You are therefore advised to update to at least FreeCAD 0.19 - 22665.
 
-For latest versions of FreeCAD 0.19 see https://github.com/FreeCAD/FreeCAD/releases
+For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
 ## **** New experimental export for GEMC ****
 
