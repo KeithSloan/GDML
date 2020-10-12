@@ -236,7 +236,7 @@ def indexBoolean(list,ln) :
     #print('Length : '+str(ln))
     if ln > 3 :
        #print(range(ln-3))
-       for r in range(ln-2) :
+       for r in range(ln-2,-1,-1) :
           t = list[r].TypeId
           #print(t)
           if t == 'Part::Cut' or t == 'Part::Fuse' or t == 'Part::Common' :

@@ -82,6 +82,28 @@ def getSelectedMaterial() :
 
     return 0
 
+def getSelectedPM() :
+    from .exportGDML import nameFromLabel
+    from .GDMLObjects import GDMLmaterial
+
+    objPart = None
+    material = 0
+    list = FreeCADGui.Selection.getSelection()
+    if list != None :
+       for obj in list :
+          if hasattr(obj,'Proxy') :
+             if isinstance(obj.Proxy,GDMLmaterial) == True and \
+                   material == 0 :
+                material = nameFromLabel(obj.Label)
+
+          if obj.TypeId == 'App::Part' and objPart is None :
+                objPart = obj
+
+          if objPart is not None and material !=0 :
+                return objPart, material
+
+    return objPart, material
+
 class ColourMapFeature:
 
   def Activated(self):
@@ -126,12 +148,17 @@ class BoxFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLBox, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLBox_Box")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Box")
+        else :
+           vol=objPart.newObject("App::Part","LV-Box")
+        obj=vol.newObject("Part::FeaturePython","GDMLBox_Box")
         #print("GDMLBox Object - added")
         # obj, x, y, z, lunits, material
-        GDMLBox(a,10.0,10.0,10.0,"mm",getSelectedMaterial())
+        GDMLBox(obj,10.0,10.0,10.0,"mm",material)
         #print("GDMLBox initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -154,12 +181,17 @@ class ConeFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLCone, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","GDMLCone_Cone")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Cone")
+        else :
+           vol=objPart.newObject("App::Part","LV-Cone")      
+        obj=vol.newObject("Part::FeaturePython","GDMLCone_Cone")
         #print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
-        GDMLCone(a,1,3,4,7,10.0,0,2,"rads","mm",getSelectedMaterial())
+        GDMLCone(obj,1,3,4,7,10.0,0,2,"rads","mm",material)
         #print("GDMLCone initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         #print("GDMLCone ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -183,13 +215,17 @@ class EllispoidFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLEllipsoid, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                  "GDMLEllipsoid_Ellipsoid")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Ellipsoid")
+        else :
+           vol=objPart.newObject("App::Part","LV-Ellipsoid")
+        obj=vol.newObject("Part::FeaturePython","GDMLEllipsoid_Ellipsoid")
         #print("GDMLEllipsoid Object - added")
         #  obj,ax, by, cz, zcut1, zcut2, lunit,material
-        GDMLEllipsoid(a,10,20,30,0,0,"mm",getSelectedMaterial())
+        GDMLEllipsoid(obj,10,20,30,0,0,"mm",material)
         #print("GDMLEllipsoid initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         #print("GDMLEllipsoid ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -213,13 +249,17 @@ class ElliTubeFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLElTube, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                  "GDMLElTube_Eltube")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-EllipticalTube")
+        else :
+           vol=objPart.newObject("App::Part","LV-EllipticalTube")
+        obj=vol.newObject("Part::FeaturePython","GDMLElTube_Eltube")
         #print("GDMLElTube Object - added")
         #  obj,dx, dy, dz, lunit, material
-        GDMLElTube(a,10,20,30,"mm",getSelectedMaterial())
+        GDMLElTube(obj,10,20,30,"mm",material)
         #print("GDMLElTube initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         #print("GDMLElTube ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -243,15 +283,18 @@ class SphereFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLSphere, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                    "GDMLSphere_Sphere")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Sphere")
+        else :
+           vol=objPart.newObject("App::Part","LV-Sphere")
+        obj=vol.newObject("Part::FeaturePython","GDMLSphere_Sphere")
         #print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
         #       aunit, lunits, material
-        GDMLSphere(a,10.0, 20.0, 0.0, 2.02, 0.0, 2.02,"rad","mm", \
-                  getSelectedMaterial())
+        GDMLSphere(obj,10.0, 20.0, 0.0, 2.02, 0.0, 2.02,"rad","mm",material) 
         #print("GDMLSphere initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         #print("GDMLSphere ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -275,15 +318,19 @@ class TrapFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLTrap, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                "GDMLTrap_Trap")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Trap")
+        else :
+           vol=objPart.newObject("App::Part","LV-Trap")
+        obj=vol.newObject("Part::FeaturePython","GDMLTrap_Trap")
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
         # pAlp2, aunits, lunits, material
-        GDMLTrap(a,10.0,0.0,0.0,6.0,6.0,6.0,6.0,7.0,7.0,0.0,"rad","mm", \
-                 getSelectedMaterial())
+        GDMLTrap(obj,10.0,0.0,0.0,6.0,6.0,6.0,6.0,7.0,7.0,0.0,"rad","mm", \
+                 material)
         print("GDMLTrap initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         print("GDMLTrap ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -308,13 +355,17 @@ class TubeFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLTube, ViewProvider
-        a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                "GDMLTube_Tube")
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Tube")
+        else :
+           vol=objPart.newObject("App::Part","LV-Tube")
+        obj=vol.newObject("Part::FeaturePython","GDMLTube_Tube")
         #print("GDMLTube Object - added")
         # obj, rmin, rmax, z, startphi, deltaphi, aunit, lunits, material
-        GDMLTube(a,5.0,8.0,10.0,0.52,1.57,"rad","mm",getSelectedMaterial())
+        GDMLTube(obj,5.0,8.0,10.0,0.52,1.57,"rad","mm",material)
         #print("GDMLTube initiated")
-        ViewProvider(a.ViewObject)
+        ViewProvider(obj.ViewObject)
         #print("GDMLTube ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -597,7 +648,10 @@ class CycleFeature :
             #print (obj.ViewObject.DisplayMode)
             #print (obj.ViewObject.Visibility)
             if obj.ViewObject.Visibility == False :
-               obj.ViewObject.DisplayMode = 'Shaded'
+               try :
+                  obj.ViewObject.DisplayMode = 'Shaded'
+               except :
+                  print(obj.Label+' No Shaded')
                obj.ViewObject.Visibility = True
             else :
                if obj.ViewObject.DisplayMode == 'Shaded' :
