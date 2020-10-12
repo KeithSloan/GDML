@@ -8,12 +8,12 @@ In order to support copies of GDML Volumes the following changes have been made
   * GDML position and Rotation as defined in PhysVol are now transfered to the associated FreeCAD Part
   * The only time you can change a GDML Objects Placement is when it is part of a Boolean
   * Copies are implemented as App::Links i.e. Link to Volume being copied.
-  * Copied of Volumes require function only available since FreeCAD 0.19
+  * Copies of Volumes require function only available since FreeCAD 0.19
   
 There was a regression in FreeCAD 0.19 that affected the above changes, so you need to
 update to a later version of FreeCAD 0.19. You are therefore advised to update to at least FreeCAD 0.19 - 22665.
 
-For latest versions of FreeCAD 0.19 see https://github.com/FreeCAD/FreeCAD/releases
+For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
 ## **** New experimental export for GEMC ****
 
