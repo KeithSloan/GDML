@@ -1,1 +1,0 @@
-python3 gdml2step.py ./lhcbvelo.gdml lhcbvelo.step
