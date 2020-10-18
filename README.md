@@ -425,7 +425,9 @@ to facilitate preperation for FEM analysis
   be changed before creating a compound. One option to be would be to add elements to GDML files to enable
   loading and exporting, but then they would **NOT** be standard GDML files (maybe a different file extension?)  
   
-## Standalone Utility
+## Standalone Utilities
+
+The standalone utilities and documentation are now in a submodule repository https://github.com/KeithSloan/GDML_Command_Line_Utils  
 
   In directory **Utils** You will find a python script **gdml2step.py** for creating a step file from a gdml file.
   
