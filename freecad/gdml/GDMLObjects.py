@@ -332,7 +332,8 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
       setLengthQuantity(obj, lunit)      
       obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
@@ -344,7 +345,8 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
           return
 
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1x', 'v1y', 'v2x','v2y', 'v3x', 'v3y', 'v4x', 'v4y',  \
                 'v5x', 'v5y', 'v6x', 'v6y', 'v7x', 'v7y', 'v8x', 'v8y', 'dz','lunit'] :
@@ -414,7 +416,8 @@ class GDMLBox(GDMLsolid) :
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLBox'
@@ -433,7 +436,8 @@ class GDMLBox(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
        
        if prop in ['x','y','z','lunit']  :
              self.createGeometry(fp) 
@@ -486,7 +490,8 @@ class GDMLCone(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLCone'
@@ -502,7 +507,8 @@ class GDMLCone(GDMLsolid) :
            return
 
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin1','rmax1','rmin2','rmax2','z','startphi','deltaphi' \
                ,'aunit', 'lunit'] :
@@ -577,7 +583,8 @@ class GDMLElCone(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLElCone'
@@ -593,7 +600,8 @@ class GDMLElCone(GDMLsolid) :
           return  
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
        
        if prop in ['dx','dy','zmax','zcut','lunit'] :
           self.createGeometry(fp)
@@ -647,7 +655,8 @@ class GDMLEllipsoid(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLEllipsoid'
@@ -664,7 +673,8 @@ class GDMLEllipsoid(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['ax','by','cz','zcut1','zcut2','lunit'] :
           self.createGeometry(fp)
@@ -728,7 +738,8 @@ class GDMLElTube(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLElTube'
@@ -744,7 +755,8 @@ class GDMLElTube(GDMLsolid) :
           return
 
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['dx','dy','dz','lunit'] :
           self.createGeometry(fp)
@@ -778,7 +790,8 @@ class GDMLOrb(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLOrb'
@@ -795,7 +808,8 @@ class GDMLOrb(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['r', 'lunit'] :
           #print(dir(fp))
@@ -835,7 +849,8 @@ class GDMLPara(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLParapiped", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLPara'
@@ -852,7 +867,8 @@ class GDMLPara(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
       
 
        if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
@@ -914,7 +930,8 @@ class GDMLPolyhedra(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLPolyhedra", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLPolyhedra'
@@ -931,7 +948,8 @@ class GDMLPolyhedra(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -1028,7 +1046,8 @@ class GDMLTorus(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTorus", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLTorus'
@@ -1044,7 +1063,8 @@ class GDMLTorus(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin', 'rmax', 'rtor','startphi','deltaphi', \
                    'aunit','lunit'] :
@@ -1083,7 +1103,8 @@ class GDMLXtru(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLXtru'
@@ -1099,7 +1120,8 @@ class GDMLXtru(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1300,7 +1322,8 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
       setMaterial(obj, material)
       # For debugging
       #obj.setEditorMode('Placement',0)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLPolycone'
@@ -1316,7 +1339,8 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1400,7 +1424,8 @@ class GDMLSphere(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLSphere", \
                        "Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
@@ -1416,7 +1441,8 @@ class GDMLSphere(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','startphi','deltaphi','starttheta', \
                     'deltatheta','aunit','lunit'] :
@@ -1518,7 +1544,8 @@ class GDMLTrap(GDMLsolid) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrap","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
@@ -1533,7 +1560,8 @@ class GDMLTrap(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','theta','phi','x1','x2','x3','x4','y1','y2','alpha', \
                    'aunit', 'lunit'] :
@@ -1623,7 +1651,8 @@ class GDMLTrd(GDMLsolid) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
@@ -1638,7 +1667,8 @@ class GDMLTrd(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','x1','x2','y1','y2','lunit'] :
           self.createGeometry(fp)
@@ -1698,7 +1728,8 @@ class GDMLTube(GDMLsolid) :
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTube","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
@@ -1713,7 +1744,8 @@ class GDMLTube(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                   'lunit'] :
@@ -1773,7 +1805,8 @@ class GDMLcutTube(GDMLsolid) :
       #print('Add material')
       #print(material)
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
@@ -1789,7 +1822,8 @@ class GDMLcutTube(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                    'lowX', 'lowY', 'lowZ', \
@@ -2004,6 +2038,9 @@ class GDMLGmshTessellated(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
+      #print(MaterialsList)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -2024,7 +2061,8 @@ class GDMLGmshTessellated(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['editable'] :
            if fp.editable == True :
@@ -2122,6 +2160,8 @@ class GDMLTessellated(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -2140,7 +2180,8 @@ class GDMLTessellated(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['editable'] :
            if fp.editable == True :
@@ -2219,7 +2260,8 @@ class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
       setMaterial(obj, material)
-      obj.ViewObject.ShapeColor = colourMaterial(material)
+      if FreeCAD.GuiUp :
+         obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       self.Type = 'GDMLTetra'
@@ -2235,7 +2277,8 @@ class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
            return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1','v2','v3','v4','lunit'] :
           self.createGeometry(fp)
@@ -2274,6 +2317,8 @@ class GDMLTetrahedron(GDMLsolid) :
        obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
+       if FreeCAD.GuiUp :
+          fp.ViewObject.ShapeColor = colourMaterial(fp.material)
        # Suppress Placement - position & Rotation via parent App::Part
        # this makes Placement via Phyvol easier and allows copies etc
        #obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -2292,7 +2337,8 @@ class GDMLTetrahedron(GDMLsolid) :
           return
        
        if prop in ['material'] :
-           fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+          if FreeCAD.GuiUp :
+             fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['lunit'] :
           self.createGeometry(fp)
