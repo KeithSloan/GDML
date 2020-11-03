@@ -2317,6 +2317,8 @@ class GDMLTetrahedron(GDMLsolid) :
        obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTetrahedron","Material")
        setMaterial(obj, material)
+       if FreeCAD.GuiUp :
+          obj.ViewObject.ShapeColor = colourMaterial(material)
        # Suppress Placement - position & Rotation via parent App::Part
        # this makes Placement via Phyvol easier and allows copies etc
        #obj.addExtension('App::OriginGroupExtensionPython', self)
