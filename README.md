@@ -156,7 +156,7 @@ and when GDML workbench active
 
 Upon switching to the GDML workbench, one will notice a number of icons that become available on the Workbench bar.
 
-* Clicking on one of the icons will create a Part(GDMLvolume) containg the GDML object
+* Clicking on one of the icons will create a Part(GDMLvolume) containing the GDML object
 
   If at the time a material is selected e.g. in the 'Labels & Attributes' window,
   then the object will be created with that material, otherwise the material will be set to the first material in the list.
