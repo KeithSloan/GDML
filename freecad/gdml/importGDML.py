@@ -935,92 +935,76 @@ def getVolSolid(name):
     vol = structure.find("/volume[@name='%s']" % name )
     sr = vol.find("solidref")
     GDMLShared.trace(sr.attrib)
-    name = GDMLShared.getRef(sr)
+    name = GDMLShared.getRef(sr,'name')
     solid = solids.find("*[@name='%s']" % name )
     return solid
 
-def parsePhysVol(volAsmFlg, parent,physVol,phylvl,px,py,pz,rot,displayMode):
+def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     # if volAsmFlag == True : Volume
     # if volAsmFlag == False : Assembly 
     # physvol is xml entity
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
-    #nx, ny, nz = GDMLShared.getPosition(physVol)
-    nx, ny, nz = GDMLShared.testPosition(physVol,px,py,pz)
-    nrot = GDMLShared.getRotation(physVol)
-    #print('rot : '+str(rot)+' nrot : '+nrot)
     volRef = GDMLShared.getRef(physVol,"volumeref")
     GDMLShared.trace("Volume Ref : "+volRef)
     if volRef != None :
        copyNum = physVol.get('copynumber')
        GDMLShared.trace('Copynumber : '+str(copyNum))
-       objName = None
-       if copyNum is not None :
-          # Test if exists
-          objName =FreeCAD.ActiveDocument.getObject(volRef)
-       if objName is None :
+       # lhcbvelo has duplicate with no copynumber
+       # Test if exists
+       namedObj = FreeCAD.ActiveDocument.getObject(volRef)
+       if namedObj is None :
           part = parent.newObject("App::Part",volRef)
-          expandVolume(part,volRef,nx,ny,nz,nrot,phylvl,displayMode)
+          expandVolume(part,volRef,phylvl,displayMode)
+
        else :  # Object exists create a Linked Object
           GDMLShared.trace('====> Create Link to : '+volRef)
-          part = parent.newObject('App::Link',volRef + '_' + copyNum)
-          part.LinkedObject = objName 
-          scale = GDMLShared.getScale(physVol)
-          #print(scale)
-          part.ScaleVector = scale
-          if scale != FreeCAD.Vector(1.,1.,1.) :
-             try :  # try as not working FC 0.18
-                part.addProperty("App::PropertyVector","GDMLscale","GDML", \
-                   "GDML Scale Vector")
-                part.GDMLscale = scale
-             except:
-                pass
-    
-       # This would be for Placement of Part need FC 0.19 Fix       
-       #part.Placement = GDMLShared.getPlacement(physVol)
-          
-       if copyNum is not None :
+          part = parent.newObject('App::Link',volRef)
+          part.LinkedObject = namedObj
+          if part.Name != volRef :
+             ln = len(volRef)
+             part.Label = volRef + '_' + part.Name[ln:]
           try : # try as not working FC 0.18
-             part.addProperty("App::PropertyInteger","Copynumber", \
-                               "GDML").Copynumber=int(copyNum)
+             part.addProperty("App::PropertyString","VolRef", \
+                               "GDML").VolRef=volRef
           except:
              pass
 
+          scale = GDMLShared.getScale(physVol)
+          #print(scale)
+          part.ScaleVector = scale
+          #if scale != FreeCAD.Vector(1.,1.,1.) :
+          #   try :  # try as not working FC 0.18
+          #      part.addProperty("App::PropertyVector","GDMLscale","Link", \
+          #         "GDML Scale Vector").GDMLscale = scale
+          #   except:
+          #      print('Scale not supported with FreeCAD 0.18')
+    
+       # This would be for Placement of Part need FC 0.19 Fix       
+       part.Placement = GDMLShared.getPlacement(physVol)
+          
+       # Louis gdml file copynumber on non duplicate   
+       if copyNum is not None :
+          try : # try as not working FC 0.18
+             part.addProperty("App::PropertyInteger","CopyNumber", \
+                               "GDML").CopyNumber=int(copyNum)
+          except:
+             print('Copynumber not supported in FreeCAD 0.18')
+
     #GDMLShared.setTrace(False)
  
-
 # ParseVolume name - structure is global
-# We get passed position and rotation
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
-    #global volDict
+def parseVolume(parent,name,phylvl,displayMode) :
+    GDMLShared.trace("ParseVolume : "+name)
+    expandVolume(parent,name,phylvl,displayMode)
 
-    # Has the volume already been parsed i.e in Assembly etc
-    #obj = volDict.get(name)
-    #if obj != None :
-    #   newobj = Draft.clone(obj)
-    #   #print(dir(newobj))
-    #   #print(newobj.TypeId)
-    #   #print(newobj.Name)
-    #   #print(newobj.Label)
-    #   parent.addObject(newobj)
-    #   base = FreeCAD.Vector(px,py,pz)
-    #   newobj.Placement = GDMLShared.processPlacement(base,rot)
-    #   return
-
-    #else :
-        GDMLShared.trace("ParseVolume : "+name)
-        #part = parent.newObject("App::Part",name)
-        #expandVolume(part,name,px,py,pz,rot,phylvl,displayMode)
-        expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode)
-
-def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
+def expandVolume(parent,name,phylvl,displayMode) :
     import FreeCAD as App
     from .GDMLObjects import checkMaterial
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
-    GDMLShared.trace("Positions : px "+str(px)+' py '+str(py)+' pz '+str(pz))
     vol = structure.find("volume[@name='%s']" % name )
     if vol != None : # If not volume test for assembly
        solidref = GDMLShared.getRef(vol,"solidref")
@@ -1033,8 +1017,8 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
              material = GDMLShared.getRef(vol,"materialref")
              if material != None :
                 if checkMaterial(material) == True :
-                   obj = createSolid(parent,solid,material,px,py,pz,rot \
-                         ,displayMode)
+                   obj = createSolid(parent,solid,material,0,0,0,None, \
+                                 displayMode)
                 else :
                    print('Material : '+material+' Not defined')
                    return None
@@ -1057,32 +1041,34 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
               if phylvl >= 0 :
                  phylvl += 1 
               # If negative always parse otherwise increase level    
-              parsePhysVol(True,parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(True,parent,pv,phylvl,displayMode)
+
            else :  # Just Add to structure 
-              volref = GDMLShared.getRef(pv,"volumeref")
+              volRef = GDMLShared.getRef(pv,"volumeref")
               nx, ny, nz = GDMLShared.getPosition(pv)
-              #nx, ny, nz = GDMLShared.testPosition(pv,px,py,pz)
               nrot = GDMLShared.getRotation(pv)
-              #part = parent.newObject("App::Part","NOT-Expanded_"+volref+"_")
-              part = parent.newObject("App::Part",volref)
-              part.Label = "NOT_Expanded_"+volref
+              cpyNum = pv.get('copynumber')
+              linkObj = FreeCAD.ActiveDocument.getObject(volRef)
+              if linkObj is not None :
+                 part = parent.newObject("App::Link",volRef)
+                 part.LinkedObject = linkObj
+              else :
+                 part = parent.newObject("App::Part",volRef)
+              if part.Name != volRef :
+                 ln = len(volRef)
+                 part.Label = "NOT_Expanded_"+volRef+'_'+part.Name[ln:]
+              else :
+                 part.Label = "NOT_Expanded_"+volRef
+              try :
+                 part.addProperty("App::PropertyString","VolRef","GDML", \
+                     "volref name").VolRef = volRef
+                 part.addProperty("App::PropertyInteger","CopyNumber","GDML", \
+                     "copynumber").CopyNumber = int(cpyNum)
+              except:
+                 print(volRef+' : volref not supported with FreeCAD 0.18')
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
-              #print(dir(part))
-              #
-              #obj = part.newObject("App::Annotation","Not Expanded")
-              #obj.LabelText="Annotation"
-              #view = obj.ViewObject
-              #print(dir(view))
-              #part = parent.newObject("App::DocumentObjectGroup",volref)
-              #vpart2 = part2.ViewObject
-              #print(dir(vpart2))
-              # 100% red, 0% Green, 0% Blue
-              #vpart.TextColor = (100., 0., 0., 0.)
-       # Add parsed Volume to dict
-       #volDict[name] = obj
        App.ActiveDocument.recompute() 
-       return obj
 
     else :
        asm = structure.find("assembly[@name='%s']" % name)
@@ -1090,7 +1076,7 @@ def expandVolume(parent,name,px,py,pz,rot,phylvl,displayMode) :
        if asm != None :
           for pv in asm.findall("physvol") :
               #obj = parent.newObject("App::Part",name)
-              parsePhysVol(False,parent,pv,phylvl,px,py,pz,rot,displayMode)
+              parsePhysVol(False,parent,pv,phylvl,displayMode)
        else :
            print("Not Volume or Assembly") 
 
@@ -1346,7 +1332,7 @@ def processGDML(doc,filename,prompt,initFlg):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, define, materials, solids, structure, volDict
+    global setup, define, materials, solids, structure 
   
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
@@ -1383,14 +1369,9 @@ def processGDML(doc,filename,prompt,initFlg):
     solids    = root.find('solids')
     structure = root.find('structure')
 
-    # volDict dictionary of volume names and associated FreeCAD part
-    volDict = {}
-
     world = GDMLShared.getRef(setup,"world")
     part =doc.addObject("App::Part",world)
-    #print(world)
-    #scanVolume(part,world)
-    parseVolume(part,world,0,0,0,None,phylvl,3)
+    parseVolume(part,world,phylvl,3)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]

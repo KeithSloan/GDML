@@ -1,1 +1,0 @@
-python3 combineGDML.py testCombineDir/testCombine.gdml combined.gdml

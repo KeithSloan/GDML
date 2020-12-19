@@ -1,3 +1,20 @@
+## **** VERY IMPORTANT - Upgrade FreeCAD 0.19 to 22665 or later ****
+
+**Changes to Placement ( GDML Position & Rotation )**
+
+In order to support copies of GDML Volumes the following changes have been made
+
+  * As per GDML one GDML Volume(FreeCAD Part) containes one Solid
+  * GDML position and Rotation as defined in PhysVol are now transfered to the associated FreeCAD Part
+  * The only time you can change a GDML Objects Placement is when it is part of a Boolean
+  * Copies are implemented as App::Links i.e. Link to Volume being copied.
+  * Copies of Volumes require function only available since FreeCAD 0.19
+  
+There was a regression in FreeCAD 0.19 that affected the above changes, so you need to
+update to a later version of FreeCAD 0.19. You are therefore advised to update to at least FreeCAD 0.19 - 22665.
+
+For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
+
 ## **** New experimental export for GEMC ****
 
 ## **** Wiki Under Construction ****
@@ -113,14 +130,14 @@ and when GDML workbench active
    * Drag the created **Part** to the World Volume in the **Tree** window
    * **Part** maybe renamed via right click context menu  
 5. Create GDML Solids by:  
-   * Clicking on the corresponding icon of the workbench.
-   * Drag the GDML object to the appropriate **Part** again via the **Tree** window
-   * You can then change the attributes by selecting the GDMLObject in the **Tree** window then changing the properties in the **Property View**
+   * Clicking on the corresponding icon of the workbench, this will create a Part(GDML Volume) which contains the GDMLsolid
+   * You can then change the attributes by selecting the GDMLObject in the **Tree** window and changing the properties in the **Property View**
+   * You can alter the position and rotation by changing the Placement parameters in the Part(GDML Volume)
+   * You can select and drag the Part(GDML Volume) to the appropriate part of the overall model strcuture
       
   So a valid structure for a GDML file is:  
    * Single World Volume (Part)
    * A number of Volumes (Parts) under the World Volume
-   * A number of GDML Objects can exist in one Part ( GDML Logical Volume)
  
 6. To Export to GDML
     1. Select the 'World' Volume ( Default Name WorldVol )
@@ -139,14 +156,15 @@ and when GDML workbench active
 
 Upon switching to the GDML workbench, one will notice a number of icons that become available on the Workbench bar.
 
-* Clicking on one the icons will create a GDML object.
+* Clicking on one of the icons will create a Part(GDMLvolume) containing the GDML object
 
   If at the time a material is selected e.g. in the 'Labels & Attributes' window,
   then the object will be created with that material, otherwise the material will be set to the first material in the list.
   
-* It should then be dragged to the appropriate __Part__ (GDML Logical Volume)
-* In neccessary, once can then edit the properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
+* You can then alter the Objects properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
+* If a Part(GDML Volume) is selected at the time of clicking on the icon, then the new Part(GDML volume ) and GDML object will be created as
+a subvolume of the one selected, otherwise the created Part can then be dragged to the appropriate part of model structure
 
 ### GDML Objects Currently Supported for creation via the GUI are
 
@@ -408,7 +426,9 @@ to facilitate preperation for FEM analysis
   be changed before creating a compound. One option to be would be to add elements to GDML files to enable
   loading and exporting, but then they would **NOT** be standard GDML files (maybe a different file extension?)  
   
-## Standalone Utility
+## Standalone Utilities
+
+The standalone utilities and documentation are now in a submodule repository https://github.com/KeithSloan/GDML_Command_Line_Utils  
 
   In directory **Utils** You will find a python script **gdml2step.py** for creating a step file from a gdml file.
   
