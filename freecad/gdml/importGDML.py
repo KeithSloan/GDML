@@ -1045,27 +1045,36 @@ def expandVolume(parent,name,phylvl,displayMode) :
 
            else :  # Just Add to structure 
               volRef = GDMLShared.getRef(pv,"volumeref")
+              #print('volRef : '+volRef)
               nx, ny, nz = GDMLShared.getPosition(pv)
               nrot = GDMLShared.getRotation(pv)
               cpyNum = pv.get('copynumber')
+              #print('copyNumber : '+str(cpyNum))
+              # Is volRef already defined
               linkObj = FreeCAD.ActiveDocument.getObject(volRef)
               if linkObj is not None :
-                 part = parent.newObject("App::Link",volRef)
-                 part.LinkedObject = linkObj
+                 # already defined so link
+                 #print('Already defined')
+                 try : 
+                    part = parent.newObject("App::Link",volRef)
+                    part.LinkedObject = linkObj
+                 except:
+                    print(volRef+' : volref not supported with FreeCAD 0.18')
               else :
+                 # Not already defined so create
+                 #print('Is new : '+volRef)
                  part = parent.newObject("App::Part",volRef)
+              part.addProperty("App::PropertyString","VolRef","GDML", \
+                   "volref name").VolRef = volRef
+              if cpyNum is not None :
+                 part.addProperty("App::PropertyInteger","CopyNumber", \
+                     "GDML", "copynumber").CopyNumber = int(cpyNum)
+              #print('part Name : '+part.Name)
               if part.Name != volRef :
                  ln = len(volRef)
                  part.Label = "NOT_Expanded_"+volRef+'_'+part.Name[ln:]
               else :
                  part.Label = "NOT_Expanded_"+volRef
-              try :
-                 part.addProperty("App::PropertyString","VolRef","GDML", \
-                     "volref name").VolRef = volRef
-                 part.addProperty("App::PropertyInteger","CopyNumber","GDML", \
-                     "copynumber").CopyNumber = int(cpyNum)
-              except:
-                 print(volRef+' : volref not supported with FreeCAD 0.18')
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
        App.ActiveDocument.recompute() 
