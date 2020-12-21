@@ -714,15 +714,7 @@ def expandFunction(obj, eNum) :
        volRef = name
     if obj.TypeId != 'App::Link' :
        expandVolume(obj,volRef,eNum,3)
-    else :
-       if hasattr(obj,'LinkedObject') :
-          if obj.LinkedObject.Label[0:12] == 'NOT_Expanded' :
-             print('Expand : '+volRef)
-             expandVolume(obj.LinkedObject,volRef,eNum,3)
-             obj.LinkedObject.Label = volRef
-       else :
-          print('No Linked Object Found')
-    obj.Label = name
+       obj.Label = name
 
 
 class ExpandFeature :
@@ -734,9 +726,13 @@ class ExpandFeature :
             #if len(obj.InList) == 0: # allowed only for for top level objects
             # add check for Part i.e. Volume
             print("Selected")
-            print(obj.Label[:12])
-            if obj.Label[:12] == "NOT_Expanded" :
+            print(obj.Label[:13])
+            if obj.Label[:13] == "NOT_Expanded_" :
                expandFunction(obj,0) 
+            if obj.Label[:5] == "Link_" :
+               if hasattr(obj,'LinkedObject') :
+                  if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_' :
+                     expandFunction(obj.LinkedObject,0)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Expand_One', 'MenuText': \
