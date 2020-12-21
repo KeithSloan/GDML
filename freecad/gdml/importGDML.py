@@ -1058,23 +1058,19 @@ def expandVolume(parent,name,phylvl,displayMode) :
                  try : 
                     part = parent.newObject("App::Link",volRef)
                     part.LinkedObject = linkObj
+                    part.Label = "Link_"+part.Name
                  except:
                     print(volRef+' : volref not supported with FreeCAD 0.18')
               else :
                  # Not already defined so create
                  #print('Is new : '+volRef)
                  part = parent.newObject("App::Part",volRef)
+                 part.Label = "NOT_Expanded_"+part.Name
               part.addProperty("App::PropertyString","VolRef","GDML", \
                    "volref name").VolRef = volRef
               if cpyNum is not None :
                  part.addProperty("App::PropertyInteger","CopyNumber", \
                      "GDML", "copynumber").CopyNumber = int(cpyNum)
-              #print('part Name : '+part.Name)
-              if part.Name != volRef :
-                 ln = len(volRef)
-                 part.Label = "NOT_Expanded_"+volRef+'_'+part.Name[ln:]
-              else :
-                 part.Label = "NOT_Expanded_"+volRef
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
        App.ActiveDocument.recompute() 
