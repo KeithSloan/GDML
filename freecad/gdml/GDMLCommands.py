@@ -749,9 +749,13 @@ class ExpandMaxFeature :
             #if len(obj.InList) == 0: # allowed only for for top level objects
             # add check for Part i.e. Volume
             print("Selected")
-            print(obj.Label[:12])
-            if obj.Label[:12] == "NOT_Expanded" :
-               expandFunction(obj,-1) 
+            print(obj.Label[:13])
+            if obj.Label[:13] == "NOT_Expanded_" :
+               expandFunction(obj,-1)
+            if obj.Label[:5] == "Link_" :
+               if hasattr(obj,'LinkedObject') :
+                  if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_' :
+                     expandFunction(obj.LinkedObject,-1)
 
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Expand_Max', 'MenuText': \
