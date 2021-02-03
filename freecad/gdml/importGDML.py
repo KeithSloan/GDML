@@ -1007,17 +1007,28 @@ def expandVolume(parent,name,phylvl,displayMode) :
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
     vol = structure.find("volume[@name='%s']" % name )
-    if vol != None : # If not volume test for assembly
-       aux = vol.get('auxillary')
+    if vol is not None : # If not volume test for assembly
        colour = None
-       if aux is not None :
-          if aux.get('auxtype') == 'color' :
-             auxvalue = aux.get('auxvalue')
-             if auxvalue[0] == '#' :   # Hex values
-                colour = (int(auxvalue[1:2],16),int(auxvalue[3:4],16), \
-                          int(auxvalue[5:6],16),int(auxvalue[7:9],16))
-             else :
-                print('Colour text values - Not yet coded for') 
+       for aux in vol.findall('auxillary') : # could be more than one auxillary
+          if aux is not None :
+             #print('auxillary')
+             if aux.get('auxtype') == 'color' :
+                #print('auxtype color')
+                auxvalue = aux.get('auxvalue')
+                if auxvalue is not None :
+                   #print(auxvalue)
+                   #print(auxvalue[1:3])
+                   #print(int(auxvalue[1:3],16))
+                   if auxvalue[0] == '#' :   # Hex values
+                      colour = (int(auxvalue[1:3],16)/256, \
+                                int(auxvalue[3:5],16)/256, \
+                                int(auxvalue[5:7],16)/256, \
+                                int(auxvalue[7:],16)/256)
+                      #print('colour '+str(colour))
+                   else :
+                      print('Colour text values - Not yet coded for')
+                else :
+                   print('No auxvalue')
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref is not None :
           solid  = solids.find("*[@name='%s']" % solidref )
@@ -1031,10 +1042,12 @@ def expandVolume(parent,name,phylvl,displayMode) :
                    obj = createSolid(parent,solid,material,colour,0,0,0,None, \
                                  displayMode)
                 else :
-                   print('Material : '+material+' Not defined')
+                   print('Material : '+material+' Not defined for solid : ' \
+                         +str(solid)+' Volume : '+name)
                    return None
              else :
-                print('materialref not defined')
+                print('Materialref Not defined for solid : ' \
+                         +str(solid)+' Volume : '+name)
                 return None
           else :
              print('Solid : '+solidref+' Not defined')
