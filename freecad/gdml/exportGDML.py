@@ -654,12 +654,16 @@ def testAddPhysVol(obj, xmlParent, volName):
        else :
           print('Root/World Volume')
 
-def addVolRef(volxml, volName, solidName, material) :
+def addVolRef(volxml, volName, solidName, obj) :
     GDMLShared.trace('AddVolRef : '+volName+' : '+solidName)
     ET.SubElement(volxml,'solidref',{'ref': solidName})
-    if material != None :   # MultiUnion no material
-       ET.SubElement(volxml,'materialref',{'ref': material})
-    ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
+    if hasattr(obj,'material') :  # MultiUnion no material
+       ET.SubElement(volxml,'materialref',{'ref': obj.material})
+       ET.SubElement(gxml,'volume',{'name': volName, 'material':obj.material})
+    if hasattr(obj.ViewObject,'ShapeColor') :
+       colour = obj.ViewObject.ShapeColor
+       colStr = '#'+''.join('{:02x}'.format(round(v*255)) for v in colour)
+       ET.SubElement(volxml,'auxillary',{'auxtype': 'color', 'auxvalue':colStr})
     #print(ET.tostring(volxml))
     
 def nameOfGDMLobject(obj) :
@@ -1492,7 +1496,7 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     if hasattr(obj,'Base') :
        GDMLShared.trace('Has Base')
     material  = getMaterial(obj.Base)
-    addVolRef(xmlVol, volName, solidName, material)
+    addVolRef(xmlVol, volName, solidName, obj.Base)
     #if asmFlg == False :  # Don't add physvol if boolean is an assembly
     #   testAddPhysVol(obj, xmlParent, parentName)
     #processPosition(obj.Tool,boolxml)
@@ -1603,7 +1607,8 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          boolCount = getCount(obj.Base)
          material  = getMaterial(obj.Base)
          GDMLShared.trace('Count : '+str(boolCount))
-         addVolRef(xmlVol, volName, solidName, material(obj.Base))
+         #addVolRef(xmlVol, volName, solidName, material(obj.Base))
+         addVolRef(xmlVol, volName, solidName, obj.Base)
          testAddPhysVol(obj, xmlParent, parentName)
          # First add solids in list before reference
          print('Output Solids')
@@ -1637,6 +1642,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          processMesh(obj, obj.Mesh, obj.Name)
          #addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
          #addVolRef(xmlVol, volName, solidName, obj.material)
+         print('Need to add code for Mesh Material and colour')
          #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
          return idx + 1
@@ -1651,7 +1657,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          if cnt > 1 :
             volName = 'LV-'+solidName
             xmlVol = insertXMLvolume(volName)
-         addVolRef(xmlVol, volName, solidName, obj.material)
+         addVolRef(xmlVol, volName, solidName, obj)
          #if asmFlg == True :  # Don't add physvol if GDML object in an assembly
          #   testAddPhysVol(obj, xmlParent, parentName)
          return idx + 1
