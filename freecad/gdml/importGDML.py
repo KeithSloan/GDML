@@ -1006,17 +1006,18 @@ def expandVolume(parent,name,phylvl,displayMode) :
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
+    print("expandVolume : "+name)
     vol = structure.find("volume[@name='%s']" % name )
     if vol is not None : # If not volume test for assembly
        colour = None
-       for aux in vol.findall('auxillary') : # could be more than one auxillary
+       for aux in vol.findall('auxiliary') : # could be more than one auxillary
           if aux is not None :
-             #print('auxillary')
+             print('auxillary')
              if aux.get('auxtype') == 'Color' :
-                #print('auxtype Color')
+                print('auxtype Color')
                 auxvalue = aux.get('auxvalue')
                 if auxvalue is not None :
-                   #print(auxvalue)
+                   print(auxvalue)
                    #print(auxvalue[1:3])
                    #print(int(auxvalue[1:3],16))
                    if auxvalue[0] == '#' :   # Hex values
@@ -1026,7 +1027,20 @@ def expandVolume(parent,name,phylvl,displayMode) :
                                 int(auxvalue[7:],16)/256)
                       #print('colour '+str(colour))
                    else :
+                      colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
+                                'Blue'    :(0.0, 0.0, 1.0, 0.0), \
+                                'Brown'   :(0.45, 0.25, 0.0, 0.0), \
+                                'Cyan'    :(0.0, 1.0, 1.0, 0.0), \
+                                'Gray'    :(0.5, 0.5, 0.5, 0.0), \
+                                'Grey'    :(0.5, 0.5, 0.5, 0.0), \
+                                'Green'   :(0.0, 1.0, 0.0, 0.0), \
+                                'Magenta' :(1.0, 0.0, 1.0, 0.0), \
+                                'Red'     :(1.0, 0.0, 0.0, 0.0), \
+                                'White'   :(1.0, 1.0, 1.0, 0.0), \
+                                'Yellow'  :(1.0, 1.0, 0.0, 0.0)  }
+                      colour = colDict.get(auxvalue,(0,0, 0.0, 0.0))
                       print('Colour text values - Not yet coded for')
+                      print(colour)
                 else :
                    print('No auxvalue')
        solidref = GDMLShared.getRef(vol,"solidref")
