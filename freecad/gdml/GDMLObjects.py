@@ -1143,7 +1143,7 @@ class GDMLTorus(GDMLsolid) :
        fp.Placement = currPlacement
 
 class GDMLXtru(GDMLsolid) :
-   def __init__(self, obj, lunit, materiali, colour) :
+   def __init__(self, obj, lunit, material, colour) :
       super().__init__(obj)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLXtru","lunit")

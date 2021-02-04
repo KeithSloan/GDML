@@ -344,7 +344,7 @@ def createPara(part,solid,material,colour,px,py,pz,rot,displayMode) :
     theta = GDMLShared.getVal(solid,'theta')
     phi = GDMLShared.getVal(solid,'phi')
     mypara=part.newObject("Part::FeaturePython","GDMLPara:"+getName(solid))
-    GDMLPara(mypara,x,y,z,alpha,theta,phi,aunit,lunit,materialr,colour)
+    GDMLPara(mypara,x,y,z,alpha,theta,phi,aunit,lunit,material,colour)
     GDMLShared.trace("CreatePara : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -889,7 +889,6 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
            break
 
         if case('trd'):
-           print(colour)
            return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
            break
 
