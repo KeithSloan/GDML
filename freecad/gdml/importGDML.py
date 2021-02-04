@@ -1012,19 +1012,23 @@ def expandVolume(parent,name,phylvl,displayMode) :
        colour = None
        for aux in vol.findall('auxiliary') : # could be more than one auxillary
           if aux is not None :
-             print('auxillary')
-             if aux.get('auxtype') == 'Color' :
-                print('auxtype Color')
-                auxvalue = aux.get('auxvalue')
-                if auxvalue is not None :
-                   print(auxvalue)
-                   #print(auxvalue[1:3])
-                   #print(int(auxvalue[1:3],16))
-                   if auxvalue[0] == '#' :   # Hex values
-                      colour = (int(auxvalue[1:3],16)/256, \
-                                int(auxvalue[3:5],16)/256, \
-                                int(auxvalue[5:7],16)/256, \
-                                int(auxvalue[7:],16)/256)
+             print('auxiliary')
+             aType = aux.get('auxtype')
+             aValue = aux.get('auxvalue')
+             if aValue is not None :
+                if aType == 'SensDet' :
+                   parent.addProperty("App::PropertyString","SensDet","Base", \
+                       "SensDet").SensDet = aValue
+                if aType == 'Color' :
+                   print('auxtype Color')
+                   print(aValue)
+                   #print(aValue[1:3])
+                   #print(int(aValue[1:3],16))
+                   if aValue[0] == '#' :   # Hex values
+                      colour = (int(aValue[1:3],16)/256, \
+                                int(aValue[3:5],16)/256, \
+                                int(aValue[5:7],16)/256, \
+                                int(aValue[7:],16)/256)
                       #print('colour '+str(colour))
                    else :
                       colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
@@ -1038,11 +1042,10 @@ def expandVolume(parent,name,phylvl,displayMode) :
                                 'Red'     :(1.0, 0.0, 0.0, 0.0), \
                                 'White'   :(1.0, 1.0, 1.0, 0.0), \
                                 'Yellow'  :(1.0, 1.0, 0.0, 0.0)  }
-                      colour = colDict.get(auxvalue,(0,0, 0.0, 0.0))
-                      print('Colour text values - Not yet coded for')
-                      print(colour)
-                else :
-                   print('No auxvalue')
+                      colour = colDict.get(aValue,(0,0, 0.0, 0.0))
+                      #print(colour)
+             else :
+                print('No auxvalue')
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref is not None :
           solid  = solids.find("*[@name='%s']" % solidref )

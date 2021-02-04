@@ -1826,6 +1826,13 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     if GDMLShared.getTrace() == True :
        GDMLShared.trace('Process Volume : '+volName)
        printVolumeInfo(cnt, vol, xmlVol, xmlParent, parentName)
+
+    if hasattr(vol,'SensDet') :
+       if vol.SensDet is not None :
+          print('Volume : '+volName)
+          print('SensDet : '+vol.SensDet)
+          ET.SubElement(xmlVol,'auxillary',{'auxtype':'SensDet', \
+                        'auxvalue' : vol.SensDet}) 
     idx = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)
