@@ -161,7 +161,8 @@ Upon switching to the GDML workbench, one will notice a number of icons that bec
   If at the time a material is selected e.g. in the 'Labels & Attributes' window,
   then the object will be created with that material, otherwise the material will be set to the first material in the list.
   
-* You can then alter the Objects properties via the properties window. The parameters should be the same as in the [GDML user guide]().  
+* You can then alter the Objects properties via the properties window. The parameters should be the same as in the [GDML user guide]().
+* Note: If you toggle values via your mouse, you then need to hit enter for the changes to show in the main view.
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
 * If a Part(GDML Volume) is selected at the time of clicking on the icon, then the new Part(GDML volume ) and GDML object will be created as
 a subvolume of the one selected, otherwise the created Part can then be dragged to the appropriate part of model structure
