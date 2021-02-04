@@ -1012,8 +1012,8 @@ def expandVolume(parent,name,phylvl,displayMode) :
        for aux in vol.findall('auxillary') : # could be more than one auxillary
           if aux is not None :
              #print('auxillary')
-             if aux.get('auxtype') == 'color' :
-                #print('auxtype color')
+             if aux.get('auxtype') == 'Color' :
+                #print('auxtype Color')
                 auxvalue = aux.get('auxvalue')
                 if auxvalue is not None :
                    #print(auxvalue)

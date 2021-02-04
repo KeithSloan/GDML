@@ -663,7 +663,7 @@ def addVolRef(volxml, volName, solidName, obj) :
     if hasattr(obj.ViewObject,'ShapeColor') :
        colour = obj.ViewObject.ShapeColor
        colStr = '#'+''.join('{:02x}'.format(round(v*255)) for v in colour)
-       ET.SubElement(volxml,'auxillary',{'auxtype': 'color', 'auxvalue':colStr})
+       ET.SubElement(volxml,'auxillary',{'auxtype': 'Color', 'auxvalue':colStr})
     #print(ET.tostring(volxml))
     
 def nameOfGDMLobject(obj) :
