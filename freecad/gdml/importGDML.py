@@ -1012,7 +1012,7 @@ def expandVolume(parent,name,phylvl,displayMode) :
        colour = None
        for aux in vol.findall('auxiliary') : # could be more than one auxillary
           if aux is not None :
-             print('auxiliary')
+             #print('auxiliary')
              aType = aux.get('auxtype')
              aValue = aux.get('auxvalue')
              if aValue is not None :
@@ -1020,15 +1020,17 @@ def expandVolume(parent,name,phylvl,displayMode) :
                    parent.addProperty("App::PropertyString","SensDet","Base", \
                        "SensDet").SensDet = aValue
                 if aType == 'Color' :
-                   print('auxtype Color')
-                   print(aValue)
+                   #print('auxtype Color')
+                   #print(aValue)
                    #print(aValue[1:3])
                    #print(int(aValue[1:3],16))
                    if aValue[0] == '#' :   # Hex values
-                      colour = (int(aValue[1:3],16)/256, \
-                                int(aValue[3:5],16)/256, \
-                                int(aValue[5:7],16)/256, \
-                                int(aValue[7:],16)/256)
+                      #colour = (int(aValue[1:3],16)/256, \
+                      #          int(aValue[3:5],16)/256, \
+                      #          int(aValue[5:7],16)/256, \
+                      #          int(aValue[7:],16)/256)
+                      colour = tuple(int(aValue[n:n+2],16)/256 for \
+                               n in range(1, len(aValue),2))
                       #print('colour '+str(colour))
                    else :
                       colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \

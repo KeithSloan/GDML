@@ -194,13 +194,14 @@ def createLVandPV(obj, name, solidName):
     #
     # Logical & Physical Volumes get added to structure section of gdml
     #
+    print('createLVandPV')
     #ET.ElementTree(gdml).write("test9d", 'utf-8', True)
     #print("Object Base")
     #dir(obj.Base)
     #print dir(obj)
     #print dir(obj.Placement)
     global PVcount, POScount, ROTcount
-    return
+    #return
     pvName = 'PV'+name+str(PVcount)
     PVcount += 1
     pos  = obj.Placement.Base
@@ -223,14 +224,18 @@ def createLVandPV(obj, name, solidName):
     GDMLShared.trace("Angles")
     GDMLShared.trace(angles)
     a0 = angles[0]
+    print(a0)
     a1 = angles[1]
+    print(a1)
     a2 = angles[2]
+    print(a2)
     if a0!=0 and a1!=0 and a2!=0 :
        rotName = 'Rot'+name+str(ROTcount)
        ROTcount += 1
        ET.SubElement(phys, 'rotationref', {'name': rotName})
        ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
-                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
+                  'x': str(a2), 'y': str(a1), 'z': str(a0)})
+                  #'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
 
 def createAdjustedLVandPV(obj, name, solidName, delta):
     # Allow for difference in placement between FreeCAD and GDML
@@ -601,25 +606,29 @@ def exportPosition(name, xml, pos) :
     ET.SubElement(xml,'positionref',{'ref' : posName})
 
 def exportRotation(name, xml, Rotation) :
+    print('Export Rotation')
     global ROTcount
     if Rotation.Angle != 0 :
         angles = Rotation.toEuler()
         GDMLShared.trace("Angles")
         GDMLShared.trace(angles)
         a0 = angles[0]
+        print(a0)
         a1 = angles[1]
+        print(a1)
         a2 = angles[2]
+        print(a2)
         if a0!=0 or a1!=0 or a2!=0 :
             rotName = 'R-'+name+str(ROTcount)
             ROTcount += 1
             rotxml = ET.SubElement(define, 'rotation', {'name': rotName, \
                     'unit': 'deg'})
             if abs(a2) != 0 :
-                rotxml.attrib['x']=str(a2)
+                rotxml.attrib['x']=str(-a2)
             if abs(a1) != 0 :
-                rotxml.attrib['y']=str(a1)
+                rotxml.attrib['y']=str(-a1)
             if abs(a0) != 0 :
-                rotxml.attrib['z']=str(a0)
+                rotxml.attrib['z']=str(-a0)
             ET.SubElement(xml, 'rotationref', {'ref': rotName})
 
 def processPosition(obj, solid) :
@@ -1831,7 +1840,7 @@ def processVolume(cnt, vol, xmlVol, xmlParent, parentName, addVolsFlag) :
        if vol.SensDet is not None :
           print('Volume : '+volName)
           print('SensDet : '+vol.SensDet)
-          ET.SubElement(xmlVol,'auxillary',{'auxtype':'SensDet', \
+          ET.SubElement(xmlVol,'auxiliary',{'auxtype':'SensDet', \
                         'auxvalue' : vol.SensDet}) 
     idx = 0
     if hasattr(vol,'OutList') :
