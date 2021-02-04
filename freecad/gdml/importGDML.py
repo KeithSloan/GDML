@@ -148,7 +148,7 @@ def setDisplayMode(obj,mode):
     if mode == 3 :
        obj.ViewObject.DisplayMode = 'Wireframe'
 
-def createArb8(part,solid,meterial,colourcolour,px,py,pz,rot,displayMode) :
+def createArb8(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLArb8, ViewProvider
     #GDMLShared.setTrace(True)
@@ -889,6 +889,7 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
            break
 
         if case('trd'):
+           print(colour)
            return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
            break
 

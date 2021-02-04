@@ -1719,7 +1719,7 @@ class GDMLTrd(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
-         if colous is not None :
+         if colour is not None :
             obj.ViewObject.ShapeColor = colourMaterial(material)
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -2122,7 +2122,7 @@ class GDMLGmshTessellated(GDMLsolid) :
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
-         if colours is not None :
+         if colour is not None :
             obj.ViewObject.ShapeColor = colourMaterial(material)
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
