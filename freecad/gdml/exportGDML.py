@@ -194,6 +194,9 @@ def createLVandPV(obj, name, solidName):
     #
     # Logical & Physical Volumes get added to structure section of gdml
     #
+    # Need to update so that use export of Rotation & position
+    # rather than this as well i.e one Place
+    #
     print('createLVandPV')
     #ET.ElementTree(gdml).write("test9d", 'utf-8', True)
     #print("Object Base")
@@ -234,8 +237,7 @@ def createLVandPV(obj, name, solidName):
        ROTcount += 1
        ET.SubElement(phys, 'rotationref', {'name': rotName})
        ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
-                  'x': str(a2), 'y': str(a1), 'z': str(a0)})
-                  #'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
+                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
 
 def createAdjustedLVandPV(obj, name, solidName, delta):
     # Allow for difference in placement between FreeCAD and GDML
@@ -664,11 +666,12 @@ def testAddPhysVol(obj, xmlParent, volName):
           print('Root/World Volume')
 
 def addVolRef(volxml, volName, solidName, obj) :
+    # Pass material as Boolean
     GDMLShared.trace('AddVolRef : '+volName+' : '+solidName)
     ET.SubElement(volxml,'solidref',{'ref': solidName})
-    if hasattr(obj,'material') :  # MultiUnion no material
-       ET.SubElement(volxml,'materialref',{'ref': obj.material})
-       ET.SubElement(gxml,'volume',{'name': volName, 'material':obj.material})
+    material = getMaterial(obj)
+    ET.SubElement(volxml,'materialref',{'ref': material})
+    ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
     if hasattr(obj.ViewObject,'ShapeColor') :
        colour = obj.ViewObject.ShapeColor
        colStr = '#'+''.join('{:02x}'.format(round(v*255)) for v in colour)
@@ -1504,7 +1507,6 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     GDMLShared.trace('Solid Name : '+solidName)
     if hasattr(obj,'Base') :
        GDMLShared.trace('Has Base')
-    material  = getMaterial(obj.Base)
     addVolRef(xmlVol, volName, solidName, obj.Base)
     #if asmFlg == False :  # Don't add physvol if boolean is an assembly
     #   testAddPhysVol(obj, xmlParent, parentName)
@@ -1614,9 +1616,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          # test and fix
          solidName = 'MultiFuse'+obj.Name
          boolCount = getCount(obj.Base)
-         material  = getMaterial(obj.Base)
          GDMLShared.trace('Count : '+str(boolCount))
-         #addVolRef(xmlVol, volName, solidName, material(obj.Base))
          addVolRef(xmlVol, volName, solidName, obj.Base)
          testAddPhysVol(obj, xmlParent, parentName)
          # First add solids in list before reference
@@ -1649,8 +1649,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          print("   Mesh Feature") 
          # test and Fix
          processMesh(obj, obj.Mesh, obj.Name)
-         #addVolRef(xmlVol, volName, solidName, getMaterial(obj.Base))
-         #addVolRef(xmlVol, volName, solidName, obj.material)
+         addVolRef(xmlVol, volName, solidName, obj)
          print('Need to add code for Mesh Material and colour')
          #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
