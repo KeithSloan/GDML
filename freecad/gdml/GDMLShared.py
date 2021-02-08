@@ -238,15 +238,17 @@ def processPlacement(base,rot) :
 
         rot = rotX.multiply(rotY).multiply(rotZ)
         #rot = rotX
-        c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
+        #c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
         #print('base : '+str(base))
         #print('rot  : '+str(rot))
         #return FreeCAD.Placement(base, rot,  c_rot)
       
+        #placement = FreeCAD.Placement(base, FreeCAD.Rotation(-x,-y,-z))
+        #placement = FreeCAD.Placement(base, FreeCAD.Rotation(-z,-y,-x), \
+        #            base)
         placement = FreeCAD.Placement(base, FreeCAD.Rotation(rot))
         #print('placement : '+str(placement))
-        return FreeCAD.Placement(base, FreeCAD.Rotation(rot))
-
+        return placement
 
 def getPositionFromAttrib(pos) :
     #print('getPositionFromAttrib')
