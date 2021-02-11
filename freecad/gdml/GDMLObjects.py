@@ -309,7 +309,7 @@ class GDMLcommon :
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
    def __init__(self, obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,  \
                 v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz, \
-                lunit, material, colour):
+                lunit, material, colour = None):
       '''Add some custom properties to our Tube feature'''
       obj.addProperty("App::PropertyFloat","v1x","GDMLArb8","vertex 1 x position").v1x=v1x
       obj.addProperty("App::PropertyFloat","v1y","GDMLArb8","vertex 1 y position").v1y=v1y
@@ -409,7 +409,7 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
         fp.Placement = currPlacement 
 
 class GDMLBox(GDMLsolid) :
-   def __init__(self, obj, x, y, z, lunit, material, colour):
+   def __init__(self, obj, x, y, z, lunit, material, colour=None):
       super().__init__(obj)
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
@@ -481,7 +481,7 @@ class GDMLBox(GDMLsolid) :
 
 class GDMLCone(GDMLsolid) :
    def __init__(self, obj, rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit, \
-                lunit, material, colour):
+                lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
       obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").rmin1=rmin1
@@ -582,7 +582,7 @@ class GDMLCone(GDMLsolid) :
           fp.Placement = currPlacement   
 
 class GDMLElCone(GDMLsolid) :
-   def __init__(self, obj, dx, dy, zmax, zcut, lunit, material, colour) :
+   def __init__(self, obj, dx, dy, zmax, zcut, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our ElCone feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElCone", \
@@ -656,7 +656,7 @@ class GDMLElCone(GDMLsolid) :
        fp.Placement = currPlacement   
 
 class GDMLEllipsoid(GDMLsolid) :
-   def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material, colour) :
+   def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
       obj.addProperty("App::PropertyFloat","ax","GDMLEllipsoid", \
@@ -747,7 +747,7 @@ class GDMLEllipsoid(GDMLsolid) :
        fp.Placement = currPlacement
 
 class GDMLElTube(GDMLsolid) :
-   def __init__(self, obj, dx, dy, dz, lunit, material, colour) :
+   def __init__(self, obj, dx, dy, dz, lunit, material, colour=None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElTube", \
@@ -809,7 +809,7 @@ class GDMLElTube(GDMLsolid) :
        fp.Placement = currPlacement
 
 class GDMLOrb(GDMLsolid) :
-   def __init__(self, obj, r, lunit, material, colour) :
+   def __init__(self, obj, r, lunit, material, colour=None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
@@ -861,7 +861,7 @@ class GDMLOrb(GDMLsolid) :
 
 class GDMLPara(GDMLsolid) :
    def __init__(self, obj, x, y, z, alpha, theta, phi, aunit, lunit, \
-                material, colour) :
+                material, colour= None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
@@ -949,7 +949,7 @@ class GDMLPara(GDMLsolid) :
    
 class GDMLPolyhedra(GDMLsolid) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, \
-                material, colour) :
+                material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolyhedra", \
@@ -1068,7 +1068,7 @@ class GDMLPolyhedra(GDMLsolid) :
 
 class GDMLTorus(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
-                aunit, lunit, material, colour) :
+                aunit, lunit, material, colour = None) :
       super().__init__(obj)
       obj.addProperty("App::PropertyFloat","rmin","GDMLTorus", \
                       "rmin").rmin=rmin
@@ -1143,7 +1143,7 @@ class GDMLTorus(GDMLsolid) :
        fp.Placement = currPlacement
 
 class GDMLXtru(GDMLsolid) :
-   def __init__(self, obj, lunit, material, colour) :
+   def __init__(self, obj, lunit, material, colour = None) :
       super().__init__(obj)
       obj.addExtension('App::OriginGroupExtensionPython', self)
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLXtru","lunit")
@@ -1356,7 +1356,7 @@ class GDMLzplane(GDMLcommon) :
        pass
 
 class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
-   def __init__(self, obj, startphi, deltaphi, aunit, lunit, material, colour) :
+   def __init__(self, obj, startphi, deltaphi, aunit, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Polycone feature'''
       obj.addExtension('App::OriginGroupExtensionPython', self)
@@ -1457,7 +1457,7 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
 
 class GDMLSphere(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta, \
-                deltatheta, aunit, lunit, material, colour ):
+                deltatheta, aunit, lunit, material, colour = None ):
       super().__init__(obj)
       '''Add some custom properties to our Sphere feature'''
       GDMLShared.trace("GDMLSphere init")
@@ -1490,7 +1490,7 @@ class GDMLSphere(GDMLsolid) :
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
       self.Type = 'GDMLSphere'
-      self,colour = colour
+      self.colour = colour
 
    def getMaterial(self):
        return obj.material
@@ -1578,7 +1578,7 @@ class GDMLSphere(GDMLsolid) :
 
 class GDMLTrap(GDMLsolid) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \
-                aunit, lunit, material, colour):
+                aunit, lunit, material, colour = None):
       super().__init__(obj)
       "General Trapezoid"
       obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").z=z
@@ -1702,7 +1702,7 @@ class GDMLTrap(GDMLsolid) :
        fp.Placement = currPlacement
 
 class GDMLTrd(GDMLsolid) :
-   def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour) :
+   def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour = None) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
       obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
@@ -1785,7 +1785,7 @@ class GDMLTrd(GDMLsolid) :
 
 class GDMLTube(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
-                lunit, material, colour):
+                lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
       obj.addProperty("App::PropertyFloat","rmin","GDMLTube","Inside Radius").rmin=rmin
@@ -1859,7 +1859,7 @@ class GDMLTube(GDMLsolid) :
 class GDMLcutTube(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, z, startphi, deltaphi, aunit,  \
                 lowX, lowY, lowZ, highX, highY, highZ, \
-                lunit, material, colour):
+                lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
       obj.addProperty("App::PropertyFloat","rmin","GDMLcutTube","Inside Radius").rmin=rmin
@@ -2097,7 +2097,7 @@ class GDMLQuadrangular(GDMLcommon) :
 class GDMLGmshTessellated(GDMLsolid) :
     
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, \
-                material, colour) :
+                material, colour = None) :
       super().__init__(obj)
       obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
                       'Editable').editable = False
@@ -2232,7 +2232,7 @@ class GDMLGmshTessellated(GDMLsolid) :
    
 class GDMLTessellated(GDMLsolid) :
     
-   def __init__(self, obj, vertex, facets, lunit, material, colour) :
+   def __init__(self, obj, vertex, facets, lunit, material, colour = None) :
       super().__init__(obj)
       obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
                       'Editable').editable = False
@@ -2337,7 +2337,7 @@ class GDMLTessellated(GDMLsolid) :
    
 class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
     
-   def __init__(self, obj, v1, v2, v3, v4, lunit, material, colour ):
+   def __init__(self, obj, v1, v2, v3, v4, lunit, material, colour = None ):
       super().__init__(obj)
       obj.addProperty("App::PropertyVector","v1","GDMLTra", \
               "v1").v1=v1
