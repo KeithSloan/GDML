@@ -167,9 +167,11 @@ class BooleanUnionFeature :
                  print('Tool : '+tool.Label)
                  boolVol = parent.newObject('App::Part','BoolUnion')
                  boolObj = boolVol.newObject('Part::Fuse','Union')
+                 boolObj.Placement = sel[0].Object.Placement
                  boolObj.Base = base
                  boolObj.Tool = tool
-                 boolObj.Placement = sel[0].Object.Placement
+                 boolObj.Tool.Placement = sel[1].Object.Placement
+                 boolObj.Tool.setEditorMode('Placement',0)
                  boolObj.recompute()
 
     def IsActive(self):
