@@ -181,7 +181,7 @@ class BooleanUnionFeature :
            return True
 
     def GetResources(self):
-        return {'Pixmap'  : 'GDML-Union', 'MenuText': \
+        return {'Pixmap'  : 'GDML_Union', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('gdmlBooleanFeature',\
                 'GDML Union'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('gdmlBooleanFeature',\

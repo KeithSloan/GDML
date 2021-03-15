@@ -77,18 +77,18 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
         commands=['CycleCommand','ColourMapCommand','ExpandCommand', \
               'ExpandMaxCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
-              'TrapCommand','TubeCommand','AddCompound', \
-              'TessellateCommand','TessellateGmshCommand', \
-              'Mesh2TessCommand','Tess2MeshCommand', \
-              'TetrahedronCommand','BooleanUnionCommand']
+              'TrapCommand','TubeCommand', \
+              'BooleanUnionCommand', \
+              'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
               'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
-                  'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
-                  'TrapCommand','TubeCommand','AddCompound', \
-                  'TessellateCommand','TessellateGmshCommand', \
-                  'Mesh2TessCommand','Tess2MeshCommand', \
-                  'TetrahedronCommand','BooleanUnionCommand']
+              'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
+              'TrapCommand','TubeCommand',
+              'BooleanUnionCommand', \
+              'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
         parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
         meshtoolbarcommands = ['Mesh_FromPartShape']
