@@ -78,7 +78,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'ExpandMaxCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand', \
-              'BooleanUnionCommand', \
+              'BooleanCutCommand','BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
@@ -86,7 +86,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
               'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand',
-              'BooleanUnionCommand', \
+              'BooleanCutCommand','BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
