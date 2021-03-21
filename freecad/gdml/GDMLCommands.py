@@ -142,6 +142,52 @@ class ColourMapFeature:
               QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
               'Add Colour Map')}
 
+class BooleanCutFeature :
+
+    #def IsActive(self):
+    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        import Part
+
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 2 :
+           print(sel)
+           selObj = 'Gui::SelectionObject'
+           if sel[0].TypeId == selObj and sel[1].TypeId == selObj :
+              if sel[0].Object.TypeId == 'App::Part' and \
+                 sel[1].Object.TypeId == 'App::Part' :
+                 print('Boolean Union')
+                 parent = sel[0].Object.InList[0]
+                 print('Parent : '+parent.Label)
+                 print(sel[0].Object.OutList)
+                 base = sel[0].Object.OutList[1]
+                 print('Base : '+base.Label)
+                 tool = sel[1].Object.OutList[1]
+                 print('Tool : '+tool.Label)
+                 boolVol = parent.newObject('App::Part','BoolCut')
+                 boolObj = boolVol.newObject('Part::Cut','Cut')
+                 boolObj.Placement = sel[0].Object.Placement
+                 boolObj.Base = base
+                 boolObj.Tool = tool
+                 boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
+                                             - sel[0].Object.Placement.Base
+                 boolObj.Tool.setEditorMode('Placement',0)
+                 boolObj.recompute()
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument == None:
+           return False
+        else:
+           return True
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Cut', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('gdmlBooleanFeature',\
+                'GDML Cut'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('gdmlBooleanFeature',\
+                'GDML Cut')}
+
 class BooleanUnionFeature :
 
     #def IsActive(self):
@@ -170,7 +216,8 @@ class BooleanUnionFeature :
                  boolObj.Placement = sel[0].Object.Placement
                  boolObj.Base = base
                  boolObj.Tool = tool
-                 boolObj.Tool.Placement = sel[1].Object.Placement
+                 boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
+                                             - sel[0].Object.Placement.Base
                  boolObj.Tool.setEditorMode('Placement',0)
                  boolObj.recompute()
 
@@ -896,6 +943,7 @@ FreeCADGui.addCommand('CycleCommand',CycleFeature())
 FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
 FreeCADGui.addCommand('ExpandMaxCommand',ExpandMaxFeature())
 FreeCADGui.addCommand('ColourMapCommand',ColourMapFeature())
+FreeCADGui.addCommand('BooleanCutCommand',BooleanCutFeature())
 FreeCADGui.addCommand('BooleanUnionCommand',BooleanUnionFeature())
 FreeCADGui.addCommand('BoxCommand',BoxFeature())
 FreeCADGui.addCommand('EllipsoidCommand',EllispoidFeature())
