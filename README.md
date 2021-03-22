@@ -200,6 +200,11 @@ _Short decription_
 Given a lot more solids are supported for import, it is not too difficult to add more,
 so if you feel you need a particular solid to be added please contact me.
 
+### Boolean Operations
+
+Select two Parts/Logical Volumes and then click on the appropriate boolean icon
+
+
 ## GDML Tessellated Objects
 
 The following icons are available for Tessellated operations
