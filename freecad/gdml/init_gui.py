@@ -78,7 +78,8 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'ExpandMaxCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand', \
-              'BooleanCutCommand','BooleanUnionCommand', \
+              'BooleanCutCommand','BooleanIntersectionCommand', \
+              'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
@@ -86,16 +87,17 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
               'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand',
-              'BooleanCutCommand','BooleanUnionCommand', \
+              'BooleanCutCommand','BooleanIntersectionCommand', \
+              'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
-        parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
+        #parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
         meshtoolbarcommands = ['Mesh_FromPartShape']
 
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','GDMLTools'),toolbarcommands)
         self.appendMenu('GDML',commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
+        #self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
         FreeCADGui.addIconPath(joinDir("Resources/icons"))
         FreeCADGui.addLanguagePath(joinDir("Resources/translations"))
         FreeCADGui.addPreferencePage(joinDir("Resources/ui/GDML-base.ui"),"GDML")
