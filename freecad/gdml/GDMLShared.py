@@ -68,9 +68,10 @@ def setDefine(val) :
     define = val
 
 def processConstants(doc):
+    # Quick fix Treat Variable as a constant
     # all of math must be imported at global level
-    trace("Process Constants")
-    constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants")
+    trace("Process Constants & Variables")
+    constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants-Variables")
     from .GDMLObjects import GDMLconstant
     for cdefine in define.findall('constant') :
         #print cdefine.attrib
@@ -85,6 +86,21 @@ def processConstants(doc):
         constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLconstant(constObj,name,value)
+
+    for cdefine in define.findall('variable') :
+        #print cdefine.attrib
+        name  = str(cdefine.attrib.get('name'))
+        trace('name : '+name)
+        value = cdefine.attrib.get('value')
+        trace('value : '+ value)
+        #constDict[name] = value
+        trace(name)
+        #print(dir(name))
+        globals()[name] = eval(value)
+        constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
+                     name)
+        GDMLconstant(constObj,name,value)
+
     #print("Globals")
     #print(globals())
 
