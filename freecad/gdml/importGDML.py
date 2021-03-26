@@ -1398,6 +1398,7 @@ def processGDML(doc,filename,prompt,initFlg):
        GDMLShared.trace("Call set Define")
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
+       GDMLShared.processVariables(doc)
 
        # modif
        GDMLShared.processPosition(doc)

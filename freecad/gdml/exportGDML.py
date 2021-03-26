@@ -62,7 +62,7 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDML2dVertex, GDMLSection, \
                         GDMLmaterial, GDMLfraction, \
                         GDMLcomposite, GDMLisotope, \
-                        GDMLelement, GDMLconstant
+                        GDMLelement, GDMLconstant, GDMLvariable
 
 from . import GDMLShared
 
@@ -138,7 +138,8 @@ def GDMLstructure() :
     #################################
     # globals
     ################################
-    global gdml, constants, define, materials, solids, structure, setup
+    global gdml, constants, variables, define, materials, solids, \
+           structure, setup
     global worldVOL
     global defineCnt, LVcount, PVcount, POScount, ROTcount
     global gxml
@@ -1135,6 +1136,15 @@ def processMaterialObject(obj) :
              #print(dir(obj))
 
              item = ET.SubElement(define,'constant',{'name': obj.Name, \
+                                 'value': obj.value })
+             #return True
+          #return   
+
+          if isinstance(obj.Proxy,GDMLvariable) :
+             #print("GDML variable")
+             #print(dir(obj))
+
+             item = ET.SubElement(define,'variable',{'name': obj.Name, \
                                  'value': obj.value })
              #return True
           #return   
