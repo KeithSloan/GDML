@@ -178,6 +178,7 @@ def meshObj(obj, dim, meshParms=False, tessObj=None) :
 
 def getVertex() :
     # Attempt at bulk getting coordinate
+    print('Calling Gmsh')
     nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
     #print('coords datatype : '+str(coordLst.dtype))
     # int does not work needs to be float at least

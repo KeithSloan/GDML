@@ -2129,7 +2129,7 @@ class GDMLGmshTessellated(GDMLsolid) :
       #print(MaterialsList)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      obj.addExtension('App::OriginGroupExtensionPython', self)
+      #obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLGmshTessellated'
       self.SourceObj = sourceObj
       self.Vertex = vertex
@@ -2254,7 +2254,7 @@ class GDMLTessellated(GDMLsolid) :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      obj.addExtension('App::OriginGroupExtensionPython', self)
+      #obj.addExtension('App::OriginGroupExtensionPython', self)
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
       self.Facets = facets
