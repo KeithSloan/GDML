@@ -451,7 +451,7 @@ def createSphere(part,solid,material,colour,px,py,pz,rot,displayMode) :
     deltatheta = GDMLShared.getVal(solid,'deltatheta')
     mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
     GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta, \
-            deltatheta,aunit, lunit,material.colour)
+            deltatheta,aunit, lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
     mysphere.Placement = GDMLShared.processPlacement(base,rot)
@@ -790,9 +790,8 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
-    print('Parse Boolean : '+str(solid.tag))
-    print('colour : '+str(colour))
     #GDMLShared.setTrace(True)
+    GDMLShared.trace('Parse Boolean : '+str(solid.tag))
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
     if solid.tag in ["subtraction","union","intersection"] :
@@ -827,8 +826,6 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
 def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # parent,solid, material
     # returns created Object
-    print('create Solid - tag : '+str(solid.tag))
-    print('colour : '+str(colour))
     GDMLShared.trace('createSolid '+solid.tag)
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
@@ -1010,7 +1007,6 @@ def expandVolume(parent,name,phylvl,displayMode) :
     # also used in ScanCommand
     #GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
-    print("expandVolume : "+name)
     vol = structure.find("volume[@name='%s']" % name )
     if vol is not None : # If not volume test for assembly
        colour = None
@@ -1052,7 +1048,6 @@ def expandVolume(parent,name,phylvl,displayMode) :
                       #print(colour)
              else :
                 print('No auxvalue')
-       print('colour : '+str(colour))
        if colour is None :
           colour = (0.0, 0.0, 0.0, 0.0)
        solidref = GDMLShared.getRef(vol,"solidref")
@@ -1065,11 +1060,6 @@ def expandVolume(parent,name,phylvl,displayMode) :
              material = GDMLShared.getRef(vol,"materialref")
              if material is not None :
                 if checkMaterial(material) == True :
-                   print('colour : '+str(colour))
-                   print('parent : '+str(parent))
-                   print('solid  : '+str(solid))
-                   print('solid tag : '+str(solid.tag)) 
-                   print('material  : '+str(material))
                    obj = createSolid(parent,solid,material,colour,0,0,0,None, \
                                  displayMode)
                 else :
