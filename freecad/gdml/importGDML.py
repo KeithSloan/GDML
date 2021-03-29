@@ -790,6 +790,8 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
+    print('Parse Boolean : '+str(solid.tag))
+    print('colour : '+str(colour))
     #GDMLShared.setTrace(True)
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
@@ -825,6 +827,8 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
 def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # parent,solid, material
     # returns created Object
+    print('create Solid - tag : '+str(solid.tag))
+    print('colour : '+str(colour))
     GDMLShared.trace('createSolid '+solid.tag)
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
@@ -1048,6 +1052,9 @@ def expandVolume(parent,name,phylvl,displayMode) :
                       #print(colour)
              else :
                 print('No auxvalue')
+       print('colour : '+str(colour))
+       if colour is None :
+          colour = (0.0, 0.0, 0.0, 0.0)
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref is not None :
           solid  = solids.find("*[@name='%s']" % solidref )
@@ -1058,6 +1065,11 @@ def expandVolume(parent,name,phylvl,displayMode) :
              material = GDMLShared.getRef(vol,"materialref")
              if material is not None :
                 if checkMaterial(material) == True :
+                   print('colour : '+str(colour))
+                   print('parent : '+str(parent))
+                   print('solid  : '+str(solid))
+                   print('solid tag : '+str(solid.tag)) 
+                   print('material  : '+str(material))
                    obj = createSolid(parent,solid,material,colour,0,0,0,None, \
                                  displayMode)
                 else :

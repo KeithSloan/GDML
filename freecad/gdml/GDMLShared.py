@@ -103,7 +103,12 @@ def processVariables(doc):
         #constDict[name] = value
         trace(name)
         #print(dir(name))
-        globals()[name] = eval(value)
+        print('Name  : '+name)
+        print('Value : '+value)
+        try :
+          globals()[name] = eval(value)
+        except :
+          globals()[name] = value
         variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLvariable(variableObj,name,value)
