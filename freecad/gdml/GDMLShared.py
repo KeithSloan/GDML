@@ -99,6 +99,8 @@ def processVariables(doc):
 
     #globals()['sin'] = math.sin
     #globals()['cos'] = math.cos
+    globals()['false'] = False
+    globals()['true'] = True
 
     for cdefine in define.findall('variable') :
         #print cdefine.attrib
@@ -110,11 +112,12 @@ def processVariables(doc):
         trace(name)
         #print(dir(name))
         print('Name  : '+name)
-        print('Value : '+value)
         try :
           globals()[name] = eval(value)
+          print('Value : '+value)
         except :
           globals()[name] = value
+          print('Value String : '+value)
         variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLvariable(variableObj,name,value)

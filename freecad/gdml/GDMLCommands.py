@@ -158,37 +158,40 @@ class BooleanCutFeature :
               if sel[0].Object.TypeId == 'App::Part' and \
                  sel[1].Object.TypeId == 'App::Part' :
                  print('Boolean Cut')
-                 print('Parent : '+parent.Label)
-                 print(sel[0].Object.OutList)
-                 baseVol = sel[0].Object
-                 print('Base Vol : '+baseVol.Label)
-                 toolVol = sel[1].Object
-                 print('Tool Vol : '+toolVol.Label)
-                 print(sel[0].Object.OutList)
-                 base = sel[0].Object.OutList[1]
-                 print('Base : '+base.Label)
-                 tool = sel[1].Object.OutList[1]
-                 print('Tool : '+tool.Label)
-                 print('Remove Base')
-                 baseVol.removeObject(base)
-                 print('Adjust Base Links')
-                 base.adjustRelativeLinks(baseVol)
-                 toolVol.removeObject(tool)
-                 tool.adjustRelativeLinks(toolVol)
-                 boolVol = parent.newObject('App::Part','Bool-Cut')
-                 boolVol.addObject(base)
-                 boolVol.addObject(tool)
-                 boolObj = boolVol.newObject('Part::Cut','Cut')
-                 boolObj.Placement = sel[0].Object.Placement
-                 boolObj.Base = base
-                 boolObj.Tool = tool
-                 boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
+                 if hasattr(sel[0].Object,'InList') :
+                    parent = sel[0].Object.InList[0]
+                    print('Parent : '+parent.Label)
+                    baseVol = sel[0].Object
+                    print('Base Vol : '+baseVol.Label)
+                    toolVol = sel[1].Object
+                    print('Tool Vol : '+toolVol.Label)
+                    print(sel[0].Object.OutList)
+                    base = sel[0].Object.OutList[1]
+                    print('Base : '+base.Label)
+                    tool = sel[1].Object.OutList[1]
+                    print('Tool : '+tool.Label)
+                    print('Remove Base')
+                    baseVol.removeObject(base)
+                    print('Adjust Base Links')
+                    base.adjustRelativeLinks(baseVol)
+                    toolVol.removeObject(tool)
+                    tool.adjustRelativeLinks(toolVol)
+                    boolVol = parent.newObject('App::Part','Bool-Cut')
+                    boolVol.addObject(base)
+                    boolVol.addObject(tool)
+                    boolObj = boolVol.newObject('Part::Cut','Cut')
+                    boolObj.Placement = sel[0].Object.Placement
+                    boolObj.Base = base
+                    boolObj.Tool = tool
+                    boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
                                              - sel[0].Object.Placement.Base
-                 boolObj.Tool.setEditorMode('Placement',0)
-                 print('Remove Base Vol')
-                 FreeCAD.ActiveDocument.removeObject(baseVol.Label)
-                 FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                 boolObj.recompute()
+                    boolObj.Tool.setEditorMode('Placement',0)
+                    print('Remove Base Vol')
+                    FreeCAD.ActiveDocument.removeObject(baseVol.Label)
+                    FreeCAD.ActiveDocument.removeObject(toolVol.Label)
+                    boolObj.recompute()
+                 else :
+                    print('No Parent Volume/Part')
 
     def IsActive(self):
         if FreeCAD.ActiveDocument == None:
@@ -219,37 +222,40 @@ class BooleanIntersectionFeature :
               if sel[0].Object.TypeId == 'App::Part' and \
                  sel[1].Object.TypeId == 'App::Part' :
                  print('Boolean Intersection')
-                 parent = sel[0].Object.InList[0]
-                 print('Parent : '+parent.Label)
-                 baseVol = sel[0].Object
-                 print('Base Vol : '+baseVol.Label)
-                 toolVol = sel[1].Object
-                 print('Tool Vol : '+toolVol.Label)
-                 baseVol = sel[0].Object
-                 print(sel[0].Object.OutList)
-                 base = sel[0].Object.OutList[1]
-                 print('Base : '+base.Label)
-                 tool = sel[1].Object.OutList[1]
-                 print('Tool : '+tool.Label)
-                 print('Remove Base')
-                 baseVol.removeObject(base)
-                 print('Adjust Base Links')
-                 base.adjustRelativeLinks(baseVol)
-                 toolVol.removeObject(tool)
-                 tool.adjustRelativeLinks(toolVol)
-                 boolVol = parent.newObject('App::Part','Bool-Intersection')
-                 boolVol.addObject(base)
-                 boolVol.addObject(tool)
-                 boolObj = boolVol.newObject('Part::Common','Common')
-                 boolObj.Placement = sel[0].Object.Placement
-                 boolObj.Base = base
-                 boolObj.Tool = tool
-                 boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
+                 if hasattr(sel[0].Object,'InList') :
+                    parent = sel[0].Object.InList[0]
+                    print('Parent : '+parent.Label)
+                    baseVol = sel[0].Object
+                    print('Base Vol : '+baseVol.Label)
+                    toolVol = sel[1].Object
+                    print('Tool Vol : '+toolVol.Label)
+                    baseVol = sel[0].Object
+                    print(sel[0].Object.OutList)
+                    base = sel[0].Object.OutList[1]
+                    print('Base : '+base.Label)
+                    tool = sel[1].Object.OutList[1]
+                    print('Tool : '+tool.Label)
+                    print('Remove Base')
+                    baseVol.removeObject(base)
+                    print('Adjust Base Links')
+                    base.adjustRelativeLinks(baseVol)
+                    toolVol.removeObject(tool)
+                    tool.adjustRelativeLinks(toolVol)
+                    boolVol = parent.newObject('App::Part','Bool-Intersection')
+                    boolVol.addObject(base)
+                    boolVol.addObject(tool)
+                    boolObj = boolVol.newObject('Part::Common','Common')
+                    boolObj.Placement = sel[0].Object.Placement
+                    boolObj.Base = base
+                    boolObj.Tool = tool
+                    boolObj.Tool.Placement.Base = sel[1].Object.Placement.Base \
                                              - sel[0].Object.Placement.Base
-                 boolObj.Tool.setEditorMode('Placement',0)
-                 FreeCAD.ActiveDocument.removeObject(baseVol.Label)
-                 FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                 boolObj.recompute()
+                    boolObj.Tool.setEditorMode('Placement',0)
+                    FreeCAD.ActiveDocument.removeObject(baseVol.Label)
+                    FreeCAD.ActiveDocument.removeObject(toolVol.Label)
+                    boolObj.recompute()
+                 else :
+                    print('No Parent Volume/Part')
 
     def IsActive(self):
         if FreeCAD.ActiveDocument == None:
