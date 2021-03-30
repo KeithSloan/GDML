@@ -87,13 +87,19 @@ def processConstants(doc):
         GDMLconstant(constObj,name,value)
 
     #print("Globals")
-    #print(globals())
+    print(str(globals()))
 
 def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
     variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
     from .GDMLObjects import GDMLvariable
+
+    #import math
+
+    #globals()['sin'] = math.sin
+    #globals()['cos'] = math.cos
+
     for cdefine in define.findall('variable') :
         #print cdefine.attrib
         name  = str(cdefine.attrib.get('name'))
@@ -112,6 +118,8 @@ def processVariables(doc):
         variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLvariable(variableObj,name,value)
+    #print("Globals")
+    #print(str(globals()))
 
 def processPosition(doc):
     # need to be done ?

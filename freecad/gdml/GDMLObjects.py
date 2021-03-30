@@ -1549,7 +1549,7 @@ class GDMLSphere(GDMLsolid) :
                                 FreeCAD.Vector(-rmax,-rmax,-rmax)))
                 elif startthetaRad <= math.pi :
                     sphere2 = sphere2.common(Part.makeCone(0.0, \
-                        rmax/math.cos(pi-startthetaRad),rmax, spos, \
+                        rmax/math.cos(math.pi-startthetaRad),rmax, spos, \
                         FreeCAD.Vector(0,0,-1.0)))
 
        # if deltatheta -> cut the down cone
