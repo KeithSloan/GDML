@@ -1048,8 +1048,8 @@ def expandVolume(parent,name,phylvl,displayMode) :
                       #print(colour)
              else :
                 print('No auxvalue')
-       if colour is None :
-          colour = (0.0, 0.0, 0.0, 0.0)
+       #if colour is None :
+       #   colour = (0.0, 0.0, 0.0, 0.0)
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref is not None :
           solid  = solids.find("*[@name='%s']" % solidref )
