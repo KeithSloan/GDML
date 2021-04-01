@@ -556,30 +556,32 @@ def addPhysVol(xmlVol, volName) :
 def cleanVolName(obj, volName) :
     # Get proper Volume Name
     print('clean name : '+volName)
-    if hasattr(obj,'Copynumber') :
-       print('Has copynumber')
-       i = len(volName)
-       if '_' in volName and i > 2 :
-          volName = volName[:-2] 
-    print('returning name : '+volName)
+    return volName
+    #if hasattr(obj,'CopyNumber') :
+    #   print('Has CopyNumber')
+    #   i = len(volName)
+    #   if '_' in volName and i > 2 :
+    #      volName = volName[:-2] 
+    #print('returning name : '+volName)
     return volName
 
 def addPhysVolPlacement(obj, xmlVol, volName) :
     # ??? Is volName not obj.Label after correction
     # Get proper Volume Name
     refName = cleanVolName(obj, volName)
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : "+refName) 
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
-       if hasattr(obj,'Copynumber') :
-          volName = volName + '_' + str(obj.Copynumber)
-       pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
+       if not hasattr(obj,'CopyNumber') :
+          pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
+       else :
+          cpyNum = str(obj.CopyNumber)
+          GDMLShared.trace('CopyNumber : '+cpyNum)
+          pvol = ET.SubElement(xmlVol,'physvol',{'copynumber':cpyNum})
        ET.SubElement(pvol,'volumeref',{'ref':refName})
        processPosition(obj,pvol)
        processRotation(obj,pvol)
-       if hasattr(obj,'Copynumber') :
-          GDMLShared.trace('Copynumber : '+str(obj.Copynumber))
-          pvol.attrib['copynumber'] = str(obj.Copynumber)
        if hasattr(obj,'GDMLscale') :
           scaleName = refName+'scl'
           ET.SubElement(pvol,'scale',{'name':scaleName,\
@@ -1550,6 +1552,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             else :
                parentName = None
             print(obj.Label)
+            print(dir(obj))
             processVolAssem(obj, xmlVol, volName, True)
          return idx + 1
 
@@ -1772,7 +1775,6 @@ def createXMLvol(name):
 
     volName = cleanVolName(vol, vol.Label)
 
-
 def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
     # xmlVol - xml of this volume
@@ -1793,8 +1795,9 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
               processVolAssem(obj, xmlVol, volName, addVolsFlag)
 
            elif obj.TypeId == 'App::Link' :
-                objName = cleanVolName(obj, obj.Label)
-                addPhysVolPlacement(obj,xmlVol,objName)
+                print('Process Link')
+                #objName = cleanVolName(obj, obj.Label)
+                addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
 
        addPhysVolPlacement(vol,xmlParent,volName)
 
@@ -1904,12 +1907,19 @@ def checkGDMLstructure(objList) :
     # GDML Object
     GDMLShared.trace('check GDML structure')
     GDMLShared.trace(objList)
-    if len(objList) < 3 :
+    print(objList)
+    cnt = countGDMLObj(objList)
+    if cnt > 1 : # More than one GDML Object need to insert Dummy
        return False
-    if objList[0].TypeId != 'App::Origin' \
-        or objList[2].TypeId != 'App::Part' :
-            return False
+    if cnt == 1 and len(objList) == 2 : # Just a single GDML obj insert Dummy
+       return False
     return True
+    #if len(objList) < 3 :
+    #   return False
+    #if objList[0].TypeId != 'App::Origin' \
+    #    or objList[2].TypeId != 'App::Part' :
+    #        return False
+    #return True
 
 def locateXMLvol(vol) :
     global structure
