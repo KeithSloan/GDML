@@ -1119,7 +1119,6 @@ def expandVolume(parent,name,phylvl,displayMode) :
                      "GDML", "copynumber").CopyNumber = int(cpyNum)
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
-       App.ActiveDocument.recompute() 
 
     else :
        asm = structure.find("assembly[@name='%s']" % name)
@@ -1428,6 +1427,7 @@ def processGDML(doc,filename,prompt,initFlg):
     if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = 'Shaded'
+    FreeCAD.ActiveDocument.recompute()
     if FreeCAD.GuiUp :
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
