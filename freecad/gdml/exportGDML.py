@@ -225,7 +225,12 @@ def createLVandPV(obj, name, solidName):
        ET.SubElement(define, 'position', {'name': posName, 'unit': 'mm', \
                   'x': str(x), 'y': str(y), 'z': str(z) })
     # Realthunders enhancment to toEuler ixyz is intrinsic
-    angles = obj.Placement.Rotation.toEuler('ixyz')
+    rot = obj.Placement.Rotation
+    if hasattr(rot, 'toEulerAngles'):
+        angles = rot.toEulerAngles('ixyz')
+        angles = (angles[2], angles[1], angles[0])
+    else:
+        angles = rot.toEuler()
     GDMLShared.trace("Angles")
     GDMLShared.trace(angles)
     a0 = angles[0]
@@ -616,8 +621,11 @@ def exportRotation(name, xml, Rotation) :
     global ROTcount
     if Rotation.Angle != 0 :
         # Realthunders enhancment to toEuler ixyz is intrinsic
-        angles = Rotation.toEuler('ixyz')
-        #angles = Rotation.toEuler()
+        if hasattr(Rotation, 'toEulerAngles'):
+            angles = Rotation.toEulerAngles('ixyz')
+            angles = (angles[2], angles[1], angles[0])
+        else:
+            angles = Rotation.toEuler()
         GDMLShared.trace("Angles")
         GDMLShared.trace(angles)
         a0 = angles[0]
