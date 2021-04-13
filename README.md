@@ -18,8 +18,8 @@ There is also the option to use enhanced rendering which helps with complex mode
 If you like what you see you might like to thank Lei Zhang by contributing to his FreeCAD Patreon
 https://www.patreon.com/thundereal/posts   
 
-You can use FreeCAD 0.19.1 but this does not have the EulerAngles function that facilities the
-fixing of exports with rotations and import speed will still be slow. The EulerAngles facility should be in the
+You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
+fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
 process of being added to FreeCAD 0.20
 
 For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
