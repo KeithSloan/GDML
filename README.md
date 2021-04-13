@@ -10,7 +10,7 @@ To fix a problem with export and rotations please use
       * git checkout link3
       * start FreeCAD
 
-You should also see a dramatic improvment in import times with these builds.
+You should also see a dramatic improvment especailly with DAILY in import times with these builds.
 There is also the option to use enhanced rendering which helps with complex models.
    
    FreeCAD | Preferences | Display | Render Cache | Experimental
