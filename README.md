@@ -1,4 +1,28 @@
-## **** VERY IMPORTANT - Upgrade FreeCAD 0.19 to 22665 or later ****
+## **** VERY IMPORTANT ****
+
+To fix a problem with export and rotations please use
+
+  * A FreeCAD_Assembly release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
+  * branch **link3**
+  
+    In .FreeCAD/Mod/GDML
+      * git fetch origin link3
+      * git checkout link3
+      * start FreeCAD
+
+You should also see a dramatic improvment especailly with DAILY in import times with these builds.
+There is also the option to use enhanced rendering which helps with complex models.
+   
+   FreeCAD | Preferences | Display | Render Cache | Experimental
+   
+If you like what you see you might like to thank Lei Zhang by contributing to his FreeCAD Patreon
+https://www.patreon.com/thundereal/posts   
+
+You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
+fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
+process of being added to FreeCAD 0.20
+
+For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
 **Changes to Placement ( GDML Position & Rotation )**
 
@@ -10,11 +34,6 @@ In order to support copies of GDML Volumes the following changes have been made
   * Copies are implemented as App::Links i.e. Link to Volume being copied.
   * Copies of Volumes require function only available since FreeCAD 0.19
   
-There was a regression in FreeCAD 0.19 that affected the above changes, so you need to
-update to a later version of FreeCAD 0.19. You are therefore advised to update to at least FreeCAD 0.19 - 22665.
-
-For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
-
 ## **** New experimental export for GEMC ****
 
 ## **** Wiki Under Construction ****
@@ -288,8 +307,13 @@ For unprocessed volume the names are preceded by **`NOT_Expanded`** so an exampl
 Unexpanded Volumes can be expanded by:  
 1. Switching to the GDML workbench.
 2. Selecting a volume in the **_labels & attributes_** window
-3. Clicking on the experimental Expand Volume icon **'E'**
-
+3. Clicking on one of the the experimental Expand Volume Icons 
+   - ![Expand One](Source_Icon_Designs/GDML_Expand_One.svg)
+   - Expand Selected Volume to Minimum Level
+     
+   - ![Expand Max GDML](Source_Icon_Designs/GDML_Expand_Max.svg)
+   - Expand Selected Volume to Full Depth
+   
 On opening of a GDML file the appropriate FreeCAD implemented python Object is created for each solid
 
 ## Viewing Volumes
