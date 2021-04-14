@@ -307,8 +307,13 @@ For unprocessed volume the names are preceded by **`NOT_Expanded`** so an exampl
 Unexpanded Volumes can be expanded by:  
 1. Switching to the GDML workbench.
 2. Selecting a volume in the **_labels & attributes_** window
-3. Clicking on the experimental Expand Volume icon **'E'**
-
+3. Clicking on one of the the experimental Expand Volume Icons 
+   - ![Expand One](Source_Icon_Designs/GDML_Expand_One.svg)
+   - Expand Selected Volume to Minimum Level
+     
+   - ![Expand Max GDML](Source_Icon_Designs/GDML_Expand_Max.svg)
+   - Expand Selected Volume to Full Depth
+   
 On opening of a GDML file the appropriate FreeCAD implemented python Object is created for each solid
 
 ## Viewing Volumes
