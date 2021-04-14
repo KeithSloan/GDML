@@ -79,7 +79,7 @@ def processConstants(doc):
         value = cdefine.attrib.get('value')
         trace('value : '+ value)
         #constDict[name] = value
-        trace(name)
+        #trace(name)
         #print(dir(name))
         globals()[name] = eval(value)
         constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
@@ -87,7 +87,7 @@ def processConstants(doc):
         GDMLconstant(constObj,name,value)
 
     #print("Globals")
-    print(str(globals()))
+    #print(str(globals()))
 
 def processVariables(doc):
     # all of math must be imported at global level
