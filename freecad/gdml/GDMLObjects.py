@@ -1145,7 +1145,7 @@ class GDMLTorus(GDMLsolid) :
 class GDMLXtru(GDMLsolid) :
    def __init__(self, obj, lunit, material, colour = None) :
       super().__init__(obj)
-      obj.addExtension('App::OriginGroupExtensionPython', self)
+      obj.addExtension('App::GroupExtensionPython')
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLXtru","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLXtru", \
@@ -1359,7 +1359,7 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Polycone feature'''
-      obj.addExtension('App::OriginGroupExtensionPython', self)
+      obj.addExtension('App::GroupExtensionPython')
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolycone", \
               "Start Angle").startphi=startphi
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLPolycone", \
@@ -2129,7 +2129,7 @@ class GDMLGmshTessellated(GDMLsolid) :
       #print(MaterialsList)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      #obj.addExtension('App::OriginGroupExtensionPython', self)
+      #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLGmshTessellated'
       self.SourceObj = sourceObj
       self.Vertex = vertex
@@ -2254,7 +2254,7 @@ class GDMLTessellated(GDMLsolid) :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
-      #obj.addExtension('App::OriginGroupExtensionPython', self)
+      #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
       self.Facets = facets
@@ -2420,7 +2420,7 @@ class GDMLTetrahedron(GDMLsolid) :
              obj.ViewObject.ShapeColor = colourMaterial(material)
        # Suppress Placement - position & Rotation via parent App::Part
        # this makes Placement via Phyvol easier and allows copies etc
-       #obj.addExtension('App::OriginGroupExtensionPython', self)
+       #obj.addExtension('App::GroupExtensionPython')
        self.Tetra = tetra
        self.Object = obj
        self.Type = 'GDMLTetrahedron'
@@ -2573,7 +2573,7 @@ class GDMLisotope(GDMLcommon) :
 class ViewProviderExtension(GDMLcommon) :
    def __init__(self, obj):
        super().__init__(obj)
-       obj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
+       obj.addExtension("Gui::ViewProviderGroupExtensionPython")
        obj.Proxy = self
 
    def getDisplayModes(self,obj):

@@ -366,7 +366,7 @@ def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     mypolycone=part.newObject("Part::FeaturePython","GDMLPolycone:"+getName(solid))
-    mypolycone.addExtension("App::OriginGroupExtensionPython", None)
+    mypolycone.addExtension("App::GroupExtensionPython")
     GDMLPolycone(mypolycone,startphi,deltaphi,aunit,lunit,material,colour)
     if FreeCAD.GuiUp :
        ViewProviderExtension(mypolycone.ViewObject)
@@ -406,7 +406,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     lunit = getText(solid,'lunit',"mm")
     mypolyhedra=part.newObject("Part::FeaturePython","GDMLPolyhedra:"+ \
                 getName(solid))
-    mypolyhedra.addExtension("App::OriginGroupExtensionPython", None)
+    mypolyhedra.addExtension("App::GroupExtensionPython")
     GDMLPolyhedra(mypolyhedra,startphi,deltaphi,numsides,aunit,lunit, \
                   material,colour)
     if FreeCAD.GuiUp :
@@ -569,7 +569,7 @@ def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #print(solid)
     #print(getName(solid))
     myXtru=part.newObject("Part::FeaturePython","GDMLXtru-"+getName(solid))
-    #myXtru.addExtension("App::OriginGroupExtensionPython", None)
+    #myXtru.addExtension("App::GroupExtensionPython")
     lunit = getText(solid,'lunit',"mm")
     GDMLXtru(myXtru,lunit,material,colour)
     if FreeCAD.GuiUp :
