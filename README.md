@@ -4,7 +4,7 @@
 
 lxml should have been installed in prebuilt versions of FreeCAD. 
 It seems with FreeCAD 0.19.1 going to production this slipped through the net,
-RealThunders builds have the same issue
+RealThunders builds have the same issue. Seems to only be a problem for Windows users.
 
 To resolve you have to install the lxml library where FreeCAD can find it see
 the required libraries section of this README.
