@@ -9,6 +9,8 @@ RealThunders builds have the same issue. Seems to only be a problem for Windows 
 To resolve you have to install the lxml library where FreeCAD can find it see
 the required libraries section of this README.
 
+## *** All Operating Systems - Problem export of Rotations ***
+
 To fix a problem with export and rotations please use
 
   * A FreeCAD_Assembly release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
