@@ -36,7 +36,7 @@ from math import *
 from . import GDMLShared
 
 ##########################
-# Globals Dictionarys    #
+# Globals Dictionaries    #
 ##########################
 #global setup, define, materials, solids, structure
 #globals constDict, filesDict 
@@ -1010,7 +1010,7 @@ def expandVolume(parent,name,phylvl,displayMode) :
     vol = structure.find("volume[@name='%s']" % name )
     if vol is not None : # If not volume test for assembly
        colour = None
-       for aux in vol.findall('auxiliary') : # could be more than one auxillary
+       for aux in vol.findall('auxiliary') : # could be more than one auxiliary
           if aux is not None :
              #print('auxiliary')
              aType = aux.get('auxtype')
