@@ -2235,7 +2235,7 @@ def export(exportList,filepath) :
              if len(first.InList) == 0 : 
                 exportGDMLworld(first,filepath,fileExt)
              else :
-                print('Export XML stucture & solids')
+                print('Export XML structure & solids')
                 exportGDML(first,filepath,'.xml')
 
        elif first.Name == "Materials" :

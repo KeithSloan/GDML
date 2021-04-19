@@ -702,7 +702,7 @@ class TessellateGmshFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
                 'Gmsh & Tessellate'), 'Tessellate_Gmsh': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
-                'Mesh & Tesselate Selected Planar Object')}    
+                'Mesh & Tessellate Selected Planar Object')}    
 
 class Mesh2TessFeature :
      

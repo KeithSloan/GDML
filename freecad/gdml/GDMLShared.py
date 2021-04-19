@@ -150,7 +150,7 @@ def getVal(ptr,var,vtype = 1) :
        # if yes get its value
        vval = ptr.attrib.get(var)
        trace("vval : "+str(vval))
-       if vval[0] == '&' :  # Is this refering to an HTML entity constant
+       if vval[0] == '&' :  # Is this referring to an HTML entity constant
          chkval = vval[1:]
        else :
           chkval = vval
@@ -346,7 +346,7 @@ def testPosition(xmlEntity,px,py,pz) :
        return px,py,pz 
 
 def getDefinedRotation(name) :
-    # Just get defintion - used by parseMultiUnion passed to create solids
+    # Just get definition - used by parseMultiUnion passed to create solids
     return(define.find("rotation[@name='%s']" % name ))
 
 def getRotation(xmlEntity) :

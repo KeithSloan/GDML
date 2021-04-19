@@ -337,7 +337,7 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
             obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
-      # Supress Placement - position & Rotation via parent App::Part
+      # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
       self.Type = 'GDMLArb8'
@@ -2213,7 +2213,7 @@ class GDMLGmshTessellated(GDMLsolid) :
           solid=Part.Solid(shell)
        except : 
           # make compound rather than just barf
-          # visualy able to view at least
+          # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
        #if solid.Volume < 0:
@@ -2318,7 +2318,7 @@ class GDMLTessellated(GDMLsolid) :
           solid=Part.Solid(shell)
        except : 
           # make compound rather than just barf
-          # visualy able to view at least
+          # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
        #if solid.Volume < 0:
@@ -2485,7 +2485,7 @@ class GDMLFiles(GDMLcommon) :
       obj.addProperty("App::PropertyString","solids","GDMLFiles", \
                     "solids section").solids=sectionDict.get('solids',"")
       obj.addProperty("App::PropertyString","structure","GDMLFiles", \
-                    "sructure section").structure=sectionDict.get('structure',"")
+                    "structure section").structure=sectionDict.get('structure',"")
       self.Type = 'GDMLFiles'
       obj.Proxy = self
 
