@@ -279,31 +279,29 @@ class GDMLsolid :
        obj.setEditorMode('Placement',2)
 
    def __getstate__(self):
-        '''When saving the document this object gets stored using Python's json module.\
+      '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-        return None
+      return {'type' : self.Type }
  
-   def __setstate__(self,state):
-        '''When restoring the serialized object from document we have the chance to set some internals here.\
-                Since no data were serialized nothing needs to be done here.'''
-        return None
-
+   def __setstate__(self, arg):
+      '''When restoring the serialized object from document we have the chance to set some internals here. Since no data were serialized nothing needs to be done here.'''
+      self.Type = arg['type']
 
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
    
    def __getstate__(self):
-        '''When saving the document this object gets stored using Python's json module.\
+      '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-        return None
+      return {'type' : self.Type }
  
    def __setstate__(self,state):
-        '''When restoring the serialized object from document we have the chance to set some internals here.\
+      '''When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here.'''
-        return None
+      self.Type = arg['type']
 
 
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
