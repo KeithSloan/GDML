@@ -1375,7 +1375,7 @@ def processGDML(doc,filename,prompt,initFlg):
     print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
-    FreeCAD.Console.PrintMessage('ImportGDML Version 0.4\n')
+    FreeCAD.Console.PrintMessage('ImportGDML Version 1.4\n')
     startTime = time.perf_counter()
     
     global pathName
