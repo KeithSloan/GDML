@@ -486,6 +486,11 @@ The standalone utilities and documentation are now in a submodule repository htt
 
 [![DOI](Documentation/DOImage.png)](https://zenodo.org/badge/latestdoi/223232841)
 
+[![DOI](Documentation/DOImage.png)](https://doi.org/10.5281/zenodo.3787318)
+
+If you found this Workbench useful in your research we would appreciate being cited
+as per the above link.
+
 
 ## Roadmap
 
