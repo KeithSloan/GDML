@@ -483,9 +483,14 @@ The standalone utilities and documentation are now in a submodule repository htt
          e.g. iges, but this is untested.
          
 ## Citing information
-[![DOI](https://zenodo.org/badge/223232841.svg)](https://zenodo.org/badge/latestdoi/223232841)
 
-![DOI_image](Documentation/DOImage.png)
+[![DOI](Documentation/DOImage.png)](https://zenodo.org/badge/latestdoi/223232841)
+
+[![DOI](Documentation/DOImage.png)](https://doi.org/10.5281/zenodo.3787318)
+
+If you found this Workbench useful in your research we would appreciate being cited
+as per the above link.
+
 
 ## Roadmap
 
