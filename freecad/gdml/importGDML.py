@@ -948,7 +948,7 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     volRef = GDMLShared.getRef(physVol,"volumeref")
-    GDMLShared.trace("Volume Ref : "+volRef)
+    GDMLShared.trace("Volume Ref : "+str(volRef))
     if volRef != None :
        copyNum = physVol.get('copynumber')
        GDMLShared.trace('Copynumber : '+str(copyNum))
@@ -1090,7 +1090,7 @@ def expandVolume(parent,name,phylvl,displayMode) :
 
            else :  # Just Add to structure 
               volRef = GDMLShared.getRef(pv,"volumeref")
-              #print('volRef : '+volRef)
+              print('volRef : '+str(volRef))
               nx, ny, nz = GDMLShared.getPosition(pv)
               nrot = GDMLShared.getRotation(pv)
               cpyNum = pv.get('copynumber')
