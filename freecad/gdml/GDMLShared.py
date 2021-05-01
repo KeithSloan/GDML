@@ -69,6 +69,7 @@ def setDefine(val) :
 
 def processConstants(doc):
     # all of math must be imported at global level
+    # setTrace(True)
     trace("Process Constants")
     constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants")
     from .GDMLObjects import GDMLconstant
@@ -81,7 +82,10 @@ def processConstants(doc):
         #constDict[name] = value
         trace(name)
         #print(dir(name))
-        globals()[name] = eval(value)
+        try :
+           globals()[name] = eval(value)
+        except :		# eg 5*cm
+           globals()[name] = value
         constObj = constantGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLconstant(constObj,name,value)
