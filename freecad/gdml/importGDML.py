@@ -1134,13 +1134,13 @@ def getItem(element, attribute) :
     # returns None if not found
     return element.get(attribute)
 
-def processIsotopes(doc) :
+def processIsotopes(isotopesGrp) :
     from .GDMLObjects import GDMLisotope, ViewProvider
-    try :
-        isotopesGrp = FreeCAD.ActiveDocument.Isotopes
-    
-    except :
-       isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
+    #try :
+    #    isotopesGrp = FreeCAD.ActiveDocument.Isotopes
+    #
+    #except :
+    #   isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
     
     for isotope in materials.findall('isotope') :
         N = int(isotope.get('N'))
@@ -1153,15 +1153,14 @@ def processIsotopes(doc) :
         isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
         GDMLisotope(isoObj,name,N,Z,unit,value)
 
-def processElements(doc) :
+def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction
-    try :
-       elementsGrp  = FreeCAD.ActiveDocument.Elements
-
-    except :
-       elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
+    #try :
+    #   elementsGrp  = FreeCAD.ActiveDocument.Elements
+    #
+    #except :
+    #   elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
     
-    elementsGrp.Label = 'Elements'
     for element in materials.findall('element') :
         name = element.get('name')
         #print('element : '+name)
@@ -1209,17 +1208,16 @@ def processElements(doc) :
                GDMLcomposite(compositeObj,ref,n)
                compositeObj.Label = ref+' : ' + str(n) 
 
-def processMaterials(doc) :
+def processMaterials(materialGrp) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
                             MaterialsList
 
-    try :
-        materialGrp = FreeCAD.ActiveDocument.Materials
-
-    except:
-        materialGrp = doc.addObject("App::DocumentObjectGroupPython", \
-                              "Materials")
-    materialGrp.Label = "Materials"
+    #try :
+    #    materialGrp = FreeCAD.ActiveDocument.Materials
+    #
+    #except:
+    #     materialGrp = doc.addObject("App::DocumentObjectGroupPython", \
+    #                          "Materials")
     for material in materials.findall('material') :
         name = material.get('name')
         #print(name)
@@ -1340,6 +1338,17 @@ def processXML(doc,filename):
        processElements(doc)
        processMaterials(doc)
 
+def processMaterialsSet(root, GrpSet) :
+    global materials
+    materials = root.find('materials')
+    if materials != None :
+       isotopesGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Isotopes")
+       processIsotopes(isotopesGrp)
+       elementsGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Elements")
+       processElements(elementsGrp)
+       materialsGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Materials")
+       processMaterials(materialsGrp)
+
 
 def processGDML(doc,filename,prompt,initFlg):
 
@@ -1411,11 +1420,7 @@ def processGDML(doc,filename,prompt,initFlg):
 
        GDMLShared.trace(setup.attrib)
 
-    materials = root.find('materials')
-    if materials != None :
-       processIsotopes(doc)
-       processElements(doc)
-       processMaterials(doc)
+    processMaterialsSet(root,doc)
 
     solids    = root.find('solids')
     structure = root.find('structure')
