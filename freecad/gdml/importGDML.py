@@ -32,6 +32,11 @@ import FreeCAD
 import os, io, sys, re
 import Part, Draft
 
+def joinDir(path) :
+    import os
+    __dirname__ = os.path.dirname(__file__)
+    return(os.path.join(__dirname__,path))
+
 from math import *
 from . import GDMLShared
 
@@ -1136,12 +1141,6 @@ def getItem(element, attribute) :
 
 def processIsotopes(isotopesGrp) :
     from .GDMLObjects import GDMLisotope, ViewProvider
-    #try :
-    #    isotopesGrp = FreeCAD.ActiveDocument.Isotopes
-    #
-    #except :
-    #   isotopesGrp  = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
-    
     for isotope in materials.findall('isotope') :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
@@ -1155,12 +1154,6 @@ def processIsotopes(isotopesGrp) :
 
 def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction
-    #try :
-    #   elementsGrp  = FreeCAD.ActiveDocument.Elements
-    #
-    #except :
-    #   elementsGrp  = doc.addObject("App::DocumentObjectGroupPython","Elements")
-    
     for element in materials.findall('element') :
         name = element.get('name')
         #print('element : '+name)
@@ -1212,12 +1205,6 @@ def processMaterials(materialGrp) :
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
                             MaterialsList
 
-    #try :
-    #    materialGrp = FreeCAD.ActiveDocument.Materials
-    #
-    #except:
-    #     materialGrp = doc.addObject("App::DocumentObjectGroupPython", \
-    #                          "Materials")
     for material in materials.findall('material') :
         name = material.get('name')
         #print(name)
@@ -1338,15 +1325,43 @@ def processXML(doc,filename):
        processElements(doc)
        processMaterials(doc)
 
-def processMaterialsSet(root, GrpSet) :
+def processGEANT4(doc,filename):
+    print('process GEANT4 Materials : '+filename)
+    etree, root = setupEtree(filename)
+    #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    geant4Grp = doc.addObject("App::DocumentObjectGroupPython","Geant4")
+    processMaterialsG4(geant4Grp,root)
+
+def processMaterialsDocSet(doc, root) :
     global materials
     materials = root.find('materials')
     if materials != None :
-       isotopesGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Isotopes")
+       try :
+          isotopesGrp = FreeCAD.ActiveDocument.Isotopes
+       except :
+          isotopesGrp = doc.addObject("App::DocumentObjectGroupPython","Isotopes")
        processIsotopes(isotopesGrp)
-       elementsGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Elements")
+       try :
+          elementsGrp = FreeCAD.ActiveDocument.Elements
+       except :
+          elementsGrp = doc.addObject("App::DocumentObjectGroupPython","Elements")
        processElements(elementsGrp)
-       materialsGrp = GrpSet.addObject("App::DocumentObjectGroupPython","Materials")
+       try :
+          materialsGrp = FreeCAD.ActiveDocument.Materials
+       except :
+          materialsGrp = doc.addObject("App::DocumentObjectGroupPython","Materials")
+       processMaterials(materialsGrp)
+
+
+def processMaterialsG4(G4rp, root) :
+    global materials
+    materials = root.find('materials')
+    if materials != None :
+       isotopesGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Isotopes")
+       processIsotopes(isotopesGrp)
+       elementsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Elements")
+       processElements(elementsGrp)
+       materialsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Materials")
        processMaterials(materialsGrp)
 
 
@@ -1420,7 +1435,10 @@ def processGDML(doc,filename,prompt,initFlg):
 
        GDMLShared.trace(setup.attrib)
 
-    processMaterialsSet(root,doc)
+    processMaterialsDocSet(doc,root)
+    #processGEANT4(doc,joinDir("Mod/GDML/Resources/Geant4Materials.xml"))
+    print(joinDir("test"))
+    processGEANT4(doc,joinDir("Resources/Geant4Materials.xml"))
 
     solids    = root.find('solids')
     structure = root.find('structure')

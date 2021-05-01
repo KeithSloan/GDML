@@ -296,7 +296,12 @@ class GDMLcommon :
       '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-      return {'type' : self.Type }
+      if hasAttr(self,'Type') : # If not saved just return
+         return {'type' : self.Type }
+      else :
+         return {'type' : self.Type }
+         pass
+
  
    def __setstate__(self,state):
       '''When restoring the serialized object from document we have the chance to set some internals here.\
