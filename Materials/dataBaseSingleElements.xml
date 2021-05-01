@@ -299,395 +299,395 @@
       <element Z="98" formula="Cf" name="Cf_element" >
         <atom value="251" />
       </element>
-      <material formula="H" name="GF_H" >
+      <material formula="H" name="G4_H" >
         <D unit="g/cm3" value="0.000083748" />
         <composite n="1" ref="H_element"/>
       </material>
-      <material formula="He" name="GF_He" >
+      <material formula="He" name="G4_He" >
         <D unit="g/cm3" value="0.000166322" />
         <composite n="1" ref="He_element"/>
       </material>
-      <material formula="Li" name="GF_Li" >
+      <material formula="Li" name="G4_Li" >
         <D unit="g/cm3" value="0.534" />
         <composite n="1" ref="Li_element"/>
       </material>
-      <material formula="Be" name="GF_Be" >
+      <material formula="Be" name="G4_Be" >
         <D unit="g/cm3" value="1.848" />
         <composite n="1" ref="Be_element"/>
       </material>
-      <material formula="B" name="GF_B" >
+      <material formula="B" name="G4_B" >
         <D unit="g/cm3" value="2.37" />
         <composite n="1" ref="B_element"/>
       </material>
-      <material formula="C" name="GF_C" >
+      <material formula="C" name="G4_C" >
         <D unit="g/cm3" value="2" />
         <composite n="1" ref="C_element"/>
       </material>
-      <material formula="N" name="GF_N" >
+      <material formula="N" name="G4_N" >
         <D unit="g/cm3" value="0.0011652" />
         <composite n="1" ref="N_element"/>
       </material>
-      <material formula="O" name="GF_O" >
+      <material formula="O" name="G4_O" >
         <D unit="g/cm3" value="0.00133151" />
         <composite n="1" ref="O_element"/>
       </material>
-      <material formula="F" name="GF_F" >
+      <material formula="F" name="G4_F" >
         <D unit="g/cm3" value="0.00158029" />
         <composite n="1" ref="F_element"/>
       </material>
-      <material formula="Ne" name="GF_Ne" >
+      <material formula="Ne" name="G4_Ne" >
         <D unit="g/cm3" value="0.000838505" />
         <composite n="1" ref="Ne_element"/>
       </material>
-      <material formula="Na" name="GF_Na" >
+      <material formula="Na" name="G4_Na" >
         <D unit="g/cm3" value="0.971" />
         <composite n="1" ref="Na_element"/>
       </material>
-      <material formula="Mg" name="GF_Mg" >
+      <material formula="Mg" name="G4_Mg" >
         <D unit="g/cm3" value="1.74" />
         <composite n="1" ref="Mg_element"/>
       </material>
-      <material formula="Al" name="GF_Al" >
+      <material formula="Al" name="G4_Al" >
         <D unit="g/cm3" value="2.699" />
         <composite n="1" ref="Al_element"/>
       </material>
-      <material formula="Si" name="GF_Si" >
+      <material formula="Si" name="G4_Si" >
         <D unit="g/cm3" value="2.33" />
         <composite n="1" ref="Si_element"/>
       </material>
-      <material formula="P" name="GF_P" >
+      <material formula="P" name="G4_P" >
         <D unit="g/cm3" value="2.2" />
         <composite n="1" ref="P_element"/>
       </material>
-      <material formula="S" name="GF_S" >
+      <material formula="S" name="G4_S" >
         <D unit="g/cm3" value="2" />
         <composite n="1" ref="S_element"/>
       </material>
-      <material formula="Cl" name="GF_Cl" >
+      <material formula="Cl" name="G4_Cl" >
         <D unit="g/cm3" value="0.00299473" />
         <composite n="1" ref="Cl_element"/>
       </material>
-      <material formula="Ar" name="GF_Ar" >
+      <material formula="Ar" name="G4_Ar" >
         <D unit="g/cm3" value="0.00166201" />
         <composite n="1" ref="Ar_element"/>
       </material>
-      <material formula="K" name="GF_K" >
+      <material formula="K" name="G4_K" >
         <D unit="g/cm3" value="0.862" />
         <composite n="1" ref="K_element"/>
       </material>
-      <material formula="Ca" name="GF_Ca" >
+      <material formula="Ca" name="G4_Ca" >
         <D unit="g/cm3" value="1.55" />
         <composite n="1" ref="Ca_element"/>
       </material>
-      <material formula="Sc" name="GF_Sc" >
+      <material formula="Sc" name="G4_Sc" >
         <D unit="g/cm3" value="2.989" />
         <composite n="1" ref="Sc_element"/>
       </material>
-      <material formula="Ti" name="GF_Ti" >
+      <material formula="Ti" name="G4_Ti" >
         <D unit="g/cm3" value="4.54" />
         <composite n="1" ref="Ti_element"/>
       </material>
-      <material formula="V" name="GF_V" >
+      <material formula="V" name="G4_V" >
         <D unit="g/cm3" value="6.11" />
         <composite n="1" ref="V_element"/>
       </material>
-      <material formula="Cr" name="GF_Cr" >
+      <material formula="Cr" name="G4_Cr" >
         <D unit="g/cm3" value="7.18" />
         <composite n="1" ref="Cr_element"/>
       </material>
-      <material formula="Mn" name="GF_Mn" >
+      <material formula="Mn" name="G4_Mn" >
         <D unit="g/cm3" value="7.44" />
         <composite n="1" ref="Mn_element"/>
       </material>
-      <material formula="Fe" name="GF_Fe" >
+      <material formula="Fe" name="G4_Fe" >
         <D unit="g/cm3" value="7.874" />
         <composite n="1" ref="Fe_element"/>
       </material>
-      <material formula="Co" name="GF_Co" >
+      <material formula="Co" name="G4_Co" >
         <D unit="g/cm3" value="8.9" />
         <composite n="1" ref="Co_element"/>
       </material>
-      <material formula="Ni" name="GF_Ni" >
+      <material formula="Ni" name="G4_Ni" >
         <D unit="g/cm3" value="8.902" />
         <composite n="1" ref="Ni_element"/>
       </material>
-      <material formula="Cu" name="GF_Cu" >
+      <material formula="Cu" name="G4_Cu" >
         <D unit="g/cm3" value="8.96" />
         <composite n="1" ref="Cu_element"/>
       </material>
-      <material formula="Zn" name="GF_Zn" >
+      <material formula="Zn" name="G4_Zn" >
         <D unit="g/cm3" value="7.133" />
         <composite n="1" ref="Zn_element"/>
       </material>
-      <material formula="Ga" name="GF_Ga" >
+      <material formula="Ga" name="G4_Ga" >
         <D unit="g/cm3" value="5.904" />
         <composite n="1" ref="Ga_element"/>
       </material>
-      <material formula="Ge" name="GF_Ge" >
+      <material formula="Ge" name="G4_Ge" >
         <D unit="g/cm3" value="5.323" />
         <composite n="1" ref="Ge_element"/>
       </material>
-      <material formula="As" name="GF_As" >
+      <material formula="As" name="G4_As" >
         <D unit="g/cm3" value="5.73" />
         <composite n="1" ref="As_element"/>
       </material>
-      <material formula="Se" name="GF_Se" >
+      <material formula="Se" name="G4_Se" >
         <D unit="g/cm3" value="4.5" />
         <composite n="1" ref="Se_element"/>
       </material>
-      <material formula="Br" name="GF_Br" >
+      <material formula="Br" name="G4_Br" >
         <D unit="g/cm3" value="0.0070721" />
         <composite n="1" ref="Br_element"/>
       </material>
-      <material formula="Kr" name="GF_Kr" >
+      <material formula="Kr" name="G4_Kr" >
         <D unit="g/cm3" value="0.00347832" />
         <composite n="1" ref="Kr_element"/>
       </material>
-      <material formula="Rb" name="GF_Rb" >
+      <material formula="Rb" name="G4_Rb" >
         <D unit="g/cm3" value="1.532" />
         <composite n="1" ref="Rb_element"/>
       </material>
-      <material formula="Sr" name="GF_Sr" >
+      <material formula="Sr" name="G4_Sr" >
         <D unit="g/cm3" value="2.54" />
         <composite n="1" ref="Sr_element"/>
       </material>
-      <material formula="Y" name="GF_Y" >
+      <material formula="Y" name="G4_Y" >
         <D unit="g/cm3" value="4.469" />
         <composite n="1" ref="Y_element"/>
       </material>
-      <material formula="Zr" name="GF_Zr" >
+      <material formula="Zr" name="G4_Zr" >
         <D unit="g/cm3" value="6.506" />
         <composite n="1" ref="Zr_element"/>
       </material>
-      <material formula="Nb" name="GF_Nb" >
+      <material formula="Nb" name="G4_Nb" >
         <D unit="g/cm3" value="8.57" />
         <composite n="1" ref="Nb_element"/>
       </material>
-      <material formula="Mo" name="GF_Mo" >
+      <material formula="Mo" name="G4_Mo" >
         <D unit="g/cm3" value="10.22" />
         <composite n="1" ref="Mo_element"/>
       </material>
-      <material formula="Tc" name="GF_Tc" >
+      <material formula="Tc" name="G4_Tc" >
         <D unit="g/cm3" value="11.5" />
         <composite n="1" ref="Tc_element"/>
       </material>
-      <material formula="Ru" name="GF_Ru" >
+      <material formula="Ru" name="G4_Ru" >
         <D unit="g/cm3" value="12.41" />
         <composite n="1" ref="Ru_element"/>
       </material>
-      <material formula="Rh" name="GF_Rh" >
+      <material formula="Rh" name="G4_Rh" >
         <D unit="g/cm3" value="12.41" />
         <composite n="1" ref="Rh_element"/>
       </material>
-      <material formula="Pd" name="GF_Pd" >
+      <material formula="Pd" name="G4_Pd" >
         <D unit="g/cm3" value="12.02" />
         <composite n="1" ref="Pd_element"/>
       </material>
-      <material formula="Ag" name="GF_Ag" >
+      <material formula="Ag" name="G4_Ag" >
         <D unit="g/cm3" value="10.5" />
         <composite n="1" ref="Ag_element"/>
       </material>
-      <material formula="Cd" name="GF_Cd" >
+      <material formula="Cd" name="G4_Cd" >
         <D unit="g/cm3" value="8.65" />
         <composite n="1" ref="Cd_element"/>
       </material>
-      <material formula="In" name="GF_In" >
+      <material formula="In" name="G4_In" >
         <D unit="g/cm3" value="7.31" />
         <composite n="1" ref="In_element"/>
       </material>
-      <material formula="Sn" name="GF_Sn" >
+      <material formula="Sn" name="G4_Sn" >
         <D unit="g/cm3" value="7.31" />
         <composite n="1" ref="Sn_element"/>
       </material>
-      <material formula="Sb" name="GF_Sb" >
+      <material formula="Sb" name="G4_Sb" >
         <D unit="g/cm3" value="6.691" />
         <composite n="1" ref="Sb_element"/>
       </material>
-      <material formula="Te" name="GF_Te" >
+      <material formula="Te" name="G4_Te" >
         <D unit="g/cm3" value="6.24" />
         <composite n="1" ref="Te_element"/>
       </material>
-      <material formula="I" name="GF_I" >
+      <material formula="I" name="G4_I" >
         <D unit="g/cm3" value="4.93" />
         <composite n="1" ref="I_element"/>
       </material>
-      <material formula="Xe" name="GF_Xe" >
+      <material formula="Xe" name="G4_Xe" >
         <D unit="g/cm3" value="0.00548536" />
         <composite n="1" ref="Xe_element"/>
       </material>
-      <material formula="Cs" name="GF_Cs" >
+      <material formula="Cs" name="G4_Cs" >
         <D unit="g/cm3" value="1.873" />
         <composite n="1" ref="Cs_element"/>
       </material>
-      <material formula="Ba" name="GF_Ba" >
+      <material formula="Ba" name="G4_Ba" >
         <D unit="g/cm3" value="3.5" />
         <composite n="1" ref="Ba_element"/>
       </material>
-      <material formula="La" name="GF_La" >
+      <material formula="La" name="G4_La" >
         <D unit="g/cm3" value="6.154" />
         <composite n="1" ref="La_element"/>
       </material>
-      <material formula="Ce" name="GF_Ce" >
+      <material formula="Ce" name="G4_Ce" >
         <D unit="g/cm3" value="6.657" />
         <composite n="1" ref="Ce_element"/>
       </material>
-      <material formula="Pr" name="GF_Pr" >
+      <material formula="Pr" name="G4_Pr" >
         <D unit="g/cm3" value="6.71" />
         <composite n="1" ref="Pr_element"/>
       </material>
-      <material formula="Nd" name="GF_Nd" >
+      <material formula="Nd" name="G4_Nd" >
         <D unit="g/cm3" value="6.9" />
         <composite n="1" ref="Nd_element"/>
       </material>
-      <material formula="Pm" name="GF_Pm" >
+      <material formula="Pm" name="G4_Pm" >
         <D unit="g/cm3" value="7.22" />
         <composite n="1" ref="Pm_element"/>
       </material>
-      <material formula="Sm" name="GF_Sm" >
+      <material formula="Sm" name="G4_Sm" >
         <D unit="g/cm3" value="7.46" />
         <composite n="1" ref="Sm_element"/>
       </material>
-      <material formula="Eu" name="GF_Eu" >
+      <material formula="Eu" name="G4_Eu" >
         <D unit="g/cm3" value="5.243" />
         <composite n="1" ref="Eu_element"/>
       </material>
-      <material formula="Gd" name="GF_Gd" >
+      <material formula="Gd" name="G4_Gd" >
         <D unit="g/cm3" value="7.9004" />
         <composite n="1" ref="Gd_element"/>
       </material>
-      <material formula="Tb" name="GF_Tb" >
+      <material formula="Tb" name="G4_Tb" >
         <D unit="g/cm3" value="8.229" />
         <composite n="1" ref="Tb_element"/>
       </material>
-      <material formula="Dy" name="GF_Dy" >
+      <material formula="Dy" name="G4_Dy" >
         <D unit="g/cm3" value="8.55" />
         <composite n="1" ref="Dy_element"/>
       </material>
-      <material formula="Ho" name="GF_Ho" >
+      <material formula="Ho" name="G4_Ho" >
         <D unit="g/cm3" value="8.795" />
         <composite n="1" ref="Ho_element"/>
       </material>
-      <material formula="Er" name="GF_Er" >
+      <material formula="Er" name="G4_Er" >
         <D unit="g/cm3" value="9.066" />
         <composite n="1" ref="Er_element"/>
       </material>
-      <material formula="Tm" name="GF_Tm" >
+      <material formula="Tm" name="G4_Tm" >
         <D unit="g/cm3" value="9.321" />
         <composite n="1" ref="Tm_element"/>
       </material>
-      <material formula="Yb" name="GF_Yb" >
+      <material formula="Yb" name="G4_Yb" >
         <D unit="g/cm3" value="6.73" />
         <composite n="1" ref="Yb_element"/>
       </material>
-      <material formula="Lu" name="GF_Lu" >
+      <material formula="Lu" name="G4_Lu" >
         <D unit="g/cm3" value="9.84" />
         <composite n="1" ref="Lu_element"/>
       </material>
-      <material formula="Hf" name="GF_Hf" >
+      <material formula="Hf" name="G4_Hf" >
         <D unit="g/cm3" value="13.31" />
         <composite n="1" ref="Hf_element"/>
       </material>
-      <material formula="Ta" name="GF_Ta" >
+      <material formula="Ta" name="G4_Ta" >
         <D unit="g/cm3" value="16.654" />
         <composite n="1" ref="Ta_element"/>
       </material>
-      <material formula="W" name="GF_W" >
+      <material formula="W" name="G4_W" >
         <D unit="g/cm3" value="19.3" />
         <composite n="1" ref="W_element"/>
       </material>
-      <material formula="Re" name="GF_Re" >
+      <material formula="Re" name="G4_Re" >
         <D unit="g/cm3" value="21.02" />
         <composite n="1" ref="Re_element"/>
       </material>
-      <material formula="Os" name="GF_Os" >
+      <material formula="Os" name="G4_Os" >
         <D unit="g/cm3" value="22.57" />
         <composite n="1" ref="Os_element"/>
       </material>
-      <material formula="Ir" name="GF_Ir" >
+      <material formula="Ir" name="G4_Ir" >
         <D unit="g/cm3" value="22.42" />
         <composite n="1" ref="Ir_element"/>
       </material>
-      <material formula="Pt" name="GF_Pt" >
+      <material formula="Pt" name="G4_Pt" >
         <D unit="g/cm3" value="21.45" />
         <composite n="1" ref="Pt_element"/>
       </material>
-      <material formula="Au" name="GF_Au" >
+      <material formula="Au" name="G4_Au" >
         <D unit="g/cm3" value="19.32" />
         <composite n="1" ref="Au_element"/>
       </material>
-      <material formula="Hg" name="GF_Hg" >
+      <material formula="Hg" name="G4_Hg" >
         <D unit="g/cm3" value="13.546" />
         <composite n="1" ref="Hg_element"/>
       </material>
-      <material formula="Tl" name="GF_Tl" >
+      <material formula="Tl" name="G4_Tl" >
         <D unit="g/cm3" value="11.72" />
         <composite n="1" ref="Tl_element"/>
       </material>
-      <material formula="Pb" name="GF_Pb" >
+      <material formula="Pb" name="G4_Pb" >
         <D unit="g/cm3" value="11.35" />
         <composite n="1" ref="Pb_element"/>
       </material>
-      <material formula="Bi" name="GF_Bi" >
+      <material formula="Bi" name="G4_Bi" >
         <D unit="g/cm3" value="9.747" />
         <composite n="1" ref="Bi_element"/>
       </material>
-      <material formula="Po" name="GF_Po" >
+      <material formula="Po" name="G4_Po" >
         <D unit="g/cm3" value="9.32" />
         <composite n="1" ref="Po_element"/>
       </material>
-      <material formula="At" name="GF_At" >
+      <material formula="At" name="G4_At" >
         <D unit="g/cm3" value="9.32" />
         <composite n="1" ref="At_element"/>
       </material>
-      <material formula="Rn" name="GF_Rn" >
+      <material formula="Rn" name="G4_Rn" >
         <D unit="g/cm3" value="0.00900662" />
         <composite n="1" ref="Rn_element"/>
       </material>
-      <material formula="Fr" name="GF_Fr" >
+      <material formula="Fr" name="G4_Fr" >
         <D unit="g/cm3" value="1" />
         <composite n="1" ref="Fr_element"/>
       </material>
-      <material formula="Ra" name="GF_Ra" >
+      <material formula="Ra" name="G4_Ra" >
         <D unit="g/cm3" value="5" />
         <composite n="1" ref="Ra_element"/>
       </material>
-      <material formula="Ac" name="GF_Ac" >
+      <material formula="Ac" name="G4_Ac" >
         <D unit="g/cm3" value="10.07" />
         <composite n="1" ref="Ac_element"/>
       </material>
-      <material formula="Th" name="GF_Th" >
+      <material formula="Th" name="G4_Th" >
         <D unit="g/cm3" value="11.72" />
         <composite n="1" ref="Th_element"/>
       </material>
-      <material formula="Pa" name="GF_Pa" >
+      <material formula="Pa" name="G4_Pa" >
         <D unit="g/cm3" value="15.37" />
         <composite n="1" ref="Pa_element"/>
       </material>
-      <material formula="U" name="GF_U" >
+      <material formula="U" name="G4_U" >
         <D unit="g/cm3" value="18.95" />
         <composite n="1" ref="U_element"/>
       </material>
-      <material formula="Np" name="GF_Np" >
+      <material formula="Np" name="G4_Np" >
         <D unit="g/cm3" value="20.25" />
         <composite n="1" ref="Np_element"/>
       </material>
-      <material formula="Pu" name="GF_Pu" >
+      <material formula="Pu" name="G4_Pu" >
         <D unit="g/cm3" value="19.84" />
         <composite n="1" ref="Pu_element"/>
       </material>
-      <material formula="Am" name="GF_Am" >
+      <material formula="Am" name="G4_Am" >
         <D unit="g/cm3" value="13.67" />
         <composite n="1" ref="Am_element"/>
       </material>
-      <material formula="Cm" name="GF_Cm" >
+      <material formula="Cm" name="G4_Cm" >
         <D unit="g/cm3" value="13.51" />
         <composite n="1" ref="Cm_element"/>
       </material>
-      <material formula="Bk" name="GF_Bk" >
+      <material formula="Bk" name="G4_Bk" >
         <D unit="g/cm3" value="14" />
         <composite n="1" ref="Bk_element"/>
       </material>
-      <material formula="Cf" name="GF_Cf" >
+      <material formula="Cf" name="G4_Cf" >
         <D unit="g/cm3" value="10" />
         <composite n="1" ref="Cf_element"/>
       </material>
