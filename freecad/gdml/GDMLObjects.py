@@ -309,7 +309,7 @@ class GDMLcommon :
       '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-      if hasAttr(self,'Type') : # If not saved just return
+      if hasattr(self,'Type') : # If not saved just return
          return {'type' : self.Type }
       else :
          return {'type' : self.Type }
