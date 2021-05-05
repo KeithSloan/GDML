@@ -182,6 +182,43 @@ def setMaterial(obj, m) :
     else :
         obj.Material = 0
 
+def indiceToRay(indiceIn):	# Thanks to Dam
+    if indiceIn<1: 
+        return 0
+    else:
+        lray=[0.0, 1.0]
+        puissanceDown=2
+        while len(lray) <= indiceIn:
+            for indiceTmp in range(1,puissanceDown,2):
+                lray.append(float(indiceTmp)/float(puissanceDown))
+            puissanceDown = 2 * puissanceDown
+        return lray[indiceIn]
+	
+def colorFromRay(rayIn):	# Thanks to Dam
+    coeffR=coeffG=coeffB=1.0
+
+    if(rayIn<0.2 and rayIn>=0.0):
+        coeffR=1.0
+        coeffG=rayIn*5.0
+        coeffB=0.0
+    elif(rayIn<0.4):
+        coeffR=2.0-(5.0*rayIn)
+        coeffG=1.0
+        coeffB=0.0
+    elif(rayIn<0.6):
+        coeffR=0.0
+        coeffG=1.0
+        coeffB=rayIn*5.0-2.0
+    elif(rayIn<0.8):
+        coeffR=1.0
+        coeffG=4.0-(5.0*rayIn)
+        coeffB=1.0
+    elif(rayIn<=1.0):
+        coeffR=(5.0*rayIn)-4.0
+        coeffG=0.0
+        coeffB=1.0
+    return (coeffR,coeffG,coeffB)
+
 def colourMaterial(m):
 
    if MaterialsList == None :
@@ -194,35 +231,8 @@ def colourMaterial(m):
        elif m not in MaterialsList :
             return (0.5,0.5,0.5)
        else:
-           nbreColor=len(MaterialsList)
-
            coeffRGB = MaterialsList.index(m)
-
-           coeffRGB=float(coeffRGB)/float(nbreColor-1)
-           coeffR=coeffG=coeffB=1.0
-
-           if(coeffRGB<0.2 and coeffRGB>=0.0):
-               coeffR=1.0
-               coeffG=coeffRGB*5.0
-               coeffB=0.0
-           elif(coeffRGB<0.4):
-               coeffR=2.0-(5.0*coeffRGB)
-               coeffG=1.0
-               coeffB=0.0
-           elif(coeffRGB<0.6):
-               coeffR=0.0
-               coeffG=1.0
-               coeffB=coeffRGB*5.0-2.0
-           elif(coeffRGB<0.8):
-               coeffR=1.0
-               coeffG=4.0-(5.0*coeffRGB)
-               coeffB=1.0
-           elif(coeffRGB<=1.0):
-               coeffR=(5.0*coeffRGB)-4.0
-               coeffG=0.0
-               coeffB=1.0
-
-           return (coeffR,coeffG,coeffB)
+           return colorFromRay(indiceToRay(coeffRGB))
 
 class GDMLColourMapEntry :
    def __init__(self,obj,colour,material) :
@@ -282,7 +292,10 @@ class GDMLsolid :
       '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-      return {'type' : self.Type }
+      if hasAttr(self,'Type') :
+         return {'type' : self.Type }
+      else :
+         pass
  
    def __setstate__(self, arg):
       '''When restoring the serialized object from document we have the chance to set some internals here. Since no data were serialized nothing needs to be done here.'''
