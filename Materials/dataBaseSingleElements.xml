@@ -1,4 +1,4 @@
-<xml>
+xml>
   <define>
     <constant name="HALFPI" value="pi/2." />
     <constant name="PI" value="1.*pi" />
