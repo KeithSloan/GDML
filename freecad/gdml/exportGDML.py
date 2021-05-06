@@ -230,6 +230,8 @@ def createLVandPV(obj, name, solidName):
         angles = rot.toEulerAngles('ixyz')
         angles = (angles[2], angles[1], angles[0])
     else:
+        print('Export of rotation probably wrong')
+        pritn('Needs toEulerAngles function - Use LinkStage 3')
         angles = rot.toEuler()
     GDMLShared.trace("Angles")
     GDMLShared.trace(angles)
