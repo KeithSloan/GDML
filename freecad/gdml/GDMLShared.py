@@ -80,7 +80,7 @@ def processConstants(doc):
         value = cdefine.attrib.get('value')
         trace('value : '+ value)
         #constDict[name] = value
-        trace(name)
+        #trace(name)
         #print(dir(name))
         try :
            globals()[name] = eval(value)

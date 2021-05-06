@@ -1068,18 +1068,19 @@ def expandVolume(parent,name,phylvl,displayMode) :
                    obj = createSolid(parent,solid,material,colour,0,0,0,None, \
                                  displayMode)
                 else :
-                   print('Material : '+material+' Not defined for solid : ' \
-                         +str(solid)+' Volume : '+name)
+                   print('ERROR - Material : '+material+ \
+                         ' Not defined for solid : '  +str(solid)+ \
+                         ' Volume : '+name)
                    return None
              else :
-                print('Materialref Not defined for solid : ' \
+                print('ERROR - Materialref Not defined for solid : ' \
                          +str(solid)+' Volume : '+name)
                 return None
           else :
-             print('Solid : '+solidref+' Not defined')
+             print('ERROR - Solid  : '+solidref+' Not defined')
              return None
        else :
-          print('solidref Not defined')
+          print('ERROR - solidref Not defined in Volume : '+name)
           return None 
        # Volume may or maynot contain physvol's
        displayMode = 1
@@ -1123,17 +1124,16 @@ def expandVolume(parent,name,phylvl,displayMode) :
                      "GDML", "copynumber").CopyNumber = int(cpyNum)
               base = FreeCAD.Vector(nx,ny,nz)
               part.Placement = GDMLShared.processPlacement(base,nrot)
-       App.ActiveDocument.recompute() 
 
     else :
        asm = structure.find("assembly[@name='%s']" % name)
-       print("Assembly : "+name)
-       if asm != None :
+       if asm is not None :
+          print("Assembly : "+name)
           for pv in asm.findall("physvol") :
               #obj = parent.newObject("App::Part",name)
               parsePhysVol(False,parent,pv,phylvl,displayMode)
        else :
-           print("Not Volume or Assembly") 
+           print(name+' is Not a defined Volume or Assembly') 
 
 def getItem(element, attribute) :
     # returns None if not found
@@ -1450,6 +1450,7 @@ def processGDML(doc,filename,prompt,initFlg):
     if len(part.OutList) == 2 and initFlg == False :
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = 'Shaded'
+    FreeCAD.ActiveDocument.recompute()
     if FreeCAD.GuiUp :
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
