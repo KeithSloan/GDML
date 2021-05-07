@@ -231,7 +231,7 @@ def createLVandPV(obj, name, solidName):
         angles = (angles[2], angles[1], angles[0])
     else:
         print('Export of rotation probably wrong')
-        pritn('Needs toEulerAngles function - Use LinkStage 3')
+        print('Needs toEulerAngles function - Use LinkStage 3')
         angles = rot.toEuler()
     GDMLShared.trace("Angles")
     GDMLShared.trace(angles)
@@ -625,6 +625,8 @@ def exportRotation(name, xml, Rotation) :
             angles = Rotation.toEulerAngles('ixyz')
             angles = (angles[2], angles[1], angles[0])
         else:
+            print('Export of rotation probably wrong')
+            print('Needs toEulerAngles function - Use LinkStage 3')
             angles = Rotation.toEuler()
         GDMLShared.trace("Angles")
         GDMLShared.trace(angles)
