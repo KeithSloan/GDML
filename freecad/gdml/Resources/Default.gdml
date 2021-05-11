@@ -11,7 +11,7 @@
 </solids>
 <structure>
   <volume name="worldVOL">
-      <materialref ref="GF_AIR" />
+      <materialref ref="G4_AIR" />
     <solidref ref="WorldBox" />
     </volume>
   </structure>
