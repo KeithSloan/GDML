@@ -312,7 +312,6 @@ class GDMLcommon :
       if hasattr(self,'Type') : # If not saved just return
          return {'type' : self.Type }
       else :
-         return {'type' : self.Type }
          pass
 
  
