@@ -34,6 +34,17 @@ This Script includes the GUI Commands of the GDML module
 import FreeCAD,FreeCADGui
 from PySide import QtGui, QtCore
 
+if FreeCAD.GuiUp:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
+
 class importPrompt(QtGui.QDialog):
     def __init__(self, *args):
         super(importPrompt, self).__init__()
@@ -616,6 +627,119 @@ class PolyHedraFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'PolyHedra Selected Object')}    
 
+class AddTessellateWidget(QtGui.QWidget):
+    def __init__(self,*args):
+        QtGui.QWidget.__init__(self,*args)
+        # Main text area
+        self.textEdit=QtGui.QTextEdit()
+        self.textEdit.setAcceptRichText(False)
+        #print(self.textEdit.maximumHeight())
+        #print(self.textEdit.maximumViewportSize())
+        # Message Area
+        self.textMsg=QtGui.QPlainTextEdit()
+        self.textMsg.setReadOnly(True)
+        h = int(2.5 * self.textMsg.fontMetrics().height())
+        self.textMsg.setMaximumHeight(h)
+        self.textMsg.resize(self.textMsg.width(),h)
+        self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
+        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Load'))
+        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save'))
+        self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
+        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
+        layouth=QtGui.QHBoxLayout()
+        layouth.addWidget(self.buttonadd)
+        layouth.addWidget(self.buttonload)
+        layouth.addWidget(self.buttonsave)
+        layouth.addWidget(self.buttonrefresh)
+        layouth.addWidget(self.buttonclear)
+        layout= QtGui.QVBoxLayout()
+        layout.addLayout(layouth)
+        layout.addWidget(self.checkboxmesh)
+        layout.addWidget(self.textEdit)
+        layout.addWidget(self.textMsg)
+        self.setLayout(layout)
+        self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
+        self.textEdit.setText(u'cube();')
+        self.buttonclear.clicked.connect(self.textEdit.clear)
+
+    def retranslateUi(self, widget=None):
+        self.buttonadd.setText(translate('OpenSCAD','Add'))
+        self.buttonload.setText(translate('OpenSCAD','Load'))
+        self.buttonsave.setText(translate('OpenSCAD','Save'))
+        self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
+        self.buttonclear.setText(translate('OpenSCAD','Clear'))
+        self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
+        self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
+
+class AddTessellateTask:
+    def __init__(self):
+        self.form = AddTessellateWidget()
+        self.form.buttonadd.clicked.connect(self.addelement)
+        self.form.buttonload.clicked.connect(self.loadelement)
+        self.form.buttonsave.clicked.connect(self.saveelement)
+        self.form.buttonrefresh.clicked.connect(self.refreshelement)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def addelement(self):
+        scadstr=self.form.textEdit.toPlainText()
+        asmesh=self.form.checkboxmesh.checkState()
+        import OpenSCADUtils, os
+        extension= 'stl' if asmesh else 'csg'
+        try:
+            tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,extension)
+            doc=FreeCAD.activeDocument() or FreeCAD.newDocument()
+            if asmesh:
+                import Mesh
+                Mesh.insert(tmpfilename,doc.Name)
+            else:
+                import importCSG
+                importCSG.insert(tmpfilename,doc.Name)
+            try:
+                os.unlink(tmpfilename)
+            except OSError:
+                pass
+
+        except OpenSCADUtils.OpenSCADError as e:
+            self.form.textMsg.setPlainText(e.value)
+            FreeCAD.Console.PrintError(e.value)
+     
+    def refreshelement(self):
+        self.form.textMsg.setPlainText('')
+        doc=FreeCAD.activeDocument()
+        if doc :
+           for obj in doc.Objects :
+               doc.removeObject(obj.Name)
+        self.addelement()
+
+    def loadelement(self):
+        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           print('filename :'+filename)
+           with open(filename,'r') as fp :
+              data = fp.read()
+              self.form.textEdit.setText(data)
+    
+    def saveelement(self) :
+        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           Text = self.form.textEdit.toPlainText()
+           with open(filename,'w') as fp :
+              fp.write(Text)
+
 class TessellateFeature :
       
     def Activated(self) :
@@ -673,6 +797,19 @@ class TessellateGmshFeature :
  
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
+
+        print('Action Gmsh Activated')
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Gmsh Tessellate')
+            if hasattr(obj,'Shape') :
+               if obj.TypeId == 'GDMLGmsh' :
+                  print('Build panel for EXISTING Gmsh Tessellate')
+               else :
+                  print('Build panel for TO BE Gmeshed')
+               panel = AddTessellateTask()
+               FreeCADGui.Control.showDialog(panel)
+            return
 
         for obj in FreeCADGui.Selection.getSelection():
             initialize()
