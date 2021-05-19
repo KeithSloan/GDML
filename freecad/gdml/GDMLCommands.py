@@ -653,13 +653,13 @@ class AddTessellateWidget(QtGui.QWidget):
         #layouth.addWidget(self.buttonsave)
         #layouth.addWidget(self.buttonrefresh)
         #layouth.addWidget(self.buttonclear)
-        layout= QtGui.QVBoxLayout()
-        layout.addLayout(layoutbbox)
-        layout.addLayout(layouth)
+        self.Vlayout= QtGui.QVBoxLayout()
+        self.Vlayout.addLayout(layoutbbox)
+        self.Vlayout.addLayout(layouth)
         #layout.addWidget(self.checkboxmesh)
         #layout.addWidget(self.textEdit)
         #layout.addWidget(self.textMsg)
-        self.setLayout(layout)
+        self.setLayout(self.Vlayout)
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
         #self.textEdit.setText(u'cube();')
         #self.buttonclear.clicked.connect(self.textEdit.clear)
@@ -674,8 +674,16 @@ class AddTessellateWidget(QtGui.QWidget):
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
 
 class AddTessellateTask:
-    def __init__(self, Shape):
-        self.form = AddTessellateWidget(Shape)
+    import ObjectsFem
+    #from .GmshUtils import initialize, meshObj, \
+    #      getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+
+
+    from femmesh.gmshtools import GmshTools
+
+    def __init__(self, Obj):
+        self.obj = Obj
+        self.form = AddTessellateWidget(Obj.Shape)
         self.form.buttonMesh.clicked.connect(self.actionMesh)
         #self.form.buttonload.clicked.connect(self.loadelement)
         #self.form.buttonsave.clicked.connect(self.saveelement)
@@ -693,32 +701,39 @@ class AddTessellateTask:
     def isAllowedAlterDocument(self):
         return True
 
-    def addelement(self):
-        scadstr=self.form.textEdit.toPlainText()
-        asmesh=self.form.checkboxmesh.checkState()
-        import OpenSCADUtils, os
-        extension= 'stl' if asmesh else 'csg'
-        try:
-            tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,extension)
-            doc=FreeCAD.activeDocument() or FreeCAD.newDocument()
-            if asmesh:
-                import Mesh
-                Mesh.insert(tmpfilename,doc.Name)
-            else:
-                import importCSG
-                importCSG.insert(tmpfilename,doc.Name)
-            try:
-                os.unlink(tmpfilename)
-            except OSError:
-                pass
-
-        except OpenSCADUtils.OpenSCADError as e:
-            self.form.textMsg.setPlainText(e.value)
-            FreeCAD.Console.PrintError(e.value)
-
-
     def actionMesh(self) :
+        from .GmshUtils import initialize, meshObj, \
+          getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
         print('Action Gmsh') 
+        initialize()
+        parent = None
+        if meshObj(self.obj,2) == True :
+           facets = getFacets()
+           vertex = getVertex()
+           name ='GDMLTessellate_'+self.obj.Name
+           if hasattr(self.obj,'InList') :
+              if len(self.obj.InList) > 0 :
+                  parent = self.obj.InList[0]
+                  myTes = parent.newObject('Part::FeaturePython',name)
+              if parent == None :
+                  myTes = FreeCAD.ActiveDocument.addObject( \
+                           'Part::FeaturePython',name)
+              GDMLGmshTessellated(myTes,self.obj,getMeshLen(self.obj),vertex, facets, \
+                  "mm", getSelectedMaterial())
+              if FreeCAD.GuiUp :
+                 self.obj.ViewObject.Visibility = False
+                 ViewProvider(myTes.ViewObject)
+                 myTes.ViewObject.DisplayMode = "Wireframe"
+                 FreeCAD.ActiveDocument.recompute()
+                 FreeCADGui.SendMsgToActiveView("ViewFit")
+                 meshInfoLayout=QtGui.QHBoxLayout()
+                 meshInfoLayout.addWidget(QtGui.QLabel('Vertex : '+str(len(vertex))))
+                 meshInfoLayout.addWidget(QtGui.QLabel('Facets : '+str(len(facets))))
+                 #meshInfoLayout.addWidget(QtGui.QLabel('Nodes : '+str(len(facets))))
+                 self.form.Vlayout.addLayout(meshInfoLayout)
+                 self.form.setLayout(self.form.Vlayout)
 
 class TessellateFeature :
       
@@ -787,7 +802,7 @@ class TessellateGmshFeature :
                   print('Build panel for EXISTING Gmsh Tessellate')
                else :
                   print('Build panel for TO BE Gmeshed')
-               panel = AddTessellateTask(obj.Shape)
+               panel = AddTessellateTask(obj)
                FreeCADGui.Control.showDialog(panel)
             return
 
@@ -865,8 +880,6 @@ class Tess2MeshFeature :
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
-
-        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
