@@ -224,7 +224,7 @@ def createLVandPV(obj, name, solidName):
        ET.SubElement(phys, 'positionref', {'name': posName})
        ET.SubElement(define, 'position', {'name': posName, 'unit': 'mm', \
                   'x': str(x), 'y': str(y), 'z': str(z) })
-    # Realthunders enhancment to toEuler ixyz is intrinsic
+    # Realthunders enhancement to toEuler ixyz is intrinsic
     rot = obj.Placement.Rotation
     if hasattr(rot, 'toEulerAngles'):
         angles = rot.toEulerAngles('ixyz')
@@ -620,7 +620,7 @@ def exportRotation(name, xml, Rotation) :
     print('Export Rotation')
     global ROTcount
     if Rotation.Angle != 0 :
-        # Realthunders enhancment to toEuler ixyz is intrinsic
+        # Realthunders enhancement to toEuler ixyz is intrinsic
         if hasattr(Rotation, 'toEulerAngles'):
             angles = Rotation.toEulerAngles('ixyz')
             angles = (angles[2], angles[1], angles[0])
