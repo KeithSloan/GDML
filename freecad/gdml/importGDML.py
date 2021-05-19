@@ -1147,7 +1147,7 @@ def processIsotopes(isotopesGrp) :
         name = isotope.get('name')
         atom = isotope.find('atom')
         unit = atom.get('unit','g/mole')
-        value = float(atom.get('value'))
+        value = GDMLShared.getVal(atom,'value',1)
         #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
         isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
         GDMLisotope(isoObj,name,N,Z,unit,value)
@@ -1177,17 +1177,18 @@ def processElements(elementsGrp) :
            if unit is not None :
               elementObj.addProperty("App::PropertyString","atom_unit",name). \
                                       atom_unit = unit
-           value = atom.get('value')
-           if value is not None :
+           a_value = GDMLShared.getVal(atom,'value',1)
+           if a_value is not None :
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
-                                      atom_value = float(value)
+                                      atom_value = a_value
 
 
         GDMLelement(elementObj,name)
         if( len(element.findall('fraction'))>0 ):
            for fraction in element.findall('fraction') :
                ref = fraction.get('ref')
-               n = float(fraction.get('n'))
+               #n = float(fraction.get('n'))
+               n = GDMLShared.getVal(fraction,'n',1)
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLfraction(fractObj,ref,n)
@@ -1223,10 +1224,10 @@ def processMaterials(materialGrp) :
            if Dunit is not None :
                  materialObj.addProperty("App::PropertyString",'Dunit', \
                                 'GDMLmaterial','Dunit').Dunit = Dunit
-           Dvalue = getItem(D,'value')
+           Dvalue = GDMLShared.getVal(D,'value',1)
            if Dvalue is not None :
               materialObj.addProperty("App::PropertyFloat", \
-                      'Dvalue','GDMLmaterial','value').Dvalue = float(Dvalue)
+                      'Dvalue','GDMLmaterial','value').Dvalue = Dvalue
 
         Z = material.get('Z')
         if Z is not None :
@@ -1238,10 +1239,10 @@ def processMaterials(materialGrp) :
            if aUnit is not None :
               materialObj.addProperty("App::PropertyString",'atom_unit', \
                          name).atom_unit = aUnit
-           aValue = atom.get('value')
+           aValue = GDMLShared.getVal(atom,'value',1)
            if aValue is not None :
               materialObj.addProperty("App::PropertyFloat",'atom_value', \
-                         name).atom_value = float(aValue)
+                         name).atom_value = aValue
  
         T = material.find('T')
         if T is not None :
@@ -1253,11 +1254,11 @@ def processMaterials(materialGrp) :
         MEE = material.find('MEE')
         if MEE is not None :
            Munit = MEE.get('unit')
-           Mvalue = float(MEE.get('value'))
+           Mvalue = GDMLShared.getVal(MEE,'value',1)
            materialObj.addProperty("App::PropertyString",'MEEunit','GDMLmaterial','MEE unit').MEEunit = Munit
            materialObj.addProperty("App::PropertyFloat",'MEEvalue','GDMLmaterial','MEE value').MEEvalue = Mvalue
         for fraction in material.findall('fraction') :
-            n = float(fraction.get('n'))
+            n = GDMLShared.getVal(fraction,'n',1)
             #print(n)
             ref = fraction.get('ref')
             #print('fraction : '+ref)
