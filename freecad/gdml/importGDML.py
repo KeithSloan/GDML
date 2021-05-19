@@ -784,7 +784,7 @@ def parseMultiUnion(part,solid,material,colour,px,py,pz,rot,displayMode) :
                     rname = t.get('ref')
                     GDMLShared.trace('rotation ref : '+rname)
                     nrot = GDMLShared.getDefinedRotation(rname)
-            if sname != None :        # Did we find at least one solid
+            if sname is not None :        # Did we find at least one solid
                 objList.append(createSolid(part,ssolid,material,colour,nx,ny,nz, \
                     nrot,displayMode))
     #myMUobj = part.newObject('Part::MultiFuse',muName)
@@ -954,7 +954,7 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
     volRef = GDMLShared.getRef(physVol,"volumeref")
     GDMLShared.trace("Volume Ref : "+str(volRef))
-    if volRef != None :
+    if volRef is not None :
        copyNum = physVol.get('copynumber')
        GDMLShared.trace('Copynumber : '+str(copyNum))
        # lhcbvelo has duplicate with no copynumber
@@ -968,7 +968,7 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
           GDMLShared.trace('====> Create Link to : '+volRef)
           part = parent.newObject('App::Link',volRef)
           part.LinkedObject = namedObj
-          if part.Name != volRef :
+          if part.Name is not volRef :
              ln = len(volRef)
              part.Label = volRef + '_' + part.Name[ln:]
           try : # try as not working FC 0.18
@@ -980,7 +980,7 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
           scale = GDMLShared.getScale(physVol)
           #print(scale)
           part.ScaleVector = scale
-          #if scale != FreeCAD.Vector(1.,1.,1.) :
+          #if scale is not FreeCAD.Vector(1.,1.,1.) :
           #   try :  # try as not working FC 0.18
           #      part.addProperty("App::PropertyVector","GDMLscale","Link", \
           #         "GDML Scale Vector").GDMLscale = scale
@@ -1058,7 +1058,7 @@ def expandVolume(parent,name,phylvl,displayMode) :
        solidref = GDMLShared.getRef(vol,"solidref")
        if solidref is not None :
           solid  = solids.find("*[@name='%s']" % solidref )
-          if solid != None :
+          if solid is not None :
              GDMLShared.trace(solid.tag)
              # Material is the materialref value
              # need to add default
@@ -1160,25 +1160,25 @@ def processElements(elementsGrp) :
         elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython",  \
                      name)
         Z = element.get('Z')
-        if (Z != None ) :
+        if (Z is not None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
         N = element.get('N')
-        if (N != None ) :
+        if (N is not None ) :
            elementObj.addProperty("App::PropertyInteger","N",name).N=int(N)
             
         formula = element.get('formula')
-        if (formula != None ) :
+        if (formula is not None ) :
            elementObj.addProperty("App::PropertyString","formula",name). \
                    formula = formula
             
         atom = element.find('atom') 
-        if atom != None :
+        if atom is not None :
            unit = atom.get('unit')
-           if unit != None :
+           if unit is not None :
               elementObj.addProperty("App::PropertyString","atom_unit",name). \
                                       atom_unit = unit
            value = atom.get('value')
-           if value != None :
+           if value is not None :
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
                                       atom_value = float(value)
 
@@ -1213,44 +1213,45 @@ def processMaterials(materialGrp) :
                       name)
         GDMLmaterial(materialObj,name)
         formula = material.get('formula')
-        if formula != None :
+        if formula is not None :
            materialObj.addProperty("App::PropertyString",'formula', \
                       name).formula = formula
         D = material.find('D')
-        if D != None :
+        if D is not None :
            Dunit = getItem(D,'unit')
            #print(Dunit)
-           if Dunit != None :
+           if Dunit is not None :
                  materialObj.addProperty("App::PropertyString",'Dunit', \
                                 'GDMLmaterial','Dunit').Dunit = Dunit
            Dvalue = getItem(D,'value')
-           if Dvalue != None :
+           if Dvalue is not None :
               materialObj.addProperty("App::PropertyFloat", \
                       'Dvalue','GDMLmaterial','value').Dvalue = float(Dvalue)
 
         Z = material.get('Z')
-        if Z != None :
+        if Z is not None :
            materialObj.addProperty("App::PropertyString",'Z',name).Z = Z
         atom = material.find('atom')
-        if atom != None :
+        if atom is not None :
            #print("Found atom in : "+name) 
            aUnit = atom.get('unit')
-           if aUnit != None :
+           if aUnit is not None :
               materialObj.addProperty("App::PropertyString",'atom_unit', \
                          name).atom_unit = aUnit
            aValue = atom.get('value')
-           if aValue != None :
+           if aValue is not None :
               materialObj.addProperty("App::PropertyFloat",'atom_value', \
                          name).atom_value = float(aValue)
  
         T = material.find('T')
-        if T != None :
+        if T is not None :
            Tunit = T.get('unit')
-           Tvalue = float(T.get('value'))
+           if Tunit is None :	# Default Kelvin
+              Tunit = 'K'
            materialObj.addProperty("App::PropertyString",'Tunit','GDMLmaterial',"T ZZZUnit").Tunit = Tunit
-           materialObj.addProperty("App::PropertyFloat",'Tvalue','GDMLmaterial','T XXXXvalue').Tvalue = Tvalue
+           Tvalue = GDMLShared.getVal(T,'value',1)
         MEE = material.find('MEE')
-        if MEE != None :
+        if MEE is not None :
            Munit = MEE.get('unit')
            Mvalue = float(MEE.get('value'))
            materialObj.addProperty("App::PropertyString",'MEEunit','GDMLmaterial','MEE unit').MEEunit = Munit
@@ -1320,7 +1321,7 @@ def processXML(doc,filename):
     #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
     global materials
     materials = root.find('materials')
-    if materials != None :
+    if materials is not None :
        processIsotopes(doc)
        processElements(doc)
        processMaterials(doc)
@@ -1335,7 +1336,7 @@ def processGEANT4(doc,filename):
 def processMaterialsDocSet(doc, root) :
     global materials
     materials = root.find('materials')
-    if materials != None :
+    if materials is not None :
        try :
           isotopesGrp = FreeCAD.ActiveDocument.Isotopes
        except :
@@ -1356,7 +1357,7 @@ def processMaterialsDocSet(doc, root) :
 def processMaterialsG4(G4rp, root) :
     global materials
     materials = root.find('materials')
-    if materials != None :
+    if materials is not None :
        isotopesGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Isotopes")
        processIsotopes(isotopesGrp)
        elementsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Elements")
@@ -1420,7 +1421,7 @@ def processGDML(doc,filename,prompt,initFlg):
     etree, root = setupEtree(filename)
     setup     = root.find('setup')
     define    = root.find('define')
-    if define != None :
+    if define is not None :
        GDMLShared.trace("Call set Define")
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
