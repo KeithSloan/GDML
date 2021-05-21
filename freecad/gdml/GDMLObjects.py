@@ -1195,8 +1195,18 @@ class GDMLXtru(GDMLsolid) :
             
    def execute(self, fp):
        self.createGeometry(fp)
-   
+  
+   def layerPoints(self,polyList,sf,xOffset,yOffset,zPosition):
+       vl = []
+       for p in polyList :
+           #print(p)
+           vl.append(FreeCAD.Vector(p[0]*sf+xOffset, p[1]*sf+yOffset,zPosition))
+       # Close list
+       vl.append(vl[0])
+       return vl
+
    def createGeometry(self,fp):
+       GDMLShared.setTrace(True)
        currPlacement = fp.Placement
        #print("Create Geometry")
        parms = fp.OutList
@@ -1204,6 +1214,7 @@ class GDMLXtru(GDMLsolid) :
        #print(parms)
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        polyList = []
+       faceList = []
        sections = []
        mul = GDMLShared.getMult(fp)
        for ptr in parms :
@@ -1218,46 +1229,34 @@ class GDMLXtru(GDMLsolid) :
               xOffset = ptr.xOffset * mul
               yOffset = ptr.yOffset * mul
               zPosition = ptr.zPosition * mul
-              sf = ptr.scalingFactor
+              sf = ptr.scalingFactor * mul
               s = [zOrder,xOffset,yOffset,zPosition,sf]
               sections.append(s)
-
-       faces_list = []
-       baseList = []
-       topList = []
-       # close polygon
-       polyList.append(polyList[0])
+       print('sections : '+str(len(sections)))
+       #
+       # Deal with Base Face
+       #
+       #baseList = layerPoints(polyList,sf,xOffset,yOffset,zPosition):
+       baseList = self.layerPoints(polyList,sections[0][4],sections[0][1], \
+                              sections[0][2],sections[0][3])
+       print('baseList')
+       print(baseList)
+       w1 = Part.makePolygon(baseList)
+       f1 = Part.Face(w1)
+       f1.reverse()
+       faceList.append(f1)
+       #print("base list")
+       # 
+       # Deal with Sides 
+       #
        #print("Start Range "+str(len(sections)-1))
        for s in range(0,len(sections)-1) :
-           xOffset1   = sections[s][1] * mul
-           yOffset1   = sections[s][2] * mul
-           zPosition1 = sections[s][3] * mul
-           sf1        = sections[s][4] * mul
-           xOffset2   = sections[s+1][1] * mul
-           yOffset2   = sections[s+1][2] * mul
-           zPosition2 = sections[s+1][3] * mul
-           sf2        = sections[s+1][4] * mul
-           #print("polyList")
-           for p in polyList :
-              #print(p)
-              vb=FreeCAD.Vector(p[0]*sf1+xOffset1, p[1]*sf1+yOffset1,zPosition1)
-              #vb=FreeCAD.Vector(-20, p[1]*sf1+yOffset1,zPosition1)
-              vt=FreeCAD.Vector(p[0]*sf2+xOffset2, p[1]*sf2+yOffset2,zPosition2)
-              #vt=FreeCAD.Vector(20, p[1]*sf2+yOffset2,zPosition2)
-              baseList.append(vb) 
-              topList.append(vt) 
-           # close polygons
-           baseList.append(baseList[0])
-           topList.append(topList[0])
-           # deal with base face       
-           w1 = Part.makePolygon(baseList)
-           f1 = Part.Face(w1)
-           #f1.reverse()
-           faces_list.append(f1)
-           #print("base list")
-           #print(baseList)
-           #print("Top list")
-           #print(topList)
+           xOffset   = sections[s+1][1]
+           yOffset   = sections[s+1][2]
+           zPosition = sections[s+1][3]
+           sf2       = sections[s+1][4]
+           #layerList = layerPoints(polyList,sf,xOffset,yOffset,zPosition)
+           layerList = self.layerPoints(polyList,sf,xOffset,yOffset,zPosition)
            # deal with side faces
            # remember first point is added to end of list
            #print("Number Sides : "+str(len(baseList)-1))
@@ -1265,28 +1264,30 @@ class GDMLXtru(GDMLsolid) :
                sideList = []
                sideList.append(baseList[i])
                sideList.append(baseList[i+1])
-               sideList.append(topList[i+1])
-               sideList.append(topList[i])
+               sideList.append(layerList[i+1])
+               sideList.append(layerList[i])
                # Close SideList polygon
                sideList.append(baseList[i])
                #print("sideList")
                #print(sideList)
                w1 = Part.makePolygon(sideList)
                f1 = Part.Face(w1)
-               faces_list.append(f1)
-           # deal with top face
-           w1 = Part.makePolygon(topList)
-           f1 = Part.Face(w1)
-           #f1.reverse()
-           faces_list.append(f1)
-           #print("Faces List")
-           #print(faces_list)
-           shell=Part.makeShell(faces_list)
-           #solid=Part.Solid(shell).removeSplitter()
-           solid=Part.Solid(shell)
-           #print("Valid Solid : "+str(solid.isValid()))
-           if solid.Volume < 0:
-              solid.reverse()
+               faceList.append(f1)
+       #  
+       # Deal with Top Face
+       #
+       w1 = Part.makePolygon(layerList)
+       f1 = Part.Face(w1)
+       #f1.reverse()
+       faceList.append(f1)
+       #print("Faces List")
+       #print(faceList)
+       shell=Part.makeShell(faceList)
+       #solid=Part.Solid(shell).removeSplitter()
+       solid=Part.Solid(shell)
+       #print("Valid Solid : "+str(solid.isValid()))
+       if solid.Volume < 0:
+          solid.reverse()
        #print(dir(fp))       
        #solid.exportBrep("/tmp/"+fp.Label+".brep")       
        fp.Shape = solid
