@@ -1206,7 +1206,7 @@ class GDMLXtru(GDMLsolid) :
        return vl
 
    def createGeometry(self,fp):
-       GDMLShared.setTrace(True)
+       #GDMLShared.setTrace(True)
        currPlacement = fp.Placement
        #print("Create Geometry")
        parms = fp.OutList
@@ -1232,15 +1232,15 @@ class GDMLXtru(GDMLsolid) :
               sf = ptr.scalingFactor * mul
               s = [zOrder,xOffset,yOffset,zPosition,sf]
               sections.append(s)
-       print('sections : '+str(len(sections)))
+       #print('sections : '+str(len(sections)))
        #
        # Deal with Base Face
        #
        #baseList = layerPoints(polyList,sf,xOffset,yOffset,zPosition):
        baseList = self.layerPoints(polyList,sections[0][4],sections[0][1], \
                               sections[0][2],sections[0][3])
-       print('baseList')
-       print(baseList)
+       #print('baseList')
+       #print(baseList)
        w1 = Part.makePolygon(baseList)
        f1 = Part.Face(w1)
        f1.reverse()
