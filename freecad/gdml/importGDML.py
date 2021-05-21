@@ -1320,12 +1320,7 @@ def processXML(doc,filename):
     print('process XML : '+filename)
     etree, root = setupEtree(filename)
     #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
-    global materials
-    materials = root.find('materials')
-    if materials is not None :
-       processIsotopes(doc)
-       processElements(doc)
-       processMaterials(doc)
+    processMaterialsDocSet(doc, root)
 
 def processGEANT4(doc,filename):
     print('process GEANT4 Materials : '+filename)
