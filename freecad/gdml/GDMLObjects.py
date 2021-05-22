@@ -149,7 +149,7 @@ def angleSectionSolid(fp, rmax, z, shape) :
     v4 = FreeCAD.Vector(0,0,z)
 
     f1 = make_face4(v1,v2,v3,v4)
-    s1 = f1.revolve(v1,v4,deltaPhiDeg)
+    s1 = f1.revolve(v1,v4,360-deltaPhiDeg)
     # Problem with FreeCAD 0.18
     #s2 = s1.rotate(v1,v4,startPhiDeg)
 
@@ -157,15 +157,7 @@ def angleSectionSolid(fp, rmax, z, shape) :
     #return(shape.cut(s2))
     #return(s2)
     
-    #if deltaPhiDeg > 90 :
-    #   return(shape.common(s2))
-    #else :   
-    #   return(shape.cut(s2))
-
-    if deltaPhiDeg > 90 :
-        shape = shape.common(s1)
-    else :   
-        shape = shape.cut(s1)
+    shape = shape.cut(s1)
     if startPhiDeg != 0 :
         shape.rotate(FreeCAD.Vector(0,0,0), \
                             FreeCAD.Vector(0,0,1),startPhiDeg)
