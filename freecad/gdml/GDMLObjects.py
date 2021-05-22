@@ -2422,7 +2422,7 @@ class GDMLTetrahedron(GDMLsolid) :
    ''' Does not exist as a GDML solid, but export as an Assembly of G4Tet '''
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
-   def __init__(self, obj, tetra, lunit, material) :
+   def __init__(self, obj, tetra, lunit, material, colour = None) :
        super().__init__(obj)
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
        #                'Editable').editable = False
