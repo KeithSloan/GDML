@@ -24,7 +24,7 @@ To resolve you have to install the lxml library where FreeCAD can find it see
 the required libraries section of this README.
 
 ## *** Note there is a regression with STEP export ***
-With OCC 7.4.0 as used in FreeCAD 0.19.2
+With OCC 7.5.0 and 7.5.1 as used in FreeCAD 0.19.2
 
 ## *** All Operating Systems - Problem export of Rotations ***
 
