@@ -198,7 +198,7 @@ def createLVandPV(obj, name, solidName):
     # Need to update so that use export of Rotation & position
     # rather than this as well i.e one Place
     #
-    print('createLVandPV')
+    #print('createLVandPV')
     #ET.ElementTree(gdml).write("test9d", 'utf-8', True)
     #print("Object Base")
     #dir(obj.Base)
@@ -224,21 +224,23 @@ def createLVandPV(obj, name, solidName):
        ET.SubElement(phys, 'positionref', {'name': posName})
        ET.SubElement(define, 'position', {'name': posName, 'unit': 'mm', \
                   'x': str(x), 'y': str(y), 'z': str(z) })
-    # Realthunders enhancment to toEuler ixyz is intrinsic
+    # Realthunders enhancement to toEuler ixyz is intrinsic
     rot = obj.Placement.Rotation
     if hasattr(rot, 'toEulerAngles'):
         angles = rot.toEulerAngles('ixyz')
         angles = (angles[2], angles[1], angles[0])
     else:
+        print('Export of rotation probably wrong')
+        print('Needs toEulerAngles function - Use LinkStage 3')
         angles = rot.toEuler()
     GDMLShared.trace("Angles")
     GDMLShared.trace(angles)
     a0 = angles[0]
-    print(a0)
+    #print(a0)
     a1 = angles[1]
-    print(a1)
+    #print(a1)
     a2 = angles[2]
-    print(a2)
+    #print(a2)
     if a0!=0 and a1!=0 and a2!=0 :
        rotName = 'Rot'+name+str(ROTcount)
        ROTcount += 1
@@ -386,22 +388,21 @@ def mesh2Tessellate(mesh, name) :
      global defineCnt
 
      baseVrt = defineCnt
-     print ("mesh")
-     print (mesh)
-     print (dir(mesh))
-     print ("Facets")
-     print (mesh.Facets)
-     print ("mesh topology")
-     print (dir(mesh.Topology))
-     print (mesh.Topology)
+     #print ("mesh")
+     #print (mesh)
+     #print ("Facets")
+     #print (mesh.Facets)
+     #print ("mesh topology")
+     #print (dir(mesh.Topology))
+     #print (mesh.Topology)
 #
 #    mesh.Topology[0] = points
 #    mesh.Topology[1] = faces
 #
 #    First setup vertex in define section vetexs (points) 
-     print("Add Vertex positions")
+     #print("Add Vertex positions")
      for fc_points in mesh.Topology[0] : 
-         print(fc_points)
+         #print(fc_points)
          v = 'v'+str(defineCnt)
          ET.SubElement(define, 'position', {'name': v, \
                   'x': str(fc_points[0]), \
@@ -412,10 +413,10 @@ def mesh2Tessellate(mesh, name) :
 #                  
 #     Add faces
 #
-     print("Add Triangular vertex")
+     #print("Add Triangular vertex")
      tess = ET.SubElement(solids,'tessellated',{'name': name})
      for fc_facet in mesh.Topology[1] : 
-       print(fc_facet)
+       #print(fc_facet)
        vrt1 = 'v'+str(baseVrt+fc_facet[0])
        vrt2 = 'v'+str(baseVrt+fc_facet[1])
        vrt3 = 'v'+str(baseVrt+fc_facet[2])
@@ -441,9 +442,9 @@ def processObjectShape(obj) :
     # Check if Planar
     # If plannar create Tessellated Solid with 3 & 4 vertex as appropriate
     # If not planar create a mesh and the a Tessellated Solid with 3 vertex
-    print("Process Object Shape")
-    print(obj)
-    print(obj.PropertiesList)
+    #print("Process Object Shape")
+    #print(obj)
+    #print(obj.PropertiesList)
     if not hasattr(obj,'Shape') :
        return 
     shape = obj.Shape
@@ -464,9 +465,9 @@ def processObjectShape(obj) :
 #   Dropped through to here
 #   Need to check has Shape
 
-    print('Check if All planar')
+    #print('Check if All planar')
     planar = checkShapeAllPlanar(shape)
-    print(planar)
+    #print(planar)
 
     if planar :
        return(processPlanar(obj,shape,obj.Name))
@@ -561,13 +562,12 @@ def addPhysVol(xmlVol, volName) :
 
 def cleanVolName(obj, volName) :
     # Get proper Volume Name
-    print('clean name : '+volName)
-    return volName
-    #if hasattr(obj,'CopyNumber') :
-    #   print('Has CopyNumber')
-    #   i = len(volName)
-    #   if '_' in volName and i > 2 :
-    #      volName = volName[:-2] 
+    #print('clean name : '+volName)
+    if hasattr(obj,'Copynumber') :
+       #print('Has copynumber')
+       i = len(volName)
+       if '_' in volName and i > 2 :
+          volName = volName[:-2] 
     #print('returning name : '+volName)
     return volName
 
@@ -620,11 +620,13 @@ def exportRotation(name, xml, Rotation) :
     print('Export Rotation')
     global ROTcount
     if Rotation.Angle != 0 :
-        # Realthunders enhancment to toEuler ixyz is intrinsic
+        # Realthunders enhancement to toEuler ixyz is intrinsic
         if hasattr(Rotation, 'toEulerAngles'):
             angles = Rotation.toEulerAngles('ixyz')
             angles = (angles[2], angles[1], angles[0])
         else:
+            print('Export of rotation probably wrong')
+            print('Needs toEulerAngles function - Use LinkStage 3')
             angles = Rotation.toEuler()
         GDMLShared.trace("Angles")
         GDMLShared.trace(angles)
@@ -1111,13 +1113,15 @@ def processElement(obj, item): # maybe part of material or element (common code)
 def processMaterials() :
     #print("\nProcess Materials")
     global materials
-   
-    for obj in FreeCAD.ActiveDocument.Objects:
-        #print(obj.TypeId+" : "+obj.Name)
-
-        #processMaterialObject(obj)
-        if processMaterialObject(obj) == False :
-           break
+ 
+    for GName in ['Materials','Elements','Isotopes'] : 
+        Grp = FreeCAD.ActiveDocument.getObject(GName)
+        if Grp is not None : 
+           for obj in Grp.Group:
+               #print(obj.TypeId+" : "+obj.Name)
+               #processMaterialObject(obj)
+               if processMaterialObject(obj) == False :
+                 break
 
 def processMaterialObject(obj) :
     global item
@@ -2009,7 +2013,7 @@ def exportGDML(first, filepath, fileExt) :
 
     #GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
-    print("====> Start GDML Export 0.1")
+    print("====> Start GDML Export 1.4")
     print('File extension : '+fileExt)
 
     GDMLstructure()
@@ -2268,7 +2272,7 @@ def export(exportList,filepath) :
              if len(first.InList) == 0 : 
                 exportGDMLworld(first,filepath,fileExt)
              else :
-                print('Export XML stucture & solids')
+                print('Export XML structure & solids')
                 exportGDML(first,filepath,'.xml')
 
        elif first.Name == "Materials" :

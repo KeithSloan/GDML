@@ -1,20 +1,67 @@
-## **** VERY IMPORTANT - Upgrade FreeCAD 0.19 to 22665 or later ****
+## GDML Workbench 
+
+For 
+
+    * Viewing
+    * Creation
+    * Modification
+
+of GDML models as can be used in GEANT4 and ROOT
+
+### Viewing CERN's LHCBVelo.gdml using LinkStage 3 Daily
+
+![LHCB1](Images/LHCBVelo1.jpg) ![LHCB2](Images/LHCBVelo2.jpg) ![LHCB3](Images/LHCBVelo3.jpg)
+
+## **** VERY IMPORTANT ****
+
+# *** ATTENTION WINDOWS USERS ***
+
+lxml should have been installed in prebuilt versions of FreeCAD. 
+It seems with FreeCAD 0.19.1 going to production this slipped through the net,
+RealThunders builds have the same issue. Seems to only be a problem for Windows users.
+
+To resolve you have to install the lxml library where FreeCAD can find it see
+the required libraries section of this README.
+
+## *** Note there is a regression with STEP export ***
+With OCC 7.4.0 as used in FreeCAD 0.19.2
+
+## *** All Operating Systems - Problem export of Rotations ***
+
+To fix a problem with export and rotations please use
+
+  * A FreeCAD_Assembly release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
+  * branch **link3**
+  
+    In .FreeCAD/Mod/GDML
+      * git fetch origin link3
+      * git checkout link3
+      * start FreeCAD
+
+You should also see a dramatic improvement especially with DAILY in import times with these builds.
+There is also the option to use enhanced rendering which helps with complex models.
+   
+   FreeCAD | Preferences | Display | Render Cache | Experimental
+   
+If you like what you see you might like to thank Lei Zhang by contributing to his FreeCAD Patreon
+https://www.patreon.com/thundereal/posts   
+
+You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
+fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
+process of being added to FreeCAD 0.20
+
+For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
 **Changes to Placement ( GDML Position & Rotation )**
 
 In order to support copies of GDML Volumes the following changes have been made
 
-  * As per GDML one GDML Volume(FreeCAD Part) containes one Solid
-  * GDML position and Rotation as defined in PhysVol are now transfered to the associated FreeCAD Part
+  * As per GDML one GDML Volume(FreeCAD Part) contains one Solid
+  * GDML position and Rotation as defined in PhysVol are now transferred to the associated FreeCAD Part
   * The only time you can change a GDML Objects Placement is when it is part of a Boolean
   * Copies are implemented as App::Links i.e. Link to Volume being copied.
   * Copies of Volumes require function only available since FreeCAD 0.19
   
-There was a regression in FreeCAD 0.19 that affected the above changes, so you need to
-update to a later version of FreeCAD 0.19. You are therefore advised to update to at least FreeCAD 0.19 - 22665.
-
-For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
-
 ## **** New experimental export for GEMC ****
 
 ## **** Wiki Under Construction ****
@@ -133,7 +180,7 @@ and when GDML workbench active
    * Clicking on the corresponding icon of the workbench, this will create a Part(GDML Volume) which contains the GDMLsolid
    * You can then change the attributes by selecting the GDMLObject in the **Tree** window and changing the properties in the **Property View**
    * You can alter the position and rotation by changing the Placement parameters in the Part(GDML Volume)
-   * You can select and drag the Part(GDML Volume) to the appropriate part of the overall model strcuture
+   * You can select and drag the Part(GDML Volume) to the appropriate part of the overall model structure
       
   So a valid structure for a GDML file is:  
    * Single World Volume (Part)
@@ -212,14 +259,14 @@ The following icons are available for Tessellated operations
 ### Tessellate
 ![GDML Tessellate-Icon](freecad/gdml/Resources/icons/GDML_Tessellate.svg) Tessellate
 
-If the selected FreeCAD object has a Shape then a GDML Tesselated Object is created by using the Meshing
+If the selected FreeCAD object has a Shape then a GDML Tessellated Object is created by using the Meshing
 Workbench default options. If a material is also selected this will determine the GDML material of the
 created GDML Tessellated Object
 
 ### Tessellate with Gmsh
 ![GDML Tessellate_Gmsh](freecad/gdml/Resources/icons/GDML_Tessellate_Gmsh.svg)
 
-If the selected FreeCAD object has a Shape or Mesh then a GDML Tesselated Object is created by using gmsh.
+If the selected FreeCAD object has a Shape or Mesh then a GDML Tessellated Object is created by using gmsh.
 
 The initial mesh size is determined by the shapes bounding box divided by 10.
 
@@ -242,7 +289,7 @@ also selected then this will set the GDML material of the GDML Tessellated Objec
    1) FreeCAD Supports a large number of mesh file formats including stl, ply, etc
       so **Mesh 2 Tessellate** allows these to be converted to a GDML Tessellate object
       
-   2) The Mesh Workbench offers a range of meshing facilites with options ( Meshes | create mesh from Shape )
+   2) The Mesh Workbench offers a range of meshing facilities with options ( Meshes | create mesh from Shape )
    
       * Standard
       * Mefisto
@@ -288,8 +335,13 @@ For unprocessed volume the names are preceded by **`NOT_Expanded`** so an exampl
 Unexpanded Volumes can be expanded by:  
 1. Switching to the GDML workbench.
 2. Selecting a volume in the **_labels & attributes_** window
-3. Clicking on the experimental Expand Volume icon **'E'**
-
+3. Clicking on one of the the experimental Expand Volume Icons 
+   - ![Expand One](Source_Icon_Designs/GDML_Expand_One.svg)
+   - Expand Selected Volume to Minimum Level
+     
+   - ![Expand Max GDML](Source_Icon_Designs/GDML_Expand_Max.svg)
+   - Expand Selected Volume to Full Depth
+   
 On opening of a GDML file the appropriate FreeCAD implemented python Object is created for each solid
 
 ## Viewing Volumes
@@ -312,7 +364,7 @@ The first icon on the workbench bar is different. If you select a object by one 
 One in particular is lhcbvelo.gdml. This file takes a LONG LONG time to import/open, over a minute on my system, but does eventually load. On my system I have to okay one wait. When it finally does display you will want to zoom in.
 
 If when it is displayed you go down the Volumes tree to VelovVelo under the World volume then click on the toggle icon ( 1st GDML icon in the workbench) Again wait patiently and the display will change to wireframe. You can
-then decend further down the Volumes tree, select one and again use the toggle icon and that volume and children will change to Solid. In this way various parts in different volumes can be examined.
+then descend further down the Volumes tree, select one and again use the toggle icon and that volume and children will change to Solid. In this way various parts in different volumes can be examined.
 
 ## GDML Objects Exporter 
 
@@ -394,7 +446,7 @@ so the FreeCAD Import/Export Preferences for STEP Import should be set as follow
        
      This creates a directory structure for a CAD Factory - Where all FreeCAD Objects with Shapes are exported as stl files
 
-   * Selecting GEMC upper case otion GEMC - gdml (*.GEMC)
+   * Selecting GEMC upper case option GEMC - gdml (*.GEMC)
      
      Then GDML objects and FreeCAD Object that directly convert are output in a GDML file of a GDML Factory,
      Other Objects with a Shape are output as STL files in a CAD Factory.
@@ -413,7 +465,7 @@ There is now an option to toggle `Printverbose` flag to reduce printing to the p
 ## Compound & FEM - Finite Element Analysis
 
 ### Use of `compound` icon     ![GDML_MakeCompund ](freecad/gdml/Resources/icons/GDML_Compound.svg)   GDML Compound
-to facilitate preperation for FEM analysis
+to facilitate preparation for FEM analysis
 
 #### Usage
 
@@ -448,9 +500,14 @@ The standalone utilities and documentation are now in a submodule repository htt
          e.g. iges, but this is untested.
          
 ## Citing information
-[![DOI](https://zenodo.org/badge/223232841.svg)](https://zenodo.org/badge/latestdoi/223232841)
 
-![DOI_image](Documentation/DOImage.png)
+[![DOI](Documentation/DOImage.png)](https://zenodo.org/badge/latestdoi/223232841)
+
+[![DOI](Documentation/DOImage.png)](https://doi.org/10.5281/zenodo.3787318)
+
+If you found this Workbench useful in your research we would appreciate being cited
+as per the above link.
+
 
 ## Roadmap
 
@@ -471,7 +528,7 @@ The standalone utilities and documentation are now in a submodule repository htt
   - [ ] Analyze FreeCAD file for direct conversion of object to GDML solid
   - [ ] Display mesh for objects that will not directly convert
   - [ ] Provide options to control meshing objects that will be Tessellated
-  - [ ] Icons to Analize and Export
+  - [ ] Icons to Analyze and Export
 
 **Note:**
 For NIST Materials database see http://physics.nist.gov/PhysRefData

@@ -149,7 +149,7 @@ def angleSectionSolid(fp, rmax, z, shape) :
     v4 = FreeCAD.Vector(0,0,z)
 
     f1 = make_face4(v1,v2,v3,v4)
-    s1 = f1.revolve(v1,v4,deltaPhiDeg)
+    s1 = f1.revolve(v1,v4,360-deltaPhiDeg)
     # Problem with FreeCAD 0.18
     #s2 = s1.rotate(v1,v4,startPhiDeg)
 
@@ -157,15 +157,7 @@ def angleSectionSolid(fp, rmax, z, shape) :
     #return(shape.cut(s2))
     #return(s2)
     
-    #if deltaPhiDeg > 90 :
-    #   return(shape.common(s2))
-    #else :   
-    #   return(shape.cut(s2))
-
-    if deltaPhiDeg > 90 :
-        shape = shape.common(s1)
-    else :   
-        shape = shape.cut(s1)
+    shape = shape.cut(s1)
     if startPhiDeg != 0 :
         shape.rotate(FreeCAD.Vector(0,0,0), \
                             FreeCAD.Vector(0,0,1),startPhiDeg)
@@ -182,6 +174,43 @@ def setMaterial(obj, m) :
     else :
         obj.Material = 0
 
+def indiceToRay(indiceIn):	# Thanks to Dam
+    if indiceIn<1: 
+        return 0
+    else:
+        lray=[0.0, 1.0]
+        puissanceDown=2
+        while len(lray) <= indiceIn:
+            for indiceTmp in range(1,puissanceDown,2):
+                lray.append(float(indiceTmp)/float(puissanceDown))
+            puissanceDown = 2 * puissanceDown
+        return lray[indiceIn]
+	
+def colorFromRay(rayIn):	# Thanks to Dam
+    coeffR=coeffG=coeffB=1.0
+
+    if(rayIn<0.2 and rayIn>=0.0):
+        coeffR=1.0
+        coeffG=rayIn*5.0
+        coeffB=0.0
+    elif(rayIn<0.4):
+        coeffR=2.0-(5.0*rayIn)
+        coeffG=1.0
+        coeffB=0.0
+    elif(rayIn<0.6):
+        coeffR=0.0
+        coeffG=1.0
+        coeffB=rayIn*5.0-2.0
+    elif(rayIn<0.8):
+        coeffR=1.0
+        coeffG=4.0-(5.0*rayIn)
+        coeffB=1.0
+    elif(rayIn<=1.0):
+        coeffR=(5.0*rayIn)-4.0
+        coeffG=0.0
+        coeffB=1.0
+    return (coeffR,coeffG,coeffB)
+
 def colourMaterial(m):
 
    if MaterialsList == None :
@@ -194,35 +223,8 @@ def colourMaterial(m):
        elif m not in MaterialsList :
             return (0.5,0.5,0.5)
        else:
-           nbreColor=len(MaterialsList)
-
            coeffRGB = MaterialsList.index(m)
-
-           coeffRGB=float(coeffRGB)/float(nbreColor-1)
-           coeffR=coeffG=coeffB=1.0
-
-           if(coeffRGB<0.2 and coeffRGB>=0.0):
-               coeffR=1.0
-               coeffG=coeffRGB*5.0
-               coeffB=0.0
-           elif(coeffRGB<0.4):
-               coeffR=2.0-(5.0*coeffRGB)
-               coeffG=1.0
-               coeffB=0.0
-           elif(coeffRGB<0.6):
-               coeffR=0.0
-               coeffG=1.0
-               coeffB=coeffRGB*5.0-2.0
-           elif(coeffRGB<0.8):
-               coeffR=1.0
-               coeffG=4.0-(5.0*coeffRGB)
-               coeffB=1.0
-           elif(coeffRGB<=1.0):
-               coeffR=(5.0*coeffRGB)-4.0
-               coeffG=0.0
-               coeffB=1.0
-
-           return (coeffR,coeffG,coeffB)
+           return colorFromRay(indiceToRay(coeffRGB))
 
 class GDMLColourMapEntry :
    def __init__(self,obj,colour,material) :
@@ -279,31 +281,36 @@ class GDMLsolid :
        obj.setEditorMode('Placement',2)
 
    def __getstate__(self):
-        '''When saving the document this object gets stored using Python's json module.\
+      '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-        return None
+      if hasattr(self,'Type') :
+         return {'type' : self.Type }
+      else :
+         pass
  
-   def __setstate__(self,state):
-        '''When restoring the serialized object from document we have the chance to set some internals here.\
-                Since no data were serialized nothing needs to be done here.'''
-        return None
-
+   def __setstate__(self, arg):
+      '''When restoring the serialized object from document we have the chance to set some internals here. Since no data were serialized nothing needs to be done here.'''
+      self.Type = arg['type']
 
 class GDMLcommon :
    def __init__(self, obj):
        '''Init'''
    
    def __getstate__(self):
-        '''When saving the document this object gets stored using Python's json module.\
+      '''When saving the document this object gets stored using Python's json module.\
                 Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
                 to return a tuple of all serializable objects or None.'''
-        return None
+      if hasattr(self,'Type') : # If not saved just return
+         return {'type' : self.Type }
+      else :
+         pass
+
  
    def __setstate__(self,state):
-        '''When restoring the serialized object from document we have the chance to set some internals here.\
+      '''When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here.'''
-        return None
+      self.Type = arg['type']
 
 
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
@@ -337,7 +344,7 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
             obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
-      # Supress Placement - position & Rotation via parent App::Part
+      # Suppress Placement - position & Rotation via parent App::Part
       # this makes Placement via Phyvol easier and allows copies etc
       obj.Proxy = self
       self.Type = 'GDMLArb8'
@@ -1180,8 +1187,18 @@ class GDMLXtru(GDMLsolid) :
             
    def execute(self, fp):
        self.createGeometry(fp)
-   
+  
+   def layerPoints(self,polyList,sf,xOffset,yOffset,zPosition):
+       vl = []
+       for p in polyList :
+           #print(p)
+           vl.append(FreeCAD.Vector(p[0]*sf+xOffset, p[1]*sf+yOffset,zPosition))
+       # Close list
+       vl.append(vl[0])
+       return vl
+
    def createGeometry(self,fp):
+       #GDMLShared.setTrace(True)
        currPlacement = fp.Placement
        #print("Create Geometry")
        parms = fp.OutList
@@ -1189,6 +1206,7 @@ class GDMLXtru(GDMLsolid) :
        #print(parms)
        GDMLShared.trace("Number of parms : "+str(len(parms)))
        polyList = []
+       faceList = []
        sections = []
        mul = GDMLShared.getMult(fp)
        for ptr in parms :
@@ -1203,46 +1221,34 @@ class GDMLXtru(GDMLsolid) :
               xOffset = ptr.xOffset * mul
               yOffset = ptr.yOffset * mul
               zPosition = ptr.zPosition * mul
-              sf = ptr.scalingFactor
+              sf = ptr.scalingFactor * mul
               s = [zOrder,xOffset,yOffset,zPosition,sf]
               sections.append(s)
-
-       faces_list = []
-       baseList = []
-       topList = []
-       # close polygon
-       polyList.append(polyList[0])
+       #print('sections : '+str(len(sections)))
+       #
+       # Deal with Base Face
+       #
+       #baseList = layerPoints(polyList,sf,xOffset,yOffset,zPosition):
+       baseList = self.layerPoints(polyList,sections[0][4],sections[0][1], \
+                              sections[0][2],sections[0][3])
+       #print('baseList')
+       #print(baseList)
+       w1 = Part.makePolygon(baseList)
+       f1 = Part.Face(w1)
+       f1.reverse()
+       faceList.append(f1)
+       #print("base list")
+       # 
+       # Deal with Sides 
+       #
        #print("Start Range "+str(len(sections)-1))
        for s in range(0,len(sections)-1) :
-           xOffset1   = sections[s][1] * mul
-           yOffset1   = sections[s][2] * mul
-           zPosition1 = sections[s][3] * mul
-           sf1        = sections[s][4] * mul
-           xOffset2   = sections[s+1][1] * mul
-           yOffset2   = sections[s+1][2] * mul
-           zPosition2 = sections[s+1][3] * mul
-           sf2        = sections[s+1][4] * mul
-           #print("polyList")
-           for p in polyList :
-              #print(p)
-              vb=FreeCAD.Vector(p[0]*sf1+xOffset1, p[1]*sf1+yOffset1,zPosition1)
-              #vb=FreeCAD.Vector(-20, p[1]*sf1+yOffset1,zPosition1)
-              vt=FreeCAD.Vector(p[0]*sf2+xOffset2, p[1]*sf2+yOffset2,zPosition2)
-              #vt=FreeCAD.Vector(20, p[1]*sf2+yOffset2,zPosition2)
-              baseList.append(vb) 
-              topList.append(vt) 
-           # close polygons
-           baseList.append(baseList[0])
-           topList.append(topList[0])
-           # deal with base face       
-           w1 = Part.makePolygon(baseList)
-           f1 = Part.Face(w1)
-           #f1.reverse()
-           faces_list.append(f1)
-           #print("base list")
-           #print(baseList)
-           #print("Top list")
-           #print(topList)
+           xOffset   = sections[s+1][1]
+           yOffset   = sections[s+1][2]
+           zPosition = sections[s+1][3]
+           sf2       = sections[s+1][4]
+           #layerList = layerPoints(polyList,sf,xOffset,yOffset,zPosition)
+           layerList = self.layerPoints(polyList,sf,xOffset,yOffset,zPosition)
            # deal with side faces
            # remember first point is added to end of list
            #print("Number Sides : "+str(len(baseList)-1))
@@ -1250,28 +1256,30 @@ class GDMLXtru(GDMLsolid) :
                sideList = []
                sideList.append(baseList[i])
                sideList.append(baseList[i+1])
-               sideList.append(topList[i+1])
-               sideList.append(topList[i])
+               sideList.append(layerList[i+1])
+               sideList.append(layerList[i])
                # Close SideList polygon
                sideList.append(baseList[i])
                #print("sideList")
                #print(sideList)
                w1 = Part.makePolygon(sideList)
                f1 = Part.Face(w1)
-               faces_list.append(f1)
-           # deal with top face
-           w1 = Part.makePolygon(topList)
-           f1 = Part.Face(w1)
-           #f1.reverse()
-           faces_list.append(f1)
-           #print("Faces List")
-           #print(faces_list)
-           shell=Part.makeShell(faces_list)
-           #solid=Part.Solid(shell).removeSplitter()
-           solid=Part.Solid(shell)
-           #print("Valid Solid : "+str(solid.isValid()))
-           if solid.Volume < 0:
-              solid.reverse()
+               faceList.append(f1)
+       #  
+       # Deal with Top Face
+       #
+       w1 = Part.makePolygon(layerList)
+       f1 = Part.Face(w1)
+       #f1.reverse()
+       faceList.append(f1)
+       #print("Faces List")
+       #print(faceList)
+       shell=Part.makeShell(faceList)
+       #solid=Part.Solid(shell).removeSplitter()
+       solid=Part.Solid(shell)
+       #print("Valid Solid : "+str(solid.isValid()))
+       if solid.Volume < 0:
+          solid.reverse()
        #print(dir(fp))       
        #solid.exportBrep("/tmp/"+fp.Label+".brep")       
        fp.Shape = solid
@@ -1526,54 +1534,67 @@ class GDMLSphere(GDMLsolid) :
        sdir = FreeCAD.Vector(0,0,1)
        HalfPi = math.pi / 2.0
        TwoPi = 2 * math.pi
-       deltaphi = getAngleDeg(fp.aunit, fp.deltaphi)
-       if deltaphi != 360 :
+       deltaphi_deg = getAngleDeg(fp.aunit, fp.deltaphi)
+       if deltaphi_deg < 360.0 and deltaphi_deg > 0:
             sphere2 = Part.makeSphere(rmax,spos,sdir, \
                      -90.0, 90.0, \
-                     getAngleDeg(fp.aunit, fp.deltaphi))
+                     deltaphi_deg)
             if fp.startphi != 0 :
                 sphere2.rotate(spos, sdir, getAngleDeg(fp.aunit,fp.startphi))
        else :
             sphere2 = Part.makeSphere(rmax)
 
        # if starttheta > 0 cut the upper cone     
-       if fp.starttheta != 0 :
-            startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
-
-            if startthetaRad > 0.0 :
-                if startthetaRad < HalfPi :
-                    sphere2 = sphere2.cut(Part.makeCone(0.0, \
-                            rmax/math.cos(startthetaRad), rmax))
-                elif startthetaRad == HalfPi :
-                    sphere2.cut(Part.makeBox(Rmax,Rmax,Rmax, \
-                                FreeCAD.Vector(-rmax,-rmax,-rmax)))
-                elif startthetaRad <= math.pi :
-                    sphere2 = sphere2.common(Part.makeCone(0.0, \
+       startthetaRad = getAngleRad(fp.aunit, fp.starttheta)     
+       startthetaDeg = getAngleDeg(fp.aunit, fp.starttheta)       
+         
+       if startthetaDeg > 0.0 :
+            if startthetaDeg == 90.0 :
+                cylToCut = Part.makeCylinder(2.0*rmax,rmax, \
+                                      FreeCAD.Vector(0,0,0))	
+                sphere2 = sphere2.cut(cylToCut)
+            elif startthetaDeg < 90.0 :	    
+                sphere2 = sphere2.cut(Part.makeCone(0.0, \
+                            rmax*math.sin(startthetaRad), rmax*math.cos(startthetaRad)))
+                
+                cylToCut = Part.makeCylinder(2.0*rmax,rmax, \
+                                      FreeCAD.Vector(0,0,rmax*math.cos(startthetaRad)))		
+                sphere2 = sphere2.cut(cylToCut)				
+							    
+            elif startthetaDeg < 180.0 :
+                sphere2 = sphere2.common(Part.makeCone(0.0, \
                         rmax/math.cos(math.pi-startthetaRad),rmax, spos, \
                         FreeCAD.Vector(0,0,-1.0)))
-
+     
        # if deltatheta -> cut the down cone
        deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
-       startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
-       thetaSum= startthetaRad + deltathetaRad
-       if thetaSum < math.pi :
-            if thetaSum > HalfPi :
+       thetaSumRad= startthetaRad + deltathetaRad
+       if thetaSumRad < math.pi :
+            if thetaSumRad > HalfPi :
+
                 sphere2 = sphere2.cut(Part.makeCone(0.0, \
-                    rmax/math.cos(math.pi - thetaSum), rmax, \
-                    spos, FreeCAD.Vector(0,0,-1.0)))
-            elif thetaSum == math.pi :
-                sphere2 = sphere.cut(Part.makeBox(Rmax,Rmax,Rmax, \
-                                    FreeCAD.Vector(-rmax,-rmax,-Rmax)))
-            elif thetaSum > 0 :
+                            rmax*math.sin(math.pi - thetaSumRad), \
+                            rmax*math.cos(math.pi - thetaSumRad), \
+                            spos, FreeCAD.Vector(0,0,-1.0)))
+
+                cylToCut = Part.makeCylinder(2.0*rmax,rmax, \
+                                      FreeCAD.Vector(0,0,rmax*(-1.0 + math.cos(thetaSumRad)))  )		
+                sphere2 = sphere2.cut(cylToCut)	
+
+            elif thetaSumRad == HalfPi :
+                cylToCut = Part.makeCylinder(2.0*rmax,rmax, \
+                                      FreeCAD.Vector(0,0,-rmax))	
+                sphere2 = sphere2.cut(cylToCut)
+            elif thetaSumRad > 0 :    
                 sphere2 = sphere2.common(Part.makeCone(0.0, \
-                    rmax/math.cos(math.pi-thetaSum), \
-                    rmax, spos,sdir))
-       # if rmin -> cut the rmin sphere
+                                      2*rmax*math.tan( thetaSumRad), \
+                                      2*rmax  ))
+     
        if rmin <= 0 or rmin > rmax :
            fp.Shape = sphere2
        else :
            fp.Shape = sphere2.cut(Part.makeSphere(rmin))
-       fp.Placement = currPlacement    
+       fp.Placement = currPlacement 
            
 
 class GDMLTrap(GDMLsolid) :
@@ -2213,7 +2234,7 @@ class GDMLGmshTessellated(GDMLsolid) :
           solid=Part.Solid(shell)
        except : 
           # make compound rather than just barf
-          # visualy able to view at least
+          # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
        #if solid.Volume < 0:
@@ -2318,7 +2339,7 @@ class GDMLTessellated(GDMLsolid) :
           solid=Part.Solid(shell)
        except : 
           # make compound rather than just barf
-          # visualy able to view at least
+          # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
        #if solid.Volume < 0:
@@ -2401,7 +2422,7 @@ class GDMLTetrahedron(GDMLsolid) :
    ''' Does not exist as a GDML solid, but export as an Assembly of G4Tet '''
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
-   def __init__(self, obj, tetra, lunit, material) :
+   def __init__(self, obj, tetra, lunit, material, colour = None) :
        super().__init__(obj)
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
        #                'Editable').editable = False
@@ -2485,7 +2506,7 @@ class GDMLFiles(GDMLcommon) :
       obj.addProperty("App::PropertyString","solids","GDMLFiles", \
                     "solids section").solids=sectionDict.get('solids',"")
       obj.addProperty("App::PropertyString","structure","GDMLFiles", \
-                    "sructure section").structure=sectionDict.get('structure',"")
+                    "structure section").structure=sectionDict.get('structure',"")
       self.Type = 'GDMLFiles'
       obj.Proxy = self
 
