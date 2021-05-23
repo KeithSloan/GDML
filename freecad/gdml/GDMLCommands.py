@@ -692,7 +692,8 @@ class AddTessellateWidget(QtGui.QWidget):
 
     def leaveEvent(self, event) :
         print('Leave Event')
-        FreeCADGui.Control.closeDialog()
+        #FreeCADGui.Control.closeDialog()
+        closeDialog()
 
     def retranslateUi(self, widget=None):
         self.buttoniMesh.setText(translate('GDML','Mesh'))
