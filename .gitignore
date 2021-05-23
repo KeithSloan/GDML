@@ -1,2 +1,3 @@
 Utils/*.step
+freecad/__pycache__/
 .DS_Store
