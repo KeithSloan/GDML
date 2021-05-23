@@ -632,7 +632,9 @@ class iField(QtGui.QWidget) :
         super(iField, self).__init__(parent)
         self.label = QtGui.QLabel(label)
         self.value = QtGui.QLineEdit()
-        self.value.setMaxLength = len
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(10,20,25,15))
+        self.value.setTextMargins(0,0,10,5)
         self.value.setText(value)
         self.label.setBuddy(self.value)
         layout = QtGui.QHBoxLayout()
@@ -645,7 +647,8 @@ class oField(QtGui.QWidget) :
         super(oField, self).__init__(parent)
         self.label = QtGui.QLabel(label)
         self.value = QtGui.QLineEdit()
-        self.value.setMaxLength = len
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(0,0,10,5))
         self.value.setReadOnly(True)
         self.value.setText(value)
         self.label.setBuddy(self.value)
@@ -653,7 +656,10 @@ class oField(QtGui.QWidget) :
         layout.addWidget(self.label)
         layout.addWidget(self.value)
         self.setLayout(layout)
-          
+
+    def sizeHint(self) :
+        return(QtCore.QSize(10,5))
+
 class AddTessellateWidget(QtGui.QWidget):
     def __init__(self, Shape,*args):
         QtGui.QWidget.__init__(self,*args)
@@ -683,6 +689,10 @@ class AddTessellateWidget(QtGui.QWidget):
         self.Vlayout.addLayout(layoutAction)
         self.setLayout(self.Vlayout)
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
+
+    def leaveEvent(self, event) :
+        print('Leave Event')
+        FreeCADGui.Control.closeDialog()
 
     def retranslateUi(self, widget=None):
         self.buttoniMesh.setText(translate('GDML','Mesh'))
@@ -756,6 +766,12 @@ class AddTessellateTask:
                  #meshInfoLayout.addWidget(QtGui.QLabel('Nodes : '+str(len(facets))))
                  self.form.Vlayout.addLayout(meshInfoLayout)
                  self.form.setLayout(self.form.Vlayout)
+
+    def leaveEvent(self, event) :
+        print('Leave Event II')
+
+    def focusOutEvent(self, event) :
+        print('Out of Focus II')
 
 class TessellateFeature :
       
