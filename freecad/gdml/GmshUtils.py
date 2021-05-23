@@ -242,12 +242,12 @@ def getTetrahedrons():
        return None
 
 def addFacet(msh, v0,v1,v2) :
-    print('Add Facet')
+    #print('Add Facet')
     #msh.addFacet(v0[0],v0[1],v0[2],v1[0],v1[1],v1[2],v2[0],v2[1],v2[2])
     #print(v0)
     #print(v1)
     #print(v2)
-    msh.addFacet(v0,v1,v2)
+    msh.addFacet(FreeCAD.Vector(v0),FreeCAD.Vector(v1),FreeCAD.Vector(v2))
 
 def Tessellated2Mesh(obj) :
     import Mesh
