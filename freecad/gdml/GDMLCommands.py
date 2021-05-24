@@ -678,14 +678,18 @@ class AddTessellateWidget(QtGui.QWidget):
         layoutbbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
         layoutbbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
         layoutbbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
-        meshParmsLayout=QtGui.QHBoxLayout()
-        meshParmsLayout.addWidget(iField('Gmsh Parm',3,'10'))
+        self.maxLen = iField('Char Max Length',3,'10')
+        self.meshParmsLayout=QtGui.QVBoxLayout()
+        #self.meshParmsLayout.addWidget(iField('Char Max Length',3,'10'))
+        self.meshParmsLayout.addWidget(self.maxLen)
+        self.meshParmsLayout.addWidget(iField('Char Length Curve',3,'10'))
+        self.meshParmsLayout.addWidget(iField('Char Length form Point',3,'10'))
         self.buttonMesh = QtGui.QPushButton(translate('GDML','Mesh'))
         layoutAction=QtGui.QHBoxLayout()
         layoutAction.addWidget(self.buttonMesh)
         self.Vlayout= QtGui.QVBoxLayout()
         self.Vlayout.addLayout(layoutbbox)
-        self.Vlayout.addLayout(meshParmsLayout)
+        self.Vlayout.addLayout(self.meshParmsLayout)
         self.Vlayout.addLayout(layoutAction)
         self.setLayout(self.Vlayout)
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
@@ -693,7 +697,9 @@ class AddTessellateWidget(QtGui.QWidget):
     def leaveEvent(self, event) :
         print('Leave Event')
         #FreeCADGui.Control.closeDialog()
-        closeDialog()
+        #closeDialog()
+        #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
+        #QtCore.QTimer.singleShot(0, FreeCADGui.Control, SLOT('closeDialog()'))
 
     def retranslateUi(self, widget=None):
         self.buttoniMesh.setText(translate('GDML','Mesh'))
@@ -737,7 +743,10 @@ class AddTessellateTask:
           getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
-        print('Action Gmsh') 
+        print('Action Gmsh')
+        print(self.form.maxLen)
+        print(dir(self.form.maxLen))
+        print(self.form.maxLen.value.text())
         initialize()
         parent = None
         if meshObj(self.obj,2) == True :

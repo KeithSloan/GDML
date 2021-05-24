@@ -97,6 +97,12 @@ def setMeshParms(meshParms, obj, tessObj) :
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", \
              tessObj.m_pointLen)
 
+def altMeshParms(lm, lc, lp ):
+       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
+       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
+
+
 def meshObjShape(obj, dim) :
     import tempfile
 
@@ -170,6 +176,17 @@ def meshObj(obj, dim, meshParms=False, tessObj=None) :
     # Clear any previous models
     gmsh.clear()
     setMeshParms(meshParms,obj,tessObj)
+    if hasattr(obj,'Shape') :
+       return(meshObjShape(obj, dim))
+
+    elif hasattr(obj,'Mesh') :
+       return(meshObjMesh(obj,dim))
+
+def altMeshObj(obj, dim, lm, lc, lp) :
+    # Create gmsh from shape or mesh
+    # Clear any previous models
+    gmsh.clear()
+    altMeshParms(lm, lc, lp)
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
