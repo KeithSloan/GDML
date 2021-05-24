@@ -753,37 +753,37 @@ class Tess2MeshFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
-            print(dir(obj.Proxy))
-            print(obj.Proxy.Type)
-            mesh = None
-            if obj.Proxy.Type == 'GDMLTessellated' :
-               print('Tessellated2Mesh')
-               mesh = Tessellated2Mesh(obj)
+            if hasattr(obj,'Proxy') :
+               if hasattr(obj.Proxy,'Type') :
+                  mesh = None
+                  if obj.Proxy.Type == 'GDMLTessellated' :
+                     print('Tessellated2Mesh')
+                     mesh = Tessellated2Mesh(obj)
     
-            if obj.Proxy.Type == 'GDMLGmshTessellated' :
-               print('GmshTessellated2Mesh')
-               mesh = Tessellated2Mesh(obj)
+                  if obj.Proxy.Type == 'GDMLGmshTessellated' :
+                     print('GmshTessellated2Mesh')
+                     mesh = Tessellated2Mesh(obj)
     
-            if obj.Proxy.Type == 'GDMLTetrahedron' :
-               print('Tetrahedron2Mesh')
-               mesh = Tetrahedron2Mesh(obj)
+                  if obj.Proxy.Type == 'GDMLTetrahedron' :
+                     print('Tetrahedron2Mesh')
+                     mesh = Tetrahedron2Mesh(obj)
 
-            if mesh != None :
-               print('Add Mesh')
-               parent = None
-               if hasattr(obj,'InList') :
-                  if len(obj.InList) > 0 :
-                     parent = obj.InList[0]
-                     mshObj = parent.newObject('Mesh::Feature',obj.Name)
-               if parent == None :
-                     mshObj = FreeCAD.ActiveDocument.addObject( \
+                  if mesh != None :
+                     print('Add Mesh')
+                     parent = None
+                     if hasattr(obj,'InList') :
+                        if len(obj.InList) > 0 :
+                           parent = obj.InList[0]
+                           mshObj = parent.newObject('Mesh::Feature',obj.Name)
+                     if parent == None :
+                         mshObj = FreeCAD.ActiveDocument.addObject( \
                            'Mesh::Feature',obj.Name)
-               mshObj.Mesh = mesh
-               if FreeCAD.GuiUp :
-                  obj.ViewObject.Visibility = False
-                  mshObj.ViewObject.DisplayMode = "Wireframe"
-                  FreeCAD.ActiveDocument.recompute()
-                  FreeCADGui.SendMsgToActiveView("ViewFit")
+                     mshObj.Mesh = mesh
+                     if FreeCAD.GuiUp :
+                        obj.ViewObject.Visibility = False
+                        mshObj.ViewObject.DisplayMode = "Wireframe"
+                        FreeCAD.ActiveDocument.recompute()
+                        FreeCADGui.SendMsgToActiveView("ViewFit")
     
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tess2Mesh', 'MenuText': \

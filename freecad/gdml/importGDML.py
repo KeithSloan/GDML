@@ -687,6 +687,7 @@ def indexVertex(list,name) :
 def createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
           GDMLQuadrangular, ViewProvider, ViewProviderExtension
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
     vertNames = []
@@ -744,7 +745,6 @@ def createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode) :
                           +getName(solid))
     tess = GDMLTessellated(myTess,vertex,faces,lunit,material,colour)
     if FreeCAD.GuiUp :
-       ViewProviderExtension(myTess.ViewObject)
        ViewProvider(myTess.ViewObject)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)

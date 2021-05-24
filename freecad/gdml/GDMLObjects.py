@@ -2273,9 +2273,6 @@ class GDMLTessellated(GDMLsolid) :
             obj.ViewObject.ShapeColor = colourMaterial(material)
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
-      # Suppress Placement - position & Rotation via parent App::Part
-      # this makes Placement via Phyvol easier and allows copies etc
-      #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
       self.Facets = facets
@@ -2288,7 +2285,7 @@ class GDMLTessellated(GDMLsolid) :
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
-          return
+           return
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
