@@ -83,29 +83,15 @@ def getMeshLen(obj):
     print('Mesh length : '+str(ml))
     return ml
 
-def setMeshParms(meshParms, obj, tessObj) :
-    if meshParms == False :
-       ml = getMeshLen(obj)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
-    else :
-       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", \
-             tessObj.m_maxLength)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", \
-             tessObj.m_curveLen)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", \
-             tessObj.m_pointLen)
-
-def altMeshParms(lm, lc, lp ):
-       gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
-       gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
-
+def setMeshParms(lm, lc, lp ):
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
 
 def meshObjShape(obj, dim) :
     import tempfile
 
+    print('Mesh Object Shape')
     tmpFile = tempfile.NamedTemporaryFile(suffix='.brep').name
     obj.Shape.exportBrep(tmpFile)
     gmsh.open(tmpFile)
@@ -116,7 +102,6 @@ def meshObjShape(obj, dim) :
     return True
 
 def meshObjSTL(obj, dim) :
-
     import tempfile
 
     tmpFile = tempfile.NamedTemporaryFile(suffix='.stl').name
@@ -171,22 +156,12 @@ def meshObjMesh(obj,dim) :
     meshObjSTL(obj,dim)
     return True
 
-def meshObj(obj, dim, meshParms=False, tessObj=None) :
+def meshObject(obj, dim, lm, lc, lp) :
     # Create gmsh from shape or mesh
     # Clear any previous models
+    print('gmsh Clear')
     gmsh.clear()
-    setMeshParms(meshParms,obj,tessObj)
-    if hasattr(obj,'Shape') :
-       return(meshObjShape(obj, dim))
-
-    elif hasattr(obj,'Mesh') :
-       return(meshObjMesh(obj,dim))
-
-def altMeshObj(obj, dim, lm, lc, lp) :
-    # Create gmsh from shape or mesh
-    # Clear any previous models
-    gmsh.clear()
-    altMeshParms(lm, lc, lp)
+    setMeshParms(lm, lc, lp)
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
@@ -195,7 +170,7 @@ def altMeshObj(obj, dim, lm, lc, lp) :
 
 def getVertex() :
     # Attempt at bulk getting coordinate
-    print('Calling Gmsh')
+    print('Gmsh - GetNodes')
     nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
     #print('coords datatype : '+str(coordLst.dtype))
     # int does not work needs to be float at least

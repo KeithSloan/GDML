@@ -2114,8 +2114,8 @@ class GDMLGmshTessellated(GDMLsolid) :
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, \
                 material, colour = None) :
       super().__init__(obj)
-      obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
-                      'Editable').editable = False
+      #obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
+      #                'Editable').editable = False
       obj.addProperty('App::PropertyInteger','facets','GDMLGmshTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
@@ -2151,6 +2151,14 @@ class GDMLGmshTessellated(GDMLsolid) :
       self.Facets = facets
       self.Object = obj
       obj.Proxy = self
+
+   def updateParams(self, vertex, facets) :
+      print('Update Params')
+      print(len(vertex))
+      self.Vertex = vertex
+      self.Facets = facets
+      self.facets  = len(facets)
+      self.vertex  = len(vertex)
 
    def getMaterial(self):
        return obj.material
