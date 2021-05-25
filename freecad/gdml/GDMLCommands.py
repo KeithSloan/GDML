@@ -600,17 +600,17 @@ class PolyHedraFeature :
                if hasattr(obj.Shape,'Vertexes') :
                   numVert = len(obj.Shape.Vertexes)
                   print('Number of Vertex : '+str(numVert))
-                  #print(obj.Shape.Vertexes)
+                  print(obj.Shape.Vertexes)
                if hasattr(obj.Shape,'Faces') :
                   print('Faces')
-                  print(dir(obj.Shape.Faces[0]))
+                  #print(dir(obj.Shape.Faces[0]))
                   print(obj.Shape.Faces)
                   planar = self.checkPlanar(obj.Shape.Faces)
                   print(planar)
                if hasattr(obj.Shape,'Edges') :
                   print('Edges')
                   #print(dir(obj.Shape.Edges[0]))
-                  #print(obj.Shape.Edges)
+                  print(obj.Shape.Edges)
 
     def checkPlanar(self,faces):
         import Part
@@ -680,9 +680,9 @@ class AddTessellateWidget(QtGui.QWidget):
         layoutbbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
         maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
                     Shape.BoundBox.ZLength) / 15)
-        self.maxLen   = iField('Characteristic Max Length',3,str(maxl))
-        self.curveLen = iField('Characteristic Length Curve',3,'10')
-        self.pointLen = iField('Characteristic Length form Point',3,'10')
+        self.maxLen   = iField('Characteristic Max Length',5,str(maxl))
+        self.curveLen = iField('Characteristic Length Curve',5,'10')
+        self.pointLen = iField('Characteristic Length form Point',5,'10')
         self.meshParmsLayout=QtGui.QVBoxLayout()
         self.meshParmsLayout.addWidget(self.maxLen)
         self.meshParmsLayout.addWidget(self.curveLen)
@@ -704,6 +704,7 @@ class AddTessellateWidget(QtGui.QWidget):
         #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
         #QtCore.QTimer.singleShot(0, FreeCADGui.Control, SLOT('closeDialog()'))
         #QtCore.QTimer.singleShot(0, FreeCADGui.Control, QtCore.SLOT('closeDialog()'))
+        QtCore.QTimer.singleShot(0, lambda :FreeCADGui.Control.closeDialog())
 
     def retranslateUi(self, widget=None):
         self.buttoniMesh.setText(translate('GDML','Mesh'))
@@ -769,9 +770,9 @@ class AddTessellateTask:
                            'Part::FeaturePython',name)
                  GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
                      "mm", getSelectedMaterial())
-                 self.form.Vertex = oField('Vertex',3,str(len(vertex)))
-                 self.form.Facets = oField('Facets',3,str(len(facets)))
-                 #self.form.Nodes  = oField('Nodes',3,str(len(nodes)))
+                 self.form.Vertex = oField('Vertex',6,str(len(vertex)))
+                 self.form.Facets = oField('Facets',6,str(len(facets)))
+                 #self.form.Nodes  = oField('Nodes',6,str(len(nodes)))
                  self.form.meshInfoLayout=QtGui.QHBoxLayout()
                  self.form.meshInfoLayout.addWidget(self.form.Vertex)
                  self.form.meshInfoLayout.addWidget(self.form.Facets)
@@ -781,8 +782,8 @@ class AddTessellateTask:
 
            print('Update Tessellated Object')
            print(dir(self.tess.Proxy))
-           print(len(vertex))
-           print(len(facets))
+           print('Vertex : '+str(len(vertex)))
+           print('Facets : '+str(len(facets)))
            self.tess.Proxy.updateParams(vertex,facets)
            #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
            self.form.Vertex.value.setText(str(len(vertex)))
@@ -795,7 +796,6 @@ class AddTessellateTask:
               self.tess.ViewObject.DisplayMode = "Wireframe"
               FreeCAD.ActiveDocument.recompute()
               FreeCADGui.SendMsgToActiveView("ViewFit")
-
 
     def leaveEvent(self, event) :
         print('Leave Event II')

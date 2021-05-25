@@ -2129,8 +2129,8 @@ class GDMLGmshTessellated(GDMLsolid) :
                       'Curve Length').m_curveLen = meshLen
       obj.addProperty('App::PropertyFloat','m_pointLen','GDMLGmshTessellated', \
                       'Point Length').m_pointLen = meshLen
-      obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
-                      'ReMesh').m_Remesh = False
+      #obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
+      #                'ReMesh').m_Remesh = False
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLGmshTessellated","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material", \
