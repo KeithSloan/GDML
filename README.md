@@ -568,7 +568,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   
-* FreeCAD forum members (Applogies if I left anybody off ) :
+* FreeCAD forum members (Apologies if I left anybody off ) :
 
   * wmayer
   * Joel_graff
