@@ -751,49 +751,86 @@ class AddTessellateTask:
                   ViewProvider, ViewProviderExtension
         print('Action Gmsh : '+self.obj.Name)
         initialize()
-        parent = None
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
         pl = self.form.pointLen.value.text()
         print('ml : '+ml+' cl : '+cl+' pl : '+pl)
-        if meshObject(self.obj,2,int(ml),int(cl),int(pl)) == True :
-           facets = getFacets()
-           vertex = getVertex()
-           if self.tess is None :
-              name ='GDMLTessellate_'+self.obj.Name
-              if hasattr(self.obj,'InList') :
-                 if len(self.obj.InList) > 0 :
-                     parent = self.obj.InList[0]
-                     self.tess = parent.newObject('Part::FeaturePython',name)
-                 if parent == None :
-                     self.tess = FreeCAD.ActiveDocument.addObject( \
-                           'Part::FeaturePython',name)
-                 GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
-                     "mm", getSelectedMaterial())
-                 self.form.Vertex = oField('Vertex',6,str(len(vertex)))
-                 self.form.Facets = oField('Facets',6,str(len(facets)))
-                 #self.form.Nodes  = oField('Nodes',6,str(len(nodes)))
-                 self.form.meshInfoLayout=QtGui.QHBoxLayout()
-                 self.form.meshInfoLayout.addWidget(self.form.Vertex)
-                 self.form.meshInfoLayout.addWidget(self.form.Facets)
-                 #self.form.meshInfoLayout.addWidget(self.form.Nodes)
-                 self.form.Vlayout.addLayout(self.form.meshInfoLayout)
-                 self.form.setLayout(self.form.Vlayout)
-
+        existing = False
+        if hasattr(self.obj,'Proxy') :
+           if hasattr(self.obj.Proxy,'SourceObj') :
+              print('Has source Object')
+              existing = True
+              if meshObject(self.obj.Proxy.SourceObj,2,int(ml),int(cl),int(pl)) == True : 
+                 facets = getFacets()
+                 vertex = getVertex()
+                 self.tess = self.obj
+                 #print('Update Tessellated Object')
+                 #print(dir(self.Proxy.tess))
+                 #print('Vertex : '+str(len(vertex)))
+                 #print('Facets : '+str(len(facets)))
+                 #self.tess.Proxy.updateParams(vertex,facets)
+                 #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
+                 #self.form.Vertex.value.setText(str(len(vertex)))
+                 #self.form.Facets.value.setText(QtCore.QString(len(facets)))
+                 #self.form.Facets.value.setText(str(len(facets)))
+                 #self.tess.recompute()
+           else :
+              if meshObject(self.obj,2,int(ml),int(cl),int(pl)) == True :
+                 facets = getFacets()
+                 vertex = getVertex()
+                 if self.tess is None :
+                    name ='GDMLTessellate_'+self.obj.Name
+                    parent = None
+                    if hasattr(self.obj,'InList') :
+                       if len(self.obj.InList) > 0 :
+                          parent = self.obj.InList[0]
+                          self.tess = parent.newObject('Part::FeaturePython',name)
+                       if parent == None :
+                          self.tess = FreeCAD.ActiveDocument.addObject( \
+                                   'Part::FeaturePython',name)
+                       GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
+                             "mm", getSelectedMaterial())
+           print('Check Form')
+           print(dir(self.form))
+           if hasattr(self.form,'meshInfoLayout') :
+              print('Mesh Info Layout')
+              print(dir(self.form.meshInfoLayout))
+              print(self.form.meshInfoLayout.Vertex)
+              print(self.form.meshInfoLayout.Vertex.value.text())
+           if not hasattr(self.form,'Vertex') :
+              self.form.Vertex = oField('Vertex',6,str(len(vertex)))
+              self.form.Facets = oField('Facets',6,str(len(facets)))
+              #self.form.Nodes  = oField('Nodes',6,str(len(nodes)))
+              self.form.meshInfoLayout=QtGui.QHBoxLayout()
+              self.form.meshInfoLayout.addWidget(self.form.Vertex)
+              self.form.meshInfoLayout.addWidget(self.form.Facets)
+              #self.form.meshInfoLayout.addWidget(self.form.Nodes)
+              self.form.Vlayout.addLayout(self.form.meshInfoLayout)
+              self.form.setLayout(self.form.Vlayout)
+ 
            print('Update Tessellated Object')
-           print(dir(self.tess.Proxy))
+           print(dir(self.form))
            print('Vertex : '+str(len(vertex)))
            print('Facets : '+str(len(facets)))
-           self.tess.Proxy.updateParams(vertex,facets)
+           if existing == True :
+              self.obj.Proxy.updateParams(vertex,facets)
+           else :
+              self.tess.Proxy.updateParams(vertex,facets)
            #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
            self.form.Vertex.value.setText(str(len(vertex)))
            #self.form.Facets.value.setText(QtCore.QString(len(facets)))
            self.form.Facets.value.setText(str(len(facets)))
-           self.tess.recompute()
+
            if FreeCAD.GuiUp :
-              self.obj.ViewObject.Visibility = False
-              ViewProvider(self.tess.ViewObject)
-              self.tess.ViewObject.DisplayMode = "Wireframe"
+              print('Visibility : '+self.tess.Name)
+              if existing == True :
+                 print('Recompute : '+self.obj.Name)
+                 self.obj.recompute()
+                 self.obj.ViewObject.Visibility = True
+              else :
+                 self.obj.ViewObject.Visibility = False
+                 ViewProvider(self.tess.ViewObject)
+                 self.tess.ViewObject.DisplayMode = "Wireframe"
               FreeCAD.ActiveDocument.recompute()
               FreeCADGui.SendMsgToActiveView("ViewFit")
 
@@ -988,12 +1025,12 @@ class TetrahedronFeature :
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tetrahedron')
             initialize()
-            parent = None
             if meshObj(obj,3) == True :
                tetraheds = getTetrahedrons()
                if tetraheds != None :
                   print('tetraheds : '+str(len(tetraheds)))
                   name ='GDMLTetrahedron_'+obj.Name
+                  parent = None
                   if hasattr(obj,'InList') :
                      if len(obj.InList) > 0 :
                         parent = obj.InList[0]
