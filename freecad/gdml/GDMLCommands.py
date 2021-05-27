@@ -683,6 +683,8 @@ class AddTessellateWidget(QtGui.QWidget):
         self.maxLen   = iField('Characteristic Max Length',5,str(maxl))
         self.curveLen = iField('Characteristic Length Curve',5,'10')
         self.pointLen = iField('Characteristic Length form Point',5,'10')
+        self.Vertex = oField('Vertex',6,'')
+        self.Facets = oField('Facets',6,'')
         self.meshParmsLayout=QtGui.QVBoxLayout()
         self.meshParmsLayout.addWidget(self.maxLen)
         self.meshParmsLayout.addWidget(self.curveLen)
@@ -764,16 +766,6 @@ class AddTessellateTask:
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
-                 #print('Update Tessellated Object')
-                 #print(dir(self.Proxy.tess))
-                 #print('Vertex : '+str(len(vertex)))
-                 #print('Facets : '+str(len(facets)))
-                 #self.tess.Proxy.updateParams(vertex,facets)
-                 #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
-                 #self.form.Vertex.value.setText(str(len(vertex)))
-                 #self.form.Facets.value.setText(QtCore.QString(len(facets)))
-                 #self.form.Facets.value.setText(str(len(facets)))
-                 #self.tess.recompute()
            else :
               if meshObject(self.obj,2,int(ml),int(cl),int(pl)) == True :
                  facets = getFacets()
@@ -792,21 +784,14 @@ class AddTessellateTask:
                              "mm", getSelectedMaterial())
            print('Check Form')
            print(dir(self.form))
-           if hasattr(self.form,'meshInfoLayout') :
+           if not hasattr(self.form,'meshInfoLayout') :
               print('Mesh Info Layout')
-              print(dir(self.form.meshInfoLayout))
-              print(self.form.meshInfoLayout.Vertex)
-              print(self.form.meshInfoLayout.Vertex.value.text())
-           if not hasattr(self.form,'Vertex') :
-              self.form.Vertex = oField('Vertex',6,str(len(vertex)))
-              self.form.Facets = oField('Facets',6,str(len(facets)))
-              #self.form.Nodes  = oField('Nodes',6,str(len(nodes)))
               self.form.meshInfoLayout=QtGui.QHBoxLayout()
               self.form.meshInfoLayout.addWidget(self.form.Vertex)
               self.form.meshInfoLayout.addWidget(self.form.Facets)
               #self.form.meshInfoLayout.addWidget(self.form.Nodes)
               self.form.Vlayout.addLayout(self.form.meshInfoLayout)
-              self.form.setLayout(self.form.Vlayout)
+              #self.form.setLayout(self.form.Vlayout)
  
            print('Update Tessellated Object')
            print(dir(self.form))
