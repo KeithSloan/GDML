@@ -701,6 +701,7 @@ class AddTessellateWidget(QtGui.QWidget):
 
     def leaveEvent(self, event) :
         print('Leave Event')
+        return
         #FreeCADGui.Control.closeDialog()
         #closeDialog()
         #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
@@ -816,8 +817,10 @@ class AddTessellateTask:
                  self.obj.ViewObject.Visibility = False
                  ViewProvider(self.tess.ViewObject)
                  self.tess.ViewObject.DisplayMode = "Wireframe"
-              FreeCAD.ActiveDocument.recompute()
+                 self.tess.recompute()
+              #FreeCAD.ActiveDocument.recompute()
               FreeCADGui.SendMsgToActiveView("ViewFit")
+              FreeCADGui.updateGui()
 
     def leaveEvent(self, event) :
         print('Leave Event II')
