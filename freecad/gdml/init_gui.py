@@ -81,6 +81,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'BooleanCutCommand','BooleanIntersectionCommand', \
               'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'TessellateMeshLabCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
@@ -90,6 +91,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'BooleanCutCommand','BooleanIntersectionCommand', \
               'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'TessellateMeshLabCommand', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
         #parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']

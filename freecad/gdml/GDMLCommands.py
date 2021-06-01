@@ -34,6 +34,18 @@ This Script includes the GUI Commands of the GDML module
 import FreeCAD,FreeCADGui
 from PySide import QtGui, QtCore
 
+if FreeCAD.GuiUp:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
+
+
 class importPrompt(QtGui.QDialog):
     def __init__(self, *args):
         super(importPrompt, self).__init__()
@@ -704,6 +716,242 @@ class TessellateGmshFeature :
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
                 'Mesh & Tessellate Selected Planar Object')}    
 
+class TessellateMeshLabFeature :
+     
+    def Activated(self) :
+    
+        #import ObjectsFem
+        #from .GmshUtils import initialize, meshObj, \
+        #      getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+
+        #from femmesh.gmshtools import GmshTools
+ 
+        from .GDMLObjects import GDMLMeshLabTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #initialize()
+            parent = None
+            print('Mesh with MeshLab')
+            if hasattr(obj,'Shape') :
+               print('Build panel for TO BE Gmeshed')
+               panel = AddMeshLabTask(obj)
+               if hasattr(obj,'Proxy') :
+                  print(obj.Proxy.Type)
+                  if obj.Proxy.Type == 'GDMLMeshLabTessellated' :
+                     print('Build panel for EXISTING MeshLab Tessellate')
+                     panel.form.meshInfoLayout=QtGui.QHBoxLayout()
+                     panel.form.meshInfoLayout.addWidget(oField('Vertex',6, \
+                           str(len(obj.Proxy.Vertex))))
+                     panel.form.meshInfoLayout.addWidget(oField('Facets',6, \
+                           str(len(obj.Proxy.Facets))))
+                     panel.form.Vlayout.addLayout(panel.form.meshInfoLayout)
+                     panel.form.setLayout(panel.form.Vlayout)
+               FreeCADGui.Control.showDialog(panel)
+            return
+               
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Tessellate_Meshlab', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'MeshLab & Tessellate'), 'Tessellate_MeshLab': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Mesh with Meshlib & Tessellate Selected Planar Object')}    
+
+class iField(QtGui.QWidget) :
+    def __init__(self,label,len,value,parent=None) :
+        super(iField, self).__init__(parent)
+        self.label = QtGui.QLabel(label)
+        self.value = QtGui.QLineEdit()
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(10,20,25,15))
+        self.value.setTextMargins(0,0,10,5)
+        self.value.setText(value)
+        self.label.setBuddy(self.value)
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.value)
+        self.setLayout(layout)
+
+class oField(QtGui.QWidget) :
+    def __init__(self,label,len, value,parent=None) :
+        super(oField, self).__init__(parent)
+        self.label = QtGui.QLabel(label)
+        self.value = QtGui.QLineEdit()
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(0,0,10,5))
+        self.value.setReadOnly(True)
+        self.value.setText(value)
+        self.label.setBuddy(self.value)
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.value)
+        self.setLayout(layout)
+
+    def sizeHint(self) :
+        return(QtCore.QSize(10,5))
+
+class AddMeshLabWidget(QtGui.QWidget):
+    def __init__(self, Shape,*args):
+        QtGui.QWidget.__init__(self,*args)
+        # Main text area
+        # self.textEdit=QtGui.QTextEdit()
+        #self.textEdit.setAcceptRichText(False)
+        #print(self.textEdit.maximumHeight())
+        #print(self.textEdit.maximumViewportSize())
+        # Message Area
+        #self.textMsg=QtGui.QPlainTextEdit()
+        #self.textMsg.setReadOnly(True)
+        #h = int(2.5 * self.textMsg.fontMetrics().height())
+        #self.textMsg.setMaximumHeight(h)
+        #self.textMsg.resize(self.textMsg.width(),h)
+        layoutbbox = QtGui.QHBoxLayout()
+        layoutbbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
+        layoutbbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
+        layoutbbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
+        maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
+                    Shape.BoundBox.ZLength) / 15)
+        self.maxLen   = iField('Characteristic Max Length',5,str(maxl))
+        self.curveLen = iField('Characteristic Length Curve',5,'10')
+        self.pointLen = iField('Characteristic Length form Point',5,'10')
+        self.Vertex = oField('Vertex',6,'')
+        self.Facets = oField('Facets',6,'')
+        self.meshParmsLayout=QtGui.QVBoxLayout()
+        self.meshParmsLayout.addWidget(self.maxLen)
+        self.meshParmsLayout.addWidget(self.curveLen)
+        self.meshParmsLayout.addWidget(self.pointLen)
+        self.buttonMesh = QtGui.QPushButton(translate('GDML','Mesh'))
+        layoutAction=QtGui.QHBoxLayout()
+        layoutAction.addWidget(self.buttonMesh)
+        self.Vlayout= QtGui.QVBoxLayout()
+        self.Vlayout.addLayout(layoutbbox)
+        self.Vlayout.addLayout(self.meshParmsLayout)
+        self.Vlayout.addLayout(layoutAction)
+        self.setLayout(self.Vlayout)
+        self.setWindowTitle(translate('GDML','Tessellate with MeshLab'))
+
+    def leaveEvent(self, event) :
+        print('Leave Event')
+        return
+        #FreeCADGui.Control.closeDialog()
+        #closeDialog()
+        #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
+        #QtCore.QTimer.singleShot(0, FreeCADGui.Control, SLOT('closeDialog()'))
+        #QtCore.QTimer.singleShot(0, FreeCADGui.Control, QtCore.SLOT('closeDialog()'))
+        QtCore.QTimer.singleShot(0, lambda :FreeCADGui.Control.closeDialog())
+
+    def retranslateUi(self, widget=None):
+        self.buttoniMesh.setText(translate('GDML','Mesh'))
+        #self.buttonload.setText(translate('OpenSCAD','Load'))
+        #self.buttonsave.setText(translate('OpenSCAD','Save'))
+        #self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
+        #self.buttonclear.setText(translate('OpenSCAD','Clear'))
+        #self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
+        self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
+
+class AddMeshLabTask:
+    import ObjectsFem
+    #from .GmshUtils import initialize, meshObject, \
+    #      getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+
+
+    from femmesh.gmshtools import GmshTools
+
+    def __init__(self, Obj):
+        self.obj  = Obj
+        self.tess = None
+        self.form = AddMeshLabWidget(Obj.Shape)
+        self.form.buttonMesh.clicked.connect(self.actionMesh)
+        #self.form.buttonload.clicked.connect(self.loadelement)
+        #self.form.buttonsave.clicked.connect(self.saveelement)
+        #self.form.buttonrefresh.clicked.connect(self.refreshelement)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def actionMesh(self) :
+        from .GmshUtils import initialize, meshObject, \
+          getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+        from .GDMLObjects import GDMLMeshLabTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+        print('Action MeshLab : '+self.obj.Name)
+        initialize()
+        ml = self.form.maxLen.value.text()
+        cl = self.form.curveLen.value.text()
+        pl = self.form.pointLen.value.text()
+        print('ml : '+ml+' cl : '+cl+' pl : '+pl)
+        existing = False
+        if hasattr(self.obj,'Proxy') :
+           if hasattr(self.obj.Proxy,'SourceObj') :
+              print('Has source Object')
+              existing = True
+              if meshObject(self.obj.Proxy.SourceObj,2,int(ml),int(cl),int(pl)) == True : 
+                 facets = getFacets()
+                 vertex = getVertex()
+                 self.tess = self.obj
+           else :
+              if meshObject(self.obj,2,int(ml),int(cl),int(pl)) == True :
+                 facets = getFacets()
+                 vertex = getVertex()
+                 if self.tess is None :
+                    name ='GDMLTessellate_'+self.obj.Name
+                    parent = None
+                    if hasattr(self.obj,'InList') :
+                       if len(self.obj.InList) > 0 :
+                          parent = self.obj.InList[0]
+                          self.tess = parent.newObject('Part::FeaturePython',name)
+                       if parent == None :
+                          self.tess = FreeCAD.ActiveDocument.addObject( \
+                                   'Part::FeaturePython',name)
+                       GDMLMeshLabTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
+                             "mm", getSelectedMaterial())
+           print('Check Form')
+           print(dir(self.form))
+           if not hasattr(self.form,'meshInfoLayout') :
+              print('Mesh Info Layout')
+              self.form.meshInfoLayout=QtGui.QHBoxLayout()
+              self.form.meshInfoLayout.addWidget(self.form.Vertex)
+              self.form.meshInfoLayout.addWidget(self.form.Facets)
+              #self.form.meshInfoLayout.addWidget(self.form.Nodes)
+              self.form.Vlayout.addLayout(self.form.meshInfoLayout)
+              #self.form.setLayout(self.form.Vlayout)
+ 
+           print('Update Tessellated Object')
+           print(dir(self.form))
+           print('Vertex : '+str(len(vertex)))
+           print('Facets : '+str(len(facets)))
+           if existing == True :
+              self.obj.Proxy.updateParams(vertex,facets)
+           else :
+              self.tess.Proxy.updateParams(vertex,facets)
+           #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
+           self.form.Vertex.value.setText(str(len(vertex)))
+           #self.form.Facets.value.setText(QtCore.QString(len(facets)))
+           self.form.Facets.value.setText(str(len(facets)))
+
+           if FreeCAD.GuiUp :
+              print('Visibility : '+self.tess.Name)
+              if existing == True :
+                 print('Recompute : '+self.obj.Name)
+                 self.obj.recompute()
+                 self.obj.ViewObject.Visibility = True
+              else :
+                 self.obj.ViewObject.Visibility = False
+                 ViewProvider(self.tess.ViewObject)
+                 self.tess.ViewObject.DisplayMode = "Wireframe"
+                 self.tess.recompute()
+              #FreeCAD.ActiveDocument.recompute()
+              FreeCADGui.SendMsgToActiveView("ViewFit")
+              FreeCADGui.updateGui()
+
 class Mesh2TessFeature :
      
     def Activated(self) :
@@ -1058,6 +1306,7 @@ FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
 FreeCADGui.addCommand('AddCompound',CompoundFeature())
 FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
+FreeCADGui.addCommand('TessellateMeshLabCommand',TessellateMeshLabFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())
 FreeCADGui.addCommand('TetrahedronCommand',TetrahedronFeature())

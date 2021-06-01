@@ -770,7 +770,7 @@ class GDMLElTube(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -976,7 +976,7 @@ class GDMLPolyhedra(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1096,7 +1096,7 @@ class GDMLTorus(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1160,7 +1160,7 @@ class GDMLXtru(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1384,7 +1384,7 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
       #obj.setEditorMode('Placement',0)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1741,7 +1741,7 @@ class GDMLTrd(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1823,7 +1823,7 @@ class GDMLTube(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
@@ -1905,7 +1905,7 @@ class GDMLcutTube(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
@@ -2144,7 +2144,7 @@ class GDMLGmshTessellated(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       #print(MaterialsList)
@@ -2152,6 +2152,141 @@ class GDMLGmshTessellated(GDMLsolid) :
       # this makes Placement via Phyvol easier and allows copies etc
       #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLGmshTessellated'
+      self.SourceObj = sourceObj
+      self.Vertex = vertex
+      self.Facets = facets
+      self.Object = obj
+      obj.Proxy = self
+
+   def getMaterial(self):
+       return obj.material
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+          if FreeCAD.GuiUp :
+             if self.colour is None :
+                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       if prop in ['editable'] :
+           if fp.editable == True :
+              self.addProperties()
+
+       if prop in ['m_Remesh'] :
+           if fp.m_Remesh == True :
+              self.reMesh(fp)
+              self.execute(fp)
+
+       #if prop in ['v1','v2','v3','v4','type','lunit'] :
+       #   self.createGeometry(fp)
+
+   def addProperties(self) :
+       print('Add Properties')
+
+   def reMesh(self,fp) :
+       from .GmshUtils import initialize, meshObj, getVertex, getFacets
+ 
+       initialize()
+       meshObj(fp.Proxy.SourceObj,2,True,fp.Proxy.Object)
+       facets = getFacets()
+       vertex = getVertex()
+       fp.Proxy.Vertex = vertex
+       self.Object.vertex = len(vertex)
+       fp.Proxy.Facets = facets
+       self.Object.facets = len(facets)
+       FreeCADGui.updateGui()
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+   
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       print("Tessellated")
+       mul = GDMLShared.getMult(fp)
+       FCfaces = []
+       #print(self.Vertex)
+       i = 0
+       for f in self.Facets :
+          #print('Facet')
+          #print(f)
+          if len(f) == 3 : 
+             FCfaces.append(GDMLShared.triangle( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]]))
+          else : # len should then be 4
+             FCfaces.append(GDMLShared.quad( \
+                             mul*self.Vertex[f[0]], \
+                             mul*self.Vertex[f[1]], \
+                             mul*self.Vertex[f[2]], \
+                             mul*self.Vertex[f[3]]))
+       shell=Part.makeShell(FCfaces)
+       if shell.isValid == False :
+          FreeCAD.Console.PrintWarning('Not a valid Shell/n')
+ 
+       #shell.check()
+       #solid=Part.Solid(shell).removeSplitter()
+       try :
+          solid=Part.Solid(shell)
+       except : 
+          # make compound rather than just barf
+          # visually able to view at least
+          FreeCAD.Console.PrintWarning('Problem making Solid/n')
+          solid = Part.makeCompound(FCfaces)
+       #if solid.Volume < 0:
+       #   solid.reverse()
+       #print(dir(solid))   
+       #bbox = solid.BoundBox
+       #base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
+       #                      -(bbox.YMin+bbox.YMax)/2 \
+       #                      -(bbox.ZMin+bbox.ZMax)/2)
+       #print(base)
+
+       #base = FreeCAD.Vector(0,0,0)
+       #fp.Shape = translate(solid,base)
+       fp.Shape = solid
+       fp.Placement = currPlacement
+
+class GDMLMeshLabTessellated(GDMLsolid) :
+    
+   def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, \
+                material, colour = None) :
+      super().__init__(obj)
+      obj.addProperty('App::PropertyBool','editable','GDMLMeshlabTessellated', \
+                      'Editable').editable = False
+      obj.addProperty('App::PropertyInteger','facets','GDMLMeshLabTessellated', \
+                      'Facets').facets = len(facets)
+      obj.setEditorMode('facets',1)
+      obj.addProperty('App::PropertyInteger','vertex','GDMLMeshLabTessellated', \
+                      'Vertex').vertex = len(vertex)
+      obj.setEditorMode('vertex',1)
+      obj.addProperty('App::PropertyFloat','m_maxLength', \
+                      'GDMLMeshLabTessellated', \
+                      'Max Length').m_maxLength = meshLen
+      obj.addProperty('App::PropertyFloat','m_curveLen','GDMLMeshLabTessellated', \
+                      'Curve Length').m_curveLen = meshLen
+      obj.addProperty('App::PropertyFloat','m_pointLen','GDMLMeshLabTessellated', \
+                      'Point Length').m_pointLen = meshLen
+      obj.addProperty('App::PropertyBool','m_Remesh','GDMLMeshLabTessellated', \
+                      'ReMesh').m_Remesh = False
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLMeshLabTessellated","lunit")
+      setLengthQuantity(obj, lunit) 		      
+      obj.addProperty("App::PropertyEnumeration","material", \
+                      "GDMLTessellated","Material")
+      setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         if colour is not None :
+            obj.ViewObject.ShapeColor = colour
+         else :
+            obj.ViewObject.ShapeColor = colourMaterial(material)
+      #print(MaterialsList)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      self.Type = 'GDMLMeshLibTessellated'
       self.SourceObj = sourceObj
       self.Vertex = vertex
       self.Facets = facets
@@ -2270,7 +2405,7 @@ class GDMLTessellated(GDMLsolid) :
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTessellated'
@@ -2371,7 +2506,7 @@ class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
       setMaterial(obj, material)
       if FreeCAD.GuiUp :
          if colour is not None :
-            obj.ViewObject.ShapeColor = colourMaterial(material)
+            obj.ViewObject.ShapeColor = colour
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       # Suppress Placement - position & Rotation via parent App::Part
