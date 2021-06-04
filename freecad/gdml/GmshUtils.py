@@ -53,17 +53,24 @@ def Gmsh(obj) :
 
 import gmsh
 import numpy as np
+import os
 
 def initialize() :
     gmsh.initialize()
-    gmsh.option.setNumber('Mesh.Algorithm',6)
+    #gmsh.option.setNumber('Mesh.Algorithm',6)
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
     gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
     #gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
     # Netgen crashes
-    gmsh.option.setNumber("Mesh.MaxNumThreads3D", 4)
+    try :
+       threads = max(1,os.cpu_count() - 2)
+    except :
+       threads = 1
+    print('Gmsh to use '+str(threads)+' threads')
+    gmsh.option.setNumber("Mesh.MaxNumThreads2D", threads)
+    gmsh.option.setNumber("Mesh.MaxNumThreads3D", threads)
     gmsh.option.setString("Geometry.OCCTargetUnit", 'mm')
     gmsh.option.setString("General.ErrorFileName", '/tmp/error.log')
     gmsh.option.setNumber('General.Terminal',1)
@@ -83,7 +90,8 @@ def getMeshLen(obj):
     print('Mesh length : '+str(ml))
     return ml
 
-def setMeshParms(lm, lc, lp ):
+def setMeshParms(algol,lm, lc, lp ):
+    gmsh.option.setNumber("Mesh.Algorithm",algol)
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
@@ -171,12 +179,12 @@ def meshObjMesh(obj,dim) :
     meshObjSTL(obj,dim)
     return True
 
-def meshObject(obj, dim, lm, lc, lp) :
+def meshObject(obj, dim, algol, lm, lc, lp) :
     # Create gmsh from shape or mesh
     # Clear any previous models
     print('gmsh Clear')
     gmsh.clear()
-    setMeshParms(lm, lc, lp)
+    setMeshParms(algol,lm, lc, lp)
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
@@ -184,6 +192,7 @@ def meshObject(obj, dim, lm, lc, lp) :
        return(meshObjMesh(obj,dim))
 
 def meshObj(obj, dim, meshParms=False, tessObj=None) :
+    # Used by Tetrahedron - Retire
     # Create gmsh from shape or mesh
     # Clear any previous models
     gmsh.clear()

@@ -763,12 +763,12 @@ class AddTessellateTask:
            if hasattr(self.obj.Proxy,'SourceObj') :
               print('Has source Object')
               existing = True
-              if meshObject(self.obj.Proxy.SourceObj,2,int(ml),int(cl),int(pl)) == True : 
+              if meshObject(self.obj.Proxy.SourceObj,2,6,int(ml),int(cl),int(pl)) == True : 
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
            else :
-              if meshObject(self.obj,2,int(ml),int(cl),int(pl)) == True :
+              if meshObject(self.obj,2,6,int(ml),int(cl),int(pl)) == True :
                  facets = getFacets()
                  vertex = getVertex()
                  if self.tess is None :
@@ -784,7 +784,7 @@ class AddTessellateTask:
                        GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
                              "mm", getSelectedMaterial())
            print('Check Form')
-           print(dir(self.form))
+           #print(dir(self.form))
            if not hasattr(self.form,'meshInfoLayout') :
               print('Mesh Info Layout')
               self.form.meshInfoLayout=QtGui.QHBoxLayout()
@@ -795,7 +795,7 @@ class AddTessellateTask:
               #self.form.setLayout(self.form.Vlayout)
  
            print('Update Tessellated Object')
-           print(dir(self.form))
+           #print(dir(self.form))
            print('Vertex : '+str(len(vertex)))
            print('Facets : '+str(len(facets)))
            if existing == True :
@@ -891,21 +891,25 @@ class TessellateGmshFeature :
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Gmsh Tessellate')
             #print(dir(obj))
-            if hasattr(obj,'Shape') :
-               print('Build panel for TO BE Gmeshed')
-               panel = AddTessellateTask(obj)
-               if hasattr(obj,'Proxy') :
-                  print(obj.Proxy.Type)
-                  if obj.Proxy.Type == 'GDMLGmshTessellated' :
-                     print('Build panel for EXISTING Gmsh Tessellate')
-                     panel.form.meshInfoLayout=QtGui.QHBoxLayout()
-                     panel.form.meshInfoLayout.addWidget(oField('Vertex',6, \
-                           str(len(obj.Proxy.Vertex))))
-                     panel.form.meshInfoLayout.addWidget(oField('Facets',6, \
-                           str(len(obj.Proxy.Facets))))
-                     panel.form.Vlayout.addLayout(panel.form.meshInfoLayout)
-                     panel.form.setLayout(panel.form.Vlayout)
-               FreeCADGui.Control.showDialog(panel)
+            print(obj.Name)
+            if hasattr(obj,'Shape') and obj.TypeId != 'App::Part' :
+               if FreeCADGui.Control.activeDialog() == False :
+                  print('Build panel for TO BE Gmeshed')
+                  panel = AddTessellateTask(obj)
+                  if hasattr(obj,'Proxy') :
+                     print(obj.Proxy.Type)
+                     if obj.Proxy.Type == 'GDMLGmshTessellated' :
+                        print('Build panel for EXISTING Gmsh Tessellate')
+                        panel.form.meshInfoLayout=QtGui.QHBoxLayout()
+                        panel.form.meshInfoLayout.addWidget(oField('Vertex',6, \
+                                str(len(obj.Proxy.Vertex))))
+                        panel.form.meshInfoLayout.addWidget(oField('Facets',6, \
+                                str(len(obj.Proxy.Facets))))
+                        panel.form.Vlayout.addLayout(panel.form.meshInfoLayout)
+                        panel.form.setLayout(panel.form.Vlayout)
+                  FreeCADGui.Control.showDialog(panel)
+               else :
+                  print('Already an Active Task')
             return
 
                
@@ -963,7 +967,7 @@ class Tess2MeshFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
-            print(dir(obj.Proxy))
+            #print(dir(obj.Proxy))
             print(obj.Proxy.Type)
             mesh = None
             if obj.Proxy.Type == 'GDMLTessellated' :
