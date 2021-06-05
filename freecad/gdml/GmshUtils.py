@@ -53,17 +53,24 @@ def Gmsh(obj) :
 
 import gmsh
 import numpy as np
+import os
 
 def initialize() :
     gmsh.initialize()
-    gmsh.option.setNumber('Mesh.Algorithm',6)
+    #gmsh.option.setNumber('Mesh.Algorithm',6)
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
     gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
     #gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
     # Netgen crashes
-    gmsh.option.setNumber("Mesh.MaxNumThreads3D", 4)
+    try :
+       threads = max(1,os.cpu_count() - 2)
+    except :
+       threads = 1
+    print('Gmsh to use '+str(threads)+' threads')
+    gmsh.option.setNumber("Mesh.MaxNumThreads2D", threads)
+    gmsh.option.setNumber("Mesh.MaxNumThreads3D", threads)
     gmsh.option.setString("Geometry.OCCTargetUnit", 'mm')
     gmsh.option.setString("General.ErrorFileName", '/tmp/error.log')
     gmsh.option.setNumber('General.Terminal',1)
@@ -83,7 +90,13 @@ def getMeshLen(obj):
     print('Mesh length : '+str(ml))
     return ml
 
-def setMeshParms(meshParms, obj, tessObj) :
+def setMeshParms(algol,lm, lc, lp ):
+    gmsh.option.setNumber("Mesh.Algorithm",algol)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
+
+def setAltMeshParms(meshParms, obj, tessObj) :
     if meshParms == False :
        ml = getMeshLen(obj)
        gmsh.option.setNumber("Mesh.CharacteristicLengthMax", ml)
@@ -97,9 +110,11 @@ def setMeshParms(meshParms, obj, tessObj) :
        gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", \
              tessObj.m_pointLen)
 
+
 def meshObjShape(obj, dim) :
     import tempfile
 
+    print('Mesh Object Shape')
     tmpFile = tempfile.NamedTemporaryFile(suffix='.brep').name
     obj.Shape.exportBrep(tmpFile)
     gmsh.open(tmpFile)
@@ -110,7 +125,6 @@ def meshObjShape(obj, dim) :
     return True
 
 def meshObjSTL(obj, dim) :
-
     import tempfile
 
     tmpFile = tempfile.NamedTemporaryFile(suffix='.stl').name
@@ -165,11 +179,24 @@ def meshObjMesh(obj,dim) :
     meshObjSTL(obj,dim)
     return True
 
+def meshObject(obj, dim, algol, lm, lc, lp) :
+    # Create gmsh from shape or mesh
+    # Clear any previous models
+    print('gmsh Clear')
+    gmsh.clear()
+    setMeshParms(algol,lm, lc, lp)
+    if hasattr(obj,'Shape') :
+       return(meshObjShape(obj, dim))
+
+    elif hasattr(obj,'Mesh') :
+       return(meshObjMesh(obj,dim))
+
 def meshObj(obj, dim, meshParms=False, tessObj=None) :
+    # Used by Tetrahedron - Retire
     # Create gmsh from shape or mesh
     # Clear any previous models
     gmsh.clear()
-    setMeshParms(meshParms,obj,tessObj)
+    setAltMeshParms(meshParms,obj,tessObj)
     if hasattr(obj,'Shape') :
        return(meshObjShape(obj, dim))
 
@@ -178,7 +205,7 @@ def meshObj(obj, dim, meshParms=False, tessObj=None) :
 
 def getVertex() :
     # Attempt at bulk getting coordinate
-    print('Calling Gmsh')
+    print('Gmsh - GetNodes')
     nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
     #print('coords datatype : '+str(coordLst.dtype))
     # int does not work needs to be float at least
