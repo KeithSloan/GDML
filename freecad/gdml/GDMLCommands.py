@@ -663,38 +663,34 @@ class oField(QtGui.QWidget) :
 class AddTessellateWidget(QtGui.QWidget):
     def __init__(self, Shape,*args):
         QtGui.QWidget.__init__(self,*args)
-        # Main text area
-        # self.textEdit=QtGui.QTextEdit()
-        #self.textEdit.setAcceptRichText(False)
-        #print(self.textEdit.maximumHeight())
-        #print(self.textEdit.maximumViewportSize())
-        # Message Area
-        #self.textMsg=QtGui.QPlainTextEdit()
-        #self.textMsg.setReadOnly(True)
-        #h = int(2.5 * self.textMsg.fontMetrics().height())
-        #self.textMsg.setMaximumHeight(h)
-        #self.textMsg.resize(self.textMsg.width(),h)
-        layoutbbox = QtGui.QHBoxLayout()
-        layoutbbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
-        layoutbbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
-        layoutbbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
+        bboxGroup  = QtGui.QGroupBox('Objects Bounding Box') 
+        laybbox = QtGui.QHBoxLayout()
+        laybbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
+        laybbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
+        laybbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
+        bboxGroup.setLayout(laybbox)
         maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
                     Shape.BoundBox.ZLength) / 15)
-        self.maxLen   = iField('Characteristic Max Length',5,str(maxl))
-        self.curveLen = iField('Characteristic Length Curve',5,'10')
-        self.pointLen = iField('Characteristic Length form Point',5,'10')
-        self.Vertex = oField('Vertex',6,'')
-        self.Facets = oField('Facets',6,'')
-        self.meshParmsLayout=QtGui.QVBoxLayout()
-        self.meshParmsLayout.addWidget(self.maxLen)
-        self.meshParmsLayout.addWidget(self.curveLen)
-        self.meshParmsLayout.addWidget(self.pointLen)
+        self.type     = QtGui.QComboBox()
+        self.type.addItems(['Triangular','Quadrangular'])
+        self.group    = QtGui.QGroupBox('Mesh Characteristics')
+        self.maxLen   = iField('Max Length',5,str(maxl))
+        self.curveLen = iField('Curve Length',5,'10')
+        self.pointLen = iField('Length from Point',5,'10')
+        self.Vertex   = oField('Vertex',6,'')
+        self.Facets   = oField('Facets',6,'')
+        self.meshParmsLayout=QtGui.QGridLayout()
+        self.meshParmsLayout.addWidget(self.type,0,0)
+        self.meshParmsLayout.addWidget(self.maxLen,0,1)
+        self.meshParmsLayout.addWidget(self.curveLen,1,0)
+        self.meshParmsLayout.addWidget(self.pointLen,1,1)
+        self.group.setLayout(self.meshParmsLayout)
         self.buttonMesh = QtGui.QPushButton(translate('GDML','Mesh'))
         layoutAction=QtGui.QHBoxLayout()
         layoutAction.addWidget(self.buttonMesh)
         self.Vlayout= QtGui.QVBoxLayout()
-        self.Vlayout.addLayout(layoutbbox)
-        self.Vlayout.addLayout(self.meshParmsLayout)
+        self.Vlayout.addWidget(bboxGroup)
+        self.Vlayout.addWidget(self.group)
         self.Vlayout.addLayout(layoutAction)
         self.setLayout(self.Vlayout)
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
@@ -754,21 +750,23 @@ class AddTessellateTask:
                   ViewProvider, ViewProviderExtension
         print('Action Gmsh : '+self.obj.Name)
         initialize()
+        typeDict = {0:6,1:8}
+        ty = typeDict[self.form.type.currentIndex()]
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
         pl = self.form.pointLen.value.text()
-        print('ml : '+ml+' cl : '+cl+' pl : '+pl)
+        print('type :  '+str(ty)+' ml : '+ml+' cl : '+cl+' pl : '+pl)
         existing = False
         if hasattr(self.obj,'Proxy') :
            if hasattr(self.obj.Proxy,'SourceObj') :
               print('Has source Object')
               existing = True
-              if meshObject(self.obj.Proxy.SourceObj,2,6,int(ml),int(cl),int(pl)) == True : 
+              if meshObject(self.obj.Proxy.SourceObj,2,ty,int(ml),int(cl),int(pl)) == True : 
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
            else :
-              if meshObject(self.obj,2,6,int(ml),int(cl),int(pl)) == True :
+              if meshObject(self.obj,2,ty,int(ml),int(cl),int(pl)) == True :
                  facets = getFacets()
                  vertex = getVertex()
                  if self.tess is None :
@@ -785,13 +783,15 @@ class AddTessellateTask:
                              "mm", getSelectedMaterial())
            print('Check Form')
            #print(dir(self.form))
-           if not hasattr(self.form,'meshInfoLayout') :
+           if not hasattr(self.form,'infoGroup') :
+              self.form.infoGroup = QtGui.QGroupBox('Mesh Information')
               print('Mesh Info Layout')
-              self.form.meshInfoLayout=QtGui.QHBoxLayout()
-              self.form.meshInfoLayout.addWidget(self.form.Vertex)
-              self.form.meshInfoLayout.addWidget(self.form.Facets)
-              #self.form.meshInfoLayout.addWidget(self.form.Nodes)
-              self.form.Vlayout.addLayout(self.form.meshInfoLayout)
+              layMeshInfo=QtGui.QHBoxLayout()
+              layMeshInfo.addWidget(self.form.Vertex)
+              layMeshInfo.addWidget(self.form.Facets)
+              #layMeshInfo.addWidget(self.form.Nodes)
+              self.form.infoGroup.setLayout(layMeshInfo)
+              self.form.Vlayout.addWidget(self.form.infoGroup)
               #self.form.setLayout(self.form.Vlayout)
  
            print('Update Tessellated Object')
