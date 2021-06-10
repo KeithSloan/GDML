@@ -672,7 +672,7 @@ class AddTessellateWidget(QtGui.QWidget):
         maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
                     Shape.BoundBox.ZLength) / 15)
         self.type     = QtGui.QComboBox()
-        self.type.addItems(['Triangular','Quadrangular'])
+        self.type.addItems(['Triangular','Quadrangular','Parallelograms'])
         self.group    = QtGui.QGroupBox('Mesh Characteristics')
         self.maxLen   = iField('Max Length',5,str(maxl))
         self.curveLen = iField('Curve Length',5,'10')
@@ -750,7 +750,7 @@ class AddTessellateTask:
                   ViewProvider, ViewProviderExtension
         print('Action Gmsh : '+self.obj.Name)
         initialize()
-        typeDict = {0:6,1:8}
+        typeDict = {0:6,1:8,2:9}
         ty = typeDict[self.form.type.currentIndex()]
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
@@ -761,12 +761,14 @@ class AddTessellateTask:
            if hasattr(self.obj.Proxy,'SourceObj') :
               print('Has source Object')
               existing = True
-              if meshObject(self.obj.Proxy.SourceObj,2,ty,int(ml),int(cl),int(pl)) == True : 
+              if meshObject(self.obj.Proxy.SourceObj,2,ty,\
+                 float(ml),float(cl),float(pl)) == True : 
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
            else :
-              if meshObject(self.obj,2,ty,int(ml),int(cl),int(pl)) == True :
+              if meshObject(self.obj,2,ty, \
+                 float(ml),float(cl),float(pl)) == True : 
                  facets = getFacets()
                  vertex = getVertex()
                  if self.tess is None :
@@ -808,6 +810,7 @@ class AddTessellateTask:
            self.form.Facets.value.setText(str(len(facets)))
 
            if FreeCAD.GuiUp :
+              print(self.tess)
               print('Visibility : '+self.tess.Name)
               if existing == True :
                  print('Recompute : '+self.obj.Name)
