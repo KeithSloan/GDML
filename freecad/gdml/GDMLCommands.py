@@ -766,22 +766,22 @@ class AddTessellateTask:
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
-           else :
-              if meshObject(self.obj,2,ty, \
-                 float(ml),float(cl),float(pl)) == True : 
-                 facets = getFacets()
-                 vertex = getVertex()
-                 if self.tess is None :
-                    name ='GDMLTessellate_'+self.obj.Name
-                    parent = None
-                    if hasattr(self.obj,'InList') :
-                       if len(self.obj.InList) > 0 :
-                          parent = self.obj.InList[0]
-                          self.tess = parent.newObject('Part::FeaturePython',name)
-                       if parent == None :
-                          self.tess = FreeCAD.ActiveDocument.addObject( \
+        else :
+           if meshObject(self.obj,2,ty, \
+              float(ml),float(cl),float(pl)) == True : 
+              facets = getFacets()
+              vertex = getVertex()
+              if self.tess is None :
+                 name ='GDMLTessellate_'+self.obj.Name
+                 parent = None
+                 if hasattr(self.obj,'InList') :
+                    if len(self.obj.InList) > 0 :
+                       parent = self.obj.InList[0]
+                       self.tess = parent.newObject('Part::FeaturePython',name)
+                    if parent == None :
+                       self.tess = FreeCAD.ActiveDocument.addObject( \
                                    'Part::FeaturePython',name)
-                       GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
+                    GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
                              "mm", getSelectedMaterial())
            print('Check Form')
            #print(dir(self.form))
