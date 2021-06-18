@@ -697,7 +697,6 @@ class AddTessellateWidget(QtGui.QWidget):
 
     def leaveEvent(self, event) :
         print('Leave Event')
-        return
         #FreeCADGui.Control.closeDialog()
         #closeDialog()
         #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
@@ -967,6 +966,8 @@ class Tess2MeshFeature :
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
+
+        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')

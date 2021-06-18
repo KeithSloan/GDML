@@ -315,10 +315,11 @@ class GDMLcommon :
          pass
 
  
-   def __setstate__(self,state):
+   def __setstate__(self,arg):
       '''When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here.'''
-      self.Type = arg['type']
+      if arg is not None :
+         self.Type = arg['type']
 
 
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
