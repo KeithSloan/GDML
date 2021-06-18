@@ -34,6 +34,17 @@ This Script includes the GUI Commands of the GDML module
 import FreeCAD,FreeCADGui
 from PySide import QtGui, QtCore
 
+if FreeCAD.GuiUp:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
+
 class importPrompt(QtGui.QDialog):
     def __init__(self, *args):
         super(importPrompt, self).__init__()
@@ -589,17 +600,17 @@ class PolyHedraFeature :
                if hasattr(obj.Shape,'Vertexes') :
                   numVert = len(obj.Shape.Vertexes)
                   print('Number of Vertex : '+str(numVert))
-                  #print(obj.Shape.Vertexes)
+                  print(obj.Shape.Vertexes)
                if hasattr(obj.Shape,'Faces') :
                   print('Faces')
-                  print(dir(obj.Shape.Faces[0]))
+                  #print(dir(obj.Shape.Faces[0]))
                   print(obj.Shape.Faces)
                   planar = self.checkPlanar(obj.Shape.Faces)
                   print(planar)
                if hasattr(obj.Shape,'Edges') :
                   print('Edges')
                   #print(dir(obj.Shape.Edges[0]))
-                  #print(obj.Shape.Edges)
+                  print(obj.Shape.Edges)
 
     def checkPlanar(self,faces):
         import Part
@@ -615,6 +626,209 @@ class PolyHedraFeature :
                 'Poly Group'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_PolyGroup', \
                 'PolyHedra Selected Object')}    
+
+class iField(QtGui.QWidget) :
+    def __init__(self,label,len,value,parent=None) :
+        super(iField, self).__init__(parent)
+        self.label = QtGui.QLabel(label)
+        self.value = QtGui.QLineEdit()
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(10,20,25,15))
+        self.value.setTextMargins(0,0,10,5)
+        self.value.setText(value)
+        self.label.setBuddy(self.value)
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.value)
+        self.setLayout(layout)
+
+class oField(QtGui.QWidget) :
+    def __init__(self,label,len, value,parent=None) :
+        super(oField, self).__init__(parent)
+        self.label = QtGui.QLabel(label)
+        self.value = QtGui.QLineEdit()
+        self.value.setMaxLength(len)
+        self.value.setGeometry(QtCore.QRect(0,0,10,5))
+        self.value.setReadOnly(True)
+        self.value.setText(value)
+        self.label.setBuddy(self.value)
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.value)
+        self.setLayout(layout)
+
+    def sizeHint(self) :
+        return(QtCore.QSize(10,5))
+
+class AddTessellateWidget(QtGui.QWidget):
+    def __init__(self, Shape,*args):
+        QtGui.QWidget.__init__(self,*args)
+        bboxGroup  = QtGui.QGroupBox('Objects Bounding Box') 
+        laybbox = QtGui.QHBoxLayout()
+        laybbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
+        laybbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
+        laybbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
+        bboxGroup.setLayout(laybbox)
+        maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
+                    Shape.BoundBox.ZLength) / 15)
+        self.type     = QtGui.QComboBox()
+        self.type.addItems(['Triangular','Quadrangular','Parallelograms'])
+        self.group    = QtGui.QGroupBox('Mesh Characteristics')
+        self.maxLen   = iField('Max Length',5,str(maxl))
+        self.curveLen = iField('Curve Length',5,'10')
+        self.pointLen = iField('Length from Point',5,'10')
+        self.Vertex   = oField('Vertex',6,'')
+        self.Facets   = oField('Facets',6,'')
+        self.meshParmsLayout=QtGui.QGridLayout()
+        self.meshParmsLayout.addWidget(self.type,0,0)
+        self.meshParmsLayout.addWidget(self.maxLen,0,1)
+        self.meshParmsLayout.addWidget(self.curveLen,1,0)
+        self.meshParmsLayout.addWidget(self.pointLen,1,1)
+        self.group.setLayout(self.meshParmsLayout)
+        self.buttonMesh = QtGui.QPushButton(translate('GDML','Mesh'))
+        layoutAction=QtGui.QHBoxLayout()
+        layoutAction.addWidget(self.buttonMesh)
+        self.Vlayout= QtGui.QVBoxLayout()
+        self.Vlayout.addWidget(bboxGroup)
+        self.Vlayout.addWidget(self.group)
+        self.Vlayout.addLayout(layoutAction)
+        self.setLayout(self.Vlayout)
+        self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
+
+    def leaveEvent(self, event) :
+        print('Leave Event')
+        #FreeCADGui.Control.closeDialog()
+        #closeDialog()
+        #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
+        #QtCore.QTimer.singleShot(0, FreeCADGui.Control, SLOT('closeDialog()'))
+        #QtCore.QTimer.singleShot(0, FreeCADGui.Control, QtCore.SLOT('closeDialog()'))
+        QtCore.QTimer.singleShot(0, lambda :FreeCADGui.Control.closeDialog())
+
+    def retranslateUi(self, widget=None):
+        self.buttoniMesh.setText(translate('GDML','Mesh'))
+        #self.buttonload.setText(translate('OpenSCAD','Load'))
+        #self.buttonsave.setText(translate('OpenSCAD','Save'))
+        #self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
+        #self.buttonclear.setText(translate('OpenSCAD','Clear'))
+        #self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
+        self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
+
+class AddTessellateTask:
+    import ObjectsFem
+    #from .GmshUtils import initialize, meshObject, \
+    #      getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+
+
+    from femmesh.gmshtools import GmshTools
+
+    def __init__(self, Obj):
+        self.obj  = Obj
+        self.tess = None
+        self.form = AddTessellateWidget(Obj.Shape)
+        self.form.buttonMesh.clicked.connect(self.actionMesh)
+        #self.form.buttonload.clicked.connect(self.loadelement)
+        #self.form.buttonsave.clicked.connect(self.saveelement)
+        #self.form.buttonrefresh.clicked.connect(self.refreshelement)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def actionMesh(self) :
+        from .GmshUtils import initialize, meshObject, \
+          getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+        print('Action Gmsh : '+self.obj.Name)
+        initialize()
+        typeDict = {0:6,1:8,2:9}
+        ty = typeDict[self.form.type.currentIndex()]
+        ml = self.form.maxLen.value.text()
+        cl = self.form.curveLen.value.text()
+        pl = self.form.pointLen.value.text()
+        print('type :  '+str(ty)+' ml : '+ml+' cl : '+cl+' pl : '+pl)
+        existing = False
+        if hasattr(self.obj,'Proxy') :
+           if hasattr(self.obj.Proxy,'SourceObj') :
+              print('Has source Object')
+              existing = True
+              if meshObject(self.obj.Proxy.SourceObj,2,ty,\
+                 float(ml),float(cl),float(pl)) == True : 
+                 facets = getFacets()
+                 vertex = getVertex()
+                 self.tess = self.obj
+        else :
+           if meshObject(self.obj,2,ty, \
+              float(ml),float(cl),float(pl)) == True : 
+              facets = getFacets()
+              vertex = getVertex()
+              if self.tess is None :
+                 name ='GDMLTessellate_'+self.obj.Name
+                 parent = None
+                 if hasattr(self.obj,'InList') :
+                    if len(self.obj.InList) > 0 :
+                       parent = self.obj.InList[0]
+                       self.tess = parent.newObject('Part::FeaturePython',name)
+                    if parent == None :
+                       self.tess = FreeCAD.ActiveDocument.addObject( \
+                                   'Part::FeaturePython',name)
+                    GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
+                             "mm", getSelectedMaterial())
+           print('Check Form')
+           #print(dir(self.form))
+           if not hasattr(self.form,'infoGroup') :
+              self.form.infoGroup = QtGui.QGroupBox('Mesh Information')
+              print('Mesh Info Layout')
+              layMeshInfo=QtGui.QHBoxLayout()
+              layMeshInfo.addWidget(self.form.Vertex)
+              layMeshInfo.addWidget(self.form.Facets)
+              #layMeshInfo.addWidget(self.form.Nodes)
+              self.form.infoGroup.setLayout(layMeshInfo)
+              self.form.Vlayout.addWidget(self.form.infoGroup)
+              #self.form.setLayout(self.form.Vlayout)
+ 
+           print('Update Tessellated Object')
+           #print(dir(self.form))
+           print('Vertex : '+str(len(vertex)))
+           print('Facets : '+str(len(facets)))
+           if existing == True :
+              self.obj.Proxy.updateParams(vertex,facets)
+           else :
+              self.tess.Proxy.updateParams(vertex,facets)
+           #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
+           self.form.Vertex.value.setText(str(len(vertex)))
+           #self.form.Facets.value.setText(QtCore.QString(len(facets)))
+           self.form.Facets.value.setText(str(len(facets)))
+
+           if FreeCAD.GuiUp :
+              print(self.tess)
+              print('Visibility : '+self.tess.Name)
+              if existing == True :
+                 print('Recompute : '+self.obj.Name)
+                 self.obj.recompute()
+                 self.obj.ViewObject.Visibility = True
+              else :
+                 self.obj.ViewObject.Visibility = False
+                 ViewProvider(self.tess.ViewObject)
+                 self.tess.ViewObject.DisplayMode = "Wireframe"
+                 self.tess.recompute()
+              #FreeCAD.ActiveDocument.recompute()
+              FreeCADGui.SendMsgToActiveView("ViewFit")
+              FreeCADGui.updateGui()
+
+    def leaveEvent(self, event) :
+        print('Leave Event II')
+
+    def focusOutEvent(self, event) :
+        print('Out of Focus II')
 
 class TessellateFeature :
       
@@ -666,7 +880,7 @@ class TessellateGmshFeature :
     def Activated(self) :
     
         import ObjectsFem
-        from .GmshUtils import initialize, meshObj, \
+        from .GmshUtils import initialize, meshObject, \
               getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
 
         from femmesh.gmshtools import GmshTools
@@ -674,28 +888,32 @@ class TessellateGmshFeature :
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
+        print('Action Gmsh Activated')
         for obj in FreeCADGui.Selection.getSelection():
-            initialize()
-            parent = None
-            if meshObj(obj,2) == True :
-               facets = getFacets()
-               vertex = getVertex()
-               name ='GDMLTessellate_'+obj.Name
-               if hasattr(obj,'InList') :
-                  if len(obj.InList) > 0 :
-                     parent = obj.InList[0]
-                     myTes = parent.newObject('Part::FeaturePython',name)
-               if parent == None :
-                  myTes = FreeCAD.ActiveDocument.addObject( \
-                           'Part::FeaturePython',name)
-               GDMLGmshTessellated(myTes,obj,getMeshLen(obj),vertex, facets, \
-                  "mm", getSelectedMaterial())
-               if FreeCAD.GuiUp :
-                  obj.ViewObject.Visibility = False
-                  ViewProvider(myTes.ViewObject)
-                  myTes.ViewObject.DisplayMode = "Wireframe"
-                  FreeCAD.ActiveDocument.recompute()
-                  FreeCADGui.SendMsgToActiveView("ViewFit")
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Gmsh Tessellate')
+            #print(dir(obj))
+            print(obj.Name)
+            if hasattr(obj,'Shape') and obj.TypeId != 'App::Part' :
+               if FreeCADGui.Control.activeDialog() == False :
+                  print('Build panel for TO BE Gmeshed')
+                  panel = AddTessellateTask(obj)
+                  if hasattr(obj,'Proxy') :
+                     print(obj.Proxy.Type)
+                     if obj.Proxy.Type == 'GDMLGmshTessellated' :
+                        print('Build panel for EXISTING Gmsh Tessellate')
+                        panel.form.meshInfoLayout=QtGui.QHBoxLayout()
+                        panel.form.meshInfoLayout.addWidget(oField('Vertex',6, \
+                                str(len(obj.Proxy.Vertex))))
+                        panel.form.meshInfoLayout.addWidget(oField('Facets',6, \
+                                str(len(obj.Proxy.Facets))))
+                        panel.form.Vlayout.addLayout(panel.form.meshInfoLayout)
+                        panel.form.setLayout(panel.form.Vlayout)
+                  FreeCADGui.Control.showDialog(panel)
+               else :
+                  print('Already an Active Task')
+            return
+
                
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Tessellate_Gmsh', 'MenuText': \
@@ -753,7 +971,7 @@ class Tess2MeshFeature :
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
-            print(dir(obj.Proxy))
+            #print(dir(obj.Proxy))
             print(obj.Proxy.Type)
             mesh = None
             if obj.Proxy.Type == 'GDMLTessellated' :
@@ -803,12 +1021,12 @@ class TetrahedronFeature :
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tetrahedron')
             initialize()
-            parent = None
             if meshObj(obj,3) == True :
                tetraheds = getTetrahedrons()
                if tetraheds != None :
                   print('tetraheds : '+str(len(tetraheds)))
                   name ='GDMLTetrahedron_'+obj.Name
+                  parent = None
                   if hasattr(obj,'InList') :
                      if len(obj.InList) > 0 :
                         parent = obj.InList[0]

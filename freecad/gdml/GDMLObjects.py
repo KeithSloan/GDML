@@ -307,10 +307,11 @@ class GDMLcommon :
          pass
 
  
-   def __setstate__(self,state):
+   def __setstate__(self,arg):
       '''When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here.'''
-      self.Type = arg['type']
+      if arg is not None :
+         self.Type = arg['type']
 
 
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
@@ -2120,8 +2121,8 @@ class GDMLGmshTessellated(GDMLsolid) :
    def __init__(self, obj, sourceObj,meshLen, vertex, facets, lunit, \
                 material, colour = None) :
       super().__init__(obj)
-      obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
-                      'Editable').editable = False
+      #obj.addProperty('App::PropertyBool','editable','GDMLGmshTessellated', \
+      #                'Editable').editable = False
       obj.addProperty('App::PropertyInteger','facets','GDMLGmshTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
@@ -2135,8 +2136,8 @@ class GDMLGmshTessellated(GDMLsolid) :
                       'Curve Length').m_curveLen = meshLen
       obj.addProperty('App::PropertyFloat','m_pointLen','GDMLGmshTessellated', \
                       'Point Length').m_pointLen = meshLen
-      obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
-                      'ReMesh').m_Remesh = False
+      #obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
+      #                'ReMesh').m_Remesh = False
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLGmshTessellated","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material", \
@@ -2157,6 +2158,14 @@ class GDMLGmshTessellated(GDMLsolid) :
       self.Facets = facets
       self.Object = obj
       obj.Proxy = self
+
+   def updateParams(self, vertex, facets) :
+      print('Update Params')
+      print(len(vertex))
+      self.Vertex = vertex
+      self.Facets = facets
+      self.facets  = len(facets)
+      self.vertex  = len(vertex)
 
    def getMaterial(self):
        return obj.material
@@ -2422,7 +2431,7 @@ class GDMLTetrahedron(GDMLsolid) :
    ''' Does not exist as a GDML solid, but export as an Assembly of G4Tet '''
    ''' See paper Poole at al - Fast Tessellated solid navigation in GEANT4 '''
     
-   def __init__(self, obj, tetra, lunit, material, colour = None) :
+   def __init__(self, obj, tetra, lunit, material, colour=None) :
        super().__init__(obj)
        #obj.addProperty('App::PropertyBool','editable','GDMLTetrahedron', \
        #                'Editable').editable = False
