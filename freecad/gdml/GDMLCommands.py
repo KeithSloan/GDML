@@ -672,7 +672,7 @@ class AddTessellateWidget(QtGui.QWidget):
         maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
                     Shape.BoundBox.ZLength) / 15)
         self.type     = QtGui.QComboBox()
-        self.type.addItems(['Triangular','Quadrangular'])
+        self.type.addItems(['Triangular','Quadrangular','Parallelograms'])
         self.group    = QtGui.QGroupBox('Mesh Characteristics')
         self.maxLen   = iField('Max Length',5,str(maxl))
         self.curveLen = iField('Curve Length',5,'10')
@@ -697,7 +697,6 @@ class AddTessellateWidget(QtGui.QWidget):
 
     def leaveEvent(self, event) :
         print('Leave Event')
-        return
         #FreeCADGui.Control.closeDialog()
         #closeDialog()
         #QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
@@ -750,7 +749,7 @@ class AddTessellateTask:
                   ViewProvider, ViewProviderExtension
         print('Action Gmsh : '+self.obj.Name)
         initialize()
-        typeDict = {0:6,1:8}
+        typeDict = {0:6,1:8,2:9}
         ty = typeDict[self.form.type.currentIndex()]
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
@@ -761,25 +760,27 @@ class AddTessellateTask:
            if hasattr(self.obj.Proxy,'SourceObj') :
               print('Has source Object')
               existing = True
-              if meshObject(self.obj.Proxy.SourceObj,2,ty,int(ml),int(cl),int(pl)) == True : 
+              if meshObject(self.obj.Proxy.SourceObj,2,ty,\
+                 float(ml),float(cl),float(pl)) == True : 
                  facets = getFacets()
                  vertex = getVertex()
                  self.tess = self.obj
-           else :
-              if meshObject(self.obj,2,ty,int(ml),int(cl),int(pl)) == True :
-                 facets = getFacets()
-                 vertex = getVertex()
-                 if self.tess is None :
-                    name ='GDMLTessellate_'+self.obj.Name
-                    parent = None
-                    if hasattr(self.obj,'InList') :
-                       if len(self.obj.InList) > 0 :
-                          parent = self.obj.InList[0]
-                          self.tess = parent.newObject('Part::FeaturePython',name)
-                       if parent == None :
-                          self.tess = FreeCAD.ActiveDocument.addObject( \
+        else :
+           if meshObject(self.obj,2,ty, \
+              float(ml),float(cl),float(pl)) == True : 
+              facets = getFacets()
+              vertex = getVertex()
+              if self.tess is None :
+                 name ='GDMLTessellate_'+self.obj.Name
+                 parent = None
+                 if hasattr(self.obj,'InList') :
+                    if len(self.obj.InList) > 0 :
+                       parent = self.obj.InList[0]
+                       self.tess = parent.newObject('Part::FeaturePython',name)
+                    if parent == None :
+                       self.tess = FreeCAD.ActiveDocument.addObject( \
                                    'Part::FeaturePython',name)
-                       GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
+                    GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
                              "mm", getSelectedMaterial())
            print('Check Form')
            #print(dir(self.form))
@@ -808,6 +809,7 @@ class AddTessellateTask:
            self.form.Facets.value.setText(str(len(facets)))
 
            if FreeCAD.GuiUp :
+              print(self.tess)
               print('Visibility : '+self.tess.Name)
               if existing == True :
                  print('Recompute : '+self.obj.Name)
@@ -964,6 +966,8 @@ class Tess2MeshFeature :
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
+
+        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
