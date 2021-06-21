@@ -182,7 +182,7 @@ def meshObjMesh(obj,dim) :
 def meshObject(obj, dim, algol, lm, lc, lp) :
     # Create gmsh from shape or mesh
     # Clear any previous models
-    print('gmsh Clear')
+    print('mesh Object - first Clear')
     gmsh.clear()
     setMeshParms(algol,lm, lc, lp)
     if hasattr(obj,'Shape') :
@@ -225,6 +225,9 @@ def getFacets() :
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
     # Get Triangle Facets
+    # Get Elements
+    #eTypes, tags, faceNodes = gmsh.model.mesh.getElements(-1,-1)
+    #print(eTypes[0:3])
     tags, faceNodes = gmsh.model.mesh.getElementsByType(2)
     #print('faceNodes datatype : '+str(faceNodes.dtype))
     faceNodes = faceNodes.astype('int32')
@@ -274,7 +277,7 @@ def addFacet(msh, v0,v1,v2) :
     #print(v0)
     #print(v1)
     #print(v2)
-    msh.addFacet(v0,v1,v2)
+    msh.addFacet(FreeCAD.Vector(v0),FreeCAD.Vector(v1),FreeCAD.Vector(v2))
 
 def Tessellated2Mesh(obj) :
     import Mesh

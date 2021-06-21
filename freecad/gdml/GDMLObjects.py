@@ -305,14 +305,12 @@ class GDMLcommon :
          return {'type' : self.Type }
       else :
          pass
-
  
    def __setstate__(self,arg):
       '''When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here.'''
       if arg is not None :
          self.Type = arg['type']
-
 
 class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
    def __init__(self, obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,  \
@@ -2282,9 +2280,6 @@ class GDMLTessellated(GDMLsolid) :
             obj.ViewObject.ShapeColor = colourMaterial(material)
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
-      # Suppress Placement - position & Rotation via parent App::Part
-      # this makes Placement via Phyvol easier and allows copies etc
-      #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLTessellated'
       self.Vertex = vertex
       self.Facets = facets
@@ -2297,7 +2292,7 @@ class GDMLTessellated(GDMLsolid) :
        '''Do something when a property has changed'''
        #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
        if 'Restore' in fp.State :
-          return
+           return
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :

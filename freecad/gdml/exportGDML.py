@@ -1184,7 +1184,7 @@ def processMaterialObject(obj) :
              if hasattr(obj,'Dvalue') :
                 D.set('value',str(obj.Dvalue))
 
-          if hasattr(obj,'Tunit') :
+          if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
              ET.SubElement(item,'T',{'unit': obj.Tunit, \
                                       'value': str(obj.Tvalue)})
            

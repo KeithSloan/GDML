@@ -24,7 +24,7 @@ To resolve you have to install the lxml library where FreeCAD can find it see
 the required libraries section of this README.
 
 ## *** Note there is a regression with STEP export ***
-With OCC 7.4.0 as used in FreeCAD 0.19.2
+With OCC 7.5.0 and 7.5.1 as used in FreeCAD 0.19.2
 
 ## *** All Operating Systems - Problem export of Rotations ***
 
@@ -266,19 +266,20 @@ created GDML Tessellated Object
 ### Tessellate with Gmsh
 ![GDML Tessellate_Gmsh](freecad/gdml/Resources/icons/GDML_Tessellate_Gmsh.svg)
 
-If the selected FreeCAD object has a Shape or Mesh then a GDML Tessellated Object is created by using gmsh.
+If the selected FreeCAD object has a Shape or Mesh then a Gmsh Panel is displayed in the Task Window.
 
-The initial mesh size is determined by the shapes bounding box divided by 10.
+The panel displays
+ 
+   1) Bounding box information for the selected Object
+   2) Type of Mesh
+   3) Input parameters for the Gmsh operation
+   4) Action 'Mesh' button
+   
+Clicking on the 'Mesh' button a GDML_Tessellate_Gmsh Object is created and Mesh info is added to the panel.
+The input parameters can be changed and another Gmsh operation performed.
 
-You can **remesh** a copy of the original object by changing the properties of the created GDMLTesselate Object
-    
-    m_max Length - CharacteristicLengthMax
-    m_curve Len  - CharacteristicLengthFromCurvature
-    m_point Len  - CharacteristicLengthFromPoints
-    
-and then changing the **m_Remesh** property to True.
-
-Note: For some reason there appears to be a delay in updating the new number of vertex. facets counts displayed.
+Once happy with the Mesh, then Object being meshed can be deleted before exporting to the GDML format.
+The panel needs to be closed before working on another object
 
 ### FC Mesh to GDML Tessellated
 ![GDML FC-Mesh2Tess-Icon](freecad/gdml/Resources/icons/GDML_Mesh2Tess.svg) Mesh to GDML Tessellated
@@ -568,7 +569,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   
-* FreeCAD forum members (Applogies if I left anybody off ) :
+* FreeCAD forum members (Apologies if I left anybody off ) :
 
   * wmayer
   * Joel_graff

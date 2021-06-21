@@ -77,9 +77,10 @@ def open(filename):
     "called when freecad opens a file."
     global doc
     print('Open : '+filename)
-    docname = os.path.splitext(os.path.basename(filename))[0]
+    docName  = os.path.splitext(os.path.basename(filename)) [0]
+    print('path : '+filename) 
     if filename.lower().endswith('.gdml') :
-        doc = FreeCAD.newDocument(docname)
+        doc = FreeCAD.newDocument(docName)
         processGDML(doc,filename,True,False)
 
     elif filename.lower().endswith('.xml'):
@@ -89,7 +90,7 @@ def open(filename):
 
        except :
            print('New Doc')
-           doc = FreeCAD.newDocument(docname)
+           doc = FreeCAD.newDocument(docName)
 
        processXML(doc,filename)
 
@@ -687,6 +688,7 @@ def indexVertex(list,name) :
 def createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
           GDMLQuadrangular, ViewProvider, ViewProviderExtension
+    #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
     vertNames = []
@@ -951,6 +953,11 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
     # physvol is xml entity
     #GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : "+str(phylvl))
+    # Test if any physvol file imports
+    filePtr = physVol.find('file')
+    if filePtr is not None :
+       fname = filePtr.get('name')
+       processPhysVolFile(doc,parent,fname)
     volRef = GDMLShared.getRef(physVol,"volumeref")
     GDMLShared.trace("Volume Ref : "+str(volRef))
     if volRef is not None :
@@ -1005,39 +1012,34 @@ def parseVolume(parent,name,phylvl,displayMode) :
     GDMLShared.trace("ParseVolume : "+name)
     expandVolume(parent,name,phylvl,displayMode)
 
-def expandVolume(parent,name,phylvl,displayMode) :
-    import FreeCAD as App
-    from .GDMLObjects import checkMaterial
-    # also used in ScanCommand
+def processVol(vol, parent, phylvl, displayMode) :
     #GDMLShared.setTrace(True)
-    GDMLShared.trace("expandVolume : "+name)
-    vol = structure.find("volume[@name='%s']" % name )
-    if vol is not None : # If not volume test for assembly
-       colour = None
-       for aux in vol.findall('auxiliary') : # could be more than one auxiliary
-          if aux is not None :
-             #print('auxiliary')
-             aType = aux.get('auxtype')
-             aValue = aux.get('auxvalue')
-             if aValue is not None :
-                if aType == 'SensDet' :
-                   parent.addProperty("App::PropertyString","SensDet","Base", \
+    from .GDMLObjects import checkMaterial
+    colour = None
+    for aux in vol.findall('auxiliary') : # could be more than one auxiliary
+        if aux is not None :
+           #print('auxiliary')
+           aType = aux.get('auxtype')
+           aValue = aux.get('auxvalue')
+           if aValue is not None :
+              if aType == 'SensDet' :
+                 parent.addProperty("App::PropertyString","SensDet","Base", \
                        "SensDet").SensDet = aValue
-                if aType == 'Color' :
-                   #print('auxtype Color')
-                   #print(aValue)
-                   #print(aValue[1:3])
-                   #print(int(aValue[1:3],16))
-                   if aValue[0] == '#' :   # Hex values
-                      #colour = (int(aValue[1:3],16)/256, \
-                      #          int(aValue[3:5],16)/256, \
-                      #          int(aValue[5:7],16)/256, \
-                      #          int(aValue[7:],16)/256)
-                      colour = tuple(int(aValue[n:n+2],16)/256 for \
+              if aType == 'Color' :
+                 #print('auxtype Color')
+                 #print(aValue)
+                 #print(aValue[1:3])
+                 #print(int(aValue[1:3],16))
+                 if aValue[0] == '#' :   # Hex values
+                    #colour = (int(aValue[1:3],16)/256, \
+                    #          int(aValue[3:5],16)/256, \
+                    #          int(aValue[5:7],16)/256, \
+                    #          int(aValue[7:],16)/256)
+                    colour = tuple(int(aValue[n:n+2],16)/256 for \
                                n in range(1, len(aValue),2))
-                      #print('colour '+str(colour))
-                   else :
-                      colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
+                    #print('colour '+str(colour))
+                 else :
+                    colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
                                 'Blue'    :(0.0, 0.0, 1.0, 0.0), \
                                 'Brown'   :(0.45, 0.25, 0.0, 0.0), \
                                 'Cyan'    :(0.0, 1.0, 1.0, 0.0), \
@@ -1048,81 +1050,90 @@ def expandVolume(parent,name,phylvl,displayMode) :
                                 'Red'     :(1.0, 0.0, 0.0, 0.0), \
                                 'White'   :(1.0, 1.0, 1.0, 0.0), \
                                 'Yellow'  :(1.0, 1.0, 0.0, 0.0)  }
-                      colour = colDict.get(aValue,(0,0, 0.0, 0.0))
-                      #print(colour)
-             else :
-                print('No auxvalue')
-       #if colour is None :
-       #   colour = (0.0, 0.0, 0.0, 0.0)
-       solidref = GDMLShared.getRef(vol,"solidref")
-       if solidref is not None :
-          solid  = solids.find("*[@name='%s']" % solidref )
-          if solid is not None :
-             GDMLShared.trace(solid.tag)
-             # Material is the materialref value
-             # need to add default
-             material = GDMLShared.getRef(vol,"materialref")
-             if material is not None :
-                if checkMaterial(material) == True :
-                   obj = createSolid(parent,solid,material,colour,0,0,0,None, \
+                    colour = colDict.get(aValue,(0,0, 0.0, 0.0))
+                    #print(colour)
+        else :
+           print('No auxvalue')
+    #if colour is None :
+    #   colour = (0.0, 0.0, 0.0, 0.0)
+    solidref = GDMLShared.getRef(vol,"solidref")
+    if solidref is not None :
+       solid  = solids.find("*[@name='%s']" % solidref )
+       if solid is not None :
+          GDMLShared.trace(solid.tag)
+          # Material is the materialref value
+          # need to add default
+          material = GDMLShared.getRef(vol,"materialref")
+          if material is not None :
+             if checkMaterial(material) == True :
+                obj = createSolid(parent,solid,material,colour,0,0,0,None, \
                                  displayMode)
-                else :
-                   print('ERROR - Material : '+material+ \
+             else :
+                print('ERROR - Material : '+material+ \
                          ' Not defined for solid : '  +str(solid)+ \
                          ' Volume : '+name)
-                   return None
-             else :
-                print('ERROR - Materialref Not defined for solid : ' \
-                         +str(solid)+' Volume : '+name)
                 return None
           else :
-             print('ERROR - Solid  : '+solidref+' Not defined')
+             print('ERROR - Materialref Not defined for solid : ' \
+                         +str(solid)+' Volume : '+name)
              return None
        else :
-          print('ERROR - solidref Not defined in Volume : '+name)
-          return None 
-       # Volume may or maynot contain physvol's
-       displayMode = 1
-       for pv in vol.findall("physvol") :
-           # Need to clean up use of phylvl flag
-           # create solids at pos & rot in physvols
-           #if phylvl < 1 :
-           if phylvl < 0 :
-              if phylvl >= 0 :
-                 phylvl += 1 
-              # If negative always parse otherwise increase level    
-              parsePhysVol(True,parent,pv,phylvl,displayMode)
+           print('ERROR - Solid  : '+solidref+' Not defined')
+           return None
+    else :
+       print('ERROR - solidref Not defined in Volume : '+name)
+       return None 
+    # Volume may or maynot contain physvol's
+    displayMode = 1
+    for pv in vol.findall("physvol") :
+        # Need to clean up use of phylvl flag
+        # create solids at pos & rot in physvols
+        #if phylvl < 1 :
+        if phylvl < 0 :
+           #if phylvl >= 0 :
+           #   phylvl += 1 
+           # If negative always parse otherwise increase level    
+           parsePhysVol(True,parent,pv,phylvl,displayMode)
 
-           else :  # Just Add to structure 
-              volRef = GDMLShared.getRef(pv,"volumeref")
-              print('volRef : '+str(volRef))
-              nx, ny, nz = GDMLShared.getPosition(pv)
-              nrot = GDMLShared.getRotation(pv)
-              cpyNum = pv.get('copynumber')
-              #print('copyNumber : '+str(cpyNum))
-              # Is volRef already defined
-              linkObj = FreeCAD.ActiveDocument.getObject(volRef)
-              if linkObj is not None :
-                 # already defined so link
-                 #print('Already defined')
-                 try : 
-                    part = parent.newObject("App::Link",volRef)
-                    part.LinkedObject = linkObj
-                    part.Label = "Link_"+part.Name
-                 except:
-                    print(volRef+' : volref not supported with FreeCAD 0.18')
-              else :
-                 # Not already defined so create
-                 #print('Is new : '+volRef)
-                 part = parent.newObject("App::Part",volRef)
-                 part.Label = "NOT_Expanded_"+part.Name
-              part.addProperty("App::PropertyString","VolRef","GDML", \
+        else :  # Just Add to structure 
+            volRef = GDMLShared.getRef(pv,"volumeref")
+            print('volRef : '+str(volRef))
+            nx, ny, nz = GDMLShared.getPosition(pv)
+            nrot = GDMLShared.getRotation(pv)
+            cpyNum = pv.get('copynumber')
+            #print('copyNumber : '+str(cpyNum))
+            # Is volRef already defined
+            linkObj = FreeCAD.ActiveDocument.getObject(volRef)
+            if linkObj is not None :
+               # already defined so link
+               #print('Already defined')
+               try : 
+                  part = parent.newObject("App::Link",volRef)
+                  part.LinkedObject = linkObj
+                  part.Label = "Link_"+part.Name
+               except:
+                  print(volRef+' : volref not supported with FreeCAD 0.18')
+            else :
+               # Not already defined so create
+               #print('Is new : '+volRef)
+               part = parent.newObject("App::Part",volRef)
+               part.Label = "NOT_Expanded_"+part.Name
+            part.addProperty("App::PropertyString","VolRef","GDML", \
                    "volref name").VolRef = volRef
-              if cpyNum is not None :
-                 part.addProperty("App::PropertyInteger","CopyNumber", \
+            if cpyNum is not None :
+               part.addProperty("App::PropertyInteger","CopyNumber", \
                      "GDML", "copynumber").CopyNumber = int(cpyNum)
-              base = FreeCAD.Vector(nx,ny,nz)
-              part.Placement = GDMLShared.processPlacement(base,nrot)
+            base = FreeCAD.Vector(nx,ny,nz)
+            part.Placement = GDMLShared.processPlacement(base,nrot)
+
+def expandVolume(parent,name,phylvl,displayMode) :
+    import FreeCAD as App
+    # also used in ScanCommand
+    #GDMLShared.setTrace(True)
+    GDMLShared.trace("expandVolume : "+name)
+    vol = structure.find("volume[@name='%s']" % name )
+    if vol is not None : # If not volume test for assembly
+       processVol(vol,parent,phylvl,displayMode)
 
     else :
        asm = structure.find("assembly[@name='%s']" % name)
@@ -1321,6 +1332,34 @@ def processXML(doc,filename):
     #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
     processMaterialsDocSet(doc, root)
 
+def processPhysVolFile(doc, parent, fname):
+    print('Process physvol file import')
+    print(pathName)
+    filename = os.path.join(pathName,fname)
+    print('Full Path : '+filename)
+    etree, root = setupEtree(filename)
+    #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    processMaterialsDocSet(doc, root)
+    print('Now process Volume')
+    define = root.find('define')
+    print(str(define))
+    GDMLShared.setDefine(define)
+    global solids
+    solids = root.find('solids')
+    print(str(solids))
+    structure = root.find('structure')
+    if structure is None :
+       vol = root.find('volume')
+    else :
+       vol = structure.find('volume')
+    print(str(vol))
+    if vol is not None :
+       vName = vol.get('name')
+       if vName is not None :
+          part = parent.newObject("App::Part",vName)
+          #expandVolume(None,vName,-1,1)
+          processVol(vol,part,-1,1)
+
 def processGEANT4(doc,filename):
     print('process GEANT4 Materials : '+filename)
     etree, root = setupEtree(filename)
@@ -1432,8 +1471,6 @@ def processGDML(doc,filename,prompt,initFlg):
        GDMLShared.trace(setup.attrib)
 
     processMaterialsDocSet(doc,root)
-    #processGEANT4(doc,joinDir("Mod/GDML/Resources/Geant4Materials.xml"))
-    print(joinDir("test"))
     processGEANT4(doc,joinDir("Resources/Geant4Materials.xml"))
 
     solids    = root.find('solids')
