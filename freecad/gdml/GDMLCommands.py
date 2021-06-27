@@ -674,18 +674,28 @@ class AddDecimateWidget(QtGui.QWidget):
         self.type     = QtGui.QComboBox()
         #self.type.addItems(['sp4cerat','MeshLab','Blender'])
         self.type.addItems(['sp4cerat'])
-        self.group    = QtGui.QGroupBox('Decimate Parameters')
-        self.maxLen   = iField('Max Length',5,'1')
-        self.decimateParmsLayout=QtGui.QGridLayout()
-        self.decimateParmsLayout.addWidget(self.type,0,0)
-        self.decimateParmsLayout.addWidget(self.maxLen,0,1)
-        self.group.setLayout(self.decimateParmsLayout)
-        self.buttonDecimate = QtGui.QPushButton(translate('GDML','Decimate'))
-        layoutAction=QtGui.QHBoxLayout()
-        layoutAction.addWidget(self.buttonDecimate)
+        self.group1  = QtGui.QGroupBox('Decimate Reduction')
+        self.tolerance  = iField('Tolerance',5,'5.0')
+        self.reduction  = iField('Reduction',5,'0.1')
+        self.parms1layout = QtGui.QHBoxLayout()
+        self.parms1layout.addWidget(self.tolerance)
+        self.parms1layout.addWidget(self.reduction)
+        self.grpLay1 = QtGui.QVBoxLayout()
+        self.grpLay1.addLayout(self.parms1layout)
+        self.buttonReduction = QtGui.QPushButton(translate('GDML','Decimate Reduction'))
+        self.grpLay1.addWidget(self.buttonReduction)
+        self.group1.setLayout(self.grpLay1)
+        self.group2    = QtGui.QGroupBox('Decimate to Size')
+        self.targetSize = iField('Target Size',5,'100')
+        self.grpLay2 = QtGui.QVBoxLayout()
+        self.grpLay2.addWidget(self.targetSize)
+        self.buttonToSize = QtGui.QPushButton(translate('GDML','Decimate To Size'))
+        self.grpLay2.addWidget(self.buttonToSize)
+        self.group2.setLayout(self.grpLay2)
         self.Vlayout= QtGui.QVBoxLayout()
-        self.Vlayout.addWidget(self.group)
-        self.Vlayout.addLayout(layoutAction)
+        self.Vlayout.addWidget(self.type)
+        self.Vlayout.addWidget(self.group1)
+        self.Vlayout.addWidget(self.group2)
         self.setLayout(self.Vlayout)
         self.setWindowTitle(translate('GDML','Decimate'))
 
@@ -702,7 +712,8 @@ class AddDecimateTask:
     def __init__(self, Obj):
         self.obj  = Obj
         self.form = AddDecimateWidget(Obj)
-        self.form.buttonDecimate.clicked.connect(self.actionDecimate)
+        self.form.buttonReduction.clicked.connect(self.actionReduction)
+        self.form.buttonToSize.clicked.connect(self.actionToSize)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -716,8 +727,27 @@ class AddDecimateTask:
     def isAllowedAlterDocument(self):
         return True
 
-    def actionDecimate(self) :
-        print('Action Decimate : '+self.obj.Name)
+    def actionReduction(self) :
+        from .GmshUtils import Tessellated2Mesh 
+
+        print('Action Decimate Reduction : '+self.obj.Name)
+        print(dir(self))
+        if hasattr(self.obj,'Mesh') :
+           mesh = self.obj.Mesh
+        else :
+           mesh = Tessellated2Mesh(self.obj)
+        print(dir(mesh.decimate))
+
+    def actionToSize(self) :
+        from .GmshUtils import Tessellated2Mesh 
+
+        print('Action Decimatei To Size : '+self.obj.Name)
+        print(dir(self))
+        if hasattr(self.obj,'Mesh') :
+           mesh = self.obj.Mesh
+        else :
+           mesh = Tessellated2Mesh(self.obj)
+        print(dir(mesh.decimate))
 
     def leaveEvent(self, event) :
         print('Leave Event II')
@@ -736,8 +766,7 @@ class DecimateFeature :
         for obj in FreeCADGui.Selection.getSelection():
             #if len(obj.InList) == 0: # allowed only for for top level objects
             print('Action Decimate')
-            self.decimatable =  self.isDecimatable(obj)
-            if self.decimatable > 0 :
+            if self.isDecimatable(obj) :
                if FreeCADGui.Control.activeDialog() == False :
                   print('Build panel for Decimate')
                   panel = AddDecimateTask(obj)
@@ -758,10 +787,10 @@ class DecimateFeature :
            print(obj.Proxy.Type)
            if obj.Proxy.Type == 'GDMLGmshTessellated' or \
               obj.Proxy.Type == 'GDMLTessellated' :
-              return 1
+              return True
         if hasattr(obj,'Mesh') :
-           return 2
-        return -1
+           return True
+        return False
 
 class AddTessellateWidget(QtGui.QWidget):
     def __init__(self, Shape,*args):
