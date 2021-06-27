@@ -676,7 +676,7 @@ class AddDecimateWidget(QtGui.QWidget):
         self.type.addItems(['sp4cerat'])
         self.group1  = QtGui.QGroupBox('Decimate Reduction')
         self.tolerance  = iField('Tolerance',5,'5.0')
-        self.reduction  = iField('Reduction',5,'0.1')
+        self.reduction  = iField('Reduction',5,'0.8')
         self.parms1layout = QtGui.QHBoxLayout()
         self.parms1layout.addWidget(self.tolerance)
         self.parms1layout.addWidget(self.reduction)
@@ -731,23 +731,44 @@ class AddDecimateTask:
         from .GmshUtils import Tessellated2Mesh 
 
         print('Action Decimate Reduction : '+self.obj.Name)
-        print(dir(self))
+        #print(dir(self))
         if hasattr(self.obj,'Mesh') :
            mesh = self.obj.Mesh
         else :
            mesh = Tessellated2Mesh(self.obj)
-        print(dir(mesh.decimate))
+        try :
+           tolerance = float(self.form.tolerance.value.text())
+           reduction = float(self.form.reduction.value.text())
+           print('Tolerance : '+str(tolerance))
+           print('Reduction : '+str(reduction))
+           mesh.decimate(tolerance,reduction)
+        except :
+           print('Invalid Float Values')
+
+        #print(dir(self.obj))
+        self.obj.Proxy.updateParams(mesh.Topology[0],mesh.Topology[1])
+        self.obj.recompute()
+        self.obj.ViewObject.Visibility = True
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.updateGui()
 
     def actionToSize(self) :
         from .GmshUtils import Tessellated2Mesh 
 
-        print('Action Decimatei To Size : '+self.obj.Name)
+        print('Action Decimate To Size : '+self.obj.Name)
         print(dir(self))
         if hasattr(self.obj,'Mesh') :
            mesh = self.obj.Mesh
         else :
            mesh = Tessellated2Mesh(self.obj)
-        print(dir(mesh.decimate))
+
+        try :
+           targetSize = int(self.form.targetSize.value.text())
+           print('Target Size : '+str(targetSize))
+           mesh.decimate(targetSize)
+
+        except :
+           print('Invalid Float Values')
 
     def leaveEvent(self, event) :
         print('Leave Event II')
@@ -1066,7 +1087,7 @@ class TessellateGmshFeature :
                 'Mesh & Tessellate Selected Planar Object')}    
 
 class Mesh2TessFeature :
-     
+    
     def Activated(self) :
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \

@@ -2287,6 +2287,14 @@ class GDMLTessellated(GDMLsolid) :
 
    def getMaterial(self):
        return obj.material
+   
+   def updateParams(self, vertex, facets) :
+      print('Update Params')
+      print(len(vertex))
+      self.Vertex = vertex
+      self.Facets = facets
+      self.facets  = len(facets)
+      self.vertex  = len(vertex)
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
