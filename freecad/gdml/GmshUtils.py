@@ -222,7 +222,7 @@ def getVertex() :
         vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
     return vertex
 
-def getFacets(meshType) :
+def getFacets() :
     print('Get Vertex Facets')
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
@@ -230,27 +230,29 @@ def getFacets(meshType) :
     # Get Elements
     #eTypes, tags, faceNodes = gmsh.model.mesh.getElements(-1,-1)
     #print(eTypes[0:3])
-    tags, faceNodes = gmsh.model.mesh.getElementsByType(meshType)
-    print('faceNodes datatype : '+str(faceNodes.dtype))
-    faceNodes = faceNodes.astype('int32')
-    # nodes, coords are numpy arrays
-    maxIdx = np.amax(faceNodes)
-    print('Max : ' +str(np.amax(faceNodes)))
-    minIdx = int(np.amin(faceNodes))
-    print('Min : ' +str(minIdx))
-    print('faceNodes : '+str(len(faceNodes)))
-    # gmsh index starts 1
-    # fc index starts 0
-    #if minIdx > 1 :
-    #   facetList = np.subtract(faceNodes,minIdx-1)
-    #else :
-    #   facetList = faceNodes
-    #
-    facetList = np.subtract(faceNodes,minIdx)
-    if meshType == 2 :
-       facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
-    if meshType == 3 :
-       facets = [facetList[x:x+4] for x in range(0, len(facetList),4)]
+    facets = []
+    for mt in [2,3] :
+       tags, faceNodes = gmsh.model.mesh.getElementsByType(mt)
+       if len(faceNodes) > 0 :
+          print('faceNodes datatype : '+str(faceNodes.dtype))
+          faceNodes = faceNodes.astype('int32')
+          # nodes, coords are numpy arrays
+          maxIdx = np.amax(faceNodes)
+          print('Max : ' +str(np.amax(faceNodes)))
+          minIdx = int(np.amin(faceNodes))
+          print('Min : ' +str(minIdx))
+          print('faceNodes : '+str(len(faceNodes)))
+          # gmsh index starts 1
+          # fc index starts 0
+          #if minIdx > 1 :
+          #   facetList = np.subtract(faceNodes,minIdx-1)
+          #else :
+          #   facetList = faceNodes
+          #
+          facetList = np.subtract(faceNodes,minIdx)
+          print('Len Facetlist : '+str(len(facetList)))
+          l = mt + 1 
+          facets = facets + [facetList[x:x+l] for x in range(0, len(facetList),l)]
     print('Number of facets : '+str(len(facets)))
     #print('Facets')
     #for f in facets :

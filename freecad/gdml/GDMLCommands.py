@@ -746,7 +746,7 @@ class AddTessellateTask:
         from .GDMLObjects import ViewProvider
 
         print('Update Tessellated Object')
-        print(dir(self))
+        #print(dir(self))
         print('Object Name ' +self.obj.Name)
         print('Object Type ' +self.obj.TypeId)
         if hasattr(self.obj,'Proxy') :
@@ -763,7 +763,7 @@ class AddTessellateTask:
            print('Tesselated Name '+self.tess.Name)
            print('Update parms : '+self.tess.Name)
            if hasattr(self.tess,'Proxy') : # If GDML object has Proxy
-              print(dir(self.tess.Proxy))
+              #print(dir(self.tess.Proxy))
               self.tess.Proxy.updateParams(vertex,facets)
            else : 
               self.tess.updateParams(vertex,facets)
@@ -797,7 +797,7 @@ class AddTessellateTask:
         typeDict = {0:6,1:8,2:9}
         # meshTypes Gmsh types 2 triangle, 3, Quad
         meshTypeDict = {0:2,1:3,2:3}
-        print(dir(self))
+        #print(dir(self))
         print('Object '+self.obj.Name)
         if self.tess is not None :
            print('Tessellated '+self.tess.Name)
@@ -814,14 +814,14 @@ class AddTessellateTask:
               if meshObject(self.obj.Proxy.SourceObj,2,ty,\
                  float(ml),float(cl),float(pl)) == True : 
                  vertex = getVertex()
-                 facets = getFacets(mt)
+                 facets = getFacets()
                  self.processMesh(vertex,facets)
                  return
             
         if meshObject(self.obj,2,ty, \
            float(ml),float(cl),float(pl)) == True : 
            vertex = getVertex()
-           facets = getFacets(mt)
+           facets = getFacets()
            if self.tess is None :
               name ='GDMLTessellate_'+self.obj.Name
               parent = None
