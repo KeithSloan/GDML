@@ -57,8 +57,8 @@ import os
 
 def initialize() :
     gmsh.initialize()
-    #gmsh.option.setNumber('Mesh.Algorithm',6)
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
+    #gmsh.option.setNumber('Mesh.RecombinationAlgorithm',2)
     gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
@@ -111,7 +111,7 @@ def setAltMeshParms(meshParms, obj, tessObj) :
              tessObj.m_pointLen)
 
 
-def meshObjShape(obj, dim) :
+def meshObjShape(obj, dim, algol) :
     import tempfile
 
     print('Mesh Object Shape')
@@ -121,6 +121,8 @@ def meshObjShape(obj, dim) :
     gmsh.model.occ.synchronize()
     gmsh.model.mesh.generate(dim)
     print('Mesh Generated')
+    if algol == 8 :
+       gmsh.model.mesh.recombine()
     gmsh.model.mesh.renumberNodes()
     return True
 
@@ -186,7 +188,7 @@ def meshObject(obj, dim, algol, lm, lc, lp) :
     gmsh.clear()
     setMeshParms(algol,lm, lc, lp)
     if hasattr(obj,'Shape') :
-       return(meshObjShape(obj, dim))
+       return(meshObjShape(obj, dim, algol))
 
     elif hasattr(obj,'Mesh') :
        return(meshObjMesh(obj,dim))
@@ -220,7 +222,7 @@ def getVertex() :
         vertex.append(FreeCAD.Vector(n[0],n[1],n[2]))
     return vertex
 
-def getFacets() :
+def getFacets(meshType) :
     print('Get Vertex Facets')
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
@@ -228,8 +230,8 @@ def getFacets() :
     # Get Elements
     #eTypes, tags, faceNodes = gmsh.model.mesh.getElements(-1,-1)
     #print(eTypes[0:3])
-    tags, faceNodes = gmsh.model.mesh.getElementsByType(2)
-    #print('faceNodes datatype : '+str(faceNodes.dtype))
+    tags, faceNodes = gmsh.model.mesh.getElementsByType(meshType)
+    print('faceNodes datatype : '+str(faceNodes.dtype))
     faceNodes = faceNodes.astype('int32')
     # nodes, coords are numpy arrays
     maxIdx = np.amax(faceNodes)
@@ -245,8 +247,10 @@ def getFacets() :
     #   facetList = faceNodes
     #
     facetList = np.subtract(faceNodes,minIdx)
-
-    facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
+    if meshType == 2 :
+       facets = [facetList[x:x+3] for x in range(0, len(facetList),3)]
+    if meshType == 3 :
+       facets = [facetList[x:x+4] for x in range(0, len(facetList),4)]
     print('Number of facets : '+str(len(facets)))
     #print('Facets')
     #for f in facets :

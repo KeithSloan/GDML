@@ -795,30 +795,33 @@ class AddTessellateTask:
         print('Action Gmsh : '+self.obj.Name)
         initialize()
         typeDict = {0:6,1:8,2:9}
+        # meshTypes Gmsh types 2 triangle, 3, Quad
+        meshTypeDict = {0:2,1:3,2:3}
         print(dir(self))
         print('Object '+self.obj.Name)
         if self.tess is not None :
            print('Tessellated '+self.tess.Name)
         ty = typeDict[self.form.type.currentIndex()]
+        mt = meshTypeDict[self.form.type.currentIndex()]
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
         pl = self.form.pointLen.value.text()
-        print('type :  '+str(ty)+' ml : '+ml+' cl : '+cl+' pl : '+pl)
+        print('type : '+str(ty)+'Mesh type : '+str(mt)+' ml : '+ml+' cl : '+cl+' pl : '+pl)
         if hasattr(self.obj,'Proxy') :
            print('has proxy')
            if hasattr(self.obj.Proxy,'SourceObj') :
               print('Has source Object')
               if meshObject(self.obj.Proxy.SourceObj,2,ty,\
                  float(ml),float(cl),float(pl)) == True : 
-                 facets = getFacets()
                  vertex = getVertex()
+                 facets = getFacets(mt)
                  self.processMesh(vertex,facets)
                  return
             
         if meshObject(self.obj,2,ty, \
            float(ml),float(cl),float(pl)) == True : 
-           facets = getFacets()
            vertex = getVertex()
+           facets = getFacets(mt)
            if self.tess is None :
               name ='GDMLTessellate_'+self.obj.Name
               parent = None
