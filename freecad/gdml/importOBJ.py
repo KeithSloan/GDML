@@ -100,19 +100,37 @@ def processOBJ(doc,filename) :
     faces = []
     f = io.open(filename, 'r', encoding="utf8")
     for line in f:
-        print(line)
+        #print(line)
+        items = line.split(' ')
         while switch(line[0]) :
            if case('v') :
-              print('Vertex')
-              vertex.append(line[1:])
+              #print('Vertex')
+              vertex.append(FreeCAD.Vector(float(items[1]), \
+                                           float(items[2]), \
+                                           float(items[3])))
+              #print(FreeCAD.Vector(float(items[1]), \
+              #                     float(items[2]), \
+              #                     float(items[3])))
               break
 
            if case('f') :
-              print('Face')
-              faces.append(line[1:])
+              #print('Face')
+              l = len(items) - 1
+              if l == 3 :
+                 faces.append([int(items[1]) - 1, \
+                               int(items[2]) - 1, \
+                               int(items[3]) - 1])
+              elif l == 4 : 
+                 faces.append([int(items[1]) - 1, \
+                               int(items[2]) - 1, \
+                               int(items[3]) - 1, \
+                               int(items[4]) - 1])
+              else :
+                 print('Number = '+l+'Polygon not yet supported')
               break
 
            print('Tag : '+line[0])
            break
     GDMLTessellated(obj,vertex,faces,'mm',getSelectedMaterial())
     ViewProvider(obj.ViewObject)
+    obj.recompute()
