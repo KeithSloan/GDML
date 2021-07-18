@@ -135,13 +135,20 @@ def processOBJ(doc,filename) :
                  faces.append([getVert(items[1]), getVert(items[2]), \
                               getVert(items[3]), getVert(items[4])])
               else :
-                 print('Number of Face Vertex = '+str(l)+' Polygon not yet supported')
+                 print('Warning Polygon : Number of Face Vertex = '+str(l))
+                 print('Converting to Triangle Faces')
+                 for i in range(2,l-2 ) :
+                     faces.append([getVert(items[1]), getVert(items[i]), \
+                                   getVert(items[i+1])])
               break
 
            if case('#') :          # Comment ignore
               break
 
            if case('vt') :
+              break
+
+           if case('vn') :
               break
 
            print('Tag : '+items[0])
