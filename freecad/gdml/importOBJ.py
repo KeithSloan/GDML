@@ -91,6 +91,14 @@ def getSelectedMaterial() :
 
     return 0
 
+def getVert(s) :
+    if '/' in s :
+       ret = int(s[:s.index('/')])-1
+       print(ret)
+    else :
+       ret = int(s)-1
+    return(ret)
+
 def processOBJ(doc,filename) :
 
     from .GDMLObjects import GDMLTessellated, ViewProvider
@@ -102,12 +110,17 @@ def processOBJ(doc,filename) :
     for line in f:
         #print(line)
         items = line.split(' ')
-        while switch(line[0]) :
+        l = len(items) - 1
+        while switch(items[0]) :
            if case('v') :
-              #print('Vertex')
-              vertex.append(FreeCAD.Vector(float(items[1]), \
-                                           float(items[2]), \
-                                           float(items[3])))
+              #print('Vertex - len : '+str(l))
+              if l >= 3 : 
+                  vertex.append(FreeCAD.Vector(float(items[1]), \
+                                               float(items[2]), \
+                                               float(items[3])))
+              else :
+                  print('Invalid Vertex')
+                  print(items)
               #print(FreeCAD.Vector(float(items[1]), \
               #                     float(items[2]), \
               #                     float(items[3])))
@@ -115,22 +128,24 @@ def processOBJ(doc,filename) :
 
            if case('f') :
               #print('Face')
-              l = len(items) - 1
               if l == 3 :
-                 faces.append([int(items[1]) - 1, \
-                               int(items[2]) - 1, \
-                               int(items[3]) - 1])
+                 faces.append([getVert(items[1]), getVert(items[2]), \
+                               getVert(items[3])])
               elif l == 4 : 
-                 faces.append([int(items[1]) - 1, \
-                               int(items[2]) - 1, \
-                               int(items[3]) - 1, \
-                               int(items[4]) - 1])
+                 faces.append([getVert(items[1]), getVert(items[2]), \
+                              getVert(items[3]), getVert(items[4])])
               else :
                  print('Number = '+l+'Polygon not yet supported')
               break
 
-           print('Tag : '+line[0])
+           if case('#') :          # Comment ignore
+              break
+
+           if case('vt') :
+              break
+           print('Tag : '+items[0])
            break
+
     GDMLTessellated(obj,vertex,faces,'mm',getSelectedMaterial())
     ViewProvider(obj.ViewObject)
     obj.recompute()
