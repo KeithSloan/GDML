@@ -94,7 +94,7 @@ def getSelectedMaterial() :
 def getVert(s) :
     if '/' in s :
        ret = int(s[:s.index('/')])-1
-       print(ret)
+       #print(ret)
     else :
        ret = int(s)-1
     return(ret)
@@ -135,7 +135,7 @@ def processOBJ(doc,filename) :
                  faces.append([getVert(items[1]), getVert(items[2]), \
                               getVert(items[3]), getVert(items[4])])
               else :
-                 print('Number = '+l+'Polygon not yet supported')
+                 print('Number of Face Vertex = '+str(l)+' Polygon not yet supported')
               break
 
            if case('#') :          # Comment ignore
@@ -143,6 +143,7 @@ def processOBJ(doc,filename) :
 
            if case('vt') :
               break
+
            print('Tag : '+items[0])
            break
 
