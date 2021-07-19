@@ -137,9 +137,25 @@ def processOBJ(doc,filename) :
               else :
                  print('Warning Polygon : Number of Face Vertex = '+str(l))
                  print('Converting to Triangle Faces')
-                 for i in range(2,l-2 ) :
-                     faces.append([getVert(items[1]), getVert(items[i]), \
-                                   getVert(items[i+1])])
+                 verts = []
+                 for i in range(1,l+1) :
+                     v = vertex[getVert(items[i])]
+                     #print(v)
+                     verts.append(v)
+                 #print(verts)
+                 verts.append(verts[0])
+                 poly = Part.makePolygon(verts)
+                 c = poly.CenterOfMass
+                 ic = len(vertex)
+                 #print(len(vertex))
+                 vertex.append(c)
+                 #print(len(vertex))
+                 #print(c)
+                 #print(ic)
+                 for i in range(1,l) :
+                     #print(i)
+                     faces.append([ic,getVert(items[i]),getVert(items[i+1])])
+                 faces.append([ic,getVert(items[i+1]),getVert(items[1])])
               break
 
            if case('#') :          # Comment ignore
