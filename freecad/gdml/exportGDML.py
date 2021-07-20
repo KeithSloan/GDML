@@ -168,6 +168,13 @@ def exportDefine(name, v) :
     ET.SubElement(define,'position',{'name' : name, 'unit': 'mm',   \
                 'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
+def exportDefineVertex(name, v) :
+    global define
+    #print('define Vertex : '+name)
+    #print(v)
+    ET.SubElement(define,'position',{'name' : name + str(v.hashCode()), \
+           'unit': 'mm', 'x': str(v.X), 'y': str(v.Y), 'z': str(v.Z) })
+
 def defineWorldBox(bbox):
     global solids
     for obj in FreeCAD.ActiveDocument.Objects :
@@ -695,7 +702,12 @@ def addVolRef(volxml, volName, solidName, obj) :
     #print(ET.tostring(volxml))
     
 def nameOfGDMLobject(obj) :
-    return(obj.Label.split('_',1)[1])
+    name = obj.Label
+    if len(name) > 4 :
+       if name[0:4] == 'GDML' :
+          if '_' in name :
+             return(name.split('_',1)[1])
+    return name
 
 def processGDMLArb8Object(obj, flag) :
     # Needs unique Name
@@ -909,30 +921,26 @@ def processGDMLTessellatedObject(obj, flag) :
     # Use more readable version
     tessVname = tessName + '_'
     #print(dir(obj))
-    #print(dir(obj.Proxy))
     if flag == True :
        tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
-       for x in range(0,len(obj.Proxy.Vertex)) :
-           #print(obj.Proxy.Vertex[x])
-           exportDefine(tessVname+str(x),obj.Proxy.Vertex[x])
+       for v in obj.Shape.Vertexes :
+           exportDefineVertex(tessVname,v)
 
-       for f in obj.Proxy.Facets :
-           if len(f) == 3 :
-              #print(f)
+       for f in obj.Shape.Faces :
+           if len(f.Edges) == 3 :
               ET.SubElement(tess,'triangular',{ \
-                        'vertex1': tessVname+str(f[0]), \
-                        'vertex2': tessVname+str(f[1]), \
-                        'vertex3': tessVname+str(f[2]), \
+                        'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
+                        'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
+                        'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
                         'type':'ABSOLUTE'})
 
-           else :
-              #print(f)
+           elif len(f.Edges) == 4 :
               ET.SubElement(tess,'quadrangular',{ \
-                        'vertex1': tessVname+str(f[0]), \
-                        'vertex2': tessVname+str(f[1]), \
-                        'vertex3': tessVname+str(f[2]), \
-                        'vertex4': tessVname+str(f[3]), \
-                                  'type':'ABSOLUTE'})
+                        'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
+                        'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
+                        'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
+                        'vertex4': tessVname+str(f.Vertexes[3].hashCode()), \
+                        'type':'ABSOLUTE'})
 
     return tess, tessName
 
@@ -1310,7 +1318,9 @@ def processGDMLSolid(obj, addVolsFlag) :
 
        if case("GDMLTessellated") :
           #print("      GDMLTessellated") 
-          return(processGDMLTessellatedObject(obj, addVolsFlag))
+          ret = processGDMLTessellatedObject(obj, addVolsFlag)
+          return ret
+          #return(processGDMLTessellatedObject(obj, addVolsFlag))
           break
 
        if case("GDMLGmshTessellated") :
@@ -1567,7 +1577,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             else :
                parentName = None
             print(obj.Label)
-            print(dir(obj))
+            #print(dir(obj))
             processVolAssem(obj, xmlVol, volName, True)
          return idx + 1
 
