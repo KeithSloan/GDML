@@ -1,6 +1,6 @@
 ## GDML Workbench 
 
-For 
+The GDML workbench can be used for:
 
     * Viewing
     * Creation
@@ -8,7 +8,7 @@ For
 
 of GDML models as can be used in GEANT4 and ROOT
 
-### Viewing CERN's LHCBVelo.gdml using LinkStage 3 Daily
+### Viewing CERN's LHCBVelo.gdml using LinkStage3 Daily
 
 ![LHCB1](Images/LHCBVelo1.jpg) ![LHCB2](Images/LHCBVelo2.jpg) ![LHCB3](Images/LHCBVelo3.jpg)
 
@@ -512,7 +512,7 @@ as per the above link.
 
 ## Roadmap
 
-  - [ ] Change structure of xml handing to use Python class rather than global variables
+  - [ ] Change structure of xml handling to use Python class rather than global variables
   - [ ] Check handling of different Positioning between GDML & FreeCAD
   - [ ] Add support for quantity
   - [ ] Add further GDML Objects
@@ -536,7 +536,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 ## Development Notes
  
- based on gdml.xsd
+ Based on `gdml.xsd`
  
  * 'Volumes'
  
@@ -569,7 +569,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   
-* FreeCAD forum members (Apologies if I left anybody off ) :
+* FreeCAD forum members (Apologies if I left anybody out):
 
   * wmayer
   * Joel_graff
@@ -585,10 +585,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * OpenBrain
 
 * OpenCascade Forum members:
-  *  Sergey Slyadnev
+  * Sergey Slyadnev
   
 * Stack Overflow
-
   * Daniel Haley
     
 ## For NIST Materials database see http://physics.nist.gov/PhysRefData

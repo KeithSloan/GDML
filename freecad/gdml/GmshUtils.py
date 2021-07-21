@@ -362,7 +362,7 @@ def printMeshInfo() :
         partitions = gmsh.model.getPartitions(e[0], e[1])
         if len(partitions):
            print(" - Partition tag(s): " + str(partitions) + \
-               " - parent entity " + str(iself.Gmsh.model.getParent(e[0], e[1])))
+               " - parent entity " + str(self.Gmsh.model.getParent(e[0], e[1])))
         for t in elemTypes:
             name, dim, order, numv, parv, _ =  \
                      gmsh.model.mesh.getElementProperties(t) 
