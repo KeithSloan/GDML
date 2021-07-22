@@ -417,14 +417,14 @@ def getVertex(v):
     return(FreeCAD.Vector(x,y,z))
 
 def triangle(v1,v2,v3) :
-    # passsed vertex return face
+    # passed vertex return face
     #print('v1 : '+str(v1)+' v2 : '+str(v2)+' v3 : '+str(v3))
     w1 = Part.makePolygon([v1,v2,v3,v1])
     f1 = Part.Face(w1)
     return(f1)
 
 def quad(v1,v2,v3,v4) :
-    # passsed vertex return face
+    # passed vertex return face
     w1 = Part.makePolygon([v1,v2,v3,v4,v1])
     f1 = Part.Face(w1)
     return(f1)
