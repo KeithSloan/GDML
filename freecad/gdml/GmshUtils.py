@@ -59,7 +59,7 @@ def initialize() :
     gmsh.initialize()
     #gmsh.option.setNumber('Mesh.Algorithm',6)
     gmsh.option.setNumber('Mesh.Algorithm3D',1)
-    gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
+    #gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
     #gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
