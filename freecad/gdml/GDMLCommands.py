@@ -728,39 +728,41 @@ class AddDecimateTask:
         return True
 
     def actionReduction(self) :
-        from .GmshUtils import Tessellated2Mesh 
+        from .GmshUtils import TessellatedShape2Mesh 
 
         print('Action Decimate Reduction : '+self.obj.Name)
         #print(dir(self))
         if hasattr(self.obj,'Mesh') :
            mesh = self.obj.Mesh
         else :
-           mesh = Tessellated2Mesh(self.obj)
+           mesh = TessellatedShape2Mesh(self.obj)
         try :
            tolerance = float(self.form.tolerance.value.text())
            reduction = float(self.form.reduction.value.text())
            print('Tolerance : '+str(tolerance))
            print('Reduction : '+str(reduction))
            mesh.decimate(tolerance,reduction)
-        except :
-           print('Invalid Float Values')
+
+        except Exception as e:
+           print(e)
 
         #print(dir(self.obj))
         self.obj.Proxy.updateParams(mesh.Topology[0],mesh.Topology[1])
         self.obj.recompute()
         self.obj.ViewObject.Visibility = True
         FreeCADGui.SendMsgToActiveView("ViewFit")
+        print('Update Gui')
         FreeCADGui.updateGui()
 
     def actionToSize(self) :
-        from .GmshUtils import Tessellated2Mesh 
+        from .GmshUtils import TessellatedShape2Mesh 
 
         print('Action Decimate To Size : '+self.obj.Name)
         print(dir(self))
         if hasattr(self.obj,'Mesh') :
            mesh = self.obj.Mesh
         else :
-           mesh = Tessellated2Mesh(self.obj)
+           mesh = TessellatedShape2Mesh(self.obj)
 
         try :
            targetSize = int(self.form.targetSize.value.text())
@@ -1131,7 +1133,7 @@ class Tess2MeshFeature :
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
-        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
+        from .GmshUtils import TessellatedShape2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
@@ -1139,12 +1141,12 @@ class Tess2MeshFeature :
                if hasattr(obj.Proxy,'Type') :
                   mesh = None
                   if obj.Proxy.Type == 'GDMLTessellated' :
-                     print('Tessellated2Mesh')
-                     mesh = Tessellated2Mesh(obj)
+                     print('TessellatedShape2Mesh')
+                     mesh = TessellatedShape2Mesh(obj)
     
                   if obj.Proxy.Type == 'GDMLGmshTessellated' :
-                     print('GmshTessellated2Mesh')
-                     mesh = Tessellated2Mesh(obj)
+                     print('GmshTessellatedShape2Mesh')
+                     mesh = TessellatedShape2Mesh(obj)
     
                   if obj.Proxy.Type == 'GDMLTetrahedron' :
                      print('Tetrahedron2Mesh')

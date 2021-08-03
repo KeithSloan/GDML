@@ -271,20 +271,39 @@ def getTetrahedrons():
        FreeCAD.Console.PrintWarning('Unable to create quad faces for this shape')
        return None
 
+def vertex2Vector(v) :
+    return(FreeCAD.Vector(v.X, v.Y, v.Z))
+
 def addFacet(msh, v0,v1,v2) :
     #print('Add Facet')
     #msh.addFacet(v0[0],v0[1],v0[2],v1[0],v1[1],v1[2],v2[0],v2[1],v2[2])
     #print(v0)
     #print(v1)
     #print(v2)
-    msh.addFacet(FreeCAD.Vector(v0),FreeCAD.Vector(v1),FreeCAD.Vector(v2))
+    #msh.addFacet(FreeCAD.Vector(v0),FreeCAD.Vector(v1),FreeCAD.Vector(v2))
+    msh.addFacet(vertex2Vector(v0),vertex2Vector(v1),vertex2Vector(v2))
+
+def TessellatedShape2Mesh(obj) :
+    import Mesh
+    msh = Mesh.Mesh()
+    #v = obj.Shape.Vertexes
+    for f in obj.Shape.Faces :
+        #print('Deal with Triangular Faces')
+        #addFacet(msh,v[f.Vertexes[0]], v[f.Vertexes[1]],  v[f.Vertexes[2]])
+        addFacet(msh,f.Vertexes[0], f.Vertexes[1],  f.Vertexes[2])
+        if len(f.Edges) == 4 :
+           #print('Deal with Quad Faces')
+           #addFacet(msh,v[f.Vertexes[0]], v[f.vertexes[2]],  v[f.vertexes[3]])
+           addFacet(msh,f.Vertexes[0], f.vertexes[2],  f.vertexes[3])
+    return msh
 
 def Tessellated2Mesh(obj) :
+    # Should now be redundant as replaced by TessellatedShape2Mesh
     import Mesh
 
-    print('Tessellated 2 Mesh')
+    print('Tessellated 2 Mesh : '+obj.Label)
     if hasattr(obj.Proxy,'Facets') :
-       #print('Create Mesh')
+       print('Has proxy - Create Mesh')
        msh = Mesh.Mesh()
        v = obj.Proxy.Vertex
        #print(v)
@@ -295,6 +314,8 @@ def Tessellated2Mesh(obj) :
            if len(f) == 4 :
               addFacet(msh,v[f[0]], v[f[2]],  v[f[3]])
        return msh
+    else :
+       print(dir(obj))
 
 def Tetrahedron2Mesh(obj) :
     import Mesh
