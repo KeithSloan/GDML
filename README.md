@@ -1,4 +1,4 @@
-## GDML Workbench 
+## GDML Workbench - Introduction 
 
 The GDML workbench can be used for:
 
@@ -8,13 +8,15 @@ The GDML workbench can be used for:
 
 of GDML models as can be used in GEANT4 and ROOT
 
+
+## Examples
 ### Viewing CERN's LHCBVelo.gdml using LinkStage3 Daily
 
 ![LHCB1](Images/LHCBVelo1.jpg) ![LHCB2](Images/LHCBVelo2.jpg) ![LHCB3](Images/LHCBVelo3.jpg)
 
-## **** VERY IMPORTANT ****
+# NOTICE BOARD
 
-# *** ATTENTION WINDOWS USERS ***
+## *** ATTENTION WINDOWS USERS ***
 
 lxml should have been installed in prebuilt versions of FreeCAD. 
 It seems with FreeCAD 0.19.1 going to production this slipped through the net,
@@ -64,25 +66,21 @@ In order to support copies of GDML Volumes the following changes have been made
   
 ## **** New experimental export for GEMC ****
 
-## **** Wiki Under Construction ****
+# INSTALLATION & CONFIGURATION
 
-## Installable FreeCAD Python Workbench
-
-FreeCAD's python Importer & Exporter for GDML files.
-
-## Installation of FreeCAD
+### Installation of FreeCAD
 see https://wiki.freecadweb.org/Installing#Choose_Your_Operating_System
 
-## Installation of Workbench
+### Installation of Workbench
 
 GDML can be installed via the Addon Manager 
 https://wiki.freecadweb.org/Std_AddonMgr
 
 Install by use of FreeCAD Addon Manager ==> GDML ==> update
 
-## Required python libraries - lxml & gmsh
+### Required python libraries - lxml & gmsh
 
-### lxml - python library
+#### lxml - python library
 
 lxml which should be installed as part of FreeCAD
 
@@ -139,32 +137,11 @@ will create
     D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\gmsh-4.6.0-py3.8.egg-info
     D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\Lib\site-packages\gmsh-4.6.0-Windows64-sdk
      
-## Details of GDML
+# GDML WORKBENCH USAGE & DETAILS 
+For details on using the workbench please see the wiki [GDML Workbench WIKI](https://github.com/KeithSloan/GDML/wiki)
 
-For more information on GDML see
 
-[GDML User Guide](https://gdml.web.cern.ch/GDML/doc/GDMLmanual.pdf)
-
-[GDML Solids](http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html)
-
-## Usage
-
-### GDML Solids
-
-GDML Solids are implemented as FreeCAD Python Objects and have the same properties as defined by GDML. By selecting an Object the properties can be changed via the FreeCAD properties windows and the resulting changes displayed.
-
-### FreeCAD View settings
-
-It is suggested that you have the **View** | **Toolbars**
-set to
-
-* Workbench
-* Structure
-
-and when GDML workbench active
-
-* GDMLTools
-* GDML Part tools
+## FOLLOWING TO BE MOVED TO WIKI
 
 ### Create a new GDML design
 
@@ -213,44 +190,6 @@ Upon switching to the GDML workbench, one will notice a number of icons that bec
 * If the Object is part of a Boolean you will have to use the **recompute** facility of FreeCAD to see the change to the Boolean. This can be achieved through the right clicking on the context menu or clicking the **Recompute** icon in the toolbar.
 * If a Part(GDML Volume) is selected at the time of clicking on the icon, then the new Part(GDML volume ) and GDML object will be created as
 a subvolume of the one selected, otherwise the created Part can then be dragged to the appropriate part of model structure
-
-### GDML Objects Currently Supported for creation via the GUI are
-
-#### GDMLBox 
-![GDML_Box-Icon](Source_Icon_Designs/GDML_Box_mauve_blackline.svg)
-_Short decription_
-
-#### GDMLCone
-![GDML_Clone-Icon](Source_Icon_Designs/GDML_Polycone_Mauve_blackline.svg)
-_Short decription_
-
-#### GDMLElTube
-![GDML_EllipticalTube-Icon](Source_Icon_Designs/GDML_EllipticalTube_Mauve_blackline.svg)
-_Short decription_
-
-#### GDMLEllipsoid
-![GDML_Ellipsoid-Icon](Source_Icon_Designs/GDML_Ellipsoid_Mauve_blackline.svg)
-_Short decription_
-
-#### GDMLSphere
-![GDML_Sphere-Icon](Source_Icon_Designs/GDML_Sphere_mauve.svg)
-_Short decription_
-
-#### GDMLTrap
-![GDML_Trapezoid-Icon](Source_Icon_Designs/GDML_Trapezoid_Mauve_blackline.svg)
-_Short decription_
-
-#### GDMLTube
-![GDML_Tube-Icon](Source_Icon_Designs/GDML_Tube_mauve_blackline.svg)
-_Short decription_
-
-Given a lot more solids are supported for import, it is not too difficult to add more,
-so if you feel you need a particular solid to be added please contact me.
-
-### Boolean Operations
-
-Select two Parts/Logical Volumes and then click on the appropriate boolean icon
-
 
 ## GDML Tessellated Objects
 
