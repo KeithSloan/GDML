@@ -1096,7 +1096,7 @@ def processGDML2dVertex(obj, flag) :
         #print("Process 2d Vertex")
         ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
 
-def processElement(obj, item): # maybe part of material or element (common code)
+def processIsotope(obj, item): # maybe part of material or element (common code)
     if hasattr(obj,'Z') :
        #print(dir(obj))
        item.set('Z',str(obj.Z)) 
@@ -1119,7 +1119,7 @@ def processElement(obj, item): # maybe part of material or element (common code)
           atom.set('value',str(obj.atom_value)) 
 
 def processMaterials() :
-    #print("\nProcess Materials")
+    print("\nProcess Materials")
     global materials
  
     for GName in ['Materials','Elements','Isotopes'] : 
@@ -1128,29 +1128,74 @@ def processMaterials() :
            for obj in Grp.Group:
                #print(obj.TypeId+" : "+obj.Name)
                #processMaterialObject(obj)
-               if processMaterialObject(obj) == False :
+               if processMaterialGroups(obj) == False :
                  break
 
-def processMaterialObject(obj) :
+def processFractions(obj, item) :
+    # Fractions are used in Material and Elements
+    if isinstance(obj.Proxy,GDMLfraction) :
+        print("GDML fraction :" + obj.Name)
+        # need to strip number making it unique
+        ET.SubElement(item,'fraction',{'n': str(obj.n), \
+                     'ref': nameFromLabel(obj.Label)})
+
+def processMaterial(obj) :
+    print(obj.Label)
+    item = ET.SubElement(materials,'material',{'name': \
+                    nameFromLabel(obj.Label)})
+
+    # process common options material / element
+    processIsotope(obj, item)
+    if len(obj.Group) > 0 :
+       for o in obj.Group :
+           processFractions(o,item)
+
+    if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
+       print("Dunit or DValue")
+       D = ET.SubElement(item,'D')
+       if hasattr(obj,'Dunit') :
+          D.set('unit',str(obj.Dunit))
+             
+       if hasattr(obj,'Dvalue') :
+          D.set('value',str(obj.Dvalue))
+
+       if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
+          ET.SubElement(item,'T',{'unit': obj.Tunit, \
+                                      'value': str(obj.Tvalue)})
+           
+       if hasattr(obj,'MEEunit') :
+          ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
+                                               'value': str(obj.MEEvalue)})
+
+
+def processElement(obj) :
+    item = ET.SubElement(materials,'element',{'name': \
+                 nameFromLabel(obj.Label)})
+
+    if len(obj.Group) > 0 :
+       for o in obj.Group :
+           processFractions(o,item)
+
+def processMaterialGroups(obj) :
     global item
-    #print(obj.Label)
+    print(obj.Label)
     while switch(obj.TypeId) :
        if case("App::DocumentObjectGroupPython"):
-          #print("   Object List : "+obj.Name)
+          print("   Object List : "+obj.Name)
           #print(obj)
           while switch(obj.Name) :
              if case("Materials") : 
-                #print("Materials")
+                print("Materials")
                 #return True
                 break
 
              if case("Isotopes") :
-                #print("Isotopes")
+                print("Isotopes")
                 #return True
                 break
             
              if case("Elements") :
-                #print("Elements")
+                print("Elements")
                 #return True
                 break
          
@@ -1175,53 +1220,21 @@ def processMaterialObject(obj) :
           #return   
             
           if isinstance(obj.Proxy,GDMLmaterial) :
-             #print("GDML material")
-             #print(dir(obj))
+             print("GDML material")
+             print(dir(obj))
+             print(obj.Group)
+             processMaterial(obj)
 
-             item = ET.SubElement(materials,'material',{'name': \
-                    nameFromLabel(obj.Label)})
-
-             # process common options material / element
-             processElement(obj, item)
-
-          if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-             D = ET.SubElement(item,'D')
-             if hasattr(obj,'Dunit') :
-                D.set('unit',str(obj.Dunit))
-             
-             if hasattr(obj,'Dvalue') :
-                D.set('value',str(obj.Dvalue))
-
-          if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
-             ET.SubElement(item,'T',{'unit': obj.Tunit, \
-                                      'value': str(obj.Tvalue)})
-           
-          if hasattr(obj,'MEEunit') :
-             ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
-                                               'value': str(obj.MEEvalue)})
-
-          #return True
-          #break
-
-          if isinstance(obj.Proxy,GDMLfraction) :
-
-             #print("GDML fraction :" + obj.Name)
-             # need to strip number making it unique
-             ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                     'ref': nameFromLabel(obj.Label)})
-
-             #return True
-             break
 
           if isinstance(obj.Proxy,GDMLcomposite) :
-             #print("GDML Composite")
+             print("GDML Composite")
              ET.SubElement(item,'composite',{'n': str(obj.n), \
                      'ref': nameFromLabel(obj.Label)})
              #return True
              break
 
           if isinstance(obj.Proxy,GDMLisotope) :
-             #print("GDML isotope")
+             print("GDML isotope")
              item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
                                                       'Z': str(obj.Z), \
                                                       'name' : obj.Name})
@@ -1231,10 +1244,8 @@ def processMaterialObject(obj) :
              break
 
           if isinstance(obj.Proxy,GDMLelement) :
-             #print("GDML element")
-             item = ET.SubElement(materials,'element',{'name': \
-                    nameFromLabel(obj.Label)})
-             processElement(obj,item)
+             print("GDML element "+obj.Label)
+             processElement(obj)
              #return True
              break
 
