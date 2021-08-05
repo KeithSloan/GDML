@@ -660,6 +660,161 @@ class oField(QtGui.QWidget) :
     def sizeHint(self) :
         return(QtCore.QSize(10,5))
 
+class AddDecimateWidget(QtGui.QWidget):
+    def __init__(self, Obj,*args):
+        QtGui.QWidget.__init__(self,*args)
+        #bboxGroup  = QtGui.QGroupBox('Objects Bounding Box') 
+        #laybbox = QtGui.QHBoxLayout()
+        #laybbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
+        #laybbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
+        #laybbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength) ))
+        #bboxGroup.setLayout(laybbox)
+        #maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength + \
+        #            Shape.BoundBox.ZLength) / 15)
+        self.type     = QtGui.QComboBox()
+        #self.type.addItems(['sp4cerat','MeshLab','Blender'])
+        self.type.addItems(['sp4cerat'])
+        self.group1  = QtGui.QGroupBox('Decimate Reduction')
+        self.tolerance  = iField('Tolerance',5,'5.0')
+        self.reduction  = iField('Reduction',5,'0.8')
+        self.parms1layout = QtGui.QHBoxLayout()
+        self.parms1layout.addWidget(self.tolerance)
+        self.parms1layout.addWidget(self.reduction)
+        self.grpLay1 = QtGui.QVBoxLayout()
+        self.grpLay1.addLayout(self.parms1layout)
+        self.buttonReduction = QtGui.QPushButton(translate('GDML','Decimate Reduction'))
+        self.grpLay1.addWidget(self.buttonReduction)
+        self.group1.setLayout(self.grpLay1)
+        self.group2    = QtGui.QGroupBox('Decimate to Size')
+        self.targetSize = iField('Target Size',5,'100')
+        self.grpLay2 = QtGui.QVBoxLayout()
+        self.grpLay2.addWidget(self.targetSize)
+        self.buttonToSize = QtGui.QPushButton(translate('GDML','Decimate To Size'))
+        self.grpLay2.addWidget(self.buttonToSize)
+        self.group2.setLayout(self.grpLay2)
+        self.Vlayout= QtGui.QVBoxLayout()
+        self.Vlayout.addWidget(self.type)
+        self.Vlayout.addWidget(self.group1)
+        self.Vlayout.addWidget(self.group2)
+        self.setLayout(self.Vlayout)
+        self.setWindowTitle(translate('GDML','Decimate'))
+
+    def leaveEvent(self, event) :
+        print('Leave Event')
+        QtCore.QTimer.singleShot(0, lambda :FreeCADGui.Control.closeDialog())
+
+    def retranslateUi(self, widget=None):
+        self.buttonMesh.setText(translate('GDML','Decimate'))
+        self.setWindowTitle(translate('GDML','Decimate'))
+
+class AddDecimateTask:
+
+    def __init__(self, Obj):
+        self.obj  = Obj
+        self.form = AddDecimateWidget(Obj)
+        self.form.buttonReduction.clicked.connect(self.actionReduction)
+        self.form.buttonToSize.clicked.connect(self.actionToSize)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def actionReduction(self) :
+        from .GmshUtils import TessellatedShape2Mesh 
+
+        print('Action Decimate Reduction : '+self.obj.Name)
+        #print(dir(self))
+        if hasattr(self.obj,'Mesh') :
+           mesh = self.obj.Mesh
+        else :
+           mesh = TessellatedShape2Mesh(self.obj)
+        try :
+           tolerance = float(self.form.tolerance.value.text())
+           reduction = float(self.form.reduction.value.text())
+           print('Tolerance : '+str(tolerance))
+           print('Reduction : '+str(reduction))
+           mesh.decimate(tolerance,reduction)
+
+        except Exception as e:
+           print(e)
+
+        #print(dir(self.obj))
+        self.obj.Proxy.updateParams(mesh.Topology[0],mesh.Topology[1])
+        self.obj.recompute()
+        self.obj.ViewObject.Visibility = True
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        print('Update Gui')
+        FreeCADGui.updateGui()
+
+    def actionToSize(self) :
+        from .GmshUtils import TessellatedShape2Mesh 
+
+        print('Action Decimate To Size : '+self.obj.Name)
+        print(dir(self))
+        if hasattr(self.obj,'Mesh') :
+           mesh = self.obj.Mesh
+        else :
+           mesh = TessellatedShape2Mesh(self.obj)
+
+        try :
+           targetSize = int(self.form.targetSize.value.text())
+           print('Target Size : '+str(targetSize))
+           mesh.decimate(targetSize)
+
+        except :
+           print('Invalid Float Values')
+
+    def leaveEvent(self, event) :
+        print('Leave Event II')
+
+    def focusOutEvent(self, event) :
+        print('Out of Focus II')
+
+class DecimateFeature :
+      
+    def Activated(self) :
+        import Mesh
+        import MeshPart
+        from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+                  ViewProvider, ViewProviderExtension
+
+        for obj in FreeCADGui.Selection.getSelection():
+            #if len(obj.InList) == 0: # allowed only for for top level objects
+            print('Action Decimate')
+            if self.isDecimatable(obj) :
+               if FreeCADGui.Control.activeDialog() == False :
+                  print('Build panel for Decimate')
+                  panel = AddDecimateTask(obj)
+                  FreeCADGui.Control.showDialog(panel)
+               else :
+                  print('Already an Active Task')
+            return
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'GDML_Decimate', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
+                'Decimate Selected Object'), 'Decimate': \
+                QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup', \
+                'Decimate Selected  Object')}
+
+    def isDecimatable(self, obj) :
+        if hasattr(obj,'Proxy') :
+           print(obj.Proxy.Type)
+           if obj.Proxy.Type == 'GDMLGmshTessellated' or \
+              obj.Proxy.Type == 'GDMLTessellated' :
+              return True
+        if hasattr(obj,'Mesh') :
+           return True
+        return False
+
 class AddTessellateWidget(QtGui.QWidget):
     def __init__(self, Shape,*args):
         QtGui.QWidget.__init__(self,*args)
@@ -705,21 +860,10 @@ class AddTessellateWidget(QtGui.QWidget):
         QtCore.QTimer.singleShot(0, lambda :FreeCADGui.Control.closeDialog())
 
     def retranslateUi(self, widget=None):
-        self.buttoniMesh.setText(translate('GDML','Mesh'))
-        #self.buttonload.setText(translate('OpenSCAD','Load'))
-        #self.buttonsave.setText(translate('OpenSCAD','Save'))
-        #self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
-        #self.buttonclear.setText(translate('OpenSCAD','Clear'))
-        #self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
+        self.buttonMesh.setText(translate('GDML','Mesh'))
         self.setWindowTitle(translate('GDML','Tessellate with Gmsh'))
 
 class AddTessellateTask:
-    import ObjectsFem
-    #from .GmshUtils import initialize, meshObject, \
-    #      getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
-
-
-    from femmesh.gmshtools import GmshTools
 
     def __init__(self, Obj):
         self.obj  = Obj
@@ -907,8 +1051,6 @@ class TessellateGmshFeature :
         from .GmshUtils import initialize, meshObject, \
               getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
 
-        from femmesh.gmshtools import GmshTools
- 
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
@@ -947,7 +1089,7 @@ class TessellateGmshFeature :
                 'Mesh & Tessellate Selected Planar Object')}    
 
 class Mesh2TessFeature :
-     
+    
     def Activated(self) :
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
@@ -991,7 +1133,7 @@ class Tess2MeshFeature :
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
 
-        from .GmshUtils import Tessellated2Mesh, Tetrahedron2Mesh
+        from .GmshUtils import TessellatedShape2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tessellate 2 Mesh')
@@ -999,12 +1141,12 @@ class Tess2MeshFeature :
                if hasattr(obj.Proxy,'Type') :
                   mesh = None
                   if obj.Proxy.Type == 'GDMLTessellated' :
-                     print('Tessellated2Mesh')
-                     mesh = Tessellated2Mesh(obj)
+                     print('TessellatedShape2Mesh')
+                     mesh = TessellatedShape2Mesh(obj)
     
                   if obj.Proxy.Type == 'GDMLGmshTessellated' :
-                     print('GmshTessellated2Mesh')
-                     mesh = Tessellated2Mesh(obj)
+                     print('GmshTessellatedShape2Mesh')
+                     mesh = TessellatedShape2Mesh(obj)
     
                   if obj.Proxy.Type == 'GDMLTetrahedron' :
                      print('Tetrahedron2Mesh')
@@ -1300,6 +1442,7 @@ FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())
 FreeCADGui.addCommand('AddCompound',CompoundFeature())
 FreeCADGui.addCommand('TessellateCommand',TessellateFeature())
 FreeCADGui.addCommand('TessellateGmshCommand',TessellateGmshFeature())
+FreeCADGui.addCommand('DecimateCommand',DecimateFeature())
 FreeCADGui.addCommand('Mesh2TessCommand',Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand',Tess2MeshFeature())
 FreeCADGui.addCommand('TetrahedronCommand',TetrahedronFeature())

@@ -168,6 +168,13 @@ def exportDefine(name, v) :
     ET.SubElement(define,'position',{'name' : name, 'unit': 'mm',   \
                 'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
+def exportDefineVertex(name, v) :
+    global define
+    #print('define Vertex : '+name)
+    #print(v)
+    ET.SubElement(define,'position',{'name' : name + str(v.hashCode()), \
+           'unit': 'mm', 'x': str(v.X), 'y': str(v.Y), 'z': str(v.Z) })
+
 def defineWorldBox(bbox):
     global solids
     for obj in FreeCAD.ActiveDocument.Objects :
@@ -695,7 +702,12 @@ def addVolRef(volxml, volName, solidName, obj) :
     #print(ET.tostring(volxml))
     
 def nameOfGDMLobject(obj) :
-    return(obj.Label.split('_',1)[1])
+    name = obj.Label
+    if len(name) > 4 :
+       if name[0:4] == 'GDML' :
+          if '_' in name :
+             return(name.split('_',1)[1])
+    return name
 
 def processGDMLArb8Object(obj, flag) :
     # Needs unique Name
@@ -909,30 +921,26 @@ def processGDMLTessellatedObject(obj, flag) :
     # Use more readable version
     tessVname = tessName + '_'
     #print(dir(obj))
-    #print(dir(obj.Proxy))
     if flag == True :
        tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
-       for x in range(0,len(obj.Proxy.Vertex)) :
-           #print(obj.Proxy.Vertex[x])
-           exportDefine(tessVname+str(x),obj.Proxy.Vertex[x])
+       for v in obj.Shape.Vertexes :
+           exportDefineVertex(tessVname,v)
 
-       for f in obj.Proxy.Facets :
-           if len(f) == 3 :
-              #print(f)
+       for f in obj.Shape.Faces :
+           if len(f.Edges) == 3 :
               ET.SubElement(tess,'triangular',{ \
-                        'vertex1': tessVname+str(f[0]), \
-                        'vertex2': tessVname+str(f[1]), \
-                        'vertex3': tessVname+str(f[2]), \
+                        'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
+                        'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
+                        'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
                         'type':'ABSOLUTE'})
 
-           else :
-              #print(f)
+           elif len(f.Edges) == 4 :
               ET.SubElement(tess,'quadrangular',{ \
-                        'vertex1': tessVname+str(f[0]), \
-                        'vertex2': tessVname+str(f[1]), \
-                        'vertex3': tessVname+str(f[2]), \
-                        'vertex4': tessVname+str(f[3]), \
-                                  'type':'ABSOLUTE'})
+                        'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
+                        'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
+                        'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
+                        'vertex4': tessVname+str(f.Vertexes[3].hashCode()), \
+                        'type':'ABSOLUTE'})
 
     return tess, tessName
 
@@ -1088,7 +1096,7 @@ def processGDML2dVertex(obj, flag) :
         #print("Process 2d Vertex")
         ET.SubElement(solids, 'twoDimVertex',{'x': obj.x, 'y': obj.y})
 
-def processElement(obj, item): # maybe part of material or element (common code)
+def processIsotope(obj, item): # maybe part of material or element (common code)
     if hasattr(obj,'Z') :
        #print(dir(obj))
        item.set('Z',str(obj.Z)) 
@@ -1111,135 +1119,141 @@ def processElement(obj, item): # maybe part of material or element (common code)
           atom.set('value',str(obj.atom_value)) 
 
 def processMaterials() :
-    #print("\nProcess Materials")
+    print("\nProcess Materials")
     global materials
  
-    for GName in ['Materials','Elements','Isotopes'] : 
+    for GName in ['Constants','Variables','Isotopes','Elements','Materials'] : 
         Grp = FreeCAD.ActiveDocument.getObject(GName)
         if Grp is not None : 
-           for obj in Grp.Group:
-               #print(obj.TypeId+" : "+obj.Name)
-               #processMaterialObject(obj)
-               if processMaterialObject(obj) == False :
-                 break
+           #print(Grp.TypeId+" : "+Grp.Name)
+           print(Grp.Name)
+           if processGroup(Grp) == False :
+              break
 
-def processMaterialObject(obj) :
-    global item
-    #print(obj.Label)
-    while switch(obj.TypeId) :
-       if case("App::DocumentObjectGroupPython"):
-          #print("   Object List : "+obj.Name)
-          #print(obj)
-          while switch(obj.Name) :
-             if case("Materials") : 
-                #print("Materials")
-                #return True
+def processFractionsComposites(obj, item) :
+    # Fractions are used in Material and Elements
+    if isinstance(obj.Proxy,GDMLfraction) :
+        #print("GDML fraction :" + obj.Name)
+        # need to strip number making it unique
+        ET.SubElement(item,'fraction',{'n': str(obj.n), \
+                     'ref': nameFromLabel(obj.Label)})
+
+    if isinstance(obj.Proxy,GDMLcomposite) :
+       print("GDML Composite")
+       ET.SubElement(item,'composite',{'n': str(obj.n), \
+                    'ref': nameFromLabel(obj.Label)})
+
+def createMaterials(group):
+    global materials
+    for obj in group :
+        item = ET.SubElement(materials,'material',{'name': \
+                 nameFromLabel(obj.Label)})
+
+        # process common options material / element
+        processIsotope(obj, item)
+        if len(obj.Group) > 0 :
+           for o in obj.Group :
+               processFractionsComposites(o,item)
+
+        if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
+           #print("Dunit or DValue")
+           D = ET.SubElement(item,'D')
+           if hasattr(obj,'Dunit') :
+              D.set('unit',str(obj.Dunit))
+             
+           if hasattr(obj,'Dvalue') :
+              D.set('value',str(obj.Dvalue))
+
+           if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
+              ET.SubElement(item,'T',{'unit': obj.Tunit, \
+                                      'value': str(obj.Tvalue)})
+           
+           if hasattr(obj,'MEEunit') :
+              ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
+                                               'value': str(obj.MEEvalue)})
+
+def createElements(group) :
+    global materials
+    for obj in group :
+        item = ET.SubElement(materials,'element',{'name': \
+                 nameFromLabel(obj.Label)})
+
+        if len(obj.Group) > 0 :
+           for o in obj.Group :
+               processFractionsComposites(o,item)
+
+def createConstants(group) :
+    global define
+    for obj in group :
+        if isinstance(obj.Proxy,GDMLconstant) :
+           #print("GDML constant")
+           #print(dir(obj))
+
+           item = ET.SubElement(define,'constant',{'name': obj.Name, \
+                                 'value': obj.value })
+
+def createVariables(group) :
+    global define
+    for obj in group :
+        if isinstance(obj.Proxy,GDMLvariable) :
+           #print("GDML variable")
+           #print(dir(obj))
+
+           item = ET.SubElement(define,'variable',{'name': obj.Name, \
+                                 'value': obj.value })
+
+def createIsotopes(group) :
+    global materials
+    for obj in group :
+        if isinstance(obj.Proxy,GDMLisotope) :
+           print("GDML isotope")
+           #item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
+           #                                           'Z': str(obj.Z), \
+           #                                           'name' : obj.Name})
+           #ET.SubElement(item,'atom',{'unit': obj.unit, \
+           #                           'value': str(obj.value)})
+           item = ET.SubElement(materials,'isotope',{'name' : obj.Name})
+           processIsotope(obj,item)
+
+def processGroup(obj) :
+    print('Process Group '+obj.Label)
+    print(obj.TypeId)
+    print(obj.Group)
+    #      if hasattr(obj,'Group') :
+    #return
+    if hasattr(obj,'Group') :
+       #print("   Object List : "+obj.Name)
+       #print(obj)
+       while switch(obj.Name) :
+             if case("Constants") : 
+                print("Constants")
+                createConstants(obj.Group)
+                break
+
+             if case("Variables") : 
+                print("Variables")
+                createVariables(obj.Group)
                 break
 
              if case("Isotopes") :
-                #print("Isotopes")
-                #return True
+                print("Isotopes")
+                createIsotopes(obj.Group)
                 break
-            
-             if case("Elements") :
-                #print("Elements")
-                #return True
-                break
-         
-             break
-          
-          if isinstance(obj.Proxy,GDMLconstant) :
-             #print("GDML constant")
-             #print(dir(obj))
-
-             item = ET.SubElement(define,'constant',{'name': obj.Name, \
-                                 'value': obj.value })
-             #return True
-          #return   
-
-          if isinstance(obj.Proxy,GDMLvariable) :
-             #print("GDML variable")
-             #print(dir(obj))
-
-             item = ET.SubElement(define,'variable',{'name': obj.Name, \
-                                 'value': obj.value })
-             #return True
-          #return   
-            
-          if isinstance(obj.Proxy,GDMLmaterial) :
-             #print("GDML material")
-             #print(dir(obj))
-
-             item = ET.SubElement(materials,'material',{'name': \
-                    nameFromLabel(obj.Label)})
-
-             # process common options material / element
-             processElement(obj, item)
-
-          if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-             D = ET.SubElement(item,'D')
-             if hasattr(obj,'Dunit') :
-                D.set('unit',str(obj.Dunit))
              
-             if hasattr(obj,'Dvalue') :
-                D.set('value',str(obj.Dvalue))
+             if case("Elements") : 
+                print("Elements")
+                createElements(obj.Group)
+                break
+             
+             if case("Materials") : 
+                print("Materials")
+                createMaterials(obj.Group)
+                break
 
-          if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
-             ET.SubElement(item,'T',{'unit': obj.Tunit, \
-                                      'value': str(obj.Tvalue)})
-           
-          if hasattr(obj,'MEEunit') :
-             ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
-                                               'value': str(obj.MEEvalue)})
-
-          #return True
-          #break
-
-          if isinstance(obj.Proxy,GDMLfraction) :
-
-             #print("GDML fraction :" + obj.Name)
-             # need to strip number making it unique
-             ET.SubElement(item,'fraction',{'n': str(obj.n), \
-                     'ref': nameFromLabel(obj.Label)})
-
-             #return True
-             break
-
-          if isinstance(obj.Proxy,GDMLcomposite) :
-             #print("GDML Composite")
-             ET.SubElement(item,'composite',{'n': str(obj.n), \
-                     'ref': nameFromLabel(obj.Label)})
-             #return True
-             break
-
-          if isinstance(obj.Proxy,GDMLisotope) :
-             #print("GDML isotope")
-             item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
-                                                      'Z': str(obj.Z), \
-                                                      'name' : obj.Name})
-             ET.SubElement(item,'atom',{'unit': obj.unit, \
-                                      'value': str(obj.value)})
-             #return True
-             break
-
-          if isinstance(obj.Proxy,GDMLelement) :
-             #print("GDML element")
-             item = ET.SubElement(materials,'element',{'name': \
-                    nameFromLabel(obj.Label)})
-             processElement(obj,item)
-             #return True
-             break
-
-          # Commented out as individual objects will also exist
-          #if len(obj.Group) > 1 :
-          #   for grp in obj.Group :
-          #       processObject(grp, addVolsFlag)
-          # All non Material Objects should terminate Loop
-          #return False
-          break
-
-       return False
-       break
+             if case("Geant4") :
+                # Do not export predefine in Geant4
+                print("Geant4")
+                break
 
 def processGDMLSolid(obj, addVolsFlag) :
     # Deal with GDML Solids first
@@ -1252,6 +1266,7 @@ def processGDMLSolid(obj, addVolsFlag) :
           print("      GDMLArb8") 
           return(processGDMLArb8Object(obj, addVolsFlag))
           break
+
 
        if case("GDMLBox") :
           #print("      GDMLBox") 
@@ -1310,7 +1325,9 @@ def processGDMLSolid(obj, addVolsFlag) :
 
        if case("GDMLTessellated") :
           #print("      GDMLTessellated") 
-          return(processGDMLTessellatedObject(obj, addVolsFlag))
+          ret = processGDMLTessellatedObject(obj, addVolsFlag)
+          return ret
+          #return(processGDMLTessellatedObject(obj, addVolsFlag))
           break
 
        if case("GDMLGmshTessellated") :
@@ -1567,7 +1584,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             else :
                parentName = None
             print(obj.Label)
-            print(dir(obj))
+            #print(dir(obj))
             processVolAssem(obj, xmlVol, volName, True)
          return idx + 1
 
@@ -2013,7 +2030,7 @@ def exportGDML(first, filepath, fileExt) :
 
     #GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
-    print("====> Start GDML Export 1.4")
+    print("====> Start GDML Export 1.5")
     print('File extension : '+fileExt)
 
     GDMLstructure()

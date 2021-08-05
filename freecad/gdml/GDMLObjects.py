@@ -107,13 +107,13 @@ def translate(shape,base) :
     return retShape
 
 def make_face3(v1,v2,v3):
-    # helper mehod to create the faces
+    # helper method to create the faces
     wire = Part.makePolygon([v1,v2,v3,v1])
     face = Part.Face(wire)
     return face
 
 def make_face4(v1,v2,v3,v4):
-    # helper mehod to create the faces
+    # helper method to create the faces
     wire = Part.makePolygon([v1,v2,v3,v4,v1])
     face = Part.Face(wire)
     return face
@@ -2159,11 +2159,11 @@ class GDMLGmshTessellated(GDMLsolid) :
 
    def updateParams(self, vertex, facets) :
       print('Update Params')
-      print(len(vertex))
       self.Vertex = vertex
       self.Facets = facets
       self.facets  = len(facets)
       self.vertex  = len(vertex)
+      print(f"Vertex : {self.vertex} Facets : {self.facets}")
 
    def getMaterial(self):
        return obj.material
@@ -2287,6 +2287,14 @@ class GDMLTessellated(GDMLsolid) :
 
    def getMaterial(self):
        return obj.material
+   
+   def updateParams(self, vertex, facets) :
+      print('Update Params')
+      self.Vertex = vertex
+      self.Facets = facets
+      self.facets  = len(facets)
+      self.vertex  = len(vertex)
+      print(f"Vertex : {self.vertex} Facets : {self.facets}")
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
