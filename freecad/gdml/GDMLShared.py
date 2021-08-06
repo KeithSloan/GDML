@@ -97,6 +97,7 @@ def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
     variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
+    sheet = variablesGrp.newObject("Spreadsheet::Sheet","GDMLvariables")
     from .GDMLObjects import GDMLvariable
 
     #import math
@@ -106,6 +107,8 @@ def processVariables(doc):
     globals()['false'] = False
     globals()['true'] = True
 
+
+    row = 1
     for cdefine in define.findall('variable') :
         #print cdefine.attrib
         name  = str(cdefine.attrib.get('name'))
@@ -125,6 +128,12 @@ def processVariables(doc):
         variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLvariable(variableObj,name,value)
+        # Add variable to spreadsheet
+        sheet.set('A'+str(row),name)
+        sheet.setAlias('B'+str(row),name)
+        sheet.set(name,value)
+        row += 1
+    sheet.recompute()
     #print("Globals")
     #print(str(globals()))
 
