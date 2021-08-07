@@ -97,7 +97,7 @@ def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
     variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
-    sheet = variablesGrp.newObject("Spreadsheet::Sheet","GDMLvariables")
+    sheet = variablesGrp.newObject("Spreadsheet::Sheet","Variables")
     from .GDMLObjects import GDMLvariable
 
     #import math
