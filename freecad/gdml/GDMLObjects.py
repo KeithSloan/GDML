@@ -2322,16 +2322,29 @@ class GDMLTessellated(GDMLsolid) :
    def createGeometry(self,fp):
        #currPlacement = fp.Placement
        print("Tessellated")
-       if hasattr(fp,'pshape') :
+       print(self.Type)
+       print('self')
+       print(dir(self))
+       print('fp')
+       print(dir(fp))
+       if hasattr(self,'pshape') :
           print('Update Shape')
-          print(fp.pshape)
-          print(dir(fp.pshape))
-          print(len(fp.pshape.Vertexes))
-          print(fp.Shape)
-          print(fp.pshape)
-          fp.Shape = fp.pshape
+          fp.Shape  = self.pshape
+          if hasattr(fp,'pshape') :
+             fp.pshape = self.pshape
+          fp.vertex = self.vertex
+          fp.facets = self.facets
           print(len(fp.Shape.Vertexes))
           print(fp.Shape)
+       else :
+          if hasattr(fp,'pshape') :
+             fp.Shape = fp.pshape
+             print(fp.pshape)
+             print(dir(fp.pshape))
+             print(f"pshape Vertextes {len(fp.pshape.Vertexes)}")
+             print(fp.vertex)
+             print(fp.Shape)
+             print(fp.pshape)
        #fp.Placement = currPlacement
 
    def createShape(self,vertex,facets) :
