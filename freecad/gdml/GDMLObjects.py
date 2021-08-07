@@ -2262,8 +2262,9 @@ class GDMLTessellated(GDMLsolid) :
     
    def __init__(self, obj, vertex, facets, lunit, material, colour = None) :
       super().__init__(obj)
-      obj.addProperty('App::PropertyBool','editable','GDMLTessellated', \
-                      'Editable').editable = False
+      obj.addProperty('Part::PropertyPartShape','pshape','GDMLTessellated', \
+                       'Shape').pshape = self.createShape(vertex,facets)
+      obj.setEditorMode('pshape',1)
       obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
@@ -2281,17 +2282,15 @@ class GDMLTessellated(GDMLsolid) :
          else :
             obj.ViewObject.ShapeColor = colourMaterial(material)
       self.Type = 'GDMLTessellated'
-      self.Vertex = vertex
-      self.Facets = facets
       obj.Proxy = self
 
    def getMaterial(self):
        return obj.material
    
    def updateParams(self, vertex, facets) :
-      print('Update Params')
-      self.Vertex = vertex
-      self.Facets = facets
+      print('Update Params & Shape')
+      self.pshape = self.createShape(vertex,facets)
+      print(f"Pshape vertex {len(self.pshape.Vertexes)}")
       self.facets  = len(facets)
       self.vertex  = len(vertex)
       print(f"Vertex : {self.vertex} Facets : {self.facets}")
@@ -2321,26 +2320,39 @@ class GDMLTessellated(GDMLsolid) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       currPlacement = fp.Placement
+       #currPlacement = fp.Placement
        print("Tessellated")
-       mul = GDMLShared.getMult(fp)
+       if hasattr(fp,'pshape') :
+          print('Update Shape')
+          print(fp.pshape)
+          print(dir(fp.pshape))
+          print(len(fp.pshape.Vertexes))
+          print(fp.Shape)
+          print(fp.pshape)
+          fp.Shape = fp.pshape
+          print(len(fp.Shape.Vertexes))
+          print(fp.Shape)
+       #fp.Placement = currPlacement
+
+   def createShape(self,vertex,facets) :
+       #mul = GDMLShared.getMult(fp)
+       mul = GDMLShared.getMult(self)
        FCfaces = []
-       #print(self.Vertex)
        i = 0
-       for f in self.Facets :
+       for f in facets :
           #print('Facet')
           #print(f)
           if len(f) == 3 : 
              FCfaces.append(GDMLShared.triangle( \
-                             mul*self.Vertex[f[0]], \
-                             mul*self.Vertex[f[1]], \
-                             mul*self.Vertex[f[2]]))
+                             mul*vertex[f[0]], \
+                             mul*vertex[f[1]], \
+                             mul*vertex[f[2]]))
           else : # len should then be 4
              FCfaces.append(GDMLShared.quad( \
-                             mul*self.Vertex[f[0]], \
-                             mul*self.Vertex[f[1]], \
-                             mul*self.Vertex[f[2]], \
-                             mul*self.Vertex[f[3]]))
+                             mul*vertex[f[0]], \
+                             mul*vertex[f[1]], \
+                             mul*vertex[f[2]], \
+                             mul*vertex[f[3]]))
        shell=Part.makeShell(FCfaces)
        if shell.isValid == False :
           FreeCAD.Console.PrintWarning('Not a valid Shell/n')
@@ -2365,8 +2377,9 @@ class GDMLTessellated(GDMLsolid) :
 
        #base = FreeCAD.Vector(0,0,0)
        #fp.Shape = translate(solid,base)
-       fp.Shape = solid
-       fp.Placement = currPlacement
+       #fp.Shape = solid
+
+       return solid
    
 class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
     
