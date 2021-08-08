@@ -97,7 +97,8 @@ def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
     variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
-    sheet = variablesGrp.newObject("Spreadsheet::Sheet","Variables")
+    global sheet
+    sheet = variablesGrp.newObject("Spreadsheet::Sheet","GDMLVariables")
     from .GDMLObjects import GDMLvariable
 
     #import math
@@ -119,12 +120,12 @@ def processVariables(doc):
         trace(name)
         #print(dir(name))
         #print('Name  : '+name)
-        try :
-          globals()[name] = eval(value)
-          #print('Value : '+value)
-        except :
-          globals()[name] = value
-          #print('Value String : '+value)
+        #try :
+        #  globals()[name] = eval(value)
+        #  #print('Value : '+value)
+        #except :
+        #  globals()[name] = value
+        #  #print('Value String : '+value)
         variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython", \
                      name)
         GDMLvariable(variableObj,name,value)
@@ -153,7 +154,13 @@ def processQuantity(doc):
     # need to be done 
     trace("Process quantity (not taken into account in this version)" )
 
+def containsAny(str, set):
+    """ Check whether sequence str contains ANY of the items in set. """
+    return 1 in [c in str for c in set]
+
 def getVal(ptr,var,vtype = 1) :
+    import re
+    operators = '+-*/'
     # vtype 1 - float vtype 2 int
     # get value for var variable var
     # all of math must be imported at global level
@@ -163,22 +170,47 @@ def getVal(ptr,var,vtype = 1) :
        # if yes get its value
        vval = ptr.attrib.get(var)
        trace("vval : "+str(vval))
+       print(f"vval : {vval}")
+       #if containsAny(vval,operators) == 1 :
+       #   for s in  re.split(operators, vval) :
+       #       print(s)
+       #elif hasattr(sheet,vval) : # Is it defined in a spreadsheet
+       #   return('GDMLVariables.'+vval)
        if vval[0] == '&' :  # Is this referring to an HTML entity constant
          chkval = vval[1:]
        else :
-          chkval = vval
-       # check if defined as a constant
-       #if vval in constDict :
-       #   c = constDict.get(vval)
-       #   #print c
-       #   return(eval(c))
-       #
-       #else :
+          chkval =vval
        trace("chkval : "+str(chkval))
+       print(chkval)
+       try :
+          val=eval(chkval)
+       except :
+          print('Exception')
+          if containsAny(vval,operators) :
+             print('Process split')
+             #print(re.split(r'\-\+\*\/]',chkval))
+             list  = re.split(r'|W',chkval)
+             print(list)
+             print(list[1:-1])
+             ret = ''
+             for s in list[1:-1] :
+                print(s)
+                if not containsAny(s, operators) :
+                   if hasattr(sheet,s) :
+                      ret = ret +'GDMLVariables.'+s
+                else :
+                   ret = ret + s
+             print(ret)
+             return ret
+          else :
+            if hasattr(sheet,chkval) : # Is it defined in a spreadsheet
+               return('GDMLVariables.'+chkval)
+            else :
+               return(chkval)
        if vtype == 1 :
-          ret = float(eval(chkval))
+          ret = float(val)
        else :
-          ret = int(eval(chkval))
+          ret = int(val)
        trace('return value : '+str(ret))
        return(ret)
     else :

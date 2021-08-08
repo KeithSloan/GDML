@@ -420,9 +420,9 @@ class GDMLBox(GDMLsolid) :
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
       #GDMLShared.trace("material : "+material)
-      obj.addProperty("App::PropertyFloat","x","GDMLBox","Length x").x=x
-      obj.addProperty("App::PropertyFloat","y","GDMLBox","Length y").y=y
-      obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").z=z
+      obj.addProperty("App::PropertyFloat","x","GDMLBox","Length x").setExpression('x',str(x))
+      obj.addProperty("App::PropertyFloat","y","GDMLBox","Length y").setExpression('y',str(y))
+      obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").setExpression('z',str(z))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLBox","lunit")
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")

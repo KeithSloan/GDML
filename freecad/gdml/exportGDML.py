@@ -1195,11 +1195,14 @@ def createConstants(group) :
 def createVariables(group) :
     global define
     for obj in group :
-        if isinstance(obj.Proxy,GDMLvariable) :
-           #print("GDML variable")
-           #print(dir(obj))
+        if obj.TypeId == "Spreadsheet::Sheet" :
+           print('Need to process Spreadsheet')
+        if hasattr(obj,'Proxy') :
+           if isinstance(obj.Proxy,GDMLvariable) :
+              #print("GDML variable")
+              #print(dir(obj))
 
-           item = ET.SubElement(define,'variable',{'name': obj.Name, \
+              item = ET.SubElement(define,'variable',{'name': obj.Name, \
                                  'value': obj.value })
 
 def createIsotopes(group) :
