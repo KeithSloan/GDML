@@ -116,9 +116,7 @@ def processVariables(doc):
         trace('name : '+name)
         value = cdefine.attrib.get('value')
         trace('value : '+ value)
-        #constDict[name] = value
         trace(name)
-        #print(dir(name))
         #print('Name  : '+name)
         #try :
         #  globals()[name] = eval(value)
@@ -131,8 +129,19 @@ def processVariables(doc):
         GDMLvariable(variableObj,name,value)
         # Add variable to spreadsheet
         sheet.set('A'+str(row),name)
-        sheet.setAlias('B'+str(row),name)
-        sheet.set(name,value)
+        print('B'+str(row),name)
+        try :
+           sheet.setAlias('B'+str(row),name)
+           sheet.set(name,value)
+        except :
+           print(f"{name} is an invalid FreeCAD Alias")
+           try :
+              print(f"{name} Trying to Set as Python Global")
+              globals()[name] = eval(value)
+              #print('Value : '+value)
+           except :
+              print(f"{name} set literal")
+              globals()[name] = value
         row += 1
     sheet.recompute()
     #print("Globals")
@@ -158,9 +167,10 @@ def containsAny(str, set):
     """ Check whether sequence str contains ANY of the items in set. """
     return 1 in [c in str for c in set]
 
+
 def getVal(ptr,var,vtype = 1) :
     import re
-    operators = '+-*/'
+    operators = '+-*/()'
     # vtype 1 - float vtype 2 int
     # get value for var variable var
     # all of math must be imported at global level
@@ -171,17 +181,12 @@ def getVal(ptr,var,vtype = 1) :
        vval = ptr.attrib.get(var)
        trace("vval : "+str(vval))
        print(f"vval : {vval}")
-       #if containsAny(vval,operators) == 1 :
-       #   for s in  re.split(operators, vval) :
-       #       print(s)
-       #elif hasattr(sheet,vval) : # Is it defined in a spreadsheet
-       #   return('GDMLVariables.'+vval)
        if vval[0] == '&' :  # Is this referring to an HTML entity constant
          chkval = vval[1:]
        else :
           chkval =vval
        trace("chkval : "+str(chkval))
-       print(chkval)
+       #print(chkval)
        try :
           val=eval(chkval)
        except :
@@ -190,17 +195,30 @@ def getVal(ptr,var,vtype = 1) :
              print('Process split')
              #print(re.split(r'\-\+\*\/]',chkval))
              list  = re.split(r'|W',chkval)
-             print(list)
-             print(list[1:-1])
+             #print(list)
+             #print(list[1:-1])
              ret = ''
+             var = ''
              for s in list[1:-1] :
-                print(s)
-                if not containsAny(s, operators) :
-                   if hasattr(sheet,s) :
-                      ret = ret +'GDMLVariables.'+s
+                #print(s)
+                if not containsAny(s,operators) :
+                   var = var + s
                 else :
+                   if len(var) > 0 :
+                      #print(f"var : {var}")
+                      if hasattr(sheet,var) :
+                         ret = ret +'GDMLVariables.'+var
+                      else :
+                         ret = ret + var
+                      var = ''
                    ret = ret + s
-             print(ret)
+             if len(var) > 0 :
+                #print(f"var : {var}")
+                if hasattr(sheet,var) :
+                   ret = ret +'GDMLVariables.'+var
+                else :
+                   ret = ret + var
+             print(f"Updated expression : {ret}")
              return ret
           else :
             if hasattr(sheet,chkval) : # Is it defined in a spreadsheet
