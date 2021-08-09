@@ -317,23 +317,23 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
                 v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz, \
                 lunit, material, colour = None):
       '''Add some custom properties to our Tube feature'''
-      obj.addProperty("App::PropertyFloat","v1x","GDMLArb8","vertex 1 x position").v1x=v1x
-      obj.addProperty("App::PropertyFloat","v1y","GDMLArb8","vertex 1 y position").v1y=v1y
-      obj.addProperty("App::PropertyFloat","v2x","GDMLArb8","vertex 2 x position").v2x=v2x
-      obj.addProperty("App::PropertyFloat","v2y","GDMLArb8","vertex 2 y position").v2y=v2y
-      obj.addProperty("App::PropertyFloat","v3x","GDMLArb8","vertex 3 x position").v3x=v3x
-      obj.addProperty("App::PropertyFloat","v3y","GDMLArb8","vertex 3 y position").v3y=v3y
-      obj.addProperty("App::PropertyFloat","v4x","GDMLArb8","vertex 4 x position").v4x=v4x
-      obj.addProperty("App::PropertyFloat","v4y","GDMLArb8","vertex 4 y position").v4y=v4y
-      obj.addProperty("App::PropertyFloat","v5x","GDMLArb8","vertex 5 x position").v5x=v5x
-      obj.addProperty("App::PropertyFloat","v5y","GDMLArb8","vertex 5 y position").v5y=v5y
-      obj.addProperty("App::PropertyFloat","v6x","GDMLArb8","vertex 6 x position").v6x=v6x
-      obj.addProperty("App::PropertyFloat","v6y","GDMLArb8","vertex 6 y position").v6y=v6y
-      obj.addProperty("App::PropertyFloat","v7x","GDMLArb8","vertex 7 x position").v7x=v7x
-      obj.addProperty("App::PropertyFloat","v7y","GDMLArb8","vertex 7 y position").v7y=v7y
-      obj.addProperty("App::PropertyFloat","v8x","GDMLArb8","vertex 8 x position").v8x=v8x
-      obj.addProperty("App::PropertyFloat","v8y","GDMLArb8","vertex 8 y position").v8y=v8y
-      obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").dz=dz
+      obj.addProperty("App::PropertyFloat","v1x","GDMLArb8","vertex 1 x position").setExpression('v1x',str(v1x))
+      obj.addProperty("App::PropertyFloat","v1y","GDMLArb8","vertex 1 y position").setExpression('v1y',str(v1y))
+      obj.addProperty("App::PropertyFloat","v2x","GDMLArb8","vertex 2 x position").setExpression('v2x',str(v2x))
+      obj.addProperty("App::PropertyFloat","v2y","GDMLArb8","vertex 2 y position").setExpression('v2y',str(v2y))
+      obj.addProperty("App::PropertyFloat","v3x","GDMLArb8","vertex 3 x position").setExpression('v3x',str(v3x))
+      obj.addProperty("App::PropertyFloat","v3y","GDMLArb8","vertex 3 y position").setExpression('v3y',str(v3y))
+      obj.addProperty("App::PropertyFloat","v4x","GDMLArb8","vertex 4 x position").setExpression('v4x',str(v4x))
+      obj.addProperty("App::PropertyFloat","v4y","GDMLArb8","vertex 4 y position").setExpression('v4y',str(v4y))
+      obj.addProperty("App::PropertyFloat","v5x","GDMLArb8","vertex 5 x position").setExpression('v5x',str(v5x))
+      obj.addProperty("App::PropertyFloat","v5y","GDMLArb8","vertex 5 y position").setExpression('v5y',str(v5y))
+      obj.addProperty("App::PropertyFloat","v6x","GDMLArb8","vertex 6 x position").setExpression('v6x',str(v6x))
+      obj.addProperty("App::PropertyFloat","v6y","GDMLArb8","vertex 6 y position").setExpression('v6y',str(v6y))
+      obj.addProperty("App::PropertyFloat","v7x","GDMLArb8","vertex 7 x position").setExpression('v7x',str(v7x))
+      obj.addProperty("App::PropertyFloat","v7y","GDMLArb8","vertex 7 y position").setExpression('v7y',str(v7y))
+      obj.addProperty("App::PropertyFloat","v8x","GDMLArb8","vertex 8 x position").setExpression('v8x',str(v8x))
+      obj.addProperty("App::PropertyFloat","v8y","GDMLArb8","vertex 8 y position").setExpression('v8y',str(v8y))
+      obj.addProperty("App::PropertyFloat","dz","GDMLArb8","Half z Length").setExpression('dz',str(dz))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLArb8","lunit")
       setLengthQuantity(obj, lunit)      
       obj.addProperty("App::PropertyEnumeration","material","GDMLArb8","Material")
@@ -490,20 +490,20 @@ class GDMLCone(GDMLsolid) :
                 lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
-      obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").rmin1=rmin1
-      obj.addProperty("App::PropertyFloat","rmax1","GDMLCone","Max Radius 1").rmax1=rmax1
-      obj.addProperty("App::PropertyFloat","rmin2","GDMLCone","Min Radius 2").rmin2=rmin2
-      obj.addProperty("App::PropertyFloat","rmax2","GDMLCone","Max Radius 2").rmax2=rmax2
-      obj.addProperty("App::PropertyFloat","z","GDMLCone","Height of Cone").z=z
-      obj.addProperty("App::PropertyFloat","startphi","GDMLCone","Start Angle").startphi=startphi
-      obj.addProperty("App::PropertyFloat","deltaphi","GDMLCone","Delta Angle").deltaphi=deltaphi
+      obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").setExpression('z',str(z))
+      obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").setExpression('rmin1',str(rmin1))
+      obj.addProperty("App::PropertyFloat","rmax1","GDMLCone","Max Radius 1").setExpression('rmax1',str(rmax1))
+      obj.addProperty("App::PropertyFloat","rmin2","GDMLCone","Min Radius 2").setExpression('rmin2',str(rmin2))
+      obj.addProperty("App::PropertyFloat","rmax2","GDMLCone","Max Radius 2").setExpression('rmax2',str(rmax2))
+      obj.addProperty("App::PropertyFloat","z","GDMLCone","Height of Cone").setExpression('z',str(z))
+      obj.addProperty("App::PropertyFloat","startphi","GDMLCone","Start Angle").setExpression('startphi',str(startphi))
+      obj.addProperty("App::PropertyFloat","deltaphi","GDMLCone","Delta Angle").setExpression('deltaphi',str(deltaphi))
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLCone","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLCone","lunit")
       setLengthQuantity(obj, lunit)      
 
-      
       obj.addProperty("App::PropertyEnumeration","material","GDMLCone", \
                        "Material")
       setMaterial(obj, material)
@@ -592,13 +592,13 @@ class GDMLElCone(GDMLsolid) :
       super().__init__(obj)
       '''Add some custom properties to our ElCone feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElCone", \
-                      "x semi axis").dx = dx
+                      "x semi axis").setExpression('dx',str(dx))
       obj.addProperty("App::PropertyFloat","dy","GDMLElCone", \
-                      "y semi axis").dy = dy
+                      "y semi axis").setExpression('dy',str(dy))
       obj.addProperty("App::PropertyFloat","zmax","GDMLElCone", \
-                      "z length").zmax = zmax
+                      "z length").setExpression('zmax',str(zmax))
       obj.addProperty("App::PropertyFloat","zcut","GDMLElCone", \
-                      "z cut").zcut = zcut
+                      "z cut").setExpression('zcut',str(zcut))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElCone","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLElCone", \
@@ -665,16 +665,17 @@ class GDMLEllipsoid(GDMLsolid) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
+                      "z cut").setExpression('zcut',str(zcut))
       obj.addProperty("App::PropertyFloat","ax","GDMLEllipsoid", \
-                       "x semi axis").ax=ax
+                       "x semi axis").setExpression('ax',str(ax))
       obj.addProperty("App::PropertyFloat","by","GDMLEllipsoid", \
-                       "y semi axis").by=by
+                       "y semi axis").setExpression('by',str(by))
       obj.addProperty("App::PropertyFloat","cz","GDMLEllipsoid", \
-                       "z semi axis").cz=cz
+                       "z semi axis").setExpression('cz',str(cz))
       obj.addProperty("App::PropertyFloat","zcut1","GDMLEllipsoid", \
-                       "z axis cut1").zcut1=zcut1
+                       "z axis cut1").setExpression('zcut1',str(zcut1))
       obj.addProperty("App::PropertyFloat","zcut2","GDMLEllipsoid", \
-                       "z axis1 cut2").zcut2=zcut2
+                       "z axis1 cut2").setExpression('zcut2',str(zcut2))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLEllipsoid","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLEllipsoid", \
