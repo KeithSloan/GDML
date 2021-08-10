@@ -758,11 +758,11 @@ class GDMLElTube(GDMLsolid) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
       obj.addProperty("App::PropertyFloat","dx","GDMLElTube", \
-                       "x semi axis1").dx=dx
+                       "x semi axis1").setExpression('dx',str(dx))
       obj.addProperty("App::PropertyFloat","dy","GDMLElTube", \
-                       "y semi axis1").dy=dy
+                       "y semi axis1").setExpression('dy',str(dy))
       obj.addProperty("App::PropertyFloat","dz","GDMLElTube", \
-                       "z semi axis1").dz=dz
+                       "z semi axis1").setExpression('dz',str(dz))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElTube","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
@@ -819,7 +819,7 @@ class GDMLOrb(GDMLsolid) :
    def __init__(self, obj, r, lunit, material, colour=None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
-      obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
+      obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").setExpression('r',str(r))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLOrb","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
@@ -871,15 +871,15 @@ class GDMLPara(GDMLsolid) :
                 material, colour= None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
-      obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
-      obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
-      obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").z=z
+      obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").setExpression('x',str(x))
+      obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").setExpression('y',str(y))
+      obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").setExpression('z',str(z))
       obj.addProperty("App::PropertyFloat","alpha","GDMLParapiped", \
-                      "Angle with y axis").alpha=alpha
+                      "Angle with y axis").setExpression('alpha',str(alpha))
       obj.addProperty("App::PropertyFloat","theta","GDMLParapiped", \
-                      "Polar Angle with faces").theta=theta
+                      "Polar Angle with faces").setExpression('theta',str(theta))
       obj.addProperty("App::PropertyFloat","phi","GDMLParapiped", \
-                      "Azimuthal Angle with faces").phi=phi
+                      "Azimuthal Angle with faces").setExpression('phi',str(phi))
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLParapiped", \
                        "aunit")
       obj.aunit=["rad", "deg"]
