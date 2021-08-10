@@ -490,7 +490,6 @@ class GDMLCone(GDMLsolid) :
                 lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
-      obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").setExpression('z',str(z))
       obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").setExpression('rmin1',str(rmin1))
       obj.addProperty("App::PropertyFloat","rmax1","GDMLCone","Max Radius 1").setExpression('rmax1',str(rmax1))
       obj.addProperty("App::PropertyFloat","rmin2","GDMLCone","Min Radius 2").setExpression('rmin2',str(rmin2))
@@ -960,11 +959,11 @@ class GDMLPolyhedra(GDMLsolid) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolyhedra", \
-                      "Start Angle").startphi=startphi
+                      "Start Angle").setExpression('startphi',str(startphi))
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLPolyhedra", \
-                      "Delta Angle").deltaphi=deltaphi
+                      "Delta Angle").setExpression('deltaphi',str(deltaphi))
       obj.addProperty("App::PropertyInteger","numsides","GDMLPolyhedra", \
-                      "Number of Side").numsides=numsides
+                      "Number of Side").setExpression('numsides',str(numside))s
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLPolyhedra", \
                        "aunit")
       obj.aunit=["rad", "deg"]
@@ -1078,15 +1077,15 @@ class GDMLTorus(GDMLsolid) :
                 aunit, lunit, material, colour = None) :
       super().__init__(obj)
       obj.addProperty("App::PropertyFloat","rmin","GDMLTorus", \
-                      "rmin").rmin=rmin
+                      "rmin").setExpression('rmin',str(rmin))
       obj.addProperty("App::PropertyFloat","rmax","GDMLTorus", \
-                      "rmax").rmax=rmax
+                      "rmax").setExpression('rmax',str(rmax))
       obj.addProperty("App::PropertyFloat","rtor","GDMLTorus", \
-                      "rtor").rtor=rtor
+                      "rtor").setExpression('rtor',str(rtor))
       obj.addProperty("App::PropertyFloat","startphi","GDMLTorus", \
-                      "startphi").startphi=startphi
+                      "startphi").setExpression('startphi',str(startphi))
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLTorus", \
-                      "deltaphi").deltaphi=deltaphi
+                      "deltaphi").setExpression('deltaphi',str(deltaphi))
       obj.addProperty("App::PropertyString","aunit","GDMLTorus", \
                       "aunit").aunit=aunit
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTorus","lunit")
@@ -1291,9 +1290,9 @@ class GDML2dVertex(GDMLcommon) :
       obj.addProperty("App::PropertyString","Type","Vertex", \
               "twoDimVertex").Type='twoDimVertex'
       obj.addProperty("App::PropertyFloat","x","Vertex", \
-              "x").x=x
+              "x").setExpression('x',str(x))
       obj.addProperty("App::PropertyFloat","y","Vertex", \
-              "y").y=y
+              "y").setExpression('y',str(y))
       obj.setEditorMode("Type", 1) 
       self.Type = 'Vertex'
       self.Object = obj
@@ -1344,10 +1343,10 @@ class GDMLzplane(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z):
       super().__init__(obj)
       obj.addProperty("App::PropertyFloat","rmin","zplane", \
-              "Inside Radius").rmin=rmin
+              "Inside Radius").setExpression('rmin',str(rmin))
       obj.addProperty("App::PropertyFloat","rmax","zplane", \
-              "Outside Radius").rmax=rmax
-      obj.addProperty("App::PropertyFloat","z","zplane","z").z=z
+              "Outside Radius").setExpression('rmax',str(rmax))
+      obj.addProperty("App::PropertyFloat","z","zplane","z").setExpression('z',str(z))
       self.Type = 'zplane'
       obj.Proxy = self
 
@@ -1369,9 +1368,9 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
       '''Add some custom properties to our Polycone feature'''
       obj.addExtension('App::GroupExtensionPython')
       obj.addProperty("App::PropertyFloat","startphi","GDMLPolycone", \
-              "Start Angle").startphi=startphi
+              "Start Angle").setExpression('startphi',str(startphi))
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLPolycone", \
-             "Delta Angle").deltaphi=deltaphi
+             "Delta Angle").setExpression('deltaphi',str(deltaphi))
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLPolycone","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
