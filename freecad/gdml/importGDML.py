@@ -1057,6 +1057,8 @@ def processVol(vol, parent, phylvl, displayMode) :
     #if colour is None :
     #   colour = (0.0, 0.0, 0.0, 0.0)
     solidref = GDMLShared.getRef(vol,"solidref")
+    #print(f"solidref : {solidref}")
+    name = vol.get("name")
     if solidref is not None :
        solid  = solids.find("*[@name='%s']" % solidref )
        if solid is not None :
