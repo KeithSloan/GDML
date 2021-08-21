@@ -664,7 +664,6 @@ class GDMLEllipsoid(GDMLsolid) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
-                      "z cut").setExpression('zcut',str(zcut))
       obj.addProperty("App::PropertyFloat","ax","GDMLEllipsoid", \
                        "x semi axis").setExpression('ax',str(ax))
       obj.addProperty("App::PropertyFloat","by","GDMLEllipsoid", \
@@ -963,7 +962,7 @@ class GDMLPolyhedra(GDMLsolid) :
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLPolyhedra", \
                       "Delta Angle").setExpression('deltaphi',str(deltaphi))
       obj.addProperty("App::PropertyInteger","numsides","GDMLPolyhedra", \
-                      "Number of Side").setExpression('numsides',str(numside))s
+                      "Number of Side").setExpression('numsides',str(numside))
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLPolyhedra", \
                        "aunit")
       obj.aunit=["rad", "deg"]
@@ -1315,15 +1314,15 @@ class GDMLSection(GDMLcommon) :
       obj.addProperty("App::PropertyString","Type","section", \
               "section").Type='section'
       obj.addProperty("App::PropertyInteger","zOrder","section", \
-              "zOrder").zOrder=zOrder
+              "zOrder").setExpression('zOrder',str(zOrder))
       obj.addProperty("App::PropertyInteger","zPosition","section", \
-              "zPosition").zPosition=zPosition
+              "zPosition").setExpression('zPosition',str(zPosition))
       obj.addProperty("App::PropertyFloat","xOffset","section", \
-              "xOffset").xOffset=xOffset
+              "xOffset").setExpression('xOffset',str(xOffset))
       obj.addProperty("App::PropertyFloat","yOffset","section", \
-              "yOffset").yOffset=yOffset
+              "yOffset").setExpression('yOffset',str(yOffset))
       obj.addProperty("App::PropertyFloat","scalingFactor","section", \
-              "scalingFactor").scalingFactor=scalingFactor
+              "scalingFactor").setExpression('scalingFactor',str(scalingFactor))
       obj.setEditorMode("Type", 1) 
       self.Type = 'section'
       obj.Proxy = self
@@ -1604,7 +1603,7 @@ class GDMLTrap(GDMLsolid) :
       obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").setExpression('z',str(z))
       obj.addProperty("App::PropertyFloat","theta","GDMLTrap","theta"). \
                        setExpression('theta',str(theta))
-      obj.addProperty("App::PropertyFloat","phi","GDMLTrap","phi").setExpression('phi=phi
+      obj.addProperty("App::PropertyFloat","phi","GDMLTrap","phi").setExpression('phi',str(phi))
       obj.addProperty("App::PropertyFloat","x1","GDMLTrap", \
                       "Length x at y= -y1 face -z").setExpression('x1',str(x1))
       obj.addProperty("App::PropertyFloat","x2","GDMLTrap", \
@@ -1618,7 +1617,7 @@ class GDMLTrap(GDMLsolid) :
       obj.addProperty("App::PropertyFloat","y2","GDMLTrap", \
                       "Length y at face +z").setExpression('y2',str(y2))
       obj.addProperty("App::PropertyFloat","alpha","GDMLTrap","alpha"). \
-                     setExpression('alpha',str(=alpha))
+                     setExpression('alpha',str(alpha))
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTrap","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
@@ -1891,8 +1890,8 @@ class GDMLcutTube(GDMLsolid) :
       obj.aunit=['rad','deg']
       obj.aunit=['rad','deg'].index(aunit[0:3])
       obj.addProperty("App::PropertyFloat","lowX","GDMLcutTube","low X").setExpression('lowX',str(lowX))
-      obj.addProperty("App::PropertyFloat","lowY","GDMLcutTube","low Y").setExpression('lowY.str(lowY))
-      obj.addProperty("App::PropertyFloat","lowZ","GDMLcutTube","low Z").setExpression('lowZ.str(lowZ))
+      obj.addProperty("App::PropertyFloat","lowY","GDMLcutTube","low Y").setExpression('lowY',str(lowY))
+      obj.addProperty("App::PropertyFloat","lowZ","GDMLcutTube","low Z").setExpression('lowZ',str(lowZ))
       obj.addProperty("App::PropertyFloat","highX","GDMLcutTube","high X").setExpression('highX',str(highX))
       obj.addProperty("App::PropertyFloat","highY","GDMLcutTube","high Y").setExpression('highY',str(highY))
       obj.addProperty("App::PropertyFloat","highZ","GDMLcutTube","high Z").setExpression('highZ',str(highZ))
@@ -2373,13 +2372,13 @@ class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
    def __init__(self, obj, v1, v2, v3, v4, lunit, material, colour = None ):
       super().__init__(obj)
       obj.addProperty("App::PropertyVector","v1","GDMLTra", \
-              "v1").v1=v1
+              "v1").setExpression('v1',str(v1))
       obj.addProperty("App::PropertyVector","v2","GDMLTra", \
-              "v2").v2=v2
+              "v2").setExpression('v2',str(v2))
       obj.addProperty("App::PropertyVector","v3","GDMLTra", \
-              "v3").v3=v3
+              "v3").setExpression('v3',str(v3))
       obj.addProperty("App::PropertyVector","v4","GDMLTra", \
-              "v4").v4=v4
+              "v4").setExpression('v4',str(v4))
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTra","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTra","Material")
