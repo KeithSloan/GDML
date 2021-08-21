@@ -738,6 +738,10 @@
         <fraction n="0.290924" ref="F_element"/>
         <fraction n="0.647767" ref="I_element"/>
       </material>
+      <material formula="G4_Galactic" name="G4_Galactic" >
+        <D unit="g/cm3" value="10" />
+        <composite n="1" ref="H_element"/>
+      </material>
       <material formula="G4_GADOLINIUM_OXYSULFIDE" name="G4_GADOLINIUM_OXYSULFIDE" >
         <D unit="g/cm3" value="7.44" />
         <composite n="2" ref="Gd_element"/>
