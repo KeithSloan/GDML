@@ -287,6 +287,7 @@ def TessellatedShape2Mesh(obj) :
     import Mesh
     msh = Mesh.Mesh()
     #v = obj.Shape.Vertexes
+    print(dir(obj.Shape.Faces))
     for f in obj.Shape.Faces :
         #print('Deal with Triangular Faces')
         #addFacet(msh,v[f.Vertexes[0]], v[f.Vertexes[1]],  v[f.Vertexes[2]])

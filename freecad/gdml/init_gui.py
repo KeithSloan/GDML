@@ -34,6 +34,7 @@
 #from FreeCAD import *
 import FreeCAD
 import PartGui
+import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
 
@@ -82,7 +83,8 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'DecimateCommand', \
-              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
+              'Mesh_FromPartShape','Mesh_Evaluation', \
+              'Mesh2TessCommand','Tess2MeshCommand', 'TetrahedronCommand']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
               'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
@@ -92,14 +94,16 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'BooleanUnionCommand', \
               'AddCompound','TessellateCommand','TessellateGmshCommand', \
               'DecimateCommand', \
+              'Mesh_FromPartShape','Mesh_Evaluation', \
               'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
 
         #parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
-        meshtoolbarcommands = ['Mesh_FromPartShape']
+        #meshtoolbarcommands = ['Mesh_FromPartShape','Mesh_Evaluation']
 
         self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','GDMLTools'),toolbarcommands)
         self.appendMenu('GDML',commands)
         #self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
+        #self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Mesh Tools'),meshtoolbarcommands)
         FreeCADGui.addIconPath(joinDir("Resources/icons"))
         FreeCADGui.addLanguagePath(joinDir("Resources/translations"))
         FreeCADGui.addPreferencePage(joinDir("Resources/ui/GDML-base.ui"),"GDML")

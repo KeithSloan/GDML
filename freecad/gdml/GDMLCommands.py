@@ -1122,7 +1122,7 @@ class Mesh2TessFeature :
     def GetResources(self):
         return {'Pixmap'  : 'GDML_Mesh2Tess', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',\
-                'Mesh 2 Tess'), 'Mesh 2 Tess': \
+                'Mesh 2 Tess'), 'Mesh2Tess': \
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessyGroup', \
                 'Create GDML Tessellate from FC Mesh')}    
 
@@ -1136,24 +1136,12 @@ class Tess2MeshFeature :
         from .GmshUtils import TessellatedShape2Mesh, Tetrahedron2Mesh
 
         for obj in FreeCADGui.Selection.getSelection():
+            import MeshPart
             print('Action Tessellate 2 Mesh')
             if hasattr(obj,'Proxy') :
                if hasattr(obj.Proxy,'Type') :
-                  mesh = None
-                  if obj.Proxy.Type == 'GDMLTessellated' :
-                     print('TessellatedShape2Mesh')
-                     mesh = TessellatedShape2Mesh(obj)
-    
-                  if obj.Proxy.Type == 'GDMLGmshTessellated' :
-                     print('GmshTessellatedShape2Mesh')
-                     mesh = TessellatedShape2Mesh(obj)
-    
-                  if obj.Proxy.Type == 'GDMLTetrahedron' :
-                     print('Tetrahedron2Mesh')
-                     mesh = Tetrahedron2Mesh(obj)
-
-                  if mesh != None :
-                     print('Add Mesh')
+                  if obj.Proxy.Type in ['GDMLTessellated', \
+                            'GDMLGmshTessellated','GDMLTetrahedron'] :
                      parent = None
                      if hasattr(obj,'InList') :
                         if len(obj.InList) > 0 :
@@ -1162,7 +1150,23 @@ class Tess2MeshFeature :
                      if parent == None :
                          mshObj = FreeCAD.ActiveDocument.addObject( \
                            'Mesh::Feature',obj.Name)
-                     mshObj.Mesh = mesh
+                     mshObj.Mesh = MeshPart.meshFromShape(obj.Shape)
+    
+                  #if obj.Proxy.Type == 'GDMLTetrahedron' :
+                  #   print('Tetrahedron2Mesh')
+                  #   mesh = Tetrahedron2Mesh(obj)
+
+                  #if mesh != None :
+                  #   print('Add Mesh')
+                  #   parent = None
+                  #   if hasattr(obj,'InList') :
+                  #      if len(obj.InList) > 0 :
+                  #         parent = obj.InList[0]
+                  #         mshObj = parent.newObject('Mesh::Feature',obj.Name)
+                  #   if parent == None :
+                  #       mshObj = FreeCAD.ActiveDocument.addObject( \
+                  #         'Mesh::Feature',obj.Name)
+                  #   mshObj.Mesh = mesh
                      if FreeCAD.GuiUp :
                         obj.ViewObject.Visibility = False
                         mshObj.ViewObject.DisplayMode = "Wireframe"
