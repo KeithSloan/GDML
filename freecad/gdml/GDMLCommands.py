@@ -1026,7 +1026,8 @@ class TessellateFeature :
                if parent == None :
                   myTess = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+               #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+               GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets, \
                       "mm", getSelectedMaterial())
                myTess.Placement = obj.Placement
                FreeCAD.ActiveDocument.recompute()
