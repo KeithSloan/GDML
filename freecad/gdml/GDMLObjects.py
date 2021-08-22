@@ -2262,9 +2262,9 @@ class GDMLTessellated(GDMLsolid) :
     
    def __init__(self, obj, vertex, facets, lunit, material, colour = None) :
       super().__init__(obj)
-      obj.addProperty('Part::PropertyPartShape','pshape','GDMLTessellated', \
-                       'Shape').pshape = self.createShape(vertex,facets)
-      obj.setEditorMode('pshape',1)
+      #obj.addProperty('Part::PropertyPartShape','pshape','GDMLTessellated', \
+      #                 'Shape').pshape = self.createShape(vertex,facets)
+      #obj.setEditorMode('pshape',1)
       obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
@@ -2276,6 +2276,7 @@ class GDMLTessellated(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
+      self.updateParams(vertex, facets)
       if FreeCAD.GuiUp :
          if colour is not None :
             obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -2322,11 +2323,11 @@ class GDMLTessellated(GDMLsolid) :
    def createGeometry(self,fp):
        #currPlacement = fp.Placement
        print("Tessellated")
-       print(self.Type)
-       print('self')
-       print(dir(self))
-       print('fp')
-       print(dir(fp))
+       #print(self.Type)
+       #print('self')
+       #print(dir(self))
+       #print('fp')
+       #print(dir(fp))
        if hasattr(self,'pshape') :
           print('Update Shape')
           fp.Shape  = self.pshape
@@ -2336,15 +2337,15 @@ class GDMLTessellated(GDMLsolid) :
           fp.facets = self.facets
           print(len(fp.Shape.Vertexes))
           print(fp.Shape)
-       else :
-          if hasattr(fp,'pshape') :
-             fp.Shape = fp.pshape
-             print(fp.pshape)
-             print(dir(fp.pshape))
-             print(f"pshape Vertextes {len(fp.pshape.Vertexes)}")
-             print(fp.vertex)
-             print(fp.Shape)
-             print(fp.pshape)
+       #else :
+       #   if hasattr(fp,'pshape') :
+       #      fp.Shape = fp.pshape
+       #      print(fp.pshape)
+       #      print(dir(fp.pshape))
+       #      print(f"pshape Vertextes {len(fp.pshape.Vertexes)}")
+       #      print(fp.vertex)
+       #      print(fp.Shape)
+       #      print(fp.pshape)
        #fp.Placement = currPlacement
 
    def createShape(self,vertex,facets) :
