@@ -507,6 +507,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Wouter Deconnick
   * Hilden Timo
   * Atanu Quant
+  * Masaki Morita
   
 * FreeCAD forum members (Apologies if I left anybody out):
 
@@ -522,6 +523,9 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * sgrogan
   * onekk (Carlo D)
   * OpenBrain
+  * Roy_043
+  * TheMarkster
+  * jeno
 
 * OpenCascade Forum members:
   * Sergey Slyadnev
