@@ -1026,8 +1026,8 @@ class TessellateFeature :
                if parent == None :
                   myTess = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
-               GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets, \
+               GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+               #GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets, \
                       "mm", getSelectedMaterial())
                myTess.Placement = obj.Placement
                FreeCAD.ActiveDocument.recompute()
@@ -1110,7 +1110,8 @@ class Mesh2TessFeature :
                         "GDMLTessellate_Mesh2Tess")
                #a = parent.newObject('Part::FeaturePython', \
                #                    'GDMLTessellate_Mesh2Tess')
-               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets, \
+               #GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets, \
+               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
