@@ -423,7 +423,7 @@ def facet(f) :
     print(f.Normal)
     if len(f.Points) == 3 :
        #return(triangle(f.Points[0],f.Points[1],f.Points[2]))
-       if f.Normal.dot(vec) > 0 :
+       if f.Normal.dot(vec) < 0 :
           print('Normal Okay')
           return(triangle(f.Points[0],f.Points[1],f.Points[2]))
        else :
@@ -431,7 +431,7 @@ def facet(f) :
           return(triangle(f.Points[2],f.Points[1],f.Points[0]))
     else :
        #return(quad(f.Points[0],f.Points[1],f.Points[2],f.Points[3]))
-       if f.Normal.dot(vec) > 0 :
+       if f.Normal.dot(vec) < 0 :
           return(quad(f.Points[0],f.Points[1],f.Points[2],f.Points[3]))
        else :
           return(quad(f.Points[3],f.Points[2],f.Points[1],f.Points[0]))
