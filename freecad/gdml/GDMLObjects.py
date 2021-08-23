@@ -2375,7 +2375,7 @@ class GDMLTessellated(GDMLsolid) :
        if shell.isValid == False :
           FreeCAD.Console.PrintWarning('Not a valid Shell/n')
  
-       #shell.check()
+       shell.check()
        #solid=Part.Solid(shell).removeSplitter()
        try :
           solid=Part.Solid(shell)
@@ -2384,6 +2384,7 @@ class GDMLTessellated(GDMLsolid) :
           # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
+       print(f"Solid Volume {solid.Volume}")
        #if solid.Volume < 0:
        #   solid.reverse()
        #print(dir(solid))   
