@@ -1110,7 +1110,7 @@ class Mesh2TessFeature :
                         "GDMLTessellate_Mesh2Tess")
                #a = parent.newObject('Part::FeaturePython', \
                #                    'GDMLTessellate_Mesh2Tess')
-               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
+               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets, \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
