@@ -2259,12 +2259,13 @@ class GDMLGmshTessellated(GDMLsolid) :
        fp.Placement = currPlacement
    
 class GDMLTessellated(GDMLsolid) :
-    
-   def __init__(self, obj, vertex, facets, lunit, material, colour = None) :
+
+   def __init__(self, obj, vertex, facets, flag, lunit, material, colour = None) :
       super().__init__(obj)
-      #obj.addProperty('Part::PropertyPartShape','pshape','GDMLTessellated', \
-      #                 'Shape').pshape = self.createShape(vertex,facets)
-      #obj.setEditorMode('pshape',1)
+      # ########################################
+      # if flag == True  - facets is Mesh.Facets - with Normals
+      # if flag == False - facets is Faces i.e. from import GDMLTessellated
+      # ######################################## 
       obj.addProperty('App::PropertyInteger','facets','GDMLTessellated', \
                       'Facets').facets = len(facets)
       obj.setEditorMode('facets',1)
@@ -2276,7 +2277,7 @@ class GDMLTessellated(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","material", \
                       "GDMLTessellated","Material")
       setMaterial(obj, material)
-      self.updateParams(vertex, facets)
+      self.updateParams(vertex, facets, flag)
       if FreeCAD.GuiUp :
          if colour is not None :
             obj.ViewObject.ShapeColor = colourMaterial(material)
@@ -2288,9 +2289,9 @@ class GDMLTessellated(GDMLsolid) :
    def getMaterial(self):
        return obj.material
    
-   def updateParams(self, vertex, facets) :
+   def updateParams(self, vertex, facets, flag) :
       print('Update Params & Shape')
-      self.pshape = self.createShape(vertex,facets)
+      self.pshape = self.createShape(vertex,facets,flag)
       print(f"Pshape vertex {len(self.pshape.Vertexes)}")
       self.facets  = len(facets)
       self.vertex  = len(vertex)
@@ -2337,19 +2338,12 @@ class GDMLTessellated(GDMLsolid) :
           fp.facets = self.facets
           print(len(fp.Shape.Vertexes))
           print(fp.Shape)
-       #else :
-       #   if hasattr(fp,'pshape') :
-       #      fp.Shape = fp.pshape
-       #      print(fp.pshape)
-       #      print(dir(fp.pshape))
-       #      print(f"pshape Vertextes {len(fp.pshape.Vertexes)}")
-       #      print(fp.vertex)
-       #      print(fp.Shape)
-       #      print(fp.pshape)
        #fp.Placement = currPlacement
 
-   def createShape(self,vertex,facets) :
+   def createShape(self,vertex,facets,flag) :
        # Viewing outside of face vertex must be counter clockwise
+       # if flag == True  - facets is Mesh.Facets 
+       # if flag == False - factes is Faces i.e. from import GDMLTessellated 
        #mul = GDMLShared.getMult(fp)
        mul = GDMLShared.getMult(self)
        print('Create Shape')
@@ -2358,14 +2352,16 @@ class GDMLTessellated(GDMLsolid) :
        for f in facets :
           #print('Facet')
           #print(f)
-          #FCfaces.append(GDMLShared.facet(f))
-          if len(f) == 3 : 
-             FCfaces.append(GDMLShared.triangle( \
+          if flag == True :
+             FCfaces.append(GDMLShared.facet(f))
+          else :
+             if len(f) == 3 : 
+                FCfaces.append(GDMLShared.triangle( \
                             mul*vertex[f[0]], \
                             mul*vertex[f[1]], \
                             mul*vertex[f[2]]))
-          else : # len should then be 4
-             FCfaces.append(GDMLShared.quad( \
+             else : # len should then be 4
+                FCfaces.append(GDMLShared.quad( \
                             mul*vertex[f[0]], \
                             mul*vertex[f[1]], \
                             mul*vertex[f[2]], \

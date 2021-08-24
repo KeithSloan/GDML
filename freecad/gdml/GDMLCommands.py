@@ -747,7 +747,7 @@ class AddDecimateTask:
            print(e)
 
         #print(dir(self.obj))
-        self.obj.Proxy.updateParams(mesh.Topology[0],mesh.Topology[1])
+        self.obj.Proxy.updateParams(mesh.Topology[0],mesh.Topology[1],False)
         self.obj.recompute()
         self.obj.ViewObject.Visibility = True
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -898,7 +898,7 @@ class AddTessellateTask:
            print(self.obj.Proxy.Type)
            if self.obj.Proxy.Type == 'GDMLGmshTessellated' or \
               self.obj.Proxy.Type == 'GDMLTessellated' :
-              self.obj.Proxy.updateParams(vertex,facets)
+              self.obj.Proxy.updateParams(vertex,facets,False)
         #print(dir(self.form))
         print('Vertex : '+str(len(vertex)))
         print('Facets : '+str(len(facets)))
@@ -908,11 +908,11 @@ class AddTessellateTask:
            print('Update parms : '+self.tess.Name)
            if hasattr(self.tess,'Proxy') : # If GDML object has Proxy
               print(dir(self.tess.Proxy))
-              self.tess.Proxy.updateParams(vertex,facets)
+              self.tess.Proxy.updateParams(vertex,facets,False)
            else : 
-              self.tess.updateParams(vertex,facets)
+              self.tess.updateParams(vertex,facets,False)
            #print('Update parms : '+self.tess.Name)
-           #self.tess.updateParams(vertex,facets)
+           #self.tess.updateParams(vertex,facets,False)
         #self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
         self.form.Vertex.value.setText(str(len(vertex)))
         #self.form.Facets.value.setText(QtCore.QString(len(facets)))
@@ -1026,8 +1026,8 @@ class TessellateFeature :
                if parent == None :
                   myTess = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
-               GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
-               #GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets, \
+               #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
+               GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets,True, \
                       "mm", getSelectedMaterial())
                myTess.Placement = obj.Placement
                FreeCAD.ActiveDocument.recompute()
@@ -1110,8 +1110,8 @@ class Mesh2TessFeature :
                         "GDMLTessellate_Mesh2Tess")
                #a = parent.newObject('Part::FeaturePython', \
                #                    'GDMLTessellate_Mesh2Tess')
-               #GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets, \
-               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
+               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets,True, \
+               #GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
                               "mm",getSelectedMaterial())
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False

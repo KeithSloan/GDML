@@ -744,7 +744,7 @@ def createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #print(vertNames)
     myTess=part.newObject("Part::FeaturePython","GDMLTessellated:" \
                           +getName(solid))
-    tess = GDMLTessellated(myTess,vertex,faces,lunit,material,colour)
+    tess = GDMLTessellated(myTess,vertex,faces,False,lunit,material,colour)
     if FreeCAD.GuiUp :
        ViewProvider(myTess.ViewObject)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
