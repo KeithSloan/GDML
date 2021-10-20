@@ -260,7 +260,7 @@ def createElcone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     zcut = GDMLShared.getVal(solid,'zcut')
     lunit = getText(solid,'lunit',"mm")
     myelcone=part.newObject("Part::FeaturePython","GDMLElCone:"+getName(solid))
-    GDMLElCone(myelcone,dx,dy,zmax,zcut,lunit,material.colour)
+    GDMLElCone(myelcone,dx,dy,zmax,zcut,lunit,material,colour)
     GDMLShared.trace("CreateElCone : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz-zmax/2)
@@ -880,7 +880,7 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
            break
 
         if case('tet'):
-           return(createTetra(part,solid,material,colour.px,py,pz,rot,displayMode)) 
+           return(createTetra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
            break
 
         if case('torus'):

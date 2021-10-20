@@ -120,7 +120,7 @@ def nameFromLabel(label) :
 
 def initGDML() :
     NS = 'http://www.w3.org/2001/XMLSchema-instance'
-    location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
+    location_attribute = '{%s}noNamespaceSchemaLocation' % NS
     gdml = ET.Element('gdml',attrib={location_attribute: \
       'http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd'})
     #print(gdml.tag)
