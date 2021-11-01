@@ -287,15 +287,20 @@ def getRadians(flag,r) :
     else :
         return r * math.pi / 180
 
-def processPlacement(base,rot) :
-    #setTrace(True)
-    #trace('processPlacement')
+#def processPlacement(base,rot) :
+def processPlacement(obj,x,y,z,rot) :
+    setTrace(True)
+    trace('processPlacement')
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
     # set rotation matrix
-    #print('process Placement : '+str(base))
     if rot is None :
-        return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
+        #return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
+        print('rot None')
+        print(f'Position x : {x}')
+        obj.setExpression("Placement.Position.x",x)
+        obj.setExpression("Placement.Position.y",y)
+        obj.setExpression("Placement.Position.z",z)
     
     else :
         trace("Rotation : ")
@@ -305,7 +310,13 @@ def processPlacement(base,rot) :
         if 'name' in rot.attrib :
             if rot.attrib['name'] == 'identity' :
                 trace('identity')
-                return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
+                #return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
+                obj.setExpression("Placement.Position.x",x)
+                print(f'Set expression x : {x}')
+                obj.setExpression("Placement.Position.y",y)
+                print(f'Set expression y : {y}')
+                obj.setExpression("Placement.Position.z",z)
+                print(f'Set expression z : {z}')
 
         radianFlg = True
         if 'unit' in rot.attrib :
@@ -334,7 +345,8 @@ def processPlacement(base,rot) :
         rotY = FreeCAD.Rotation(FreeCAD.Vector(0,1,0), -y)
         rotZ = FreeCAD.Rotation(FreeCAD.Vector(0,0,1), -z)
 
-        rot = rotX.multiply(rotY).multiply(rotZ)
+        #rot = rotX.multiply(rotY).multiply(rotZ)
+        #######
         #rot = rotX
         #c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
         #print('base : '+str(base))
@@ -344,9 +356,13 @@ def processPlacement(base,rot) :
         #placement = FreeCAD.Placement(base, FreeCAD.Rotation(-x,-y,-z))
         #placement = FreeCAD.Placement(base, FreeCAD.Rotation(-z,-y,-x), \
         #            base)
-        placement = FreeCAD.Placement(base, FreeCAD.Rotation(rot))
+        #placement = FreeCAD.Placement(base, FreeCAD.Rotation(rot))
+        ######
         #print('placement : '+str(placement))
-        return placement
+        #return placement
+        obj.setExpression("Placement.Rotation.Axis.x",rotX)
+        obj.setExpression("Placement.Rotation.Axis.y",rotY)
+        obj.setExpression("Placement.Rotation.Axis.z",rotZ)
 
 def getPositionFromAttrib(pos) :
     #print('getPositionFromAttrib')

@@ -214,8 +214,10 @@ def createBox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     lunit = getText(solid,'lunit',"mm")
     GDMLBox(mycube,x,y,z,lunit,material,colour)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
-    base = FreeCAD.Vector(px,py,pz)
-    mycube.Placement = GDMLShared.processPlacement(base,rot)
+    #base = FreeCAD.Vector(px,py,pz)
+    #mycube.Placement = GDMLShared.processPlacement(base,rot)
+    #mycube.Placement = GDMLShared.processPlacement(px,py,pz,rot)
+    GDMLShared.processPlacement(mycube,px,py,pz,rot)
     GDMLShared.trace(mycube.Placement.Rotation)
     if FreeCAD.GuiUp :
        # set ViewProvider before setDisplay
@@ -796,7 +798,7 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
     # parent, solid, boolean Type,
     from .GDMLObjects import ViewProvider
 
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     GDMLShared.trace('Parse Boolean : '+str(solid.tag))
     GDMLShared.trace(solid.tag)
     GDMLShared.trace(solid.attrib)
@@ -818,6 +820,10 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
        mybool.Base = createSolid(part,base,material,colour,0,0,0,None,displayMode)
        # second solid is placed at position and rotation relative to first
        GDMLShared.trace('Create Tool Object')
+       print(f"x : {x}")
+       print(f"y : {y}")
+       print(f"z : {z}")
+       print(f"rotBool : {rotBool}") 
        mybool.Tool = createSolid(part,tool,material,None,x,y,z,rotBool,displayMode)
        # Okay deal with position of boolean
        GDMLShared.trace('Boolean Position and rotation')
@@ -832,6 +838,7 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
 def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # parent,solid, material
     # returns created Object
+    GDMLShared.setTrace(True)
     GDMLShared.trace('createSolid '+solid.tag)
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
