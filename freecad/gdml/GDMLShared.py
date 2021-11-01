@@ -294,29 +294,31 @@ def processPlacement(obj,x,y,z,rot) :
     # Different Objects will have adjusted base GDML-FreeCAD
     # rot is rotation or None if default 
     # set rotation matrix
-    if rot is None :
-        #return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
-        print('rot None')
-        print(f'Position x : {x}')
-        obj.setExpression("Placement.Position.x",x)
-        obj.setExpression("Placement.Position.y",y)
-        obj.setExpression("Placement.Position.z",z)
-    
+    print(f'x Type : {type(x)}')
+    print(f'Position x : {x}')
+    if type(x) is not str :
+       obj.Placement.Base.x = x
     else :
+       obj.setExpression("Placement.Base.x",x)
+    print(f'y Type : {type(y)}')
+    print(f'Position y : {y}')
+    if type(y) is not str :
+       obj.Placement.Base.y = y
+    else :
+       obj.setExpression("Placement.Base.y",y)
+    print(f'Position z : {z}')
+    if type(z) is not str :
+       obj.Placement.Base.z = z
+    else :
+       obj.setExpression("Placement.Base.z",z)
+    
+    if rot is not None :
         trace("Rotation : ")
         trace(rot.attrib)
-        x = y = z = 0
-
         if 'name' in rot.attrib :
             if rot.attrib['name'] == 'identity' :
                 trace('identity')
-                #return FreeCAD.Placement(base,FreeCAD.Rotation(0,0,0,1))
-                obj.setExpression("Placement.Position.x",x)
-                print(f'Set expression x : {x}')
-                obj.setExpression("Placement.Position.y",y)
-                print(f'Set expression y : {y}')
-                obj.setExpression("Placement.Position.z",z)
-                print(f'Set expression z : {z}')
+                obj.Placement.Rotation = FreeCAD.Rotation(0,0,0,1)
 
         radianFlg = True
         if 'unit' in rot.attrib :
