@@ -508,6 +508,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   * Masaki Morita
+  * Munther Hindi
   
 * FreeCAD forum members (Apologies if I left anybody out):
 
