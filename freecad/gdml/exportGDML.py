@@ -1,4 +1,4 @@
-#**************************************************************************
+#**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
 #*             (c) 2020 Dam Lambert                                       *
@@ -1217,8 +1217,8 @@ def createIsotopes(group) :
 
 def processGroup(obj) :
     print('Process Group '+obj.Label)
-    print(obj.TypeId)
-    print(obj.Group)
+    #print(obj.TypeId)
+    #print(obj.Group)
     #      if hasattr(obj,'Group') :
     #return
     if hasattr(obj,'Group') :
@@ -1263,7 +1263,7 @@ def processGDMLSolid(obj, addVolsFlag) :
     #print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
-          print("      GDMLArb8") 
+          #print("      GDMLArb8") 
           return(processGDMLArb8Object(obj, addVolsFlag))
           break
 
@@ -1588,6 +1588,10 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             processVolAssem(obj, xmlVol, volName, True)
          return idx + 1
 
+      if case("PartDesign::Body") :
+         print("Part Design Body - ignoring")
+         return idx + 1
+
       if case("App::Origin") :
          #print("App Origin")
          return idx + 1
@@ -1767,6 +1771,8 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       #return(processObjectShape(obj, addVolsFlag))
       print("Convert FreeCAD shape to GDML Tessellated")
       print(obj.TypeId)
+      return idx+1
+
       if hasattr(obj,'Shape') :
          if obj.Shape.isValid() : 
             #return(processObjectShape(obj))
@@ -1939,7 +1945,7 @@ def checkGDMLstructure(objList) :
     # GDML Object
     GDMLShared.trace('check GDML structure')
     GDMLShared.trace(objList)
-    print(objList)
+    #print(objList)
     cnt = countGDMLObj(objList)
     if cnt > 1 : # More than one GDML Object need to insert Dummy
        return False
@@ -2030,7 +2036,7 @@ def exportGDML(first, filepath, fileExt) :
 
     #GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
-    print("====> Start GDML Export 1.5")
+    print("====> Start GDML Export 1.6")
     print('File extension : '+fileExt)
 
     GDMLstructure()
