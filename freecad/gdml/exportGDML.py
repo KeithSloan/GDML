@@ -1846,7 +1846,7 @@ def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
     else :
        xmlstr ='None'
     print(xmlstr)
-    GDMLShared.trace('     '+vol.Name+ ' - '+str(xmlstr))
+    GDMLShared.trace('     '+vol.Label+ ' - '+str(xmlstr))
     if xmlParent != None :
        xmlstr = ET.tostring(xmlParent)
     else :
@@ -1861,8 +1861,8 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
-    print('Process Volume')
     volName = vol.Label
+    print(f'Process Volume : {volName}')
     #volName = cleanVolName(vol, vol.Label)
     if GDMLShared.getTrace() == True :
        GDMLShared.trace('Process Volume : '+volName)
@@ -1961,20 +1961,20 @@ def checkGDMLstructure(objList) :
 
 def locateXMLvol(vol) :
     global structure
-    xmlVol = structure.find("volume[@name='%s']" % vol.Name)
+    xmlVol = structure.find("volume[@name='%s']" % vol.Label)
     return xmlVol
 
 def exportWorldVol(vol, fileExt) :
     if fileExt != '.xml' :
-       print('Export World Process Volume : '+vol.Name)
-       GDMLShared.trace('Export Word Process Volume'+vol.Name)
-       ET.SubElement(setup,'world',{'ref':vol.Name}) 
+       print('Export World Process Volume : '+vol.Label)
+       GDMLShared.trace('Export Word Process Volume'+vol.Label)
+       ET.SubElement(setup,'world',{'ref':vol.Label}) 
 
        if checkGDMLstructure(vol.OutList) == False :
           GDMLShared.trace('Insert Dummy Volume')
           xmlVol = createXMLvol('dummy') 
-          xmlParent = createWorldVol(vol.Name)
-          parentName = vol.Name
+          xmlParent = createWorldVol(vol.Label)
+          parentName = vol.Label
           addPhysVol(xmlParent,'dummy')
        else :
           GDMLShared.trace('Valid Structure')
@@ -2022,6 +2022,7 @@ def exportGDMLstructure(dirPath, fileName) :
     exportElementAsXML(dirPath, fileName, True, 'solids',solids)
     exportElementAsXML(dirPath, fileName, True, 'structure',structure)
     exportElementAsXML(dirPath, fileName, False, 'setup',setup)
+    print(f"setup : {setup}")
     docString += ']>\n'
     #print(docString)
     #print(len(docString))
@@ -2275,8 +2276,8 @@ def exportGEMC(first, path, flag) :
 def export(exportList,filepath) :
     "called when FreeCAD exports a file"
   
-    print('Export')
     first = exportList[0]
+    print(f'Export Volume: {first.Label}')
  
     import os
     path, fileExt = os.path.splitext(filepath)
@@ -2298,7 +2299,7 @@ def export(exportList,filepath) :
                 print('Export XML structure & solids')
                 exportGDML(first,filepath,'.xml')
 
-       elif first.Name == "Materials" :
+       elif first.Label == "Materials" :
           exportMaterials(first,filepath)
     
        else :
