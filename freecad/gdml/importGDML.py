@@ -212,7 +212,6 @@ def createBox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
     lunit = getText(solid,'lunit',"mm")
-    print(colour)
     GDMLBox(mycube,x,y,z,lunit,material,colour)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -1037,8 +1036,22 @@ def processVol(vol, parent, phylvl, displayMode) :
                     #          int(aValue[3:5],16)/256, \
                     #          int(aValue[5:7],16)/256, \
                     #          int(aValue[7:],16)/256)
-                    colour = tuple(int(aValue[n:n+2],16)/256 for \
-                               n in range(1, len(aValue),2))
+                    lav = len(aValue)
+                    if lav == 7 :
+                       try : 
+                          colour = tuple(int(aValue[n:n+2],16)/256 for \
+                                   n in range(1,3))+(0)
+                       except :
+                          print("Invalid Colour definition #RRGGBB")
+
+                    elif lav == 9 :
+                       try :
+                          colour = tuple(int(aValue[n:n+2],16)/256 for \
+                                   n in range(1,4))
+                       except :
+                          print("Invalid Colour definition #RRGGBBAA")
+                    else :
+                       print("Invalid Colour definition")
                     #print('colour '+str(colour))
                  else :
                     colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
