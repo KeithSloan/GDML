@@ -212,6 +212,7 @@ def createBox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
     lunit = getText(solid,'lunit',"mm")
+    print(colour)
     GDMLBox(mycube,x,y,z,lunit,material,colour)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -1051,7 +1052,7 @@ def processVol(vol, parent, phylvl, displayMode) :
                                 'Red'     :(1.0, 0.0, 0.0, 0.0), \
                                 'White'   :(1.0, 1.0, 1.0, 0.0), \
                                 'Yellow'  :(1.0, 1.0, 0.0, 0.0)  }
-                    colour = colDict.get(aValue,(0,0, 0.0, 0.0))
+                    colour = colDict.get(aValue,(0.0, 0.0, 0.0, 0.0))
                     #print(colour)
         else :
            print('No auxvalue')
@@ -1440,7 +1441,7 @@ def processGDML(doc,filename,prompt,initFlg):
     print("Print Verbose : "+ str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage('Import GDML file : '+filename+'\n')
-    FreeCAD.Console.PrintMessage('ImportGDML Version 1.4\n')
+    FreeCAD.Console.PrintMessage('ImportGDML Version 1.5\n')
     startTime = time.perf_counter()
     
     global pathName
