@@ -921,8 +921,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
             break
 
         if case('union'):
+            print(f'colour : {colour}')
             return(parseBoolean(part,solid,'Part::Fuse', \
-                  material,colour,px,py,pz,rot,displayMode)) 
+                  material,colour,px,py,pz,rot,displayMode))
             break
 
         if case('subtraction'):
