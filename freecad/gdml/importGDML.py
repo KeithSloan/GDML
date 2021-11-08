@@ -212,6 +212,7 @@ def createBox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
     lunit = getText(solid,'lunit',"mm")
+    #print(f'Cube colour : {colour}')
     GDMLBox(mycube,x,y,z,lunit,material,colour)
     GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -921,7 +922,7 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
             break
 
         if case('union'):
-            print(f'colour : {colour}')
+            print(f'union colour : {colour}')
             return(parseBoolean(part,solid,'Part::Fuse', \
                   material,colour,px,py,pz,rot,displayMode))
             break
@@ -1037,22 +1038,23 @@ def processVol(vol, parent, phylvl, displayMode) :
                     #          int(aValue[5:7],16)/256, \
                     #          int(aValue[7:],16)/256)
                     lav = len(aValue)
+                    #print(f'Aux col len : {lav}')
                     if lav == 7 :
                        try : 
                           colour = tuple(int(aValue[n:n+2],16)/256 for \
-                                   n in range(1,3))+(0)
+                                   n in range(1,7,2))+(0)
                        except :
                           print("Invalid Colour definition #RRGGBB")
 
                     elif lav == 9 :
                        try :
                           colour = tuple(int(aValue[n:n+2],16)/256 for \
-                                   n in range(1,4))
+                                   n in range(1,9,2))
                        except :
                           print("Invalid Colour definition #RRGGBBAA")
                     else :
                        print("Invalid Colour definition")
-                    #print('colour '+str(colour))
+                    #print('Aux colour set'+str(colour))
                  else :
                     colDict ={'Black'   :(0.0, 0.0, 0.0, 0.0), \
                                 'Blue'    :(0.0, 0.0, 1.0, 0.0), \
