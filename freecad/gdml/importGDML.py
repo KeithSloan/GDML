@@ -43,7 +43,7 @@ from . import GDMLShared
 ##########################
 # Globals Dictionaries    #
 ##########################
-#global setup, define, materials, solids, structure
+#global setup, define, materials, solids, structure, extension
 #globals constDict, filesDict 
 
 if FreeCAD.GuiUp:
@@ -1007,6 +1007,22 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
              print('Copynumber not supported in FreeCAD 0.18')
 
     #GDMLShared.setTrace(False)
+
+def getColour(colRef) :
+    #print(f'colRef : {colRef}')
+    #print(str(extension))
+    if extension is not None :
+       colxml = extension.find("*[@name='%s']" % colRef )
+       #print(str(colxml))
+       R = G = B = A = 0.0
+       if colxml is not None :
+          R = G = B = A = 0.0
+          R = colxml.get("R")
+          G = colxml.get("G")
+          B = colxml.get("B")
+          A = colxml.get("A")
+    print(f'R : {R} - G : {G} - B : {B} - A : {A}') 
+    return (float(R),float(G),float(B),1.0 - float(A))
  
 # ParseVolume name - structure is global
 # displayMode 1 normal 2 hide 3 wireframe
@@ -1071,8 +1087,9 @@ def processVol(vol, parent, phylvl, displayMode) :
                     #print(colour)
         else :
            print('No auxvalue')
-    #if colour is None :
-    #   colour = (0.0, 0.0, 0.0, 0.0)
+    coloref = GDMLShared.getRef(vol,"colorref")
+    if coloref is not None :
+       colour = getColour(coloref)
     solidref = GDMLShared.getRef(vol,"solidref")
     #print(f"solidref : {solidref}")
     name = vol.get("name")
@@ -1463,7 +1480,7 @@ def processGDML(doc,filename,prompt,initFlg):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, define, materials, solids, structure 
+    global setup, define, materials, solids, structure, extension 
   
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
@@ -1476,6 +1493,7 @@ def processGDML(doc,filename,prompt,initFlg):
 
     etree, root = setupEtree(filename)
     setup     = root.find('setup')
+    extension = root.find('extension')
     define    = root.find('define')
     if define is not None :
        GDMLShared.trace("Call set Define")
