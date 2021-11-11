@@ -31,6 +31,9 @@ import math
 from . import GDMLShared
 
 # Global Material List
+# Used for setting material enum in GDMLObjects
+# Will be lost by file save & load
+# So need to be able to rebuild from Objects
 global MaterialsList
 MaterialsList = []
 
@@ -49,6 +52,22 @@ def setLengthQuantity(obj, m) :
     else :
         obj.lunit = 2
 
+def addMaterialsFromGroup(doc, MatList, grpName) :
+    mmats = doc.getObject(grpName)
+    if mmats is not None :
+       if hasattr(mmats,'Group') :
+          for i in mmats.Group :
+              MatList.append(i.Name)
+
+def rebuildMaterialsList() :
+    global MaterialsList
+    print('Restore MaterialsList from Materials Lists')
+    doc = FreeCAD.ActiveDocument
+    addMaterialsFromGroup(doc,MaterialsList,"Materials")
+    addMaterialsFromGroup(doc,MaterialsList,"G4Materials")
+    #print('MaterialsList')
+    #print(MaterialsList)
+
 def checkMaterial(material) :
     global MaterialsList
     try :
@@ -56,6 +75,19 @@ def checkMaterial(material) :
     except ValueError:
        return False
     return True
+
+def setMaterial(obj, m) :
+    print('setMaterial')
+    if MaterialsList is not None :
+       if len(MaterialsList) > 0 :
+          obj.material = MaterialsList
+          obj.material = 0
+          if not ( m == 0 or m == None ) : 
+             obj.material = MaterialsList.index(m)
+             return
+          return
+    rebuildMaterialsList()
+    setMaterial(obj, m)
 
 def checkFullCircle(aunit, angle) :
     #print(angle)
@@ -162,17 +194,6 @@ def angleSectionSolid(fp, rmax, z, shape) :
         shape.rotate(FreeCAD.Vector(0,0,0), \
                             FreeCAD.Vector(0,0,1),startPhiDeg)
     return shape
-
-def setMaterial(obj, m) :
-    #print('setMaterial')
-    if MaterialsList != None :
-        obj.material = MaterialsList
-        obj.material = 0
-        if len(MaterialsList) > 0 :
-            if not ( m == 0 or m == None ) : 
-                obj.material = MaterialsList.index(m)
-    else :
-        obj.Material = 0
 
 def indiceToRay(indiceIn):	# Thanks to Dam
     if indiceIn<1: 
