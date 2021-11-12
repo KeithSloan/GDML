@@ -1500,12 +1500,12 @@ def processGDML(doc,filename,prompt,initFlg):
        GDMLShared.setDefine(root.find('define'))
        GDMLShared.processConstants(doc)
        GDMLShared.processVariables(doc)
+       GDMLShared.processQuantities(doc)
 
        # modif
        GDMLShared.processPosition(doc)
        GDMLShared.processExpression(doc)
        GDMLShared.processRotation(doc)
-       GDMLShared.processQuantity(doc)
        # end modif
 
        GDMLShared.trace(setup.attrib)

@@ -128,6 +128,40 @@ def processVariables(doc):
     #print("Globals")
     #print(str(globals()))
 
+def processQuantities(doc):
+    # all of math must be imported at global level
+    trace("Process Quantitities")
+    quantityGrp = doc.addObject("App::DocumentObjectGroupPython","Quantities")
+    from .GDMLObjects import GDMLquantity
+
+    for cdefine in define.findall('quantity') :
+        #print cdefine.attrib
+        name  = str(cdefine.attrib.get('name'))
+        trace('name : '+name)
+        type = cdefine.attrib.get('type')
+        trace('type : '+ type)
+        unit = cdefine.attrib.get('unit')
+        trace('unit : '+ unit)
+        value = cdefine.attrib.get('value')
+        trace('value : '+ value)
+        #constDict[name] = value
+        trace(name)
+        #print(dir(name))
+        #print('Name  : '+name)
+        try :
+          globals()[name] = eval(value)
+          #print('Value : '+value)
+        except :
+          globals()[name] = value
+          #print('Value String : '+value)
+        quantityObj = quantityGrp.newObject("App::DocumentObjectGroupPython", \
+                     name)
+        GDMLquantity(quantityObj,name,type,unit,value)
+    #print("Globals")
+    #print(str(globals()))
+
+
+
 def processPosition(doc):
     # need to be done ?
     trace("Position Not processed & Displayed")
@@ -139,10 +173,6 @@ def processExpression(doc):
 def processRotation(doc):
     # need to be done ?
     trace("Rotations Not processed & Displayed")
-
-def processQuantity(doc):
-    # need to be done 
-    trace("Process quantity (not taken into account in this version)" )
 
 def getVal(ptr,var,vtype = 1) :
     # vtype 1 - float vtype 2 int
