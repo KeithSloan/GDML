@@ -1088,10 +1088,13 @@ def processIsotope(obj, item): # maybe part of material or element (common code)
     if hasattr(obj,'unit') or hasattr(obj,'value') :
        atom = ET.SubElement(item,'atom') 
     
-       if hasattr(obj,'atom_unit') :
+       if hasattr(obj,'unit') :
           atom.set('unit',str(obj.unit)) 
             
-       if hasattr(obj,'atom_value') :
+       if hasattr(obj,'type') :
+          atom.set('unit',str(obj.type)) 
+            
+       if hasattr(obj,'value') :
           atom.set('value',str(obj.value)) 
 
 def processMaterials() :
