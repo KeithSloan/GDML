@@ -148,6 +148,14 @@ def processQuantities(doc):
         trace(name)
         #print(dir(name))
         #print('Name  : '+name)
+        if type == 'length' :
+           mul = getMultLen(unit)
+           # Do we need to adjust length ?
+           if mul != 1 :
+              # Adjust length
+              value = value+'* mul'
+        else :
+           print(f'Quantity type : {type} not yet handled')
         try :
           globals()[name] = eval(value)
           #print('Value : '+value)
@@ -159,8 +167,6 @@ def processQuantities(doc):
         GDMLquantity(quantityObj,name,type,unit,value)
     #print("Globals")
     #print(str(globals()))
-
-
 
 def processPosition(doc):
     # need to be done ?
@@ -217,6 +223,18 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
+def getMultLen(unit) :
+    if unit == 'mm' : return(1)
+    elif unit == 'cm' : return(10)
+    elif unit == 'm' : return(1000)
+    elif unit == 'um' : return(0.001)
+    elif unit == 'nm' : return(0.000001)
+    elif unit == 'dm' : return(100)
+    elif unit == 'm' : return(1000)
+    elif unit == 'km' : return(1000000)
+    print('unit not handled : '+unit)
+    return 1
+
 def getMult(fp) :
     unit = 'mm' # set default
     # Watch for unit and lunit
@@ -234,15 +252,7 @@ def getMult(fp) :
            unit = fp.attrib['lunit']
     else :
         return 1
-    if unit == 'mm' : return(1)
-    elif unit == 'cm' : return(10)
-    elif unit == 'm' : return(1000)
-    elif unit == 'um' : return(0.001)
-    elif unit == 'nm' : return(0.000001)
-    elif unit == 'dm' : return(100)
-    elif unit == 'm' : return(1000)
-    elif unit == 'km' : return(1000000)
-    print('unit not handled : '+unit)
+    return getMultLen(unit)
 
 def getDegrees(flag, r) :
     import math
