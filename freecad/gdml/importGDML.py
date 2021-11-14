@@ -1544,4 +1544,5 @@ def processGDML(doc,filename,prompt,initFlg):
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
     endTime = time.perf_counter()
-    print(f'time : {endTime - startTime:0.4f} seconds')
+    #print(f'time : {endTime - startTime:0.4f} seconds')
+    FreeCAD.Console.PrintMessage(f'time : {endTime - startTime:0.4f} seconds')
