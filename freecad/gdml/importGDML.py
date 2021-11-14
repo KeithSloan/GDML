@@ -80,8 +80,14 @@ def open(filename):
     docName  = os.path.splitext(os.path.basename(filename)) [0]
     print('path : '+filename) 
     if filename.lower().endswith('.gdml') :
+        #import cProfile, pstats
+        #profiler = cProfile.Profile()
+        #profiler.enable()
         doc = FreeCAD.newDocument(docName)
         processGDML(doc,filename,True,False)
+        #profiler.disable()
+        #stats = pstats.Stats(profiler).sort_stats('cumtime')
+        #stats.print_stats()
 
     elif filename.lower().endswith('.xml'):
        try :
@@ -1191,19 +1197,12 @@ def processIsotopes(isotopesGrp) :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
         name = isotope.get('name')
-        isObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
-        GDMLisotope(isObj,name,N,Z)
         atom = isotope.find('atom')
-        if atom is not None :
-           unit = atom.get('unit')
-           if unit is not None :
-              isObj.addProperty('App::PropertyString','unit','Unit').unit = unit
-           type = atom.get('type')           
-           if type is not None :
-              isObj.addProperty('App::PropertyString','type','Type').type = type
-           if atom.get('value') is not None :
-              value = GDMLShared.getVal(atom,'value',1)
-              isObj.addProperty('App::PropertyFloat','value','Value').value = value
+        unit = atom.get('unit','g/mole')
+        value = GDMLShared.getVal(atom,'value',1)
+        #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
+        isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
+        GDMLisotope(isoObj,name,N,Z,unit,value)
 
 def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction

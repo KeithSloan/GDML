@@ -64,8 +64,31 @@ def trace(s):
 
 def setDefine(val) :
     #print("Set Define")
-    global define
+    global define, positions
     define = val
+    positions = {}
+    for elem in define.findall('position'):
+        atts = elem.attrib
+        if 'unit' in atts:
+            unit = atts['unit']
+        else:
+            unit = 'mm'
+        if 'x' in atts:
+            x = atts['x']
+        else:
+            x = 0
+        if 'y' in atts:
+            y = atts['y']
+        else:
+            y = 0
+        if 'z' in atts:
+            z = atts['z']
+        else:
+            z = 0
+
+        
+        positions[atts['name']] = {'unit': unit, \
+                                   'x': x, 'y': y, 'z': z}
 
 def processConstants(doc):
     # all of math must be imported at global level
@@ -148,14 +171,6 @@ def processQuantities(doc):
         trace(name)
         #print(dir(name))
         #print('Name  : '+name)
-        if type == 'length' :
-           mul = getMultLen(unit)
-           # Do we need to adjust length ?
-           if mul != 1 :
-              # Adjust length
-              value = value+'* mul'
-        else :
-           print(f'Quantity type : {type} not yet handled')
         try :
           globals()[name] = eval(value)
           #print('Value : '+value)
@@ -167,6 +182,8 @@ def processQuantities(doc):
         GDMLquantity(quantityObj,name,type,unit,value)
     #print("Globals")
     #print(str(globals()))
+
+
 
 def processPosition(doc):
     # need to be done ?
@@ -223,18 +240,6 @@ def getRef(ptr, name) :
        return ref
     return wrk
 
-def getMultLen(unit) :
-    if unit == 'mm' : return(1)
-    elif unit == 'cm' : return(10)
-    elif unit == 'm' : return(1000)
-    elif unit == 'um' : return(0.001)
-    elif unit == 'nm' : return(0.000001)
-    elif unit == 'dm' : return(100)
-    elif unit == 'm' : return(1000)
-    elif unit == 'km' : return(1000000)
-    print('unit not handled : '+unit)
-    return 1
-
 def getMult(fp) :
     unit = 'mm' # set default
     # Watch for unit and lunit
@@ -252,7 +257,15 @@ def getMult(fp) :
            unit = fp.attrib['lunit']
     else :
         return 1
-    return getMultLen(unit)
+    if unit == 'mm' : return(1)
+    elif unit == 'cm' : return(10)
+    elif unit == 'm' : return(1000)
+    elif unit == 'um' : return(0.001)
+    elif unit == 'nm' : return(0.000001)
+    elif unit == 'dm' : return(100)
+    elif unit == 'm' : return(1000)
+    elif unit == 'km' : return(1000000)
+    print('unit not handled : '+unit)
 
 def getDegrees(flag, r) :
     import math
@@ -344,6 +357,36 @@ def getPositionFromAttrib(pos) :
     pz = mul * getVal(pos,'z')
     return px, py, pz     
 
+def getPositionFromDict(pos) :
+    #print('getPositionFromAttrib')
+    #print('pos : '+str(ET.tostring(pos)))
+    #print(pos.attrib)
+    #if hasattr(pos.attrib, 'unit') :        # Note unit NOT lunit
+    #if hasattr(pos.attrib,'name') :
+    #   name = pos.get('name')
+    #   if name == 'center' :
+    #      return(0,0,0)
+    unit = pos['unit']
+    mul = 1
+    #mul = getMult(pos)
+    if unit == 'mm' : mul = 1
+    elif unit == 'cm' : mul = 10
+    elif unit == 'm' : mul = 1000
+    elif unit == 'um' : mul = 0.001
+    elif unit == 'nm' : mul = 0.000001
+    elif unit == 'dm' : mul = 100
+    elif unit == 'm' : mul = 1000
+    elif unit == 'km' : mul = 1000000
+
+    try:
+        px = mul * float(pos['x'])
+        py = mul * float(pos['y'])
+        pz = mul * float(pos['z'])
+    except:
+        px = py = pz = 0
+        
+    return px, py, pz     
+
 # Return x,y,z from position definition 
 def getElementPosition(xmlElem) :
     # get Position from local element 
@@ -358,11 +401,13 @@ def getElementPosition(xmlElem) :
 
 def getDefinedPosition(name) :
     # get Position from define section 
-    pos = define.find("position[@name='%s']" % name )
+    #pos = define.find("position[@name='%s']" % name )
+    pos = positions[name]
     if pos is not None :
-        #print('Position : '+str(ET.tostring(pos)))
-        trace(pos.attrib)
-        return(getPositionFromAttrib(pos))
+        #print('Position : '+str(pos))
+        trace(pos)
+        #return(getPositionFromAttrib(pos))
+        return(getPositionFromDict(pos))
     else :
        return 0,0,0
 
@@ -486,4 +531,3 @@ def quad(v1,v2,v3,v4) :
     w1 = Part.makePolygon([v1,v2,v3,v4,v1])
     f1 = Part.Face(w1)
     return(f1)
-
