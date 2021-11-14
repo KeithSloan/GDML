@@ -1197,12 +1197,22 @@ def processIsotopes(isotopesGrp) :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
         name = isotope.get('name')
+        isObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
+        GDMLisotope(isObj,name,N,Z)
         atom = isotope.find('atom')
-        unit = atom.get('unit','g/mole')
-        value = GDMLShared.getVal(atom,'value',1)
-        #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
-        isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
-        GDMLisotope(isoObj,name,N,Z,unit,value)
+        if atom is not None :
+           unit = atom.get('unit')
+           if unit is not None :
+              isObj.addProperty('App::PropertyString','unit','Unit').unit = unit
+           type = atom.get('type')           
+           if type is not None :
+              isObj.addProperty('App::PropertyString','type','Type').type = type
+           if atom.get('value') is not None :
+              value = GDMLShared.getVal(atom,'value',1)
+              isObj.addProperty('App::PropertyFloat','value','Value').value = value
+
+
+
 
 def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction

@@ -247,15 +247,15 @@ def getRef(ptr, name) :
 
 def getMultLen(unit) :
     if unit == 'mm' : return(1)
-       elif unit == 'cm' : return(10)
-       elif unit == 'm' : return(1000)
-       elif unit == 'um' : return(0.001)
-       elif unit == 'nm' : return(0.000001)
-       elif unit == 'dm' : return(100)
-       elif unit == 'm' : return(1000)
-       elif unit == 'km' : return(1000000)
-       print('unit not handled : '+unit)
-       return 1
+    elif unit == 'cm' : return(10)
+    elif unit == 'm' : return(1000)
+    elif unit == 'um' : return(0.001)
+    elif unit == 'nm' : return(0.000001)
+    elif unit == 'dm' : return(100)
+    elif unit == 'm' : return(1000)
+    elif unit == 'km' : return(1000000)
+    print('unit not handled : '+unit)
+    return 1
 
 
 def getMult(fp) :
