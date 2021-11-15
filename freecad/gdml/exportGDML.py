@@ -2282,20 +2282,9 @@ def export(exportList,filepath) :
     print('filepath : '+path)
     print('file extension : '+fileExt)
 
-    if fileExt == '.gemc' :
-       exportGEMC(first, path, False)
-
-    elif fileExt == '.GEMC' :
-       exportGEMC(first, path, True)
-
-    else :
+    if fileExt.lower() == '.gdml' :
        if first.TypeId == "App::Part" :
-          if hasattr(first,'InList') :
-             if len(first.InList) == 0 : 
-                exportGDMLworld(first,filepath,fileExt)
-             else :
-                print('Export XML structure & solids')
-                exportGDML(first,filepath,'.xml')
+          exportGDMLworld(first,filepath,fileExt)
 
        elif first.Label == "Materials" :
           exportMaterials(first,filepath)
@@ -2305,4 +2294,13 @@ def export(exportList,filepath) :
           from PySide import QtGui
           QtGui.QMessageBox.critical(None,'Need to select a Part for export', \
                  'Press OK')
+    
+    elif fileExt.lower == '.xml' :
+         print('Export XML structure & solids')
+         exportGDML(first,filepath,'.xml')
 
+    if fileExt == '.gemc' :
+       exportGEMC(first, path, False)
+
+    elif fileExt == '.GEMC' :
+       exportGEMC(first, path, True)
