@@ -220,7 +220,7 @@ def createLVandPV(obj, name, solidName):
     ET.SubElement(lvol, 'materialref', {'ref': 'SSteel0x56070ee87d10'})
     ET.SubElement(lvol, 'solidref', {'ref': solidName})
     # Place child physical volume in World Volume
-    phys = ET.SubElement(lvol, 'physvol',{'name':'pv'+name})
+    phys = ET.SubElement(lvol, 'physvol',{'name':'PV'+name})
     ET.SubElement(phys, 'volumeref', {'ref': pvName})
     x = pos[0]
     y = pos[1]
@@ -563,7 +563,7 @@ def processSphereObject(obj, addVolsFlag) :
 def addPhysVol(xmlVol, volName) :
     GDMLShared.trace("Add PhysVol to Vol : "+volName) 
     #print(ET.tostring(xmlVol))
-    pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
+    pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV'+volName})
     ET.SubElement(pvol,'volumeref',{'ref':volName})
     return pvol
 
@@ -587,7 +587,7 @@ def addPhysVolPlacement(obj, xmlVol, volName) :
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
        if not hasattr(obj,'CopyNumber') :
-          pvol = ET.SubElement(xmlVol,'physvol',{'name':volName})
+          pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV'+volName})
        else :
           cpyNum = str(obj.CopyNumber)
           GDMLShared.trace('CopyNumber : '+cpyNum)
