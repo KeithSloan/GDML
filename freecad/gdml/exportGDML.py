@@ -915,7 +915,7 @@ def processGDMLTessellatedObject(obj) :
         n = f.normalAt(0,0)
         dot = n.dot(v)
         clockWise = dot < 0
-        print(f'Normal at : {n} dot {dot} {clockWise}')
+        #print(f'Normal at : {n} dot {dot} {clockWise}')
         if len(f.Edges) == 3 :
            if clockWise :
               ET.SubElement(tess,'triangular',{ \
