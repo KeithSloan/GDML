@@ -909,12 +909,13 @@ def processGDMLTessellatedObject(obj) :
     tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
     for v in obj.Shape.Vertexes :
         exportDefineVertex(tessVname,v)
-    v = FreeCAD.Vector(0,0,1)
+    #v = FreeCAD.Vector(0,0,1)
+    v = obj.Shape.CenterOfMass
     for f in obj.Shape.Faces :
         n = f.normalAt(0,0)
         dot = n.dot(v)
         clockWise = dot < 0
-        #print(f'Normal at : {n} dot {dot} {clockWise}')
+        print(f'Normal at : {n} dot {dot} {clockWise}')
         if len(f.Edges) == 3 :
            if clockWise :
               ET.SubElement(tess,'triangular',{ \
