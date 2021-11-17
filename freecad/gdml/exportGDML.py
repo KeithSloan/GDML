@@ -168,11 +168,11 @@ def exportDefine(name, v) :
     ET.SubElement(define,'position',{'name' : name, 'unit': 'mm',   \
                 'x': str(v[0]), 'y': str(v[1]), 'z': str(v[2]) })
 
-def exportDefineVertex(name, v) :
+def exportDefineVertex(name, v, index) :
     global define
     #print('define Vertex : '+name)
     #print(v)
-    ET.SubElement(define,'position',{'name' : name + str(v.hashCode()), \
+    ET.SubElement(define,'position',{'name' : name + str(index), \
            'unit': 'mm', 'x': str(v.X), 'y': str(v.Y), 'z': str(v.Z) })
 
 def defineWorldBox(bbox):
@@ -906,40 +906,31 @@ def processGDMLTessellatedObject(obj) :
     # Use more readable version
     tessVname = tessName + '_'
     #print(dir(obj))
+    vertexHashcodeDict = {}
+    
     tess = ET.SubElement(solids, 'tessellated',{'name': tessName})
-    for v in obj.Shape.Vertexes :
-        exportDefineVertex(tessVname,v)
-    for f in obj.Shape.Faces :
-        #print(f'Normal at : {n} dot {dot} {clockWise}')
-        print(f'Orientation : {f.Orientation}')     
-        if len(f.Edges) == 3 :
-           if f.Orientation == True :
-              ET.SubElement(tess,'triangular',{ \
-                     'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
-                     'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
-                     'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
-                     'type':'ABSOLUTE'})
-           else :
-              ET.SubElement(tess,'triangular',{ \
-                     'vertex1': tessVname+str(f.Vertexes[2].hashCode()), \
-                     'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
-                     'vertex3': tessVname+str(f.Vertexes[0].hashCode()), \
-                     'type':'ABSOLUTE'})
+    for i, v in enumerate(obj.Shape.Vertexes) :
+       vertexHashcodeDict[v.hashCode()] = i
+       exportDefineVertex(tessVname,v,i)
 
-        elif len(f.Edges) == 4 :
-           if f.Orientation == True :
-              ET.SubElement(tess,'quadrangular',{ \
-                     'vertex1': tessVname+str(f.Vertexes[0].hashCode()), \
-                     'vertex2': tessVname+str(f.Vertexes[1].hashCode()), \
-                     'vertex3': tessVname+str(f.Vertexes[2].hashCode()), \
-                     'vertex4': tessVname+str(f.Vertexes[3].hashCode()), \
+    for f in obj.Shape.Faces :
+        vertexes = f.OuterWire.OrderedVertexes
+        if len(f.Edges) == 3 :
+           i0 = vertexHashcodeDict[vertexes[0].hashCode()]
+           i1 = vertexHashcodeDict[vertexes[1].hashCode()]
+           i2 = vertexHashcodeDict[vertexes[2].hashCode()]
+           ET.SubElement(tess,'triangular',{ \
+                     'vertex1': tessVname+str(i0), \
+                     'vertex2': tessVname+str(i1), \
+                     'vertex3': tessVname+str(i2), \
                      'type':'ABSOLUTE'})
-           else :
-              ET.SubElement(tess,'quadrangular',{ \
-                     'vertex1': tessVname+str(f.Vertexes[3].hashCode()), \
-                     'vertex2': tessVname+str(f.Vertexes[2].hashCode()), \
-                     'vertex3': tessVname+str(f.Vertexes[1].hashCode()), \
-                     'vertex4': tessVname+str(f.Vertexes[0].hashCode()), \
+        elif len(f.Edges) == 4 :
+           i3 = vertexHashcodeDict[vertexes[3].hashCode()]
+           ET.SubElement(tess,'quadrangular',{ \
+                     'vertex1': tessVname+str(i0), \
+                     'vertex2': tessVname+str(i1), \
+                     'vertex3': tessVname+str(i2), \
+                     'vertex4': tessVname+str(i3), \
                      'type':'ABSOLUTE'})
 
     return tess, tessName
