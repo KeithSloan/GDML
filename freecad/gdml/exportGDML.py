@@ -911,6 +911,7 @@ def processGDMLTessellatedObject(obj) :
         exportDefineVertex(tessVname,v)
     for f in obj.Shape.Faces :
         #print(f'Normal at : {n} dot {dot} {clockWise}')
+        print(f'Orientation : {f.Orientation}')     
         if len(f.Edges) == 3 :
            if f.Orientation == True :
               ET.SubElement(tess,'triangular',{ \
