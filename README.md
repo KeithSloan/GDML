@@ -138,7 +138,11 @@ will create
     D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\Lib\site-packages\gmsh-4.6.0-Windows64-sdk
      
 # GDML WORKBENCH USAGE & DETAILS 
-For details on using the workbench please see the wiki [GDML Workbench WIKI](https://github.com/KeithSloan/GDML/wiki)
+
+For details on
+
+* Using the workbench please see the wiki [GDML Workbench WIKI](https://github.com/KeithSloan/GDML/wiki)
+* Converting STEP files to GDML see the wiki [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate) 
 
 
 ## FOLLOWING TO BE MOVED TO WIKI
