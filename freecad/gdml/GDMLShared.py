@@ -224,10 +224,18 @@ def getVal(ptr,var,vtype = 1) :
        #
        #else :
        trace("chkval : "+str(chkval))
+       print("chkval : "+str(chkval))
+       print(type(chkval))
        if vtype == 1 :
-          ret = float(eval(chkval))
+          try :
+              ret = float(eval(chkval))
+          except :
+              ret = float(chkval)
        else :
-          ret = int(eval(chkval))
+          try :
+              ret = int(eval(chkval))
+          except :
+              ret = int(chkval)
        trace('return value : '+str(ret))
        return(ret)
     else :
