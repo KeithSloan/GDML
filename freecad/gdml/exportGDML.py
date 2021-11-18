@@ -1687,9 +1687,9 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       if case("Mesh::Feature") :
          print("   Mesh Feature") 
          # test and Fix
-         processMesh(obj, obj.Mesh, obj.Name)
-         addVolRef(xmlVol, volName, solidName, obj)
-         print('Need to add code for Mesh Material and colour')
+         #processMesh(obj, obj.Mesh, obj.Name)
+         #addVolRef(xmlVol, volName, solidName, obj)
+         #print('Need to add code for Mesh Material and colour')
          #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
          return idx + 1
