@@ -1714,15 +1714,15 @@ class GDMLTrd(GDMLsolid) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour = None) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
-      obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
+      obj.addProperty("App::PropertyFloat","z","GDMLTrd","z").z=z
       obj.addProperty("App::PropertyFloat","x1","GDMLTrd", \
-                      "Length x at y= -y1 face -z").x1=x1
+                      "Length x at face -z/2").x1=x1
       obj.addProperty("App::PropertyFloat","x2","GDMLTrd", \
-                      "Length x at y= +y1 face -z").x2=x2
+                      "Length x at face +z/2").x2=x2
       obj.addProperty("App::PropertyFloat","y1","GDMLTrd", \
-                      "Length y at face -z").y1=y1
+                      "Length y at face -z/2").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrd", \
-                      "Length y at face +z").y2=y2
+                      "Length y at face +z/2").y2=y2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrd","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
@@ -1764,7 +1764,7 @@ class GDMLTrd(GDMLsolid) :
        x2 = (fp.x2 * mul)/2
        y1 = (fp.y1 * mul)/2
        y2 = (fp.y2 * mul)/2
-       z  = fp.z * mul
+       z  = (fp.z * mul)/2
        v1 = FreeCAD.Vector(-x1, -y1, -z)
        v2 = FreeCAD.Vector(-x1, +y1, -z)
        v3 = FreeCAD.Vector(x1,  +y1, -z)
