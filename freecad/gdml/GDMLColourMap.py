@@ -33,6 +33,17 @@ import FreeCADGui
 #from PySide2 import QtGui, QtCore
 from PySide import QtGui, QtCore
 
+if FreeCADGui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
+
 def resetGDMLColourMap():
     print('Reset Colour Map')
     global workBenchColourMap
@@ -131,10 +142,46 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setGeometry( 250, 450, 550, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
-      lay = QtGui.QGridLayout(self)
+      self.buttonNew = QtGui.QPushButton(translate('GDML','New'))
+      self.buttonNew.clicked.connect(self.onNew)
+      self.buttonLoad = QtGui.QPushButton(translate('GDML','Load'))
+      self.buttonLoad.clicked.connect(self.onLoad)
+      self.buttonScan = QtGui.QPushButton(translate('GDML','Scan'))
+      self.buttonScan.clicked.connect(self.onScan)
+      headerLayout = QtGui.QHBoxLayout()
+      headerLayout.addWidget(self.buttonNew)
+      headerLayout.addWidget(self.buttonLoad)
+      headerLayout.addWidget(self.buttonScan)
+      self.coloursLayout = QtGui.QGridLayout()
+      mainLayout = QtGui.QVBoxLayout(self)
+      mainLayout.addLayout(headerLayout)
+      mainLayout.addLayout(self.coloursLayout)
       
       materialList = self.getGDMLMaterials()
       self.mapList = GDMLColourMapList(materialList)
+      self.colorList = []
+      self.buildList()
+      print(self.colorList)
+      #for c in self.colorList :
+      #    self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
+      # create Labels
+      self.label1 = self.mapList 
+      self.coloursLayout.addWidget(self.label1,0,0)
+      #  cancel button
+      cancelButton = QtGui.QPushButton('Cancel', self)
+      cancelButton.clicked.connect(self.onCancel)
+      cancelButton.setAutoDefault(True)
+      self.coloursLayout.addWidget(cancelButton, 2, 1)
+
+      # OK button
+      okButton = QtGui.QPushButton('Set Materials', self)
+      okButton.clicked.connect(self.onOk)
+      self.coloursLayout.addWidget(okButton, 2, 0)
+      # now make the window visible
+      self.setLayout(mainLayout)
+      self.show()
+
+   def buildList(self) :
       doc = FreeCAD.ActiveDocument
       print('Active')
       print(doc)
@@ -155,27 +202,12 @@ class GDMLColourMap(QtGui.QDialog) :
                             try:
                                col = self.colorList.index(colour)
                             except ValueError:
+                               print('Add colour')
                                self.colorList.append(colour)
-      print(self.colorList)
-      for c in self.colorList :
-          self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
-      # create Labels
-      self.label1 = self.mapList 
-      lay.addWidget(self.label1,0,0)
-      #  cancel button
-      cancelButton = QtGui.QPushButton('Cancel', self)
-      cancelButton.clicked.connect(self.onCancel)
-      cancelButton.setAutoDefault(True)
-      lay.addWidget(cancelButton, 2, 1)
+                               self.addColour(colour)
+   def addColour(self,c) :
+       self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
 
-      # OK button
-      okButton = QtGui.QPushButton('OK', self)
-      okButton.clicked.connect(self.onOk)
-      lay.addWidget(okButton, 2, 0)
-      # now make the window visible
-      self.setLayout(lay)
-      self.show()
-      
    def lookupColour(self, col) :
        print('Lookup Colour')
        idx = self.colorList.index(col)
@@ -194,11 +226,26 @@ class GDMLColourMap(QtGui.QDialog) :
        self.result = userOK
        self.close()
 
+   def onNew(self) :
+       print('onNew')
+
+   def onLoad(self) :
+       print('onLoad')
+
+   def onScan(self) :
+       print('onScan')
+       self.buildList()
+       print('Update Layout')
+       self.coloursLayout.update()
+
    def getGDMLMaterials(self):
+       print('getGDMLMaterials')
        matList = []
        doc = FreeCAD.activeDocument()
        try :
           materials = doc.Materials
+          geant4 = doc.Geant4
+          g4Mats = geant4.G4Materials
        except :
           from .importGDML import processXML
           from .init_gui   import joinDir
@@ -209,6 +256,11 @@ class GDMLColourMap(QtGui.QDialog) :
 
        if materials != None :
           for m in materials.OutList :
+              matList.append(m.Label)
+          #print(matList)
+
+       if geant4 != None :
+          for m in geant4.OutList :
               matList.append(m.Label)
           #print(matList)
 
