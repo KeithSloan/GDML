@@ -202,8 +202,7 @@ def processRotation(doc):
     # need to be done ?
     trace("Rotations Not processed & Displayed")
 
-def getVal(ptr,var,vtype = 1) :
-    # vtype 1 - float vtype 2 int
+def getVal(ptr,var) :
     # get value for var variable var
     # all of math must be imported at global level
     #print ptr.attrib
@@ -224,23 +223,14 @@ def getVal(ptr,var,vtype = 1) :
        #
        #else :
        trace("chkval : "+str(chkval))
-       if vtype == 1 :
-          try :
-              ret = float(eval(chkval))
-          except :
-              ret = float(chkval)
-       else :
-          try :
-              ret = int(eval(chkval))
-          except :
-              ret = int(chkval)
+       try :
+          ret = float(eval(chkval))
+       except :
+          ret = float(chkval)
        trace('return value : '+str(ret))
        return(ret)
     else :
-       if vtype == 1 :
-          return (0.0)
-       else :
-          return(0)
+       return (0.0)
 
 # get ref e.g name world, solidref, materialref
 def getRef(ptr, name) :
