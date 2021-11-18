@@ -33,6 +33,17 @@ import FreeCADGui
 #from PySide2 import QtGui, QtCore
 from PySide import QtGui, QtCore
 
+if FreeCADGui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
+
 def resetGDMLColourMap():
     print('Reset Colour Map')
     global workBenchColourMap
@@ -131,7 +142,18 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setGeometry( 250, 450, 550, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
-      lay = QtGui.QGridLayout(self)
+      self.buttonNew    = QtGui.QPushButton(translate('GDML','New'))
+      self.buttonLoad   = QtGui.QPushButton(translate('GDML','Load'))
+      self.buttonScan   = QtGui.QPushButton(translate('GDML','Scan'))
+      headerLayout = QtGui.QHBoxLayout()
+      headerLayout.addWidget(self.buttonNew)
+      headerLayout.addWidget(self.buttonLoad)
+      headerLayout.addWidget(self.buttonScan)
+      coloursLayout = QtGui.QGridLayout()
+      mainLayout = QtGui.QVBoxLayout()
+      #mainLayout.addWidget(self.headerLayout)
+      #mainLayout.addLayout(headerLayout)
+      #mainLayout.addLayout(coloursLayout)
       
       materialList = self.getGDMLMaterials()
       self.mapList = GDMLColourMapList(materialList)
@@ -161,19 +183,19 @@ class GDMLColourMap(QtGui.QDialog) :
           self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
       # create Labels
       self.label1 = self.mapList 
-      lay.addWidget(self.label1,0,0)
+      coloursLayout.addWidget(self.label1,0,0)
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
       cancelButton.clicked.connect(self.onCancel)
       cancelButton.setAutoDefault(True)
-      lay.addWidget(cancelButton, 2, 1)
+      coloursLayout.addWidget(cancelButton, 2, 1)
 
       # OK button
-      okButton = QtGui.QPushButton('OK', self)
+      okButton = QtGui.QPushButton('OK111', self)
       okButton.clicked.connect(self.onOk)
-      lay.addWidget(okButton, 2, 0)
+      coloursLayout.addWidget(okButton, 2, 0)
       # now make the window visible
-      self.setLayout(lay)
+      self.setLayout(mainLayout)
       self.show()
       
    def lookupColour(self, col) :
