@@ -224,8 +224,6 @@ def getVal(ptr,var,vtype = 1) :
        #
        #else :
        trace("chkval : "+str(chkval))
-       print("chkval : "+str(chkval))
-       print(type(chkval))
        if vtype == 1 :
           try :
               ret = float(eval(chkval))
