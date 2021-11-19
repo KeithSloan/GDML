@@ -235,9 +235,9 @@ def createCone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLCone, ViewProvider
     GDMLShared.trace("CreateCone : ")
     GDMLShared.trace(solid.attrib)
-    rmin1 = GDMLShared.getVal(solid,'rmin1')
+    rmin1 = GDMLShared.getVal(solid,'rmin1',0)
     rmax1 = GDMLShared.getVal(solid,'rmax1')
-    rmin2 = GDMLShared.getVal(solid,'rmin2')
+    rmin2 = GDMLShared.getVal(solid,'rmin2',0)
     rmax2 = GDMLShared.getVal(solid,'rmax2')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -388,7 +388,7 @@ def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.findall('zplane'))
     for zplane in solid.findall('zplane') : 
         GDMLShared.trace(zplane)
-        rmin = GDMLShared.getVal(zplane,'rmin')
+        rmin = GDMLShared.getVal(zplane,'rmin',0)
         rmax = GDMLShared.getVal(zplane,'rmax')
         z = GDMLShared.getVal(zplane,'z')
         myzplane=FreeCAD.ActiveDocument.addObject('App::FeaturePython','zplane') 
@@ -414,7 +414,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
-    numsides = GDMLShared.getVal(solid,'numsides',2)
+    numsides = int(GDMLShared.getVal(solid,'numsides'))
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     mypolyhedra=part.newObject("Part::FeaturePython","GDMLPolyhedra:"+ \
@@ -429,7 +429,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.findall('zplane'))
     for zplane in solid.findall('zplane') : 
         GDMLShared.trace(zplane)
-        rmin = GDMLShared.getVal(zplane,'rmin')
+        rmin = GDMLShared.getVal(zplane,'rmin',0)
         rmax = GDMLShared.getVal(zplane,'rmax')
         z = GDMLShared.getVal(zplane,'z')
         myzplane=FreeCAD.ActiveDocument.addObject('App::FeaturePython','zplane') 
@@ -454,7 +454,7 @@ def createSphere(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace("CreateSphere : ")
     GDMLShared.trace("Display Mode : "+str(displayMode))
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin')
+    rmin = GDMLShared.getVal(solid,'rmin',0)
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
@@ -502,7 +502,7 @@ def createTorus(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTorus : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin')
+    rmin = GDMLShared.getVal(solid,'rmin',0)
     rmax = GDMLShared.getVal(solid,'rmax')
     rtor = GDMLShared.getVal(solid,'rtor')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -535,12 +535,12 @@ def createTrap(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y2 = GDMLShared.getVal(solid,'y2')
     theta = GDMLShared.getVal(solid,'theta')
     phi = GDMLShared.getVal(solid,'phi')
-    alpha = GDMLShared.getVal(solid,'alpah1')
+    alpha1 = GDMLShared.getVal(solid,'alpha1')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     #print z
     mytrap=part.newObject("Part::FeaturePython","GDMLTrap:"+getName(solid))
-    GDMLTrap(mytrap,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha,aunit,lunit, \
+    GDMLTrap(mytrap,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha1,aunit,lunit, \
              material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -597,8 +597,8 @@ def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if FreeCAD.GuiUp :
            ViewProvider(my2dVert)
     for section in solid.findall('section') : 
-        zOrder = GDMLShared.getVal(section,'zOrder',2)     # Get Int
-        zPosition = GDMLShared.getVal(section,'zPosition',2) # Get Int
+        zOrder = int(GDMLShared.getVal(section,'zOrder'))       # Get Int
+        zPosition = int(GDMLShared.getVal(section,'zPosition')) # Get Int
         xOffset = GDMLShared.getVal(section,'xOffset')
         yOffset = GDMLShared.getVal(section,'yOffset')
         scalingFactor = GDMLShared.getVal(section,'scalingFactor')
@@ -621,7 +621,7 @@ def createTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTube, ViewProvider
     GDMLShared.trace("CreateTube : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin')
+    rmin = GDMLShared.getVal(solid,'rmin',0)
     rmax = GDMLShared.getVal(solid,'rmax')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -648,7 +648,7 @@ def createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLcutTube, ViewProvider
     GDMLShared.trace("CreateCutTube : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin')
+    rmin = GDMLShared.getVal(solid,'rmin',0)
     rmax = GDMLShared.getVal(solid,'rmax')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -928,7 +928,7 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
             break
 
         if case('union'):
-            print(f'union colour : {colour}')
+            GDMLShared.trace(f'union colour : {colour}')
             return(parseBoolean(part,solid,'Part::Fuse', \
                   material,colour,px,py,pz,rot,displayMode))
             break
@@ -1456,11 +1456,11 @@ def processMaterialsG4(G4rp, root) :
 
 
 def processGDML(doc,filename,prompt,initFlg):
+    # Process GDML 
 
     import time
     from . import GDMLShared
     from . import GDMLObjects
-    
     #GDMLShared.setTrace(True)
 
     phylvl = -1 # Set default

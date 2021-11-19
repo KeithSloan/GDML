@@ -77,7 +77,7 @@ def checkMaterial(material) :
     return True
 
 def setMaterial(obj, m) :
-    #print('setMaterial')
+    GDMLShared.trace('setMaterial : '+m)
     if MaterialsList is not None :
        if len(MaterialsList) > 0 :
           obj.material = MaterialsList
@@ -1592,7 +1592,7 @@ class GDMLTrap(GDMLsolid) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \
                 aunit, lunit, material, colour = None):
       super().__init__(obj)
-      "General Trapezoid"
+      #"General Trapezoid"
       obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").z=z
       obj.addProperty("App::PropertyFloat","theta","GDMLTrap","theta"). \
                        theta=theta

@@ -62,33 +62,24 @@ def trace(s):
        tracefp.flush()
     return
 
+def getFloatVal(expr):
+    try:
+        ret = float(eval(expr))
+    except:
+        # eval might fail on constants with leading zeros in python3
+        # so we try direct conversion
+        try:
+            ret = float(expr)
+        except:
+            ret = 0.0
+            print("Illegal float value: {}".format(expr))
+    return ret
+            
+
 def setDefine(val) :
     #print("Set Define")
-    global define, positions
+    global define
     define = val
-    positions = {}
-    for elem in define.findall('position'):
-        atts = elem.attrib
-        if 'unit' in atts:
-            unit = atts['unit']
-        else:
-            unit = 'mm'
-        if 'x' in atts:
-            x = atts['x']
-        else:
-            x = 0
-        if 'y' in atts:
-            y = atts['y']
-        else:
-            y = 0
-        if 'z' in atts:
-            z = atts['z']
-        else:
-            z = 0
-
-        
-        positions[atts['name']] = {'unit': unit, \
-                                   'x': x, 'y': y, 'z': z}
 
 def processConstants(doc):
     # all of math must be imported at global level
@@ -168,14 +159,9 @@ def processQuantities(doc):
         value = cdefine.attrib.get('value')
         trace('value : '+ value)
         #constDict[name] = value
-        if type == 'length' :
-           mul = getMultLen(unit)
-           # Do we need to adjust length ?
-           if mul != 1 :
-              # Adjust length
-              value = value+'* mul'
-        else :
-           print(f'Quantity type : {type} not yet handled')
+        trace(name)
+        #print(dir(name))
+        #print('Name  : '+name)
         try :
           globals()[name] = eval(value)
           #print('Value : '+value)
@@ -188,11 +174,33 @@ def processQuantities(doc):
     #print("Globals")
     #print(str(globals()))
 
-
-
 def processPosition(doc):
     # need to be done ?
-    trace("Position Not processed & Displayed")
+    global positions
+    positions = {}
+    for elem in define.findall('position'):
+        atts = elem.attrib
+        if 'unit' in atts:
+            unit = atts['unit']
+        else:
+            unit = 'mm'
+        if 'x' in atts:
+            x = getFloatVal(atts['x'])
+        else:
+            x = 0
+        if 'y' in atts:
+            y = getFloatVal(atts['y'])
+        else:
+            y = 0
+        if 'z' in atts:
+            z = getFloatVal(atts['z'])
+        else:
+            z = 0
+
+        positions[atts['name']] = {'unit': unit, \
+                                   'x': x, 'y': y, 'z': z}
+
+    trace("Positions processed")
 
 def processExpression(doc):
     # need to be done ?
@@ -202,35 +210,31 @@ def processRotation(doc):
     # need to be done ?
     trace("Rotations Not processed & Displayed")
 
-def getVal(ptr,var) :
-    # get value for var variable var
+def getVal(ptr,var,default=0) :
     # all of math must be imported at global level
     #print ptr.attrib
     # is the variable defined in passed attribute
     if var in ptr.attrib :
        # if yes get its value
        vval = ptr.attrib.get(var)
-       trace("vval : "+str(vval))
+       trace(var+" : "+str(vval))
        if vval[0] == '&' :  # Is this referring to an HTML entity constant
          chkval = vval[1:]
        else :
           chkval = vval
-       # check if defined as a constant
-       #if vval in constDict :
-       #   c = constDict.get(vval)
-       #   #print c
-       #   return(eval(c))
-       #
-       #else :
        trace("chkval : "+str(chkval))
-       try :
-          ret = float(eval(chkval))
-       except :
-          ret = float(chkval)
+       try:
+           ret = float(eval(chkval))
+       except:
+           try:
+              ret = float(chkval)
+           except:
+              print("Illegal float: {}" % chkval)
+              ret = 0.0
+                   
        trace('return value : '+str(ret))
        return(ret)
-    else :
-       return (0.0)
+    return default
 
 # get ref e.g name world, solidref, materialref
 def getRef(ptr, name) :
@@ -240,19 +244,6 @@ def getRef(ptr, name) :
        trace(name + ' : ' + ref)
        return ref
     return wrk
-
-def getMultLen(unit) :
-    if unit == 'mm' : return(1)
-    elif unit == 'cm' : return(10)
-    elif unit == 'm' : return(1000)
-    elif unit == 'um' : return(0.001)
-    elif unit == 'nm' : return(0.000001)
-    elif unit == 'dm' : return(100)
-    elif unit == 'm' : return(1000)
-    elif unit == 'km' : return(1000000)
-    print('unit not handled : '+unit)
-    return 1
-
 
 def getMult(fp) :
     unit = 'mm' # set default
@@ -271,7 +262,15 @@ def getMult(fp) :
            unit = fp.attrib['lunit']
     else :
         return 1
-    return getMultLen(unit)
+    if unit == 'mm' : return(1)
+    elif unit == 'cm' : return(10)
+    elif unit == 'm' : return(1000)
+    elif unit == 'um' : return(0.001)
+    elif unit == 'nm' : return(0.000001)
+    elif unit == 'dm' : return(100)
+    elif unit == 'm' : return(1000)
+    elif unit == 'km' : return(1000000)
+    print('unit not handled : '+unit)
 
 def getDegrees(flag, r) :
     import math
