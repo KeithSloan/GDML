@@ -503,6 +503,8 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 * GDML Shapes designed by Jim Austin (jmaustpc)  
 * Cycle icon by Flaticon see www.flaticon.com
+   
+**Very large thank you to Munther Hindi for extensive problem solving**   
 
 **Thank you also to:** 
 
@@ -512,7 +514,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   * Masaki Morita
-  * Munther Hindi
+
   
 * FreeCAD forum members (Apologies if I left anybody out):
 
