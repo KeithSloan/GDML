@@ -826,6 +826,10 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
        # second solid is placed at position and rotation relative to first
        GDMLShared.trace('Create Tool Object')
        mybool.Tool = createSolid(part,tool,material,None,x,y,z,rotBool,displayMode)
+       # For some unknown reasons, inversionof angle in processRotation
+       # should not be peformed for boolean Tool
+       mybool.Tool.Placement.Rotation.Angle = \
+                  -mybool.Tool.Placement.Rotation.Angle
        # Okay deal with position of boolean
        GDMLShared.trace('Boolean Position and rotation')
        GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
