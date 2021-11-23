@@ -114,6 +114,33 @@ There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended th
 
 ### gmsh - python library
 
+FreeCAD & Gmsh should both be using the same version of OCC ( OpenCasCade )
+
+|   OCC   |   FreeCAD   |     gmsh      |
+|---------|-------------|---------------|
+|    7.4  |    0.19.1   | 4.7.0 - 4.7.1 |
+|    7.6  |             | 4.8.0 - 4.8.4 |
+
+At the time of writing a prebuilt version of FreeCAD with OCC 7.6 is not available
+
+Note: The version of OCC with FreeCAD 0.19.2 has a regession with STEP functionality
+
+You can check the version FreeCAD is using with About FreeCAD, copy to clipboard, paste.
+
+For the version used by Gmsh run in a python console
+
+    import gmsh
+
+    gmsh.initialize()
+    print(gmsh.option.getString("General.BuildInfo"))
+    gmsh.finalize()
+    
+Or run gmshVer.py ( In the Workbench Utils directory )
+    
+To see what verions of Gmsh are available to install
+
+    pip install gmsh==
+        
 Must be installed in a location that FreeCAD sees to check path FreeCAD uses from a command line/window.
 
     freecad -c
@@ -122,7 +149,7 @@ Must be installed in a location that FreeCAD sees to check path FreeCAD uses fro
 
 In a command window / line
 
-    pip install --upgrade --target <Full path to directory> gmsh
+    pip install --upgrade --target <Full path to directory> gmsh=='version'
   
 Windows: if no --target option upgrade pip   
 
@@ -503,6 +530,8 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 
 * GDML Shapes designed by Jim Austin (jmaustpc)  
 * Cycle icon by Flaticon see www.flaticon.com
+   
+**Very large thank you to Munther Hindi for extensive problem solving**   
 
 **Thank you also to:** 
 
@@ -512,7 +541,7 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
   * Hilden Timo
   * Atanu Quant
   * Masaki Morita
-  * Munther Hindi
+
   
 * FreeCAD forum members (Apologies if I left anybody out):
 
