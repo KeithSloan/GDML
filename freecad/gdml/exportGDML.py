@@ -1161,8 +1161,11 @@ def createMaterials(group):
 def createElements(group) :
     global materials
     for obj in group :
+        #print(f'Element : {obj.Label}')
         item = ET.SubElement(materials,'element',{'name': \
                  nameFromLabel(obj.Label)})
+        # Common code IsoTope and Elements1
+        processIsotope(obj, item)
 
         if len(obj.Group) > 0 :
            for o in obj.Group :
