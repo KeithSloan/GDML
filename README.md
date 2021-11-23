@@ -126,6 +126,7 @@ At the time of writing a prebuilt version of FreeCAD with OCC 7.6 is not availab
 Note: The version of OCC with FreeCAD 0.19.2 has a regession with STEP functionality
 
 You can check the version FreeCAD is using with About FreeCAD, copy to clipboard, paste.
+
 For the version used by Gmsh running in a python console
 
     import gmsh
