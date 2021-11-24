@@ -680,18 +680,17 @@ class GDMLElCone(GDMLsolid) :
        mat.A11 = dx
        mat.A22 = dy
        mat.A33 = 1
-       mat.A34 = -zcut # move bottom of cone to -zcut
+       #mat.A34 = -zcut # move bottom of cone to -zcut
+       mat.A34 = zmax/2-zcut # move bottom of cone to -zcut
        mat.A44 = 1
        xmax = dx*rmax
        ymax = dy*rmax
        cone2 = cone1.transformGeometry(mat)
        if zcut != None :
           box = Part.makeBox(2*xmax,2*ymax,zmax)
-          pl = FreeCAD.Placement()
-          # Only need to move to semi axis
-          pl.move(FreeCAD.Vector(-xmax,- ymax, zcut))
-          box.Placement = pl
-          fp.Shape = cone2.cut(box)
+          base = FreeCAD.Vector(-xmax,-ymax, 0)
+          box2 = translate(box,base)
+          fp.Shape = cone2.common(box2)
        else :
           fp.Shape = cone2
        fp.Placement = currPlacement   
