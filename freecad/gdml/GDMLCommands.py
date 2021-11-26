@@ -489,6 +489,8 @@ class SphereFeature:
     def Activated(self):
         from .GDMLObjects import GDMLSphere, ViewProvider
         objPart, material = getSelectedPM()
+        #print(objPart)
+        #print(material)
         if objPart is None :
            vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Sphere")
         else :
@@ -1367,8 +1369,8 @@ class CompoundFeature :
                    mat['ThermalConductivity'] = str(n.conduct) + " W/m/K"
                    mat['ThermalExpansionCoefficient'] = str(n.expand) + " m/m/K"
                    mat['SpecificHeat'] = str(n.specific) + " J/kg/K"
-                   print(mat)
-                   print(mat['Density'])
+                   #print(mat)
+                   #print(mat['Density'])
                    matObj.Material = mat
                    analObj.addObject(matObj)
 
@@ -1404,7 +1406,7 @@ class CompoundFeature :
             print('vol List')   
             print(volList)
             print('Material List')
-            print(matList)
+            #print(matList)
             doc = FreeCAD.activeDocument()
             analysis_object = ObjectsFem.makeAnalysis(doc,"Analysis")
             materials = FreeCAD.ActiveDocument.Materials

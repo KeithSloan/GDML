@@ -77,11 +77,14 @@ def checkMaterial(material) :
     return True
 
 def setMaterial(obj, m) :
-    GDMLShared.trace('setMaterial : '+m)
+    GDMLShared.trace('setMaterial : '+str(m))
     if MaterialsList is not None :
+       #print(MaterialsList)
+       #print(f'm : {m}')
        if len(MaterialsList) > 0 :
           obj.material = MaterialsList
           obj.material = 0
+          #print(obj.material)
           if not ( m == 0 or m == None ) : 
              obj.material = MaterialsList.index(m)
              return
