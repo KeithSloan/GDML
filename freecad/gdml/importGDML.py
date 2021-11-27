@@ -270,7 +270,7 @@ def createElcone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLElCone(myelcone,dx,dy,zmax,zcut,lunit,material,colour)
     GDMLShared.trace("CreateElCone : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
-    base = FreeCAD.Vector(px,py,pz-zmax/2)
+    base = FreeCAD.Vector(px,py,pz)
     #base = FreeCAD.Vector(0,0,0)
     myelcone.Placement = GDMLShared.processPlacement(base,rot)
     GDMLShared.trace(myelcone.Placement.Rotation)
