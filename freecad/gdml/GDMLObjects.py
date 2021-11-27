@@ -77,14 +77,11 @@ def checkMaterial(material) :
     return True
 
 def setMaterial(obj, m) :
-    GDMLShared.trace('setMaterial : '+str(m))
+    print('setMaterial')
     if MaterialsList is not None :
-       #print(MaterialsList)
-       #print(f'm : {m}')
        if len(MaterialsList) > 0 :
           obj.material = MaterialsList
           obj.material = 0
-          #print(obj.material)
           if not ( m == 0 or m == None ) : 
              obj.material = MaterialsList.index(m)
              return
@@ -684,17 +681,17 @@ class GDMLElCone(GDMLsolid) :
        mat.A22 = dy
        mat.A33 = 1
        mat.A34 = -zcut # move bottom of cone to -zcut
-       #mat.A34 = zmax/2-zcut # move bottom of cone to -zcut
        mat.A44 = 1
        xmax = dx*rmax
        ymax = dy*rmax
        cone2 = cone1.transformGeometry(mat)
        if zcut != None :
-          #box = Part.makeBox(2*xmax,2*ymax,zmax)
-          box = Part.makeBox(2*xmax,2*ymax,zcut)
-          base = FreeCAD.Vector(-xmax,-ymax, 0)
-          box2 = translate(box,base)
-          fp.Shape = cone2.common(box2)
+          box = Part.makeBox(2*xmax,2*ymax,zmax)
+          pl = FreeCAD.Placement()
+          # Only need to move to semi axis
+          pl.move(FreeCAD.Vector(-xmax,- ymax, zcut))
+          box.Placement = pl
+          fp.Shape = cone2.cut(box)
        else :
           fp.Shape = cone2
        fp.Placement = currPlacement   
@@ -944,9 +941,10 @@ class GDMLPara(GDMLsolid) :
        if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
           self.createGeometry(fp)
 
+
    def execute(self, fp):
        self.createGeometry(fp)
-   
+
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
@@ -959,27 +957,63 @@ class GDMLPara(GDMLsolid) :
        alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
-       #dir1 = FreeCAD.Vector(400,0,0)
-       dir1 = FreeCAD.Vector(x,0,0)
-       #dir2 = FreeCAD.Vector(400*math.tan(alpha),400,0)
-       dir2 = FreeCAD.Vector(y*math.tan(alpha),y,0)
-       #dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
-       #dir3 = FreeCAD.Vector(z/math.tan(30*math.pi/180),0,z)
-       if phi != 0 :
-            dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
-       else : 
-            dir3 = FreeCAD.Vector(0,0,z)
-       #print(dir1)
-       #print(dir2)
-       #print(dir3)
-       para0 = Part.Vertex(0,0,0)
-       para1 = para0.extrude(dir1)
-       para2 = para1.extrude(dir2)
-       para3 = para2.extrude(dir3)
-       base = FreeCAD.Vector(-x/2,-y/2,-z/2)
-       fp.Shape = translate(para3,base)
+       #Vertexes
+       v1 = FreeCAD.Vector( 0, 0, 0)
+       v2 = FreeCAD.Vector( x, 0, 0)
+       v3 = FreeCAD.Vector( x, y, 0)
+       v4 = FreeCAD.Vector( 0, y, 0)
+       v5 = FreeCAD.Vector( 0, 0, z)
+       v6 = FreeCAD.Vector( x, 0, z)
+       v7 = FreeCAD.Vector( x, y, z)
+       v8 = FreeCAD.Vector( 0, y, z)
+       #
+       # xy faces
+       #
+       vxy1 = [v1, v4, v3, v2, v1]
+       vxy2 = [v5, v6, v7, v8, v5]
+       #
+       # zx faces
+       #
+       vzx1 = [v1, v2, v6, v5, v1]
+       vzx2 = [v3, v4, v8, v7, v3]
+       #
+       # yz faces
+       #
+       vyz1 = [v5, v8, v4, v1, v5]
+       vyz2 = [v2, v3, v7, v6, v2]
+       
+       # Apply alpha angle distortions
+       #
+       dx = z*math.tan(alpha)
+       for i in range(0,4):
+           #vzx2[i][0] = vzx2[i][0] + dx 
+           vzx2[i][0] += dx 
+       #
+       # aply theta, phi distortions
+       #
+       rho = z*math.tan(theta) 
+       dx = rho*math.cos(phi)
+       dy = rho*math.sin(phi)
+       for i in range(0,4):
+           vxy2[i][0] += dx 
+           vxy2[i][1] += dy 
+        
+       fxy1 = Part.Face(Part.makePolygon(vxy1))
+       fxy2 = Part.Face(Part.makePolygon(vxy2))
+       fzx1 = Part.Face(Part.makePolygon(vzx1))
+       fzx2 = Part.Face(Part.makePolygon(vzx2))
+       fyz1 = Part.Face(Part.makePolygon(vyz1))
+       fyz2 = Part.Face(Part.makePolygon(vyz2))
+
+       shell = Part.makeShell([fxy1, fxy2, fzx1, fzx2, fyz1, fyz2])
+       solid = Part.makeSolid(shell)
+
+       # center is mid point of diagonal
+       #
+       center = (v7 - v1)/2
+       fp.Shape = translate(solid, -center)
        fp.Placement = currPlacement
-   
+
 class GDMLPolyhedra(GDMLsolid) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, \
                 material, colour = None) :
