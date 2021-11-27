@@ -1,4 +1,6 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
+# Mon Nov 22 08:31:28 PM PST 2021
+
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -77,14 +79,11 @@ def checkMaterial(material) :
     return True
 
 def setMaterial(obj, m) :
-    GDMLShared.trace('setMaterial : '+str(m))
+    print('setMaterial')
     if MaterialsList is not None :
-       #print(MaterialsList)
-       #print(f'm : {m}')
        if len(MaterialsList) > 0 :
           obj.material = MaterialsList
           obj.material = 0
-          #print(obj.material)
           if not ( m == 0 or m == None ) : 
              obj.material = MaterialsList.index(m)
              return
@@ -257,7 +256,46 @@ def updateColour(obj, colour, material) :
     #print(f'Colour {colour}')
     if colour is not None :
        obj.ViewObject.Transparency = int(colour[3]*100)
- 
+
+def rotateAroundZ(nstep, z, r):
+    #######################################
+    # Create a polyhedron by rotation of two polylines around z-axis
+    #
+    # Input: nstep: number divisions along circle of revolution
+    #        z   - list of z coordinates of polylines
+    #        r   - list of r coordinates of polylines
+    #
+    faces = []
+    deltaPhi = 2*math.pi/nstep
+    verts = []
+    #
+    # generate vertexes
+    #
+    for i,z0 in enumerate(z):
+        r0 = r[i]
+        verts.extend([FreeCAD.Vector(r0*math.cos(j*deltaPhi), \
+                                     r0*math.sin(j*deltaPhi), z0) \
+                      for j in range(0,nstep+1)])  #go past last point, same as first 
+
+    # generate side faces 
+    k = 0
+    for i in range(0, len(z) - 1):
+        faces.extend([make_face4(verts[j+k], \
+                                 verts[j+k+nstep+1], \
+                                 verts[j+k+nstep+2], \
+                                 verts[j+k+1]) \
+                      for j in range(0, nstep)])
+        k += nstep+1
+
+    # generate top, bottom faces
+    ptop = Part.makePolygon(verts[0:nstep+1])
+    faces.append(Part.Face(ptop))
+    pbot = Part.makePolygon(verts[-nstep-1:])
+    faces.append(Part.Face(pbot))
+    
+    return faces
+
+    
 class GDMLColourMapEntry :
    def __init__(self,obj,colour,material) :
       obj.addProperty("App::PropertyColor","colour", \
@@ -656,26 +694,43 @@ class GDMLElCone(GDMLsolid) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
+       # Form the Web page documentation page for elliptical cone:
+       #https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
+       # the parametric equation of the elliptical cone:
+       # x = dx*(zmax - u) * cos(v), v = 0..2Pi (note, as of 2021-11-21, web page mistakingly shows /u)
+       # y = dy*(zmax - u) * sin(v)
+       # z = u, u = -zcut..zcut
+       #Therefore the bottom base of the cone (at z=u=-zcut) has xmax = dxmax = dx*(zmax+zcut)
+       # and ymax=dymax = dy*(zmax+zcut)
+       # The ellipse at the top has simi-major axis dx*(zmax-zcut) and semiminor axis dy*(zmax-zcut)
+       # as per the above, the "bottonm of trhe cone is at z = -zcut
+       # Note that dx is a SCALING factor for the semi major axis, NOT the actual semi major axis
+       # ditto for dy
+       
+       mul = GDMLShared.getMult(fp)
        currPlacement = fp.Placement
-       cone1 = Part.makeCone(100,0,100)
+       rmax = (fp.zmax+fp.zcut)*mul
+       cone1 = Part.makeCone(rmax, 0, rmax)
        mat = FreeCAD.Matrix()
        mat.unity()
-       mul = GDMLShared.getMult(fp)
        # Semi axis values so need to double
-       dx = fp.dx * mul
-       dy = fp.dy * mul
+       dx = fp.dx
+       dy = fp.dy
        zcut = fp.zcut * mul
        zmax = fp.zmax * mul
-       mat.A11 = dx / 100
-       mat.A22 = dy / 100
-       mat.A33 = zmax / 100
+       mat.A11 = dx
+       mat.A22 = dy
+       mat.A33 = 1
+       mat.A34 = -zcut # move bottom of cone to -zcut
        mat.A44 = 1
+       xmax = dx*rmax
+       ymax = dy*rmax
        cone2 = cone1.transformGeometry(mat)
        if zcut != None :
-          box = Part.makeBox(2*dx,2*dy,zcut)
+          box = Part.makeBox(2*xmax,2*ymax,zmax)
           pl = FreeCAD.Placement()
           # Only need to move to semi axis
-          pl.move(FreeCAD.Vector(-dx,-dy,zmax-zcut))
+          pl.move(FreeCAD.Vector(-xmax,- ymax, zcut))
           box.Placement = pl
           fp.Shape = cone2.cut(box)
        else :
@@ -927,9 +982,10 @@ class GDMLPara(GDMLsolid) :
        if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
           self.createGeometry(fp)
 
+
    def execute(self, fp):
        self.createGeometry(fp)
-   
+
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
@@ -942,27 +998,185 @@ class GDMLPara(GDMLsolid) :
        alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
-       #dir1 = FreeCAD.Vector(400,0,0)
-       dir1 = FreeCAD.Vector(x,0,0)
-       #dir2 = FreeCAD.Vector(400*math.tan(alpha),400,0)
-       dir2 = FreeCAD.Vector(y*math.tan(alpha),y,0)
-       #dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
-       #dir3 = FreeCAD.Vector(z/math.tan(30*math.pi/180),0,z)
-       if phi != 0 :
-            dir3 = FreeCAD.Vector(400/math.tan(phi),0,400)
-       else : 
-            dir3 = FreeCAD.Vector(0,0,z)
-       #print(dir1)
-       #print(dir2)
-       #print(dir3)
-       para0 = Part.Vertex(0,0,0)
-       para1 = para0.extrude(dir1)
-       para2 = para1.extrude(dir2)
-       para3 = para2.extrude(dir3)
-       base = FreeCAD.Vector(-x/2,-y/2,-z/2)
-       fp.Shape = translate(para3,base)
+       #Vertexes
+       v1 = FreeCAD.Vector( 0, 0, 0)
+       v2 = FreeCAD.Vector( x, 0, 0)
+       v3 = FreeCAD.Vector( x, y, 0)
+       v4 = FreeCAD.Vector( 0, y, 0)
+       v5 = FreeCAD.Vector( 0, 0, z)
+       v6 = FreeCAD.Vector( x, 0, z)
+       v7 = FreeCAD.Vector( x, y, z)
+       v8 = FreeCAD.Vector( 0, y, z)
+       #
+       # xy faces
+       #
+       vxy1 = [v1, v4, v3, v2, v1]
+       vxy2 = [v5, v6, v7, v8, v5]
+       #
+       # zx faces
+       #
+       vzx1 = [v1, v2, v6, v5, v1]
+       vzx2 = [v3, v4, v8, v7, v3]
+       #
+       # yz faces
+       #
+       vyz1 = [v5, v8, v4, v1, v5]
+       vyz2 = [v2, v3, v7, v6, v2]
+       
+       # Apply alpha angle distortions
+       #
+       dx = z*math.tan(alpha)
+       for i in range(0,4):
+           vzx2[i][0] += dx 
+       #
+       # aply theta, phi distortions
+       #
+       rho = z*math.tan(theta) 
+       dx = rho*math.cos(phi)
+       dy = rho*math.sin(phi)
+       for i in range(0,4):
+           vxy2[i][0] += dx 
+           vxy2[i][1] += dy 
+        
+       fxy1 = Part.Face(Part.makePolygon(vxy1))
+       fxy2 = Part.Face(Part.makePolygon(vxy2))
+       fzx1 = Part.Face(Part.makePolygon(vzx1))
+       fzx2 = Part.Face(Part.makePolygon(vzx2))
+       fyz1 = Part.Face(Part.makePolygon(vyz1))
+       fyz2 = Part.Face(Part.makePolygon(vyz2))
+
+       shell = Part.makeShell([fxy1, fxy2, fzx1, fzx2, fyz1, fyz2])
+       solid = Part.makeSolid(shell)
+
+       # center is mid point of diagonal
+       #
+       center = (v7 - v1)/2
+       fp.Shape = translate(solid, -center)
        fp.Placement = currPlacement
+
+class GDMLHype(GDMLsolid) :
+   def __init__(self, obj, rmin, rmax, z, inst, outst, aunit, lunit, \
+                material, colour= None) :
+      super().__init__(obj)
+      '''Add some custom properties for Hyperbolic Tube feature'''
+      obj.addProperty("App::PropertyFloat","rmin","GDMLHype","inner radius at z=0").rmin=rmin
+      obj.addProperty("App::PropertyFloat","rmax","GDMLHype","outer radius at z=0").rmax=rmax
+      obj.addProperty("App::PropertyFloat","z","GDMLHype","Tube length").z=z
+      obj.addProperty("App::PropertyFloat","inst","GDMLHype", \
+                      "Inner stereo").inst=inst
+      obj.addProperty("App::PropertyFloat","outst","GDMLHype", \
+                      "Outer stero").outst=outst
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLHype", \
+                       "aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLHype","lunit")
+      setLengthQuantity(obj, lunit) 		      
+      obj.addProperty("App::PropertyEnumeration","material","GDMLHype", \
+                       "Material")
+      setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         updateColour(obj,colour,material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      self.Type = 'GDMLHype'
+      self.colour = colour
+      self.Object = obj
+      obj.Proxy = self
    
+   def getMaterial(self):
+       return obj.material
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+          if FreeCAD.GuiUp :
+             if self.colour is None :
+                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       if prop in ['rmin', 'rmax', 'z', 'inst', 'outst', 'aunit','lunit'] :
+          self.createGeometry(fp)
+
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       #GDMLShared.setTrace(True)
+       import math
+       GDMLShared.trace("Execute Hyperbolic Tube")
+       # this should probably be a global variable, but
+       # for now adopt the value used in geant4.10.07.p02
+       NUMBER_OF_DIVISIONS = 36
+       mul = GDMLShared.getMult(fp)
+       rmin = mul * fp.rmin
+       rmax = mul * fp.rmax
+       z = mul * fp.z
+       inst = getAngleRad(fp.aunit,fp.inst)
+       outst = getAngleRad(fp.aunit,fp.outst)
+       sqrtan1 = math.tan(inst)
+       sqrtan1 *= sqrtan1
+       sqrtan2 = math.tan(outst)
+       sqrtan2 *= sqrtan2
+
+       # mirroring error checking in HepPolyhedron.cc
+       k = 0
+       if rmin < 0. or rmax < 0. or rmin >= rmax:
+           k = 1
+       if z <= 0.:
+           k += 2
+           
+       if k != 0:
+           errmsg = "HepPolyhedronHype: error in input parameters: "
+           if (k & 1) != 0:
+               errmsg += " (radii)"
+           if (k & 2) != 0:
+               errmsg += " (half-length)"
+           print(errmsg)
+           print(f' rmin= {rmin} rmax= {rmax}  z= {z}')
+           return
+        
+       # Prepare two polylines
+       ns = NUMBER_OF_DIVISIONS
+       if ns < 3:
+           ns = 3
+       if sqrtan1 == 0.:
+           nz1 = 2
+       else:
+           nz1 = ns + 1
+       if sqrtan2 == 0.:
+           nz2 = 2
+       else:
+           nz2 = ns + 1
+
+       halfZ = z/2
+       #
+       # solid generated by external hyperbeloid
+       dz2 = z/(nz2 - 1)
+       zz = [halfZ - dz2*i for i in range(0, nz2)]
+       rr = [math.sqrt(sqrtan2*zi*zi + rmax*rmax) for zi in zz]
+       faces = rotateAroundZ(NUMBER_OF_DIVISIONS, zz, rr)
+       shell = Part.makeShell(faces)
+       outersolid = Part.makeSolid(shell)
+
+       #
+       # solid generated by internal hyperbeloid
+       dz1 = z/(nz1 - 1)
+       zz = [halfZ - dz1*i for i in range(0, nz1)]
+       rr = [math.sqrt(sqrtan1*zi*zi + rmin*rmin) for zi in zz]
+       faces = rotateAroundZ(NUMBER_OF_DIVISIONS, zz, rr)
+       shell = Part.makeShell(faces)
+       
+       innersolid = Part.makeSolid(shell)
+       
+       fp.Shape = outersolid.cut(innersolid)
+       fp.Placement = currPlacement
+
 class GDMLPolyhedra(GDMLsolid) :
    def __init__(self, obj, startphi, deltaphi, numsides, aunit, lunit, \
                 material, colour = None) :
@@ -1595,7 +1809,7 @@ class GDMLTrap(GDMLsolid) :
    def __init__(self, obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, \
                 aunit, lunit, material, colour = None):
       super().__init__(obj)
-      #"General Trapezoid"
+      "General Trapezoid"
       obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").z=z
       obj.addProperty("App::PropertyFloat","theta","GDMLTrap","theta"). \
                        theta=theta
@@ -1717,15 +1931,15 @@ class GDMLTrd(GDMLsolid) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour = None) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
-      obj.addProperty("App::PropertyFloat","z","GDMLTrd","z").z=z
+      obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
       obj.addProperty("App::PropertyFloat","x1","GDMLTrd", \
-                      "Length x at face -z/2").x1=x1
+                      "Length x at y= -y1 face -z").x1=x1
       obj.addProperty("App::PropertyFloat","x2","GDMLTrd", \
-                      "Length x at face +z/2").x2=x2
+                      "Length x at y= +y1 face -z").x2=x2
       obj.addProperty("App::PropertyFloat","y1","GDMLTrd", \
-                      "Length y at face -z/2").y1=y1
+                      "Length y at face -z").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrd", \
-                      "Length y at face +z/2").y2=y2
+                      "Length y at face +z").y2=y2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrd","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
@@ -1767,7 +1981,7 @@ class GDMLTrd(GDMLsolid) :
        x2 = (fp.x2 * mul)/2
        y1 = (fp.y1 * mul)/2
        y2 = (fp.y2 * mul)/2
-       z  = (fp.z * mul)/2
+       z  = fp.z/2 * mul
        v1 = FreeCAD.Vector(-x1, -y1, -z)
        v2 = FreeCAD.Vector(-x1, +y1, -z)
        v3 = FreeCAD.Vector(x1,  +y1, -z)
@@ -2604,14 +2818,13 @@ class GDMLelement(GDMLcommon) :
       self.Object = obj
 
 class GDMLisotope(GDMLcommon) :
-   def __init__(self,obj,name,N,Z) :
+   def __init__(self,obj,name,N,Z,unit,value) :
       super().__init__(obj)
       obj.addProperty("App::PropertyString","name",name).name = name 
       obj.addProperty("App::PropertyInteger","N",name).N=N
       obj.addProperty("App::PropertyInteger","Z",name).Z=Z
-      # Name, N and Z are minimum other values are added by import
-      #obj.addProperty("App::PropertyString","unit",name).unit = unit 
-      #obj.addProperty("App::PropertyFloat","value",name).value = value 
+      obj.addProperty("App::PropertyString","unit",name).unit = unit 
+      obj.addProperty("App::PropertyFloat","value",name).value = value 
       obj.Proxy = self
       self.Object = obj
 
@@ -2750,4 +2963,3 @@ def makeTube():
     a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","GDMLTube")
     GDMLTube(a)
     ViewProvider(a.ViewObject)
-

@@ -1,4 +1,5 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
+# Mon Nov 22 10:33:48 AM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -80,14 +81,14 @@ def open(filename):
     docName  = os.path.splitext(os.path.basename(filename)) [0]
     print('path : '+filename) 
     if filename.lower().endswith('.gdml') :
-        #import cProfile, pstats
-        #profiler = cProfile.Profile()
-        #profiler.enable()
+        import cProfile, pstats
+        profiler = cProfile.Profile()
+        profiler.enable()
         doc = FreeCAD.newDocument(docName)
         processGDML(doc,filename,True,False)
-        #profiler.disable()
-        #stats = pstats.Stats(profiler).sort_stats('cumtime')
-        #stats.print_stats()
+        profiler.disable()
+        stats = pstats.Stats(profiler).sort_stats('cumtime')
+        stats.print_stats()
 
     elif filename.lower().endswith('.xml'):
        try :
@@ -235,9 +236,9 @@ def createCone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLCone, ViewProvider
     GDMLShared.trace("CreateCone : ")
     GDMLShared.trace(solid.attrib)
-    rmin1 = GDMLShared.getVal(solid,'rmin1',0)
+    rmin1 = GDMLShared.getVal(solid,'rmin1')
     rmax1 = GDMLShared.getVal(solid,'rmax1')
-    rmin2 = GDMLShared.getVal(solid,'rmin2',0)
+    rmin2 = GDMLShared.getVal(solid,'rmin2')
     rmax2 = GDMLShared.getVal(solid,'rmax2')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -369,6 +370,30 @@ def createPara(part,solid,material,colour,px,py,pz,rot,displayMode) :
        setDisplayMode(mypara,displayMode)
     return mypara
 
+def createHype(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLHype, ViewProvider
+    GDMLShared.trace("CreateHype : ")
+    GDMLShared.trace(solid.attrib)
+    aunit = getText(solid,'aunit',"rad")
+    lunit = getText(solid,'lunit',"mm")
+    rmin = GDMLShared.getVal(solid,'rmin')
+    rmax = GDMLShared.getVal(solid,'rmax')
+    z = GDMLShared.getVal(solid,'z')
+    inst = GDMLShared.getVal(solid,'inst')
+    outst = GDMLShared.getVal(solid,'outst')
+    myhype=part.newObject("Part::FeaturePython","GDMLHype:"+getName(solid))
+    GDMLHype(myhype,rmin,rmax,z,inst,outst,aunit,lunit,material,colour)
+    GDMLShared.trace("CreateHype : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myhype.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myhype.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myhype.ViewObject)
+       setDisplayMode(myhype,displayMode)
+    return myhype
+
 def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
             ViewProvider, ViewProviderExtension
@@ -388,7 +413,7 @@ def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.findall('zplane'))
     for zplane in solid.findall('zplane') : 
         GDMLShared.trace(zplane)
-        rmin = GDMLShared.getVal(zplane,'rmin',0)
+        rmin = GDMLShared.getVal(zplane,'rmin')
         rmax = GDMLShared.getVal(zplane,'rmax')
         z = GDMLShared.getVal(zplane,'z')
         myzplane=FreeCAD.ActiveDocument.addObject('App::FeaturePython','zplane') 
@@ -414,7 +439,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
-    numsides = int(GDMLShared.getVal(solid,'numsides'))
+    numsides = GDMLShared.getVal(solid,'numsides',2)
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     mypolyhedra=part.newObject("Part::FeaturePython","GDMLPolyhedra:"+ \
@@ -429,7 +454,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.findall('zplane'))
     for zplane in solid.findall('zplane') : 
         GDMLShared.trace(zplane)
-        rmin = GDMLShared.getVal(zplane,'rmin',0)
+        rmin = GDMLShared.getVal(zplane,'rmin')
         rmax = GDMLShared.getVal(zplane,'rmax')
         z = GDMLShared.getVal(zplane,'z')
         myzplane=FreeCAD.ActiveDocument.addObject('App::FeaturePython','zplane') 
@@ -454,7 +479,7 @@ def createSphere(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace("CreateSphere : ")
     GDMLShared.trace("Display Mode : "+str(displayMode))
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin',0)
+    rmin = GDMLShared.getVal(solid,'rmin')
     rmax = GDMLShared.getVal(solid,'rmax')
     startphi = GDMLShared.getVal(solid,'startphi')
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
@@ -502,7 +527,7 @@ def createTorus(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTorus : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin',0)
+    rmin = GDMLShared.getVal(solid,'rmin')
     rmax = GDMLShared.getVal(solid,'rmax')
     rtor = GDMLShared.getVal(solid,'rtor')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -535,12 +560,12 @@ def createTrap(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y2 = GDMLShared.getVal(solid,'y2')
     theta = GDMLShared.getVal(solid,'theta')
     phi = GDMLShared.getVal(solid,'phi')
-    alpha1 = GDMLShared.getVal(solid,'alpha1')
+    alpha = GDMLShared.getVal(solid,'alpah1')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     #print z
     mytrap=part.newObject("Part::FeaturePython","GDMLTrap:"+getName(solid))
-    GDMLTrap(mytrap,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha1,aunit,lunit, \
+    GDMLTrap(mytrap,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha,aunit,lunit, \
              material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -597,8 +622,8 @@ def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if FreeCAD.GuiUp :
            ViewProvider(my2dVert)
     for section in solid.findall('section') : 
-        zOrder = int(GDMLShared.getVal(section,'zOrder'))       # Get Int
-        zPosition = int(GDMLShared.getVal(section,'zPosition')) # Get Int
+        zOrder = GDMLShared.getVal(section,'zOrder',2)     # Get Int
+        zPosition = GDMLShared.getVal(section,'zPosition',2) # Get Int
         xOffset = GDMLShared.getVal(section,'xOffset')
         yOffset = GDMLShared.getVal(section,'yOffset')
         scalingFactor = GDMLShared.getVal(section,'scalingFactor')
@@ -621,7 +646,7 @@ def createTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTube, ViewProvider
     GDMLShared.trace("CreateTube : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin',0)
+    rmin = GDMLShared.getVal(solid,'rmin')
     rmax = GDMLShared.getVal(solid,'rmax')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -648,7 +673,7 @@ def createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLcutTube, ViewProvider
     GDMLShared.trace("CreateCutTube : ")
     GDMLShared.trace(solid.attrib)
-    rmin = GDMLShared.getVal(solid,'rmin',0)
+    rmin = GDMLShared.getVal(solid,'rmin')
     rmax = GDMLShared.getVal(solid,'rmax')
     z = GDMLShared.getVal(solid,'z')
     startphi = GDMLShared.getVal(solid,'startphi')
@@ -826,10 +851,8 @@ def parseBoolean(part,solid,objType,material,colour,px,py,pz,rot,displayMode) :
        # second solid is placed at position and rotation relative to first
        GDMLShared.trace('Create Tool Object')
        mybool.Tool = createSolid(part,tool,material,None,x,y,z,rotBool,displayMode)
-       # For some unknown reasons, inversionof angle in processRotation
-       # should not be peformed for boolean Tool
-       mybool.Tool.Placement.Rotation.Angle = \
-                  -mybool.Tool.Placement.Rotation.Angle
+       #For unknown reasons, the inversion of angle in processRotation should not be done for the boolean Tool
+       mybool.Tool.Placement.Rotation.Angle = -mybool.Tool.Placement.Rotation.Angle
        # Okay deal with position of boolean
        GDMLShared.trace('Boolean Position and rotation')
        GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -847,84 +870,67 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
         if case('arb8'):
-           return(createArb8(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createArb8(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('box'):
-           return(createBox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createBox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('cone'):
-           return(createCone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createCone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('elcone'):
-           return(createElcone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createElcone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('ellipsoid'):
-           return(createEllipsoid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createEllipsoid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('eltube'):
-           return(createEltube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createEltube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('hype'):
+            return(createHype(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('orb'):
-           return(createOrb(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createOrb(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('para'):
            return(createPara(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
 
         if case('polycone'):
-           return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('polyhedra'):
-           return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('sphere'):
-           return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tet'):
-           return(createTetra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTetra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('torus'):
-           return(createTorus(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTorus(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trap'):
-           return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trap_dimensions'):
-           return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trd'):
-           return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tube'):
-           return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('cutTube'):
-           return(createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tessellated'):
-           return(createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('xtru'):
-           return(createXtru(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createXtru(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('intersection'):
             return(parseBoolean(part,solid,'Part::Common', \
@@ -932,20 +938,18 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
             break
 
         if case('union'):
-            GDMLShared.trace(f'union colour : {colour}')
+            print(f'union colour : {colour}')
             return(parseBoolean(part,solid,'Part::Fuse', \
                   material,colour,px,py,pz,rot,displayMode))
             break
 
         if case('subtraction'):
             return(parseBoolean(part,solid,'Part::Cut', \
-                  material,colour,px,py,pz,rot,displayMode)) 
-            break
+                                material,colour,px,py,pz,rot,displayMode)) 
 
         if case('multiUnion'):
             return(parseMultiUnion(part,solid,material,colour, \
-                  px,py,pz,rot,displayMode))
-            break
+                                   px,py,pz,rot,displayMode))
 
         print("Solid : "+solid.tag+" Not yet supported")
         break
@@ -1201,22 +1205,12 @@ def processIsotopes(isotopesGrp) :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
         name = isotope.get('name')
-        isObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
-        GDMLisotope(isObj,name,N,Z)
         atom = isotope.find('atom')
-        if atom is not None :
-           unit = atom.get('unit')
-           if unit is not None :
-              isObj.addProperty('App::PropertyString','unit','Unit').unit = unit
-           type = atom.get('type')           
-           if type is not None :
-              isObj.addProperty('App::PropertyString','type','Type').type = type
-           if atom.get('value') is not None :
-              value = GDMLShared.getVal(atom,'value')
-              isObj.addProperty('App::PropertyFloat','value','Value').value = value
-
-
-
+        unit = atom.get('unit','g/mole')
+        value = GDMLShared.getVal(atom,'value',1)
+        #isoObj = isotopesGrp.newObject("App::FeaturePython",name)
+        isoObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
+        GDMLisotope(isoObj,name,N,Z,unit,value)
 
 def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction
@@ -1243,7 +1237,7 @@ def processElements(elementsGrp) :
            if unit is not None :
               elementObj.addProperty("App::PropertyString","atom_unit",name). \
                                       atom_unit = unit
-           a_value = GDMLShared.getVal(atom,'value')
+           a_value = GDMLShared.getVal(atom,'value',1)
            if a_value is not None :
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
                                       atom_value = a_value
@@ -1254,7 +1248,7 @@ def processElements(elementsGrp) :
            for fraction in element.findall('fraction') :
                ref = fraction.get('ref')
                #n = float(fraction.get('n'))
-               n = GDMLShared.getVal(fraction,'n')
+               n = GDMLShared.getVal(fraction,'n',1)
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLfraction(fractObj,ref,n)
@@ -1293,7 +1287,7 @@ def processMaterials(materialGrp) :
               if Dunit is not None :
                     materialObj.addProperty("App::PropertyString",'Dunit', \
                                 'GDMLmaterial','Dunit').Dunit = Dunit
-              Dvalue = GDMLShared.getVal(D,'value')
+              Dvalue = GDMLShared.getVal(D,'value',1)
               if Dvalue is not None :
                  materialObj.addProperty("App::PropertyFloat", \
                          'Dvalue','GDMLmaterial','value').Dvalue = Dvalue
@@ -1308,7 +1302,7 @@ def processMaterials(materialGrp) :
               if aUnit is not None :
                  materialObj.addProperty("App::PropertyString",'atom_unit', \
                          name).atom_unit = aUnit
-              aValue = GDMLShared.getVal(atom,'value')
+              aValue = GDMLShared.getVal(atom,'value',1)
               if aValue is not None :
                  materialObj.addProperty("App::PropertyFloat",'atom_value', \
                          name).atom_value = aValue
@@ -1319,15 +1313,15 @@ def processMaterials(materialGrp) :
               if Tunit is None :	# Default Kelvin
                  Tunit = 'K'
               materialObj.addProperty("App::PropertyString",'Tunit','GDMLmaterial',"T ZZZUnit").Tunit = Tunit
-              Tvalue = GDMLShared.getVal(T,'value')
+              Tvalue = GDMLShared.getVal(T,'value',1)
            MEE = material.find('MEE')
            if MEE is not None :
               Munit = MEE.get('unit')
-              Mvalue = GDMLShared.getVal(MEE,'value')
+              Mvalue = GDMLShared.getVal(MEE,'value',1)
               materialObj.addProperty("App::PropertyString",'MEEunit','GDMLmaterial','MEE unit').MEEunit = Munit
               materialObj.addProperty("App::PropertyFloat",'MEEvalue','GDMLmaterial','MEE value').MEEvalue = Mvalue
            for fraction in material.findall('fraction') :
-               n = GDMLShared.getVal(fraction,'n')
+               n = GDMLShared.getVal(fraction,'n',1)
                #print(n)
                ref = fraction.get('ref')
                #print('fraction : '+ref)
@@ -1460,11 +1454,11 @@ def processMaterialsG4(G4rp, root) :
 
 
 def processGDML(doc,filename,prompt,initFlg):
-    # Process GDML 
 
     import time
     from . import GDMLShared
     from . import GDMLObjects
+    
     #GDMLShared.setTrace(True)
 
     phylvl = -1 # Set default
@@ -1548,5 +1542,4 @@ def processGDML(doc,filename,prompt,initFlg):
        FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
     endTime = time.perf_counter()
-    #print(f'time : {endTime - startTime:0.4f} seconds')
-    FreeCAD.Console.PrintMessage(f'time : {endTime - startTime:0.4f} seconds')
+    print(f'time : {endTime - startTime:0.4f} seconds')
