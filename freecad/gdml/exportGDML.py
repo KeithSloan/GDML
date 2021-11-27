@@ -1,3 +1,4 @@
+# Sat Nov 27 11:31:11 AM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -819,6 +820,22 @@ def processGDMLElTubeObject(obj) :
                           'lunit' : obj.lunit})
     return solid, eltubeName
 
+
+def processGDMLHypeObject(obj) :
+    # Needs unique Name
+    # Remove leading GDMLTube_ from name on export 
+   hypeName = nameOfGDMLobject(obj)
+   solid = ET.SubElement(solids, 'hype',{'name': hypeName, \
+                                         'rmin': str(obj.rmin),  \
+                                         'rmax': str(obj.rmax),  \
+                                         'z': str(obj.z),  \
+                                         'inst': str(obj.inst), \
+                                         'outst': str(obj.outst), \
+                                         'aunit': obj.aunit, \
+                                         'lunit' : obj.lunit})
+   # modif 'mm' -> obj.lunit
+   return solid, hypeName
+
 def processGDMLOrbObject(obj) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
@@ -914,6 +931,7 @@ def processGDMLTessellatedObject(obj) :
        exportDefineVertex(tessVname,v,i)
 
     for f in obj.Shape.Faces :
+        #print(f'Normal at : {n} dot {dot} {clockWise}')
         vertexes = f.OuterWire.OrderedVertexes
         if len(f.Edges) == 3 :
            i0 = vertexHashcodeDict[vertexes[0].hashCode()]
@@ -1092,7 +1110,7 @@ def processIsotope(obj, item): # maybe part of material or element (common code)
        #print(dir(obj))
        item.set('formula',str(obj.formula)) 
 
-    if hasattr(obj,'unit') or hasattr(obj,'value') :
+    if hasattr(obj,'unit') or hasattr(obj,'atom_value') or hasattr(obj,'value') :
        atom = ET.SubElement(item,'atom') 
     
        if hasattr(obj,'unit') :
@@ -1101,6 +1119,9 @@ def processIsotope(obj, item): # maybe part of material or element (common code)
        if hasattr(obj,'type') :
           atom.set('unit',str(obj.type)) 
             
+       if hasattr(obj,'atom_value') :
+          atom.set('value',str(obj.atom_value)) 
+
        if hasattr(obj,'value') :
           atom.set('value',str(obj.value)) 
 
@@ -1273,111 +1294,93 @@ def processGDMLSolid(obj) :
        if case("GDMLArb8") :
           #print("      GDMLArb8") 
           return(processGDMLArb8Object(obj))
-          break
 
 
        if case("GDMLBox") :
           #print("      GDMLBox") 
           return(processGDMLBoxObject(obj))
-          break
 
        if case("GDMLCone") :
           #print("      GDMLCone") 
           return(processGDMLConeObject(obj))
-          break
 
        if case("GDMLcutTube") :
           #print("      GDMLcutTube") 
           return(processGDMLCutTubeObject(obj))
-          break
        
        if case("GDMLElCone") :
           #print("      GDMLElCone") 
           return(processGDMLElConeObject(obj))
-          break
 
        if case("GDMLEllipsoid") :
           #print("      GDMLEllipsoid") 
           return(processGDMLEllipsoidObject(obj))
-          break
 
        if case("GDMLElTube") :
           #print("      GDMLElTube") 
           return(processGDMLElTubeObject(obj))
-          break
+
+       if case("GDMLHype") :
+          #print("      GDMLHype") 
+          return(processGDMLHypeObject(obj))
 
        if case("GDMLOrb") :
           #print("      GDMLOrb") 
           return(processGDMLOrbObject(obj))
-          break
 
        if case("GDMLPara") :
           #print("      GDMLPara") 
           return(processGDMLParaObject(obj))
-          break
              
        if case("GDMLPolycone") :
           #print("      GDMLPolycone") 
           return(processGDMLPolyconeObject(obj))
-          break
              
        if case("GDMLPolyhedra") :
           #print("      GDMLPolyhedra") 
           return(processGDMLPolyhedraObject(obj))
-          break
              
        if case("GDMLSphere") :
           #print("      GDMLSphere") 
           return(processGDMLSphereObject(obj))
-          break
 
        if case("GDMLTessellated") :
           #print("      GDMLTessellated") 
           ret = processGDMLTessellatedObject(obj)
           return ret
-          #return(processGDMLTessellatedObject(obj))
-          break
 
        if case("GDMLGmshTessellated") :
           #print("      GDMLGmshTessellated")
           # export GDMLTessellated & GDMLGmshTesssellated should be the same
           return(processGDMLTessellatedObject(obj))
-          break
 
        if case("GDMLTetra") :
           #print("      GDMLTetra") 
           return(processGDMLTetraObject(obj))
-          break
 
        if case("GDMLTetrahedron") :
           print("      GDMLTetrahedron") 
           return(processGDMLTetrahedronObject(obj))
-          break
 
        if case("GDMLTorus") :
           print("      GDMLTorus") 
           return(processGDMLTorusObject(obj))
-          break
 
        if case("GDMLTrap") :
           #print("      GDMLTrap") 
           return(processGDMLTrapObject(obj))
-          break
 
        if case("GDMLTrd") :
           #print("      GDMLTrd") 
           return(processGDMLTrdObject(obj))
-          break
 
        if case("GDMLTube") :
           #print("      GDMLTube") 
           return(processGDMLTubeObject(obj))
-          break
 
        if case("GDMLXtru") :
           #print("      GDMLXtru") 
           return(processGDMLXtruObject(obj))
-          break
 
        print("Not yet Handled")
        break  

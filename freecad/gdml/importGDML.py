@@ -1,4 +1,5 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
+# Sat Nov 27 11:30:37 AM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -368,6 +369,30 @@ def createPara(part,solid,material,colour,px,py,pz,rot,displayMode) :
        ViewProvider(mypara.ViewObject)
        setDisplayMode(mypara,displayMode)
     return mypara
+
+def createHype(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLHype, ViewProvider
+    GDMLShared.trace("CreateHype : ")
+    GDMLShared.trace(solid.attrib)
+    aunit = getText(solid,'aunit',"rad")
+    lunit = getText(solid,'lunit',"mm")
+    rmin = GDMLShared.getVal(solid,'rmin')
+    rmax = GDMLShared.getVal(solid,'rmax')
+    z = GDMLShared.getVal(solid,'z')
+    inst = GDMLShared.getVal(solid,'inst')
+    outst = GDMLShared.getVal(solid,'outst')
+    myhype=part.newObject("Part::FeaturePython","GDMLHype:"+getName(solid))
+    GDMLHype(myhype,rmin,rmax,z,inst,outst,aunit,lunit,material,colour)
+    GDMLShared.trace("CreateHype : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myhype.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myhype.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myhype.ViewObject)
+       setDisplayMode(myhype,displayMode)
+    return myhype
 
 def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
@@ -847,80 +872,64 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace('px : '+str(px))
     while switch(solid.tag) :
         if case('arb8'):
-           return(createArb8(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createArb8(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('box'):
-           return(createBox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createBox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('cone'):
-           return(createCone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createCone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('elcone'):
-           return(createElcone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createElcone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('ellipsoid'):
-           return(createEllipsoid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createEllipsoid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('eltube'):
-           return(createEltube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createEltube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('hype'):
+            return(createHype(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('orb'):
-           return(createOrb(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
-
+            return(createOrb(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+        
         if case('para'):
            return(createPara(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
 
         if case('polycone'):
-           return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('polyhedra'):
-           return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('sphere'):
-           return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tet'):
-           return(createTetra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTetra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('torus'):
-           return(createTorus(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTorus(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trap'):
-           return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trap_dimensions'):
-           return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('trd'):
-           return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tube'):
-           return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('cutTube'):
-           return(createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tessellated'):
-           return(createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode)) 
-           break
+            return(createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('xtru'):
            return(createXtru(part,solid,material,colour,px,py,pz,rot,displayMode)) 
@@ -929,26 +938,22 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if case('intersection'):
             return(parseBoolean(part,solid,'Part::Common', \
                   material,colour,px,py,pz,rot,displayMode)) 
-            break
 
         if case('union'):
             GDMLShared.trace(f'union colour : {colour}')
             return(parseBoolean(part,solid,'Part::Fuse', \
                   material,colour,px,py,pz,rot,displayMode))
-            break
 
         if case('subtraction'):
             return(parseBoolean(part,solid,'Part::Cut', \
-                  material,colour,px,py,pz,rot,displayMode)) 
-            break
+                                material,colour,px,py,pz,rot,displayMode)) 
 
         if case('multiUnion'):
             return(parseMultiUnion(part,solid,material,colour, \
-                  px,py,pz,rot,displayMode))
-            break
+                                   px,py,pz,rot,displayMode))
 
         print("Solid : "+solid.tag+" Not yet supported")
-        break
+        return
 
 def getVolSolid(name):
     GDMLShared.trace("Get Volume Solid")

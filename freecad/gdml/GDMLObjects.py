@@ -2,7 +2,8 @@
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
-#*             (c) Dam Lambert 2020                                          *
+#*             (c) Dam Lambert 2020                                       *
+#*             (c) Munther Hindi 2021                                     *
 #*                                                                        *
 #*   This program is free software; you can redistribute it and/or modify *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)   *
@@ -254,7 +255,27 @@ def updateColour(obj, colour, material) :
     #print(f'Colour {colour}')
     if colour is not None :
        obj.ViewObject.Transparency = int(colour[3]*100)
- 
+
+def rotateAroundZ(nstep, z, r):
+    #######################################
+    # Create a polyhedron by rotation of two polylines around z-axis
+    #
+    # Input: nstep: number divisions along circle of revolution
+    #        z   - list of z coordinates of polylines
+    #        r   - list of r coordinates of polylines
+    #
+    faces = []
+    verts = []
+    verts.append(FreeCAD.Vector(0, 0, z[0]))
+    verts.extend([FreeCAD.Vector(r[i], 0, z[i]) for i in range(0,len(z))])
+    verts.append(FreeCAD.Vector(0, 0, z[len(z)-1]) )
+    line = Part.makePolygon(verts)
+    surf = line.revolve(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), 360)
+    return Part.makeSolid(surf)
+
+    
+
+    
 class GDMLColourMapEntry :
    def __init__(self,obj,colour,material) :
       obj.addProperty("App::PropertyColor","colour", \
@@ -1012,6 +1033,126 @@ class GDMLPara(GDMLsolid) :
        #
        center = (v7 - v1)/2
        fp.Shape = translate(solid, -center)
+       fp.Placement = currPlacement
+
+<<<<<<< HEAD
+=======
+class GDMLHype(GDMLsolid) :
+   def __init__(self, obj, rmin, rmax, z, inst, outst, aunit, lunit, \
+                material, colour= None) :
+      super().__init__(obj)
+      '''Add some custom properties for Hyperbolic Tube feature'''
+      obj.addProperty("App::PropertyFloat","rmin","GDMLHype","inner radius at z=0").rmin=rmin
+      obj.addProperty("App::PropertyFloat","rmax","GDMLHype","outer radius at z=0").rmax=rmax
+      obj.addProperty("App::PropertyFloat","z","GDMLHype","Tube length").z=z
+      obj.addProperty("App::PropertyFloat","inst","GDMLHype", \
+                      "Inner stereo").inst=inst
+      obj.addProperty("App::PropertyFloat","outst","GDMLHype", \
+                      "Outer stero").outst=outst
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLHype", \
+                       "aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLHype","lunit")
+      setLengthQuantity(obj, lunit) 		      
+      obj.addProperty("App::PropertyEnumeration","material","GDMLHype", \
+                       "Material")
+      setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         updateColour(obj,colour,material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      self.Type = 'GDMLHype'
+      self.colour = colour
+      self.Object = obj
+      obj.Proxy = self
+   
+   def getMaterial(self):
+       return obj.material
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+          if FreeCAD.GuiUp :
+             if self.colour is None :
+                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       if prop in ['rmin', 'rmax', 'z', 'inst', 'outst', 'aunit','lunit'] :
+          self.createGeometry(fp)
+
+
+   def execute(self, fp):
+       self.createGeometry(fp)
+
+   def createGeometry(self,fp):
+       currPlacement = fp.Placement
+       #GDMLShared.setTrace(True)
+       import math
+       GDMLShared.trace("Execute Hyperbolic Tube")
+       # this should probably be a global variable, but
+       # for now adopt the value used in geant4.10.07.p02
+       NUMBER_OF_DIVISIONS = 36
+       mul = GDMLShared.getMult(fp)
+       rmin = mul * fp.rmin
+       rmax = mul * fp.rmax
+       z = mul * fp.z
+       inst = getAngleRad(fp.aunit,fp.inst)
+       outst = getAngleRad(fp.aunit,fp.outst)
+       sqrtan1 = math.tan(inst)
+       sqrtan1 *= sqrtan1
+       sqrtan2 = math.tan(outst)
+       sqrtan2 *= sqrtan2
+
+       # mirroring error checking in HepPolyhedron.cc
+       k = 0
+       if rmin < 0. or rmax < 0. or rmin >= rmax:
+           k = 1
+       if z <= 0.:
+           k += 2
+           
+       if k != 0:
+           errmsg = "HepPolyhedronHype: error in input parameters: "
+           if (k & 1) != 0:
+               errmsg += " (radii)"
+           if (k & 2) != 0:
+               errmsg += " (half-length)"
+           print(errmsg)
+           print(f' rmin= {rmin} rmax= {rmax}  z= {z}')
+           return
+        
+       # Prepare two polylines
+       ns = NUMBER_OF_DIVISIONS
+       if ns < 3:
+           ns = 3
+       if sqrtan1 == 0.:
+           nz1 = 2
+       else:
+           nz1 = ns + 1
+       if sqrtan2 == 0.:
+           nz2 = 2
+       else:
+           nz2 = ns + 1
+
+       halfZ = z/2
+       #
+       # solid generated by external hyperbeloid
+       dz2 = z/(nz2 - 1)
+       zz = [halfZ - dz2*i for i in range(0, nz2)]
+       rr = [math.sqrt(sqrtan2*zi*zi + rmax*rmax) for zi in zz]
+       outersolid = rotateAroundZ(NUMBER_OF_DIVISIONS, zz, rr)
+
+       #
+       # solid generated by internal hyperbeloid
+       dz1 = z/(nz1 - 1)
+       zz = [halfZ - dz1*i for i in range(0, nz1)]
+       rr = [math.sqrt(sqrtan1*zi*zi + rmin*rmin) for zi in zz]
+       innersolid = rotateAroundZ(NUMBER_OF_DIVISIONS, zz, rr)
+       
+       fp.Shape = outersolid.cut(innersolid)
        fp.Placement = currPlacement
 
 class GDMLPolyhedra(GDMLsolid) :
