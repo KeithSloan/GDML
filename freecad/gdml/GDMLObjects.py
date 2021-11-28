@@ -816,7 +816,7 @@ class GDMLElTube(GDMLsolid) :
       obj.addProperty("App::PropertyFloat","dy","GDMLElTube", \
                        "y semi axis1").dy=dy
       obj.addProperty("App::PropertyFloat","dz","GDMLElTube", \
-                       "z semi axis1").dz=dz
+                       "z half height").dz=dz
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElTube","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLElTube", \
@@ -862,7 +862,7 @@ class GDMLElTube(GDMLsolid) :
        mat.A44 = 1
        #trace mat
        newtube = tube.transformGeometry(mat)
-       base = FreeCAD.Vector(0,0,-(fp.dz*mul)/2)
+       base = FreeCAD.Vector(0,0,-(fp.dz*mul)) #dz is half height
        fp.Shape = translate(newtube,base)
        fp.Placement = currPlacement
 
@@ -1803,10 +1803,8 @@ class GDMLTrap(GDMLsolid) :
                       "Length y at face -z/2").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrap", \
                       "Length y at face +z/2").y2=y2
-      obj.addProperty("App::PropertyFloat","alpha1","GDMLTrap","alpha1"). \
-                     alpha1=alpha1
-      obj.addProperty("App::PropertyFloat","alpha2","GDMLTrap","alpha2"). \
-                     alpha2=alpha2
+      obj.addProperty("App::PropertyFloat","alpha","GDMLTrap","alpha"). \
+                     alpha=alpha
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTrap","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
@@ -1846,8 +1844,7 @@ class GDMLTrap(GDMLsolid) :
        import math
        currPlacement = fp.Placement
        # Define six vetices for the shape
-       alpha1 = getAngleRad(fp.aunit,fp.alpha1)
-       alpha2 = getAngleRad(fp.aunit,fp.alpha2)
+       alpha = getAngleRad(fp.aunit,fp.alpha)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
        mul   = GDMLShared.getMult(fp)
@@ -1858,8 +1855,8 @@ class GDMLTrap(GDMLsolid) :
        x3 = mul * fp.x3
        x4 = mul * fp.x4
        z = mul * fp.z
-       dx1 = y1*math.tan(alpha1)
-       dx2 = y2*math.tan(alpha2)
+       dx1 = y1*math.tan(alpha)
+       dx2 = y2*math.tan(alpha)
        print(f'dx = {dx1}, dx2={dx2}')
        
        #Vertexes, counter clock wise order
@@ -1894,8 +1891,10 @@ class GDMLTrap(GDMLsolid) :
        dx = rho*math.cos(phi)
        dy = rho*math.sin(phi)
        for i in range(0,4):
-           vxy2[i][0] += dx 
-           vxy2[i][1] += dy 
+           vxy1[i][0] -= dx/2 
+           vxy1[i][1] -= dy/2 
+           vxy2[i][0] += dx/2 
+           vxy2[i][1] += dy/2 
         
        fxy1 = Part.Face(Part.makePolygon(vxy1))
        fxy2 = Part.Face(Part.makePolygon(vxy2))
