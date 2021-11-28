@@ -141,7 +141,7 @@ def GDMLstructure() :
     ################################
     global gdml, constants, variables, define, materials, solids, \
            structure, setup
-    global worldVOL
+    global WorldVOL
     global defineCnt, LVcount, PVcount, POScount, ROTcount
     global gxml
 
@@ -692,11 +692,11 @@ def testAddPhysVol(obj, xmlParent, volName):
 def addVolRef(volxml, volName, solidName, obj) :
     # Pass material as Boolean
     GDMLShared.trace('AddVolRef : '+volName+' : '+solidName)
-    ET.SubElement(volxml,'solidref',{'ref': solidName})
     material = getMaterial(obj)
     ET.SubElement(volxml,'materialref',{'ref': material})
+    ET.SubElement(volxml,'solidref',{'ref': solidName})
     ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
-    if hasattr(obj.ViewObject,'ShapeColor') :
+    if hasattr(obj.ViewObject,'ShapeColor') and volName != WorldVOL :
        colour = obj.ViewObject.ShapeColor
        colStr = '#'+''.join('{:02x}'.format(round(v*255)) for v in colour)
        ET.SubElement(volxml,'auxiliary',{'auxtype': 'Color', 'auxvalue':colStr})
@@ -1924,9 +1924,9 @@ def createWorldVol(volName) :
     bbox = FreeCAD.BoundBox()
     boxName = defineWorldBox(bbox)
     worldVol = ET.SubElement(structure,'volume',{'name': volName}) 
-    ET.SubElement(worldVol, 'solidref',{'ref': boxName})
     print("Need to FIX !!!! To use defined gas")
     ET.SubElement(worldVol, 'materialref',{'ref': 'G4_Galactic'})
+    ET.SubElement(worldVol, 'solidref',{'ref': boxName})
     ET.SubElement(gxml,'volume',{'name': volName, 'material':'G4_AIR'})
     return worldVol
 
@@ -1976,6 +1976,8 @@ def locateXMLvol(vol) :
     return xmlVol
 
 def exportWorldVol(vol, fileExt) :
+    global WorldVOL
+    WorldVOL = vol.Label
     if fileExt != '.xml' :
        print('Export World Process Volume : '+vol.Label)
        GDMLShared.trace('Export Word Process Volume'+vol.Label)
