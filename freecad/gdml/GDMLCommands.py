@@ -115,6 +115,18 @@ def getSelectedPM() :
 
     return objPart, material
 
+def createPartVol(obj) :
+    # Create Part(GDML Vol) Shared with a number of Features
+    LVname = 'LV-'+obj.Label
+    if hasattr(obj,'InList') :
+       if len(obj.InList) > 0 :
+          parent = obj.InList[0]
+          vol=parent.newObject("App::Part",LVname)
+       else :
+          vol=FreeCAD.ActiveDocument.addObject("App::Part",LVname)
+       return vol
+    return None
+
 class ColourMapFeature:
 
   def Activated(self):
@@ -345,7 +357,6 @@ class BooleanUnionFeature :
                 'GDML Union'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('gdmlBooleanFeature',\
                 'GDML Union')}
-
 
 class BoxFeature:
     #    def IsActive(self):
@@ -1019,19 +1030,16 @@ class TessellateFeature :
                #print(mesh.Points)
                print('Facets : '+str(mesh.CountFacets))
                #print(mesh.Facets)
-               parent = None
-               name ='GDMLTessellate_Tess_'+obj.Name
-               if hasattr(obj,'InList') :
-                  if len(obj.InList) > 0 :
-                     parent = obj.InList[0]
-                     myTess = parent.newObject('Part::FeaturePython',name)
-               if parent == None :
-                  myTess = FreeCAD.ActiveDocument.addObject( \
-                           'Part::FeaturePython',name)
+               name ='GDMLTessellate_'+obj.Label
+               vol = createPartVol(obj)
+               print(obj.Label)
+               print(obj.Placement)
+               myTess = vol.newObject('Part::FeaturePython',name)
                #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
                GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets,True, \
                       "mm", getSelectedMaterial())
-               myTess.Placement = obj.Placement
+               # Update Part Placment with source Placement
+               vol.Placement = obj.Placement
                FreeCAD.ActiveDocument.recompute()
                if FreeCAD.GuiUp :
                   ViewProvider(myTess.ViewObject)

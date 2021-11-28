@@ -405,8 +405,9 @@ class GDMLArb8(GDMLsolid) :        # Thanks to Dam Lamb
 
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1x', 'v1y', 'v2x','v2y', 'v3x', 'v3y', 'v4x', 'v4y',  \
                 'v5x', 'v5y', 'v6x', 'v6y', 'v7x', 'v7y', 'v8x', 'v8y', 'dz','lunit'] :
@@ -498,8 +499,9 @@ class GDMLBox(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
        
        if prop in ['x','y','z','lunit']  :
              self.createGeometry(fp) 
@@ -571,8 +573,9 @@ class GDMLCone(GDMLsolid) :
 
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin1','rmax1','rmin2','rmax2','z','startphi','deltaphi' \
                ,'aunit', 'lunit'] :
@@ -666,8 +669,9 @@ class GDMLElCone(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
        
        if prop in ['dx','dy','zmax','zcut','lunit'] :
           self.createGeometry(fp)
@@ -757,8 +761,9 @@ class GDMLEllipsoid(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['ax','by','cz','zcut1','zcut2','lunit'] :
           self.createGeometry(fp)
@@ -841,8 +846,9 @@ class GDMLElTube(GDMLsolid) :
 
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['dx','dy','dz','lunit'] :
           self.createGeometry(fp)
@@ -896,8 +902,9 @@ class GDMLOrb(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['r', 'lunit'] :
           #print(dir(fp))
@@ -958,8 +965,9 @@ class GDMLPara(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -1077,8 +1085,9 @@ class GDMLHype(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin', 'rmax', 'z', 'inst', 'outst', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -1194,8 +1203,9 @@ class GDMLPolyhedra(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi', 'deltaphi', 'numsides', 'aunit','lunit'] :
           self.createGeometry(fp)
@@ -1311,8 +1321,9 @@ class GDMLTorus(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin', 'rmax', 'rtor','startphi','deltaphi', \
                    'aunit','lunit'] :
@@ -1370,8 +1381,9 @@ class GDMLXtru(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self. colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1592,8 +1604,9 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['startphi','deltaphi','aunit','lunit'] :
           self.createGeometry(fp)
@@ -1696,8 +1709,9 @@ class GDMLSphere(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','startphi','deltaphi','starttheta', \
                     'deltatheta','aunit','lunit'] :
@@ -1830,8 +1844,9 @@ class GDMLTrap(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','theta','phi','x1','x2','x3','x4','y1','y2','alpha', \
                    'aunit', 'lunit'] :
@@ -1951,8 +1966,9 @@ class GDMLTrd(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['z','x1','x2','y1','y2','lunit'] :
           self.createGeometry(fp)
@@ -2030,8 +2046,9 @@ class GDMLTube(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                   'lunit'] :
@@ -2110,8 +2127,9 @@ class GDMLcutTube(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['rmin','rmax','z','startphi','deltaphi','aunit',  \
                    'lowX', 'lowY', 'lowZ', \
@@ -2360,8 +2378,9 @@ class GDMLGmshTessellated(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['editable'] :
            if fp.editable == True :
@@ -2487,8 +2506,9 @@ class GDMLTessellated(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['editable'] :
            if fp.editable == True :
@@ -2612,8 +2632,9 @@ class GDMLTetra(GDMLsolid) :         # 4 point Tetrahedron
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['v1','v2','v3','v4','lunit'] :
           self.createGeometry(fp)
@@ -2674,8 +2695,9 @@ class GDMLTetrahedron(GDMLsolid) :
        
        if prop in ['material'] :
           if FreeCAD.GuiUp :
-             if self.colour is None :
-                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
        if prop in ['lunit'] :
           self.createGeometry(fp)
