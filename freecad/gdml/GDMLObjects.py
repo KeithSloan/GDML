@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Sat Nov 27 11:29:37 AM PST 2021
+#
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -1007,7 +1009,6 @@ class GDMLPara(GDMLsolid) :
        #
        dx = z*math.tan(alpha)
        for i in range(0,4):
-           #vzx2[i][0] = vzx2[i][0] + dx 
            vzx2[i][0] += dx 
        #
        # aply theta, phi distortions
@@ -1035,8 +1036,6 @@ class GDMLPara(GDMLsolid) :
        fp.Shape = translate(solid, -center)
        fp.Placement = currPlacement
 
-<<<<<<< HEAD
-=======
 class GDMLHype(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, z, inst, outst, aunit, lunit, \
                 material, colour= None) :
@@ -1793,19 +1792,21 @@ class GDMLTrap(GDMLsolid) :
                        theta=theta
       obj.addProperty("App::PropertyFloat","phi","GDMLTrap","phi").phi=phi
       obj.addProperty("App::PropertyFloat","x1","GDMLTrap", \
-                      "Length x at y= -y1 face -z").x1=x1
+                      "Length x at y= -y1/2 of face at -z/2").x1=x1
       obj.addProperty("App::PropertyFloat","x2","GDMLTrap", \
-                      "Length x at y= +y1 face -z").x2=x2
+                      "Length x at y= +y1/2 of face at -z/2").x2=x2
       obj.addProperty("App::PropertyFloat","x3","GDMLTrap", \
-                      "Length x at y= -y1 face +z").x3=x3
+                      "Length x at y= -y2/2 of face at +z/2").x3=x3
       obj.addProperty("App::PropertyFloat","x4","GDMLTrap", \
-                      "Length x at y= +y1 face +z").x4=x4
+                      "Length x at y= +y2/2 of face at +z/2").x4=x4
       obj.addProperty("App::PropertyFloat","y1","GDMLTrap", \
-                      "Length y at face -z").y1=y1
+                      "Length y at face -z/2").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrap", \
-                      "Length y at face +z").y2=y2
-      obj.addProperty("App::PropertyFloat","alpha","GDMLTrap","alpha"). \
-                     alpha=alpha
+                      "Length y at face +z/2").y2=y2
+      obj.addProperty("App::PropertyFloat","alpha1","GDMLTrap","alpha1"). \
+                     alpha1=alpha1
+      obj.addProperty("App::PropertyFloat","alpha2","GDMLTrap","alpha2"). \
+                     alpha2=alpha2
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTrap","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
@@ -1845,65 +1846,76 @@ class GDMLTrap(GDMLsolid) :
        import math
        currPlacement = fp.Placement
        # Define six vetices for the shape
-       alpha = getAngleRad(fp.aunit,fp.alpha)
+       alpha1 = getAngleRad(fp.aunit,fp.alpha1)
+       alpha2 = getAngleRad(fp.aunit,fp.alpha2)
        theta = getAngleRad(fp.aunit,fp.theta)
        phi   = getAngleRad(fp.aunit,fp.phi)
        mul   = GDMLShared.getMult(fp)
-       dx = fp.y1*math.sin(alpha) * mul
-       dy = fp.y1*(1.0 - math.cos(alpha)) * mul
-       GDMLShared.trace("Delta adjustments")
-       GDMLShared.trace("dx : "+str(dx)+" dy : "+str(dy))
-       y1m = dy - (fp.y1 * mul)
-       y1p = dy + (fp.y1 * mul)
-       x1m = dx - (fp.x1 * mul)
-       x1p = dx + (fp.x1 * mul)
-       z    = fp.z * mul
-       GDMLShared.trace("y1m : "+str(y1m))
-       GDMLShared.trace("y1p : "+str(y1p))
-       GDMLShared.trace("z   : "+str(z))
-       GDMLShared.trace("x1  : "+str(fp.x1))
-       GDMLShared.trace("x2  : "+str(fp.x2))
+       y1 = mul * fp.y1
+       x1 = mul * fp.x1
+       x2 = mul * fp.x2
+       y2 = mul * fp.y2
+       x3 = mul * fp.x3
+       x4 = mul * fp.x4
+       z = mul * fp.z
+       dx1 = y1*math.tan(alpha1)
+       dx2 = y2*math.tan(alpha2)
+       print(f'dx = {dx1}, dx2={dx2}')
+       
+       #Vertexes, counter clock wise order
+       v1 = FreeCAD.Vector(-x1/2 - dx1/2, -y1/2, -z/2)
+       v2 = FreeCAD.Vector( x1/2 - dx1/2, -y1/2, -z/2)
+       v3 = FreeCAD.Vector( x2/2 + dx1/2, y1/2, -z/2)
+       v4 = FreeCAD.Vector(-x2/2 + dx1/2, y1/2, -z/2)
+       v5 = FreeCAD.Vector(-x3/2 - dx2/2, -y2/2, z/2)
+       v6 = FreeCAD.Vector( x3/2 - dx2/2, -y2/2, z/2)
+       v7 = FreeCAD.Vector( x4/2 + dx2/2, y2/2, z/2)
+       v8 = FreeCAD.Vector(-x4/2 + dx2/2, y2/2, z/2)
+       #
+       # xy faces
+       #
+       vxy1 = [v1, v4, v3, v2, v1]
+       vxy2 = [v5, v6, v7, v8, v5]
+       #
+       # zx faces
+       #
+       vzx1 = [v1, v2, v6, v5, v1]
+       vzx2 = [v3, v4, v8, v7, v3]
+       #
+       # yz faces
+       #
+       vyz1 = [v5, v8, v4, v1, v5]
+       vyz2 = [v2, v3, v7, v6, v2]
+       #
+       # aply theta, phi distortions
+       #
+       print(f'theta = {theta}')
+       rho = z*math.tan(theta) 
+       dx = rho*math.cos(phi)
+       dy = rho*math.sin(phi)
+       for i in range(0,4):
+           vxy2[i][0] += dx 
+           vxy2[i][1] += dy 
+        
+       fxy1 = Part.Face(Part.makePolygon(vxy1))
+       fxy2 = Part.Face(Part.makePolygon(vxy2))
+       fzx1 = Part.Face(Part.makePolygon(vzx1))
+       fzx2 = Part.Face(Part.makePolygon(vzx2))
+       fyz1 = Part.Face(Part.makePolygon(vyz1))
+       fyz2 = Part.Face(Part.makePolygon(vyz2))
 
-       v1    = FreeCAD.Vector(x1m, y1m, -z)
-       v2    = FreeCAD.Vector(x1p, y1m, -z)
-       v3    = FreeCAD.Vector(x1p, y1p, -z)
-       v4    = FreeCAD.Vector(x1m, y1p, -z)
+       shell = Part.makeShell([fxy1, fxy2, fzx1, fzx2, fyz1, fyz2])
+       solid = Part.makeSolid(shell)
 
-       # x,y of centre of top surface
-       dr = z*math.tan(theta)
-       tx = dr*math.cos(phi)
-       ty = dr*math.cos(phi)
-       GDMLShared.trace("Coord of top surface centre")
-       GDMLShared.trace("x : "+str(tx)+" y : "+str(ty))
-       py2 = ty + (fp.y2 * mul)
-       my2 = ty - (fp.y2 * mul)
-       px3 = tx + (fp.x3 * mul)
-       mx3 = tx - (fp.x3 * mul)
-       px4 = tx + (fp.x4 * mul)
-       mx4 = tx - (fp.x4 * mul)
-       GDMLShared.trace("px3 : "+str(px3))
-       GDMLShared.trace("py2 : "+str(py2))
-       GDMLShared.trace("my2 : "+str(my2))
-
-       v5 = FreeCAD.Vector(mx3, my2, z)
-       v6 = FreeCAD.Vector(px3, my2, z)
-       v7 = FreeCAD.Vector(px3, py2, z)
-       v8 = FreeCAD.Vector(mx3, py2, z)
-
-       # Make the wires/faces
-       f1 = make_face4(v1,v2,v3,v4)
-       f2 = make_face4(v1,v2,v6,v5)
-       f3 = make_face4(v2,v3,v7,v6)
-       f4 = make_face4(v3,v4,v8,v7)
-       f5 = make_face4(v1,v4,v8,v5)
-       f6 = make_face4(v5,v6,v7,v8)
-       shell=Part.makeShell([f1,f2,f3,f4,f5,f6])
-       solid=Part.makeSolid(shell)
-
-       #solid = Part.makePolygon([v1,v2,v3,v4,v5,v6,v7,v1])
-
-       fp.Shape = solid
+       # center is mid point of diagonal
+       #
+       botCenter = ((v3+v4) + (v1+v2))/2
+       topCenter = ((v7+v8) + (v5+v6))/2
+       center = (topCenter+botCenter)/2
+       
+       fp.Shape = translate(solid, -center)
        fp.Placement = currPlacement
+
 
 class GDMLTrd(GDMLsolid) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour = None) :
@@ -1911,13 +1923,13 @@ class GDMLTrd(GDMLsolid) :
       "3.4.15 : Trapezoid – x & y varying along z"
       obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
       obj.addProperty("App::PropertyFloat","x1","GDMLTrd", \
-                      "Length x at y= -y1 face -z").x1=x1
+                      "Length x at face -z/2").x1=x1
       obj.addProperty("App::PropertyFloat","x2","GDMLTrd", \
-                      "Length x at y= +y1 face -z").x2=x2
+                      "Length x at face +z/2").x2=x2
       obj.addProperty("App::PropertyFloat","y1","GDMLTrd", \
-                      "Length y at face -z").y1=y1
+                      "Length y at face -z/2").y1=y1
       obj.addProperty("App::PropertyFloat","y2","GDMLTrd", \
-                      "Length y at face +z").y2=y2
+                      "Length y at face +z/2").y2=y2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrd","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLTrd","Material") 
@@ -1959,7 +1971,7 @@ class GDMLTrd(GDMLsolid) :
        x2 = (fp.x2 * mul)/2
        y1 = (fp.y1 * mul)/2
        y2 = (fp.y2 * mul)/2
-       z  = fp.z/2 * mul
+       z  = (fp.z * mul)/2
        v1 = FreeCAD.Vector(-x1, -y1, -z)
        v2 = FreeCAD.Vector(-x1, +y1, -z)
        v3 = FreeCAD.Vector(x1,  +y1, -z)
@@ -2801,6 +2813,9 @@ class GDMLisotope(GDMLcommon) :
       obj.addProperty("App::PropertyString","name",name).name = name 
       obj.addProperty("App::PropertyInteger","N",name).N=N
       obj.addProperty("App::PropertyInteger","Z",name).Z=Z
+      # Name, N and Z are minimum other values are added by import
+      #obj.addProperty("App::PropertyString","unit",name).unit = unit 
+      #obj.addProperty("App::PropertyFloat","value",name).value = value 
       obj.Proxy = self
       self.Object = obj
 
