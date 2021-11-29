@@ -30,6 +30,7 @@
 
 from math import *
 import FreeCAD, Part
+from PySide import QtCore, QtGui
 
 #from lxml import etree as ET
 
@@ -61,6 +62,14 @@ def trace(s):
        print(s,file = tracefp)
        tracefp.flush()
     return
+
+def errorDialog(msg, title='Warning', type=2):
+    # Create a simple dialog QMessageBox
+    # type indicates the icon used: one of QtGui.QMessageBox.{NoIcon, Information, Warning, Critical, Question} 
+    typeDict = {0:'NoIcon',1:'Information',2:'Warning',3:'Critical',4:'Question'}
+    diag = QtGui.QMessageBox('QtGui.QMessageBox.'+typeDict(type),title,msg)
+    diag.setWindowModality(QtCore.Qt.ApplicationModal)
+    diag.exec_()
 
 def getFloatVal(expr):
     try:
