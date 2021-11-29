@@ -169,7 +169,8 @@ will create
 For details on
 
 * Using the workbench please see the wiki [GDML Workbench WIKI](https://github.com/KeithSloan/GDML/wiki)
-* Converting STEP files to GDML see the wiki [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate) 
+* Converting STEP files to GDML see the wiki [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
+* Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design] https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects
 
 
 ## FOLLOWING TO BE MOVED TO WIKI
