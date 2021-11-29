@@ -77,17 +77,18 @@ class GDMLColourHex(QtGui.QLineEdit) :
       self.displayText = hexstr
       self.text = hexstr
 
-class GDMLColour(QtGui.QWidget):
+class GDMLColour(QtGui.QPalette):
   
    def __init__(self,colour):
       super().__init__()
-      self.setAutoFillBackground(True)
+      #self.setAutoFillBackground(True)
       #self.resize(50, 20)
       print(f'Set Palette {colour}')
-      palette = self.palette()
+      #palette = self.palette()
       #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
-      palette.setColor(QtGui.QPalette.Window, QtGui.QColor('red'))
-      self.setPalette(palette)
+      #palette.setColor(QtGui.QPalette.Window, QtGui.QColor('red'))
+      self.setColor(QtGui.QPalette.Window, QtGui.QColor('red'))
+      #self.setPalette(palette)
 
 class GDMLMaterial(QtGui.QComboBox):
     
