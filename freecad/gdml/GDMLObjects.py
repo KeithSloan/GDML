@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Sat Nov 27 11:29:37 AM PST 2021
+# Sun Nov 28 04:04:06 PM PST 2021
 #
 #**************************************************************************
 #*                                                                        *
@@ -167,7 +167,6 @@ def makeFrustrum(num,poly0,poly1) :
 
 def angleSectionSolid(fp, rmax, z, shape) :
     # Different Solids have different rmax and height
-    import math
     #print("angleSectionSolid")
     #print('rmax : '+str(rmax))
     #print('z : '+str(z))
@@ -971,7 +970,6 @@ class GDMLPara(GDMLsolid) :
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
-       import math
        GDMLShared.trace("Execute Polyparallepiped")
        mul = GDMLShared.getMult(fp)
        x = mul * fp.x
@@ -1090,7 +1088,6 @@ class GDMLHype(GDMLsolid) :
    def createGeometry(self,fp):
        currPlacement = fp.Placement
        #GDMLShared.setTrace(True)
-       import math
        GDMLShared.trace("Execute Hyperbolic Tube")
        # this should probably be a global variable, but
        # for now adopt the value used in geant4.10.07.p02
@@ -1341,6 +1338,104 @@ class GDMLTorus(GDMLsolid) :
             torus.rotate(spnt,sdir,getAngle(fp.aunit,fp.startphi))
        fp.Shape = torus     
        fp.Placement = currPlacement
+
+class GDMLTwistedbox(GDMLsolid) :
+   def __init__(self, obj, PhiTwist, x, y, z, aunit, lunit, material, colour=None):
+      super().__init__(obj)
+      '''Add some custom properties to our Box feature'''
+      GDMLShared.trace("GDMLTwistedbox init")
+      #GDMLShared.trace("material : "+material)
+      obj.addProperty("App::PropertyFloat","x","GDMLTwistedbox","Length x").x=x
+      obj.addProperty("App::PropertyFloat","y","GDMLTwistedbox","Length y").y=y
+      obj.addProperty("App::PropertyFloat","z","GDMLTwistedbox","Length z").z=z
+      angle = getAngleDeg(aunit, PhiTwist)
+      if angle > 90:
+          print(f'PhiTwist angle cannot be larger than 90 deg')
+          angle = 90
+          aunit = "deg"
+      elif angle < -90:
+          print(f'PhiTwist angle cannot be less than -90 deg')
+          angle = -90
+          aunit = "deg"
+      else:
+          angle = PhiTwist
+          
+      obj.addProperty("App::PropertyFloat","PhiTwist","GDMLTwistedbox","Twist Angle").PhiTwist=angle
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLTwistedbox","aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTwistedbox","lunit")
+      setLengthQuantity(obj, lunit)
+      obj.addProperty("App::PropertyEnumeration","material","GDMLTwistedbox","Material")
+      setMaterial(obj, material)
+      if FreeCAD.GuiUp :
+         updateColour(obj,colour,material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      self.Type = 'GDMLTwistedbox'
+      self.colour = colour
+      obj.Proxy = self
+      
+   ### modif add
+   def getMaterial(self):
+       return obj.material
+   ## end modif
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       # Changing Shape in createGeometry will redrive onChanged
+       if ('Restore' in fp.State) :
+          return
+       
+       if prop in ['material'] :
+          if FreeCAD.GuiUp :
+             if self.colour is None :
+                fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+       
+       if prop in ['x','y','z','lunit']  :
+             self.createGeometry(fp) 
+
+   def execute(self, fp):
+       #print('execute')
+       self.createGeometry(fp)
+
+   def createGeometry(self,fp):
+       #print('createGeometry')
+       #print(fp)
+
+       if all((fp.x,fp.y,fp.z, fp.PhiTwist)) :
+          currPlacement = fp.Placement
+
+       #if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
+          mul = GDMLShared.getMult(fp)
+          GDMLShared.trace('mul : '+str(mul))
+          x = mul * fp.x
+          y = mul * fp.y
+          z = mul * fp.z
+          angle = getAngleDeg(fp.aunit,fp.PhiTwist)
+          # lower rectanngle vertexes
+          v1 = FreeCAD.Vector(-x/2, -y/2, -z/2)
+          v2 = FreeCAD.Vector( x/2, -y/2, -z/2)
+          v3 = FreeCAD.Vector( x/2,  y/2, -z/2)
+          v4 = FreeCAD.Vector(-x/2,  y/2, -z/2)
+          pbot = Part.makePolygon([v1,v2,v3,v4,v1])
+          slices = []
+          N = 5
+          dz = z/(N-1)
+          dPhi = angle/(N-1)
+          for i in range(0,N):
+              p = pbot.translated(FreeCAD.Vector(0,0,i*dz))
+              p.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), -angle/2 + i*dPhi)
+              slices.append(p)
+          loft = Part.makeLoft(slices, True, False)
+
+          fp.Shape = loft
+          fp.Placement = currPlacement
+    
+   def OnDocumentRestored(self,obj) :
+       print('Doc Restored')
+          
 
 class GDMLXtru(GDMLsolid) :
    def __init__(self, obj, lunit, material, colour = None) :
@@ -1708,7 +1803,6 @@ class GDMLSphere(GDMLsolid) :
    
    def createGeometry(self,fp):
        # Based on code by Dam Lamb
-       import math
        currPlacement = fp.Placement
        mul = GDMLShared.getMult(fp)
        rmax = mul * fp.rmax
@@ -1841,7 +1935,6 @@ class GDMLTrap(GDMLsolid) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       import math
        currPlacement = fp.Placement
        # Define six vetices for the shape
        alpha = getAngleRad(fp.aunit,fp.alpha)
@@ -1961,7 +2054,6 @@ class GDMLTrd(GDMLsolid) :
        self.createGeometry(fp)
    
    def createGeometry(self,fp):
-       import math
        currPlacement = fp.Placement
        GDMLShared.trace("x2  : "+str(fp.x2))
 
