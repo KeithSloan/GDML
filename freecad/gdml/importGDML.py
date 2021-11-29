@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Sat Nov 27 11:30:37 AM PST 2021
+# Sun Nov 28 02:30:59 PM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -600,6 +600,39 @@ def createTrd(part,solid,material,colour,px,py,pz,rot,displayMode) :
        setDisplayMode(mytrd,displayMode)
     return mytrd
 
+def createTwistedbox(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    # parent, sold
+    from .GDMLObjects import GDMLTwistedbox, ViewProvider
+    #GDMLShared.setTrace(True)
+    GDMLShared.trace("CreateTwisted : ")
+    #GDMLShared.trace("material : "+material)
+    GDMLShared.trace(solid.attrib)
+
+    # modifs lambda (otherwise each time we open the gdml file, 
+    # the part name will have one more GDMLBox added
+    # No - need to remove leading GDMLBox on export
+    mypart = part.newObject("Part::FeaturePython","GDMLTwistedbox:"+getName(solid))
+    #mycube=part.newObject("Part::FeaturePython",getName(solid))
+    x = GDMLShared.getVal(solid,'x')
+    y = GDMLShared.getVal(solid,'y')
+    z = GDMLShared.getVal(solid,'z')
+    lunit = getText(solid,'lunit',"mm")
+    angle = GDMLShared.getVal(solid,'PhiTwist')
+    aunit = getText(solid,'aunit','rad')
+    
+    #print(f'Cube colour : {colour}')
+    GDMLTwistedbox(mypart,angle,x,y,z,aunit,lunit,material,colour)
+    GDMLShared.trace("Logical Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mypart.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mypart.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mypart.ViewObject)
+       setDisplayMode(mypart,displayMode)
+    #myCube.Shape = translate(mycube.Shape,base)
+    return mypart
+
 def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLXtru, GDML2dVertex, GDMLSection, \
              ViewProvider, ViewProviderExtension
@@ -921,6 +954,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
 
         if case('trd'):
             return(createTrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('twistedbox'):
+            return(createTwistedbox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tube'):
             return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
