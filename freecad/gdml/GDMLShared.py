@@ -66,8 +66,12 @@ def trace(s):
 def errorDialog(msg, title='Warning', type=2):
     # Create a simple dialog QMessageBox
     # type indicates the icon used: one of QtGui.QMessageBox.{NoIcon, Information, Warning, Critical, Question} 
-    typeDict = {0:'NoIcon',1:'Information',2:'Warning',3:'Critical',4:'Question'}
-    diag = QtGui.QMessageBox('QtGui.QMessageBox.'+typeDict(type),title,msg)
+    typeDict = {0:QtGui.QMessageBox.NoIcon, \
+                1:QtGui.QMessageBox.Information, \
+                2:QtGui.QMessageBox.Warning, \
+                3:QtGui.QMessageBox.Critical, \
+                4:QtGui.QMessageBox.Question}
+    diag = QtGui.QMessageBox(Dict(type),title,msg)
     diag.setWindowModality(QtCore.Qt.ApplicationModal)
     diag.exec_()
 
