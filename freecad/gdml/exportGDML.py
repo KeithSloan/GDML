@@ -1,4 +1,4 @@
-# Sat Nov 27 11:31:11 AM PST 2021
+# Sun Nov 28 04:13:47 PM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -1075,6 +1075,19 @@ def processGDMLTubeObject(obj) :
                            'lunit' : obj.lunit})
     return tube, tubeName
 
+def processGDMLTwistedboxObject(obj) :
+ 
+    solidName =  nameOfGDMLobject(obj)
+
+    solid = ET.SubElement(solids, 'twistedbox',{'name': solidName, \
+                                                'PhiTwist': str(obj.PhiTwist), \
+                                                'x': str(obj.x),  \
+                                                'y': str(obj.y),  \
+                                                'z': str(obj.z),  \
+                                                'aunit': str(obj.aunit), \
+                                                'lunit' : obj.lunit})
+    return solid, solidName
+
 def processGDMLXtruObject(obj) :
     # Needs unique Name
     xtruName = nameOfGDMLobject(obj)
@@ -1377,6 +1390,10 @@ def processGDMLSolid(obj) :
        if case("GDMLTube") :
           #print("      GDMLTube") 
           return(processGDMLTubeObject(obj))
+
+       if case("GDMLTwistedbox") :
+          #print("      GDMLTwistedbox") 
+          return(processGDMLTwistedboxObject(obj))
 
        if case("GDMLXtru") :
           #print("      GDMLXtru") 
