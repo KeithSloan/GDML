@@ -70,15 +70,23 @@ def lookupColour(col) :
       
     return mat
 
+class GDMLColourHex(QtGui.QLineEdit) :
+   def __init__(self,hexstr):
+      super().__init__()
+      print('Hex Colour')
+      self.displayText = hexstr
+      self.text = hexstr
+
 class GDMLColour(QtGui.QWidget):
   
    def __init__(self,colour):
       super().__init__()
       self.setAutoFillBackground(True)
-      self.resize(50, 20)
-
+      #self.resize(50, 20)
+      print(f'Set Palette {colour}')
       palette = self.palette()
-      palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
+      #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
+      palette.setColor(QtGui.QPalette.Window, QtGui.QColor('red'))
       self.setPalette(palette)
 
 class GDMLMaterial(QtGui.QComboBox):
@@ -100,6 +108,9 @@ class GDMLColourMapEntry(QtGui.QWidget) :
       self.colour = colour
       self.hbox = QtGui.QHBoxLayout()
       self.hbox.addWidget(GDMLColour(colour))
+      #self.hbox.addWidget(GDMLColour(colour))
+      self.hbox.addWidget(GDMLColourHex('hexcol'))
+      self.hbox.addWidget(GDMLColourHex('hexcol'))
       self.hbox.addWidget(material)
       self.setLayout(self.hbox)
 
@@ -139,7 +150,7 @@ class GDMLColourMap(QtGui.QDialog) :
       self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
-      self.setGeometry( 250, 450, 550, 550)
+      self.setGeometry( 150, 450, 850, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       self.buttonNew = QtGui.QPushButton(translate('GDML','New'))
@@ -254,18 +265,20 @@ class GDMLColourMap(QtGui.QDialog) :
           processXML(doc,joinDir("Resources/Geant4Materials.xml"))
           materials = doc.Materials
 
-       if materials != None :
-          for m in materials.OutList :
-              matList.append(m.Label)
+       try :
+          if materials != None :
+             for m in materials.OutList :
+                 matList.append(m.Label)
           #print(matList)
-
-       if geant4 != None :
-          for m in geant4.OutList :
-              matList.append(m.Label)
+       except :
+          pass
+       try :
+          if geant4 != None :
+             for m in geant4.OutList :
+                  matList.append(m.Label)
           #print(matList)
-
-       else :
-          print('Materials Not Found')
+       except :
+          pass
 
        return matList      
 
