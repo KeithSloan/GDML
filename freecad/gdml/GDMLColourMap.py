@@ -70,16 +70,23 @@ def lookupColour(col) :
       
     return mat
 
-class GDMLColour(QtGui.QWidget):
+#class GDMLColour(QtGui.QWidget):
+class GDMLColour(QtGui.QPushButton):
   
    def __init__(self,colour):
       super().__init__()
-      self.setAutoFillBackground(True)
       self.resize(50, 20)
 
       palette = self.palette()
-      palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
+      palette.setColor(QtGui.QPalette.Button, QtGui.QColor(colour))
+      #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
+      self.setAutoFillBackground(True)
+      #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(QtGui.qRed))
+      #palette.setColor(QtGui.QPalette.Window, QtGui.qRed)
+      self.setStyleSheet("QPushButton {border-color: black; border-width: 2px;}")
       self.setPalette(palette)
+      self.setFlat(True)
+      self.update()
 
 class GDMLMaterial(QtGui.QComboBox):
     
@@ -139,7 +146,7 @@ class GDMLColourMap(QtGui.QDialog) :
       self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
-      self.setGeometry( 250, 450, 550, 550)
+      self.setGeometry( 150, 450, 850, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       self.buttonNew = QtGui.QPushButton(translate('GDML','New'))
@@ -253,19 +260,21 @@ class GDMLColourMap(QtGui.QDialog) :
           print('Load Geant4 Materials XML')
           processXML(doc,joinDir("Resources/Geant4Materials.xml"))
           materials = doc.Materials
-
-       if materials != None :
-          for m in materials.OutList :
-              matList.append(m.Label)
+       try :
+          if materials != None :
+             for m in materials.OutList :
+                 matList.append(m.Label)
           #print(matList)
+       except :
+          pass
 
-       if geant4 != None :
-          for m in geant4.OutList :
-              matList.append(m.Label)
-          #print(matList)
-
-       else :
-          print('Materials Not Found')
+       try : 
+          if geant4 != None :
+             for m in geant4.OutList :
+                 matList.append(m.Label)
+             #print(matList)
+       except :
+          pass
 
        return matList      
 
