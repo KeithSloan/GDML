@@ -71,22 +71,28 @@ def lookupColour(col) :
     return mat
 
 #class GDMLColour(QtGui.QWidget):
-class GDMLColour(QtGui.QPushButton):
+#class GDMLColour(QtGui.QPushButton):
+class GDMLColour(QtGui.QLineEdit):
   
    def __init__(self,colour):
       super().__init__()
-      self.resize(50, 20)
-
       palette = self.palette()
-      palette.setColor(QtGui.QPalette.Button, QtGui.QColor(colour))
+      #palette.setColor(QtGui.QPalette.Button, QtGui.QColor(colour))
+      palette.setColor(QtGui.QPalette.Background, QtGui.QColor(colour))
       #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
       self.setAutoFillBackground(True)
       #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(QtGui.qRed))
       #palette.setColor(QtGui.QPalette.Window, QtGui.qRed)
-      self.setStyleSheet("QPushButton {border-color: black; border-width: 2px;}")
+      self.setStyleSheet("QPushButton {border-color: black; border: 2px;}")
       self.setPalette(palette)
-      self.setFlat(True)
+      #self.setFlat(True)
       self.update()
+
+class GDMLColourHex(QtGui.QLineEdit):
+  
+   def __init__(self,colhex):
+      super().__init__()
+      self.insert(colhex)
 
 class GDMLMaterial(QtGui.QComboBox):
     
@@ -101,12 +107,13 @@ class GDMLMaterial(QtGui.QComboBox):
 
 class GDMLColourMapEntry(QtGui.QWidget) :
 
-   def __init__(self,colour,material) :
+   def __init__(self,colour,colhex,material) :
       super().__init__()
       print('Map Entry : '+str(colour))
       self.colour = colour
       self.hbox = QtGui.QHBoxLayout()
       self.hbox.addWidget(GDMLColour(colour))
+      self.hbox.addWidget(GDMLColourHex(colhex))
       self.hbox.addWidget(material)
       self.setLayout(self.hbox)
 
@@ -131,10 +138,10 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       self.setWidgetResizable(True)
       self.setWidget(self.widget)
 
-   def addEntry(self, colour) :
+   def addEntry(self, colour,colhex) :
       print('Add Entry')
       mat = GDMLMaterial(self.matList)
-      self.vbox.addWidget(GDMLColourMapEntry(colour,mat))
+      self.vbox.addWidget(GDMLColourMapEntry(colour,colhex,mat))
 
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
@@ -146,18 +153,22 @@ class GDMLColourMap(QtGui.QDialog) :
       self.result = userCancelled
       # create our window
       # define window           xLoc,yLoc,xDim,yDim
-      self.setGeometry( 150, 450, 850, 550)
+      self.setGeometry( 150, 450, 650, 550)
       self.setWindowTitle("Map FreeCAD Colours to GDML Materials")
       self.setMouseTracking(True)
       self.buttonNew = QtGui.QPushButton(translate('GDML','New'))
       self.buttonNew.clicked.connect(self.onNew)
       self.buttonLoad = QtGui.QPushButton(translate('GDML','Load'))
       self.buttonLoad.clicked.connect(self.onLoad)
+      self.buttonSave = QtGui.QPushButton(translate('GDML','Save'))
+      self.buttonSave.clicked.connect(self.onSave)
+      self.buttonScan = QtGui.QPushButton(translate('GDML','Scan'))
       self.buttonScan = QtGui.QPushButton(translate('GDML','Scan'))
       self.buttonScan.clicked.connect(self.onScan)
       headerLayout = QtGui.QHBoxLayout()
       headerLayout.addWidget(self.buttonNew)
       headerLayout.addWidget(self.buttonLoad)
+      headerLayout.addWidget(self.buttonSave)
       headerLayout.addWidget(self.buttonScan)
       self.coloursLayout = QtGui.QGridLayout()
       mainLayout = QtGui.QVBoxLayout(self)
@@ -166,9 +177,9 @@ class GDMLColourMap(QtGui.QDialog) :
       
       materialList = self.getGDMLMaterials()
       self.mapList = GDMLColourMapList(materialList)
-      self.colorList = []
+      self.colorDict = {}
       self.buildList()
-      print(self.colorList)
+      print(self.colorDict)
       #for c in self.colorList :
       #    self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
       # create Labels
@@ -196,7 +207,7 @@ class GDMLColourMap(QtGui.QDialog) :
          #print(dir(doc))
          if hasattr(doc,'Objects') :
             #print(doc.Objects)
-            self.colorList = []
+            #self.colorList = []
             for obj in doc.Objects :
                 #print(dir(obj))
                 if hasattr(obj,'ViewObject') :
@@ -205,15 +216,16 @@ class GDMLColourMap(QtGui.QDialog) :
                       if obj.ViewObject.isVisible :
                          if hasattr(obj.ViewObject,'ShapeColor') :
                             colour = obj.ViewObject.ShapeColor
-                            print(colour)
-                            try:
-                               col = self.colorList.index(colour)
-                            except ValueError:
-                               print('Add colour')
-                               self.colorList.append(colour)
-                               self.addColour(colour)
-   def addColour(self,c) :
-       self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
+                            #print(colour)
+                            colhex = '#'+''.join('{:02x}'.format(round(v*255)) \
+                                     for v in colour)
+                            if not( colhex in self.colorDict) :
+                               print(f'Add colour {colhex} {colour}')
+                               self.addColour2Map(colour,colhex)
+                               self.colorDict.update([(colhex,len(self.colorDict))])
+
+   def addColour2Map(self,c,hex) :
+       self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255),hex)
 
    def lookupColour(self, col) :
        print('Lookup Colour')
@@ -231,6 +243,7 @@ class GDMLColourMap(QtGui.QDialog) :
 
    def onOk(self):
        self.result = userOK
+       print('Set Materials')
        self.close()
 
    def onNew(self) :
@@ -238,6 +251,9 @@ class GDMLColourMap(QtGui.QDialog) :
 
    def onLoad(self) :
        print('onLoad')
+
+   def onSave(self) :
+       print('onSave')
 
    def onScan(self) :
        print('onScan')
