@@ -78,7 +78,7 @@ class GDMLColour(QtGui.QLineEdit):
       super().__init__()
       palette = self.palette()
       #palette.setColor(QtGui.QPalette.Button, QtGui.QColor(colour))
-      palette.setColor(QtGui.QPalette.Background, QtGui.QColor(colour))
+      palette.setColor(QtGui.QPalette.Base, QtGui.QColor(colour))
       #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(colour))
       self.setAutoFillBackground(True)
       #palette.setColor(QtGui.QPalette.Window, QtGui.QColor(QtGui.qRed))
@@ -178,7 +178,7 @@ class GDMLColourMap(QtGui.QDialog) :
       materialList = self.getGDMLMaterials()
       self.mapList = GDMLColourMapList(materialList)
       self.colorDict = {}
-      self.buildList()
+      self.scanDocument(1)
       print(self.colorDict)
       #for c in self.colorList :
       #    self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
@@ -199,7 +199,7 @@ class GDMLColourMap(QtGui.QDialog) :
       self.setLayout(mainLayout)
       self.show()
 
-   def buildList(self) :
+   def scanDocument(self, action) :
       doc = FreeCAD.ActiveDocument
       print('Active')
       print(doc)
@@ -219,10 +219,16 @@ class GDMLColourMap(QtGui.QDialog) :
                             #print(colour)
                             colhex = '#'+''.join('{:02x}'.format(round(v*255)) \
                                      for v in colour)
-                            if not( colhex in self.colorDict) :
-                               print(f'Add colour {colhex} {colour}')
-                               self.addColour2Map(colour,colhex)
-                               self.colorDict.update([(colhex,len(self.colorDict))])
+                            if action == 1 : # Build Map
+                               if not( colhex in self.colorDict) :
+                                  print(f'Add colour {colhex} {colour}')
+                                  self.addColour2Map(colour,colhex)
+                                  self.colorDict.update([(colhex,len(self.colorDict))])
+                            if action == 2 : # Update Object Material
+                               if hasattr(obj,'Shape') :
+                                  mapIdx = self.colorDict[colhex]
+                                  print(f'Found {colhex} : id {mapIdx}')
+                                  print(obj.Label)
 
    def addColour2Map(self,c,hex) :
        self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255),hex)
@@ -244,6 +250,7 @@ class GDMLColourMap(QtGui.QDialog) :
    def onOk(self):
        self.result = userOK
        print('Set Materials')
+       self.scanDocument(2)
        self.close()
 
    def onNew(self) :
@@ -257,7 +264,7 @@ class GDMLColourMap(QtGui.QDialog) :
 
    def onScan(self) :
        print('onScan')
-       self.buildList()
+       self.scanDocument(1)
        print('Update Layout')
        self.coloursLayout.update()
 
