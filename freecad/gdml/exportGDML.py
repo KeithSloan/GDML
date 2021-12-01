@@ -1,4 +1,4 @@
-# Sun Nov 28 04:13:47 PM PST 2021
+# Tue Nov 30 05:00:40 PM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -856,6 +856,7 @@ def processGDMLParaObject(obj) :
                           'alpha':str(obj.alpha), \
                           'theta':str(obj.theta), \
                           'phi':str(obj.phi), \
+                          'aunit':str(obj.aunit), \
                           'lunit' : obj.lunit})
     return solid, paraName
 
@@ -1086,6 +1087,21 @@ def processGDMLTwistedboxObject(obj) :
                                                 'z': str(obj.z),  \
                                                 'aunit': str(obj.aunit), \
                                                 'lunit' : obj.lunit})
+    return solid, solidName
+
+def processGDMLTwistedtrdObject(obj) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    solidName = nameOfGDMLobject(obj)
+    solid = ET.SubElement(solids, 'twistedtrd',{'name': solidName, \
+                          'PhiTwist':str(obj.PhiTwist), \
+                          'x1': str(obj.x1),  \
+                          'x2': str(obj.x2),  \
+                          'y1': str(obj.y1),  \
+                          'y2': str(obj.y2),  \
+                          'z': str(obj.z),  \
+                          'aunit': str(obj.aunit),  \
+                          'lunit' : obj.lunit})
     return solid, solidName
 
 def processGDMLXtruObject(obj) :
@@ -1394,6 +1410,10 @@ def processGDMLSolid(obj) :
        if case("GDMLTwistedbox") :
           #print("      GDMLTwistedbox") 
           return(processGDMLTwistedboxObject(obj))
+
+       if case("GDMLTwistedtrd") :
+          #print("      GDMLTwistedbox") 
+          return(processGDMLTwistedtrdObject(obj))
 
        if case("GDMLXtru") :
           #print("      GDMLXtru") 
