@@ -473,9 +473,9 @@ class GDMLBox(GDMLsolid) :
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLBox init")
       #GDMLShared.trace("material : "+material)
-      obj.addProperty("App::PropertyFloat","x","GDMLBox","Length x").x=x
-      obj.addProperty("App::PropertyFloat","y","GDMLBox","Length y").y=y
-      obj.addProperty("App::PropertyFloat","z","GDMLBox","Length z").z=z
+      obj.addProperty("App::PropertyLength","x","GDMLBox","Length x").x=x
+      obj.addProperty("App::PropertyLength","y","GDMLBox","Length y").y=y
+      obj.addProperty("App::PropertyLength","z","GDMLBox","Length z").z=z
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLBox","lunit")
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLBox","Material")
@@ -533,11 +533,11 @@ class GDMLCone(GDMLsolid) :
                 lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Cone feature'''
-      obj.addProperty("App::PropertyFloat","rmin1","GDMLCone","Min Radius 1").rmin1=rmin1
-      obj.addProperty("App::PropertyFloat","rmax1","GDMLCone","Max Radius 1").rmax1=rmax1
-      obj.addProperty("App::PropertyFloat","rmin2","GDMLCone","Min Radius 2").rmin2=rmin2
-      obj.addProperty("App::PropertyFloat","rmax2","GDMLCone","Max Radius 2").rmax2=rmax2
-      obj.addProperty("App::PropertyFloat","z","GDMLCone","Height of Cone").z=z
+      obj.addProperty("App::PropertyLength","rmin1","GDMLCone","Min Radius 1").rmin1=rmin1
+      obj.addProperty("App::PropertyLength","rmax1","GDMLCone","Max Radius 1").rmax1=rmax1
+      obj.addProperty("App::PropertyLength","rmin2","GDMLCone","Min Radius 2").rmin2=rmin2
+      obj.addProperty("App::PropertyLength","rmax2","GDMLCone","Max Radius 2").rmax2=rmax2
+      obj.addProperty("App::PropertyLength","z","GDMLCone","Height of Cone").z=z
       obj.addProperty("App::PropertyFloat","startphi","GDMLCone","Start Angle").startphi=startphi
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLCone","Delta Angle").deltaphi=deltaphi
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLCone","aunit")
@@ -629,13 +629,13 @@ class GDMLElCone(GDMLsolid) :
    def __init__(self, obj, dx, dy, zmax, zcut, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our ElCone feature'''
-      obj.addProperty("App::PropertyFloat","dx","GDMLElCone", \
+      obj.addProperty("App::PropertyLength","dx","GDMLElCone", \
                       "x semi axis").dx = dx
-      obj.addProperty("App::PropertyFloat","dy","GDMLElCone", \
+      obj.addProperty("App::PropertyLength","dy","GDMLElCone", \
                       "y semi axis").dy = dy
-      obj.addProperty("App::PropertyFloat","zmax","GDMLElCone", \
+      obj.addProperty("App::PropertyLength","zmax","GDMLElCone", \
                       "z length").zmax = zmax
-      obj.addProperty("App::PropertyFloat","zcut","GDMLElCone", \
+      obj.addProperty("App::PropertyLength","zcut","GDMLElCone", \
                       "z cut").zcut = zcut
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElCone","lunit")
       setLengthQuantity(obj, lunit) 		      
@@ -715,15 +715,15 @@ class GDMLEllipsoid(GDMLsolid) :
    def __init__(self, obj, ax, by, cz, zcut1, zcut2, lunit, material, colour = None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
-      obj.addProperty("App::PropertyFloat","ax","GDMLEllipsoid", \
+      obj.addProperty("App::PropertyLength","ax","GDMLEllipsoid", \
                        "x semi axis").ax=ax
-      obj.addProperty("App::PropertyFloat","by","GDMLEllipsoid", \
+      obj.addProperty("App::PropertyLength","by","GDMLEllipsoid", \
                        "y semi axis").by=by
-      obj.addProperty("App::PropertyFloat","cz","GDMLEllipsoid", \
+      obj.addProperty("App::PropertyLength","cz","GDMLEllipsoid", \
                        "z semi axis").cz=cz
-      obj.addProperty("App::PropertyFloat","zcut1","GDMLEllipsoid", \
+      obj.addProperty("App::PropertyLength","zcut1","GDMLEllipsoid", \
                        "z axis cut1").zcut1=zcut1
-      obj.addProperty("App::PropertyFloat","zcut2","GDMLEllipsoid", \
+      obj.addProperty("App::PropertyLength","zcut2","GDMLEllipsoid", \
                        "z axis1 cut2").zcut2=zcut2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLEllipsoid","lunit")
       setLengthQuantity(obj, lunit) 		      
@@ -800,11 +800,11 @@ class GDMLElTube(GDMLsolid) :
    def __init__(self, obj, dx, dy, dz, lunit, material, colour=None) :
       super().__init__(obj)
       '''Add some custom properties to our Elliptical Tube feature'''
-      obj.addProperty("App::PropertyFloat","dx","GDMLElTube", \
+      obj.addProperty("App::PropertyLength","dx","GDMLElTube", \
                        "x semi axis1").dx=dx
-      obj.addProperty("App::PropertyFloat","dy","GDMLElTube", \
+      obj.addProperty("App::PropertyLength","dy","GDMLElTube", \
                        "y semi axis1").dy=dy
-      obj.addProperty("App::PropertyFloat","dz","GDMLElTube", \
+      obj.addProperty("App::PropertyLength","dz","GDMLElTube", \
                        "z half height").dz=dz
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLElTube","lunit")
       setLengthQuantity(obj, lunit) 		      
@@ -856,7 +856,7 @@ class GDMLOrb(GDMLsolid) :
    def __init__(self, obj, r, lunit, material, colour=None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
-      obj.addProperty("App::PropertyFloat","r","GDMLOrb","Radius").r=r
+      obj.addProperty("App::PropertyLength","r","GDMLOrb","Radius").r=r
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLOrb","lunit")
       setLengthQuantity(obj, lunit) 		      
       obj.addProperty("App::PropertyEnumeration","material","GDMLOrb", \
@@ -903,9 +903,9 @@ class GDMLPara(GDMLsolid) :
                 material, colour= None) :
       super().__init__(obj)
       '''Add some custom properties for Polyhedra feature'''
-      obj.addProperty("App::PropertyFloat","x","GDMLParapiped","x").x=x
-      obj.addProperty("App::PropertyFloat","y","GDMLParapiped","y").y=y
-      obj.addProperty("App::PropertyFloat","z","GDMLParapiped","z").z=z
+      obj.addProperty("App::PropertyLength","x","GDMLParapiped","x").x=x
+      obj.addProperty("App::PropertyLength","y","GDMLParapiped","y").y=y
+      obj.addProperty("App::PropertyLength","z","GDMLParapiped","z").z=z
       obj.addProperty("App::PropertyFloat","alpha","GDMLParapiped", \
                       "Angle with y axis").alpha=alpha
       obj.addProperty("App::PropertyFloat","theta","GDMLParapiped", \
@@ -1020,9 +1020,9 @@ class GDMLHype(GDMLsolid) :
                 material, colour= None) :
       super().__init__(obj)
       '''Add some custom properties for Hyperbolic Tube feature'''
-      obj.addProperty("App::PropertyFloat","rmin","GDMLHype","inner radius at z=0").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","GDMLHype","outer radius at z=0").rmax=rmax
-      obj.addProperty("App::PropertyFloat","z","GDMLHype","Tube length").z=z
+      obj.addProperty("App::PropertyLength","rmin","GDMLHype","inner radius at z=0").rmin=rmin
+      obj.addProperty("App::PropertyLength","rmax","GDMLHype","outer radius at z=0").rmax=rmax
+      obj.addProperty("App::PropertyLength","z","GDMLHype","Tube length").z=z
       obj.addProperty("App::PropertyFloat","inst","GDMLHype", \
                       "Inner stereo").inst=inst
       obj.addProperty("App::PropertyFloat","outst","GDMLHype", \
@@ -1248,11 +1248,11 @@ class GDMLTorus(GDMLsolid) :
    def __init__(self, obj, rmin, rmax, rtor, startphi, deltaphi, \
                 aunit, lunit, material, colour = None) :
       super().__init__(obj)
-      obj.addProperty("App::PropertyFloat","rmin","GDMLTorus", \
+      obj.addProperty("App::PropertyLength","rmin","GDMLTorus", \
                       "rmin").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","GDMLTorus", \
+      obj.addProperty("App::PropertyLength","rmax","GDMLTorus", \
                       "rmax").rmax=rmax
-      obj.addProperty("App::PropertyFloat","rtor","GDMLTorus", \
+      obj.addProperty("App::PropertyLength","rtor","GDMLTorus", \
                       "rtor").rtor=rtor
       obj.addProperty("App::PropertyFloat","startphi","GDMLTorus", \
                       "startphi").startphi=startphi
@@ -1318,9 +1318,9 @@ class GDMLTwistedbox(GDMLsolid) :
       '''Add some custom properties to our Box feature'''
       GDMLShared.trace("GDMLTwistedbox init")
       #GDMLShared.trace("material : "+material)
-      obj.addProperty("App::PropertyFloat","x","GDMLTwistedbox","Length x").x=x
-      obj.addProperty("App::PropertyFloat","y","GDMLTwistedbox","Length y").y=y
-      obj.addProperty("App::PropertyFloat","z","GDMLTwistedbox","Length z").z=z
+      obj.addProperty("App::PropertyLength","x","GDMLTwistedbox","Length x").x=x
+      obj.addProperty("App::PropertyLength","y","GDMLTwistedbox","Length y").y=y
+      obj.addProperty("App::PropertyLength","z","GDMLTwistedbox","Length z").z=z
       angle = getAngleDeg(aunit, PhiTwist)
       if angle > 90:
           print(f'PhiTwist angle cannot be larger than 90 deg')
@@ -1407,14 +1407,14 @@ class GDMLTwistedtrd(GDMLsolid) :
    def __init__(self, obj, PhiTwist, z, x1, x2, y1, y2, aunit, lunit, material, colour = None) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
-      obj.addProperty("App::PropertyFloat","z","GDMLTwistedtrd`","z").z=z
-      obj.addProperty("App::PropertyFloat","x1","GDMLTwistedtrd", \
+      obj.addProperty("App::PropertyLength","z","GDMLTwistedtrd`","z").z=z
+      obj.addProperty("App::PropertyLength","x1","GDMLTwistedtrd", \
                       "Length x at face -z/2").x1=x1
-      obj.addProperty("App::PropertyFloat","x2","GDMLTwistedtrd", \
+      obj.addProperty("App::PropertyLength","x2","GDMLTwistedtrd", \
                       "Length x at face +z/2").x2=x2
-      obj.addProperty("App::PropertyFloat","y1","GDMLTwistedtrd", \
+      obj.addProperty("App::PropertyLength","y1","GDMLTwistedtrd", \
                       "Length y at face -z/2").y1=y1
-      obj.addProperty("App::PropertyFloat","y2","GDMLTwistedtrd", \
+      obj.addProperty("App::PropertyLength","y2","GDMLTwistedtrd", \
                       "Length y at face +z/2").y2=y2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTwistedtrd","lunit")
       angle = getAngleDeg(aunit, PhiTwist)
@@ -1691,9 +1691,9 @@ class GDMLSection(GDMLcommon) :
 class GDMLzplane(GDMLcommon) :
    def __init__(self, obj, rmin, rmax, z):
       super().__init__(obj)
-      obj.addProperty("App::PropertyFloat","rmin","zplane", \
+      obj.addProperty("App::PropertyLength","rmin","zplane", \
               "Inside Radius").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","zplane", \
+      obj.addProperty("App::PropertyLength","rmax","zplane", \
               "Outside Radius").rmax=rmax
       obj.addProperty("App::PropertyFloat","z","zplane","z").z=z
       self.Type = 'zplane'
@@ -1811,9 +1811,9 @@ class GDMLSphere(GDMLsolid) :
       super().__init__(obj)
       '''Add some custom properties to our Sphere feature'''
       GDMLShared.trace("GDMLSphere init")
-      obj.addProperty("App::PropertyFloat","rmin","GDMLSphere", \
+      obj.addProperty("App::PropertyLength","rmin","GDMLSphere", \
               "Inside Radius").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","GDMLSphere", \
+      obj.addProperty("App::PropertyLength","rmax","GDMLSphere", \
               "Outside Radius").rmax=rmax
       obj.addProperty("App::PropertyFloat","startphi","GDMLSphere", \
               "Start Angle").startphi=startphi
@@ -1937,21 +1937,21 @@ class GDMLTrap(GDMLsolid) :
                 aunit, lunit, material, colour = None):
       super().__init__(obj)
       "General Trapezoid"
-      obj.addProperty("App::PropertyFloat","z","GDMLTrap","z").z=z
+      obj.addProperty("App::PropertyLength","z","GDMLTrap","z").z=z
       obj.addProperty("App::PropertyFloat","theta","GDMLTrap","theta"). \
                        theta=theta
       obj.addProperty("App::PropertyFloat","phi","GDMLTrap","phi").phi=phi
-      obj.addProperty("App::PropertyFloat","x1","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","x1","GDMLTrap", \
                       "Length x at y= -y1/2 of face at -z/2").x1=x1
-      obj.addProperty("App::PropertyFloat","x2","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","x2","GDMLTrap", \
                       "Length x at y= +y1/2 of face at -z/2").x2=x2
-      obj.addProperty("App::PropertyFloat","x3","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","x3","GDMLTrap", \
                       "Length x at y= -y2/2 of face at +z/2").x3=x3
-      obj.addProperty("App::PropertyFloat","x4","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","x4","GDMLTrap", \
                       "Length x at y= +y2/2 of face at +z/2").x4=x4
-      obj.addProperty("App::PropertyFloat","y1","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","y1","GDMLTrap", \
                       "Length y at face -z/2").y1=y1
-      obj.addProperty("App::PropertyFloat","y2","GDMLTrap", \
+      obj.addProperty("App::PropertyLength","y2","GDMLTrap", \
                       "Length y at face +z/2").y2=y2
       obj.addProperty("App::PropertyFloat","alpha","GDMLTrap","alpha"). \
                      alpha=alpha
@@ -2066,14 +2066,14 @@ class GDMLTrd(GDMLsolid) :
    def __init__(self, obj, z, x1, x2,  y1, y2, lunit, material, colour = None) :
       super().__init__(obj)
       "3.4.15 : Trapezoid – x & y varying along z"
-      obj.addProperty("App::PropertyFloat","z","GDMLTrd`","z").z=z
-      obj.addProperty("App::PropertyFloat","x1","GDMLTrd", \
+      obj.addProperty("App::PropertyLength","z","GDMLTrd`","z").z=z
+      obj.addProperty("App::PropertyLength","x1","GDMLTrd", \
                       "Length x at face -z/2").x1=x1
-      obj.addProperty("App::PropertyFloat","x2","GDMLTrd", \
+      obj.addProperty("App::PropertyLength","x2","GDMLTrd", \
                       "Length x at face +z/2").x2=x2
-      obj.addProperty("App::PropertyFloat","y1","GDMLTrd", \
+      obj.addProperty("App::PropertyLength","y1","GDMLTrd", \
                       "Length y at face -z/2").y1=y1
-      obj.addProperty("App::PropertyFloat","y2","GDMLTrd", \
+      obj.addProperty("App::PropertyLength","y2","GDMLTrd", \
                       "Length y at face +z/2").y2=y2
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTrd","lunit")
       setLengthQuantity(obj, lunit) 		      
@@ -2142,9 +2142,9 @@ class GDMLTube(GDMLsolid) :
                 lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
-      obj.addProperty("App::PropertyFloat","rmin","GDMLTube","Inside Radius").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","GDMLTube","Outside Radius").rmax=rmax
-      obj.addProperty("App::PropertyFloat","z","GDMLTube","Length z").z=z
+      obj.addProperty("App::PropertyLength","rmin","GDMLTube","Inside Radius").rmin=rmin
+      obj.addProperty("App::PropertyLength","rmax","GDMLTube","Outside Radius").rmax=rmax
+      obj.addProperty("App::PropertyLength","z","GDMLTube","Length z").z=z
       obj.addProperty("App::PropertyFloat","startphi","GDMLTube","Start Angle").startphi=startphi
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLTube","Delta Angle").deltaphi=deltaphi
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTube","aunit")
@@ -2210,9 +2210,9 @@ class GDMLcutTube(GDMLsolid) :
                 lunit, material, colour = None):
       super().__init__(obj)
       '''Add some custom properties to our Tube feature'''
-      obj.addProperty("App::PropertyFloat","rmin","GDMLcutTube","Inside Radius").rmin=rmin
-      obj.addProperty("App::PropertyFloat","rmax","GDMLcutTube","Outside Radius").rmax=rmax
-      obj.addProperty("App::PropertyFloat","z","GDMLcutTube","Length z").z=z
+      obj.addProperty("App::PropertyLength","rmin","GDMLcutTube","Inside Radius").rmin=rmin
+      obj.addProperty("App::PropertyLength","rmax","GDMLcutTube","Outside Radius").rmax=rmax
+      obj.addProperty("App::PropertyLength","z","GDMLcutTube","Length z").z=z
       obj.addProperty("App::PropertyFloat","startphi","GDMLcutTube","Start Angle").startphi=startphi
       obj.addProperty("App::PropertyFloat","deltaphi","GDMLcutTube","Delta Angle").deltaphi=deltaphi
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLcutTube","aunit")
@@ -2448,12 +2448,12 @@ class GDMLGmshTessellated(GDMLsolid) :
       obj.addProperty('App::PropertyInteger','vertex','GDMLGmshTessellated', \
                       'Vertex').vertex = len(vertex)
       obj.setEditorMode('vertex',1)
-      obj.addProperty('App::PropertyFloat','m_maxLength', \
+      obj.addProperty('App::PropertyLength','m_maxLength', \
                       'GDMLGmshTessellated', \
                       'Max Length').m_maxLength = meshLen
-      obj.addProperty('App::PropertyFloat','m_curveLen','GDMLGmshTessellated', \
+      obj.addProperty('App::PropertyLength','m_curveLen','GDMLGmshTessellated', \
                       'Curve Length').m_curveLen = meshLen
-      obj.addProperty('App::PropertyFloat','m_pointLen','GDMLGmshTessellated', \
+      obj.addProperty('App::PropertyLength','m_pointLen','GDMLGmshTessellated', \
                       'Point Length').m_pointLen = meshLen
       #obj.addProperty('App::PropertyBool','m_Remesh','GDMLGmshTessellated', \
       #                'ReMesh').m_Remesh = False
