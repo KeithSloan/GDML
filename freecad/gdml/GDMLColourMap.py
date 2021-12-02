@@ -143,6 +143,16 @@ class GDMLColourMapList(QtGui.QScrollArea) :
       mat = GDMLMaterial(self.matList)
       self.vbox.addWidget(GDMLColourMapEntry(colour,colhex,mat))
 
+   def getMaterial(self, index) :
+      #print(dir(self.vbox))
+      item = self.vbox.itemAt(index).widget()
+      #item.dumpObjectTree()
+      #cb = item.findChild(QtGui.QComboBox,'GDMLMaterial')
+      cb = item.findChildren(QtGui.QComboBox)[0]
+      m = cb.currentText()
+      print(m)
+      return(m)
+
 class GDMLColourMap(QtGui.QDialog) :
 #class GDMLColourMap(QtGui.QMainWindow) :
    def __init__(self, parent) :
@@ -163,7 +173,6 @@ class GDMLColourMap(QtGui.QDialog) :
       self.buttonSave = QtGui.QPushButton(translate('GDML','Save'))
       self.buttonSave.clicked.connect(self.onSave)
       self.buttonScan = QtGui.QPushButton(translate('GDML','Scan'))
-      self.buttonScan = QtGui.QPushButton(translate('GDML','Scan'))
       self.buttonScan.clicked.connect(self.onScan)
       headerLayout = QtGui.QHBoxLayout()
       headerLayout.addWidget(self.buttonNew)
@@ -175,8 +184,8 @@ class GDMLColourMap(QtGui.QDialog) :
       mainLayout.addLayout(headerLayout)
       mainLayout.addLayout(self.coloursLayout)
       
-      materialList = self.getGDMLMaterials()
-      self.mapList = GDMLColourMapList(materialList)
+      self.matList = self.getGDMLMaterials()
+      self.mapList = GDMLColourMapList(self.matList)
       self.colorDict = {}
       self.scanDocument(1)
       print(self.colorDict)
@@ -229,6 +238,12 @@ class GDMLColourMap(QtGui.QDialog) :
                                   mapIdx = self.colorDict[colhex]
                                   print(f'Found {colhex} : id {mapIdx}')
                                   print(obj.Label)
+                                  m = self.mapList.getMaterial(mapIdx)
+                                  if not hasattr(obj,'material') :
+                                     obj.addProperty("App::PropertyEnumeration"\
+                                        ,"material","GDML","Material")
+                                     obj.material = self.matList
+                                  obj.material=self.matList.index(m)
 
    def addColour2Map(self,c,hex) :
        self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255),hex)
