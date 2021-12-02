@@ -238,12 +238,15 @@ class GDMLColourMap(QtGui.QDialog) :
                                   mapIdx = self.colorDict[colhex]
                                   print(f'Found {colhex} : id {mapIdx}')
                                   print(obj.Label)
-                                  m = self.mapList.getMaterial(mapIdx)
+                                  m = self.mapList.getMaterial(mapIdx) 
+                                  # Only add
                                   if not hasattr(obj,'material') :
                                      obj.addProperty("App::PropertyEnumeration"\
                                         ,"material","GDML","Material")
                                      obj.material = self.matList
-                                  obj.material=self.matList.index(m)
+                                  # Ignore GDML objects which will have Proxy
+                                  if not hasattr(obj,'Proxy' ) :
+                                     obj.material=self.matList.index(m)
 
    def addColour2Map(self,c,hex) :
        self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255),hex)
