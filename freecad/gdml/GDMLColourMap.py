@@ -275,7 +275,8 @@ class GDMLColourMap(QtGui.QDialog) :
        try :
           materials = doc.Materials
           geant4 = doc.Geant4
-          g4Mats = geant4.G4Materials
+          g4Mats = doc.getObject('G4Materials')
+
        except :
           from .importGDML import processXML
           from .init_gui   import joinDir
@@ -292,8 +293,8 @@ class GDMLColourMap(QtGui.QDialog) :
           pass
 
        try : 
-          if geant4 != None :
-             for m in geant4.OutList :
+          if g4Mats != None :
+             for m in g4Mats.OutList :
                  matList.append(m.Label)
              #print(matList)
        except :
