@@ -1475,7 +1475,7 @@ class GDMLTwistedtrap(GDMLsolid) :
        x4 = mul * fp.x4
        z = mul * fp.z
 
-       N = 3
+       N = 9
        dz = z/(N-1)
        dTwist = PhiTwist/(N-1)
 
