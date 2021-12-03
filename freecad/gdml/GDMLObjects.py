@@ -1619,10 +1619,10 @@ class GDMLTwistedtubs(GDMLsolid) :
    def __init__(self, obj,endinnerrad,endouterrad,zlen,twistedangle,phi,aunit,lunit,material, colour = None) :
       super().__init__(obj)
       '''Twisted tube'''
-      obj.addProperty("App::PropertFloat","zlen","GDMLTwistedtubs","zlen").zlen=zlen
-      obj.addProperty("App::PropertFloat","endinnerrad","GDMLTwistedtubs", \
+      obj.addProperty("App::PropertyFloat","zlen","GDMLTwistedtubs","zlen").zlen=zlen
+      obj.addProperty("App::PropertyFloat","endinnerrad","GDMLTwistedtubs", \
                       "Inside radius at caps").endinnerrad=endinnerrad
-      obj.addProperty("App::PropertFloat","endouterrad","GDMLTwistedtubs", \
+      obj.addProperty("App::PropertyFloat","endouterrad","GDMLTwistedtubs", \
                       "Outside radius at caps").endouterrad=endouterrad
       obj.addProperty("App::PropertyEnumeration","lunit","GDMLTwistedtubs","lunit")
       angle = getAngleDeg(aunit, twistedangle)
