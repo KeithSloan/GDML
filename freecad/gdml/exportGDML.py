@@ -1,4 +1,4 @@
-# Tue Nov 30 05:00:40 PM PST 2021
+# Thu Dec  2 07:40:45 AM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -1104,6 +1104,40 @@ def processGDMLTwistedtrdObject(obj) :
                           'lunit' : obj.lunit})
     return solid, solidName
 
+def processGDMLTwistedtrapObject(obj) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    solidName = nameOfGDMLobject(obj)
+    solid = ET.SubElement(solids, 'twistedtrap',{'name': solidName, \
+                          'PhiTwist':str(obj.PhiTwist), \
+                          'x1': str(obj.x1),  \
+                          'x2': str(obj.x2),  \
+                          'y1': str(obj.y1),  \
+                          'y2': str(obj.y2),  \
+                          'x3': str(obj.x3),  \
+                          'x4': str(obj.x4),  \
+                          'z': str(obj.z),  \
+                          'Theta': str(obj.Theta),  \
+                          'Phi': str(obj.Phi),  \
+                          'Alph': str(obj.Alph),  \
+                          'aunit': str(obj.aunit),  \
+                          'lunit' : obj.lunit})
+    return solid, solidName
+
+def processGDMLTwistedtubsObject(obj) :
+    # Needs unique Name
+    # flag needed for boolean otherwise parse twice
+    solidName = nameOfGDMLobject(obj)
+    solid = ET.SubElement(solids, 'twistedtubs',{'name': solidName, \
+                          'twistedangle':str(obj.twistedangle), \
+                          'endinnerrad': str(obj.endinnerrad),  \
+                          'endouterrad': str(obj.endouterrad),  \
+                          'zlen': str(obj.zlen),  \
+                          'phi': str(obj.phi),  \
+                          'aunit': str(obj.aunit),  \
+                          'lunit' : obj.lunit})
+    return solid, solidName
+
 def processGDMLXtruObject(obj) :
     # Needs unique Name
     xtruName = nameOfGDMLobject(obj)
@@ -1411,9 +1445,17 @@ def processGDMLSolid(obj) :
           #print("      GDMLTwistedbox") 
           return(processGDMLTwistedboxObject(obj))
 
+       if case("GDMLTwistedtrap") :
+          #print("      GDMLTwistedtrap") 
+          return(processGDMLTwistedtrapObject(obj))
+
        if case("GDMLTwistedtrd") :
           #print("      GDMLTwistedbox") 
           return(processGDMLTwistedtrdObject(obj))
+
+       if case("GDMLTwistedtubs") :
+          #print("      GDMLTwistedbox") 
+          return(processGDMLTwistedtubsObject(obj))
 
        if case("GDMLXtru") :
           #print("      GDMLXtru") 

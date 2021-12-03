@@ -633,6 +633,37 @@ def createTwistedbox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #myCube.Shape = translate(mycube.Shape,base)
     return mypart
 
+def createTwistedtrap(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLTwistedtrap, ViewProvider
+    GDMLShared.trace("CreateTwistedtrap : ")
+    GDMLShared.trace(solid.attrib)
+    PhiTwist = GDMLShared.getVal(solid,'PhiTwist')
+    z  = GDMLShared.getVal(solid,'z')
+    x1 = GDMLShared.getVal(solid,'x1')
+    x2 = GDMLShared.getVal(solid,'x2')
+    x3 = GDMLShared.getVal(solid,'x3')
+    x4 = GDMLShared.getVal(solid,'x4')
+    y1 = GDMLShared.getVal(solid,'y1')
+    y2 = GDMLShared.getVal(solid,'y2')
+    theta = GDMLShared.getVal(solid,'Theta')
+    phi = GDMLShared.getVal(solid,'Phi')
+    alpha = GDMLShared.getVal(solid,'Alph')
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    #print z
+    mytrap=part.newObject("Part::FeaturePython","GDMLTwistedtrap:"+getName(solid))
+    GDMLTwistedtrap(mytrap,PhiTwist,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha,aunit,lunit, \
+             material,colour)
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mytrap.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mytrap.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mytrap.ViewObject)
+       setDisplayMode(mytrap,displayMode)
+    return mytrap
+
 def createTwistedtrd(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLTwistedtrd, ViewProvider
     GDMLShared.trace("CreateTwistedtrd : ")
@@ -657,6 +688,29 @@ def createTwistedtrd(part,solid,material,colour,px,py,pz,rot,displayMode) :
        ViewProvider(mytrd.ViewObject)
        setDisplayMode(mytrd,displayMode)
     return mytrd
+
+def createTwistedtubs(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLTwistedtubs, ViewProvider
+    GDMLShared.trace("CreateTwistedtubs : ")
+    GDMLShared.trace(solid.attrib)
+    zlen  = GDMLShared.getVal(solid,'zlen')
+    endinnerrad = GDMLShared.getVal(solid,'endinnerrad')
+    endouterrad = GDMLShared.getVal(solid,'endouterrad')
+    lunit = getText(solid,'lunit',"mm")
+    twistedangle = GDMLShared.getVal(solid,'twistedangle')
+    phi = GDMLShared.getVal(solid,'phi')
+    aunit = getText(solid,'aunit','rad')
+    mypart=part.newObject("Part::FeaturePython","GDMLTwistedtubs:"+getName(solid))
+    GDMLTwistedtubs(mypart,endinnerrad,endouterrad,zlen,twistedangle,phi,aunit,lunit,material,colour)
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mypart.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mypart.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(mypart.ViewObject)
+       setDisplayMode(mypart,displayMode)
+    return mypart
 
 def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLXtru, GDML2dVertex, GDMLSection, \
@@ -983,8 +1037,14 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if case('twistedbox'):
             return(createTwistedbox(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
+        if case('twistedtrap'):
+            return(createTwistedtrap(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
         if case('twistedtrd'):
             return(createTwistedtrd(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('twistedtubs'):
+            return(createTwistedtubs(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('tube'):
             return(createTube(part,solid,material,colour,px,py,pz,rot,displayMode)) 
