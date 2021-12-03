@@ -1219,12 +1219,7 @@ def createMaterials(group):
         item = ET.SubElement(materials,'material',{'name': \
                  nameFromLabel(obj.Label)})
 
-        # process common options material / element
-        processIsotope(obj, item)
-        if len(obj.Group) > 0 :
-           for o in obj.Group :
-               processFractionsComposites(o,item)
-
+        # Dunit & Dvalue must be first for Geant4
         if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
            #print("Dunit or DValue")
            D = ET.SubElement(item,'D')
@@ -1241,6 +1236,11 @@ def createMaterials(group):
            if hasattr(obj,'MEEunit') :
               ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
                                                'value': str(obj.MEEvalue)})
+        # process common options material / element
+        processIsotope(obj, item)
+        if len(obj.Group) > 0 :
+           for o in obj.Group :
+               processFractionsComposites(o,item)
 
 def createElements(group) :
     global materials
