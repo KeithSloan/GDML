@@ -1034,10 +1034,14 @@ class TessellateFeature :
                vol = createPartVol(obj)
                print(obj.Label)
                print(obj.Placement)
+               if hasattr(obj,'material') :
+                  mat = obj.material
+               else :
+                  mat = getSelectedMaterial()
                myTess = vol.newObject('Part::FeaturePython',name)
                #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
                GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets,True, \
-                      "mm", getSelectedMaterial())
+                      "mm", mat)
                # Update Part Placment with source Placement
                vol.Placement = obj.Placement
                base = obj.Placement.Base
