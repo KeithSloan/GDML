@@ -1,4 +1,4 @@
-#**************************************************************************
+#se**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
 #*             (c) Dam Lambert 2020                                          *
@@ -1040,6 +1040,9 @@ class TessellateFeature :
                       "mm", getSelectedMaterial())
                # Update Part Placment with source Placement
                vol.Placement = obj.Placement
+               base = obj.Placement.Base
+               print(type(base))
+               myTess.Placement.Base = base.multiply(-1.0)
                FreeCAD.ActiveDocument.recompute()
                if FreeCAD.GuiUp :
                   ViewProvider(myTess.ViewObject)
