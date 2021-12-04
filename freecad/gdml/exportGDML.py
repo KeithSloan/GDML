@@ -1,4 +1,4 @@
-# Thu Dec  2 07:40:45 AM PST 2021
+# Sat Dec  4 05:40:10 AM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -876,6 +876,18 @@ def processGDMLPolyconeObject(obj) :
                                'z' : str(zplane.z)})
     return cone, polyconeName
 
+def processGDMLGenericPolyconeObject(obj) :
+    polyconeName = nameOfGDMLobject(obj)
+    cone = ET.SubElement(solids, 'genericPolycone',{'name': polyconeName, \
+                                                    'startphi': str(obj.startphi),  \
+                                                    'deltaphi': str(obj.deltaphi),  \
+                                                    'aunit': obj.aunit,  \
+                                                    'lunit' : obj.lunit })
+    for rzpoint in obj.OutList :
+       ET.SubElement(cone, 'rzpoint',{'r': str(rzpoint.r), \
+                                      'z' : str(rzpoint.z)})
+    return cone, polyconeName
+
 def processGDMLPolyhedraObject(obj) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
@@ -1398,6 +1410,10 @@ def processGDMLSolid(obj) :
        if case("GDMLPolycone") :
           #print("      GDMLPolycone") 
           return(processGDMLPolyconeObject(obj))
+             
+       if case("GDMLGenericPolycone") :
+          #print("      GDMLGenericPolycone") 
+          return(processGDMLGenericPolyconeObject(obj))
              
        if case("GDMLPolyhedra") :
           #print("      GDMLPolyhedra") 
