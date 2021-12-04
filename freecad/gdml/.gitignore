@@ -1,1 +1,3 @@
 *.pyc
+Resources/ColorDict.csv
+Resources/MapMaterials.xml

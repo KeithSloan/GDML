@@ -279,6 +279,19 @@ class GDMLColourMap(QtGui.QDialog) :
 
    def onSave(self) :
        print('onSave')
+       # Save materials
+       from .exportGDML import exportMaterials
+       from .importGDML import joinDir
+       matGrp = FreeCAD.ActiveDocument.getObject('Materials')
+       if matGrp is not None :
+          exportMaterials(matGrp,joinDir('Resources/MapMaterials.xml'))
+       # Save Color Dictionary
+       f = open(joinDir('Resources/ColorDict.csv'),'w')
+       for key, value in self.colorDict.items():
+           #print(f'key {key} value {value}')
+           #print(self.mapList.getMaterial(value))
+           f.write(f'{key},{self.mapList.getMaterial(value)}\n')
+       f.close()
 
    def onScan(self) :
        print('onScan')
