@@ -734,8 +734,8 @@ def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if FreeCAD.GuiUp :
            ViewProvider(my2dVert)
     for section in solid.findall('section') : 
-        zOrder = int(GDMLShared.getVal(section,'zOrder'))       # Get Int
-        zPosition = int(GDMLShared.getVal(section,'zPosition')) # Get Int
+        zOrder = int(GDMLShared.getVal(section,'zOrder'))  # Get Int
+        zPosition = GDMLShared.getVal(section,'zPosition') # Get Float
         xOffset = GDMLShared.getVal(section,'xOffset')
         yOffset = GDMLShared.getVal(section,'yOffset')
         scalingFactor = GDMLShared.getVal(section,'scalingFactor')

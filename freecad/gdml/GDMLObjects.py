@@ -1890,7 +1890,7 @@ class GDMLSection(GDMLcommon) :
               "section").Type='section'
       obj.addProperty("App::PropertyInteger","zOrder","section", \
               "zOrder").zOrder=zOrder
-      obj.addProperty("App::PropertyInteger","zPosition","section", \
+      obj.addProperty("App::PropertyFloat","zPosition","section", \
               "zPosition").zPosition=zPosition
       obj.addProperty("App::PropertyFloat","xOffset","section", \
               "xOffset").xOffset=xOffset
