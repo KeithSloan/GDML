@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Sun Nov 28 02:30:59 PM PST 2021
+# Fri Dec  3 12:25:53 PM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -325,6 +325,43 @@ def createEltube(part,solid,material,colour,px,py,pz,rot,displayMode) :
        ViewProvider(myeltube.ViewObject)
        setDisplayMode(myeltube,displayMode)
     return myeltube
+
+def createGenericPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLGenericPolycone, GDMLrzpoint, \
+            ViewProvider, ViewProviderExtension
+    GDMLShared.trace("Create GenericPolycone : ")
+    GDMLShared.trace(solid.attrib)
+    startphi = GDMLShared.getVal(solid,'startphi')
+    deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    mypolycone=part.newObject("Part::FeaturePython","GDMLGenericPolycone:"+getName(solid))
+    mypolycone.addExtension("App::GroupExtensionPython")
+    GDMLGenericPolycone(mypolycone,startphi,deltaphi,aunit,lunit,material,colour)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(mypolycone.ViewObject)
+
+    #mypolycone.ViewObject.DisplayMode = "Shaded"
+    GDMLShared.trace(solid.findall('rzpoint'))
+    for zplane in solid.findall('rzpoint') : 
+        GDMLShared.trace(zplane)
+        r = GDMLShared.getVal(zplane,'r',0)
+        z = GDMLShared.getVal(zplane,'z')
+        myrzpoint=FreeCAD.ActiveDocument.addObject('App::FeaturePython','rzpoint') 
+        mypolycone.addObject(myrzpoint)
+        GDMLrzpoint(myrzpoint,r,z)
+        if FreeCAD.GuiUp :
+           ViewProvider(myrzpoint)
+
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mypolycone.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mypolycone.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       setDisplayMode(mypolycone,displayMode)
+    return mypolycone
+
 
 def createOrb(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLOrb, ViewProvider
@@ -1012,6 +1049,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
 
         if case('polycone'):
             return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('genericPolycone'):
+            return(createGenericPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('polyhedra'):
             return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 

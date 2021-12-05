@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Tue Nov 30 05:18:37 PM PST 2021
+# Sat Dec  4 05:39:49 AM PST 2021
 #
 #**************************************************************************
 #*                                                                        *
@@ -1936,6 +1936,27 @@ class GDMLzplane(GDMLcommon) :
    def execute(self, fp):
        pass
 
+class GDMLrzpoint(GDMLcommon) :
+   def __init__(self, obj, r, z):
+      super().__init__(obj)
+      obj.addProperty("App::PropertyFloat","r","rzpoint", \
+                      "r-coordinate").r=r
+      obj.addProperty("App::PropertyFloat","z","rzpoint","z-coordinate").z=z
+      self.Type = 'zplane'
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       #if not ('Restore' in fp.State) :
+       #if prop in ['rmin','rmax','z'] :
+       #   self.execute(fp)
+       #GDMLShared.trace("Change property: " + str(prop) + "\n")
+       pass
+
+   def execute(self, fp):
+       pass
+
 class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
    def __init__(self, obj, startphi, deltaphi, aunit, lunit, material, colour = None) :
       super().__init__(obj)
@@ -2028,6 +2049,75 @@ class GDMLPolycone(GDMLsolid) : # Thanks to Dam Lamb
            listShape[i] = face.revolve(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),angleDeltaPhiDeg)
        # compound of all faces
        fp.Shape = Part.makeCompound(listShape)
+       fp.Placement = currPlacement
+
+class GDMLGenericPolycone(GDMLsolid) : # Thanks to Dam Lamb
+   def __init__(self, obj, startphi, deltaphi, aunit, lunit, material, colour = None) :
+      super().__init__(obj)
+      '''Add some custom properties to our GenericPolycone feature'''
+      obj.addExtension('App::GroupExtensionPython')
+      obj.addProperty("App::PropertyFloat","startphi","GDMLPolycone", \
+              "Start Angle").startphi=startphi
+      obj.addProperty("App::PropertyFloat","deltaphi","GDMLPolycone", \
+             "Delta Angle").deltaphi=deltaphi
+      obj.addProperty("App::PropertyEnumeration","aunit","GDMLPolycone","aunit")
+      obj.aunit=["rad", "deg"]
+      obj.aunit=['rad','deg'].index(aunit[0:3])
+      obj.addProperty("App::PropertyEnumeration","lunit","GDMLPolycone","lunit")
+      setLengthQuantity(obj, lunit) 		      
+      obj.addProperty("App::PropertyEnumeration","material","GDMLPolycone", \
+                       "Material")
+      setMaterial(obj, material)
+      # For debugging
+      #obj.setEditorMode('Placement',0)
+      if FreeCAD.GuiUp :
+         updateColour(obj,colour,material)
+      # Suppress Placement - position & Rotation via parent App::Part
+      # this makes Placement via Phyvol easier and allows copies etc
+      self.Type = 'GDMLGenericPolycone'
+      self.colour = colour
+      obj.Proxy = self
+
+   def onChanged(self, fp, prop):
+       '''Do something when a property has changed'''
+       #print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+       if 'Restore' in fp.State :
+          return
+       
+       if prop in ['material'] :
+          if FreeCAD.GuiUp :
+             if hasattr(self,'colour') :
+                if self.colour is None :
+                   fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+       if prop in ['startphi','deltaphi','aunit','lunit'] :
+          self.createGeometry(fp)
+
+   #def execute(self, fp): in GDMLsolid
+
+   def createGeometry(self,fp) :
+
+       currPlacement = fp.Placement
+       rzpoints = fp.OutList
+       if len(rzpoints) < 3:
+           print("Error in genericPolycone: number of rzpoints less than 3")
+           return
+
+       deltaphi = getAngleDeg(fp.aunit, fp.deltaphi)
+       startphi = getAngleDeg(fp.aunit, fp.startphi)
+       
+       mul = GDMLShared.getMult(fp.lunit)
+       rr = [rz.r*mul for rz in rzpoints]
+       zz = [rz.z*mul for rz in rzpoints]
+       verts = [FreeCAD.Vector(rz.r*mul, 0, rz.z*mul) for rz in rzpoints]
+       verts.append(FreeCAD.Vector(rzpoints[0].r*mul, 0, rzpoints[0].z*mul) )
+       line = Part.makePolygon(verts)
+       line.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), startphi)
+       face = Part.Face(line)
+       surf = face.revolve(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), deltaphi)
+       solid = Part.makeSolid(surf)
+
+       fp.Shape = solid
        fp.Placement = currPlacement
 
 class GDMLSphere(GDMLsolid) :
