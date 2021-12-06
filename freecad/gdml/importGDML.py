@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Fri Dec  3 12:25:53 PM PST 2021
+# Mon Dec  6 08:49:41 AM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -468,6 +468,27 @@ def createHype(part,solid,material,colour,px,py,pz,rot,displayMode) :
        ViewProvider(myhype.ViewObject)
        setDisplayMode(myhype,displayMode)
     return myhype
+
+def createParaboloid(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLParaboloid, ViewProvider
+    GDMLShared.trace("CreateParaboloid : ")
+    GDMLShared.trace(solid.attrib)
+    lunit = getText(solid,'lunit',"mm")
+    rlo = GDMLShared.getVal(solid,'rlo')
+    rhi = GDMLShared.getVal(solid,'rhi')
+    dz = GDMLShared.getVal(solid,'dz')
+    myparaboloid=part.newObject("Part::FeaturePython","GDMLParaboloid:"+getName(solid))
+    GDMLParaboloid(myparaboloid,rlo,rhi,dz,lunit,material,colour)
+    GDMLShared.trace("CreateParaboloid : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myparaboloid.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myparaboloid.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myparaboloid.ViewObject)
+       setDisplayMode(myparaboloid,displayMode)
+    return myparaboloid
 
 def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
@@ -1084,6 +1105,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
         
         if case('para'):
            return(createPara(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('paraboloid'):
+           return(createParaboloid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('polycone'):
             return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 

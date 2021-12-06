@@ -1,4 +1,4 @@
-# Sun Dec  5 10:40:34 AM PST 2021
+# Mon Dec  6 08:49:56 AM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -836,6 +836,18 @@ def processGDMLHypeObject(obj) :
    # modif 'mm' -> obj.lunit
    return solid, hypeName
 
+def processGDMLParaboloidObject(obj) :
+    # Needs unique Name
+    # Remove leading GDMLTube_ from name on export 
+   solidName = nameOfGDMLobject(obj)
+   solid = ET.SubElement(solids, 'paraboloid',{'name': solidName, \
+                                         'rlo': str(obj.rlo),  \
+                                         'rhi': str(obj.rhi),  \
+                                         'dz': str(obj.dz),  \
+                                         'lunit' : obj.lunit})
+   # modif 'mm' -> obj.lunit
+   return solid, solidName
+
 def processGDMLOrbObject(obj) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
@@ -1419,6 +1431,10 @@ def processGDMLSolid(obj) :
        if case("GDMLPara") :
           #print("      GDMLPara") 
           return(processGDMLParaObject(obj))
+             
+       if case("GDMLParaboloid") :
+          #print("      GDMLParaboloid") 
+          return(processGDMLParaboloidObject(obj))
              
        if case("GDMLPolycone") :
           #print("      GDMLPolycone") 
