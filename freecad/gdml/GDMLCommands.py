@@ -129,28 +129,16 @@ def createPartVol(obj) :
 
 class ColourMapFeature:
 
+  def __init__(self) :
+      super().__init__()
+      from .GDMLColourMap import GDMLColourMap
+      self.colorMap = GDMLColourMap(FreeCADGui.getMainWindow())
+
   def Activated(self):
       from PySide import QtGui, QtCore
-      #import sys
-      from .GDMLColourMap import resetGDMLColourMap, showGDMLColourMap
-
-      print('Add colour Map')
-      resetGDMLColourMap()
-      showGDMLColourMap()
+      print('\nShow Add colour Map')
+      self.colorMap.scanShow()
       return      
-
-      #myWidget = QtGui.QDockWidget()
-      #mainWin = FreeCADGui.getMainWindow()
-      #mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
-      mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea, \
-         myWidget)
-      #mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
-      #myWidget.setObjectName("ColourMap")
-      #myWidget.resize(QtCore.QSize(300,100))
-      #title = QtGui.QLabel("Colour Mapping to GDML Materials")
-      #title.setIndent(100)
-      #myWidget.setTitleBarWidget(title)
-      #label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
 
   def IsActive(self):
       if FreeCAD.ActiveDocument == None:

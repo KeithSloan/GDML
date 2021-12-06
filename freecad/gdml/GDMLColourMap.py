@@ -183,17 +183,15 @@ class GDMLColourMap(QtGui.QDialog) :
       mainLayout = QtGui.QVBoxLayout(self)
       mainLayout.addLayout(headerLayout)
       mainLayout.addLayout(self.coloursLayout)
-      
-      self.matList = self.getGDMLMaterials()
-      self.mapList = GDMLColourMapList(self.matList)
       self.colorDict = {}
-      self.scanDocument(1)
-      print(self.colorDict)
+      self.matList = None
+      self.scanned = False
+      #print(self.colorDict)
       #for c in self.colorList :
       #    self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255))
       # create Labels
-      self.label1 = self.mapList 
-      self.coloursLayout.addWidget(self.label1,0,0)
+      #self.label1 = self.mapList 
+      #self.coloursLayout.addWidget(self.label1,0,0)
       #  cancel button
       cancelButton = QtGui.QPushButton('Cancel', self)
       cancelButton.clicked.connect(self.onCancel)
@@ -206,47 +204,58 @@ class GDMLColourMap(QtGui.QDialog) :
       self.coloursLayout.addWidget(okButton, 2, 0)
       # now make the window visible
       self.setLayout(mainLayout)
-      self.show()
+      #self.show()
+
+   def scanShow(self) :
+       if self.matList is None :
+          self.matList = self.getGDMLMaterials()
+       self.mapList = GDMLColourMapList(self.matList)
+       if self.scanned == False :
+          self.scanDocument(1)
+          #print(self.colorDict)
+       self.show()
 
    def scanDocument(self, action) :
-      doc = FreeCAD.ActiveDocument
-      print('Active')
-      print(doc)
-      if doc != None :
-         #print(dir(doc))
-         if hasattr(doc,'Objects') :
-            #print(doc.Objects)
-            #self.colorList = []
-            for obj in doc.Objects :
-                #print(dir(obj))
-                if hasattr(obj,'ViewObject') :
-                   #print(dir(obj.ViewObject))
-                   if hasattr(obj.ViewObject,'isVisible') :
-                      if obj.ViewObject.isVisible :
-                         if hasattr(obj.ViewObject,'ShapeColor') :
-                            colour = obj.ViewObject.ShapeColor
-                            #print(colour)
-                            colhex = '#'+''.join('{:02x}'.format(round(v*255)) \
+       doc = FreeCAD.ActiveDocument
+       print('Active')
+       print(doc)
+       if doc != None :
+          #print(dir(doc))
+          if hasattr(doc,'Objects') :
+             #print(doc.Objects)
+             #self.colorList = []
+             for obj in doc.Objects :
+                 #print(dir(obj))
+                 if hasattr(obj,'ViewObject') :
+                    #print(dir(obj.ViewObject))
+                    if hasattr(obj.ViewObject,'isVisible') :
+                       if obj.ViewObject.isVisible :
+                          if hasattr(obj.ViewObject,'ShapeColor') :
+                             colour = obj.ViewObject.ShapeColor
+                             #print(colour)
+                             colhex = '#'+''.join('{:02x}'.format(round(v*255)) \
                                      for v in colour)
-                            if action == 1 : # Build Map
-                               if not( colhex in self.colorDict) :
-                                  print(f'Add colour {colhex} {colour}')
-                                  self.addColour2Map(colour,colhex)
-                                  self.colorDict.update([(colhex,len(self.colorDict))])
-                            if action == 2 : # Update Object Material
-                               if hasattr(obj,'Shape') :
-                                  mapIdx = self.colorDict[colhex]
-                                  print(f'Found {colhex} : id {mapIdx}')
-                                  print(obj.Label)
-                                  m = self.mapList.getMaterial(mapIdx) 
-                                  # Only add
-                                  if not hasattr(obj,'material') :
-                                     obj.addProperty("App::PropertyEnumeration"\
+                             if action == 1 : # Build Map
+                                if not( colhex in self.colorDict) :
+                                   print(f'Add colour {colhex} {colour}')
+                                   self.addColour2Map(colour,colhex)
+                                   print('Color added')
+                                   self.colorDict.update([(colhex,len(self.colorDict))])
+                                   print('Dict Updated')
+                             if action == 2 : # Update Object Material
+                                if hasattr(obj,'Shape') :
+                                   mapIdx = self.colorDict[colhex]
+                                   print(f'Found {colhex} : id {mapIdx}')
+                                   print(obj.Label)
+                                   m = self.mapList.getMaterial(mapIdx) 
+                                   # Only add
+                                   if not hasattr(obj,'material') :
+                                      obj.addProperty("App::PropertyEnumeration"\
                                         ,"material","GDML","Material")
-                                     obj.material = self.matList
-                                  # Ignore GDML objects which will have Proxy
-                                  if not hasattr(obj,'Proxy' ) :
-                                     obj.material=self.matList.index(m)
+                                      obj.material = self.matList
+                                   # Ignore GDML objects which will have Proxy
+                                   if not hasattr(obj,'Proxy' ) :
+                                      obj.material=self.matList.index(m)
 
    def addColour2Map(self,c,hex) :
        self.mapList.addEntry(QtGui.QColor(c[0]*255,c[1]*255,c[2]*255),hex)
@@ -309,8 +318,7 @@ class GDMLColourMap(QtGui.QDialog) :
           g4Mats = doc.getObject('G4Materials')
 
        except :
-          from .importGDML import processXML
-          from .init_gui   import joinDir
+          from .importGDML import processXML, joinDir
 
           print('Load Geant4 Materials XML')
           processXML(doc,joinDir("Resources/Geant4Materials.xml"))
