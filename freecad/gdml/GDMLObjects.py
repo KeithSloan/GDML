@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Mon Dec  6 08:49:24 AM PST 2021
+# Mon Dec  6 10:02:57 AM PST 2021
 #
 #**************************************************************************
 #*                                                                        *
@@ -1729,7 +1729,6 @@ class GDMLTwistedtrd(GDMLsolid) :
       obj.addProperty("App::PropertyEnumeration","aunit","GDMLTwistedtrd","aunit")
       obj.aunit=["rad", "deg"]
       obj.aunit=['rad','deg'].index(aunit[0:3])
-      obj.addProperty("App::PropertyEnumeration","lunit","GDMLTwistedtrd","lunit")
       setLengthQuantity(obj, lunit)
       obj.addProperty("App::PropertyEnumeration","material","GDMLTwistedtrd","Material")
       setMaterial(obj, material)
