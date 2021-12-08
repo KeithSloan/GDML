@@ -32,10 +32,12 @@ from PySide import QtGui, QtCore
 
 class GDMLMaterial(QtGui.QComboBox):
 
-   def __init__(self,matList) :
+   def __init__(self,matList,mat) :
       super().__init__()
       self.addItems(matList)
       self.setEditable(False)
+      if mat is not None :
+         self.setCurrentIndex(matList.index(mat))
 
    def getItem(self):
       return str(self.currentText())
@@ -60,7 +62,7 @@ def getMaterialsList() :
     try :
        if materials != None :
           for m in materials.OutList :
-              if m.TypeId != "App::DocumentObjectGroupPython" :
+              if m.Label  != "Geant4" :
                  matList.append(m.Label)
          #print(matList)
 

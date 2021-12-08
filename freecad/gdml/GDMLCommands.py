@@ -182,7 +182,7 @@ class GDMLSetColour(QtGui.QDialog) :
       self.buttonSet = QtGui.QPushButton(translate('GDML','Set Material'))
       self.buttonSet.clicked.connect(self.onSet)
       self.matList = getMaterialsList()
-      self.material = GDMLMaterial(self.matList)
+      self.material = GDMLMaterial(self.matList,None)
       mainLayout = QtGui.QVBoxLayout()
       mainLayout.addWidget(self.material)
       mainLayout.addWidget(self.buttonSet)

@@ -86,7 +86,12 @@ def setMaterial(obj, m) :
           obj.material = MaterialsList
           obj.material = 0
           if not ( m == 0 or m == None ) : 
-             obj.material = MaterialsList.index(m)
+             try : 
+                obj.material = MaterialsList.index(m)
+             except :
+                print('Not in List')
+                print(MaterialsList)
+                obj.material = 0
              return
           return
     rebuildMaterialsList()
