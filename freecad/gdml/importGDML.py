@@ -1592,7 +1592,10 @@ def processGEANT4(doc,filename):
     print('process GEANT4 Materials : '+filename)
     etree, root = setupEtree(filename)
     #etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
-    geant4Grp = doc.addObject("App::DocumentObjectGroupPython","Geant4")
+    materials = doc.getObject('Materials')
+    if materials is None :
+       materials = doc.addObject("App::DocumentObjectGroupPython","Materials")
+    geant4Grp = materials.newObject("App::DocumentObjectGroupPython","Geant4")
     processMaterialsG4(geant4Grp,root)
 
 def processMaterialsDocSet(doc, root) :
@@ -1718,4 +1721,4 @@ def processGDML(doc,filename,prompt,initFlg):
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
     endTime = time.perf_counter()
     #print(f'time : {endTime - startTime:0.4f} seconds')
-    FreeCAD.Console.PrintMessage(f'time : {endTime - startTime:0.4f} seconds')
+    FreeCAD.Console.PrintMessage(f'time : {endTime - startTime:0.4f} seconds\n')

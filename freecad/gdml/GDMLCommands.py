@@ -1,4 +1,4 @@
-#se**************************************************************************
+#**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
 #*             (c) Dam Lambert 2020                                          *
@@ -164,6 +164,78 @@ class ColourMapFeature:
              'Add Colour Map'), 'ToolTip': \
               QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',\
               'Add Colour Map')}
+
+
+class GDMLSetColour(QtGui.QDialog) :
+  def __init__(self, selList):
+      super(GDMLSetColour, self).__init__()
+      self.SelList = selList
+      self.initUI()
+
+  def initUI(self) :
+      from .GDMLMaterials import GDMLMaterial, getMaterialsList
+
+      print('initUI')
+      self.setGeometry( 150, 150, 250, 250)
+      self.setWindowTitle("Set GDML Material")
+      self.setMouseTracking(True)
+      self.buttonSet = QtGui.QPushButton(translate('GDML','Set Material'))
+      self.buttonSet.clicked.connect(self.onSet)
+      self.matList = getMaterialsList()
+      self.material = GDMLMaterial(self.matList)
+      mainLayout = QtGui.QVBoxLayout()
+      mainLayout.addWidget(self.material)
+      mainLayout.addWidget(self.buttonSet)
+      self.setLayout(mainLayout)
+      self.show()
+
+  def onSet(self) :
+      mat = self.material.getItem()
+      print(f'Set Material {mat}')
+      for sel in self.SelList :
+          obj = sel.Object
+          if hasattr(obj,'material') :
+             obj.material = mat
+          else :
+             obj.addProperty("App::PropertyEnumeration","material",  \
+                         "GDML","Material")
+             obj.material = self.matList
+             obj.material = self.matList.index(mat)
+
+
+class SetMaterialFeature:
+
+  def Activated(self):
+      from PySide import QtGui, QtCore
+
+      print('Add SetMaterial')
+      cnt = 0
+      sel = FreeCADGui.Selection.getSelectionEx()
+      #print(sel)
+      set = []
+      for s in sel :
+          #print(s)
+          #print(dir(s))
+          if hasattr(s.Object,'Shape') :
+             cnt += 1
+             set.append(s)
+      if cnt > 0 :
+         dialog = GDMLSetColour(set)
+         dialog.exec_()
+      return      
+
+  def IsActive(self):
+      if FreeCAD.ActiveDocument == None:
+         return False
+      else:
+         return True
+
+  def GetResources(self):
+      return {'Pixmap'  : 'GDML_SetMaterial', 'MenuText': \
+              QtCore.QT_TRANSLATE_NOOP('GDML_SetMaterial',\
+             'Set Material'), 'ToolTip': \
+              QtCore.QT_TRANSLATE_NOOP('GDML_SetMaterial',\
+              'Set Material')}
 
 class BooleanCutFeature :
 
@@ -1451,6 +1523,7 @@ FreeCADGui.addCommand('CycleCommand',CycleFeature())
 FreeCADGui.addCommand('ExpandCommand',ExpandFeature())
 FreeCADGui.addCommand('ExpandMaxCommand',ExpandMaxFeature())
 FreeCADGui.addCommand('ColourMapCommand',ColourMapFeature())
+FreeCADGui.addCommand('SetMaterialCommand',SetMaterialFeature())
 FreeCADGui.addCommand('BooleanCutCommand',BooleanCutFeature())
 FreeCADGui.addCommand('BooleanIntersectionCommand',BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand',BooleanUnionFeature())

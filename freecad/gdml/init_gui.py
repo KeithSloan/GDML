@@ -76,7 +76,8 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
         
         #import GDMLCommands, GDMLResources
         commands=['CycleCommand','ColourMapCommand','ExpandCommand', \
-              'ExpandMaxCommand', 'BoxCommand','ConeCommand','ElTubeCommand', \
+              'ExpandMaxCommand','SetMaterialCommand', \
+              'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand', \
               'BooleanCutCommand','BooleanIntersectionCommand', \
@@ -87,7 +88,8 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'Mesh2TessCommand','Tess2MeshCommand', 'TetrahedronCommand']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
-              'ExpandMaxCommand', 'BoxCommand','ConeCommand', \
+              'ExpandMaxCommand', 'SetMaterialCommand', \
+              'BoxCommand','ConeCommand', \
               'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
               'TrapCommand','TubeCommand',
               'BooleanCutCommand','BooleanIntersectionCommand', \
