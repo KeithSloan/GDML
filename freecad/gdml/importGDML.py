@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Fri Dec  3 12:25:53 PM PST 2021
+# Mon Dec  6 08:49:41 AM PST 2021
 #**************************************************************************
 #*                                                                        *
 #*   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -363,6 +363,44 @@ def createGenericPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     return mypolycone
 
 
+def createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLGenericPolyhedra, GDMLrzpoint, \
+            ViewProvider, ViewProviderExtension
+    GDMLShared.trace("Create GenericPolyhedra : ")
+    GDMLShared.trace(solid.attrib)
+    startphi = GDMLShared.getVal(solid,'startphi')
+    deltaphi = GDMLShared.getVal(solid,'deltaphi')
+    numsides = int(GDMLShared.getVal(solid,'numsides'))
+    aunit = getText(solid,'aunit','rad')
+    lunit = getText(solid,'lunit',"mm")
+    mypolyhedra=part.newObject("Part::FeaturePython","GDMLGenericPolyhedra:"+getName(solid))
+    mypolyhedra.addExtension("App::GroupExtensionPython")
+    GDMLGenericPolyhedra(mypolyhedra,startphi,deltaphi,numsides,aunit,lunit,material,colour)
+    if FreeCAD.GuiUp :
+       ViewProviderExtension(mypolyhedra.ViewObject)
+
+    #mypolycone.ViewObject.DisplayMode = "Shaded"
+    GDMLShared.trace(solid.findall('rzpoint'))
+    for zplane in solid.findall('rzpoint') : 
+        GDMLShared.trace(zplane)
+        r = GDMLShared.getVal(zplane,'r',0)
+        z = GDMLShared.getVal(zplane,'z')
+        myrzpoint=FreeCAD.ActiveDocument.addObject('App::FeaturePython','rzpoint') 
+        mypolyhedra.addObject(myrzpoint)
+        GDMLrzpoint(myrzpoint,r,z)
+        if FreeCAD.GuiUp :
+           ViewProvider(myrzpoint)
+
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    mypolyhedra.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(mypolyhedra.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       setDisplayMode(mypolyhedra,displayMode)
+    return mypolyhedra
+
+
 def createOrb(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLOrb, ViewProvider
     GDMLShared.trace("CreateOrb : ")
@@ -430,6 +468,27 @@ def createHype(part,solid,material,colour,px,py,pz,rot,displayMode) :
        ViewProvider(myhype.ViewObject)
        setDisplayMode(myhype,displayMode)
     return myhype
+
+def createParaboloid(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    from .GDMLObjects import GDMLParaboloid, ViewProvider
+    GDMLShared.trace("CreateParaboloid : ")
+    GDMLShared.trace(solid.attrib)
+    lunit = getText(solid,'lunit',"mm")
+    rlo = GDMLShared.getVal(solid,'rlo')
+    rhi = GDMLShared.getVal(solid,'rhi')
+    dz = GDMLShared.getVal(solid,'dz')
+    myparaboloid=part.newObject("Part::FeaturePython","GDMLParaboloid:"+getName(solid))
+    GDMLParaboloid(myparaboloid,rlo,rhi,dz,lunit,material,colour)
+    GDMLShared.trace("CreateParaboloid : ")
+    GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
+    base = FreeCAD.Vector(px,py,pz)
+    myparaboloid.Placement = GDMLShared.processPlacement(base,rot)
+    GDMLShared.trace(myparaboloid.Placement.Rotation)
+    if FreeCAD.GuiUp :
+       # set ViewProvider before setDisplay
+       ViewProvider(myparaboloid.ViewObject)
+       setDisplayMode(myparaboloid,displayMode)
+    return myparaboloid
 
 def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
@@ -1047,6 +1106,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
         if case('para'):
            return(createPara(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
+        if case('paraboloid'):
+           return(createParaboloid(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
         if case('polycone'):
             return(createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
@@ -1055,6 +1117,9 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
 
         if case('polyhedra'):
             return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+
+        if case('genericPolyhedra'):
+            return(createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('sphere'):
             return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 

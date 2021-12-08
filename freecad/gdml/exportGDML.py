@@ -1,4 +1,4 @@
-# Sat Dec  4 05:40:10 AM PST 2021
+# Mon Dec  6 08:49:56 AM PST 2021
 #**************************************************************************pp
 #*                                                                        * 
 #*   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -836,6 +836,18 @@ def processGDMLHypeObject(obj) :
    # modif 'mm' -> obj.lunit
    return solid, hypeName
 
+def processGDMLParaboloidObject(obj) :
+    # Needs unique Name
+    # Remove leading GDMLTube_ from name on export 
+   solidName = nameOfGDMLobject(obj)
+   solid = ET.SubElement(solids, 'paraboloid',{'name': solidName, \
+                                         'rlo': str(obj.rlo),  \
+                                         'rhi': str(obj.rhi),  \
+                                         'dz': str(obj.dz),  \
+                                         'lunit' : obj.lunit})
+   # modif 'mm' -> obj.lunit
+   return solid, solidName
+
 def processGDMLOrbObject(obj) :
     # Needs unique Name
     # flag needed for boolean otherwise parse twice
@@ -887,6 +899,19 @@ def processGDMLGenericPolyconeObject(obj) :
        ET.SubElement(cone, 'rzpoint',{'r': str(rzpoint.r), \
                                       'z' : str(rzpoint.z)})
     return cone, polyconeName
+
+def processGDMLGenericPolyhedraObject(obj) :
+    polyhedraName = nameOfGDMLobject(obj)
+    polyhedra = ET.SubElement(solids, 'genericPolyhedra',{'name': polyhedraName, \
+                                                          'startphi': str(obj.startphi),  \
+                                                          'deltaphi': str(obj.deltaphi),  \
+                                                          'numsides': str(obj.numsides),  \
+                                                          'aunit': obj.aunit,  \
+                                                          'lunit' : obj.lunit })
+    for rzpoint in obj.OutList :
+       ET.SubElement(polyhedra, 'rzpoint',{'r': str(rzpoint.r), \
+                                           'z' : str(rzpoint.z)})
+    return polyhedra, polyhedraName
 
 def processGDMLPolyhedraObject(obj) :
     # Needs unique Name
@@ -1407,6 +1432,10 @@ def processGDMLSolid(obj) :
           #print("      GDMLPara") 
           return(processGDMLParaObject(obj))
              
+       if case("GDMLParaboloid") :
+          #print("      GDMLParaboloid") 
+          return(processGDMLParaboloidObject(obj))
+             
        if case("GDMLPolycone") :
           #print("      GDMLPolycone") 
           return(processGDMLPolyconeObject(obj))
@@ -1418,6 +1447,10 @@ def processGDMLSolid(obj) :
        if case("GDMLPolyhedra") :
           #print("      GDMLPolyhedra") 
           return(processGDMLPolyhedraObject(obj))
+             
+       if case("GDMLGenericPolyhedra") :
+          #print("      GDMLPolyhedra") 
+          return(processGDMLGenericPolyhedraObject(obj))
              
        if case("GDMLSphere") :
           #print("      GDMLSphere") 
