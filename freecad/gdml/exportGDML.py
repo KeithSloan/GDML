@@ -1246,7 +1246,7 @@ def processFractionsComposites(obj, item) :
                      'ref': nameFromLabel(obj.Label)})
 
     if isinstance(obj.Proxy,GDMLcomposite) :
-       print("GDML Composite")
+       #print("GDML Composite")
        ET.SubElement(item,'composite',{'n': str(obj.n), \
                     'ref': nameFromLabel(obj.Label)})
 
@@ -1331,7 +1331,7 @@ def createIsotopes(group) :
     global materials
     for obj in group :
         if isinstance(obj.Proxy,GDMLisotope) :
-           print("GDML isotope")
+           #print("GDML isotope")
            #item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
            #                                           'Z': str(obj.Z), \
            #                                           'name' : obj.Name})
@@ -1351,27 +1351,27 @@ def processGroup(obj) :
        #print(obj)
        while switch(obj.Name) :
              if case("Constants") : 
-                print("Constants")
+                #print("Constants")
                 createConstants(obj.Group)
                 break
 
              if case("Variables") : 
-                print("Variables")
+                #print("Variables")
                 createVariables(obj.Group)
                 break
 
              if case("Quantities") : 
-                print("Quantities")
+                #print("Quantities")
                 createQuantities(obj.Group)
                 break
 
              if case("Isotopes") :
-                print("Isotopes")
+                #print("Isotopes")
                 createIsotopes(obj.Group)
                 break
              
              if case("Elements") : 
-                print("Elements")
+                #print("Elements")
                 createElements(obj.Group)
                 break
              
