@@ -2018,7 +2018,7 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     cnt = 0
     if hasattr(vol,'OutList') :
        num = len(vol.OutList)
-       cnt = countGDMLObj(vol.OutList)
+       cnt, prt, exp = countGDMLObj(vol.OutList)
        GDMLShared.trace('OutList length : '+str(num))
        while idx < num :
           #print(idx)
@@ -2035,8 +2035,8 @@ def processVolAssem(vol, xmlParent, parentName, addVolsFlag) :
     volName = vol.Label
     #volName = cleanVolName(vol, vol.Label)
     if hasattr(vol,'OutList') : # Do we have Objects ? 
-       cnt = countGDMLObj(vol.OutList)
-       print('VolAsm - count '+str(cnt))
+       cnt, prt, exp  = countGDMLObj(vol.OutList)
+       print(f'VolAsm - gcount {gcount} pcount{pcount} {ecount}')
        if cnt > 0 :
           newXmlVol = insertXMLvolume(volName)
           processVolume(vol, newXmlVol, xmlParent, parentName, addVolsFlag)
@@ -2060,23 +2060,45 @@ def createWorldVol(volName) :
     return worldVol
 
 def countGDMLObj(objList):
-    # Return position of first GDML object and count
+    # Return number of GDML object, Parts and exportable
     #print('countGDMLObj')
     GDMLShared.trace('countGDMLObj')
-    count = 0
+    gcount = pcount = ecount = 0
     #print(range(len(objList)))
-    for idx in range(len(objList)) :
-        #print('idx : '+str(idx))
-        obj = objList[idx]
-        if obj.TypeId == 'Part::FeaturePython' :
-           count += 1
-        if obj.TypeId == 'Part::Cut' \
-           or obj.TypeId == 'Part::Fuse' \
-           or obj.TypeId == 'Part::Common' :
-           count -= 1
-    #print('countGDMLObj - Count : '+str(count))
-    GDMLShared.trace('countGDMLObj - Count : '+str(count))
-    return count
+    #for idx in range(len(objList)) :
+    #    #print('idx : '+str(idx))
+    #    obj = objList[idx]
+    for obj in objList :
+        while switch(obj.TypeId) :
+           if case("Part::FeaturePython") : 
+              gcount += 1
+              break
+           if case("Part::Part::Cut") : 
+              gcount -= 1
+              break
+           if case("Part::Part::Fuse") : 
+              gcount -= 1
+              break
+           if case("Part::Part::Common") : 
+              gcount -= 1
+              break
+           if case("App::Part") : 
+              pcount += 1
+              break
+           if case("Part::Cylinder") : 
+              ecount += 1
+              break
+           if case("Part::Cone") : 
+              ecount += 1
+              break
+           if case("Part::Tube") : 
+              ecount += 1
+              break
+           break
+
+    #print('countGDMLObj - Count : '+str(gcount))
+    GDMLShared.trace('countGDMLObj - Count : '+str(gcount))
+    return gcount, pcount, ecount
 
 def checkGDMLstructure(objList) :
     # Should be 
@@ -2086,7 +2108,7 @@ def checkGDMLstructure(objList) :
     GDMLShared.trace('check GDML structure')
     GDMLShared.trace(objList)
     #print(objList)
-    cnt = countGDMLObj(objList)
+    cnt, prt, exp = countGDMLObj(objList)
     if cnt > 1 : # More than one GDML Object need to insert Dummy
        return False
     if cnt == 1 and len(objList) == 2 : # Just a single GDML obj insert Dummy
@@ -2127,7 +2149,7 @@ def exportWorldVol(vol, fileExt) :
           parentName = None
     if hasattr(vol,'OutList') :
        #print(vol.OutList)
-       cnt = countGDMLObj(vol.OutList)
+       cnt, prt, exp  = countGDMLObj(vol.OutList)
     #print('Root GDML Count '+str(cnt))
     if cnt > 0 : 
        xmlVol = insertXMLvolume(vol.Label)
@@ -2230,7 +2252,7 @@ def exportGDMLworld(first,filepath,fileExt) :
        #   print(len(first.InList))
 
        if hasattr(first,'OutList') :
-          cnt = countGDMLObj(first.OutList)
+          cnt, prt, exp = countGDMLObj(first.OutList)
           GDMLShared.trace('Count : '+str(cnt))
           if cnt > 1 :
              from .GDMLQtDialogs import showInvalidWorldVol
