@@ -98,7 +98,9 @@ def processConstants(doc):
     # all of math must be imported at global level
     #setTrace(True)
     trace("Process Constants")
-    constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants")
+    constantGrp = doc.getObject('Constants')
+    if constantGrp is None :
+       constantGrp = doc.addObject("App::DocumentObjectGroupPython","Constants")
     from .GDMLObjects import GDMLconstant
     for cdefine in define.findall('constant') :
         #print cdefine.attrib
@@ -123,7 +125,10 @@ def processConstants(doc):
 def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
-    variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
+    variablesGrp = doc.getObject('Variables')
+    if variablesGrp is None :
+       variablesGrp = doc.addObject("App::DocumentObjectGroupPython","Variables")
+    from .GDMLObjects import GDMLconstant
     from .GDMLObjects import GDMLvariable
 
     #import math
@@ -158,7 +163,9 @@ def processVariables(doc):
 def processQuantities(doc):
     # all of math must be imported at global level
     trace("Process Quantitities")
-    quantityGrp = doc.addObject("App::DocumentObjectGroupPython","Quantities")
+    quantityGrp = doc.getObject('Quantities')
+    if quantityGrp is None :
+       quantityGrp = doc.addObject("App::DocumentObjectGroupPython","Quantities")
     from .GDMLObjects import GDMLquantity
 
     for cdefine in define.findall('quantity') :
@@ -187,7 +194,8 @@ def processQuantities(doc):
     #print("Globals")
     #print(str(globals()))
 
-def processPosition(doc):
+def processPositions(doc):
+    print('Process Positions')
     # need to be done ?
     global positions
     positions = {}

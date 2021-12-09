@@ -2977,7 +2977,7 @@ class GDMLGmshTessellated(GDMLsolid) :
       obj.Proxy = self
 
    def updateParams(self, vertex, facets) :
-      print('Update Params')
+      #print('Update Params')
       self.Vertex = vertex
       self.Facets = facets
       self.facets  = len(facets)
@@ -3031,7 +3031,7 @@ class GDMLGmshTessellated(GDMLsolid) :
    
    def createGeometry(self,fp):
        currPlacement = fp.Placement
-       print("Tessellated")
+       #print("Tessellated")
        mul = GDMLShared.getMult(fp)
        FCfaces = []
        #print(self.Vertex)
@@ -3104,12 +3104,12 @@ class GDMLTessellated(GDMLsolid) :
       obj.Proxy = self
 
    def updateParams(self, vertex, facets, flag) :
-      print('Update Params & Shape')
+      #print('Update Params & Shape')
       self.pshape = self.createShape(vertex,facets,flag)
-      print(f"Pshape vertex {len(self.pshape.Vertexes)}")
+      #print(f"Pshape vertex {len(self.pshape.Vertexes)}")
       self.facets  = len(facets)
       self.vertex  = len(vertex)
-      print(f"Vertex : {self.vertex} Facets : {self.facets}")
+      #print(f"Vertex : {self.vertex} Facets : {self.facets}")
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -3137,21 +3137,21 @@ class GDMLTessellated(GDMLsolid) :
    
    def createGeometry(self,fp):
        #currPlacement = fp.Placement
-       print("Tessellated")
+       #print("Tessellated")
        #print(self.Type)
        #print('self')
        #print(dir(self))
        #print('fp')
        #print(dir(fp))
        if hasattr(self,'pshape') :
-          print('Update Shape')
+          #print('Update Shape')
           fp.Shape  = self.pshape
           if hasattr(fp,'pshape') :
              fp.pshape = self.pshape
           fp.vertex = self.vertex
           fp.facets = self.facets
-          print(len(fp.Shape.Vertexes))
-          print(fp.Shape)
+          #print(len(fp.Shape.Vertexes))
+          #print(fp.Shape)
        #fp.Placement = currPlacement
 
    def createShape(self,vertex,facets,flag) :
@@ -3160,7 +3160,7 @@ class GDMLTessellated(GDMLsolid) :
        # if flag == False - factes is Faces i.e. from import GDMLTessellated 
        #mul = GDMLShared.getMult(fp)
        mul = GDMLShared.getMult(self)
-       print('Create Shape')
+       #print('Create Shape')
        FCfaces = []
        i = 0
        for f in facets :

@@ -1449,14 +1449,11 @@ def processIsotopes(isotopesGrp) :
               value = GDMLShared.getVal(atom,'value')
               isObj.addProperty('App::PropertyFloat','value','Value').value = value
 
-
-
-
 def processElements(elementsGrp) :
     from .GDMLObjects import GDMLelement, GDMLfraction
     for element in materials.findall('element') :
         name = element.get('name')
-        #print('element : '+name)
+        print('element : '+name)
         elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython",  \
                      name)
         Z = element.get('Z')
@@ -1482,13 +1479,14 @@ def processElements(elementsGrp) :
               elementObj.addProperty("App::PropertyFloat","atom_value",name). \
                                       atom_value = a_value
 
-
         GDMLelement(elementObj,name)
         if( len(element.findall('fraction'))>0 ):
            for fraction in element.findall('fraction') :
                ref = fraction.get('ref')
+               print(f'ref {ref}')
                #n = float(fraction.get('n'))
                n = GDMLShared.getVal(fraction,'n')
+               print(f'n {n}')
                #fractObj = elementObj.newObject("App::FeaturePython",ref)
                fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
                GDMLfraction(fractObj,ref,n)
@@ -1635,17 +1633,19 @@ def processPhysVolFile(doc, parent, fname):
     processMaterialsDocSet(doc, root)
     print('Now process Volume')
     define = root.find('define')
-    print(str(define))
+    #print(str(define))
     GDMLShared.setDefine(define)
+    if define is not None :
+       processDefines(root,doc)
     global solids
     solids = root.find('solids')
-    print(str(solids))
+    #print(str(solids))
     structure = root.find('structure')
     if structure is None :
        vol = root.find('volume')
     else :
        vol = structure.find('volume')
-    print(str(vol))
+    #print(str(vol))
     if vol is not None :
        vName = vol.get('name')
        if vName is not None :
@@ -1664,6 +1664,7 @@ def processGEANT4(doc,filename):
     processMaterialsG4(geant4Grp,root)
 
 def processMaterialsDocSet(doc, root) :
+    print('Process Materials')
     global materials
     materials = root.find('materials')
     if materials is not None :
@@ -1695,6 +1696,14 @@ def processMaterialsG4(G4rp, root) :
        materialsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Materials")
        processMaterials(materialsGrp)
 
+def processDefines(root, doc) :
+    GDMLShared.trace("Call set Define")
+    GDMLShared.setDefine(root.find('define'))
+    GDMLShared.processConstants(doc)
+    GDMLShared.processVariables(doc)
+    GDMLShared.processQuantities(doc)
+    GDMLShared.processPositions(doc)
+    GDMLShared.processExpression(doc)
 
 def processGDML(doc,filename,prompt,initFlg):
     # Process GDML 
@@ -1753,18 +1762,7 @@ def processGDML(doc,filename,prompt,initFlg):
     extension = root.find('extension')
     define    = root.find('define')
     if define is not None :
-       GDMLShared.trace("Call set Define")
-       GDMLShared.setDefine(root.find('define'))
-       GDMLShared.processConstants(doc)
-       GDMLShared.processVariables(doc)
-       GDMLShared.processQuantities(doc)
-
-       # modif
-       GDMLShared.processPosition(doc)
-       GDMLShared.processExpression(doc)
-       GDMLShared.processRotation(doc)
-       # end modif
-
+       processDefines(root,doc)
        GDMLShared.trace(setup.attrib)
 
     processMaterialsDocSet(doc,root)

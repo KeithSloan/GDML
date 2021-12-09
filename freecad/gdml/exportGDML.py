@@ -1253,31 +1253,32 @@ def processFractionsComposites(obj, item) :
 def createMaterials(group):
     global materials
     for obj in group :
-        item = ET.SubElement(materials,'material',{'name': \
-                 nameFromLabel(obj.Label)})
+        if obj.Label != 'Geant4':
+           item = ET.SubElement(materials,'material',{'name': \
+                   nameFromLabel(obj.Label)})
 
-        # Dunit & Dvalue must be first for Geant4
-        if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-           #print("Dunit or DValue")
-           D = ET.SubElement(item,'D')
-           if hasattr(obj,'Dunit') :
-              D.set('unit',str(obj.Dunit))
+           # Dunit & Dvalue must be first for Geant4
+           if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
+              #print("Dunit or DValue")
+              D = ET.SubElement(item,'D')
+              if hasattr(obj,'Dunit') :
+                 D.set('unit',str(obj.Dunit))
              
-           if hasattr(obj,'Dvalue') :
-              D.set('value',str(obj.Dvalue))
+              if hasattr(obj,'Dvalue') :
+                 D.set('value',str(obj.Dvalue))
 
-           if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
-              ET.SubElement(item,'T',{'unit': obj.Tunit, \
+              if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
+                 ET.SubElement(item,'T',{'unit': obj.Tunit, \
                                       'value': str(obj.Tvalue)})
            
-           if hasattr(obj,'MEEunit') :
-              ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
+              if hasattr(obj,'MEEunit') :
+                 ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
                                                'value': str(obj.MEEvalue)})
-        # process common options material / element
-        processIsotope(obj, item)
-        if len(obj.Group) > 0 :
-           for o in obj.Group :
-               processFractionsComposites(o,item)
+           # process common options material / element
+           processIsotope(obj, item)
+           if len(obj.Group) > 0 :
+              for o in obj.Group :
+                  processFractionsComposites(o,item)
 
 def createElements(group) :
     global materials
