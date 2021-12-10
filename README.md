@@ -123,7 +123,7 @@ FreeCAD & Gmsh should both be using the same version of OCC ( OpenCasCade )
 
 At the time of writing a prebuilt version of FreeCAD with OCC 7.6 is not available
 
-Note: The version of OCC with FreeCAD 0.19.2 has a regession with STEP functionality
+Note: The version of OCC with FreeCAD 0.19.2 has a regression with STEP functionality
 
 You can check the version FreeCAD is using with About FreeCAD, copy to clipboard, paste.
 
@@ -137,7 +137,7 @@ For the version used by Gmsh run in a python console
     
 Or run gmshVer.py ( In the Workbench Utils directory )
     
-To see what verions of Gmsh are available to install
+To see what versions of Gmsh are available to install
 
     pip install gmsh==
         
