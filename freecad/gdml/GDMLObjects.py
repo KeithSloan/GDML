@@ -682,7 +682,7 @@ class GDMLElCone(GDMLsolid) :
        #Therefore the bottom base of the cone (at z=u=-zcut) has xmax = dxmax = dx*(zmax+zcut)
        # and ymax=dymax = dy*(zmax+zcut)
        # The ellipse at the top has simi-major axis dx*(zmax-zcut) and semiminor axis dy*(zmax-zcut)
-       # as per the above, the "bottonm of trhe cone is at z = -zcut
+       # as per the above, the "bottom of the cone is at z = -zcut
        # Note that dx is a SCALING factor for the semi major axis, NOT the actual semi major axis
        # ditto for dy
        
@@ -995,7 +995,7 @@ class GDMLPara(GDMLsolid) :
        for i in range(0,4):
            vzx2[i][0] += dx 
        #
-       # aply theta, phi distortions
+       # apply theta, phi distortions
        #
        rho = z*math.tan(theta) 
        dx = rho*math.cos(phi)
@@ -2531,7 +2531,7 @@ class GDMLTrap(GDMLsolid) :
        vyz1 = [v5, v8, v4, v1, v5]
        vyz2 = [v2, v3, v7, v6, v2]
        #
-       # aply theta, phi distortions
+       # apply theta, phi distortions
        #
        rho = z*math.tan(theta) 
        dx = rho*math.cos(phi)
