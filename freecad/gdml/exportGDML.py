@@ -579,7 +579,7 @@ def cleanVolName(obj, volName) :
     #print('returning name : '+volName)
     return volName
 
-def addPhysVolPlacement(obj, xmlVol, volName) :
+def addPhysVolPlacement(obj, xmlVol, PVname, volName) :
     # ??? Is volName not obj.Label after correction
     # Get proper Volume Name
     refName = cleanVolName(obj, volName)
@@ -588,7 +588,7 @@ def addPhysVolPlacement(obj, xmlVol, volName) :
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
        if not hasattr(obj,'CopyNumber') :
-          pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName})
+          pvol = ET.SubElement(xmlVol,'physvol',{'name':PVname})
        else :
           cpyNum = str(obj.CopyNumber)
           GDMLShared.trace('CopyNumber : '+cpyNum)
@@ -1698,6 +1698,13 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     #processRotation(obj.Tool,boolxml)
     return boolCnt
 
+def countList(objList) :
+    l = len(objList)
+    if l > 0 :
+       for o in objList :
+           print(o.Label)
+           l = l + countList(o.OutList)
+    return l
 
 def processObject(cnt, idx, obj, xmlVol, volName, \
                     xmlParent, parentName) :
@@ -1755,10 +1762,15 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       # Okay this is duplicate  Volume cpynum > 1 - parent is a Volume
       if case("App::Link") :
          print('App::Link :'+obj.Label)
-         #print(dir(obj))
+         print(obj.OutList)
+         cnt = countList(obj.OutList)
+         print(cnt)
+         print(obj.OutList[0].Label)
          print(obj.LinkedObject.Label)
-         addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
-         return idx + 1
+         addPhysVolPlacement(obj,xmlVol,obj.Label,obj.LinkedObject.Label)
+         # GDML Object will already be defined so skip
+         #return idx + 1 + cnt
+         return idx + cnt
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
@@ -1975,9 +1987,9 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
            elif obj.TypeId == 'App::Link' :
                 print('Process Link')
                 #objName = cleanVolName(obj, obj.Label)
-                addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
+                addPhysVolPlacement(obj,xmlVol,obj.Label,obj.LinkedObject.Label)
 
-       addPhysVolPlacement(vol,xmlParent,volName)
+       addPhysVolPlacement(vol,xmlParent,'PV-'+obj.Label,volName)
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
@@ -2024,7 +2036,7 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
           #print(idx)
           idx = processObject(cnt,idx, vol.OutList[idx],  \
                             xmlVol, volName, xmlParent, parentName)
-       addPhysVolPlacement(vol,xmlParent,volName)
+       addPhysVolPlacement(vol,xmlParent,'PV-'+volName,volName)
 
 def processVolAssem(vol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object

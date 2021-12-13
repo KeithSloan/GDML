@@ -1213,11 +1213,13 @@ def parsePhysVol(volAsmFlg, parent,physVol,phylvl,displayMode):
        # Test if exists
        namedObj = FreeCAD.ActiveDocument.getObject(volRef)
        if namedObj is None :
+          print(f'New Vol : {volRef}')
           part = parent.newObject("App::Part",volRef)
           expandVolume(part,volRef,phylvl,displayMode)
 
        else :  # Object exists create a Linked Object
           GDMLShared.trace('====> Create Link to : '+volRef)
+          print('====> Create Link to : '+volRef)
           part = parent.newObject('App::Link',volRef)
           part.LinkedObject = namedObj
           if part.Name is not volRef :
@@ -1395,7 +1397,7 @@ def processVol(vol, parent, phylvl, displayMode) :
                   print(volRef+' : volref not supported with FreeCAD 0.18')
             else :
                # Not already defined so create
-               #print('Is new : '+volRef)
+               print('Is new : '+volRef)
                part = parent.newObject("App::Part",volRef)
                part.Label = "NOT_Expanded_"+part.Name
             part.addProperty("App::PropertyString","VolRef","GDML", \
@@ -1649,6 +1651,7 @@ def processPhysVolFile(doc, parent, fname):
     if vol is not None :
        vName = vol.get('name')
        if vName is not None :
+          print(f'Vol in Physvol file = Vol{vName}')
           part = parent.newObject("App::Part",vName)
           #expandVolume(None,vName,-1,1)
           processVol(vol,part,-1,1)
@@ -1746,7 +1749,7 @@ def processGDML(doc,filename,prompt,initFlg):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, define, materials, solids, structure, extension 
+    global setup, define, materials, solids, structure, extension
   
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
