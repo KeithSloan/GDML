@@ -66,6 +66,7 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDMLelement, GDMLconstant, GDMLvariable
 
 from . import GDMLShared
+from . import exportExtrusion
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
@@ -154,6 +155,9 @@ def GDMLstructure() :
     structure = ET.SubElement(gdml, 'structure')
     setup = ET.SubElement(gdml, 'setup', {'name': 'Default', 'version': '1.0'})
     gxml = ET.Element('gxml')
+
+    exportExtrusion.setGlobals(define, materials, solids)
+    
     return structure
 
 def defineMaterials():
@@ -579,7 +583,7 @@ def cleanVolName(obj, volName) :
     #print('returning name : '+volName)
     return volName
 
-def addPhysVolPlacement(obj, xmlVol, PVname, volName) :
+def addPhysVolPlacement(obj, xmlVol, volName) :
     # ??? Is volName not obj.Label after correction
     # Get proper Volume Name
     refName = cleanVolName(obj, volName)
@@ -588,7 +592,7 @@ def addPhysVolPlacement(obj, xmlVol, PVname, volName) :
     #print(ET.tostring(xmlVol))
     if xmlVol != None :
        if not hasattr(obj,'CopyNumber') :
-          pvol = ET.SubElement(xmlVol,'physvol',{'name':PVname})
+          pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName})
        else :
           cpyNum = str(obj.CopyNumber)
           GDMLShared.trace('CopyNumber : '+cpyNum)
@@ -1246,39 +1250,38 @@ def processFractionsComposites(obj, item) :
                      'ref': nameFromLabel(obj.Label)})
 
     if isinstance(obj.Proxy,GDMLcomposite) :
-       #print("GDML Composite")
+       print("GDML Composite")
        ET.SubElement(item,'composite',{'n': str(obj.n), \
                     'ref': nameFromLabel(obj.Label)})
 
 def createMaterials(group):
     global materials
     for obj in group :
-        if obj.Label != 'Geant4':
-           item = ET.SubElement(materials,'material',{'name': \
-                   nameFromLabel(obj.Label)})
+        item = ET.SubElement(materials,'material',{'name': \
+                 nameFromLabel(obj.Label)})
 
-           # Dunit & Dvalue must be first for Geant4
-           if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
-              #print("Dunit or DValue")
-              D = ET.SubElement(item,'D')
-              if hasattr(obj,'Dunit') :
-                 D.set('unit',str(obj.Dunit))
+        # process common options material / element
+        processIsotope(obj, item)
+        if len(obj.Group) > 0 :
+           for o in obj.Group :
+               processFractionsComposites(o,item)
+
+        if hasattr(obj,'Dunit') or hasattr(obj,'Dvalue') :
+           #print("Dunit or DValue")
+           D = ET.SubElement(item,'D')
+           if hasattr(obj,'Dunit') :
+              D.set('unit',str(obj.Dunit))
              
-              if hasattr(obj,'Dvalue') :
-                 D.set('value',str(obj.Dvalue))
+           if hasattr(obj,'Dvalue') :
+              D.set('value',str(obj.Dvalue))
 
-              if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
-                 ET.SubElement(item,'T',{'unit': obj.Tunit, \
+           if hasattr(obj,'Tunit') and hasattr(obj,'Tvalue') :
+              ET.SubElement(item,'T',{'unit': obj.Tunit, \
                                       'value': str(obj.Tvalue)})
            
-              if hasattr(obj,'MEEunit') :
-                 ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
+           if hasattr(obj,'MEEunit') :
+              ET.SubElement(item,'MEE',{'unit': obj.MEEunit, \
                                                'value': str(obj.MEEvalue)})
-           # process common options material / element
-           processIsotope(obj, item)
-           if len(obj.Group) > 0 :
-              for o in obj.Group :
-                  processFractionsComposites(o,item)
 
 def createElements(group) :
     global materials
@@ -1331,7 +1334,7 @@ def createIsotopes(group) :
     global materials
     for obj in group :
         if isinstance(obj.Proxy,GDMLisotope) :
-           #print("GDML isotope")
+           print("GDML isotope")
            #item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
            #                                           'Z': str(obj.Z), \
            #                                           'name' : obj.Name})
@@ -1351,27 +1354,27 @@ def processGroup(obj) :
        #print(obj)
        while switch(obj.Name) :
              if case("Constants") : 
-                #print("Constants")
+                print("Constants")
                 createConstants(obj.Group)
                 break
 
              if case("Variables") : 
-                #print("Variables")
+                print("Variables")
                 createVariables(obj.Group)
                 break
 
              if case("Quantities") : 
-                #print("Quantities")
+                print("Quantities")
                 createQuantities(obj.Group)
                 break
 
              if case("Isotopes") :
-                #print("Isotopes")
+                print("Isotopes")
                 createIsotopes(obj.Group)
                 break
              
              if case("Elements") : 
-                #print("Elements")
+                print("Elements")
                 createElements(obj.Group)
                 break
              
@@ -1629,6 +1632,9 @@ def processSolid(obj, addVolsFlag) :
             print("    Sphere")
             return(processSphereObject(obj, addVolsFlag))
             break
+
+        print(f'Part : {obj.Label}')
+        print(f'TypeId : {obj.TypeId}')
    
 def processMuNod(xmlelem, name) :
     node = ET.SubElement(xmlelem,'multiUnionNode',{'name' : name})
@@ -1698,13 +1704,130 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     #processRotation(obj.Tool,boolxml)
     return boolCnt
 
-def countList(objList) :
-    l = len(objList)
-    if l > 0 :
-       for o in objList :
-           print(o.Label)
-           l = l + countList(o.OutList)
-    return l
+def exportCone(name, radius, height) :
+    cylEl = ET.SubElement(solids,'cone',{'name': name, \
+            'rmin1':'0', \
+            'rmax1':str(radius), \
+            'rmin2':'0', \
+            'rmax2':str(radius), \
+            'z': str(height), \
+            'startphi': '0', \
+            'deltaphi': '360', \
+            'aunit':'deg', 'lunit':'mm'})
+    return cylEl
+
+def processExtrudedSketch(extrudeObj,sketchObj, xmlVol) :
+    print('Process Extruded sketch')
+    print(f'Extrude {extrudeObj.Label} sketch {sketchObj.Label}')
+    print('Check extrude for material and delta')
+    #print(dir(extrudeObj))
+    print(f'LengthFwd {extrudeObj.LengthFwd}')
+    print(f'LengthRev {extrudeObj.LengthRev}')
+    print(f'TaperAngle {extrudeObj.TaperAngle}')
+    print(f'TaperAngleRev {extrudeObj.TaperAngleRev}')
+    sName = extrudeObj.Name
+    xtru = ET.SubElement(solids,'xtru',{'name': sName, 'lunit':'mm'})
+    if hasattr(sketchObj.Geometry[0],'StartPoint') :
+       sx = ex = sketchObj.Geometry[0].StartPoint[0]
+       sy = ey = sketchObj.Geometry[0].StartPoint[1]
+       ET.SubElement(xtru,'twoDimVertex',{'x': str(sx), \
+                                          'y': str(sy)})
+    #print(dir(sketchObj.Shape))
+    print(f'Number of wires : {len(sketchObj.Shape.Wires)}')
+    sketchFace = Part.makeFace(sketchObj.Shape, "Part::FaceMakerSimple")
+    print(dir(sketchFace))
+    print(sketchFace.isClosed())
+    print(sketchObj.Shape.isClosed())
+    layer = 0
+    cylList = []
+    z = extrudeObj.LengthFwd.Value
+       
+    for gs in sketchObj.Geometry :
+        print(gs.TypeId)
+        # Check for continuty if not continous indicate new layer
+        if hasattr(gs,'StartPoint') :
+           #print(math.isclose(gs.StartPoint[0],ex,abs_tol=1e-6))
+           #print(math.isclose(gs.StartPoint[1],ey,abs_tol=1e-6))
+           if not math.isclose(gs.StartPoint[0],ex,abs_tol=1e-6) and \
+              math.isclose(gs.StartPoint[1],ey,abs_tol=1e-6) :
+              layer += 1
+        else :
+           layer += 1
+        print(f'Layer {layer}')
+        while switch (gs.TypeId) :
+           if case('Part::GeomLineSegment') :
+              print(gs.StartPoint)
+              sx = gs.StartPoint[0]
+              sy = gs.StartPoint[1]
+              if not math.isclose(sx,ex,abs_tol=1e-6) or \
+                 not math.isclose(ey,ey,abs_tol=1e-6) :
+                 ET.SubElement(xtru,'twoDimVertex',{'x': str(sx), \
+                                                    'y': str(sy)})
+              ex = gs.EndPoint[0]
+              ey = gs.EndPoint[1]
+              ET.SubElement(xtru,'twoDimVertex',{'x': str(ex), \
+                                                    'y': str(ey)})
+              break
+
+           if case('Part::GeomLine') :
+              print(gs.StartPoint)
+              #ET.SubElement(xtru,'twoDimVertex',{'x': str(gs.StartPoint[0]), \
+              #                                   'y': str(gs.StartPoint[1])})
+              break
+
+           if case('Part::GeomArcOfCircle') :
+              print('ArcofCircle')
+              name = extrudeObj.Label+'_cyl'+str(len(cylList))
+              exportCone(name,gs.Radius,z)
+              # Is Inside(point, tolerance, if onSurface)
+              inside = sketchFace.isInside(gs.Center,0.001,True)
+              cylList.append([name,layer,inside,[gs.Center[0], gs.Center[1], z/2]]) 
+              break
+
+           if case('Part::GeomCircle') :
+              print('Circle')
+              name = extrudeObj.Label+'_cyl'+str(len(cylList))
+              exportCone(name,gs.Radius,z)
+              inside = sketchFace.isInside(gs.Center,0.001,True)
+              cylList.append([name,layer,inside,[gs.Center[0], gs.Center[1], z/2]]) 
+              break
+
+           if case('Part::GeomEllipse'):
+              print('Ellipse')
+              break
+
+           if case('Part::GeomBSplineCurve'):
+              print('BSpline')
+              break
+           ps = gs
+
+    ET.SubElement(xtru,'section',{'zOrder':'0','zPosition':'0', \
+                     'xOffset':'0','yOffset':'0','scalingFactor':'1'})
+    ET.SubElement(xtru,'section',{'zOrder':'1','zPosition':str(z), \
+                     'xOffset':'0','yOffset':'0','scalingFactor':'1'})
+    currentSolid = sName
+    if len(cylList) > 0 :
+       for c in cylList :
+           if (c[1] % 2) == 0 and c[2] == True :
+              name = 'union_'+c[0]
+              bool = ET.SubElement(solids,'union',{'name':name})
+           else :
+              name = 'sub_'+c[0]
+              bool = ET.SubElement(solids,'subtraction',{'name':name})
+           ET.SubElement(bool,'first',{'ref':currentSolid})
+           ET.SubElement(bool,'second',{'ref':c[0]})
+           posName = name+'_position'
+           exportDefine(posName,c[3])
+           ET.SubElement(bool,'positionref',{'ref':posName})
+           currentSolid = name
+        
+
+    volName = name+'Vol'
+    # insertXMLvolume inserts at front of structure
+    newvol = insertXMLvolume(volName)
+    ET.SubElement(newvol,'materialref',{'ref': 'G4_Si'})
+    ET.SubElement(newvol,'solidref',{'ref': currentSolid})
+    addPhysVolPlacement(extrudeObj, xmlVol, volName)
 
 def processObject(cnt, idx, obj, xmlVol, volName, \
                     xmlParent, parentName) :
@@ -1722,6 +1845,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
     GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx))
+    #print(f'Object : {obj.Label} : TypeId { obj.TypeId}')
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1730,13 +1854,26 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
                parentName = obj.InList[0].Label
             else :
                parentName = None
-            print(obj.Label)
             #print(dir(obj))
             processVolAssem(obj, xmlVol, volName, True)
          return idx + 1
 
       if case("PartDesign::Body") :
          print("Part Design Body - ignoring")
+         return idx + 1
+
+      if case("Sketcher::SketchObject") :
+         print(f'Sketch {obj.Label}')
+         if hasattr(obj,'InList') :
+            print(f'Has InList {obj.InList}')
+            for subObj in obj.InList :
+                print(f'subobj typeid {subObj.TypeId}')
+                if subObj.TypeId == "Part::Extrusion" :
+                   exportExtrusion.processExtrudedSketch(subObj,obj, xmlVol)
+         return idx + 1
+
+      if case("Part::Extrusion") :
+         print("Part Extrusion - Handle in Sketch")
          return idx + 1
 
       if case("App::Origin") :
@@ -1762,15 +1899,10 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       # Okay this is duplicate  Volume cpynum > 1 - parent is a Volume
       if case("App::Link") :
          print('App::Link :'+obj.Label)
-         print(obj.OutList)
-         cnt = countList(obj.OutList)
-         print(cnt)
-         print(obj.OutList[0].Label)
+         #print(dir(obj))
          print(obj.LinkedObject.Label)
-         addPhysVolPlacement(obj,xmlVol,obj.Label,obj.LinkedObject.Label)
-         # GDML Object will already be defined so skip
-         #return idx + 1 + cnt
-         return idx + cnt
+         addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
+         return idx + 1
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
@@ -1921,7 +2053,8 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       # Create tessellated solid
       #
       #return(processObjectShape(obj, addVolsFlag))
-      print("Convert FreeCAD shape to GDML Tessellated")
+      #print("Convert FreeCAD shape to GDML Tessellated")
+      print(f"Object {obj.Label} Type : {obj.TypeId} Not yet handled")
       print(obj.TypeId)
       return idx+1
 
@@ -1973,13 +2106,14 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
-    #GDMLShared.setTrace(True)
+    GDMLShared.setTrace(True)
     volName = vol.Label
     #volName = cleanVolName(vol, vol.Label)
     GDMLShared.trace('Process Assembly : '+volName)
-    if GDMLShared.getTrace() == True :
-       printVolumeInfo(vol, xmlVol, xmlParent, parentName)
+    #if GDMLShared.getTrace() == True :
+    #   printVolumeInfo(vol, xmlVol, xmlParent, parentName)
     if hasattr(vol,'OutList') :
+       print('Has OutList')
        for obj in vol.OutList :
            if obj.TypeId == 'App::Part' :
               processVolAssem(obj, xmlVol, volName, addVolsFlag)
@@ -1987,9 +2121,18 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
            elif obj.TypeId == 'App::Link' :
                 print('Process Link')
                 #objName = cleanVolName(obj, obj.Label)
-                addPhysVolPlacement(obj,xmlVol,obj.Label,obj.LinkedObject.Label)
+                addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
 
-       addPhysVolPlacement(vol,xmlParent,'PV-'+obj.Label,volName)
+           elif obj.TypeId == "Sketcher::SketchObject" :
+                print(f'Sketch {obj.Label}')
+                if hasattr(obj,'InList') :
+                   print(f'Has InList {obj.InList}')
+                   for subObj in obj.InList :
+                      print(f'subobj typeid {subObj.TypeId}')
+                      if subObj.TypeId == "Part::Extrusion" :
+                         exportExtrusion.processExtrudedSketch(subObj,obj, xmlVol)
+
+       addPhysVolPlacement(vol,xmlParent,volName)
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
@@ -2036,7 +2179,7 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
           #print(idx)
           idx = processObject(cnt,idx, vol.OutList[idx],  \
                             xmlVol, volName, xmlParent, parentName)
-       addPhysVolPlacement(vol,xmlParent,'PV-'+volName,volName)
+       addPhysVolPlacement(vol,xmlParent,volName)
 
 def processVolAssem(vol, xmlParent, parentName, addVolsFlag) :
     # vol - Volume Object
@@ -2072,23 +2215,23 @@ def createWorldVol(volName) :
     return worldVol
 
 def countGDMLObj(objList):
-    # Return position of first GDML object and count
-    #print('countGDMLObj')
+    # Return counts GDML objects exportables
+    ##rint('countGDMLObj')
     GDMLShared.trace('countGDMLObj')
-    count = 0
+    gcount = 0
     #print(range(len(objList)))
     for idx in range(len(objList)) :
         #print('idx : '+str(idx))
         obj = objList[idx]
         if obj.TypeId == 'Part::FeaturePython' :
-           count += 1
+           gcount += 1
         if obj.TypeId == 'Part::Cut' \
            or obj.TypeId == 'Part::Fuse' \
            or obj.TypeId == 'Part::Common' :
-           count -= 1
-    #print('countGDMLObj - Count : '+str(count))
-    GDMLShared.trace('countGDMLObj - Count : '+str(count))
-    return count
+           gcount -= 1
+    #print('countGDMLObj - Count : '+str(gcount))
+    GDMLShared.trace('countGDMLObj - gdml : '+str(gcount))
+    return gcount
 
 def checkGDMLstructure(objList) :
     # Should be 
@@ -2140,7 +2283,7 @@ def exportWorldVol(vol, fileExt) :
     if hasattr(vol,'OutList') :
        #print(vol.OutList)
        cnt = countGDMLObj(vol.OutList)
-    #print('Root GDML Count '+str(cnt))
+    print('Root GDML Count '+str(cnt))
     if cnt > 0 : 
        xmlVol = insertXMLvolume(vol.Label)
        processVolume(vol, xmlVol, xmlParent, parentName, False)
