@@ -1,52 +1,56 @@
-## GDML Workbench - Introduction 
+## FreeCAD GDML Workbench
 
-The GDML workbench can be used for:
+### Introduction 
 
-    * Viewing
-    * Creation
-    * Modification
+**[FreeCAD](https://freecad.org)** is a Free Libre Open Source multi-platform CAD/CAM/FEM suite.
+**GDML** stands for **Geometry Description Markup Language** and is an application-indepedent geometry description format based on XML. It can be used as the primary geometry implementation language as well providing a geometry data exchange format for existing applications.
 
-of GDML models as can be used in GEANT4 and ROOT
+The **FreeCAD GDML Workbench** can be used for:
+* Viewing
+* Creation
+* Modification
 
+of GDML models. It can also be used in GEANT4 and ROOT.
 
-## Examples
-### Viewing CERN's LHCBVelo.gdml using LinkStage3 Daily
+## Screenshots
+
+Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily branch:
 
 ![LHCB1](Images/LHCBVelo1.jpg) ![LHCB2](Images/LHCBVelo2.jpg) ![LHCB3](Images/LHCBVelo3.jpg)
 
-# NOTICE BOARD
+## Important Notes
 
-## *** ATTENTION WINDOWS USERS ***
+#### ATTENTION WINDOWS users using FreeCAD v0.19.1
 
-lxml should have been installed in prebuilt versions of FreeCAD. 
-It seems with FreeCAD 0.19.1 going to production this slipped through the net,
-RealThunders builds have the same issue. Seems to only be a problem for Windows users.
+The 3rd party python dependency `lxml` should have been installed in prebuilt versions of FreeCAD. 
+It seems with FreeCAD v0.19.1 going to production this slipped through the cracks. RealThunder's builds (LinkStage3) have the same issue. Seems to only be a problem for Windows users.
 
 To resolve you have to install the lxml library where FreeCAD can find it see
 the required libraries section of this README.
 
-## *** Note there is a regression with STEP export ***
-With OCC 7.5.0 and 7.5.1 as used in FreeCAD 0.19.2
+#### Regression with STEP export
 
-## *** All Operating Systems - Problem export of Rotations ***
+With OpenCasCade v7.5.0 and v7.5.1 as used in FreeCAD 0.19.2
 
-To fix a problem with export and rotations please use
+#### Problem with export of Rotations
 
-  * A FreeCAD_Assembly release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
-  * branch **link3**
-  
-    In .FreeCAD/Mod/GDML
-      * git fetch origin link3
-      * git checkout link3
-      * start FreeCAD
+This issues applies to all operating systems. To fix a problem with export and rotations please use
 
-You should also see a dramatic improvement especially with DAILY in import times with these builds.
-There is also the option to use enhanced rendering which helps with complex models.
+* the FreeCAD_Assembly3 release STABLE or DAILY seehttps://github.com/realthunder/FreeCAD_assembly3/releases
+* the GDML git branch called **link3**. Install it via:
+  1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
+  2. `git fetch origin link3`
+  3. `git checkout link3`
+  4. Restart FreeCAD
+
+You should also see a dramatic improvement especially with LinkDaily in import times with these builds.
+
+#### Enhanced Rendering (on Realthunder's LinkDaily branch)
+There is also the option to use enhanced rendering which helps with complex models. To enable enhanced rendering in LinkDaily:
+
+`FreeCAD > Preferences > Display > Render Cache > Experimental`
    
-   FreeCAD | Preferences | Display | Render Cache | Experimental
-   
-If you like what you see you might like to thank Lei Zhang by contributing to his FreeCAD Patreon
-https://www.patreon.com/thundereal/posts   
+If you like what you see you might like to thank Lei Zhang by contributing to his [FreeCAD Patreon](https://www.patreon.com/thundereal/posts)
 
 You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
 fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
@@ -54,7 +58,7 @@ process of being added to FreeCAD 0.20
 
 For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
-**Changes to Placement ( GDML Position & Rotation )**
+**Changes to Placement (GDML Position & Rotation)**
 
 In order to support copies of GDML Volumes the following changes have been made
 
@@ -63,63 +67,85 @@ In order to support copies of GDML Volumes the following changes have been made
   * The only time you can change a GDML Objects Placement is when it is part of a Boolean
   * Copies are implemented as App::Links i.e. Link to Volume being copied.
   * Copies of Volumes require function only available since FreeCAD 0.19
-  
-## **** New experimental export for GEMC ****
 
-# INSTALLATION & CONFIGURATION
+**New experimental export for GEMC**
 
-### Installation of FreeCAD
-see https://wiki.freecadweb.org/Installing#Choose_Your_Operating_System
+## Installation 
 
-### Installation of Workbench
+### Prerequisites
 
-GDML can be installed via the Addon Manager 
-https://wiki.freecadweb.org/Std_AddonMgr
+* FreeCAD (https://freecad.org/)
+* `lxml` (bundled in to FreeCAD v0.19)
+* `gmsh` (bundled in to FreeCAD v0.19)
 
-Install by use of FreeCAD Addon Manager ==> GDML ==> update
+### Install via the Addon Manager
 
-### Required python libraries - lxml & gmsh
+The GDML workbench can be installed via the [Addon Manager](https://wiki.freecad.org/Std_AddonMgr) 
 
-#### lxml - python library
+1. Start FreeCAD
+2. Click the `Tools` → `Addon manager` dropdown menu
+3. Browse through the list of workbench and look for GDML
 
-lxml which should be installed as part of FreeCAD
+### Prerequisite 3rd party Python libraries 
 
-   * FreeCAD_0.19.19424 and above.
-   * FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z and above.
+<details>
+<summary>Click to expand!</summary>
+
+Currently there are two 3rd party libraries that are necessary for the GDML workbench to function: `lxml` and `gmsh`.
+
+#### `lxml`
+
+[lxml](https://lxml.de/) is a Python library that processes XML and HTML. Starting with the below versions of FreeCAD, `lxml` should be auto-bundled as part of the installation:
+
+   * `FreeCAD_0.19.19424` and above
+   * `FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z` and above.
    
 
-#### Checking required python libraries available to FreeCAD
+##### Checking if `lxml` is installed
 
-To check path FreeCAD uses from a command line/window.
+To discover if **`lxml`** is installed and accessible by FreeCAD:
 
+1. Open the CLI
+2. Invoke the following:
+    ```python
     freecad -c
     import sys
     print(sys.path)
+    ```
+    Result:
 
-#### Manual install of lxml
 
-    pip3 install lxml -t < directory >
-  
-#### Check lxml correctly installed
+**Note:** To check if **`lxml`** is installed correctly:
 
-    freecad -c
-    import lxml
-    from lxml import etree
-    print(etree.LXML_VERSION)
+  ```python
+  freecad -c
+  import lxml
+  from lxml import etree
+  print(etree.LXML_VERSION)
+  ```
 
-#### FreeCAD version 0.18
+##### Manual install of lxml
 
-There are known limitations with FreeCAD 0.18 and **lxml**  it is recommended that you use FreeCAD 0.19 as above.
-( Note: You can install both versions 0.18 & 0.19 and still use 0.18 for non GDML related work )   
+In case there is a need to manually install `lxml`: 
 
-### gmsh - python library
+  ```bash
+  pip3 install lxml -t < directory >
+  ```
 
-FreeCAD & Gmsh should both be using the same version of OCC ( OpenCasCade )
+
+##### FreeCAD v0.18
+
+There are known limitations with FreeCAD 0.18 and **lxml**. Therefore, it is recommended that you use FreeCAD v0.19 as above.
+(Note: You can install both versions v0.18 & v0.19 and still use v0.18 for non GDML related work)
+
+### `Gmsh`
+
+[Gmsh](https://gmsh.info/) is an open source 3D finite element mesh generator. FreeCAD & Gmsh should both be using the same version of OCC (OpenCasCade), the underlying CAD kernel that FreeCAD uses.
 
 |   OCC   |   FreeCAD   |     gmsh      |
 |---------|-------------|---------------|
-|    7.4  |    0.19.1   | 4.7.0 - 4.7.1 |
-|    7.6  |             | 4.8.0 - 4.8.4 |
+|   `7.4` |   `0.19.1`  |`4.7.0 - 4.7.1`|
+|   `7.6` |             |`4.8.0 - 4.8.4`|
 
 At the time of writing a prebuilt version of FreeCAD with OCC 7.6 is not available
 
@@ -127,26 +153,30 @@ Note: The version of OCC with FreeCAD 0.19.2 has a regression with STEP function
 
 You can check the version FreeCAD is using with About FreeCAD, copy to clipboard, paste.
 
-For the version used by Gmsh run in a python console
+#### Checking what version of Gmsh is installed
 
-    import gmsh
+To ascertain the Gmsh version, paste the following in to the python console
 
-    gmsh.initialize()
-    print(gmsh.option.getString("General.BuildInfo"))
-    gmsh.finalize()
-    
-Or run gmshVer.py ( In the Workbench Utils directory )
-    
-To see what versions of Gmsh are available to install
+  ```python
+  import gmsh
+  gmsh.initialize()
+  print(gmsh.option.getString("General.BuildInfo"))
+  gmsh.finalize()
+  ```
 
-    pip install gmsh==
-        
-Must be installed in a location that FreeCAD sees to check path FreeCAD uses from a command line/window.
+#### Check the Gmsh version using `gmshVer.py`
+It is also possible to run the `gmshVer.py` script (available in this workbench's `Utils` directory). To see what versions of Gmsh are available to install, open the CLI and type:
 
-    freecad -c
-    import sys
-    print(sys.path)
+  ```bash
+  pip install gmsh==
+  ```
+  **Note:** Gmsh must be installed in a location that FreeCAD can access. To check the path FreeCAD uses, open the CLI and type:
 
+  ```bash
+  freecad -c
+  import sys
+  print(sys.path)
+  ```
 In a command window / line
 
     pip install --upgrade --target <Full path to directory> gmsh=='version'
@@ -163,17 +193,18 @@ will create
 
     D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\gmsh-4.6.0-py3.8.egg-info
     D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\Lib\site-packages\gmsh-4.6.0-Windows64-sdk
-     
-# GDML WORKBENCH USAGE & DETAILS 
 
-See the wiki details on
+</details>
 
-* Using the workbench in general [GDML Workbench WIKI](https://github.com/KeithSloan/GDML/wiki)
+## Usage 
+
+* To read more about the general usage of the GDML workbench checkout the [GDML Workbench wiki](https://github.com/KeithSloan/GDML/wiki)
 * Converting STEP files to GDML [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
 * Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design](https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects)
 
 
-## FOLLOWING TO BE MOVED TO WIKI
+<details>
+<summary>FOLLOWING TO BE MOVED TO WIKI</summary>
 
 ### Create a new GDML design
 
@@ -455,22 +486,25 @@ to facilitate preparation for FEM analysis
   Also as an experiment: thermal parameters have been added to the `GDMLmaterial` object so these could
   be changed before creating a compound. One option to be would be to add elements to GDML files to enable
   loading and exporting, but then they would **NOT** be standard GDML files (maybe a different file extension?)  
-  
+
+</details>
+
 ## Standalone Utilities
 
 The standalone utilities and documentation are now in a submodule repository https://github.com/KeithSloan/GDML_Command_Line_Utils  
 
-  In directory **Utils** You will find a python script **gdml2step.py** for creating a step file from a gdml file.
-  
-  syntax is
-   
-         python3 gdml2step.py <input gdml file> <output step file>
-         
-         The step file should be given a .step extension.
-         
-         In theory other file extension should produce a file of the appropriate type,
-         e.g. iges, but this is untested.
-         
+  In the [Utils](Utils/) directory, you'll find a python script named **`gdml2step.py`** for creating a STEP file from a GDML file.
+
+The syntax is as follows:
+
+  ```bash
+  python3 gdml2step.py <input gdml file> <oustep file>
+  ```
+
+**Note:** the step file should be given a `.step` extension.
+
+In theory other file extension should produfile of the appropriate type, e.g. iges, but this is untested.
+
 ## Citing information
 
 [![DOI](Documentation/DOImage.png)](https://zenodo.org/badge/latestdoi/223232841)
@@ -502,24 +536,18 @@ as per the above link.
   - [ ] Provide options to control meshing objects that will be Tessellated
   - [ ] Icons to Analyze and Export
 
-**Note:**
-For NIST Materials database see http://physics.nist.gov/PhysRefData
-
 ## Development Notes
  
- Based on `gdml.xsd`
- 
- * 'Volumes'
- 
-    * **Must** have **solid & material ref**
- 
- * PhysVol 
- 
-     * Must contain **volref** ( or file ) 
-     * volref **must not** be same as current volume name
-     * May contain **position** or **position ref**
-     * May contain **rotation** or **rotation ref**
- 
+Based on `gdml.xsd`
+
+* 'Volumes'
+  * **Must** have **solid & material ref**
+* PhysVol
+  * Must contain **volref** (or file)
+  * volref **must not** be same as current volume name
+  * May contain **position** or **position ref**
+  * May contain **rotation** or **rotation ref**
+
 ## Acknowledgements 
 
 **Developers**
@@ -568,14 +596,17 @@ For NIST Materials database see http://physics.nist.gov/PhysRefData
 * Stack Overflow
   * Daniel Haley
     
-## For NIST Materials database see http://physics.nist.gov/PhysRefData
+## Notes
 
-## Need to sort out AIR definition
+* For NIST Materials database see http://physics.nist.gov/PhysRefData
+* Need to sort out AIR definition
 
 ## Feedback
 
-Please report bugs by opening a ticket in the  [FreeCAD_Python_GDML issue queue](https://github.com/KeithSloan/FreeCAD_Python_GDML/issues)
+Please report bugs by opening a ticket in the [issue queue](https://github.com/KeithSloan/FreeCAD_Python_GDML/issues)
 
-**Note: I am always on the look out for test gdml files (small to medium size)XXXX# FreeCAD_Python_GDML**
+**Note: I am always on the look out for test gdml files (small to medium size)**
+
+## Author
 
 To contact the author via email: keith[at]sloan-home[dot]co[dot]uk 
