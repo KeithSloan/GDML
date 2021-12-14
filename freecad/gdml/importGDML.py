@@ -569,6 +569,28 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
        setDisplayMode(mypolyhedra,displayMode)
     return mypolyhedra
 
+def createScaledSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
+    print('Create Scaled Solid')
+    solidDict = {'tube':'GDMLTube'}
+    name = getName(solid)
+    x = GDMLShared.getVal(solid,'x',0)
+    y = GDMLShared.getVal(solid,'y',0)
+    z = GDMLShared.getVal(solid,'z',0)
+    solidref = GDMLShared.getRef(solid,'solidref')
+    print('SolidRef {solidref}')
+    ssolid = solids.find("*[@name='%s']" % solidref)
+    print(ssolid.tag)
+    print(ssolid.attrib)
+    type = solidDict[ssolid.tag]
+    print(type)
+    searchName = type+'_'+getName(ssolid)
+    print(searchName)
+    obj = FreeCAD.ActiveDocument.getObject(searchName)
+    if obj is not None :
+       print(obj.Label)
+    else :
+       print('Not found')
+
 def createSphere(part,solid,material,colour,px,py,pz,rot,displayMode) :
     from .GDMLObjects import GDMLSphere, ViewProvider
     #GDMLShared.setTrace(True)
@@ -1119,7 +1141,10 @@ def createSolid(part,solid,material,colour,px,py,pz,rot,displayMode) :
             return(createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
 
         if case('genericPolyhedra'):
-            return(createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode)) 
+            return(createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode))
+
+        if case('scaledSolid'):
+           return(createScaledSolid(part,solid,material,colour,px,py,pz,rot,displayMode))
 
         if case('sphere'):
             return(createSphere(part,solid,material,colour,px,py,pz,rot,displayMode)) 
