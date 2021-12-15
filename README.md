@@ -553,6 +553,7 @@ Based on `gdml.xsd`
 **Developers**
 
   * Keith Sloan
+  * Munther Hindi
   * Damian Lambert
 
 **Graphic Icons** 
