@@ -1195,17 +1195,19 @@ class Mesh2TessFeature :
                print('Facets : '+str(obj.Mesh.CountFacets))
                #print(obj.Mesh.Topology[0])
                #print(obj.Mesh.Topology[1])
-               a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", \
-                        "GDMLTessellate_Mesh2Tess")
-               #a = parent.newObject('Part::FeaturePython', \
-               #                    'GDMLTessellate_Mesh2Tess')
-               GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Facets,True, \
-               #GDMLTessellated(a,obj.Mesh.Topology[0],obj.Mesh.Topology[1], \
-                              "mm",getSelectedMaterial())
+               vol = createPartVol(obj)
+               if hasattr(obj,'material') :
+                  mat = obj.material
+               else :
+                  mat = getSelectedMaterial()
+               m2t = vol.newObject('Part::FeaturePython',\
+                      "GDMLTessellate_Mesh2Tess")
+               GDMLTessellated(m2t,obj.Mesh.Topology[0],obj.Mesh.Facets,True, \
+                      "mm",mat)
                if FreeCAD.GuiUp :
                   obj.ViewObject.Visibility = False
                   #print(dir(obj.ViewObject))
-                  ViewProvider(a.ViewObject)
+                  ViewProvider(m2t.ViewObject)
 
                FreeCAD.ActiveDocument.recompute()
                FreeCADGui.SendMsgToActiveView("ViewFit")
