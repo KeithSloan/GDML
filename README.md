@@ -563,7 +563,7 @@ Based on `gdml.xsd`
    
 **Very large thank you to Munther Hindi for extensive problem solving**  
   
-** For Help with documentation **
+**For Help with documentation**
   
   * Luzpaz
 
