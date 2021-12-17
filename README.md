@@ -561,7 +561,11 @@ Based on `gdml.xsd`
 * GDML Shapes designed by Jim Austin (jmaustpc)  
 * Cycle icon by Flaticon see www.flaticon.com
    
-**Very large thank you to Munther Hindi for extensive problem solving**   
+**Very large thank you to Munther Hindi for extensive problem solving**  
+  
+** For Help with documentation **
+  
+  * Luzpaz
 
 **Thank you also to:** 
 
