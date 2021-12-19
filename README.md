@@ -36,7 +36,7 @@ With OpenCasCade v7.5.0 and v7.5.1 as used in FreeCAD 0.19.2
 
 This issues applies to all operating systems. To fix a problem with export and rotations please use
 
-* the FreeCAD_Assembly3 release STABLE or DAILY seehttps://github.com/realthunder/FreeCAD_assembly3/releases
+* the FreeCAD_Assembly3 release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
 * the GDML git branch called **link3**. Install it via:
   1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
   2. `git fetch origin link3`
