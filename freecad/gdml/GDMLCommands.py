@@ -261,9 +261,9 @@ class BooleanCutFeature :
                     toolVol = sel[1].Object
                     print('Tool Vol : '+toolVol.Label)
                     print(sel[0].Object.OutList)
-                    base = sel[0].Object.OutList[1]
+                    base = sel[0].Object.OutList[-1]
                     print('Base : '+base.Label)
-                    tool = sel[1].Object.OutList[1]
+                    tool = sel[1].Object.OutList[-1]
                     print('Tool : '+tool.Label)
                     print('Remove Base')
                     baseVol.removeObject(base)
@@ -326,9 +326,9 @@ class BooleanIntersectionFeature :
                     print('Tool Vol : '+toolVol.Label)
                     baseVol = sel[0].Object
                     print(sel[0].Object.OutList)
-                    base = sel[0].Object.OutList[1]
+                    base = sel[0].Object.OutList[-1]
                     print('Base : '+base.Label)
-                    tool = sel[1].Object.OutList[1]
+                    tool = sel[1].Object.OutList[-1]
                     print('Tool : '+tool.Label)
                     print('Remove Base')
                     baseVol.removeObject(base)
@@ -390,10 +390,17 @@ class BooleanUnionFeature :
                     toolVol = sel[1].Object
                     print('Tool Vol : '+toolVol.Label)
                     baseVol = sel[0].Object
-                    print(sel[0].Object.OutList)
-                    base = sel[0].Object.OutList[1]
+                    print(f'Base OutList {sel[0].Object.OutList}')
+                    for o in sel[0].Object.OutList :
+                        print(o.Label)
+                    print(f'Tool OutList {sel[1].Object.OutList}')
+                    for o in sel[1].Object.OutList :
+                        print(o.Label)
+                    print(f'True Base {sel[0].Object.OutList[-1].Label}')
+                    base = sel[0].Object.OutList[-1]
                     print('Base : '+base.Label)
-                    tool = sel[1].Object.OutList[1]
+                    print(f'True Tool {sel[1].Object.OutList[-1].Label}')
+                    tool = sel[1].Object.OutList[-1]
                     print('Tool : '+tool.Label)
                     print('Remove Base')
                     baseVol.removeObject(base)
@@ -601,6 +608,39 @@ class SphereFeature:
                 'Sphere Object'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('GDMLSphereFeature',\
                 'Sphere Object')}
+
+class TorusFeature:
+    #def IsActive(self):
+    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        from .GDMLObjects import GDMLTorus, ViewProvider
+        objPart, material = getSelectedPM()
+        if objPart is None :
+           vol=FreeCAD.ActiveDocument.addObject("App::Part","LV-Torus")
+        else :
+           vol=objPart.newObject("App::Part","LV-Torus")
+        myTorus=vol.newObject("Part::FeaturePython","GDMLTorus_Torus")
+        GDMLTorus(myTorus,10,50,50,10,360,"deg","mm",material)
+        if FreeCAD.GuiUp :
+           myTorus.ViewObject.Visibility = True
+           ViewProvider(myTorus.ViewObject)
+
+           FreeCAD.ActiveDocument.recompute()
+           FreeCADGui.SendMsgToActiveView("ViewFit")
+               
+    def IsActive(self):
+        if FreeCAD.ActiveDocument == None:
+           return False
+        else:
+           return True
+
+    def GetResources(self):
+        return {'Pixmap'  : 'GDMLTorusFeature', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('GDMLTorusFeature',\
+                'Torus Object'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('GDMLTorusFeature',\
+                'Torus Object')}
 
 class TrapFeature:
     #def IsActive(self):
@@ -1534,6 +1574,7 @@ FreeCADGui.addCommand('EllipsoidCommand',EllispoidFeature())
 FreeCADGui.addCommand('ElTubeCommand',ElliTubeFeature())
 FreeCADGui.addCommand('ConeCommand',ConeFeature())
 FreeCADGui.addCommand('SphereCommand',SphereFeature())
+FreeCADGui.addCommand('TorusCommand',TorusFeature())
 FreeCADGui.addCommand('TrapCommand',TrapFeature())
 FreeCADGui.addCommand('TubeCommand',TubeFeature())
 FreeCADGui.addCommand('PolyHedraCommand',PolyHedraFeature())

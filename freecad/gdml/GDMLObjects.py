@@ -1475,6 +1475,7 @@ class GDMLTorus(GDMLsolid) :
 
        if prop in ['rmin', 'rmax', 'rtor','startphi','deltaphi', \
                    'aunit','lunit'] :
+          #print(f'Change Prop : {prop}')
           self.createGeometry(fp)
             
    #def execute(self, fp): in GDMLsolid
@@ -1490,13 +1491,16 @@ class GDMLTorus(GDMLsolid) :
        spnt = FreeCAD.Vector(0,0,0)
        sdir = FreeCAD.Vector(0,0,1)
 
-       innerTorus = Part.makeTorus(rtor,rmin,spnt,sdir,0,360,  \
-                    getAngleDeg(fp.aunit, fp.deltaphi))
        outerTorus = Part.makeTorus(rtor,rmax,spnt,sdir,0,360,  \
-                    getAngleDeg(fp.aunit, fp.deltaphi))
-       torus = outerTorus.cut(innerTorus)
+                       getAngleDeg(fp.aunit, fp.deltaphi))
+       if rmin > 0 :
+          innerTorus = Part.makeTorus(rtor,rmin,spnt,sdir,0,360,  \
+                       getAngleDeg(fp.aunit, fp.deltaphi))
+          torus = outerTorus.cut(innerTorus)
+       else :
+          torus = outerTorus
        if fp.startphi != 0 :
-            torus.rotate(spnt,sdir,getAngle(fp.aunit,fp.startphi))
+            torus.rotate(spnt,sdir,getAngleDeg(fp.aunit,fp.startphi))
        fp.Shape = torus     
        fp.Placement = currPlacement
 
