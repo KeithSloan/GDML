@@ -689,12 +689,12 @@ def testAddPhysVol(obj, xmlParent, volName):
        else :
           print('Root/World Volume')
 
-def addVolRef(volxml, volName, solidName, obj) :
+def addVolRef(volxml, volName, obj) :
+    # obj is GDML object
     # Pass material as Boolean
-    GDMLShared.trace('AddVolRef : '+volName+' : '+solidName)
     material = getMaterial(obj)
     ET.SubElement(volxml,'materialref',{'ref': material})
-    ET.SubElement(volxml,'solidref',{'ref': solidName})
+    ET.SubElement(volxml,'solidref',{'ref': nameOfGDMLobject(obj)})
     ET.SubElement(gxml,'volume',{'name': volName, 'material':material})
     if hasattr(obj.ViewObject,'ShapeColor') and volName != WorldVOL :
        colour = obj.ViewObject.ShapeColor
@@ -1390,12 +1390,11 @@ def processGDMLSolid(obj) :
     # Deal with FC Objects that convert
     #print(dir(obj))
     #print(dir(obj.Proxy))
-    #print(obj.Proxy.Type)
+    print(obj.Proxy.Type)
     while switch(obj.Proxy.Type) :
        if case("GDMLArb8") :
           #print("      GDMLArb8") 
           return(processGDMLArb8Object(obj))
-
 
        if case("GDMLBox") :
           #print("      GDMLBox") 
@@ -1528,7 +1527,7 @@ def processSolid(obj, addVolsFlag) :
             #    #print(obj.Proxy.Type) 
             #    return(processGDMLSolid(obj))
             solidxml, solidName = processGDMLSolid(obj)
-            return 1, solidxml, solidName
+            return 1, solidxml, obj
         #
         #  Now deal with Boolean solids
         #  Note handle different from Bookean Objects
@@ -1552,6 +1551,8 @@ def processSolid(obj, addVolsFlag) :
 
         if case("Part::Fuse") :
            GDMLShared.trace("Fuse - union")
+           print("Fuse - Union")
+           #print(dir(obj))
            solidName = 'Union'+obj.Name
            baseCnt, basexml, ref1 = processSolid(obj.Base, True)
            toolCnt, toolxml, ref2 = processSolid(obj.Tool, True)
@@ -1699,22 +1700,16 @@ def processBooleanObject(obj, xmlVol, volName, xmlParent, parentName) :
     return boolCnt
 
 
-def processObject(cnt, idx, obj, xmlVol, volName, \
+def processObject(obj, xmlVol, volName, \
                     xmlParent, parentName) :
-    # cnt - number of GDML objects in Part/Volume
-    # If cnt == 1 - No need to create Volume use Part.Label & No PhysVol
-    # idx - index into OutList
-    # obj - This object 
     # xmlVol    - xmlVol
     # xmlParent - xmlParent Volume
     # parentName - Parent Name
-    # addVolsFlag - Add physical Vo return idx of next Object to be processed
-    # solid or boolean reference name or None
     #ET.ElementTree(gdml).write("test9a", 'utf-8', True)
     #if obj.Label[:12] != 'NOT_Expanded' :
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
-    GDMLShared.trace('Process Object : '+obj.Name+' idx : '+str(idx))
+    GDMLShared.trace('Process Object : '+obj.Name)
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1726,31 +1721,27 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
             print(obj.Label)
             #print(dir(obj))
             processVolAssem(obj, xmlVol, volName, True)
-         return idx + 1
+         return
 
       if case("PartDesign::Body") :
          print("Part Design Body - ignoring")
-         return idx + 1
+         return
 
       if case("App::Origin") :
          #print("App Origin")
-         return idx + 1
-         break
+         return
 
       #if case("App::GeoFeature") :
       #   #print("App GeoFeature")
       #   return 
-      #   break
 
       #if case("App::Line") :
       #   #print("App Line")
       #   return
-      #   break
 
       #f case("App::Plane") :
       #   #print("App Plane")
       #   return
-      #   break
 
       # Okay this is duplicate  Volume cpynum > 1 - parent is a Volume
       if case("App::Link") :
@@ -1758,31 +1749,50 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          #print(dir(obj))
          print(obj.LinkedObject.Label)
          addPhysVolPlacement(obj,xmlVol,obj.LinkedObject.Label)
-         return idx + 1
+         return
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
-         retval = idx + processBooleanObject(obj, xmlVol, volName, \
-                                xmlParent, parentName)
-         GDMLShared.trace('Return Count : '+str(retval))
-         return retval
-         break
+         solidName = obj.Name
+         subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
+         ET.SubElement(subtract,'first', {'ref': nameOfGDMLobject(obj.Base)})
+         ET.SubElement(subtract,'second',{'ref': nameOfGDMLobject(obj.Tool)})
+         # process position & rotation ?
+         processPosition(obj.Tool,union)
+         processRotation(obj.Tool,union)
+         return obj
 
       if case("Part::Fuse") :
          GDMLShared.trace("Fuse - union")
-         retval = idx + processBooleanObject(obj, xmlVol, volName, \
-                                xmlParent, parentName)
-         GDMLShared.trace('Return Count : '+str(retval))
-         return retval
-         break
+         print("Fuse - union")
+         #print(dir(obj))
+         #print(len(obj.InList))
+         #print('InList')
+         #for o in obj.InList :
+         #    print(o.Label)
+         #print(len(obj.OutList))
+         #print('OutList')
+         #for o in obj.OutList :
+         #    print(o.Label)
+         solidName = obj.Name
+         union = ET.SubElement(solids,'union',{'name': solidName })
+         ET.SubElement(union,'first', {'ref': nameOfGDMLobject(obj.Base)})
+         ET.SubElement(union,'second',{'ref': nameOfGDMLobject(obj.Tool)})
+         # process position & rotation ?
+         processPosition(obj.Tool,union)
+         processRotation(obj.Tool,union)
+         return obj
 
       if case("Part::Common") :
          GDMLShared.trace("Common - Intersection")
-         retval = idx + processBooleanObject( obj, xmlVol, volName, \
-                                xmlParent, parentName)
-         GDMLShared.trace('Return Count : '+str(retval))
-         return retval
-         break
+         solidName = obj.Name
+         intersect = ET.SubElement(solids,'subtraction',{'name': solidName })
+         ET.SubElement(intersect,'first', {'ref': nameOfGDMLobject(obj.Base)})
+         ET.SubElement(intersect,'second',{'ref': nameOfGDMLobject(obj.Tool)})
+         # process position & rotation ?
+         processPosition(obj.Tool,union)
+         processRotation(obj.Tool,union)
+         return obj
 
       if case("Part::MultiFuse") :
          GDMLShared.trace("   Multifuse") 
@@ -1810,8 +1820,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
              num += 1
 
          print('Return MultiUnion')
-         return idx + num
-         break
+         return
 
       if case("Part::MultiCommon") :
          print("   Multi Common / intersection")
@@ -1827,22 +1836,21 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          #print('Need to add code for Mesh Material and colour')
          #testAddPhysVol(obj, xmlParent, parentName):
          # return solid ???
-         return idx + 1
-         break
+         return
 
       if case("Part::FeaturePython"):
          GDMLShared.trace("   Python Feature")
          if GDMLShared.getTrace == True :
             if hasattr(obj.Proxy, 'Type') :
                print(obj.Proxy.Type) 
-         solidCnt, solidxml, solidName = processSolid(obj, True)
-         if cnt > 1 :
-            volName = 'LV-'+solidName
-            xmlVol = insertXMLvolume(volName)
-         addVolRef(xmlVol, volName, solidName, obj)
+         #if cnt > 1 :
+         #   volName = 'LV-'+solidName
+         #   xmlVol = insertXMLvolume(volName)
+         #addVolRef(xmlVol, volName, solidName, obj)
          #if asmFlg == True :  # Don't add physvol if GDML object in an assembly
          #   testAddPhysVol(obj, xmlParent, parentName)
-         return idx + 1
+         processGDMLSolid(obj)
+         return obj
 
       # Same as Part::Feature but no position
       if case("App::FeaturePython") :
@@ -1865,8 +1873,7 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          #if isinstance(obj.Proxy, GDMLSection) :
          #   return(processGDMLSection(obj, addVolsFlag))
          #   break
-         return idx + 1
-         break  
+         return
 
       #
       #  Now deal with objects that map to GDML solids
@@ -1876,32 +1883,28 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
          #return(processBoxObject(obj, addVolsFlag))
          processBoxObject(obj, addVolsFlag)
          #testAddPhysVol(obj, xmlParent, parentName)
-         return idx + 1
-         break
+         return
 
       if case("Part::Cylinder") :
          print("    Cylinder")
          #return(processCylinderObject(obj, addVolsFlag))
          processCylinderObject(obj, addVolsFlag)
          #testAddPhysVol(obj, xmlParent, parentName)
-         return idx + 1
-         break
+         return
 
       if case("Part::Cone") :
          print("    Cone")
          #return(processConeObject(obj, addVolsFlag))
          processConeObject(obj, addVolsFlag)
          #testAddPhysVol(obj, xmlParent, parentName)
-         return idx + 1
-         break
+         return
 
       if case("Part::Sphere") :
          print("    Sphere")
          #return(processSphereObject(obj, addVolsFlag))
          processSphereObject(obj, addVolsFlag)
          #testAddPhysVol(obj, xmlParent, parentName)
-         return idx + 1
-         break
+         return
 
       # Not a Solid that translated to GDML solid
       # Dropped through so treat object as a shape
@@ -1911,15 +1914,14 @@ def processObject(cnt, idx, obj, xmlVol, volName, \
       #return(processObjectShape(obj, addVolsFlag))
       print("Convert FreeCAD shape to GDML Tessellated")
       print(obj.TypeId)
-      return idx+1
+      return
 
       if hasattr(obj,'Shape') :
          if obj.Shape.isValid() : 
             #return(processObjectShape(obj))
             processObjectShape(obj)
       #testAddPhysVol(obj, xmlParent, parentName)
-      return idx+1
-      break
+      return
 
 def insertXMLvolume(name):
     # Insert at beginning for sub volumes
@@ -2014,16 +2016,14 @@ def processVolume(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
           print('SensDet : '+vol.SensDet)
           ET.SubElement(xmlVol,'auxiliary',{'auxtype':'SensDet', \
                         'auxvalue' : vol.SensDet}) 
-    idx = 0
-    cnt = 0
     if hasattr(vol,'OutList') :
-       num = len(vol.OutList)
-       cnt = countGDMLObj(vol.OutList)
-       GDMLShared.trace('OutList length : '+str(num))
-       while idx < num :
-          #print(idx)
-          idx = processObject(cnt,idx, vol.OutList[idx],  \
-                            xmlVol, volName, xmlParent, parentName)
+       GDMLShared.trace('OutList length : '+str(len(vol.OutList)))
+       gdmlObj = None
+       for obj in vol.OutList :
+          robj = processObject(obj,xmlVol, volName, xmlParent, parentName)
+          if robj is not None :
+                gdmlObj = robj
+       addVolRef(xmlVol, volName, gdmlObj)
        addPhysVolPlacement(vol,xmlParent,volName)
 
 def processVolAssem(vol, xmlParent, parentName, addVolsFlag) :
