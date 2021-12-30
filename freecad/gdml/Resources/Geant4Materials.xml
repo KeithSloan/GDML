@@ -738,10 +738,6 @@
         <fraction n="0.290924" ref="F_element"/>
         <fraction n="0.647767" ref="I_element"/>
       </material>
-      <material formula="G4_Galactic" name="G4_Galactic" >
-        <D unit="g/cm3" value="10" />
-        <composite n="1" ref="H_element"/>
-      </material>
       <material formula="G4_GADOLINIUM_OXYSULFIDE" name="G4_GADOLINIUM_OXYSULFIDE" >
         <D unit="g/cm3" value="7.44" />
         <composite n="2" ref="Gd_element"/>
@@ -1835,5 +1831,237 @@
         <D unit="g/cm3" value="10" />
         <composite n="1" ref="Cf_element"/>
       </material>
+	<material formula="G4_lH2" name="G4_lH2" >
+		<D unit="g/cm3" value="0.0708" />
+		<composite n="2" ref="H_element" />
+	</material>
+	<material formula="G4_lN2" name="G4_lN2" >
+		<D unit="g/cm3" value="0.807" />
+		<composite n="2" ref="N_element" />
+	</material>
+	<material formula="G4_lO2" name="G4_lO2" >
+		<D unit="g/cm3" value="1.141" />
+		<composite n="2" ref="O_element" />
+	</material>
+	<material formula="G4_lAr" name="G4_lAr" >
+		<D unit="g/cm3" value="1.396" />
+		<composite n="1" ref="Ar" />
+	</material>
+	<material formula="G4_lBr" name="G4_lBr" >
+		<D unit="g/cm3" value="3.1028" />
+		<composite n="1" ref="Br" />
+	</material>
+	<material formula="G4_lKr" name="G4_lKr" >
+		<D unit="g/cm3" value="2.418" />
+		<composite n="1" ref="Kr" />
+	</material>
+	<material formula="G4_lXe" name="G4_lXe" >
+		<D unit="g/cm3" value="2.953" />
+		<composite n="1" ref="Xe" />
+	</material>
+	<material formula="G4_PbWO4" name="G4_PbWO4" >
+		<D unit="g/cm3" value="8.28" />
+		<composite n="4" ref="O_element" />
+		<composite n="1" ref="Pb_element" />
+		<composite n="1" ref="W_element" />
+	</material>
+	<material formula="G4_Galactic" name="G4_Galactic" >
+		<D unit="g/cm3" value="1e-25" />
+		<composite n="1" ref="alactic" />
+	</material>
+	<material formula="G4_GRAPHITE_POROUS" name="G4_GRAPHITE_POROUS" >
+		<D unit="g/cm3" value="1.7" />
+		<composite n="1" ref="RAPHITE_POROUS" />
+	</material>
+	<material formula="G4_LUCITE" name="G4_LUCITE" >
+		<D unit="g/cm3" value="1.19" />
+		<fraction n="0.080538" ref="H_element" />
+		<fraction n="0.599848" ref="C_element" />
+		<fraction n="0.319614" ref="O_element" />
+	</material>
+	<material formula="G4_BRASS" name="G4_BRASS" >
+		<D unit="g/cm3" value="8.52" />
+		<composite n="62" ref="Cu_element" />
+		<composite n="35" ref="Zn_element" />
+		<composite n="3" ref="Pb_element" />
+	</material>
+	<material formula="G4_BRONZE" name="G4_BRONZE" >
+		<D unit="g/cm3" value="8.82" />
+		<composite n="89" ref="Cu_element" />
+		<composite n="9" ref="Zn_element" />
+		<composite n="2" ref="Pb_element" />
+	</material>
+	<material formula="G4_STAINLESS-STEEL" name="G4_STAINLESS-STEEL" >
+		<D unit="g/cm3" value="8.0" />
+		<composite n="74" ref="Fe_element" />
+		<composite n="18" ref="Cr_element" />
+		<composite n="8" ref="Ni_element" />
+	</material>
+	<material formula="G4_CR39" name="G4_CR39" >
+		<D unit="g/cm3" value="1.32" />
+		<composite n="18" ref="H_element" />
+		<composite n="12" ref="C_element" />
+		<composite n="7" ref="O_element" />
+	</material>
+	<material formula="G4_OCTADECANOL" name="G4_OCTADECANOL" >
+		<D unit="g/cm3" value="0.812" />
+		<composite n="38" ref="H_element" />
+		<composite n="18" ref="C_element" />
+		<composite n="1" ref="O_element" />
+	</material>
+	<material formula="G4_KEVLAR" name="G4_KEVLAR" >
+		<D unit="g/cm3" value="1.44" />
+		<composite n="14" ref="C_element" />
+		<composite n="10" ref="H_element" />
+		<composite n="2" ref="O_element" />
+		<composite n="2" ref="N_element" />
+	</material>
+	<material formula="G4_DACRON" name="G4_DACRON" >
+		<D unit="g/cm3" value="1.4" />
+		<composite n="10" ref="C_element" />
+		<composite n="8" ref="H_element" />
+		<composite n="4" ref="O_element" />
+	</material>
+	<material formula="G4_NEOPRENE" name="G4_NEOPRENE" >
+		<D unit="g/cm3" value="1.23" />
+		<composite n="4" ref="C_element" />
+		<composite n="5" ref="H_element" />
+		<composite n="1" ref="Cl_element" />
+	</material>
+	<material formula="G4_CYTOSINE" name="G4_CYTOSINE" >
+		<D unit="g/cm3" value="1.55" />
+		<composite n="5" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="1" ref="O_element" />
+	</material>
+	<material formula="G4_THYMINE" name="G4_THYMINE" >
+		<D unit="g/cm3" value="1.23" />
+		<composite n="6" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+	</material>
+	<material formula="G4_URACIL" name="G4_URACIL" >
+		<D unit="g/cm3" value="1.32" />
+		<composite n="4" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_ADENINE" name="G4_DNA_ADENINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="5" ref="N_element" />
+	</material>
+	<material formula="G4_DNA_GUANINE" name="G4_DNA_GUANINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="1" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_CYTOSINE" name="G4_DNA_CYTOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="1" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_THYMINE" name="G4_DNA_THYMINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="5" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_URACIL" name="G4_DNA_URACIL" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="3" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_ADENOSINE" name="G4_DNA_ADENOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="4" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_GUANOSINE" name="G4_DNA_GUANOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="5" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_CYTIDINE" name="G4_DNA_CYTIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="5" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_URIDINE" name="G4_DNA_URIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="9" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="6" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_METHYLURIDINE" name="G4_DNA_METHYLURIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="11" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="6" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_MONOPHOSPHATE" name="G4_DNA_MONOPHOSPHATE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="1" ref="P_element" />
+		<composite n="3" ref="O_element" />
+	</material>
+	<material formula="G4_DNA_A" name="G4_DNA_A" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="7" ref="O_element" />
+		<composite n="1" ref="P_element" />
+	</material>
+	<material formula="G4_DNA_G" name="G4_DNA_G" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="8" ref="O_element" />
+		<composite n="1" ref="P_element" />
+	</material>
+	<material formula="G4_DNA_C" name="G4_DNA_C" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="8" ref="O_element" />
+		<composite n="1" ref="P_element" />
+	</material>
+	<material formula="G4_DNA_U" name="G4_DNA_U" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="9" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="9" ref="O_element" />
+		<composite n="1" ref="P_element" />
+	</material>
+	<material formula="G4_DNA_MU" name="G4_DNA_MU" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="11" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="9" ref="O_element" />
+		<composite n="1" ref="P_element" />
+	</material>
   </materials>
 </xml>
