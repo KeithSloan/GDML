@@ -3,14 +3,16 @@
 ### Introduction 
 
 **[FreeCAD](https://freecad.org)** is a Free Libre Open Source multi-platform CAD/CAM/FEM suite.
-**GDML** stands for **Geometry Description Markup Language** and is an application-indepedent geometry description format based on XML. It can be used as the primary geometry implementation language as well providing a geometry data exchange format for existing applications.
+**GDML** stands for **Geometry Description Markup Language** and is an application-indepedent geometry description format based on XML. It can be used as the primary geometry implementation language as well providing a geometry data exchange format for existing applications. 
+
+The main use of GDML is with Nuclear Physics MonteCarlo Simulation programs GEANT4 and ROOT
 
 The **FreeCAD GDML Workbench** can be used for:
 * Viewing
 * Creation
 * Modification
 
-of GDML models. It can also be used in GEANT4 and ROOT.
+of GDML models.
 
 ## Screenshots
 
@@ -79,7 +81,23 @@ In order to support copies of GDML Volumes the following changes have been made
 
 * FreeCAD (https://freecad.org/)
 * `lxml` (bundled in to FreeCAD v0.19)
-* `gmsh` (bundled in to FreeCAD v0.19)
+* `gmsh` python library
+
+### gmsh python library
+
+The workbench uses the gmsh python library and must be installed in a location that FreeCAD sees
+To check path FreeCAD uses from a command line/window.
+
+    freecad -c
+    import sys
+    print(sys.path)
+
+In a command window / line
+
+    pip install --upgrade --target <Full path to directory> gmsh
+
+Windows: if no --target option upgrade pip
+
 
 ### Install via the Addon Manager
 
