@@ -86,6 +86,7 @@ In order to support copies of GDML Volumes the following changes have been made
 ### gmsh python library
 
 The workbench uses the gmsh python library and must be installed in a location that FreeCAD sees
+
 To check path FreeCAD uses from a command line/window.
 
     freecad -c
