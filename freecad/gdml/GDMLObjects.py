@@ -2973,20 +2973,16 @@ class GDMLGmshTessellated(GDMLsolid) :
       # this makes Placement via Phyvol easier and allows copies etc
       #obj.addExtension('App::GroupExtensionPython')
       self.Type = 'GDMLGmshTessellated'
-      self.SourceObj = sourceObj
-      self.Vertex = vertex
-      self.Facets = facets
-      self.Object = obj
       self.colour = colour
       obj.Proxy = self
 
    def updateParams(self, vertex, facets) :
-      #print('Update Params')
-      self.Vertex = vertex
-      self.Facets = facets
+      #print('Update Params & Shape')
+      self.pshape = self.createShape(vertex,facets,flag)
+      #print(f"Pshape vertex {len(self.pshape.Vertexes)}")
       self.facets  = len(facets)
       self.vertex  = len(vertex)
-      print(f"Vertex : {self.vertex} Facets : {self.facets}")
+      #print(f"Vertex : {self.vertex} Facets : {self.facets}")
 
    def onChanged(self, fp, prop):
        '''Do something when a property has changed'''
@@ -3012,8 +3008,7 @@ class GDMLGmshTessellated(GDMLsolid) :
        #if prop in ['v1','v2','v3','v4','type','lunit'] :
        #   self.createGeometry(fp)
 
-   def execute(self, fp): # Here for remesh?
-       self.createGeometry(fp)
+   #def execute(self, fp): in GDMLsolid
    
    def addProperties(self) :
        print('Add Properties')
@@ -3034,42 +3029,67 @@ class GDMLGmshTessellated(GDMLsolid) :
    #def execute(self, fp): in GDMLsolid
    
    def createGeometry(self,fp):
-       currPlacement = fp.Placement
+       #currPlacement = fp.Placement
        #print("Tessellated")
-       mul = GDMLShared.getMult(fp)
+       #print(self.Type)
+       #print('self')
+       #print(dir(self))
+       #print('fp')
+       #print(dir(fp))
+       if hasattr(self,'pshape') :
+          #print('Update Shape')
+          fp.Shape  = self.pshape
+          if hasattr(fp,'pshape') :
+             fp.pshape = self.pshape
+          fp.vertex = self.vertex
+          fp.facets = self.facets
+          #print(len(fp.Shape.Vertexes))
+          #print(fp.Shape)
+       #fp.Placement = currPlacement
+   
+   def createShape(self,vertex,facets,flag) :
+       # Viewing outside of face vertex must be counter clockwise
+       # if flag == True  - facets is Mesh.Facets
+       # if flag == False - factes is Faces i.e. from import GDMLTessellated
+       #mul = GDMLShared.getMult(fp)
+       mul = GDMLShared.getMult(self)
+       #print('Create Shape')
        FCfaces = []
-       #print(self.Vertex)
        i = 0
-       for f in self.Facets :
+       for f in facets :
           #print('Facet')
           #print(f)
-          if len(f) == 3 : 
-             FCfaces.append(GDMLShared.triangle( \
-                             mul*self.Vertex[f[0]], \
-                             mul*self.Vertex[f[1]], \
-                             mul*self.Vertex[f[2]]))
-          else : # len should then be 4
-             FCfaces.append(GDMLShared.quad( \
-                             mul*self.Vertex[f[0]], \
-                             mul*self.Vertex[f[1]], \
-                             mul*self.Vertex[f[2]], \
-                             mul*self.Vertex[f[3]]))
+          if flag == True :
+             FCfaces.append(GDMLShared.facet(f))
+          else :
+             if len(f) == 3 :
+                FCfaces.append(GDMLShared.triangle( \
+                            mul*vertex[f[0]], \
+                            mul*vertex[f[1]], \
+                            mul*vertex[f[2]]))
+             else : # len should then be 4
+                FCfaces.append(GDMLShared.quad( \
+                            mul*vertex[f[0]], \
+                            mul*vertex[f[1]], \
+                            mul*vertex[f[2]], \
+                            mul*vertex[f[3]]))
+       #print(FCfaces)
        shell=Part.makeShell(FCfaces)
        if shell.isValid == False :
           FreeCAD.Console.PrintWarning('Not a valid Shell/n')
- 
+
        #shell.check()
        #solid=Part.Solid(shell).removeSplitter()
        try :
           solid=Part.Solid(shell)
-       except : 
+       except :
           # make compound rather than just barf
           # visually able to view at least
           FreeCAD.Console.PrintWarning('Problem making Solid/n')
           solid = Part.makeCompound(FCfaces)
        #if solid.Volume < 0:
        #   solid.reverse()
-       #print(dir(solid))   
+       #print(dir(solid))
        #bbox = solid.BoundBox
        #base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
        #                      -(bbox.YMin+bbox.YMax)/2 \
@@ -3078,9 +3098,10 @@ class GDMLGmshTessellated(GDMLsolid) :
 
        #base = FreeCAD.Vector(0,0,0)
        #fp.Shape = translate(solid,base)
-       fp.Shape = solid
-       fp.Placement = currPlacement
-   
+       #fp.Shape = solid
+
+       return solid
+
 class GDMLTessellated(GDMLsolid) :
 
    def __init__(self, obj, vertex, facets, flag, lunit, material, colour = None) :

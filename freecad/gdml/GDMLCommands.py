@@ -1098,8 +1098,14 @@ class AddTessellateTask:
                  if parent == None :
                     self.tess = FreeCAD.ActiveDocument.addObject( \
                                 'Part::FeaturePython',name)
-                 GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
-                             "mm", getSelectedMaterial())
+                 GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj), \
+                     vertex, facets,"mm", getSelectedMaterial())
+                 self.tess.ViewObject.Proxy = 0  #Realthunder fix
+                 if FreeCAD.GuiUp :
+                    # set ViewProvider before setDisplay
+                    ViewProvider(self.tess.ViewObject)
+                    setDisplayMode(self.tess,displayMode)
+
            else :
               self.processMesh(vertex,facets)
            
@@ -1150,6 +1156,7 @@ class TessellateFeature :
                   mat = obj.material
                else :
                   mat = getSelectedMaterial()
+               print(f'Material : {mat}')
                myTess = vol.newObject('Part::FeaturePython',name)
                #GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
                GDMLTessellated(myTess,mesh.Topology[0],mesh.Facets,True, \
@@ -1262,6 +1269,7 @@ class Mesh2TessFeature :
 class Tess2MeshFeature :
      
     def Activated(self) :
+        print('Tess2Mesh')
  
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
                   ViewProvider, ViewProviderExtension
