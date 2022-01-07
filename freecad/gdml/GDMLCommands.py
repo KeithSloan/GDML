@@ -1100,6 +1100,7 @@ class AddTessellateTask:
                                 'Part::FeaturePython',name)
                  GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj), \
                      vertex, facets,"mm", getSelectedMaterial())
+                 print('Object Created')
                  self.tess.ViewObject.Proxy = 0  #Realthunder fix
                  if FreeCAD.GuiUp :
                     # set ViewProvider before setDisplay

@@ -2975,10 +2975,11 @@ class GDMLGmshTessellated(GDMLsolid) :
       self.Type = 'GDMLGmshTessellated'
       self.colour = colour
       obj.Proxy = self
+      self.updateParams(vertex, facets)
 
    def updateParams(self, vertex, facets) :
-      #print('Update Params & Shape')
-      self.pshape = self.createShape(vertex,facets,flag)
+      print('Update Params & Shape')
+      self.pshape = self.createShape(vertex,facets,False)
       #print(f"Pshape vertex {len(self.pshape.Vertexes)}")
       self.facets  = len(facets)
       self.vertex  = len(vertex)
@@ -3047,13 +3048,13 @@ class GDMLGmshTessellated(GDMLsolid) :
           #print(fp.Shape)
        #fp.Placement = currPlacement
    
-   def createShape(self,vertex,facets,flag) :
+   def createShape(self,vertex,facets,flag=False) :
        # Viewing outside of face vertex must be counter clockwise
        # if flag == True  - facets is Mesh.Facets
        # if flag == False - factes is Faces i.e. from import GDMLTessellated
        #mul = GDMLShared.getMult(fp)
        mul = GDMLShared.getMult(self)
-       #print('Create Shape')
+       print('Create Shape')
        FCfaces = []
        i = 0
        for f in facets :
