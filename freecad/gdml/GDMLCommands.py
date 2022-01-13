@@ -153,7 +153,7 @@ class ColourMapFeature:
       #label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
 
   def IsActive(self):
-      if FreeCAD.ActiveDocument == None:
+      if FreeCAD.ActiveDocument is None:
          return False
       else:
          return True
@@ -225,7 +225,7 @@ class SetMaterialFeature:
       return      
 
   def IsActive(self):
-      if FreeCAD.ActiveDocument == None:
+      if FreeCAD.ActiveDocument is None:
          return False
       else:
          return True
@@ -289,7 +289,7 @@ class BooleanCutFeature :
                     print('No Parent Volume/Part')
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -353,7 +353,7 @@ class BooleanIntersectionFeature :
                     print('No Parent Volume/Part')
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -425,7 +425,7 @@ class BooleanUnionFeature :
                     print('No Parent Volume')
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -458,7 +458,7 @@ class BoxFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -492,7 +492,7 @@ class ConeFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -526,7 +526,7 @@ class EllispoidFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -560,7 +560,7 @@ class ElliTubeFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -597,7 +597,7 @@ class SphereFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -630,7 +630,7 @@ class TorusFeature:
            FreeCADGui.SendMsgToActiveView("ViewFit")
                
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -666,7 +666,7 @@ class TrapFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -701,7 +701,7 @@ class TubeFeature:
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
            return False
         else:
            return True
@@ -1095,7 +1095,7 @@ class AddTessellateTask:
                  if len(self.obj.InList) > 0 :
                     parent = self.obj.InList[0]
                     self.tess = parent.newObject('Part::FeaturePython',name)
-                 if parent == None :
+                 if parent is None :
                     self.tess = FreeCAD.ActiveDocument.addObject( \
                                 'Part::FeaturePython',name)
                  GDMLGmshTessellated(self.tess,self.obj,getMeshLen(self.obj),vertex, facets, \
@@ -1280,7 +1280,7 @@ class Tess2MeshFeature :
                         if len(obj.InList) > 0 :
                            parent = obj.InList[0]
                            mshObj = parent.newObject('Mesh::Feature',obj.Name)
-                     if parent == None :
+                     if parent is None :
                          mshObj = FreeCAD.ActiveDocument.addObject( \
                            'Mesh::Feature',obj.Name)
                      mshObj.Mesh = MeshPart.meshFromShape(obj.Shape)
@@ -1296,7 +1296,7 @@ class Tess2MeshFeature :
                   #      if len(obj.InList) > 0 :
                   #         parent = obj.InList[0]
                   #         mshObj = parent.newObject('Mesh::Feature',obj.Name)
-                  #   if parent == None :
+                  #   if parent is None :
                   #       mshObj = FreeCAD.ActiveDocument.addObject( \
                   #         'Mesh::Feature',obj.Name)
                   #   mshObj.Mesh = mesh
@@ -1334,7 +1334,7 @@ class TetrahedronFeature :
                      if len(obj.InList) > 0 :
                         parent = obj.InList[0]
                         myTet = parent.newObject('Part::FeaturePython',name)
-                  if parent == None :
+                  if parent is None :
                      myTet = FreeCAD.ActiveDocument.addObject( \
                            'Part::FeaturePython',name)
                   GDMLTetrahedron(myTet,tetraheds,"mm",getSelectedMaterial())

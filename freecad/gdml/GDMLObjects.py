@@ -50,7 +50,7 @@ def setLengthQuantity(obj, m) :
         obj.lunit = LengthQuantityList
         obj.lunit = 0
         if len(LengthQuantityList) > 0 :
-            if not ( m == 0 or m == None ) : 
+            if not ( m == 0 or m is None ) : 
                 obj.lunit = LengthQuantityList.index(m)
     else :
         obj.lunit = 2
@@ -85,7 +85,7 @@ def setMaterial(obj, m) :
        if len(MaterialsList) > 0 :
           obj.material = MaterialsList
           obj.material = 0
-          if not ( m == 0 or m == None ) : 
+          if not ( m == 0 or m is None ) : 
              try : 
                 obj.material = MaterialsList.index(m)
              except :
@@ -243,10 +243,10 @@ def colorFromRay(rayIn):	# Thanks to Dam
 
 def colourMaterial(m):
 
-   if MaterialsList == None :
+   if MaterialsList is None :
         return (0.5,0.5,0.5,0.0)
    else :
-       if ( m == None ) : 
+       if ( m is None ) : 
            return (0.5,0.5,0.5,0,0)
        elif(len(MaterialsList)<=1):
            return (0.5,0.5,0.5,0.0)
