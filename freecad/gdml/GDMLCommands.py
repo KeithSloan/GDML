@@ -85,7 +85,7 @@ def getSelectedMaterial() :
     from .GDMLObjects import GDMLmaterial
 
     list = FreeCADGui.Selection.getSelection()
-    if list != None :
+    if list is not None :
        for obj in list :
           if hasattr(obj,'Proxy') :
              if isinstance(obj.Proxy,GDMLmaterial) == True :
@@ -100,7 +100,7 @@ def getSelectedPM() :
     objPart = None
     material = 0
     list = FreeCADGui.Selection.getSelection()
-    if list != None :
+    if list is not None :
        for obj in list :
           if hasattr(obj,'Proxy') :
              if isinstance(obj.Proxy,GDMLmaterial) == True and \
@@ -1289,7 +1289,7 @@ class Tess2MeshFeature :
                   #   print('Tetrahedron2Mesh')
                   #   mesh = Tetrahedron2Mesh(obj)
 
-                  #if mesh != None :
+                  #if mesh is not None :
                   #   print('Add Mesh')
                   #   parent = None
                   #   if hasattr(obj,'InList') :
@@ -1326,7 +1326,7 @@ class TetrahedronFeature :
             initialize()
             if meshObj(obj,3) == True :
                tetraheds = getTetrahedrons()
-               if tetraheds != None :
+               if tetraheds is not None :
                   print('tetraheds : '+str(len(tetraheds)))
                   name ='GDMLTetrahedron_'+obj.Name
                   parent = None

@@ -586,7 +586,7 @@ def addPhysVolPlacement(obj, xmlVol, volName) :
     #GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : "+refName) 
     #print(ET.tostring(xmlVol))
-    if xmlVol != None :
+    if xmlVol is not None :
        if not hasattr(obj,'CopyNumber') :
           pvol = ET.SubElement(xmlVol,'physvol',{'name':'PV-'+volName})
        else :
@@ -682,7 +682,7 @@ def testDefaultPlacement(obj) :
 
 def testAddPhysVol(obj, xmlParent, volName):
     if testDefaultPlacement(obj) == False :
-       if xmlParent != None :
+       if xmlParent is not None :
           pvol = addPhysVol(xmlParent,volName)
           processPosition(obj,pvol)
           processRotation(obj,pvol)
@@ -1585,12 +1585,12 @@ def getMaterial(obj) :
 
 def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
     print("Process Object : "+obj.Name+' Type '+obj.TypeId)
-    if xmlVol != None :
+    if xmlVol is not None :
        xmlstr = ET.tostring(xmlVol) 
     else :
        xmlstr = 'None'
     print('Volume : '+volName+' : '+str(xmlstr))
-    if xmlParent != None :
+    if xmlParent is not None :
        xmlstr = ET.tostring(xmlParent) 
     else :
        xmlstr = 'None'
@@ -1881,13 +1881,13 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, addVolsFlag) :
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName) :
-    if xmlVol != None :
+    if xmlVol is not None :
        xmlstr = ET.tostring(xmlVol)
     else :
        xmlstr ='None'
     print(xmlstr)
     GDMLShared.trace('     '+vol.Label+ ' - '+str(xmlstr))
-    if xmlParent != None :
+    if xmlParent is not None :
        xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr ='None'
@@ -2038,7 +2038,7 @@ def exportWorldVol(vol, fileExt) :
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem) :
     # gdml is a global
     global gdml, docString, importStr
-    if elem != None :
+    if elem is not None :
        #xmlElem = ET.Element('xml')
        #xmlElem.append(elem)
        #indent(xmlElem)

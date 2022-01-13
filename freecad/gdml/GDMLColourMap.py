@@ -202,7 +202,7 @@ class GDMLColourMap(QtGui.QDialog) :
       doc = FreeCAD.ActiveDocument
       print('Active')
       print(doc)
-      if doc != None :
+      if doc is not None :
          #print(dir(doc))
          if hasattr(doc,'Objects') :
             #print(doc.Objects)
@@ -310,7 +310,7 @@ class GDMLColourMap(QtGui.QDialog) :
           processXML(doc,joinDir("Resources/Geant4Materials.xml"))
           materials = doc.Materials
        try :
-          if materials != None :
+          if materials is not None :
              for m in materials.OutList :
                  matList.append(m.Label)
           #print(matList)
@@ -318,7 +318,7 @@ class GDMLColourMap(QtGui.QDialog) :
           pass
 
        try : 
-          if g4Mats != None :
+          if g4Mats is not None :
              for m in g4Mats.OutList :
                  matList.append(m.Label)
              #print(matList)

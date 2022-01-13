@@ -46,7 +46,7 @@ LengthQuantityList =  ['nm','um', 'mm','cm', 'dm','m', 'km']
 
 
 def setLengthQuantity(obj, m) :
-    if LengthQuantityList != None :
+    if LengthQuantityList is not None :
         obj.lunit = LengthQuantityList
         obj.lunit = 0
         if len(LengthQuantityList) > 0 :
@@ -705,7 +705,7 @@ class GDMLElCone(GDMLsolid) :
        xmax = dx*rmax
        ymax = dy*rmax
        cone2 = cone1.transformGeometry(mat)
-       if zcut != None :
+       if zcut is not None :
           box = Part.makeBox(2*xmax,2*ymax,zmax)
           pl = FreeCAD.Placement()
           # Only need to move to semi axis
@@ -778,7 +778,7 @@ class GDMLEllipsoid(GDMLsolid) :
        zcut2 = abs(fp.zcut2*mul)
        GDMLShared.trace("zcut2 : "+str(zcut2))
        t1ellipsoid = sphere.transformGeometry(mat) 
-       if zcut2 != None and zcut2 > 0 and zcut2 < cz:   # Remove from upper z
+       if zcut2 is not None and zcut2 > 0 and zcut2 < cz:   # Remove from upper z
           box1 = Part.makeBox(2*ax,2*by,zcut2)
           pl = FreeCAD.Placement()
           # Only need to move to semi axis
@@ -787,7 +787,7 @@ class GDMLEllipsoid(GDMLsolid) :
           t2ellipsoid = t1ellipsoid.cut(box1)
        else :
           t2ellipsoid = t1ellipsoid 
-       if zcut1 != None and zcut1 > 0 and zcut1 < cz:
+       if zcut1 is not None and zcut1 > 0 and zcut1 < cz:
           # Remove from lower z, seems to be a negative number
           box2 = Part.makeBox(2*ax,2*by,zcut1)
           pl = FreeCAD.Placement()
