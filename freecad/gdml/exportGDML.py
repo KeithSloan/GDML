@@ -1649,10 +1649,10 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
          solidName = obj.Name
-         subtract = ET.Element('subtraction',{'name': solidName })
+         subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(subtract,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(subtract,'second',{'ref': nameOfGDMLobject(obj.Tool)})
-         solids.insert(0,subtract)
+         #solids.insert(0,subtract)
          # process position & rotation ?
          processPosition(obj.Tool,subtract)
          processRotation(obj.Tool,subtract)
@@ -1671,10 +1671,11 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
          #for o in obj.OutList :
          #    print(o.Label)
          solidName = obj.Name
-         union = ET.Element('union',{'name': solidName })
+         union = ET.SubElement(solids,'union',{'name': solidName })
          ET.SubElement(union,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(union,'second',{'ref': nameOfGDMLobject(obj.Tool)})
-         solids.insert(0,union)
+         print(f'Insert union : {solidName}')
+         #solids.insert(0,union)
          # process position & rotation ?
          processPosition(obj.Tool,union)
          processRotation(obj.Tool,union)
@@ -1683,10 +1684,10 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
       if case("Part::Common") :
          GDMLShared.trace("Common - Intersection")
          solidName = obj.Name
-         intersect = ET.Element('subtraction',{'name': solidName })
+         intersect = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(intersect,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(intersect,'second',{'ref': nameOfGDMLobject(obj.Tool)})
-         solids.insert(0,intersect)
+         #solids.insert(0,intersect)
          # process position & rotation ?
          processPosition(obj.Tool,intersect)
          processRotation(obj.Tool,intersect)
