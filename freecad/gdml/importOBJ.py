@@ -83,7 +83,7 @@ def getSelectedMaterial() :
     from .GDMLObjects import GDMLmaterial
 
     list = FreeCADGui.Selection.getSelection()
-    if list != None :
+    if list is not None :
        for obj in list :
           if hasattr(obj,'Proxy') :
              if isinstance(obj.Proxy,GDMLmaterial) == True :

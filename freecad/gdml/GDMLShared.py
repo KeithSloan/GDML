@@ -260,7 +260,7 @@ def getVal(ptr,var,default=0) :
 # get ref e.g name world, solidref, materialref
 def getRef(ptr, name) :
     wrk = ptr.find(name)
-    if wrk != None :
+    if wrk is not None :
        ref = wrk.get('ref')
        trace(name + ' : ' + ref)
        return ref
@@ -454,7 +454,7 @@ def testPosition(xmlEntity,px,py,pz) :
        trace("positionref : "+posName)
        return(getDefinedPosition(posName))
     pos = xmlEntity.find("position")
-    if pos != None :
+    if pos is not None :
         trace(pos.attrib)
         return(getPositionFromAttrib(pos))
     else :

@@ -60,7 +60,7 @@ def getMaterialsList() :
        geant4 = doc.Geant4
        g4Mats = doc.getObject('G4Materials')
     try :
-       if materials != None :
+       if materials is not None :
           for m in materials.OutList :
               if m.Label  != "Geant4" :
                  matList.append(m.Label)
@@ -70,7 +70,7 @@ def getMaterialsList() :
        pass
 
     try :
-       if g4Mats != None :
+       if g4Mats is not None :
           for m in g4Mats.OutList :
               matList.append(m.Label)
           #print(matList)
