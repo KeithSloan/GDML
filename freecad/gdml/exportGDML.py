@@ -1540,7 +1540,7 @@ def processGDMLSolid(obj) :
 
        print("Not yet Handled")
        break  
-    #solids.insert(0,solid)
+    solids.insert(0,solid)
 
 def processMuNod(xmlelem, name) :
     node = ET.SubElement(xmlelem,'multiUnionNode',{'name' : name})
