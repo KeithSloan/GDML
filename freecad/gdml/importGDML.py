@@ -161,6 +161,20 @@ def setDisplayMode(obj,mode):
     if mode == 3 :
        obj.ViewObject.DisplayMode = 'Wireframe'
 
+def newPartFeature(obj,name) :
+    newobj = obj.newObject("Part::FeaturePython",name)
+    # FreeCAD can change the name i.e. hypen to underscore
+    # So also set the Objects Label
+    newobj.Label = name
+    return(newobj)
+
+def newGroupPython(obj,name) :
+    newobj = obj.newObject("App::DocumentObjectGroupPython",name)
+    # FreeCAD can change the name i.e. hypen to underscore
+    # So also set the Objects Label
+    newobj.Label = name
+    return(newobj)
+
 def createArb8(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # parent, sold
     from .GDMLObjects import GDMLArb8, ViewProvider
@@ -169,7 +183,7 @@ def createArb8(part,solid,material,colour,px,py,pz,rot,displayMode) :
     #GDMLShared.trace("material : "+material)
     GDMLShared.trace(solid.attrib)
 
-    myArb8=part.newObject("Part::FeaturePython","GDMLArb8:"+getName(solid))
+    myArb8=newPartFeature(part,"GDMLArb8:"+getName(solid))
     v1x = GDMLShared.getVal(solid,'v1x')
     v1y = GDMLShared.getVal(solid,'v1y')
     v2x = GDMLShared.getVal(solid,'v2x')
@@ -213,8 +227,8 @@ def createBox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # modifs lambda (otherwise each time we open the gdml file, 
     # the part name will have one more GDMLBox added
     # No - need to remove leading GDMLBox on export
-    mycube=part.newObject("Part::FeaturePython","GDMLBox:"+getName(solid))
-    #mycube=part.newObject("Part::FeaturePython",getName(solid))
+    
+    mycube=newPartFeature(part,"GDMLBox:"+getName(solid))
     x = GDMLShared.getVal(solid,'x')
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
@@ -245,7 +259,7 @@ def createCone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mycone=part.newObject("Part::FeaturePython","GDMLCone:"+getName(solid))
+    mycone=newPartFeature(part,"GDMLCone:"+getName(solid))
     GDMLCone(mycone,rmin1,rmax1,rmin2,rmax2,z, \
              startphi,deltaphi,aunit,lunit,material,colour)
     GDMLShared.trace("CreateCone : ")
@@ -267,7 +281,7 @@ def createElcone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     zmax = GDMLShared.getVal(solid,'zmax')
     zcut = GDMLShared.getVal(solid,'zcut')
     lunit = getText(solid,'lunit',"mm")
-    myelcone=part.newObject("Part::FeaturePython","GDMLElCone:"+getName(solid))
+    myelcone=newPartFeature(part,"GDMLElCone:"+getName(solid))
     GDMLElCone(myelcone,dx,dy,zmax,zcut,lunit,material,colour)
     GDMLShared.trace("CreateElCone : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -291,7 +305,7 @@ def createEllipsoid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     zcut1 = GDMLShared.getVal(solid,'zcut1')
     zcut2 = GDMLShared.getVal(solid,'zcut2')
     lunit = getText(solid,'lunit',"mm")
-    myelli=part.newObject("Part::FeaturePython","GDMLEllipsoid:"+getName(solid))
+    myelli=newPartFeature(part,"GDMLEllipsoid:"+getName(solid))
     # cuts 0 for now
     GDMLEllipsoid(myelli,ax, by, cz,zcut1,zcut2,lunit,material,colour)
     GDMLShared.trace("CreateEllipsoid : ")
@@ -313,7 +327,7 @@ def createEltube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     dy = GDMLShared.getVal(solid,'dy')
     dz = GDMLShared.getVal(solid,'dz')
     lunit = getText(solid,'lunit',"mm")
-    myeltube=part.newObject("Part::FeaturePython","GDMLElTube:"+getName(solid))
+    myeltube=newPartFeature(part,"GDMLElTube:"+getName(solid))
     GDMLElTube(myeltube,dx, dy, dz,lunit,material,colour)
     GDMLShared.trace("CreateElTube : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -335,7 +349,7 @@ def createGenericPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mypolycone=part.newObject("Part::FeaturePython","GDMLGenericPolycone:"+getName(solid))
+    mypolycone=newPartFeature(part,"GDMLGenericPolycone:"+getName(solid))
     mypolycone.addExtension("App::GroupExtensionPython")
     GDMLGenericPolycone(mypolycone,startphi,deltaphi,aunit,lunit,material,colour)
     if FreeCAD.GuiUp :
@@ -373,7 +387,7 @@ def createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) 
     numsides = int(GDMLShared.getVal(solid,'numsides'))
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mypolyhedra=part.newObject("Part::FeaturePython","GDMLGenericPolyhedra:"+getName(solid))
+    mypolyhedra=newPartFeature(part,"GDMLGenericPolyhedra:"+getName(solid))
     mypolyhedra.addExtension("App::GroupExtensionPython")
     GDMLGenericPolyhedra(mypolyhedra,startphi,deltaphi,numsides,aunit,lunit,material,colour)
     if FreeCAD.GuiUp :
@@ -407,7 +421,7 @@ def createOrb(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(solid.attrib)
     r = GDMLShared.getVal(solid,'r')
     lunit = getText(solid,'lunit',"mm")
-    myorb=part.newObject("Part::FeaturePython","GDMLOrb:"+getName(solid))
+    myorb=newPartFeature(part,"GDMLOrb:"+getName(solid))
     GDMLOrb(myorb,r,lunit,material,colour)
     GDMLShared.trace("CreateOrb : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -432,7 +446,7 @@ def createPara(part,solid,material,colour,px,py,pz,rot,displayMode) :
     alpha = GDMLShared.getVal(solid,'alpha')
     theta = GDMLShared.getVal(solid,'theta')
     phi = GDMLShared.getVal(solid,'phi')
-    mypara=part.newObject("Part::FeaturePython","GDMLPara:"+getName(solid))
+    mypara=newPartFeature(part,"GDMLPara:"+getName(solid))
     GDMLPara(mypara,x,y,z,alpha,theta,phi,aunit,lunit,material,colour)
     GDMLShared.trace("CreatePara : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -456,7 +470,7 @@ def createHype(part,solid,material,colour,px,py,pz,rot,displayMode) :
     z = GDMLShared.getVal(solid,'z')
     inst = GDMLShared.getVal(solid,'inst')
     outst = GDMLShared.getVal(solid,'outst')
-    myhype=part.newObject("Part::FeaturePython","GDMLHype:"+getName(solid))
+    myhype=newPartFeature(part,"GDMLHype:"+getName(solid))
     GDMLHype(myhype,rmin,rmax,z,inst,outst,aunit,lunit,material,colour)
     GDMLShared.trace("CreateHype : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -477,7 +491,7 @@ def createParaboloid(part,solid,material,colour,px,py,pz,rot,displayMode) :
     rlo = GDMLShared.getVal(solid,'rlo')
     rhi = GDMLShared.getVal(solid,'rhi')
     dz = GDMLShared.getVal(solid,'dz')
-    myparaboloid=part.newObject("Part::FeaturePython","GDMLParaboloid:"+getName(solid))
+    myparaboloid=newPartFeature(part,"GDMLParaboloid:"+getName(solid))
     GDMLParaboloid(myparaboloid,rlo,rhi,dz,lunit,material,colour)
     GDMLShared.trace("CreateParaboloid : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -499,7 +513,7 @@ def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mypolycone=part.newObject("Part::FeaturePython","GDMLPolycone:"+getName(solid))
+    mypolycone=newPartFeature(part,"GDMLPolycone:"+getName(solid))
     mypolycone.addExtension("App::GroupExtensionPython")
     GDMLPolycone(mypolycone,startphi,deltaphi,aunit,lunit,material,colour)
     if FreeCAD.GuiUp :
@@ -514,7 +528,6 @@ def createPolycone(part,solid,material,colour,px,py,pz,rot,displayMode) :
         z = GDMLShared.getVal(zplane,'z')
         myzplane=FreeCAD.ActiveDocument.addObject('App::FeaturePython','zplane') 
         mypolycone.addObject(myzplane)
-        #myzplane=mypolycone.newObject('App::FeaturePython','zplane') 
         GDMLzplane(myzplane,rmin,rmax,z)
         if FreeCAD.GuiUp :
            ViewProvider(myzplane)
@@ -538,8 +551,7 @@ def createPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     numsides = int(GDMLShared.getVal(solid,'numsides'))
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mypolyhedra=part.newObject("Part::FeaturePython","GDMLPolyhedra:"+ \
-                getName(solid))
+    mypolyhedra=newPartFeature(part,"GDMLPolyhedra:"+getName(solid))
     mypolyhedra.addExtension("App::GroupExtensionPython")
     GDMLPolyhedra(mypolyhedra,startphi,deltaphi,numsides,aunit,lunit, \
                   material,colour)
@@ -583,7 +595,7 @@ def createSphere(part,solid,material,colour,px,py,pz,rot,displayMode) :
     lunit = getText(solid,'lunit',"mm")
     starttheta = GDMLShared.getVal(solid,'starttheta')
     deltatheta = GDMLShared.getVal(solid,'deltatheta')
-    mysphere=part.newObject("Part::FeaturePython","GDMLSphere:"+getName(solid))
+    mysphere=newPartFeature(part,"GDMLSphere:"+getName(solid))
     GDMLSphere(mysphere,rmin,rmax,startphi,deltaphi,starttheta, \
             deltatheta,aunit, lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -606,7 +618,7 @@ def createTetra(part,solid,material,colour,px,py,pz,rot,displayMode) :
     v3 = GDMLShared.getDefinedVector(solid,'vertex3')
     v4 = GDMLShared.getDefinedVector(solid,'vertex4')
     lunit = getText(solid,'lunit',"mm")
-    mytetra=part.newObject("Part::FeaturePython","GDMLTetra:"+getName(solid))
+    mytetra=newPartFeature(part,"GDMLTetra:"+getName(solid))
     GDMLTetra(mytetra,v1,v2,v3,v4,lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -630,7 +642,7 @@ def createTorus(part,solid,material,colour,px,py,pz,rot,displayMode) :
     deltaphi = GDMLShared.getVal(solid,'deltaphi')
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
-    mytorus=part.newObject("Part::FeaturePython","GDMLTorus:"+getName(solid))
+    mytorus=newPartFeature(part,"GDMLTorus:"+getName(solid))
     GDMLTorus(mytorus,rmin,rmax,rtor,startphi,deltaphi, \
               aunit, lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -660,7 +672,7 @@ def createTrap(part,solid,material,colour,px,py,pz,rot,displayMode) :
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     #print z
-    mytrap=part.newObject("Part::FeaturePython","GDMLTrap:"+getName(solid))
+    mytrap=newPartFeature(part,"GDMLTrap:"+getName(solid))
     GDMLTrap(mytrap,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha1,aunit,lunit, \
              material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -684,7 +696,7 @@ def createTrd(part,solid,material,colour,px,py,pz,rot,displayMode) :
     y2 = GDMLShared.getVal(solid,'y2')
     lunit = getText(solid,'lunit',"mm")
     #print z
-    mytrd=part.newObject("Part::FeaturePython","GDMLTrd:"+getName(solid))
+    mytrd=newPartFeature(part,"GDMLTrd:"+getName(solid))
     GDMLTrd(mytrd,z,x1,x2,y1,y2,lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -707,8 +719,7 @@ def createTwistedbox(part,solid,material,colour,px,py,pz,rot,displayMode) :
     # modifs lambda (otherwise each time we open the gdml file, 
     # the part name will have one more GDMLBox added
     # No - need to remove leading GDMLBox on export
-    mypart = part.newObject("Part::FeaturePython","GDMLTwistedbox:"+getName(solid))
-    #mycube=part.newObject("Part::FeaturePython",getName(solid))
+    mypart = newPartFeature(part,"GDMLTwistedbox:"+getName(solid))
     x = GDMLShared.getVal(solid,'x')
     y = GDMLShared.getVal(solid,'y')
     z = GDMLShared.getVal(solid,'z')
@@ -747,7 +758,7 @@ def createTwistedtrap(part,solid,material,colour,px,py,pz,rot,displayMode) :
     aunit = getText(solid,'aunit','rad')
     lunit = getText(solid,'lunit',"mm")
     #print z
-    mytrap=part.newObject("Part::FeaturePython","GDMLTwistedtrap:"+getName(solid))
+    mytrap=newPartFeature(part,"GDMLTwistedtrap:"+getName(solid))
     GDMLTwistedtrap(mytrap,PhiTwist,z,theta,phi,x1,x2,x3,x4,y1,y2,alpha,aunit,lunit, \
              material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -773,7 +784,7 @@ def createTwistedtrd(part,solid,material,colour,px,py,pz,rot,displayMode) :
     angle = GDMLShared.getVal(solid,'PhiTwist')
     aunit = getText(solid,'aunit','rad')
     #print z
-    mytrd=part.newObject("Part::FeaturePython","GDMLTwistedtrd:"+getName(solid))
+    mytrd=newPartFeature(part,"GDMLTwistedtrd:"+getName(solid))
     GDMLTwistedtrd(mytrd,angle,z,x1,x2,y1,y2,aunit,lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -796,7 +807,7 @@ def createTwistedtubs(part,solid,material,colour,px,py,pz,rot,displayMode) :
     twistedangle = GDMLShared.getVal(solid,'twistedangle')
     phi = GDMLShared.getVal(solid,'phi')
     aunit = getText(solid,'aunit','rad')
-    mypart=part.newObject("Part::FeaturePython","GDMLTwistedtubs:"+getName(solid))
+    mypart=newPartFeature(part,"GDMLTwistedtubs:"+getName(solid))
     GDMLTwistedtubs(mypart,endinnerrad,endouterrad,zlen,twistedangle,phi,aunit,lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px,py,pz)
@@ -814,7 +825,7 @@ def createXtru(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace("CreateXtru : ")
     #print(solid)
     #print(getName(solid))
-    myXtru=part.newObject("Part::FeaturePython","GDMLXtru-"+getName(solid))
+    myXtru=newPartFeature(part,"GDMLXtru-"+getName(solid))
     #myXtru.addExtension("App::GroupExtensionPython")
     lunit = getText(solid,'lunit',"mm")
     GDMLXtru(myXtru,lunit,material,colour)
@@ -864,7 +875,7 @@ def createTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(rmin)
     GDMLShared.trace(rmax)
     GDMLShared.trace(z)
-    mytube=part.newObject("Part::FeaturePython","GDMLTube:"+getName(solid))
+    mytube=newPartFeature(part,"GDMLTube:"+getName(solid))
     GDMLTube(mytube,rmin,rmax,z,startphi,deltaphi,aunit,lunit,material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     #base = FreeCAD.Vector(0,0,0)
@@ -904,7 +915,7 @@ def createCutTube(part,solid,material,colour,px,py,pz,rot,displayMode) :
     GDMLShared.trace(highX)
     GDMLShared.trace(highY)
     GDMLShared.trace(highZ)
-    mycuttube=part.newObject("Part::FeaturePython","GDMLcutTube:"+getName(solid))
+    mycuttube=newPartFeature(part,"GDMLcutTube:"+getName(solid))
     GDMLcutTube(mycuttube,rmin,rmax,z,startphi,deltaphi,aunit, \
                 lowX, lowY, lowZ, highX, highY, highZ, lunit, material,colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
@@ -982,8 +993,7 @@ def createTessellated(part,solid,material,colour,px,py,pz,rot,displayMode) :
               vertex.append(v4)
            faces.append([v1pos,v2pos,v3pos,v4pos])
     #print(vertNames)
-    myTess=part.newObject("Part::FeaturePython","GDMLTessellated:" \
-                          +getName(solid))
+    myTess=newPartFeature(part,"GDMLTessellated:"+getName(solid))
     tess = GDMLTessellated(myTess,vertex,faces,False,lunit,material,colour)
     if FreeCAD.GuiUp :
        ViewProvider(myTess.ViewObject)
@@ -1436,8 +1446,7 @@ def processIsotopes(isotopesGrp) :
         N = int(isotope.get('N'))
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
         name = isotope.get('name')
-        isObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
-        isObj.Label = name
+        isObj = newGroupPython(isotopesGrp,name)
         GDMLisotope(isObj,name,N,Z)
         atom = isotope.find('atom')
         if atom is not None :
@@ -1456,9 +1465,7 @@ def processElements(elementsGrp) :
     for element in materials.findall('element') :
         name = element.get('name')
         print('element : '+name)
-        elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython",  \
-                     name)
-        elementObj.Label = name
+        elementObj = newGroupPython(elementsGrp,name)
         Z = element.get('Z')
         if (Z is not None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
@@ -1490,16 +1497,14 @@ def processElements(elementsGrp) :
                #n = float(fraction.get('n'))
                n = GDMLShared.getVal(fraction,'n')
                print(f'n {n}')
-               #fractObj = elementObj.newObject("App::FeaturePython",ref)
-               fractObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
+               fractObj = newGroupPython(elementObj,ref)
                GDMLfraction(fractObj,ref,n)
                fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
         elif(len(element.findall('composite'))>0 ):
            for composite in element.findall('composite') :
                ref = composite.get('ref')
                n = int(composite.get('n'))
-               #fractObj = elementObj.newObject("App::FeaturePython",ref)
-               compositeObj = elementObj.newObject("App::DocumentObjectGroupPython",ref)
+               compositeObj = newGroupPython(elementObj,ref)
                GDMLcomposite(compositeObj,ref,n)
                compositeObj.Label = ref+' : ' + str(n) 
 
@@ -1514,9 +1519,7 @@ def processMaterials(materialGrp) :
            print("Missing Name")
         else :
            MaterialsList.append(name)
-           materialObj = materialGrp.newObject("App::DocumentObjectGroupPython", \
-                      name)
-           materialObj.Label = name
+           materialObj = newGroupPython(materialGrp,name)
            GDMLmaterial(materialObj,name)
            formula = material.get('formula')
            if formula is not None :
@@ -1567,7 +1570,7 @@ def processMaterials(materialGrp) :
                #print(n)
                ref = fraction.get('ref')
                #print('fraction : '+ref)
-               fractionObj = materialObj.newObject('App::DocumentObjectGroupPython', ref)
+               fractionObj = newGroupPython(materialObj, ref)
                #print('fractionObj Name : '+fractionObj.Name)
                GDMLfraction(fractionObj,ref,n)
                # problems with changing labels if more than one
@@ -1581,8 +1584,7 @@ def processMaterials(materialGrp) :
                #print('n = '+str(n))
                ref = composite.get('ref')
                #print('ref : '+ref)
-               compObj = materialObj.newObject("App::DocumentObjectGroupPython", \
-                                                 ref)
+               compObj = newGroupPython(materialObj,ref)
                GDMLcomposite(compObj,'comp',n,ref)
                # problems with changing labels if more than one
                #
@@ -1664,7 +1666,7 @@ def processGEANT4(doc,filename):
     materials = doc.getObject('Materials')
     if materials is None :
        materials = doc.addObject("App::DocumentObjectGroupPython","Materials")
-    geant4Grp = materials.newObject("App::DocumentObjectGroupPython","Geant4")
+    geant4Grp = newGroupPython(materials,"Geant4")
     processMaterialsG4(geant4Grp,root)
 
 def processMaterialsDocSet(doc, root) :
@@ -1693,11 +1695,12 @@ def processMaterialsG4(G4rp, root) :
     global materials
     materials = root.find('materials')
     if materials is not None :
-       isotopesGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Isotopes")
+       isotopesGrp = newGroupPython(G4rp,"G4Isotopes")
+
        processIsotopes(isotopesGrp)
-       elementsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Elements")
+       elementsGrp = newGroupPython(G4rp,"G4Elements")
        processElements(elementsGrp)
-       materialsGrp = G4rp.newObject("App::DocumentObjectGroupPython","G4Materials")
+       materialsGrp = newGroupPython(G4rp,"G4Materials")
        processMaterials(materialsGrp)
 
 def processDefines(root, doc) :

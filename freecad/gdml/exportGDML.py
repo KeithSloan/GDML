@@ -488,7 +488,6 @@ def processObjectShape(obj) :
 def processBoxObject(obj, addVolsFlag) :
     # Needs unique Name
     # This for non GDML Box
- 
     boxName =  obj.Name
 
     ET.SubElement(solids, 'box',{'name': boxName, \
