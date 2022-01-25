@@ -1003,6 +1003,7 @@ def parseMultiUnion(part,solid,material,colour,px,py,pz,rot,displayMode) :
     muName = solid.attrib.get('name')
     GDMLShared.trace('multi Union : '+muName)
     myMUobj = part.newObject('Part::MultiFuse',muName)
+    myMUobj.Label = nuName
     #for s in solid.findall('multiUnionNode') :
     objList = []
     for s in solid :
@@ -1436,6 +1437,7 @@ def processIsotopes(isotopesGrp) :
         Z = int(float(isotope.get('Z')))    # annotated.gdml file has Z=8.0 
         name = isotope.get('name')
         isObj = isotopesGrp.newObject("App::DocumentObjectGroupPython",name)
+        isObj.Label = name
         GDMLisotope(isObj,name,N,Z)
         atom = isotope.find('atom')
         if atom is not None :
@@ -1456,6 +1458,7 @@ def processElements(elementsGrp) :
         print('element : '+name)
         elementObj = elementsGrp.newObject("App::DocumentObjectGroupPython",  \
                      name)
+        elementObj.Label = name
         Z = element.get('Z')
         if (Z is not None ) :
            elementObj.addProperty("App::PropertyInteger","Z",name).Z=int(float(Z))
@@ -1506,13 +1509,14 @@ def processMaterials(materialGrp) :
 
     for material in materials.findall('material') :
         name = material.get('name')
-        #print(name)
+        print(name)
         if name is None :
            print("Missing Name")
         else :
            MaterialsList.append(name)
            materialObj = materialGrp.newObject("App::DocumentObjectGroupPython", \
                       name)
+           materialObj.Label = name
            GDMLmaterial(materialObj,name)
            formula = material.get('formula')
            if formula is not None :

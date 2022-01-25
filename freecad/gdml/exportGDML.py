@@ -1233,14 +1233,14 @@ def processMaterials() :
         Grp = FreeCAD.ActiveDocument.getObject(GName)
         if Grp is not None : 
            #print(Grp.TypeId+" : "+Grp.Name)
-           print(Grp.Name)
+           print(Grp.Label)
            if processGroup(Grp) == False :
               break
 
 def processFractionsComposites(obj, item) :
     # Fractions are used in Material and Elements
     if isinstance(obj.Proxy,GDMLfraction) :
-        #print("GDML fraction :" + obj.Name)
+        #print("GDML fraction :" + obj.Label)
         # need to strip number making it unique
         ET.SubElement(item,'fraction',{'n': str(obj.n), \
                      'ref': nameFromLabel(obj.Label)})
@@ -1300,7 +1300,7 @@ def createConstants(group) :
            #print("GDML constant")
            #print(dir(obj))
 
-           item = ET.SubElement(define,'constant',{'name': obj.Name, \
+           item = ET.SubElement(define,'constant',{'name': obj.Label, \
                                  'value': obj.value })
 
 def createVariables(group) :
@@ -1310,7 +1310,7 @@ def createVariables(group) :
            #print("GDML variable")
            #print(dir(obj))
 
-           item = ET.SubElement(define,'variable',{'name': obj.Name, \
+           item = ET.SubElement(define,'variable',{'name': obj.Label, \
                                  'value': obj.value })
 def createQuantities(group) :
     global define
@@ -1319,7 +1319,7 @@ def createQuantities(group) :
            #print("GDML quantity")
            #print(dir(obj))
 
-           item = ET.SubElement(define,'quantity',{'name': obj.Name, \
+           item = ET.SubElement(define,'quantity',{'name': obj.Label, \
                                  'type': obj.type, \
                                  'unit': obj.unit, \
                                  'value': obj.value })
@@ -1334,10 +1334,10 @@ def createIsotopes(group) :
            #print("GDML isotope")
            #item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
            #                                           'Z': str(obj.Z), \
-           #                                           'name' : obj.Name})
+           #                                           'name' : obj.Label})
            #ET.SubElement(item,'atom',{'unit': obj.unit, \
            #                           'value': str(obj.value)})
-           item = ET.SubElement(materials,'isotope',{'name' : obj.Name})
+           item = ET.SubElement(materials,'isotope',{'name' : obj.Label})
            processIsotope(obj,item)
 
 def processGroup(obj) :
@@ -1347,7 +1347,7 @@ def processGroup(obj) :
     #      if hasattr(obj,'Group') :
     #return
     if hasattr(obj,'Group') :
-       #print("   Object List : "+obj.Name)
+       #print("   Object List : "+obj.Label)
        #print(obj)
        while switch(obj.Name) :
              if case("Constants") : 
@@ -1556,9 +1556,9 @@ def getXmlVolume(volObj) :
     global structure
     if volObj is None :
        return None 
-    xmlvol = structure.find("volume[@name='%s']" % volObj.Name)
+    xmlvol = structure.find("volume[@name='%s']" % volObj.Label)
     if xmlvol is None :
-       print(volObj.Name+' Not Found') 
+       print(volObj.Label+' Not Found') 
     return xmlvol
 
 def getCount(obj) :
@@ -1573,7 +1573,7 @@ def getCount(obj) :
        return 1
 
 def getMaterial(obj) :
-    GDMLShared.trace('get Material : '+obj.Name)
+    GDMLShared.trace('get Material : '+obj.Label)
     if hasattr(obj,'material') :
        return obj.material
     if hasattr(obj,'Tool') :
@@ -1584,7 +1584,7 @@ def getMaterial(obj) :
        return None
 
 def printObjectInfo(xmlVol, volName, xmlParent, parentName) :
-    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
+    print("Process Object : "+obj.Label+' Type '+obj.TypeId)
     if xmlVol is not None :
        xmlstr = ET.tostring(xmlVol) 
     else :
@@ -1604,7 +1604,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
     #if obj.Label[:12] != 'NOT_Expanded' :
     #    printObjectInfo(xmlVol, volName, xmlParent, parentName)
     #print('structure : '+str(xmlstr)) 
-    GDMLShared.trace('Process Object : '+obj.Name)
+    GDMLShared.trace('Process Object : '+obj.Label)
     while switch(obj.TypeId) :
 
       if case("App::Part") :
@@ -1648,7 +1648,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
 
       if case("Part::Cut") :
          GDMLShared.trace("Cut - subtraction")
-         solidName = obj.Name
+         solidName = obj.Label
          subtract = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(subtract,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(subtract,'second',{'ref': nameOfGDMLobject(obj.Tool)})
@@ -1670,7 +1670,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
          #print('OutList')
          #for o in obj.OutList :
          #    print(o.Label)
-         solidName = obj.Name
+         solidName = obj.Label
          union = ET.SubElement(solids,'union',{'name': solidName })
          ET.SubElement(union,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(union,'second',{'ref': nameOfGDMLobject(obj.Tool)})
@@ -1683,7 +1683,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
 
       if case("Part::Common") :
          GDMLShared.trace("Common - Intersection")
-         solidName = obj.Name
+         solidName = obj.Label
          intersect = ET.SubElement(solids,'subtraction',{'name': solidName })
          ET.SubElement(intersect,'first', {'ref': nameOfGDMLobject(obj.Base)})
          ET.SubElement(intersect,'second',{'ref': nameOfGDMLobject(obj.Tool)})
@@ -1697,7 +1697,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
          GDMLShared.trace("   Multifuse") 
          print("   Multifuse") 
          # test and fix
-         solidName = obj.Name
+         solidName = obj.Label
          #boolCount = getCount(obj.Base)
          #GDMLShared.trace('Count : '+str(boolCount))
          #addVolRef(xmlVol, volName, solidName, obj.Base)
@@ -1730,7 +1730,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
       if case("Mesh::Feature") :
          print("   Mesh Feature") 
          # test and Fix
-         #processMesh(obj, obj.Mesh, obj.Name)
+         #processMesh(obj, obj.Mesh, obj.Label)
          #addVolRef(xmlVol, volName, solidName, obj)
          #print('Need to add code for Mesh Material and colour')
          #testAddPhysVol(obj, xmlParent, parentName):
