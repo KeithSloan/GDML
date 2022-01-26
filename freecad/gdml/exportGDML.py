@@ -63,7 +63,7 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDML2dVertex, GDMLSection, \
                         GDMLmaterial, GDMLfraction, \
                         GDMLcomposite, GDMLisotope, \
-                        GDMLelement, GDMLconstant, GDMLvariable
+                        GDMLelement, GDMLconstant, GDMLvariable, GDMLquantity
 
 from . import GDMLShared
 
@@ -1323,9 +1323,6 @@ def createQuantities(group) :
                                  'unit': obj.unit, \
                                  'value': obj.value })
 
-def createVariables(group) :
-    global define
-
 def createIsotopes(group) :
     global materials
     for obj in group :
@@ -1707,7 +1704,7 @@ def processObject(obj, xmlVol, volName, xmlParent, parentName) :
              #processSolid(sub,False)
              processGDMLSolid(sub)
          print('Output Solids Complete')
-         multUnion = ET.SubElement(solids,'multiUnion',{'name': SolidName })
+         multUnion = ET.SubElement(solids,'multiUnion',{'name': solidName })
          num = 1
 
          for sub in obj.OutList:
