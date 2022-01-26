@@ -1137,10 +1137,10 @@ class TessellateFeature :
             if hasattr(obj,'Shape') :
                shape = obj.Shape.copy(False)
                try :        # Only supported if smesh built with netgen 
-                   mesh = MeshPart.meshFromShape(Shape=shape,Fineness=2,\
-                          SecondOrder=0,Optimize=1,AllowQuad=0)
+                  mesh = MeshPart.meshFromShape(Shape=shape,Fineness=2,\
+                         SecondOrder=0,Optimize=1,AllowQuad=0)
                except :
-                   mesh = MeshPart.meshFromShape(Shape=shape)
+                  mesh = MeshPart.meshFromShape(Shape=shape,MaxArea=shape.Area)
                print('Points : '+str(mesh.CountPoints))
                #print(mesh.Points)
                print('Facets : '+str(mesh.CountFacets))
