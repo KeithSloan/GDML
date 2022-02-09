@@ -180,7 +180,7 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.initUI()
 
     def initUI(self):
-        from .GDMLMaterials import GDMLMaterial, getGroupedMaterials
+        from .GDMLMaterials import GDMLMaterial, newGetGroupedMaterials
 
         print('initUI')
         self.setGeometry(150, 150, 250, 250)
@@ -188,7 +188,7 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.setMouseTracking(True)
         self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set Material'))
         self.buttonSet.clicked.connect(self.onSet)
-        self.groupedMaterials = getGroupedMaterials()  # this build, then returns all materials
+        self.groupedMaterials = newGetGroupedMaterials()  # this build, then returns all materials
         self.groupsCombo = QtGui.QComboBox()
         groups = [group for group in self.groupedMaterials]
         self.groupsCombo.addItems(groups)

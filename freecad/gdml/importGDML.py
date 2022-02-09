@@ -1563,7 +1563,7 @@ def processElements(elementsGrp):
     from .GDMLObjects import GDMLelement, GDMLfraction, GDMLcomposite
     for element in materials.findall('element'):
         name = element.get('name')
-        print('element : '+name)
+        #print('element : '+name)
         elementObj = newGroupPython(elementsGrp, name)
         Z = element.get('Z')
         if (Z is not None):
@@ -1610,18 +1610,31 @@ def processElements(elementsGrp):
                 compositeObj.Label = ref+' : ' + str(n)
 
 
-def processMaterials(materialGrp):
+def processMaterials(materialGrp, subGrp=None):
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
                             MaterialsList
 
+    print('Process Materials : '+materialGrp.Name)
     for material in materials.findall('material'):
         name = material.get('name')
-        print(name)
+        #print(name)
         if name is None:
             print("Missing Name")
         else:
             MaterialsList.append(name)
-            materialObj = newGroupPython(materialGrp, name)
+            mGrp = materialGrp
+            aux = material.find('auxiliary')
+            #print(f'Aux {aux}')
+            if aux is not None :
+                auxType = aux.get('auxtype')
+                #print(f'Aux Type {auxType}')
+                if auxType == 'Material-type':
+                    matType = aux.get('auxvalue')
+                    #print(matType)
+                    #print(materialGrp.Group)
+                    mGrp = materialGrp.Group[subGrp.index(matType)]
+                
+            materialObj = newGroupPython(mGrp, name)
             GDMLmaterial(materialObj, name)
             formula = material.get('formula')
             if formula is not None:
@@ -1813,20 +1826,20 @@ def processMaterialsDocSet(doc,  root):
             materialsGrp = doc.addObject("App::DocumentObjectGroupPython",
                                          "Materials")
         processMaterials(materialsGrp)
-
-
+    
 def processMaterialsG4(G4rp, root):
     global materials
+    matTypes = ['NIST','Element','HEP','Space','BioChemical']
     materials = root.find('materials')
     if materials is not None:
         isotopesGrp = newGroupPython(G4rp, "G4Isotopes")
-
         processIsotopes(isotopesGrp)
         elementsGrp = newGroupPython(G4rp, "G4Elements")
         processElements(elementsGrp)
         materialsGrp = newGroupPython(G4rp, "G4Materials")
-        processMaterials(materialsGrp)
-
+        for t in matTypes:
+            newGroupPython(materialsGrp,t)  
+        processMaterials(materialsGrp,matTypes)
 
 def processDefines(root, doc):
     GDMLShared.trace("Call set Define")
@@ -1879,7 +1892,7 @@ def processGDML(doc, filename, prompt, initFlg):
     pathName = os.path.dirname(os.path.normpath(filename))
     FilesEntity = False
 
-    global setup, define, materials, solids, structure, extension
+    global setup, define, materials, solids, structure, extension, groupMaterials
 
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
@@ -1898,8 +1911,11 @@ def processGDML(doc, filename, prompt, initFlg):
         processDefines(root, doc)
         GDMLShared.trace(setup.attrib)
 
+    from .GDMLMaterials import getGroupedMaterials
+    from .GDMLMaterials import newGetGroupedMaterials
     processMaterialsDocSet(doc, root)
     processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+    groupMaterials = newGetGroupedMaterials()
 
     solids    = root.find('solids')
     structure = root.find('structure')

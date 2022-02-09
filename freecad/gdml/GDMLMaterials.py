@@ -82,6 +82,32 @@ def getMaterialsList():
 
     return matList
 
+def newGetGroupedMaterials():
+    print('New getGroupedMaterials')
+    from .GDMLObjects import GroupedMaterials
+    doc = FreeCAD.activeDocument()
+    docG4Materials = doc.G4Materials
+    for g in docG4Materials.Group:
+        #print(f'g : {g.Name}')
+        for s in g.Group:
+            #print(f's : {s.Name}')
+            if g.Name in GroupedMaterials:
+               GroupedMaterials[g.Name].append(s.Name)
+            else:
+               GroupedMaterials[g.Name] = [s.Name]
+    matList = []
+    docMaterials = doc.Materials
+    if docMaterials is not None:
+        for m in docMaterials.OutList:
+            if m.Label != "Geant4":
+                if m.Label not in matList:
+                    matList.append(m.Label)
+
+    if len(matList) > 0:
+        GroupedMaterials['Normal'] = matList
+
+    return GroupedMaterials
+
 
 def getGroupedMaterials():
     print('getGroupedMaterials')
