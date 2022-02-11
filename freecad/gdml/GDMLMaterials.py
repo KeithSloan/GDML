@@ -126,7 +126,6 @@ def newGetGroupedMaterials():
 
     return GroupedMaterials
 
-
 def getGroupedMaterials():
     print('getGroupedMaterials')
     from .GDMLObjects import GroupedMaterials

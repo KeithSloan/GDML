@@ -181,7 +181,6 @@ class GDMLSetMaterial(QtGui.QDialog):
 
     def initUI(self):
         from .GDMLMaterials import GDMLMaterial, newGetGroupedMaterials
-
         print('initUI')
         self.setGeometry(150, 150, 250, 250)
         self.setWindowTitle("Set GDML Material")
