@@ -835,41 +835,50 @@ class GDMLEllipsoid(GDMLsolid):
     def createGeometry(self, fp):
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
-        sphere = Part.makeSphere(100)
+        sphere = Part.makeSphere(100)  # 100= sphere radius = 1/2 diameter
         ax = fp.ax * mul
         by = fp.by * mul
         cz = fp.cz * mul
         mat = FreeCAD.Matrix()
         mat.unity()
-        # Semi axis values so need to double
-        mat.A11 = ax / 50
-        mat.A22 = by / 50
-        mat.A33 = cz / 50
+
+        mat.A11 = ax / 100
+        mat.A22 = by / 100
+        mat.A33 = cz / 100
         mat.A44 = 1
-        zcut1 = abs(fp.zcut1*mul)
-        zcut2 = abs(fp.zcut2*mul)
+
+        if fp.zcut1 is not None:
+            zcut1 = fp.zcut1*mul
+        else:
+            zcut1 = -2*cz
+
+        if fp.zcut2 is not None:
+            zcut2 = fp.zcut2*mul
+        else:
+            zcut2 = 2*cz
+
         GDMLShared.trace("zcut2 : " + str(zcut2))
         t1ellipsoid = sphere.transformGeometry(mat)
-        if zcut2 is not None and zcut2 > 0 and zcut2 < cz:   # Remove from upper z
-            box1 = Part.makeBox(2*ax, 2*by, zcut2)
+        if zcut2 > -cz and zcut2 < cz:   # Remove from upper z
+            box1 = Part.makeBox(2*ax, 2*by, 2*cz)
             pl = FreeCAD.Placement()
             # Only need to move to semi axis
-            pl.move(FreeCAD.Vector(-ax, -by, cz-zcut2))
+            pl.move(FreeCAD.Vector(-ax, -by, zcut2))
             box1.Placement = pl
             t2ellipsoid = t1ellipsoid.cut(box1)
         else:
             t2ellipsoid = t1ellipsoid
-        if zcut1 is not None and zcut1 > 0 and zcut1 < cz:
-            # Remove from lower z, seems to be a negative number
-            box2 = Part.makeBox(2*ax, 2*by, zcut1)
+        if zcut1 < zcut2 and zcut1 > -cz and zcut1 < cz:
+            box2 = Part.makeBox(2*ax, 2*by, 2*cz)
             pl = FreeCAD.Placement()
-            pl.move(FreeCAD.Vector(-ax, -by, -cz))
+            # cut with the upper edge of the box
+            pl.move(FreeCAD.Vector(-ax, -by, -2*cz+zcut1))
             box2.Placement = pl
             shape = t2ellipsoid.cut(box2)
         else:
             shape = t2ellipsoid
 
-        base = FreeCAD.Vector(0, 0, cz/4)
+        base = FreeCAD.Vector(0, 0, 0)
         fp.Shape = translate(shape, base)
         fp.Placement = currPlacement
 

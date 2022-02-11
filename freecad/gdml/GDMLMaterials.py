@@ -82,6 +82,7 @@ def getMaterialsList():
 
     return matList
 
+
 def refreshG4Materials(doc):
     from .importGDML import joinDir, setupEtree, processMaterialsG4, newGroupPython, processNewG4
     print('Get latest G4 Materials')
@@ -96,6 +97,7 @@ def refreshG4Materials(doc):
     doc.recompute()
     processNewG4(G4matGrp, mats_xml)
     doc.recompute()
+
 
 def newGetGroupedMaterials():
     print('New getGroupedMaterials')
