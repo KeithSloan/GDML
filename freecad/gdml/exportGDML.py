@@ -254,7 +254,7 @@ def createLVandPV(obj, name, solidName):
        ROTcount += 1
        ET.SubElement(phys, 'rotationref', {'name': rotName})
        ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg', \
-                  'x': str(-a2), 'y': str(-a1), 'z': str(-a0)})
+                  'x': str(-a0), 'y': str(-a1), 'z': str(-a2)})
 
 def createAdjustedLVandPV(obj, name, solidName, delta):
     # Allow for difference in placement between FreeCAD and GDML
