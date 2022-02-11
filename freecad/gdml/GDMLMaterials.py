@@ -82,19 +82,37 @@ def getMaterialsList():
 
     return matList
 
+def refreshG4Materials(doc):
+    from .importGDML import joinDir, setupEtree, processMaterialsG4, newGroupPython, processNewG4
+    print('Get latest G4 Materials')
+    etree, root = setupEtree(joinDir('Resources/Geant4Materials.xml'))
+    mats_xml = root.find('materials')
+    for m in doc.G4Materials.Group:
+        for n in m.Group:
+            doc.removeObject(n.Name)
+        doc.removeObject(m.Name)
+    doc.removeObject(doc.G4Materials.Name)
+    G4matGrp = newGroupPython(doc.Geant4, 'G4Materials')
+    doc.recompute()
+    processNewG4(G4matGrp, mats_xml)
+    doc.recompute()
+
 def newGetGroupedMaterials():
     print('New getGroupedMaterials')
     from .GDMLObjects import GroupedMaterials
     doc = FreeCAD.activeDocument()
     docG4Materials = doc.G4Materials
+    if not hasattr(docG4Materials, 'version'):
+        refreshG4Materials(doc)
+    docG4Materials = doc.G4Materials
     for g in docG4Materials.Group:
-        #print(f'g : {g.Name}')
+        # print(f'g : {g.Name}')
         for s in g.Group:
-            #print(f's : {s.Name}')
+            # print(f's : {s.Name}')
             if g.Name in GroupedMaterials:
-               GroupedMaterials[g.Name].append(s.Name)
+                GroupedMaterials[g.Name].append(s.Name)
             else:
-               GroupedMaterials[g.Name] = [s.Name]
+                GroupedMaterials[g.Name] = [s.Name]
     matList = []
     docMaterials = doc.Materials
     if docMaterials is not None:
