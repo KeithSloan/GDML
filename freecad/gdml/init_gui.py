@@ -34,6 +34,7 @@
 #from FreeCAD import *
 import FreeCAD
 import PartGui
+import SketcherGui
 import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
@@ -82,22 +83,25 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'TorusCommand','TrapCommand','TubeCommand', \
               'BooleanCutCommand','BooleanIntersectionCommand', \
               'BooleanUnionCommand', \
-              'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'TessellateCommand','TessellateGmshCommand', \
               'DecimateCommand', \
               'Mesh_FromPartShape','Mesh_Evaluation', \
-              'Mesh2TessCommand','Tess2MeshCommand', 'TetrahedronCommand']
+              'Mesh2TessCommand','Tess2MeshCommand', 'TetrahedronCommand', \
+              'AddCompound']
 
         toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
               'ExpandMaxCommand', 'SetMaterialCommand', \
-              'BoxCommand','ConeCommand', \
+              'Separator','Std_Part','BoxCommand','ConeCommand', \
               'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
-              'TorusCommand','TrapCommand','TubeCommand',
-              'BooleanCutCommand','BooleanIntersectionCommand', \
-              'BooleanUnionCommand', \
-              'AddCompound','TessellateCommand','TessellateGmshCommand', \
+              'TorusCommand','TrapCommand','TubeCommand', \
+              'Sketcher_NewSketch','Part_Extrude', \
+              'Separator', 'BooleanCutCommand','BooleanIntersectionCommand', \
+              'BooleanUnionCommand','Separator', \
+              'TessellateCommand','TessellateGmshCommand', \
               'DecimateCommand', \
               'Mesh_FromPartShape','Mesh_Evaluation', \
-              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand']
+              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand', \
+              'AddCompound']
 
         #parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
         #meshtoolbarcommands = ['Mesh_FromPartShape','Mesh_Evaluation']
