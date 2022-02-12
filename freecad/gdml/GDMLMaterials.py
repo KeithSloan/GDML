@@ -106,13 +106,13 @@ def newGetGroupedMaterials():
         refreshG4Materials(doc)
     docG4Materials = doc.G4Materials
     for g in docG4Materials.Group:
-        # print(f'g : {g.Name}')
+        # print(f'g : {g.Label}')
         for s in g.Group:
-            # print(f's : {s.Name}')
+            # print(f's : {s.Label}')
             if g.Name in GroupedMaterials:
-                GroupedMaterials[g.Name].append(s.Name)
+                GroupedMaterials[g.Label].append(s.Label)
             else:
-                GroupedMaterials[g.Name] = [s.Name]
+                GroupedMaterials[g.Label] = [s.Label]
     matList = []
     docMaterials = doc.Materials
     if docMaterials is not None:
