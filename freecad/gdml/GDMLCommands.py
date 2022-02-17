@@ -196,7 +196,9 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.materialComboBox.addItems(self.groupedMaterials[groups[0]])
         self.matList = []
         for group in self.groupedMaterials:
+            print(group)
             self.matList += self.groupedMaterials[group]
+        print(len(self.matList))
         self.completer = QtGui.QCompleter(self.matList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.materialComboBox.setCompleter(self.completer)
