@@ -81,6 +81,7 @@ class GDML_Workbench ( FreeCADGui.Workbench ):
               'BoxCommand','ConeCommand','ElTubeCommand', \
               'EllipsoidCommand','SphereCommand', \
               'TorusCommand','TrapCommand','TubeCommand', \
+              'Sketcher_NewSketch','Part_Extrude', \
               'BooleanCutCommand','BooleanIntersectionCommand', \
               'BooleanUnionCommand', \
               'TessellateCommand','TessellateGmshCommand', \
