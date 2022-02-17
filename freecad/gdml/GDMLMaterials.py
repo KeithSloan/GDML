@@ -101,31 +101,32 @@ def newGetGroupedMaterials():
     from .importGDML import joinDir, processGEANT4
     print('New getGroupedMaterials')
     from .GDMLObjects import GroupedMaterials
-    doc = FreeCAD.activeDocument()
-    if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):
-        processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
-    docG4Materials = doc.G4Materials
-    if not hasattr(docG4Materials, 'version'):
-        refreshG4Materials(doc)
-    docG4Materials = doc.G4Materials
-    for g in docG4Materials.Group:
-        # print(f'g : {g.Label}')
-        for s in g.Group:
-            # print(f's : {s.Label}')
-            if g.Name in GroupedMaterials:
-                GroupedMaterials[g.Label].append(s.Label)
-            else:
-                GroupedMaterials[g.Label] = [s.Label]
-    matList = []
-    docMaterials = doc.Materials
-    if docMaterials is not None:
-        for m in docMaterials.OutList:
-            if m.Label != "Geant4":
-                if m.Label not in matList:
-                    matList.append(m.Label)
+    if len(GroupedMaterials) == 0:
+        doc = FreeCAD.activeDocument()
+        if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):
+            processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+            docG4Materials = doc.G4Materials
+            if not hasattr(docG4Materials, 'version'):
+                refreshG4Materials(doc)
+        docG4Materials = doc.G4Materials
+        for g in docG4Materials.Group:
+            # print(f'g : {g.Label}')
+            for s in g.Group:
+                # print(f's : {s.Label}')
+                if g.Name in GroupedMaterials:
+                    GroupedMaterials[g.Label].append(s.Label)
+                else:
+                    GroupedMaterials[g.Label] = [s.Label]
+        matList = []
+        docMaterials = doc.Materials
+        if docMaterials is not None:
+            for m in docMaterials.OutList:
+                if m.Label != "Geant4":
+                    if m.Label not in matList:
+                        matList.append(m.Label)
 
-    if len(matList) > 0:
-        GroupedMaterials['Normal'] = matList
+        if len(matList) > 0:
+            GroupedMaterials['Normal'] = matList
 
     return GroupedMaterials
 
