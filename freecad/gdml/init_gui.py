@@ -34,6 +34,7 @@
 #from FreeCAD import *
 import FreeCAD
 import PartGui
+import SketcherGui
 import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
@@ -78,21 +79,34 @@ class GDML_Workbench (FreeCADGui.Workbench):
     def Initialize(self):
         def QT_TRANSLATE_NOOP(scope, text):
             return text
+        
+        #import GDMLCommands, GDMLResources
+        commands=['CycleCommand','ColourMapCommand','ExpandCommand', \
+              'ExpandMaxCommand','SetMaterialCommand', \
+              'BoxCommand','ConeCommand','ElTubeCommand', \
+              'EllipsoidCommand','SphereCommand', \
+              'TorusCommand','TrapCommand','TubeCommand', \
+              'BooleanCutCommand','BooleanIntersectionCommand', \
+              'BooleanUnionCommand', \
+              'TessellateCommand','TessellateGmshCommand', \
+              'DecimateCommand', \
+              'Mesh_FromPartShape','Mesh_Evaluation', \
+              'Mesh2TessCommand','Tess2MeshCommand', 'TetrahedronCommand', \
+              'AddCompound']
 
-        # import GDMLCommands, GDMLResources
-        commands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
-                    'ExpandMaxCommand', 'SetMaterialCommand',
-                    'BoxCommand', 'ConeCommand', 'ElTubeCommand',
-                    'EllipsoidCommand', 'SphereCommand',
-                    'TorusCommand', 'TrapCommand', 'TubeCommand',
-                    'BooleanCutCommand', 'BooleanIntersectionCommand',
-                    'BooleanUnionCommand',
-                    'AddCompound', 'TessellateCommand',
-                    'TessellateGmshCommand',
-                    'DecimateCommand',
-                    'Mesh_FromPartShape', 'Mesh_Evaluation',
-                    'Mesh2TessCommand', 'Tess2MeshCommand',
-                    'TetrahedronCommand']
+        toolbarcommands=['CycleCommand','ColourMapCommand','ExpandCommand',
+              'ExpandMaxCommand', 'SetMaterialCommand', \
+              'Separator','Std_Part','BoxCommand','ConeCommand', \
+              'ElTubeCommand', 'EllipsoidCommand','SphereCommand', \
+              'TorusCommand','TrapCommand','TubeCommand', \
+              'Sketcher_NewSketch','Part_Extrude', \
+              'Separator', 'BooleanCutCommand','BooleanIntersectionCommand', \
+              'BooleanUnionCommand','Separator', \
+              'TessellateCommand','TessellateGmshCommand', \
+              'DecimateCommand', \
+              'Mesh_FromPartShape','Mesh_Evaluation', \
+              'Mesh2TessCommand','Tess2MeshCommand','TetrahedronCommand', \
+              'AddCompound']
 
         toolbarcommands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
                            'ExpandMaxCommand', 'SetMaterialCommand',

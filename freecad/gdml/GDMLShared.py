@@ -159,7 +159,7 @@ def processVariables(doc):
         except:
             globals()[name] = value
             # print('Value String : '+value)
-            variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython",
+        variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython",
                                                  name)
         GDMLvariable(variableObj, name, value)
     # print("Globals")
