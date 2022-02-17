@@ -223,6 +223,7 @@ will create
 * To read more about the general usage of the GDML workbench checkout the [GDML Workbench wiki](https://github.com/KeithSloan/GDML/wiki)
 * Converting STEP files to GDML [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
 * Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design](https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects)
+* Creating a GDML object from an [Extruded sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
 
 
 <details>
