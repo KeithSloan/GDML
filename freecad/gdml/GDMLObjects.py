@@ -562,7 +562,7 @@ class GDMLBox(GDMLsolid):
                     if self.colour is None:
                         fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
-        if prop in ['x', 'y', 'z', 'lunit']:
+        if prop in ['x', 'y', 'z', 'lunit', 'scale']:
             self.createGeometry(fp)
 
     # execute(self, fp): in GDMLsolid
@@ -583,6 +583,11 @@ class GDMLBox(GDMLsolid):
             box = Part.makeBox(x, y, z)
             base = FreeCAD.Vector(-x/2, -y/2, -z/2)
             fp.Shape = translate(box, base)
+            if hasattr(fp,'scale'):
+               print('Rescale')
+               mat = FreeCAD.Matrix()
+               mat.scale(fp.scale)
+               fp.Shape = fp.Shape.transformGeometry(mat)
             fp.Placement = currPlacement
 
     def OnDocumentRestored(self, obj):
@@ -733,7 +738,7 @@ class GDMLElCone(GDMLsolid):
                     if self.colour is None:
                         fp.ViewObject.ShapeColor = colourMaterial(fp.material)
 
-        if prop in ['dx', 'dy', 'zmax', 'zcut', 'lunit']:
+        if prop in ['dx', 'dy', 'zmax', 'zcut', 'lunit', 'scale']:
             self.createGeometry(fp)
 
     # def execute(self, fp): in GDMLsolid
@@ -784,6 +789,12 @@ class GDMLElCone(GDMLsolid):
             fp.Shape = cone2.cut(box)
         else:
             fp.Shape = cone2
+        if hasattr(fp,'scale'):
+           print('Update Scale')
+           mat = FreeCAD.Matrix()
+           mat.scale(fp.scale)
+           fp.Shape = fp.Shape.transformGeometry(mat)
+
         fp.Placement = currPlacement
 
 
