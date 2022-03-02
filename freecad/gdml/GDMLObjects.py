@@ -64,7 +64,8 @@ def addMaterialsFromGroup(doc, MatList, grpName):
     if mmats is not None:
         if hasattr(mmats, 'Group'):
             for i in mmats.Group:
-                MatList.append(i.Name)
+                if i.Label != 'Geant4':
+                   MatList.append(i.Label)
 
 
 def rebuildMaterialsList():
@@ -72,7 +73,12 @@ def rebuildMaterialsList():
     print('Restore MaterialsList from Materials Lists')
     doc = FreeCAD.ActiveDocument
     addMaterialsFromGroup(doc, MaterialsList, "Materials")
-    addMaterialsFromGroup(doc, MaterialsList, "G4Materials")
+    #print(MaterialsList)
+    G4Materials = doc.getObject('G4Materials')
+    if G4Materials is not None :
+       for g in G4Materials.Group:
+           #print(g.Label)
+           addMaterialsFromGroup(doc, MaterialsList, g.Label)
     # print('MaterialsList')
     # print(MaterialsList)
 
@@ -87,9 +93,11 @@ def checkMaterial(material):
 
 
 def setMaterial(obj, m):
-    # print('setMaterial')
+    print('setMaterial')
     if MaterialsList is not None:
         if len(MaterialsList) > 0:
+            print('MaterialsList Ok')
+            #print(MaterialsList)
             obj.material = MaterialsList
             obj.material = 0
             if not (m == 0 or m is None):
@@ -358,7 +366,7 @@ class GDMLsolid:
                     if (ln - r) >= 2:
                         # print('Tool : '+obj.Label)
                         return   # Let Placement default to 0
-        obj.setEditorMode('Placement', 2)
+        #obj.setEditorMode('Placement', 2)
 
     def getMaterial(self):
         return obj.material
