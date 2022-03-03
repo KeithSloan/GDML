@@ -3134,7 +3134,8 @@ class GDMLGmshTessellated(GDMLsolid):
         self.colour = colour
         obj.Proxy = self
 
-    def updateParams(self, vertex, facets):
+    def updateParams(self, vertex, facets, flag):
+
         self.Vertex = vertex
         self.Facets = facets
         self.facets = len(facets)
