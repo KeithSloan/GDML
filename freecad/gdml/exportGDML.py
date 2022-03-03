@@ -1085,10 +1085,10 @@ def processGDMLTessellatedObject(obj):
     for f in obj.Shape.Faces:
         # print(f'Normal at : {n} dot {dot} {clockWise}')
         vertexes = f.OuterWire.OrderedVertexes
+        i0 = vertexHashcodeDict[vertexes[0].hashCode()]
+        i1 = vertexHashcodeDict[vertexes[1].hashCode()]
+        i2 = vertexHashcodeDict[vertexes[2].hashCode()]
         if len(f.Edges) == 3:
-            i0 = vertexHashcodeDict[vertexes[0].hashCode()]
-            i1 = vertexHashcodeDict[vertexes[1].hashCode()]
-            i2 = vertexHashcodeDict[vertexes[2].hashCode()]
             ET.SubElement(tess, 'triangular', {
                'vertex1': tessVname+str(i0),
                'vertex2': tessVname+str(i1),
