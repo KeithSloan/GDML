@@ -361,7 +361,13 @@ class GDMLsolid:
         obj.setEditorMode('Placement', 2)
 
     def getMaterial(self):
-        return obj.material
+        return self.obj.material
+
+    def scale(self, fp):
+        print('Rescale')
+        mat = FreeCAD.Matrix()
+        mat.scale(fp.scale)
+        fp.Shape = fp.Shape.transformGeometry(mat)
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -369,7 +375,7 @@ class GDMLsolid:
     def __getstate__(self):
         '''When saving the document this object gets stored using Python's json
         module.
-        Since we have some un-serializable parts here -- the Coin stuff -- 
+        Since we have some un-serializable parts here -- the Coin stuff --
         we must define this method\
         to return a tuple of all serializable objects or None.'''
         if hasattr(self, 'Type'):
@@ -476,6 +482,10 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
                     'dz', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
 # http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
@@ -565,6 +575,10 @@ class GDMLBox(GDMLsolid):
         if prop in ['x', 'y', 'z', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -583,6 +597,11 @@ class GDMLBox(GDMLsolid):
             box = Part.makeBox(x, y, z)
             base = FreeCAD.Vector(-x/2, -y/2, -z/2)
             fp.Shape = translate(box, base)
+            if hasattr(fp, 'scale'):
+                print('Rescale')
+                mat = FreeCAD.Matrix()
+                mat.scale(fp.scale)
+                fp.Shape = fp.Shape.transformGeometry(mat)
             fp.Placement = currPlacement
 
     def OnDocumentRestored(self, obj):
@@ -608,7 +627,7 @@ class GDMLCone(GDMLsolid):
         obj.addProperty("App::PropertyFloat",
                         "startphi", "GDMLCone", "Start Angle").startphi = startphi
         obj.addProperty("App::PropertyFloat",
-                        "deltaphi","GDMLCone", "Delta Angle").deltaphi = deltaphi
+                        "deltaphi", "GDMLCone", "Delta Angle").deltaphi = deltaphi
         obj.addProperty("App::PropertyEnumeration",
                         "aunit", "GDMLCone", "aunit")
         obj.aunit = ["rad", "deg"]
@@ -643,6 +662,10 @@ class GDMLCone(GDMLsolid):
                     'z', 'startphi', 'deltaphi',
                     'aunit', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -736,6 +759,10 @@ class GDMLElCone(GDMLsolid):
         if prop in ['dx', 'dy', 'zmax', 'zcut', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -784,6 +811,12 @@ class GDMLElCone(GDMLsolid):
             fp.Shape = cone2.cut(box)
         else:
             fp.Shape = cone2
+        if hasattr(fp, 'scale'):
+            print('Update Scale')
+            mat = FreeCAD.Matrix()
+            mat.scale(fp.scale)
+            fp.Shape = fp.Shape.transformGeometry(mat)
+
         fp.Placement = currPlacement
 
 
@@ -829,6 +862,10 @@ class GDMLEllipsoid(GDMLsolid):
 
         if prop in ['ax', 'by', 'cz', 'zcut1', 'zcut2', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -922,7 +959,9 @@ class GDMLElTube(GDMLsolid):
         if prop in ['dx', 'dy', 'dz', 'lunit']:
             self.createGeometry(fp)
 
-    # def execute(self, fp): in GDMLsolid
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     def createGeometry(self, fp):
         currPlacement = fp.Placement
@@ -975,6 +1014,10 @@ class GDMLOrb(GDMLsolid):
         if prop in ['r', 'lunit']:
             # print(dir(fp))
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -1036,12 +1079,13 @@ class GDMLPara(GDMLsolid):
         if prop in ['x', 'y', 'z', 'alpha', 'theta', 'phi', 'aunit', 'lunit']:
             self.createGeometry(fp)
 
-
-    # def execute(self, fp): in GDMLsolid
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     def createGeometry(self, fp):
         currPlacement = fp.Placement
-        #GDMLShared.setTrace(True)
+        # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Polyparallepiped")
         mul = GDMLShared.getMult(fp)
         x = mul * fp.x
@@ -1156,6 +1200,10 @@ class GDMLHype(GDMLsolid):
         if prop in ['rmin', 'rmax', 'z', 'inst', 'outst', 'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -1268,6 +1316,10 @@ class GDMLParaboloid(GDMLsolid):
         if prop in ['rlo', 'rhi', 'z', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -1351,6 +1403,10 @@ class GDMLPolyhedra(GDMLsolid):
 
         if prop in ['startphi', 'deltaphi', 'numsides', 'aunit', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -1457,7 +1513,7 @@ class GDMLGenericPolyhedra(GDMLsolid):
         # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         if 'Restore' in fp.State:
             return
-       
+
         if prop in ['material']:
             if FreeCAD.GuiUp:
                 if hasattr(self, 'colour'):
@@ -1466,6 +1522,10 @@ class GDMLGenericPolyhedra(GDMLsolid):
 
         if prop in ['startphi', 'deltaphi', 'numsides', 'aunit', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -1578,6 +1638,10 @@ class GDMLTorus(GDMLsolid):
             # print(f'Change Prop : {prop}')
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -1620,11 +1684,11 @@ class GDMLTwistedbox(GDMLsolid):
                         "Length z").z = z
         angle = getAngleDeg(aunit, PhiTwist)
         if angle > 90:
-            print(f'PhiTwist angle cannot be larger than 90 deg')
+            print('PhiTwist angle cannot be larger than 90 deg')
             angle = 90
             aunit = "deg"
         elif angle < -90:
-            print(f'PhiTwist angle cannot be less than -90 deg')
+            print('PhiTwist angle cannot be less than -90 deg')
             angle = -90
             aunit = "deg"
         else:
@@ -1664,6 +1728,10 @@ class GDMLTwistedbox(GDMLsolid):
 
         if prop in ['x', 'y', 'z', 'PhiTwist', 'lunit', 'aunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -1765,6 +1833,10 @@ class GDMLTwistedtrap(GDMLsolid):
                     'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -1841,11 +1913,11 @@ class GDMLTwistedtrd(GDMLsolid):
                         "lunit")
         angle = getAngleDeg(aunit, PhiTwist)
         if angle > 90:
-            print(f'PhiTwist angle cannot be larger than 90 deg')
+            print('PhiTwist angle cannot be larger than 90 deg')
             angle = 90
             aunit = "deg"
         elif angle < -90:
-            print(f'PhiTwist angle cannot be less than -90 deg')
+            print('PhiTwist angle cannot be less than -90 deg')
             angle = -90
             aunit = "deg"
         else:
@@ -1883,6 +1955,10 @@ class GDMLTwistedtrd(GDMLsolid):
 
         if prop in ['x1', 'y1', 'x2', 'y2', 'z', 'PhiTwist', 'lunit', 'aunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -1942,11 +2018,11 @@ class GDMLTwistedtubs(GDMLsolid):
                         "lunit")
         angle = getAngleDeg(aunit, twistedangle)
         if angle > 90:
-            print(f'PhiTwist angle cannot be larger than 90 deg')
+            print('PhiTwist angle cannot be larger than 90 deg')
             angle = 90
             aunit = "deg"
         elif angle < -90:
-            print(f'PhiTwist angle cannot be less than -90 deg')
+            print('PhiTwist angle cannot be less than -90 deg')
             angle = -90
             aunit = "deg"
         else:
@@ -1987,6 +2063,10 @@ class GDMLTwistedtubs(GDMLsolid):
         if prop in ['endinnerrad', 'endouterrad', 'zlen', 'twistedangle',
                     'phi', 'lunit', 'aunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -2045,7 +2125,7 @@ class GDMLTwistedtubs(GDMLsolid):
 
     def OnDocumentRestored(self, obj):
         print('Doc Restored')
-  
+
 
 class GDMLXtru(GDMLsolid):
     def __init__(self, obj, lunit, material, colour=None):
@@ -2078,6 +2158,10 @@ class GDMLXtru(GDMLsolid):
 
         if prop in ['startphi', 'deltaphi', 'aunit', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -2329,6 +2413,10 @@ class GDMLPolycone(GDMLsolid):  # Thanks to Dam Lamb
         if prop in ['startphi', 'deltaphi', 'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -2431,6 +2519,10 @@ class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
         if prop in ['startphi', 'deltaphi', 'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -2461,7 +2553,7 @@ class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
 
 class GDMLSphere(GDMLsolid):
     def __init__(self, obj, rmin, rmax, startphi, deltaphi, starttheta,
-                 deltatheta, aunit, lunit, material, colour=None ):
+                 deltatheta, aunit, lunit, material, colour=None):
         super().__init__(obj)
         '''Add some custom properties to our Sphere feature'''
         GDMLShared.trace("GDMLSphere init")
@@ -2511,6 +2603,10 @@ class GDMLSphere(GDMLsolid):
                     'deltatheta', 'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -2520,12 +2616,10 @@ class GDMLSphere(GDMLsolid):
         rmax = mul * fp.rmax
         if rmax <= 0.0:
             return
-        Rmax = 2 * rmax
         rmin = mul * fp.rmin
         spos = FreeCAD.Vector(0, 0, 0)
         sdir = FreeCAD.Vector(0, 0, 1)
         HalfPi = math.pi / 2.0
-        TwoPi = 2 * math.pi
         deltaphi_deg = getAngleDeg(fp.aunit, fp.deltaphi)
         if deltaphi_deg < 360.0 and deltaphi_deg > 0:
             sphere2 = Part.makeSphere(rmax, spos, sdir,
@@ -2652,14 +2746,18 @@ class GDMLTrap(GDMLsolid):
                     'aunit', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
-    def createGeometry(self,fp):
+    def createGeometry(self, fp):
         currPlacement = fp.Placement
         # Define six vetices for the shape
-        alpha = getAngleRad(fp.aunit,fp.alpha)
-        theta = getAngleRad(fp.aunit,fp.theta)
-        phi   = getAngleRad(fp.aunit,fp.phi)
+        alpha = getAngleRad(fp.aunit, fp.alpha)
+        theta = getAngleRad(fp.aunit, fp.theta)
+        phi   = getAngleRad(fp.aunit, fp.phi)
         mul   = GDMLShared.getMult(fp)
         y1 = mul * fp.y1
         x1 = mul * fp.x1
@@ -2670,7 +2768,7 @@ class GDMLTrap(GDMLsolid):
         z = mul * fp.z
         dx1 = y1*math.tan(alpha)
         dx2 = y2*math.tan(alpha)
-        
+
         # Vertexes, counter clock wise order
         v1 = FreeCAD.Vector(-x1/2 - dx1/2, -y1/2, -z/2)
         v2 = FreeCAD.Vector( x1/2 - dx1/2, -y1/2, -z/2)
@@ -2769,6 +2867,10 @@ class GDMLTrd(GDMLsolid):
         if prop in ['z', 'x1', 'x2', 'y1', 'y2', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -2843,7 +2945,7 @@ class GDMLTube(GDMLsolid):
         # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         if 'Restore' in fp.State:
             return
-       
+
         if prop in ['material']:
             if FreeCAD.GuiUp:
                 if hasattr(self, 'colour'):
@@ -2853,6 +2955,10 @@ class GDMLTube(GDMLsolid):
         if prop in ['rmin', 'rmax', 'z', 'startphi', 'deltaphi',
                     'aunit', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -2946,6 +3052,10 @@ class GDMLcutTube(GDMLsolid):
                     'lowX', 'lowY', 'lowZ',
                     'highX', 'highY', 'highZ', 'lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -3154,6 +3264,10 @@ class GDMLGmshTessellated(GDMLsolid):
                 self.reMesh(fp)
                 self.execute(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     def execute(self, fp):  # Here for remesh?
         self.createGeometry(fp)
 
@@ -3179,7 +3293,6 @@ class GDMLGmshTessellated(GDMLsolid):
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         FCfaces = []
-        i = 0
         for f in self.Facets:
             if len(f) == 3:
                 FCfaces.append(GDMLShared.triangle(mul*self.Vertex[f[0]],
@@ -3267,6 +3380,10 @@ class GDMLTessellated(GDMLsolid):
         if prop in ['editable']:
             if fp.editable is True:
                 self.addProperties()
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     def addProperties(self):
         print('Add Properties')
@@ -3365,6 +3482,10 @@ class GDMLTetra(GDMLsolid):         # 4 point Tetrahedron
         if prop in ['v1', 'v2', 'v3', 'v4', 'lunit']:
             self.createGeometry(fp)
 
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
+
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
@@ -3423,6 +3544,10 @@ class GDMLTetrahedron(GDMLsolid):
 
         if prop in ['lunit']:
             self.createGeometry(fp)
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
@@ -3631,7 +3756,7 @@ class ViewProvider(GDMLcommon):
         modes.append("Shaded")
         modes.append("Wireframe")
         return modes
- 
+
     def getDefaultDisplayMode(self):
         '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
         return "Shaded"

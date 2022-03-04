@@ -369,7 +369,7 @@ def processPlacement(base, rot):
         rotY = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), -y)
         rotZ = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), -z)
 
-        rot = rotZ*rotY*rotX
+        rot = rotX*rotY*rotZ
         # rot = rotX.multiply(rotY).multiply(rotZ)
         # rot = rotX
         # c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation

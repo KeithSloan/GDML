@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # emacs insert date command: Ctrl-U ESC-! date
-# Fri Feb 11 11:57:03 AM PST 2022
+# Mon Feb 28 12:47:38 PM PST 2022
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -614,6 +614,28 @@ def createPolyhedra(part, solid, material, colour, px, py, pz, rot, displayMode)
     return mypolyhedra
 
 
+def createScaledSolid(part, solid, material, colour, px, py, pz, rot, displayMode):
+    print('ScaledSolid')
+    global solids
+    solidref = GDMLShared.getRef(solid, 'solidref')
+    newSolid = solids.find("*[@name='%s']" % solidref)
+    scaledObj = createSolid(part, newSolid, material, colour,
+                            px, py, pz, rot, displayMode)
+    scale = solid.find('scale')
+    scaleName = scale.get('name')
+    sx = GDMLShared.getVal(scale, 'x')
+    sy = GDMLShared.getVal(scale, 'y')
+    sz = GDMLShared.getVal(scale, 'z')
+    scaleVec = FreeCAD.Vector(sx, sy, sz)
+    mat = FreeCAD.Matrix()
+    mat.scale(scaleVec)
+    scaledObj.recompute()
+    scaledObj.Shape.transformGeometry(mat)
+    scaledObj.recompute()
+    scaledObj.addProperty("App::PropertyVector", "scale", "Base", "scale").scale=scaleVec
+    return scaledObj
+
+
 def createSphere(part, solid, material, colour, px, py, pz, rot, displayMode):
     from .GDMLObjects import GDMLSphere, ViewProvider
     # GDMLShared.setTrace(True)
@@ -1207,6 +1229,10 @@ def createSolid(part, solid, material, colour, px, py, pz, rot, displayMode):
         if case('genericPolyhedra'):
             return(createGenericPolyhedra(part, solid, material, colour, px,
                                           py, pz, rot, displayMode))
+
+        if case('scaledSolid'):
+            return(createScaledSolid(part, solid, material, colour,
+                                     px, py, pz, rot, displayMode))
 
         if case('sphere'):
             return(createSphere(part, solid, material, colour, px, py, pz, rot,
