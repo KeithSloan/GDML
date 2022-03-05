@@ -364,7 +364,7 @@ class GDMLsolid:
         return obj.material
 
     def scale(self,fp):
-        print('Rescale')
+        print(f'Rescale : {fp.scale}')
         mat = FreeCAD.Matrix()
         mat.scale(fp.scale)
         fp.Shape = fp.Shape.transformGeometry(mat)
@@ -561,7 +561,7 @@ class GDMLBox(GDMLsolid):
 
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
-        # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+        print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         # Changing Shape in createGeometry will redrive onChanged
         if ('Restore' in fp.State):
             return
@@ -577,13 +577,12 @@ class GDMLBox(GDMLsolid):
 
         if prop in ['scale']:
             self.createGeometry(fp)
-            super().scale(fp)
 
     # execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        # print('createGeometry')
-        # print(fp)
+        print('createGeometry')
+        print(fp)
 
         if all((fp.x, fp.y, fp.z)):
             currPlacement = fp.Placement
@@ -597,12 +596,9 @@ class GDMLBox(GDMLsolid):
             box = Part.makeBox(x, y, z)
             base = FreeCAD.Vector(-x/2, -y/2, -z/2)
             fp.Shape = translate(box, base)
-            if hasattr(fp,'scale'):
-               print('Rescale')
-               mat = FreeCAD.Matrix()
-               mat.scale(fp.scale)
-               fp.Shape = fp.Shape.transformGeometry(mat)
             fp.Placement = currPlacement
+        if hasattr(fp,'scale'):
+           super().scale(fp)
 
     def OnDocumentRestored(self, obj):
         print('Doc Restored')
@@ -811,12 +807,6 @@ class GDMLElCone(GDMLsolid):
             fp.Shape = cone2.cut(box)
         else:
             fp.Shape = cone2
-        if hasattr(fp,'scale'):
-           print('Update Scale')
-           mat = FreeCAD.Matrix()
-           mat.scale(fp.scale)
-           fp.Shape = fp.Shape.transformGeometry(mat)
-
         fp.Placement = currPlacement
 
 
