@@ -1238,11 +1238,9 @@ class TessellateFeature:
                 GDMLTessellated(myTess, mesh.Topology[0], mesh.Facets, True,
                                 "mm", mat)
                 # Update Part Placment with source Placement
-                vol.Placement = obj.Placement
-                base = obj.Placement.Base
-                print(type(base))
-                myTess.Placement.Base = base.multiply(-1.0)
-                FreeCAD.ActiveDocument.recompute()
+                #vol.Placement = obj.Placement
+                myTess.Placement = FreeCAD.Placement()
+                myTess.recompute()
                 if FreeCAD.GuiUp:
                     ViewProvider(myTess.ViewObject)
                     obj.ViewObject.Visibility = False
