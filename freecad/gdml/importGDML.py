@@ -1227,12 +1227,10 @@ def createSolid(part, solid, material, colour, px, py, pz, rot, displayMode):
                                    rot, displayMode))
 
         if case('genericPolyhedra'):
-            return(createGenericPolyhedra(part, solid, material, colour, px,
-                                          py, pz, rot, displayMode))
+            return(createGenericPolyhedra(part,solid,material,colour,px,py,pz,rot,displayMode))
 
         if case('scaledSolid'):
-            return(createScaledSolid(part, solid, material, colour,
-                                     px, py, pz, rot, displayMode))
+           return(createScaledSolid(part,solid,material,colour,px,py,pz,rot,displayMode))
 
         if case('sphere'):
             return(createSphere(part, solid, material, colour, px, py, pz, rot,
