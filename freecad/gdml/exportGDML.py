@@ -355,6 +355,10 @@ def quaternion2XYZ(rot):
     v = rot*Vector(0, 0, 1)
     print(v)
     # solution 1.
+    if v.x > 1.0:
+        v.x = 1.0
+    if v.x < -1.0:
+        v.x = -1.0
     b = math.asin(v.x)
     if math.cos(b) > 0:
         a = math.atan2(-v.y, v.z)
@@ -696,7 +700,7 @@ def cleanVolName(obj, volName):
     return volName
 
 
-def addPhysVolPlacement(obj, xmlVol, volName, placement):
+def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
     # obj: App:Part to be placed.
     # xmlVol: the xml that the <physvol is a subelement of.
     # It may be a <volume, or an <assembly
@@ -714,7 +718,8 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement):
     # I am commenting this out I don't know why it's needed.
     # the <volume or <assembly name is ceated withoutout any cleanup,m so the
     # reference to it musl also not have any cleanup
-    # refName = cleanVolName(obj, volName)
+    if refName is None:
+        refName = cleanVolName(obj, volName)
     # GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : "+volName)
     # print(ET.tostring(xmlVol))
@@ -726,7 +731,7 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement):
             GDMLShared.trace('CopyNumber : '+cpyNum)
             pvol = ET.SubElement(xmlVol, 'physvol', {'copynumber': cpyNum})
 
-        ET.SubElement(pvol, 'volumeref', {'ref': volName})
+        ET.SubElement(pvol, 'volumeref', {'ref': refName})
         processPlacement(volName, pvol, placement)
         if hasattr(obj, 'GDMLscale'):
             scaleName = volName+'scl'
@@ -855,7 +860,7 @@ def testAddPhysVol(obj, xmlParent, volName):
             print('Root/World Volume')
 
 
-def addVolRef(volxml, volName, obj, solidName=None):
+def addVolRef(volxml, volName, obj, solidName=None, addColor=True):
     # Pass material as Boolean
     material = getMaterial(obj)
     if solidName is None:
@@ -865,7 +870,7 @@ def addVolRef(volxml, volName, obj, solidName=None):
 
     ET.SubElement(gxml, 'volume', {'name': volName, 'material': material})
 
-    if hasattr(obj.ViewObject, 'ShapeColor') and volName != WorldVOL:
+    if addColor is True and hasattr(obj.ViewObject, 'ShapeColor') and volName != WorldVOL:
         colour = obj.ViewObject.ShapeColor
         colStr = '#'+''.join('{:02x}'.format(round(v*255)) for v in colour)
         ET.SubElement(volxml, 'auxiliary', {'auxtype': 'Color',
@@ -1223,8 +1228,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
         elif obj.TypeId == 'App::Link':
             print('Process Link')
             # objName = cleanVolName(obj, obj.Label)
-            addPhysVolPlacement(obj, xmlVol, obj.LinkedObject.Label,
-                                obj.Placement)
+            addPhysVolPlacement(obj, xmlVol, volName,
+                                obj.Placement, refName=obj.VolRef)
         else:
             _ = processVolume(obj, xmlVol)
 
@@ -1242,8 +1247,8 @@ def processVolume(vol, xmlParent, volName=None):
     if vol.TypeId == 'App::Link':
         print('Volume is Link')
         # objName = cleanVolName(obj, obj.Label)
-        addPhysVolPlacement(vol, xmlParent, vol.LinkedObject.Label,
-                            vol.Placement)
+        addPhysVolPlacement(vol, xmlParent, vol.Label,
+                            vol.Placement, refName=vol.VolRef)
         return
 
     if volName is None:
@@ -1266,6 +1271,8 @@ def processVolume(vol, xmlParent, volName=None):
         solidExporter.export()
         print(f'solids count {len(list(solids))}')
         # 1- adds a <volume element to <structure with name volName
+        if volName == solidExporter.name():
+            volName = 'V-'+solidExporter.name()
         xmlVol = insertXMLvolume(volName)
         # 2- add material info to the generated <volume pointerd to by xmlVol
         addVolRef(xmlVol, volName, topObject, solidExporter.name())
@@ -1288,6 +1295,26 @@ def processVolume(vol, xmlParent, volName=None):
     return xmlVol
 
 
+def processContainer(vol, xmlParent):
+    volName = vol.Label
+    objects = assemblyHeads(vol)
+    newXmlVol = insertXMLvolume(volName)
+    solidExporter = SolidExporter.getExporter(objects[0])
+    solidExporter.export()
+    addVolRef(newXmlVol, volName, objects[0], solidExporter.name(), addColor=False)
+    addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    for obj in objects[1:]:
+        if obj.TypeId == 'App::Part':
+            processVolAssem(obj, newXmlVol, volName)
+        elif obj.TypeId == 'App::Link':
+            print('Process Link')
+            # objName = cleanVolName(obj, obj.Label)
+            addPhysVolPlacement(obj, newXmlVol, obj.Label,
+                                obj.Placement, refName=obj.VolRef)
+        else:
+            _ = processVolume(obj, newXmlVol)
+
+
 def processVolAssem(vol, xmlParent, parentName):
     # vol - Volume Object
     # xmlVol - xml of this volume
@@ -1295,7 +1322,9 @@ def processVolAssem(vol, xmlParent, parentName):
     # xmlVol could be created dummy volume
     print('process volasm '+vol.Label)
     volName = vol.Label
-    if isAssembly(vol):
+    if isContainer(vol):
+        processContainer(vol, xmlParent)
+    elif isAssembly(vol):
         newXmlVol = insertXMLassembly(volName)
         processAssembly(vol, newXmlVol, xmlParent, parentName)
     else:
@@ -1364,6 +1393,48 @@ def createWorldVol(volName):
     ET.SubElement(worldVol, 'solidref', {'ref': boxName})
     ET.SubElement(gxml, 'volume', {'name': volName, 'material': 'G4_AIR'})
     return worldVol
+
+
+def isContainer(obj):
+    # return True if The App::Part is of the form:
+    # App::Part
+    #     -solid (Part:xxx)
+    #     -App::Part
+    #     -App::Part
+    #     ....
+    # So a container satisfies the current isAssembly requirements
+    # plus the siblings must have the above form
+    # obj that satisfy is container get exported as
+    # <volume ....>
+    #   <solidref = first solid
+    #   <physvol ..ref to first App::Part>
+    #   <physvol ..ref to first App::Part>
+    # </volume>
+    #
+    # This is in contract to assembly, which is exported as
+    # <assembly
+    #   <physvol 1>
+    #   <physvol 2>
+    #   ....
+    #
+    # Must be assembly first
+    if not isAssembly(obj):
+        return False
+    heads = assemblyHeads(obj)
+    if heads is None:
+        return False
+    if len(heads) < 2:
+        return False
+
+    # first must be solid
+    if not SolidExporter.isSolid(heads[0]):
+        return False
+
+    # rest must not be solids, but only second is tested here
+    if SolidExporter.isSolid(heads[1]):
+        return False
+
+    return True
 
 
 def isAssembly(obj):
