@@ -1002,6 +1002,12 @@ class DecimateFeature:
                     print('Already an Active Task')
             return
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Decimate', 'MenuText':
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
@@ -1249,6 +1255,13 @@ class TessellateFeature:
                     myTess.ViewObject.DisplayMode = 'Flat Lines'
                     FreeCADGui.SendMsgToActiveView("ViewFit")
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Tessellate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
@@ -1293,6 +1306,12 @@ class TessellateGmshFeature:
                     print('Already an Active Task')
             return
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Tessellate_Gmsh',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
@@ -1335,6 +1354,12 @@ class Mesh2TessFeature:
                 FreeCAD.ActiveDocument.recompute()
                 FreeCADGui.SendMsgToActiveView("ViewFit")
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Mesh2Tess', 'MenuText':
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
@@ -1376,13 +1401,18 @@ class Tess2MeshFeature:
                             FreeCAD.ActiveDocument.recompute()
                             FreeCADGui.SendMsgToActiveView("ViewFit")
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Tess2Mesh', 'MenuText':
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
                                          'Tess2Mesh'), 'Tess 2 Mesh':
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
                                          'Create FC Mesh from GDML Tessellate')} 
-
 
 class TetrahedronFeature:
 
@@ -1417,6 +1447,13 @@ class TetrahedronFeature:
                         FreeCADGui.SendMsgToActiveView("ViewFit")
                     else:
                         FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
+
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
 
     def GetResources(self):
         return {'Pixmap': 'GDML_Tetrahedron',
@@ -1481,6 +1518,12 @@ class CycleFeature:
             # if len(obj.InList) == 0: # allowed only for for top level objects
             cycle(obj)
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Cycle',
                 'MenuText':
@@ -1521,6 +1564,12 @@ class ExpandFeature:
                     if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_':
                         expandFunction(obj.LinkedObject, 0)
 
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
     def GetResources(self):
         return {'Pixmap': 'GDML_Expand_One',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_Expand_One',
@@ -1544,6 +1593,11 @@ class ExpandMaxFeature:
                 if hasattr(obj, 'LinkedObject'):
                     if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_':
                         expandFunction(obj.LinkedObject, -1)
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
 
     def GetResources(self):
         return {'Pixmap': 'GDML_Expand_Max',
@@ -1626,6 +1680,12 @@ class CompoundFeature:
             obj = objs[0]
             if obj.TypeId == 'App::Part':
                 myaddCompound(obj, len(obj.InList))
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
 
     def GetResources(self):
         return {'Pixmap': 'GDML_Compound',

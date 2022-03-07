@@ -34,6 +34,7 @@
 #from FreeCAD import *
 import FreeCAD
 import PartGui
+import DraftTools
 import SketcherGui
 import MeshGui
 import FreeCADGui
@@ -86,6 +87,8 @@ class GDML_Workbench (FreeCADGui.Workbench):
                     'BoxCommand', 'ConeCommand', 'ElTubeCommand',
                     'EllipsoidCommand', 'SphereCommand',
                     'TorusCommand', 'TrapCommand', 'TubeCommand',
+                    'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
+                    'Part_Mirror', 'Draft_ArrayTools',
                     'BooleanCutCommand', 'BooleanIntersectionCommand',
                     'BooleanUnionCommand',
                     'TessellateCommand', 'TessellateGmshCommand',
@@ -102,7 +105,8 @@ class GDML_Workbench (FreeCADGui.Workbench):
                            'ElTubeCommand', 'EllipsoidCommand',
                            'SphereCommand',
                            'TorusCommand', 'TrapCommand', 'TubeCommand',
-                           'Sketcher_NewSketch', 'Part_Extrude',
+                           'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
+                           'Part_Mirror', 'Draft_ArrayTools',
                            'Separator', 'BooleanCutCommand',
                            'BooleanIntersectionCommand',
                            'BooleanUnionCommand', 'Separator',
