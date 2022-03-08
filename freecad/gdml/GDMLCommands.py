@@ -368,7 +368,7 @@ class BooleanIntersectionFeature:
             selObj = 'Gui::SelectionObject'
             if sel[0].TypeId == selObj and sel[1].TypeId == selObj:
                 if sel[0].Object.TypeId == 'App::Part' and \
-                   sel[1].Object.TypeId == 'App::Part' :
+                   sel[1].Object.TypeId == 'App::Part':
                     print('Boolean Intersection')
                     if len(sel[0].Object.InList) > 0:
                         parent = sel[0].Object.InList[0]
@@ -604,7 +604,7 @@ class ElliTubeFeature:
         from .GDMLObjects import GDMLElTube, ViewProvider
         objPart, material = getSelectedPM()
         if objPart is None:
-           vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-EllipticalTube")
+            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-EllipticalTube")
         else:
             vol = objPart.newObject("App::Part", "LV-EllipticalTube")
         obj = vol.newObject("Part::FeaturePython", "GDMLElTube_Eltube")
@@ -1015,7 +1015,7 @@ class DecimateFeature:
 class AddTessellateWidget(QtGui.QWidget):
     def __init__(self, Shape, *args):
         QtGui.QWidget.__init__(self, *args)
-        bboxGroup  = QtGui.QGroupBox('Objects Bounding Box')
+        bboxGroup = QtGui.QGroupBox('Objects Bounding Box')
         laybbox = QtGui.QHBoxLayout()
         laybbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
         laybbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
@@ -1247,7 +1247,6 @@ class TessellateFeature:
         else:
             return True
 
-
     def GetResources(self):
         return {'Pixmap': 'GDML_Tessellate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
@@ -1380,7 +1379,7 @@ class Tess2MeshFeature:
                             mshObj = FreeCAD.ActiveDocument.addObject(
                                 'Mesh::Feature', obj.Name)
                         mshObj.Mesh = MeshPart.meshFromShape(obj.Shape)
-    
+
                         if FreeCAD.GuiUp:
                             obj.ViewObject.Visibility = False
                             mshObj.ViewObject.DisplayMode = "Wireframe"
@@ -1398,7 +1397,8 @@ class Tess2MeshFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
                                          'Tess2Mesh'), 'Tess 2 Mesh':
                 QtCore.QT_TRANSLATE_NOOP('GDML_TessGroup',
-                                         'Create FC Mesh from GDML Tessellate')} 
+                                         'Create FC Mesh from GDML Tessellate')}
+
 
 class TetrahedronFeature:
 
@@ -1433,7 +1433,6 @@ class TetrahedronFeature:
                         FreeCADGui.SendMsgToActiveView("ViewFit")
                     else:
                         FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
-
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -1517,7 +1516,8 @@ class CycleFeature:
                                          'Cycle Group'),
                 'ToolTip':
                 QtCore.QT_TRANSLATE_NOOP('GDML_CycleGroup',
-                                         'Cycle Object and all children display')}  
+                                         'Cycle Object and all children display')}
+
 
 def expandFunction(obj, eNum):
     from .importGDML import expandVolume
@@ -1579,6 +1579,7 @@ class ExpandMaxFeature:
                 if hasattr(obj, 'LinkedObject'):
                     if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_':
                         expandFunction(obj.LinkedObject, -1)
+
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
             return False
