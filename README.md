@@ -43,7 +43,7 @@ A new branch beta2 has a lot of exciting enhancements. The plan is that in time 
   
   For FreeCAD 0.20 builds see weekly builds at https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds
 * Supports GDML exports without needing toEuler facility in FreeCAD
-* Creation of GDML solids from FreeCAD a sketch
+* Creation of GDML solids from a FreeCAD sketch
   * [Extruded sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
   * Revolve
 * Creation of Arrays
