@@ -58,7 +58,7 @@ scroll down to Assets.
 Realthunders LinkDaily branch has the following enhancements
 
 * Faster import of GDML objects
-* Add extra toEulerAngles function ( Note: as of branch beta2 this is no longer neede )
+* Add extra toEulerAngles function ( Note: as of branch beta2 this is no longer needed )
 * Enhanced Rendering which helps with complex models.
 
 To enable enhanced rendering in LinkDaily:
