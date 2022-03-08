@@ -43,11 +43,11 @@ A new branch beta2 has a lot of exciting enhancements. The plan is that in time 
   
   For FreeCAD 0.20 builds see weekly builds at https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds
 * Supports GDML exports without needing toEuler facility in FreeCAD
-* Creation of GDML solids from a [FreeCAD sketches](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
+* Creation of GDML solids from [FreeCAD Sketches](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
   * [Extrude](https://github.com/KeithSloan/GDML/wiki/Extrude--:-Examples-of-Extruded-sketches)
   * [Revolve](https://github.com/KeithSloan/GDML/wiki/Revolved-:-Examples-of-Revolved-sketches)
-* [Creation of Arrays](https://github.com/KeithSloan/GDML/wiki/Array-:-Example-of-use-of-Array)
-* [Creation of Mirrors](https://github.com/KeithSloan/GDML/wiki/Mirror-:-Examples-of-use-of-Mirror)
+* Creation of [Arrays](https://github.com/KeithSloan/GDML/wiki/Array-:-Example-of-use-of-Array)
+* Creation of [Mirrors](https://github.com/KeithSloan/GDML/wiki/Mirror-:-Examples-of-use-of-Mirror)
 * Export of GDML object takes into account the Placements of the GDML objects and the App::Part ( GDML Volume )
 
 #### Enhancements with Realthunder LinkDaily branch
