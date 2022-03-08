@@ -32,38 +32,51 @@ the required libraries section of this README.
 
 #### Regression with STEP export
 
-With OpenCasCade v7.5.0 and v7.5.1 as used in FreeCAD 0.19.2
+There is a regression with STEP export in OpenCasCade v7.5.0 and v7.5.1 as used in FreeCAD 0.19.2
+Recomended to use at least FreeCAD 0.19.3 with OpenCasCade v7.5.3 ( i.e OCC 7.5.3 )
 
-#### Problem with export of Rotations
+#### NEW BRANCH beta2
 
-This issues applies to all operating systems. To fix a problem with export and rotations please use
+A new branch beta2 has a lot of exciting enhancements. The plan is that in time this will merged with the master branch
 
-* the FreeCAD_Assembly3 release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
+* The branch is selectable using the new Addon manager in FreeCAD 0.20
   
-  scroll down to Assets.
+  For FreeCAD 0.20 builds see weekly builds at https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds
+* Supports GDML exports without needing toEuler facility in FreeCAD
+* Creation of GDML solids from FreeCAD a sketch
+  * Extrude
+  * Revolve
+* Creation of Arrays
+* Creation of Mirrors
+* Export of GDML object takes into account the Placements of the GDML objects and the App::Part ( GDML Volume )
 
-* the GDML git branch called **link3**. Install it via:
-  1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
-  2. `git fetch origin link3`
-  3. `git checkout link3`
-  4. Restart FreeCAD
+#### Enhancements with Realthunder LinkDaily branch)
 
-You should also see a dramatic improvement especially with LinkDaily in import times with these builds.
+For installation see the FreeCAD_Assembly3 release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
+scroll down to Assets.
 
-#### Enhanced Rendering (on Realthunder's LinkDaily branch)
-There is also the option to use enhanced rendering which helps with complex models. To enable enhanced rendering in LinkDaily:
+Realthunders LinkDaily branch has the following enhancements
+
+* Faster import of GDML objects
+* Add extra toEulerAngles function ( Note: as of branch beta2 this is no longer neede )
+* Enhanced Rendering which helps with complex models.
+
+To enable enhanced rendering in LinkDaily:
 
 `FreeCAD > Preferences > Display > Render Cache > Experimental`
    
 If you like what you see you might like to thank Lei Zhang by contributing to his [FreeCAD Patreon](https://www.patreon.com/thundereal/posts)
 
-You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
-fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
-process of being added to FreeCAD 0.20
 
-For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
+#### Problem with export of Rotations ( Fixed in beta2 )
 
-**Changes to Placement (GDML Position & Rotation)**
+For correct export of GDML rotations please use one the the following
+
+* beta2 branch ( All operating systems even FreeCAD 0.19)
+* A Realthunder version of FreeCAD
+* A recent version fo FreeCAD 0.20
+
+#### Changes to Placement (GDML Position & Rotation) [Fixed in beta2]
 
 In order to support copies of GDML Volumes the following changes have been made
 
