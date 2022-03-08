@@ -44,13 +44,13 @@ A new branch beta2 has a lot of exciting enhancements. The plan is that in time 
   For FreeCAD 0.20 builds see weekly builds at https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds
 * Supports GDML exports without needing toEuler facility in FreeCAD
 * Creation of GDML solids from FreeCAD a sketch
-  * Extrude
+  * [Extruded sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
   * Revolve
 * Creation of Arrays
 * Creation of Mirrors
 * Export of GDML object takes into account the Placements of the GDML objects and the App::Part ( GDML Volume )
 
-#### Enhancements with Realthunder LinkDaily branch)
+#### Enhancements with Realthunder LinkDaily branch
 
 For installation see the FreeCAD_Assembly3 release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
 scroll down to Assets.
