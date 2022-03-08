@@ -144,20 +144,6 @@ class ColourMapFeature:
         print('Add colour Map')
         resetGDMLColourMap()
         showGDMLColourMap()
-        return
-
-        # myWidget = QtGui.QDockWidget()
-        # mainWin = FreeCADGui.getMainWindow()
-        # mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
-        mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea, \
-                              myWidget)
-        # mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
-        # myWidget.setObjectName("ColourMap")
-        # myWidget.resize(QtCore.QSize(300,100))
-        # title = QtGui.QLabel("Colour Mapping to GDML Materials")
-        # title.setIndent(100)
-        # myWidget.setTitleBarWidget(title)
-        # label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
