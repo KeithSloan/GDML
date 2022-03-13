@@ -144,7 +144,7 @@ class ColourMapFeature:
         print('Add colour Map')
         resetGDMLColourMap()
         showGDMLColourMap()
-
+ 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
             return False
@@ -255,6 +255,207 @@ class GDMLSetMaterial(QtGui.QDialog):
                 obj.material = self.matList.index(mat)
 
 
+class GDMLScale(QtGui.QDialog):
+    def __init__(self, selList):
+        super(GDMLScale, self).__init__()
+        self.SelList = selList
+        self.initialState = {}
+        self.saveState()
+        self.setupUi()
+        self.xScale.valueChanged.connect(self.scaleChanged)
+        self.yScale.valueChanged.connect(self.scaleChanged)
+        self.zScale.valueChanged.connect(self.scaleChanged)
+        self.scaleButton.clicked.connect(self.onSet)
+        self.cancelButton.clicked.connect(self.onCancel)
+        self.initUI()
+
+    def initUI(self):
+        '''
+        print('initUI')
+        self.setGeometry(150, 150, 250, 250)
+        self.setWindowTitle("Scale GDML objects")
+        self.setMouseTracking(True)
+        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Scale'))
+        self.buttonSet.clicked.connect(self.onSet)
+        mainLayout = QtGui.QVBoxLayout()
+        self.validator = QtGui.QDoubleValidator()
+        self.validator.setRange(0.001, 1000., 3)
+        xLayout = QtGui.QHBoxLayout()
+        yLayout = QtGui.QHBoxLayout()
+        zLayout = QtGui.QHBoxLayout()
+        xlabel = QtGui.QLabel(self)
+        xlabel.setText(translate('GDML', "X factor"))
+        xLayout.addWidget(xlabel)
+        self.xScale = QtGui.QDoubleSpinBox(self)
+        self.xScale.setProperty("value", 1.0)
+        # self.xScale.setValidator(validator)
+        self.xScale.setRange(0.001, 1000)
+        xLayout.addWidget(self.xScale)
+
+        ylabel = QtGui.QLabel(self)
+        ylabel.setText(translate('GDML', "Y factor"))
+        yLayout.addWidget(ylabel)
+        self.yScale = QtGui.QDoubleSpinBox(self)
+        self.yScale.setProperty("value", 1.0)
+        # self.yScale.setValidator(validator)
+        self.yScale.setRange(0.001, 1000)
+        yLayout.addWidget(self.yScale)
+
+        zlabel = QtGui.QLabel(self)
+        zlabel.setText(translate('GDML', "Z factor"))
+        zLayout.addWidget(zlabel)
+        self.zScale = QtGui.QDoubleSpinBox(self)
+        self.zScale.setProperty("value", 1.0)
+        # self.zScale.setValidator(validator)
+        self.zScale.setRange(0.001, 1000)
+        zLayout.addWidget(self.zScale)
+
+        mainLayout.addItem(xLayout)
+        mainLayout.addItem(yLayout)
+        mainLayout.addItem(zLayout)
+
+        self.uniformScaling = QtGui.QCheckBox(self)
+        self.uniformScaling.setText(translate('GDML', "Uniform scaling"))
+        mainLayout.addWidget(self.uniformScaling)
+
+        # Signals
+        self.xScale.valueChanged.connect(self.scaleChanged)
+        '''
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.setMouseTracking(True)
+        self.show()
+
+    def setupUi(self):
+        self.setGeometry(150, 150, 400, 250)
+        self.checkBox = QtGui.QCheckBox(self)
+        self.checkBox.setGeometry(QtCore.QRect(40, 160, 141, 22))
+        self.checkBox.setObjectName("checkBox")
+        self.verticalLayoutWidget = QtGui.QWidget(self)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(40, 20, 341, 116))
+        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.xlabel = QtGui.QLabel(self.verticalLayoutWidget)
+        self.horizontalLayout.addWidget(self.xlabel)
+        self.xScale = QtGui.QDoubleSpinBox(self.verticalLayoutWidget)
+        self.xScale.setMinimum(0.01)
+        self.xScale.setMaximum(100.0)
+        self.xScale.setProperty("value", 1.0)
+        self.horizontalLayout.addWidget(self.xScale)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.yLabel = QtGui.QLabel(self.verticalLayoutWidget)
+        self.horizontalLayout_3.addWidget(self.yLabel)
+        self.yScale = QtGui.QDoubleSpinBox(self.verticalLayoutWidget)
+        self.yScale.setMinimum(0.01)
+        self.yScale.setMaximum(100.0)
+        self.yScale.setProperty("value", 1.0)
+        self.horizontalLayout_3.addWidget(self.yScale)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.zLabel = QtGui.QLabel(self.verticalLayoutWidget)
+        self.horizontalLayout_4.addWidget(self.zLabel)
+        self.zScale = QtGui.QDoubleSpinBox(self.verticalLayoutWidget)
+        self.zScale.setMinimum(0.01)
+        self.zScale.setMaximum(100.0)
+        self.zScale.setProperty("value", 1.0)
+        self.horizontalLayout_4.addWidget(self.zScale)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.scaleButton = QtGui.QPushButton(self)
+        self.scaleButton.setGeometry(QtCore.QRect(90, 210, 88, 34))
+        self.cancelButton = QtGui.QPushButton(self)
+        self.cancelButton.setGeometry(QtCore.QRect(200, 210, 88, 34))
+
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
+
+    def retranslateUi(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate("GDMLScale", "Scale GDML solids"))
+        self.checkBox.setText(_translate("GDMLScale", "Uniform scaling"))
+        self.xlabel.setText(_translate("GDMLScale", "X factor"))
+        self.yLabel.setText(_translate("GDMLScale", "Y factor"))
+        self.zLabel.setText(_translate("GDMLScale", "Z factor"))
+        self.xScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.yScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.zScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.scaleButton.setText(_translate("GDMLScale", "OK"))
+        self.cancelButton.setText(_translate("GDMLScale", "Cancel"))
+
+    def scaleChanged(self, value):
+        self.xScale.blockSignals(True)
+        self.yScale.blockSignals(True)
+        self.zScale.blockSignals(True)
+        if self.checkBox.isChecked():
+            self.xScale.setValue(value)
+            self.yScale.setValue(value)
+            self.zScale.setValue(value)
+        self.setScales()
+
+        self.xScale.blockSignals(False)
+        self.yScale.blockSignals(False)
+        self.zScale.blockSignals(False)
+
+    def setScales(self):
+        from .GDMLObjects import GDMLsolid
+        scale = FreeCAD.Vector(self.xScale.value(), self.yScale.value(),
+                               self.zScale.value())
+        print(f'Set scale {scale}')
+        errShown = False
+        for sel in self.SelList:
+            obj = sel.Object
+            if hasattr(obj, 'Proxy') and isinstance(obj.Proxy, GDMLsolid):
+                if hasattr(obj, 'scale'):
+                    obj.scale = scale
+                else:
+                    obj.addProperty("App::PropertyVector", "scale", "Base", "scale").scale=scale
+                    obj.recompute()
+            else:
+                if not errShown:
+                    QtGui.QMessageBox.critical(None,
+                                               'Not a GDML solid',
+                                               f'{obj.Label} is not a GDML Solid.\nUse Draft scale instead')
+                    errShown = True
+
+    def onSet(self):
+        self.setScales()
+        self.accept()
+        return
+
+    def onCancel(self):
+        # should undo any scaling we have set here
+        self.restoreState()
+        self.reject()
+        return
+
+    def closeEvent(self, event):
+        print('Close button')
+        self.restoreState()
+        event.accept()
+
+    def saveState(self):
+        from .GDMLObjects import GDMLsolid
+        for sel in self.SelList:
+            obj = sel.Object
+            if hasattr(obj, 'Proxy') and isinstance(obj.Proxy, GDMLsolid):
+                if hasattr(obj, 'scale'):
+                    self.initialState[obj] = {'hadScale': True, 'scale': obj.scale}
+                else:
+                    self.initialState[obj] = {'hadScale': False}
+
+    def restoreState(self):
+        from .GDMLObjects import GDMLsolid
+        for sel in self.SelList:
+            obj = sel.Object
+            if hasattr(obj, 'Proxy') and isinstance(obj.Proxy, GDMLsolid):
+                savedPars = self.initialState[obj]
+                if savedPars['hadScale'] is True:
+                    obj.scale = savedPars['scale']
+                else:
+                    obj.removeProperty('scale')
+                obj.recompute()
+
+
 class SetMaterialFeature:
 
     def Activated(self):
@@ -288,6 +489,42 @@ class SetMaterialFeature:
                                          'Set Material'), 'ToolTip':
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetMaterial',
                                          'Set Material')}
+
+
+class SetScaleFeature:
+
+    def Activated(self):
+
+        print('Set scale')
+        cnt = 0
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(sel)
+        set = []
+        for s in sel:
+            # print(s)
+            # print(dir(s))
+            if hasattr(s.Object, 'Shape'):
+                cnt += 1
+                set.append(s)
+        if cnt > 0:
+            dialog = GDMLScale(set)
+            dialog.exec_()
+        return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_Scale',
+                'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDMLScale',
+                                         'Scale'),
+                'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDMLScale',
+                                         'Scales the selected GDML solids')}
 
 
 class BooleanCutFeature:
@@ -1706,3 +1943,4 @@ FreeCADGui.addCommand('DecimateCommand', DecimateFeature())
 FreeCADGui.addCommand('Mesh2TessCommand', Mesh2TessFeature())
 FreeCADGui.addCommand('Tess2MeshCommand', Tess2MeshFeature())
 FreeCADGui.addCommand('TetrahedronCommand', TetrahedronFeature())
+FreeCADGui.addCommand('SetScaleCommand', SetScaleFeature())
