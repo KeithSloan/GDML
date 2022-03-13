@@ -1388,6 +1388,7 @@ class GDMLPolyhedra(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
+        from math import sin, cos, pi
         currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Polyhedra")
@@ -1402,18 +1403,23 @@ class GDMLPolyhedra(GDMLsolid):
         GDMLShared.trace("Top z    : " + str(z0))
         GDMLShared.trace("Top rmin : " + str(rmin0))
         GDMLShared.trace("Top rmax : " + str(rmax0))
-        inner_faces = []
-        outer_faces = []
-        numsides = int(numsides * 360 / getAngleDeg(fp.aunit, fp.deltaphi))
+        fullCircle = checkFullCircle(fp.aunit, fp.deltaphi)
+        faces = []
+        # numsides = int(numsides * 360 / getAngleDeg(fp.aunit, fp.deltaphi))
         # Deal with Inner Top Face
         # Could be point rmin0 = rmax0 = 0
-        if rmin0 > 0:
-            inner_poly0 = makeRegularPolygon(numsides, rmin0, z0)
-            inner_faces.append(Part.Face(Part.makePolygon(inner_poly0)))
-        # Deal with Outer Top Face
-        outer_poly0 = makeRegularPolygon(numsides, rmax0, z0)
-        if rmax0 > 0:        # Only make polygon if not a point
-            outer_faces.append(Part.Face(Part.makePolygon(outer_poly0)))
+        dPhi = getAngleRad(fp.aunit, fp.deltaphi)/numsides
+        phi0 = getAngleRad(fp.aunit, fp.startphi)
+        rp = rmin0/cos(dPhi/2)
+        inner_poly0 = [FreeCAD.Vector(rp*cos(phi0+i*dPhi), rp*sin(phi0+i*dPhi), z0)
+                       for i in range(numsides+1)]
+        rp = rmax0/cos(dPhi/2)
+        outer_poly0 = [FreeCAD.Vector(rp*cos(phi0+i*dPhi), rp*sin(phi0+i*dPhi), z0)
+                       for i in range(numsides+1)]
+        bottom_verts = inner_poly0 + outer_poly0[::-1]
+        bottom_verts.append(bottom_verts[0])
+        if rmax0 > 0:
+            faces.append(Part.Face(Part.makePolygon(bottom_verts)))
         for ptr in parms[1:]:
             z1 = ptr.z * mul
             rmin1 = ptr.rmin * mul
@@ -1422,36 +1428,49 @@ class GDMLPolyhedra(GDMLsolid):
             GDMLShared.trace("rmin1 : "+str(rmin1))
             GDMLShared.trace("rmax1 : "+str(rmax1))
             # Concat face lists
-            if rmin0 > 0:
-                inner_poly1 = makeRegularPolygon(numsides, rmin1, z1)
-                inner_faces = inner_faces + \
-                    makeFrustrum(numsides, inner_poly0, inner_poly1)
-                inner_poly0 = inner_poly1
-                inner_faces.append(Part.Face(Part.makePolygon(inner_poly1)))
+            rp = rmin1/cos(dPhi/2)
+            inner_poly1 = [FreeCAD.Vector(rp*cos(phi0+i*dPhi), rp*sin(phi0+i*dPhi), z1)
+                           for i in range(numsides+1)]
+            faces = faces + makeFrustrum(numsides, inner_poly0, inner_poly1)
+            inner_poly0 = inner_poly1
             # Deal with Outer
-            outer_poly1 = makeRegularPolygon(numsides, rmax1, z1)
-            outer_faces = outer_faces + \
-                makeFrustrum(numsides, outer_poly0, outer_poly1)
+            rp = rmax1/cos(dPhi/2)
+            outer_poly1 = [FreeCAD.Vector(rp*cos(phi0+i*dPhi), rp*sin(phi0+i*dPhi), z1)
+                           for i in range(numsides+1)]
+            faces = faces + makeFrustrum(numsides, outer_poly0, outer_poly1)
             # update for next zsection
             outer_poly0 = outer_poly1
             z0 = z1
-        # add bottom polygon face
-        outer_faces.append(Part.Face(Part.makePolygon(outer_poly1)))
-        GDMLShared.trace("Total Faces : " + str(len(inner_faces)))
-        outer_shell = Part.makeShell(outer_faces)
-        outer_solid = Part.makeSolid(outer_shell)
-        if rmin0 > 0:
-            inner_shell = Part.makeShell(inner_faces)
-            inner_solid = Part.makeSolid(inner_shell)
-            shape = outer_solid.cut(inner_solid)
-        else:
-            shape = outer_solid
-        # fp.Shape = shell
-        if checkFullCircle(fp.aunit, fp.deltaphi) is False:
-            newShape = angleSectionSolid(fp, rmax1, z0, shape)
-            fp.Shape = newShape
-        else:
-            fp.Shape = shape
+
+        if not fullCircle:  # build side faces
+            side0_verts = []
+            for p in parms:
+                r = p.rmax*mul/cos(dPhi/2)
+                side0_verts.append(FreeCAD.Vector(r*cos(phi0), r*sin(phi0), p.z))
+            for p in reversed(parms):
+                r = p.rmin*mul/cos(dPhi/2)
+                side0_verts.append(FreeCAD.Vector(r*cos(phi0), r*sin(phi0), p.z))
+            side0_verts.append(side0_verts[0])
+            faces.append(Part.Face(Part.makePolygon(side0_verts)))
+            siden_verts = []
+            phi = phi0+numsides*dPhi
+            for p in parms:
+                r = p.rmax*mul/cos(dPhi/2)
+                siden_verts.append(FreeCAD.Vector(r*cos(phi), r*sin(phi), p.z))
+            for p in reversed(parms):
+                r = p.rmin*mul/cos(dPhi/2)
+                siden_verts.append(FreeCAD.Vector(r*cos(phi), r*sin(phi), p.z))
+            siden_verts.append(siden_verts[0])
+            faces.append(Part.Face(Part.makePolygon(siden_verts)))
+
+        # add top polygon face
+        top_verts = outer_poly1 + inner_poly1[::-1]
+        top_verts.append(top_verts[0])
+        if rmax1 > 0:
+            faces.append(Part.Face(Part.makePolygon(top_verts)))
+        GDMLShared.trace("Total Faces : " + str(len(faces)))
+        shell = Part.makeShell(faces)
+        fp.Shape = Part.makeSolid(shell)
         if hasattr(fp, 'scale'):
             super().scale(fp)
         fp.Placement = currPlacement

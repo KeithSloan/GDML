@@ -1139,6 +1139,10 @@ def getMaterial(obj):
         GDMLShared.trace('Has Base - check Base')
         material = getMaterial(obj.Base)
         return material
+    elif hasattr(obj, 'Objects'):
+        GDMLShared.trace('Has Objects - check Objects')
+        material = getMaterial(obj.Objects[0])
+        return material
     else:
         return getDefaultMaterial()
 
@@ -1951,6 +1955,8 @@ def export(exportList, filepath):
 #
 # -------------------------------------------------------------------------------------------------------
 #
+
+
 class SolidExporter:
     # Abstract class to export object as gdml
     solidExporters = {
@@ -2004,6 +2010,10 @@ class SolidExporter:
                     return True
                 elif obj.ArrayType == 'polar':
                     return True
+            elif typeId == 'Clone':
+                clonedObj = obj.Objects[0]
+                return SolidExporter.isSolid(clonedObj)
+
             else:
                 return obj.Proxy.Type in SolidExporter.solidExporters
         else:
@@ -2018,6 +2028,8 @@ class SolidExporter:
                     return OrthoArrayExporter(obj)
                 elif obj.ArrayType == 'polar':
                     return PolarArrayExporter(obj)
+            elif typeId == 'Clone':
+                return CloneExporter(obj)
         else:
             typeId = obj.TypeId
 
@@ -2038,9 +2050,10 @@ class SolidExporter:
 
     def __init__(self, obj):
         self.obj = obj
+        self._name = self.obj.Label
 
     def name(self):
-        return self.obj.Label
+        return self._name
 
     def position(self):
         return self.obj.Placement.Base
@@ -2055,6 +2068,150 @@ class SolidExporter:
         print('This abstract base')
         return
 
+    def hasScale(self):
+        return hasattr(self.obj, 'scale') or hasattr(self.obj, 'Scale')
+
+    def getScale(self):
+        if hasattr(self.obj, 'scale'):
+            return self.obj.scale
+        elif hasattr(self.obj, 'Scale'):
+            return self.obj.Scale
+        else:
+            return FreeCAD.vector(1, 1, 1)
+
+    def _exportScaled(self):
+        if self.hasScale():
+            scale = self.getScale()
+            xml = ET.SubElement(solids, 'scaledSolid', {'name': self._name+'_scaled'})
+            ET.SubElement(xml, 'solidref', {'ref': self.name()})
+            ET.SubElement(xml, 'scale', {'name': self.name()+'_scale',
+                                         'x': str(scale.x),
+                                         'y': str(scale.y),
+                                         'z': str(scale.z)})
+            self._name += '_scaled'
+
+
+class CloneExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+        self._position = self.obj.Placement.Base
+        self._rotation = self.obj.Placement.Rotation
+
+    def position(self):
+        return self._position
+
+    def rotation(self):
+        return self._rotation
+
+    def getScale(self):
+        if self.hasScale():
+            # For rotation first, followed by scaling, the scaling would
+            # need to change: Looking for scaling S', such that
+            # S*R v = R*S' v ==>
+            # S' = R^-1 * S * R
+            # 
+            # s = FreeCAD.Matrix()
+            # s.scale(self.obj.Scale.x, self.obj.Scale.y, self.obj.Scale.z)
+            # rot = FreeCAD.Rotation(self.rotation())
+            # rot.Angle = -rot.Angle
+            # sprime = rot.inverted()*s*rot
+            # return FreeCAD.Vector(sprime.A11, sprime.A22, sprime.A33)
+            #
+            # For scaling then rotating
+            return self.obj.Scale
+        else:
+            return FreeCAD.Vector(1, 1, 1)
+
+    def export(self):
+        if len(self.obj.Objects) == 1:
+            self._export1(self.obj.Objects[0])
+            return
+
+        # Here deal with scaling multi objects:
+        # Make a multiunion of all the objects, then scale that
+        exporters = []
+        for obj in self.obj.Objects:
+            exporter = SolidExporter.getExporter(obj)
+            exporter.export()
+            exporters.append(exporter)
+
+        unionXML = ET.SubElement(solids, 'multiUnion', {'name': self.name()})
+        for i, exporter in enumerate(exporters):
+            volRef = exporter.name()
+            nodeName = f'{self.name()}_{i}'
+            nodeXML = ET.SubElement(unionXML, 'multiUnionNode', {'name': nodeName})
+            ET.SubElement(nodeXML, 'solid', {'ref': volRef})
+            exportPosition(nodeName, nodeXML, exporter.position())
+            rot = FreeCAD.Rotation(exporter.rotation())
+            # for reasons that I don't understand, in booleans and multiunions
+            # angle is NOT reverse, so undo reversal of exportRotation
+            rot.Angle = -rot.Angle
+            exportRotation(nodeName, nodeXML, rot)
+
+        self._exportScaled()
+
+    def _export1(self, clonedObj):
+        # for now we only deal with one cloned object
+        clonedObj = self.obj.Objects[0]
+        exporter = SolidExporter.getExporter(clonedObj)
+        exporter.export()
+        # The scaling of the position turns out to be more complicated
+        # than I first thought (MMH). Draft->scale scales the position of the
+        # the cloned object, i.e., the clone has a placement that already
+        # includes the scaling of the placement of the cloned object, so it is
+        # not necessary to repeat the the scaling. HOWEVER, for several of the
+        # objects we deal with, the position that is
+        # exported to the gdml IS NOT obj.Placment. For example, a regular box
+        # as its origin at corner, whereas a gdml box has its origin at the
+        # center, so we take that into account on export by adding a shift by
+        # half of each dimension. Draft/scale will scale the
+        # cube.Placement, which is (0,0,0), so nothing happens. The solution:
+        # get the clone position, unscale it, then get the exporter.position(),
+        # and then scale THAT. Note that once an object has been cloned, the
+        # clone no longer keepts track of the objects POSITION, but it does
+        # keep track of its dimensions. So if the object is doubles in size,
+        # the (scaled) double will change, but if the object is MOVED, the
+        # clone will not change its position! So the following algorith, would
+        # fail. There is no way to know if the difference between the scaled
+        # position and the clone's position is due to the clone moving or the
+        # object moving.
+        clonedPlacement = FreeCAD.Placement(exporter.placement())  # copy the placement
+        m = clonedPlacement.Matrix
+        invRotation = FreeCAD.Placement(m.inverse()).Rotation
+        clonedPosition = clonedPlacement.Base
+        clonedRotation = clonedPlacement.Rotation
+        # unrotate original position
+        r1 = invRotation*clonedPosition
+        objPosition = FreeCAD.Vector(clonedObj.Placement.Base)
+        if self.hasScale():
+            scale = self.obj.Scale
+            r1.scale(scale.x, scale.y, scale.z)
+            delta = self.obj.Placement.Base - objPosition.scale(scale.x, scale.y, scale.z)
+        else:
+            delta = self.obj.Placement.Base - objPosition
+        objRotation = FreeCAD.Rotation(clonedObj.Placement.Rotation)
+        myRotation = self.obj.Placement.Rotation
+        # additional rotation of clone
+        objRotation.invert()
+        additionalRotation = myRotation*objRotation
+        desiredRotation = additionalRotation*clonedRotation
+        r2 = desiredRotation*r1
+        # if neither clone not original have moved, delta should be zero
+        # If it is not, there is no way to know which moved, but we are working
+        # on the assumption only clone moved
+        # same consideration for rotations. Draft scale copies the obj.Placement.Rotation
+        # But that is not necessarily the exporters rotation (e.g. extruded ellipses
+        # rotation depends on orientation of ellipse). Further, the clone itself
+        # could have an extra rotation.
+        print(r2, delta)
+        clonedPosition = r2 + delta
+        placement = FreeCAD.Placement(clonedPosition, desiredRotation)
+
+        self._position = placement.Base
+        self._rotation = placement.Rotation
+        self._name = exporter.name()
+        self._exportScaled()
+
 
 class BoxExporter(SolidExporter):
     def __init__(self, obj):
@@ -2066,22 +2223,18 @@ class BoxExporter(SolidExporter):
                                       'y': str(self.obj.Width.Value),
                                       'z': str(self.obj.Height.Value),
                                       'lunit': 'mm'})
+        self._exportScaled()
 
     def position(self):
         delta = FreeCAD.Vector(self.obj.Length.Value / 2,
                                self.obj.Width.Value / 2,
                                self.obj.Height.Value / 2)
-        # The interpretation of placement for non GDML Part::xxxx objects
-        # (box, tube, etc)
-        # is different from that of their GDML counterparts.
-        # For GDML solids, the rotation is applied first (about the center of
-        # the solid)
-        # then the rotated solid is translated.
-        # For Part::xxxx solids, the part is first translated, then rotated.
-        # To reproduce the GDML behavior we have to produce a rotated position
-        # to export to gdml
-        unrotatedpos = self.obj.Placement.Base + delta
-        pos = self.obj.Placement.Rotation*unrotatedpos
+        # Part::Box  has its origin at the corner
+        # gdml box has its origin at the center
+        # In FC, rotations are about corner. Ing GDML about
+        # center. The following gives correct position of center
+        # of exported cube
+        pos = self.obj.Placement.Base + self.obj.Placement.Rotation*delta
         return pos
 
 
@@ -2098,12 +2251,12 @@ class CylinderExporter(SolidExporter):
                                        'aunit': 'deg',
                                        'z': str(self.obj.Height.Value),
                                        'lunit': 'mm'})
+        self._exportScaled()
 
     def position(self):
         delta = FreeCAD.Vector(0, 0, self.obj.Height.Value / 2)
         # see comments in BoxExporter
-        unrotatedpos = self.obj.Placement.Base + delta
-        pos = self.obj.Placement.Rotation*unrotatedpos
+        pos = self.obj.Placement.Base + self.obj.Placement.Rotation*delta
         return pos
 
 
@@ -2120,13 +2273,13 @@ class ConeExporter(SolidExporter):
             'aunit': 'deg',
             'z': str(self.obj.Height.Value),
             'lunit': 'mm'})
+        self._exportScaled()
 
     def position(self):
         # Adjustment for position in GDML
         delta = FreeCAD.Vector(0, 0, self.obj.Height.Value / 2)
         # see comments in BoxExporter
-        unrotatedpos = self.obj.Placement.Base + delta
-        pos = self.obj.Placement.Rotation*unrotatedpos
+        pos = self.obj.Placement.Base + self.obj.Placement.Rotation*delta
         return pos
 
 
@@ -2143,6 +2296,7 @@ class SphereExporter(SolidExporter):
             'deltaphi': str(float(self.obj.Angle3.Value)),
             'aunit': 'deg',
             'lunit': 'mm'})
+        self._exportScaled()
 
     def position(self):
         # see comments in processBoxObject
@@ -2250,14 +2404,16 @@ class BooleanExporter(SolidExporter):
             angle = ref2[obj1].rotation().Angle
             rot.Angle = -angle
             exportRotation(ref2[obj1].name(), boolXML, rot)
+        self._exportScaled()
 
 
 class GDMLSolidExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
+        self._name = nameOfGDMLobject(self.obj)
 
     def name(self):
-        return nameOfGDMLobject(self.obj)
+        return self._name
 
 
 class GDMLArb8Exporter(GDMLSolidExporter):
@@ -2284,6 +2440,7 @@ class GDMLArb8Exporter(GDMLSolidExporter):
                                        'v8y': str(self.obj.v8y),
                                        'dz': str(self.obj.dz),
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLBoxExporter(GDMLSolidExporter):
@@ -2296,6 +2453,7 @@ class GDMLBoxExporter(GDMLSolidExporter):
                                       'y': str(self.obj.y),
                                       'z': str(self.obj.z),
                                       'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLConeExporter(GDMLSolidExporter):
@@ -2313,6 +2471,7 @@ class GDMLConeExporter(GDMLSolidExporter):
                                        'aunit': self.obj.aunit,
                                        'z': str(self.obj.z),
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLcutTubeExporter(GDMLSolidExporter):
@@ -2334,6 +2493,7 @@ class GDMLcutTubeExporter(GDMLSolidExporter):
                                           'lowY': str(self.obj.lowY),
                                           'lowZ': str(self.obj.lowZ),
                                           'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLElConeExporter(GDMLSolidExporter):
@@ -2347,6 +2507,7 @@ class GDMLElConeExporter(GDMLSolidExporter):
                                          'zcut': str(self.obj.zcut),
                                          'zmax': str(self.obj.zmax),
                                          'lunit': str(self.obj.lunit)})
+        self._exportScaled()
 
 
 class GDMLEllipsoidExporter(GDMLSolidExporter):
@@ -2361,6 +2522,7 @@ class GDMLEllipsoidExporter(GDMLSolidExporter):
                                             'zcut1': str(self.obj.zcut1),
                                             'zcut2': str(self.obj.zcut2),
                                             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLElTubeExporter(GDMLSolidExporter):
@@ -2373,6 +2535,7 @@ class GDMLElTubeExporter(GDMLSolidExporter):
                                          'dy': str(self.obj.dy),
                                          'dz': str(self.obj.dz),
                                          'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLHypeExporter(GDMLSolidExporter):
@@ -2388,6 +2551,7 @@ class GDMLHypeExporter(GDMLSolidExporter):
                                        'outst': str(self.obj.outst),
                                        'aunit': self.obj.aunit,
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLParaboloidExporter(GDMLSolidExporter):
@@ -2400,6 +2564,7 @@ class GDMLParaboloidExporter(GDMLSolidExporter):
                                              'rhi': str(self.obj.rhi),
                                              'dz': str(self.obj.dz),
                                              'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLOrbExporter(GDMLSolidExporter):
@@ -2410,6 +2575,7 @@ class GDMLOrbExporter(GDMLSolidExporter):
         ET.SubElement(solids, 'orb', {'name': self.name(),
                                       'r': str(self.obj.r),
                                       'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLParaExporter(GDMLSolidExporter):
@@ -2426,6 +2592,7 @@ class GDMLParaExporter(GDMLSolidExporter):
                                        'phi': str(self.obj.phi),
                                        'aunit': str(self.obj.aunit),
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLPolyconeExporter(GDMLSolidExporter):
@@ -2439,6 +2606,7 @@ class GDMLPolyconeExporter(GDMLSolidExporter):
             'deltaphi': str(self.obj.deltaphi),
             'aunit': self.obj.aunit,
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
         for zplane in self.obj.OutList:
             ET.SubElement(cone, 'zplane', {'rmin': str(zplane.rmin),
@@ -2457,6 +2625,7 @@ class GDMLGenericPolyconeExporter(GDMLSolidExporter):
             'deltaphi': str(self.obj.deltaphi),
             'aunit': self.obj.aunit,
             'lunit': self.obj.lunit})
+        self._exportScaled()
         for rzpoint in self.obj.OutList:
             ET.SubElement(cone, 'rzpoint', {'r': str(rzpoint.r),
                                             'z': str(rzpoint.z)})
@@ -2474,6 +2643,7 @@ class GDMLGenericPolyhedraExporter(GDMLSolidExporter):
             'numsides': str(self.obj.numsides),
             'aunit': self.obj.aunit,
             'lunit': self.obj.lunit})
+        self._exportScaled()
         for rzpoint in self.obj.OutList:
             ET.SubElement(polyhedra, 'rzpoint', {'r': str(rzpoint.r),
                                                  'z': str(rzpoint.z)})
@@ -2491,6 +2661,7 @@ class GDMLPolyhedraExporter(GDMLSolidExporter):
             'numsides': str(self.obj.numsides),
             'aunit': self.obj.aunit,
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
         for zplane in self.obj.OutList:
             ET.SubElement(poly, 'zplane', {'rmin': str(zplane.rmin),
@@ -2513,6 +2684,7 @@ class GDMLSphereExporter(GDMLSolidExporter):
             'deltatheta': str(self.obj.deltatheta),
             'aunit': self.obj.aunit,
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTessellatedExporter(GDMLSolidExporter):
@@ -2528,6 +2700,7 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
 
         '''
         tess = ET.SubElement(solids, 'tessellated', {'name': tessName})
+
         #for i, v in enumerate(self.obj.Shape.Vertexes):
         for i, v in enumerate(self.obj.Shape.Vertexes):
             vertexHashcodeDict[v.hashCode()] = i
@@ -2588,7 +2761,7 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
                    'vertex3': tessVname+str(i2),
                    'vertex4': tessVname+str(i3),
                    'type': 'ABSOLUTE'})
-
+        self._exportScaled()
 
 
 class GDMLTetraExporter(GDMLSolidExporter):
@@ -2611,6 +2784,7 @@ class GDMLTetraExporter(GDMLSolidExporter):
                                       'vertex2': v2Name,
                                       'vertex3': v3Name,
                                       'vertex4': v4Name})
+        self._exportScaled()
 
 
 class GDMLTetrahedronExporter(GDMLSolidExporter):
@@ -2655,6 +2829,7 @@ class GDMLTetrahedronExporter(GDMLSolidExporter):
             # ET.SubElement(physvol, 'position')
             # ET.SubElement(physvol, 'rotation')
             count += 1
+        self._exportScaled()
 
 
 class GDMLTorusExporter(GDMLSolidExporter):
@@ -2670,6 +2845,7 @@ class GDMLTorusExporter(GDMLSolidExporter):
                                         'deltaphi': str(self.obj.deltaphi),
                                         'aunit': self.obj.aunit,
                                         'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTrapExporter(GDMLSolidExporter):
@@ -2691,6 +2867,7 @@ class GDMLTrapExporter(GDMLSolidExporter):
                                        'alpha2': str(self.obj.alpha),
                                        'aunit': self.obj.aunit,
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTrdExporter(GDMLSolidExporter):
@@ -2705,6 +2882,7 @@ class GDMLTrdExporter(GDMLSolidExporter):
                                       'y1': str(self.obj.y1),
                                       'y2': str(self.obj.y2),
                                       'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTubeExporter(GDMLSolidExporter):
@@ -2720,6 +2898,7 @@ class GDMLTubeExporter(GDMLSolidExporter):
                                        'aunit': self.obj.aunit,
                                        'z': str(self.obj.z),
                                        'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTwistedboxExporter(GDMLSolidExporter):
@@ -2735,6 +2914,7 @@ class GDMLTwistedboxExporter(GDMLSolidExporter):
             'z': str(self.obj.z),
             'aunit': str(self.obj.aunit),
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTwistedtrdExporter(GDMLSolidExporter):
@@ -2752,6 +2932,7 @@ class GDMLTwistedtrdExporter(GDMLSolidExporter):
             'z': str(self.obj.z),
             'aunit': str(self.obj.aunit),
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTwistedtrapExporter(GDMLSolidExporter):
@@ -2774,6 +2955,7 @@ class GDMLTwistedtrapExporter(GDMLSolidExporter):
             'Alph': str(self.obj.Alph),
             'aunit': str(self.obj.aunit),
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLTwistedtubsExporter(GDMLSolidExporter):
@@ -2790,6 +2972,7 @@ class GDMLTwistedtubsExporter(GDMLSolidExporter):
             'phi': str(self.obj.phi),
             'aunit': str(self.obj.aunit),
             'lunit': self.obj.lunit})
+        self._exportScaled()
 
 
 class GDMLXtruExporter(GDMLSolidExporter):
@@ -2810,6 +2993,7 @@ class GDMLXtruExporter(GDMLSolidExporter):
                     'xOffset': str(items.xOffset),
                     'yOffset': str(items.yOffset),
                     'scalingFactor': str(items.scalingFactor)})
+        self._exportScaled()
 
 
 class GDML2dVertexExporter(GDMLSolidExporter):
@@ -2855,15 +3039,16 @@ class MultiFuseExporter(SolidExporter):
             num += 1
 
         GDMLShared.trace('Return MultiFuse')
+        self._exportScaled()
 
 
 class OrthoArrayExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
+        self._name = 'MultiUnion-' + self.obj.Label
 
     def name(self):
-        solidName = 'MultiUnion-' + self.obj.Label
-        return solidName
+        return self._name
 
     def export(self):
         base = self.obj.OutList[0]
@@ -2894,6 +3079,7 @@ class OrthoArrayExporter(SolidExporter):
                         'y': str(translate.y),
                         'z': str(translate.z),
                         'unit': 'mm'})
+        self._exportScaled()
 
 
 class PolarArrayExporter(SolidExporter):
@@ -2927,6 +3113,8 @@ class PolarArrayExporter(SolidExporter):
             ET.SubElement(nodeXML, 'solid', {'ref': volRef})
             exportPosition(nodeName, nodeXML, pos)
             exportRotation(nodeName, nodeXML, rot)
+        self._exportScaled()
+
 #
 # -------------------------------------- revolutionExporter ----------------------------------------------------------------
 #
@@ -2966,7 +3154,8 @@ class RevolvedClosedCurve(ClosedCurve):
 class RevolvedCircle(RevolvedClosedCurve):
     def __init__(self, name, edgelist, angle, axis):
         super().__init__(name, edgelist, angle, axis)
-        self.position = edgelist[0].Curve.Center
+        z = edgelist[0].Curve.Center.z
+        self.position = FreeCAD.Vector(0, 0, z)
 
     def export(self):
         edge = self.edgeList[0]
