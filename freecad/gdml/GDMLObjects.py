@@ -1,4 +1,4 @@
-supdate# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # insert date with Ctrl-u ESC-! date
 # Wed Jan 26 04:44:48 PM PST 2022
 #
