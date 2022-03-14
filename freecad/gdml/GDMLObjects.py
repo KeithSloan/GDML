@@ -369,7 +369,7 @@ class GDMLsolid:
         #obj.setEditorMode('Placement', 2)
 
     def getMaterial(self):
-        return obj.material
+        return self.obj.material
 
     def scale(self,fp):
         print(f'Rescale : {fp.scale}')
