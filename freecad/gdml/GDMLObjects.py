@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+supdate# -*- coding: utf-8 -*-
 # insert date with Ctrl-u ESC-! date
 # Wed Jan 26 04:44:48 PM PST 2022
 #
@@ -64,7 +64,8 @@ def addMaterialsFromGroup(doc, MatList, grpName):
     if mmats is not None:
         if hasattr(mmats, 'Group'):
             for i in mmats.Group:
-                MatList.append(i.Name)
+                if i.Label != 'Geant4':
+                   MatList.append(i.Label)
 
 
 def rebuildMaterialsList():
@@ -72,7 +73,12 @@ def rebuildMaterialsList():
     print('Restore MaterialsList from Materials Lists')
     doc = FreeCAD.ActiveDocument
     addMaterialsFromGroup(doc, MaterialsList, "Materials")
-    addMaterialsFromGroup(doc, MaterialsList, "G4Materials")
+    #print(MaterialsList)
+    G4Materials = doc.getObject('G4Materials')
+    if G4Materials is not None:
+       for g in G4Materials.Group:
+           #print(g.Label)
+           addMaterialsFromGroup(doc, MaterialsList, g.Label)
     # print('MaterialsList')
     # print(MaterialsList)
 
@@ -515,6 +521,7 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
                                                   faceYminA, faceYminB,
                                                   faceYmaxA, faceYmaxB,
                                                   faceZmin, faceZmax]))
+        if hasattr(fp,'scale'): super().scale(fp)        
         fp.Placement = currPlacement
 
 
@@ -2070,7 +2077,6 @@ class GDMLTwistedtubs(GDMLsolid):
 
         if prop in ['scale']:
             self.createGeometry(fp)
-            super().scale(fp)
 
     # def execute(self, fp): in GDMLsolid
 
