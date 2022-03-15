@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="Revolve1_pos" unit="mm" x="0.0" y="0.0" z="-4.959715"/>
+    <rotation name="Revolve1_rot" unit="deg" x="0" y="0" z="0"/>
+    <position name="P-Part1" unit="mm" z="9.91943"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="50.0" y="50.0" z="50.0" lunit="mm"/>
+    <torus name="Revolve0" rmin="0" rmax="2.521373" rtor="15.115493" startphi="0" deltaphi="180.0" aunit="deg" lunit="mm"/>
+    <genericPolycone name="Revolve1" startphi="0" deltaphi="180.0" aunit="deg" lunit="mm">
+      <rzpoint r="10.0" z="10.0"/>
+      <rzpoint r="20.0" z="10.0"/>
+      <rzpoint r="20.0" z="0.0"/>
+      <rzpoint r="10.0" z="0.0"/>
+    </genericPolycone>
+    <union name="Revolve1_bool">
+      <first ref="Revolve0"/>
+      <second ref="Revolve1"/>
+      <positionref ref="Revolve1_pos"/>
+      <rotationref ref="Revolve1_rot"/>
+    </union>
+    <scaledSolid name="Revolve1_bool_scaled">
+      <solidref ref="Revolve1_bool"/>
+      <scale name="Revolve1_bool_scale" x="1.0" y="1.0" z="2.0"/>
+    </scaledSolid>
+  </solids>
+  <structure>
+    <volume name="Part">
+      <materialref ref="G4_Pb"/>
+      <solidref ref="Revolve1_bool_scaled"/>
+      <auxiliary auxtype="Color" auxvalue="#ffdca800"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="P-Part1"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>
