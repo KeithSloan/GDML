@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="P-Sphere1" unit="mm" x="20.0"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <position name="P-Part2" unit="mm" x="-76.5" y="-45.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="600.0" y="600.0" z="600.0" lunit="mm"/>
+    <sphere name="Sphere" rmin="10.0" rmax="20.0" startphi="0.0" deltaphi="2.02" starttheta="0.0" deltatheta="2.02" aunit="rad" lunit="mm"/>
+    <torus name="Torus" rmin="0.0" rmax="5.0" rtor="10.0" startphi="10.0" deltaphi="360.0" aunit="deg" lunit="mm"/>
+    <multiUnion name="MultiFuseFusion">
+      <multiUnionNode name="node-1">
+        <solid ref="Sphere"/>
+        <positionref ref="P-Sphere1"/>
+        <rotationref ref="identity"/>
+      </multiUnionNode>
+      <multiUnionNode name="node-2">
+        <solid ref="Torus"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </multiUnionNode>
+    </multiUnion>
+    <multiUnion name="MultiUnion-Array">
+      <multiUnionNode name="MultiUnion-Array_0_0_0">
+        <solid ref="MultiFuseFusion"/>
+        <position x="0.0" y="0.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_0_1_0">
+        <solid ref="MultiFuseFusion"/>
+        <position x="0.0" y="100.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1_0_0">
+        <solid ref="MultiFuseFusion"/>
+        <position x="100.0" y="0.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1_1_0">
+        <solid ref="MultiFuseFusion"/>
+        <position x="100.0" y="100.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+    </multiUnion>
+    <scaledSolid name="MultiUnion-Array_scaled">
+      <solidref ref="MultiUnion-Array"/>
+      <scale name="MultiUnion-Array_scale" x="2.5" y="1.0" z="1.0"/>
+    </scaledSolid>
+  </solids>
+  <structure>
+    <volume name="Part">
+      <materialref ref="G4_BGO"/>
+      <solidref ref="MultiUnion-Array_scaled"/>
+      <auxiliary auxtype="Color" auxvalue="#00abff00"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="P-Part2"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

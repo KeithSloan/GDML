@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="P-Extrude0020_c2_tube1" unit="mm" x="-0.837442" y="19.708573" z="5.0"/>
+    <position name="P-Extrude0020_c4_tube2" unit="mm" x="4.775865" y="9.611906" z="5.0"/>
+    <position name="P-Extrude0020_c2_s3" unit="mm" z="-0.1"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-Extrude0030_c0_tube4" unit="mm" x="-12.858757337827328" z="5.0"/>
+    <position name="Extrude0011_pos" unit="mm" x="0.0" y="0.0" z="-0.1"/>
+    <rotation name="Extrude0011_rot" unit="deg" x="0" y="0" z="0"/>
+    <position name="Extrude0012_pos" unit="mm" x="27.298664" y="-2.388348" z="4.9"/>
+    <rotation name="Extrude0012_rot" unit="deg" x="0" y="0" z="0"/>
+    <position name="P-Extrude0_c1_tube5" unit="mm" x="3.171572889881886" y="-3e-16" z="5.0"/>
+    <position name="P-Extrude0_c2_tube6" unit="mm" x="9.171572889881885" y="4.14020057e-08" z="5.0"/>
+    <position name="P-Extrude0_c2_s7" unit="mm" z="-0.1"/>
+    <position name="Extrude1_pos" unit="mm" x="0.0" y="0.0" z="4.9"/>
+    <rotation name="Extrude1_rot" unit="deg" x="0" y="0" z="0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="100.0" y="100.0" z="100.0" lunit="mm"/>
+    <xtru name="Extrude0020_c2_xtru" lunit="mm">
+      <twoDimVertex x="5.508430300627767" y="18.081397760299804"/>
+      <twoDimVertex x="-6.003868043567788" y="15.680442359999278"/>
+      <twoDimVertex x="-3.6029126432672607" y="4.168144015803723"/>
+      <twoDimVertex x="7.909385700928294" y="6.569099416104249"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="Extrude0020_c2_tube" rmax="5.88" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <intersection name="Extrude0020_c2">
+      <first ref="Extrude0020_c2_xtru"/>
+      <second ref="Extrude0020_c2_tube"/>
+      <positionref ref="P-Extrude0020_c2_tube1"/>
+    </intersection>
+    <xtru name="Extrude0020_c4_xtru" lunit="mm">
+      <twoDimVertex x="2.2037105967545623" y="5.551520318041661"/>
+      <twoDimVertex x="9.58217625208692" y="9.56627368195841"/>
+      <twoDimVertex x="13.59692961600367" y="2.187808026626054"/>
+      <twoDimVertex x="6.218463960671311" y="-1.826945337290696"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="Extrude0020_c4_tube" rmax="4.2" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <intersection name="Extrude0020_c4">
+      <first ref="Extrude0020_c4_xtru"/>
+      <second ref="Extrude0020_c4_tube"/>
+      <positionref ref="P-Extrude0020_c4_tube2"/>
+    </intersection>
+    <xtru name="Extrude0020_xtru" lunit="mm">
+      <twoDimVertex x="2.827720283661011" y="5.891055000000034"/>
+      <twoDimVertex x="-5.601642999999999" y="8.460434"/>
+      <twoDimVertex x="-5.261463195146378" y="15.835275120299084"/>
+      <twoDimVertex x="4.766025452206357" y="17.926565"/>
+      <twoDimVertex x="8.95816656518047" y="9.226739000000002"/>
+      <twoDimVertex x="2.827720283661011" y="5.891055000000034"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <scaledSolid name="Extrude0020_c2_s">
+      <solidref ref="Extrude0020_c2"/>
+      <scale name="Extrude0020_c2_ss" x="1" y="1" z="1.1"/>
+    </scaledSolid>
+    <subtraction name="boolExtrude0020_c2">
+      <first ref="Extrude0020_xtru"/>
+      <second ref="Extrude0020_c2_s"/>
+      <positionref ref="P-Extrude0020_c2_s3"/>
+    </subtraction>
+    <union name="Extrude0020">
+      <first ref="boolExtrude0020_c2"/>
+      <second ref="Extrude0020_c4"/>
+    </union>
+    <xtru name="Extrude0030_c0_xtru" lunit="mm">
+      <twoDimVertex x="-16.969140892659162" y="3.3458510291759462"/>
+      <twoDimVertex x="-7.881697649598116" y="1.8217708245203244"/>
+      <twoDimVertex x="-6.357617444942494" y="10.909214067581372"/>
+      <twoDimVertex x="-15.44506068800354" y="12.433294272236994"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="Extrude0030_c0_tube" rmax="4.607180405792652" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <intersection name="Extrude0030_c0">
+      <first ref="Extrude0030_c0_xtru"/>
+      <second ref="Extrude0030_c0_tube"/>
+      <positionref ref="P-Extrude0030_c0_tube4"/>
+    </intersection>
+    <xtru name="Extrude0010" lunit="mm">
+      <twoDimVertex x="15.238364999999998" y="8.333906000000002"/>
+      <twoDimVertex x="31.480168000000003" y="8.333906000000002"/>
+      <twoDimVertex x="31.480168000000003" y="-6.586529000000001"/>
+      <twoDimVertex x="15.238364999999998" y="-6.586529000000001"/>
+      <twoDimVertex x="15.238364999999998" y="8.333906000000002"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <xtru name="Extrude0011" lunit="mm">
+      <twoDimVertex x="22.615997" y="6.186685000000001"/>
+      <twoDimVertex x="27.736293" y="2.3326980000000006"/>
+      <twoDimVertex x="23.166565999999996" y="-4.384251"/>
+      <twoDimVertex x="18.101327" y="-0.640378"/>
+      <twoDimVertex x="22.615997" y="-1.013032"/>
+      <twoDimVertex x="22.615997" y="6.186685000000001"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <scaledSolid name="Extrude0011_s">
+      <solidref ref="Extrude0011"/>
+      <scale name="Extrude0011_ss" x="1" y="1" z="1.1"/>
+    </scaledSolid>
+    <subtraction name="Extrude0011_bool">
+      <first ref="Extrude0010"/>
+      <second ref="Extrude0011_s"/>
+      <positionref ref="Extrude0011_pos"/>
+      <rotationref ref="Extrude0011_rot"/>
+    </subtraction>
+    <tube name="Extrude0012" rmax="2.0" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <scaledSolid name="Extrude0012_s">
+      <solidref ref="Extrude0012"/>
+      <scale name="Extrude0012_ss" x="1" y="1" z="1.1"/>
+    </scaledSolid>
+    <subtraction name="Extrude0012_bool">
+      <first ref="Extrude0011_bool"/>
+      <second ref="Extrude0012_s"/>
+      <positionref ref="Extrude0012_pos"/>
+      <rotationref ref="Extrude0012_rot"/>
+    </subtraction>
+    <xtru name="Extrude0_c1_xtru" lunit="mm">
+      <twoDimVertex x="6.792893236237362" y="-0.6213203503093851"/>
+      <twoDimVertex x="2.5502525626175627" y="3.621320350309385"/>
+      <twoDimVertex x="6.792893263236333" y="7.863961023929185"/>
+      <twoDimVertex x="11.035533936856133" y="3.6213203233104148"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="Extrude0_c1_tube" rmax="3.0" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <intersection name="Extrude0_c1">
+      <first ref="Extrude0_c1_xtru"/>
+      <second ref="Extrude0_c1_tube"/>
+      <positionref ref="P-Extrude0_c1_tube5"/>
+    </intersection>
+    <xtru name="Extrude0_c2_xtru" lunit="mm">
+      <twoDimVertex x="12.042582123691535" y="-1.0073059373867481"/>
+      <twoDimVertex x="6.128990766190349" y="0.00730593741430513"/>
+      <twoDimVertex x="5.114378891389296" y="-5.906285420086879"/>
+      <twoDimVertex x="11.027970248890481" y="-6.920897294887932"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="Extrude0_c2_tube" rmax="3.0" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <intersection name="Extrude0_c2">
+      <first ref="Extrude0_c2_xtru"/>
+      <second ref="Extrude0_c2_tube"/>
+      <positionref ref="P-Extrude0_c2_tube6"/>
+    </intersection>
+    <xtru name="Extrude0_xtru" lunit="mm">
+      <twoDimVertex x="-3.5" y="3.0"/>
+      <twoDimVertex x="3.1715729089730407" y="2.9999999999999996"/>
+      <twoDimVertex x="6.171572889881885" y="0.0"/>
+      <twoDimVertex x="11.999999999999998" y="-0.999999999972443"/>
+      <twoDimVertex x="11.999999999999998" y="-7.0"/>
+      <twoDimVertex x="4.0" y="-7.0"/>
+      <twoDimVertex x="-3.5" y="-3.0"/>
+      <twoDimVertex x="-3.5" y="3.0"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="10.0" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <union name="boolExtrude0_c1">
+      <first ref="Extrude0_xtru"/>
+      <second ref="Extrude0_c1"/>
+    </union>
+    <scaledSolid name="Extrude0_c2_s">
+      <solidref ref="Extrude0_c2"/>
+      <scale name="Extrude0_c2_ss" x="1" y="1" z="1.1"/>
+    </scaledSolid>
+    <subtraction name="Extrude0">
+      <first ref="boolExtrude0_c1"/>
+      <second ref="Extrude0_c2_s"/>
+      <positionref ref="P-Extrude0_c2_s7"/>
+    </subtraction>
+    <tube name="Extrude1" rmax="2.0" z="10.0" startphi="0" deltaphi="360" aunit="deg" lunit="mm"/>
+    <scaledSolid name="Extrude1_s">
+      <solidref ref="Extrude1"/>
+      <scale name="Extrude1_ss" x="1" y="1" z="1.1"/>
+    </scaledSolid>
+    <subtraction name="Extrude1_bool">
+      <first ref="Extrude0"/>
+      <second ref="Extrude1_s"/>
+      <positionref ref="Extrude1_pos"/>
+      <rotationref ref="Extrude1_rot"/>
+    </subtraction>
+  </solids>
+  <structure>
+    <volume name="Part004">
+      <materialref ref="G4_Al"/>
+      <solidref ref="Extrude1_bool"/>
+      <auxiliary auxtype="Color" auxvalue="#cccccc00"/>
+    </volume>
+    <volume name="Part003">
+      <materialref ref="G4_Nb"/>
+      <solidref ref="Extrude0012_bool"/>
+      <auxiliary auxtype="Color" auxvalue="#ff548000"/>
+    </volume>
+    <volume name="Part">
+      <materialref ref="G4_B"/>
+      <solidref ref="Extrude0030_c0"/>
+      <auxiliary auxtype="Color" auxvalue="#0000ff00"/>
+    </volume>
+    <volume name="Part002">
+      <materialref ref="G4_TEFLON"/>
+      <solidref ref="Extrude0020"/>
+      <auxiliary auxtype="Color" auxvalue="#00ff0000"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part002">
+        <volumeref ref="Part002"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="PV-Part003">
+        <volumeref ref="Part003"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="PV-Part004">
+        <volumeref ref="Part004"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

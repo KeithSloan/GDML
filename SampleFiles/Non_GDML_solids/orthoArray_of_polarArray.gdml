@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-MultiUnion-Array_01" unit="mm" x="15.0"/>
+    <position name="P-MultiUnion-Array_12" unit="mm" x="4.635254915624212" y="14.265847744427305"/>
+    <rotation name="R-MultiUnion-Array_11" unit="deg" z="72.00000000000001"/>
+    <position name="P-MultiUnion-Array_23" unit="mm" x="-12.13525491562421" y="8.816778784387097"/>
+    <rotation name="R-MultiUnion-Array_22" unit="deg" z="144.00000000000003"/>
+    <position name="P-MultiUnion-Array_34" unit="mm" x="-12.135254915624213" y="-8.816778784387095"/>
+    <rotation name="R-MultiUnion-Array_33" unit="deg" z="-144.0"/>
+    <position name="P-MultiUnion-Array_45" unit="mm" x="4.635254915624207" y="-14.265847744427305"/>
+    <rotation name="R-MultiUnion-Array_44" unit="deg" z="-72.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="400.0" y="400.0" z="400.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+    <tube name="Tube" rmin="0.0" rmax="3.0" startphi="0.0" deltaphi="360.0" aunit="deg" z="20.0" lunit="mm"/>
+    <subtraction name="Cut">
+      <first ref="Box"/>
+      <second ref="Tube"/>
+      <positionref ref="center"/>
+      <rotationref ref="identity"/>
+    </subtraction>
+    <multiUnion name="MultiUnion-Array">
+      <multiUnionNode name="MultiUnion-Array_0">
+        <solid ref="Cut"/>
+        <positionref ref="P-MultiUnion-Array_01"/>
+        <rotationref ref="identity"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1">
+        <solid ref="Cut"/>
+        <positionref ref="P-MultiUnion-Array_12"/>
+        <rotationref ref="R-MultiUnion-Array_11"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_2">
+        <solid ref="Cut"/>
+        <positionref ref="P-MultiUnion-Array_23"/>
+        <rotationref ref="R-MultiUnion-Array_22"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_3">
+        <solid ref="Cut"/>
+        <positionref ref="P-MultiUnion-Array_34"/>
+        <rotationref ref="R-MultiUnion-Array_33"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_4">
+        <solid ref="Cut"/>
+        <positionref ref="P-MultiUnion-Array_45"/>
+        <rotationref ref="R-MultiUnion-Array_44"/>
+      </multiUnionNode>
+    </multiUnion>
+    <multiUnion name="MultiUnion-Array001">
+      <multiUnionNode name="MultiUnion-Array001_0_0_0">
+        <solid ref="MultiUnion-Array"/>
+        <position x="0.0" y="0.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array001_0_1_0">
+        <solid ref="MultiUnion-Array"/>
+        <position x="0.0" y="100.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array001_1_0_0">
+        <solid ref="MultiUnion-Array"/>
+        <position x="100.0" y="0.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array001_1_1_0">
+        <solid ref="MultiUnion-Array"/>
+        <position x="100.0" y="100.0" z="0.0" unit="mm"/>
+      </multiUnionNode>
+    </multiUnion>
+  </solids>
+  <structure>
+    <volume name="Arrays_of_solids">
+      <materialref ref="G4_Si"/>
+      <solidref ref="MultiUnion-Array001"/>
+      <auxiliary auxtype="Color" auxvalue="#ffdca800"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Arrays_of_solids">
+        <volumeref ref="Arrays_of_solids"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

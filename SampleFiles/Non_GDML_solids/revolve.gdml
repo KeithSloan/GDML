@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="Revolve1_pos" unit="mm" x="0.0" y="0.0" z="0.0"/>
+    <rotation name="Revolve1_rot" unit="deg" x="0" y="0" z="0"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="200.0" y="200.0" z="200.0" lunit="mm"/>
+    <genericPolycone name="Revolve0" startphi="0" deltaphi="180.0" aunit="deg" lunit="mm">
+      <rzpoint r="46.58933999999999" z="15.878901999999998"/>
+      <rzpoint r="59.0780691613274" z="22.014265563551728"/>
+      <rzpoint r="67.27185095964724" z="23.991626347968083"/>
+      <rzpoint r="72.79300750458526" z="23.44534555800424"/>
+      <rzpoint r="76.96614605604319" z="21.210717708151417"/>
+      <rzpoint r="80.92429854669194" z="16.855664536989668"/>
+      <rzpoint r="83.25052427911598" z="11.215838987057591"/>
+      <rzpoint r="83.85817826012489" z="4.262051123638812"/>
+      <rzpoint r="82.3983368501389" z="-3.7433310141212517"/>
+      <rzpoint r="78.55978814753664" z="-12.435335039953687"/>
+      <rzpoint r="73.52859051741346" z="-19.074306073333585"/>
+      <rzpoint r="68.8044838453156" z="-22.16514129703705"/>
+      <rzpoint r="64.2445945750239" z="-22.673256433038766"/>
+      <rzpoint r="58.338977615040434" z="-21.404984285748768"/>
+      <rzpoint r="49.52458777657077" z="-20.014124259916905"/>
+      <rzpoint r="44.25233053630326" z="-21.371606508425227"/>
+      <rzpoint r="37.230820698554716" z="-23.604403074265043"/>
+      <rzpoint r="32.75175239781081" z="-23.143922278633447"/>
+      <rzpoint r="29.940339506076644" z="-20.685485032306577"/>
+      <rzpoint r="28.0920392249102" z="-16.028439495292663"/>
+      <rzpoint r="23.458230712715363" z="-0.08058548173155876"/>
+      <rzpoint r="23.254299786657285" z="7.882079459777207"/>
+      <rzpoint r="25.309229007182687" z="15.508373484365356"/>
+      <rzpoint r="28.49770384450475" z="20.084567416318595"/>
+      <rzpoint r="32.38309835699345" z="22.051967459467985"/>
+      <rzpoint r="37.066794653176785" z="21.71931517053711"/>
+      <rzpoint r="42.975459123719254" z="18.718010285996687"/>
+      <rzpoint r="44.73545028550409" z="17.416502360446792"/>
+      <rzpoint r="46.58933999999999" z="15.878901999999998"/>
+    </genericPolycone>
+    <genericPolycone name="Revolve1" startphi="0" deltaphi="180.0" aunit="deg" lunit="mm">
+      <rzpoint r="39.99999999999999" z="9.875467999999998"/>
+      <rzpoint r="59.99999999999999" z="9.875467999999998"/>
+      <rzpoint r="59.99999999999999" z="-10.124531999999999"/>
+      <rzpoint r="39.99999999999999" z="-10.124531999999999"/>
+    </genericPolycone>
+    <subtraction name="Revolve1_bool">
+      <first ref="Revolve0"/>
+      <second ref="Revolve1"/>
+      <positionref ref="Revolve1_pos"/>
+      <rotationref ref="Revolve1_rot"/>
+    </subtraction>
+  </solids>
+  <structure>
+    <volume name="Part">
+      <materialref ref="G4_ALANINE"/>
+      <solidref ref="Revolve1_bool"/>
+      <auxiliary auxtype="Color" auxvalue="#ff000000"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>
