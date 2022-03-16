@@ -3148,7 +3148,14 @@ class RevolvedClosedCurve(ClosedCurve):
         self.deflectionFraction = 0.001
 
     def export(self):
-        print('export not implemented')
+        verts = self.discretize()
+        exportPolycone(self.name, verts, self.angle)
+
+    def discretize(self):
+        deflection = Deviation*radialExtent(self.edgeList)
+        print(f'Deflection = {deflection}')
+        edge = self.edgeList[0]
+        return edge.discretize(Deflection=deflection)
 
 
 class RevolvedCircle(RevolvedClosedCurve):
@@ -3164,352 +3171,6 @@ class RevolvedCircle(RevolvedClosedCurve):
         y = edge.Curve.Center.y
         rtor = math.sqrt(x*x + y*y)
         exportTorus(self.name, rmax, rtor, self.angle)
-
-
-class RevolvedArcSection(RevolvedClosedCurve):
-    def __init__(self, name, edgelist, angle, axis):
-        super().__init__(name, edgelist, angle, axis)
-        # Note extrusion polyogn will be in absolute coordinates
-        # since arc section is relative to that, position is actually (0,0,0)
-        # same goes for rotation
-
-    # return midpoint of arc, relative to center
-    def midPoint(self):
-        edge = self.edgeList[0]
-        radius = edge.Curve.Radius
-        thetmid = (edge.FirstParameter+edge.LastParameter)/2
-        arcAngle = edge.LastParameter - edge.FirstParameter
-        v0 = edge.Vertexes[0].Point
-        v1 = edge.Vertexes[1].Point
-        vc = (v0+v1)/2  # chord center
-        vc_vcenter = vc - edge.Curve.Center
-        if vc_vcenter.Length < 0.001:  # arc chord = diameter
-            # Although it seems that this should always work, I've seen cases in which
-            # each of the first, last parameters were shifter by pi and thetmid
-            # was off by pi
-            vmid = edge.Curve.Center + radius * \
-                Vector(math.cos(thetmid), math.sin(thetmid), 0)
-        else:
-            # unit vector fom center of circle to center of chord
-            u_vc_vcenter = vc_vcenter.normalize()
-            if arcAngle < math.pi:  # shorter of two arc segments, mid point and center are on opposite side
-                vmid = edge.Curve.Center + edge.Curve.Radius*u_vc_vcenter
-            else:  # longer of two arc segments: midpoint is on opposite side of chord
-                vmid = edge.Curve.Center - edge.Curve.Radius*u_vc_vcenter
-
-        return vmid
-
-    def discretize(self):
-        edge = self.edgeList[0]
-        return edge.discretize(Deflection=Deviation*edge.Curve.Radius)
-
-    def export(self):
-        global solids
-
-        edge = self.edgeList[0]
-        radius = edge.Curve.Radius
-        # First form a bounding rectangle (polygon) for the arc.
-        # Arc edges
-        v1 = edge.Vertexes[0].Point
-        v2 = edge.Vertexes[1].Point
-        vmid = self.midPoint()
-
-        # midpoint of chord
-        vc = (v1+v2)/2
-        v = v2-v1
-        u = v.normalize()
-        # extend the ends of the chord so extrusion can cut all of circle, if needed
-        v1 = vc + radius*u
-        v2 = vc - radius*u
-        # component of vmid perpendicular to u
-        vc_vmid = vmid - vc
-        n = vc_vmid - u.dot(vc_vmid)*u
-        n.normalize()
-        # complete edges of box paerpendicular to chord, toward mid arc point
-        v3 = v2 + 2*radius*n
-        v4 = v1 + 2*radius*n
-
-        xtruName = self.name+'_xtru'
-        exportPolycone(xtruName, [v1, v2, v3, v4], self.angle)
-
-        # tube to be cut1
-        tubeName = self.name+'_tube'
-        x = edge.Curve.Center.x
-        y = edge.Curve.Center.y
-        rtor = math.sqrt(x*x + y*y)
-        exportTorus(tubeName, edge.Curve.Radius, rtor, self.angle)
-
-        # note, it is mandatory that name be that of ClosedCurve
-        intersect = ET.SubElement(solids, 'intersection', {'name': self.name})
-        ET.SubElement(intersect, 'first', {'ref': xtruName})
-        ET.SubElement(intersect, 'second', {'ref': tubeName})
-        pos = edge.Curve.Center + Vector(0, 0, self.height/2)
-        exportPosition(tubeName, intersect, pos)
-
-
-class RevolvedEllipse(RevolvedClosedCurve):
-    def __init__(self, name, edgelist, angle, axis):
-        super().__init__(name, edgelist, angle, axis)
-        curve = edgelist[0].Curve
-        self.position = curve.Center
-
-    def export(self):
-        edge = self.edgeList[0]
-        exportEllipticalTube(self.name, edge.Curve.MajorRadius,
-                             edge.Curve.MinorRadius,
-                             self.height)
-
-    def discretize(self):
-        edge = self.edgeList[0]
-        a = edge.Curve.MajorRadius
-        b = edge.Curve.MinorRadius
-        r = (a+b)/2
-        return edge.discretize(Deflection=Deviation*r)
-
-
-class RevolvedEllipticalSection(RevolvedClosedCurve):
-    def __init__(self, name, edgelist, angle, axis):
-        super().__init__(name, edgelist, angle, axis)
-        # Note extrusion polyogn will be in absolute coordinates
-        # since arc section is relative to that, position is actually (0,0,0)
-        # same goes for rotation
-
-    def midPoint(self):
-        edge = self.edgeList[0]
-        a = edge.Curve.MajorRadius
-        b = edge.Curve.MinorRadius
-        angleXU = edge.Curve.AngleXU
-        thet1 = edge.FirstParameter  # in radians, in unorated ellipse
-        thet2 = edge.LastParameter  # in radians, in onrated ellipse
-        thetmid = (thet1+thet2)/2 + angleXU
-
-        # Major axis angle seems to be off by pi for some ellipse. Restrict it to be
-        # be between 0 an pi
-        if angleXU < 0:
-            angleXU += 180
-        v0 = edge.Vertexes[0].Point
-        v1 = edge.Vertexes[1].Point
-
-        # TODO must deal with case where cutting chord is along major axis
-        # u_vc_vcenter = vc_vcenter.normalize()  # unit vector fom center of circle to center of chord
-
-        # vertexes of triangle formed by chord ends and ellise mid point
-        # In polar coordinates equation of ellipse is r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
-        # if the ellipse is rotatated by an angle AngleXU, then
-        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU), for thet in frame of unrotated ellipse
-        # now edge.FirstParameter is begining angle of unrotaeted ellipse
-
-        def sqr(x):
-            return x*x
-
-        def r(thet):
-            return math.sqrt(1.0/(sqr(math.cos(thet)/a) + sqr(math.sin(thet)/b)))
-
-        rmid = r(thetmid)
-        vmid = Vector(rmid*math.cos(thetmid), rmid*math.sin(thetmid), 0)
-
-        vmid += edge.Curve.Center
-
-        '''
-        uxaxis = Vector(math.cos(angleXU), math.sin(angleXU), 0)
-        costhet = uxaxis.dot(u_vc_vcenter)    # angle between major axis and center of chor
-        sinthet = math.sqrt(1-costhet*costhet)
-        # polar equation of ellipse, with r measured from FOCUS. Focus at a*eps
-        # r = lambda thet: a*(1-eps*eps)/(1+eps*math.cos(thet))
-        # polar equation of ellipse, with r measured from center a*eps
-        sqr = lambda x: x*x
-        rmid = math.sqrt(1.0/(sqr(costhet/a) + sqr(sinthet/b)))        
-        if arcAngle < math.pi:  # shorter of two arc segments, mid point and center are on opposite side
-            vmid = edge.Curve.Center + rmid*u_vc_vcenter
-        else:  #longer of two arc segments: midpoint is on opposite side of chord
-            vmid = edge.Curve.Center - rmid*u_vc_vcenter
-        '''
-
-        return vmid
-
-    def discretize(self):
-        edge = self.edgeList[0]
-        a = edge.Curve.MajorRadius
-        b = edge.Curve.MinorRadius
-        r = (a+b)/2
-        return edge.discretize(Deflection=Deviation*r)
-
-    def export(self):
-        global solids
-
-        edge = self.edgeList[0]
-        a = dx = edge.Curve.MajorRadius
-        b = dy = edge.Curve.MinorRadius
-
-        # vertexes of triangle formed by chord ends and ellise mid point
-        # In polar coordinates equation of ellipse is r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
-        # if the ellipse is rotatated by an angle AngleXU, then
-        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU), for thet in frame of unrotated ellipse
-        # now edge.FirstParameter is begining angle of unrotaeted ellipse
-        # polar equation of ellipse, with r measured from FOCUS. Focus at a*eps
-        # r = lambda thet: a*(1-eps*eps)/(1+eps*math.cos(thet))
-        # polar equation of ellipse, with r measured from center a*eps
-
-        def sqr(x):
-            return x*x
-
-        def r(thet):
-            return math.sqrt(1.0/(sqr(math.cos(thet)/a) + sqr(math.sin(thet)/b)))
-
-        v1 = edge.Vertexes[0].Point
-        v2 = edge.Vertexes[1].Point
-        vmid = self.midPoint()
-
-        # midpoint of chord
-        vc = (v1+v2)/2
-        v = v2-v1
-        u = v.normalize()  # unit vector from v1 to v2
-        # extend the ends of the chord so extrusion can cut all of ellipse, if needed
-        v1 = vc + 2*a*u
-        v2 = vc - 2*a*u
-
-        # component of vmid perpendicular to u
-        vc_vmid = vmid - vc
-        n = vc_vmid - u.dot(vc_vmid)*u
-        n.normalize()
-        v3 = v2 + 2*a*n
-        v4 = v1 + 2*a*n
-
-        xtruName = self.name+'_xtru'
-        exportPolycone(xtruName, [v1, v2, v3, v4], self.angle)
-
-        # tube to be cut1
-        tubeName = self.name+'_tube'
-        exportEllipticalTube(tubeName, dx, dy, self.angle)
-
-        # note, it is mandatory that name be that of ClosedCurve
-        intersect = ET.SubElement(solids, 'intersection', {'name': self.name})
-        ET.SubElement(intersect, 'first', {'ref': xtruName})
-        ET.SubElement(intersect, 'second', {'ref': tubeName})
-        pos = edge.Curve.Center
-        exportPosition(tubeName, intersect, pos)
-        rotName = tubeName+'_rot'
-        # zAngle = math.degrees(edge.Curve.AngleXU)
-        # Focus1 is on the positive x side, Focus2 on the negative side
-        dy = edge.Curve.Focus1[1] - edge.Curve.Focus2[1]
-        dx = edge.Curve.Focus1[0] - edge.Curve.Focus2[0]
-        zAngle = math.degrees(math.atan2(dy, dx))
-        print(f'{self.name} zAngle = {zAngle}')
-        # if zAngle < 0:
-        #    zAngle += 180
-        ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg',
-                                           'x': '0', 'y': '0', 'z': str(zAngle)})
-
-        ET.SubElement(intersect, 'rotationref', {'ref': rotName})
-
-
-class RevolvedBspline(RevolvedClosedCurve):
-    def __init__(self, name, edgelist, angle, axis):
-        super().__init__(name, edgelist, angle, axis)
-
-    def export(self):
-        edge = self.edgeList[0]
-        rmax = edge.Curve.Radius
-        x = edge.Curve.Center.x
-        y = edge.Curve.Center.y
-        rtor = math.sqrt(x*x + y*y)
-        exportTorus(self.name, rmax, rtor, self.angle)
-
-    def discretize(self):
-        deflection = Deviation*radialExtent(self.edgeList)
-        print(f'Deflection = {deflection}')
-        edge = self.edgeList[0]
-        return edge.discretize(Deflection=deflection)
-
-
-class Revolved2Edges(RevolvedClosedCurve):
-    def __init__(self, name, edgelist, angle, axis):
-        super().__init__(name, edgelist, angle, axis)
-
-    def export(self):
-        global solids
-
-        # form normals to the edges. For case of two edges, sidedness is irrelevant
-        v0 = self.edgeList[0].Vertexes[0].Point
-        v1 = self.edgeList[0].Vertexes[1].Point
-        e = v1 - v0
-        if e.x == 0:
-            ny = 0
-            nx = 1
-        elif e.y == 0:
-            nx = 0
-            ny = 1
-        else:
-            nx = 1
-            ny = -e.x/e.y
-        normal = Vector(nx, ny, 0).normalize()
-
-        edgeCurves = []  # list of RevolvedClosedCurve's
-
-        for i, e in enumerate(self.edgeList):  # just TWO edges
-            while switch(e.Curve.TypeId):
-                if case('Part::GeomLineSegment'):
-                    break
-
-                if case('Part::GeomLine'):
-                    break
-
-                if case('Part::GeomCircle'):
-                    print('Arc of Circle - not implemented yet')
-                    break
-                    # arcXtruName = self.name + '_c'+str(i)
-                    # arcSection = RevolvedArcSection(arcXtruName, [e], self.angle)
-                    # arcSection.export()
-
-                    # midpnt = arcSection.midPoint()
-                    # inside = pointInsideEdge(midpnt, v0, normal)
-                    # edgeCurves.append([arcXtruName, inside])
-                    # break
-
-                if case('Part::GeomEllipse - not implemented yet'):
-                    print('Arc of Ellipse')
-                    break
-                    # arcXtruName = self.name+'_e'+str(i)
-                    # arcSection = RevolvedEllipticalSection(arcXtruName, [e], self.angle)
-                    # arcSection.export()
-                    # midpnt = arcSection.midPoint()
-                    # inside = pointInsideEdge(midpnt, v0, normal)
-                    # edgeCurves.append([arcXtruName, inside])
-                    # break
-
-                if case('Part::GeomBSplineCurve'):
-                    print('BSpline not implemented yet')
-                    break
-
-        if len(edgeCurves) == 1:
-            # change our name to be that of the constructed curve
-            # not a violation of the contract of a unique name, since the curve name is based on ours
-            # self.position = arcSection.position
-            # self.rotation = arcSection.rotation
-            self.name = edgeCurves[0][0]
-
-        else:
-            inside0 = edgeCurves[0][1]
-            inside1 = edgeCurves[1][1]
-            sameSide = (inside0 == inside1)
-            if sameSide is False:
-                booleanSolid = ET.SubElement(
-                    solids, 'union', {'name': self.name})
-            else:
-                booleanSolid = ET.SubElement(
-                    solids, 'subtraction', {'name': self.name})
-
-            area0 = edgelistBBoxArea([self.edgeList[0]])
-            area1 = edgelistBBoxArea([self.edgeList[1]])
-            if area0 > area1:
-                firstSolid = edgeCurves[0][0]
-                secondSolid = edgeCurves[1][0]
-            else:
-                firstSolid = edgeCurves[1][0]
-                secondSolid = edgeCurves[0][0]
-
-            ET.SubElement(booleanSolid, 'first', {'ref': firstSolid})
-            ET.SubElement(booleanSolid, 'second', {'ref': secondSolid})
 
 
 class RevolvedNEdges(RevolvedClosedCurve):
@@ -3534,28 +3195,11 @@ class RevolvedNEdges(RevolvedClosedCurve):
                     verts.append(e.Vertexes[0].Point)
                     break
 
-                if case('Part::GeomCircle'):
-                    print('Arc of Circle')
-                    arcXtruName = self.name + '_c'+str(i)
-                    arcSection = RevolvedArcSection(
-                        arcXtruName, [e], self.angle, self.axis)
-                    verts += arcSection.discretize()
-                    break
-
-                if case('Part::GeomEllipse'):
-                    print('Arc of Ellipse')
-                    arcXtruName = self.name+'_e'+str(i)
-                    arcSection = RevolvedEllipticalSection(
-                        arcXtruName, [e], self.angle, self.axis)
-                    verts += arcSection.discretize()
-                    break
-
-                if case('Part::GeomBSplineCurve'):
-                    print('BSpline')
-                    arcXtruName = self.name+'_e'+str(i)
-                    arcSection = RevolvedBspline(
-                        arcXtruName, [e], self.angle, self.axis)
-                    verts += arcSection.discretize()
+                else:
+                    curveName = self.name + '_c'+str(i)
+                    curveSection = RevolvedClosedCurve(curveName, [e],
+                                                       self.angle, self.axis)
+                    verts += curveSection.discretize()
                     break
 
         xtruName = self.name
@@ -3678,48 +3322,21 @@ def getRevolvedCurve(name, edges, angle, axis):
             closed = False  # a section of a curve
 
         while switch(e.Curve.TypeId):
-            if case('Part::GeomLineSegment'):
-                print(' Sketch not closed')
-                return RevolvedClosedCurve(edges, name, angle, axis)
-
-            if case('Part::GeomLine'):
-                print(' Sketch not closed')
-                return RevolvedClosedCurve(name, edges, angle, axis)
-
             if case('Part::GeomCircle'):
                 if closed is True:
                     print('Circle')
                     return RevolvedCircle(name, edges, angle, axis)
                 else:
-                    print('Arc of Circle  not implemented yet')
-                    return
+                    print('Revolve Arc of Circle')
+                    return RevolvedClosedCurve(name, edges, angle, axis)
                     # return RevolvedArcSection(name, edges, height)
 
-            if case('Part::GeomEllipse'):
-                if closed is True:
-                    print('Ellipse - not implemented yet')
-                    return
-                    # return RevolvedEllipse(name, edges, angle, axis)
-                else:
-                    print('Arc of Ellipse - not implemented yet')
-                    return
-                    # return RevolvedEllipticalSection(name, edges, angle, axis)
+            else:
+                print(f'revolve {e.Curve.TypeId}')
+                return RevolvedClosedCurve(name, edges, angle, axis)
 
-            if case('Part::GeomBSplineCurve'):
-                print(' B spline extrusion not implemented yet')
-                return
-                # return RevolvedClosedCurve(name, edges, height)
-
-    elif len(edges) == 2:  # exactly two edges
-        return Revolved2Edges(name, edges, angle, axis)
     else:  # three or more edges
         return RevolvedNEdges(name, edges, angle, axis)
-
-
-def setGlobals(defineV, solidsV):
-    global define, solids
-    define = defineV
-    solids = solidsV
 
 
 # scale up a solid that will be subtracted so it ounched thru parent
@@ -3784,8 +3401,15 @@ class RevolutionExporter(SolidExporter):
         eName = revolveObj.Label
         # get a list of curves (instances of class ClosedCurve)
         # for each set of closed edges
-        curves = [getRevolvedCurve(eName+str(i), edges, angle, axis)
-                  for i, edges in enumerate(sortededges)]
+        curves = []
+        for i, edges in enumerate(sortededges):
+            curve = getRevolvedCurve(eName+str(i), edges, angle, axis)
+            if curve is not None:
+                curves.append(curve)
+        if len(curves) == 0:
+            print('No edges that can be revolved were found')
+            return
+
         # build a generalized binary tree of closed curves.
         root = Node(curves[0], None, 0)
         for c in curves[1:]:
