@@ -3517,7 +3517,20 @@ class ExtrudedClosedCurve(ClosedCurve):
         self.rotation = [0, 0, 0]  # TBD
 
     def export(self):
-        print('export not implemented')
+        verts = self.discretize()
+        exportXtru(self.name, verts, self.height)
+
+    def midPoint(self):
+        edge = self.edgeList[0]
+        verts = edge.discretize(Number=51)
+        return verts[int(len(verts)/2)]
+
+    def discretize(self):
+        global Deviation
+        edge = self.edgeList[0]
+        deflection = Deviation*edge.BoundBox.DiagonalLength
+        print(f'Deflection = {deflection}')
+        return edge.discretize(Deflection=deflection)
 
 
 class ExtrudedCircle(ExtrudedClosedCurve):
@@ -3537,29 +3550,11 @@ class ExtrudedArcSection(ExtrudedClosedCurve):
         # since arc section is relative to that, position is actually (0,0,0)
         # same goes for rotation
 
-    # return midpoint of arc, relative to center
+
     def midPoint(self):
         edge = self.edgeList[0]
-        radius = edge.Curve.Radius
-        thetmid = (edge.FirstParameter+edge.LastParameter)/2
-        arcAngle = edge.LastParameter - edge.FirstParameter
-        v0 = edge.Vertexes[0].Point
-        v1 = edge.Vertexes[1].Point
-        vc = (v0+v1)/2  # chord center
-        vc_vcenter = vc - edge.Curve.Center
-        if vc_vcenter.Length < 0.001:  # arc chord = diameter
-            # Although it seems that this should always work, I've seen cases in which
-            # each of the first, last parameters were shifter by pi and thetmid
-            # was off by pi
-            vmid = edge.Curve.Center + radius*Vector(math.cos(thetmid), math.sin(thetmid), 0)
-        else:
-            u_vc_vcenter = vc_vcenter.normalize()  # unit vector fom center of circle to center of chord
-            if arcAngle < math.pi:  # shorter of two arc segments, mid point and center are on opposite side
-                vmid = edge.Curve.Center + edge.Curve.Radius*u_vc_vcenter
-            else:  # longer of two arc segments: midpoint is on opposite side of chord
-                vmid = edge.Curve.Center - edge.Curve.Radius*u_vc_vcenter
-
-        return vmid
+        verts = edge.discretize(Number=3)
+        return verts[1]
 
     def area(self):
         edge = self.edgeList[0]
@@ -3634,6 +3629,7 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
         # since arc section is relative to that, position is actually (0,0,0)
         # same goes for rotation
 
+    '''
     def midPoint(self):
         edge = self.edgeList[0]
         a = edge.Curve.MajorRadius
@@ -3668,22 +3664,8 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
 
         vmid += edge.Curve.Center
 
-        '''
-        uxaxis = Vector(math.cos(angleXU), math.sin(angleXU), 0)
-        costhet = uxaxis.dot(u_vc_vcenter)    # angle between major axis and center of chor
-        sinthet = math.sqrt(1-costhet*costhet)
-        # polar equation of ellipse, with r measured from FOCUS. Focus at a*eps
-        # r = lambda thet: a*(1-eps*eps)/(1+eps*math.cos(thet))
-        # polar equation of ellipse, with r measured from center a*eps
-        sqr = lambda x: x*x
-        rmid = math.sqrt(1.0/(sqr(costhet/a) + sqr(sinthet/b)))        
-        if arcAngle < math.pi:  # shorter of two arc segments, mid point and center are on opposite side
-            vmid = edge.Curve.Center + rmid*u_vc_vcenter
-        else:  #longer of two arc segments: midpoint is on opposite side of chord
-            vmid = edge.Curve.Center - rmid*u_vc_vcenter
-        '''
-
         return vmid
+    '''
 
     def export(self):
         global solids
@@ -3758,21 +3740,6 @@ class ExtrudedBSpline(ExtrudedClosedCurve):
     def __init__(self, name, edgelist, height):
         super().__init__(name, edgelist, height)
 
-    def export(self):
-        verts = self.discretize()
-        exportXtru(self.name, verts, self.height)
-
-    def midPoint(self):
-        verts = self.discretize()
-        return verts[int(len(verts)/2)]
-
-    def discretize(self):
-        global Deviation
-        edge = self.edgeList[0]
-        deflection = Deviation*edge.BoundBox.DiagonalLength
-        print(f'Deflection = {deflection}')
-        return edge.discretize(Deflection=deflection)
-
 
 class Extruded2Edges(ExtrudedClosedCurve):
     def __init__(self, name, edgelist, height):
@@ -3827,10 +3794,10 @@ class Extruded2Edges(ExtrudedClosedCurve):
                     edgeCurves.append([arcXtruName, inside])
                     break
 
-                if case('Part::GeomBSplineCurve'):
-                    print('Arc of BSplineCurve')
+                else:
+                    print(f'Arc of {e.Curve.TypeId}')
                     arcXtruName = self.name+'_bs'+str(i)
-                    arcSection = ExtrudedBSpline(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedClosedCurve(arcXtruName, [e], self.height)
                     arcSection.export()
 
                     midpnt = arcSection.midPoint()
@@ -3957,10 +3924,10 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                     edgeCurves.append([arcXtruName, inside])
                     break
 
-                if case('Part::GeomBSplineCurve'):
-                    print('Arc of BSplineCurve')
-                    arcXtruName = self.name+'_bs'+str(i)
-                    arcSection = ExtrudedBSpline(arcXtruName, [e], self.height)
+                else:
+                    print(f'Curve {e.Curve.TypeId}')
+                    arcXtruName = self.name+'_g'+str(i)
+                    arcSection = ExtrudedClosedCurve(arcXtruName, [e], self.height)
                     bsplineVerts = arcSection.discretize()
                     verts = verts + bsplineVerts
                     break
@@ -4128,9 +4095,9 @@ def getExtrudedCurve(name, edges, height):
                     print('Arc of Ellipse')
                     return ExtrudedEllipticalSection(name, edges, height)
 
-            if case('Part::GeomBSplineCurve'):
+            else:
                 print(' B spline')
-                return ExtrudedBSpline(name, edges, height)
+                return ExtrudedClosedCurve(name, edges, height)
 
     elif len(edges) == 2:  # exactly two edges
         return Extruded2Edges(name, edges, height)
