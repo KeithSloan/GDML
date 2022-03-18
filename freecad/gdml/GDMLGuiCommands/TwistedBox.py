@@ -4,6 +4,7 @@ from PySide import QtGui, QtCore
 class TwistedBoxFeature:
 
     def Activated(self):
+        from .propertiesDialog import propertiesDialog
         from ..GDMLCommands import getSelectedPM
         from ..GDMLObjects import GDMLTwistedbox, ViewProvider
         objPart, material = getSelectedPM()
@@ -13,7 +14,10 @@ class TwistedBoxFeature:
             vol = objPart.newObject("App::Part", "LV-TwistBox")
         obj = vol.newObject("Part::FeaturePython", "GDMLTwistBox_Box")
         # self, obj, PhiTwist, x, y, z, aunit, lunit, material, colour=None)
-        GDMLTwistedbox(obj, 20.0, 10.0, 10.0, 10.0, "deg", "mm", material)
+        #GDMLTwistedbox(obj, 20.0, 10.0, 10.0, 10.0, "deg", "mm", material)
+        GDMLTwistedbox(obj, material)
+        dialog = propertiesDialog(obj)
+        dialog.exec_()
         # print("GDMLBox initiated")
         ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.recompute()

@@ -1677,18 +1677,36 @@ class GDMLTorus(GDMLsolid):
 
 
 class GDMLTwistedbox(GDMLsolid):
-    def __init__(self, obj, PhiTwist, x, y, z, aunit, lunit, material,
-                 colour=None):
+    #def __init__(self, obj, PhiTwist, x, y, z, aunit, lunit, material,
+    def __init__(self, obj, material, colour=None):
         super().__init__(obj)
-        '''Add some custom properties to our Box feature'''
+        '''Add some custom properties to our Twisted Box feature'''
         GDMLShared.trace("GDMLTwistedbox init")
         # GDMLShared.trace("material : "+material)
         obj.addProperty("App::PropertyFloat", "x", "GDMLTwistedbox",
-                        "Length x").x = x
+                        "Length x")
         obj.addProperty("App::PropertyFloat", "y", "GDMLTwistedbox",
-                        "Length y").y = y
+                        "Length y")
         obj.addProperty("App::PropertyFloat", "z", "GDMLTwistedbox",
-                        "Length z").z = z
+                        "Length z")
+        obj.addProperty("App::PropertyFloat", "PhiTwist", "GDMLTwistedbox",
+                        "Twist Angle")
+        obj.addProperty("App::PropertyEnumeration", "aunit", "GDMLTwistedbox",
+                        "aunit")
+        obj.addProperty("App::PropertyEnumeration", "lunit", "GDMLTwistedbox",
+                        "lunit")
+        obj.addProperty("App::PropertyEnumeration", "material", "GDMLTwistedbox", "Material")
+        self.Type = 'GDMLTwistedbox'
+        self.colour = colour
+        obj.Proxy = self
+
+    def setPropertyValues(self, obj, PhiTwist, x, y, z, aunit, lunit, colour):
+        self.PhiTwist = PhiTwist
+        self.x = x
+        self.y = y
+        self.z = z
+        self.aunit = aunit
+        self.lunit = lunit
         angle = getAngleDeg(aunit, PhiTwist)
         if angle > 90:
             print('PhiTwist angle cannot be larger than 90 deg')
@@ -1701,25 +1719,15 @@ class GDMLTwistedbox(GDMLsolid):
         else:
             angle = PhiTwist
 
-        obj.addProperty("App::PropertyFloat", "PhiTwist", "GDMLTwistedbox",
-                        "Twist Angle").PhiTwist = angle
-        obj.addProperty("App::PropertyEnumeration", "aunit", "GDMLTwistedbox",
-                        "aunit")
-        obj.aunit = ["rad", "deg"]
-        obj.aunit = ['rad', 'deg'].index(aunit[0:3])
-        obj.addProperty("App::PropertyEnumeration", "lunit", "GDMLTwistedbox",
-                        "lunit")
+        self.PhiTwist = angle
+        self.aunit = ["rad", "deg"]
+        self.aunit = ['rad', 'deg'].index(aunit[0:3])
         setLengthQuantity(obj, lunit)
-        obj.addProperty("App::PropertyEnumeration", "material", "GDMLTwistedbox",
-                        "Material")
+        obj.addProperty("App::PropertyEnumeration", "material", "GDMLTwistedbox", "Material")
         setMaterial(obj, material)
         if FreeCAD.GuiUp:
             updateColour(obj, colour, material)
-        # Suppress Placement - position & Rotation via parent App::Part
-        # this makes Placement via Phyvol easier and allows copies etc
-        self.Type = 'GDMLTwistedbox'
         self.colour = colour
-        obj.Proxy = self
 
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
