@@ -1,9 +1,58 @@
 from PySide import QtGui, QtCore
 
+class propertyFloat(QtGui.QLineEdit):
+    def __init__(self, value):
+        super().__init__()
+        #self.insert(colhex)
+        #self.setReadOnly(True)
+
+class propertyPlacement(QtGui.QWidget):
+    def __init__(self, name, value):
+        super().__init__()
+        self.hbox = QtGui.QHBoxLayout()
+        self.hbox.addWidget(QtGui.QLabel(name))
+        self.hbox.addWidget(propertyFloat(value))
+        self.setLayout(self.hbox)
+
+class property_aunits(QtGui.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.vbox = QtGui.QVBoxLayout()
+        self.vbox.addWidget(QtGui.QLabel('aunits'))
+        self.setLayout(self.vbox)
+
+class property_lunits(QtGui.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.vbox = QtGui.QVBoxLayout()
+        self.vbox.addWidget(QtGui.QLabel('lunits'))
+        self.setLayout(self.vbox)
+
+class propertyUnits(QtGui.QWidget):
+    def __init__(self, obj):
+        super().__init__()
+        self.vbox = QtGui.QVBoxLayout()
+        if 'lunit' in obj.PropertiesList:
+           self.vbox.addWidget(property_lunits())
+        if 'aunit' in obj.PropertiesList:
+           self.vbox.addWidget(property_aunits())
+        self.setLayout(self.vbox)
+
+class propertyEntry(QtGui.QWidget):
+
+    def __init__(self, name, value):
+        super().__init__()
+        self.hbox = QtGui.QHBoxLayout()
+        self.hbox.addWidget(QtGui.QLabel(name))
+        self.hbox.addWidget(propertyFloat(value))
+        self.setLayout(self.hbox)
+
 class propertiesDialog(QtGui.QDialog):
-    def __init__(self, obj, *args):
+    def __init__(self, obj, name, image, *args):
         super(propertiesDialog, self).__init__()
         self.obj = obj
+        self.name = name
+        self.image = image
         self.initUI()
 
     def initUI(self):
@@ -19,21 +68,23 @@ class propertiesDialog(QtGui.QDialog):
         buttonBox.addButton(okayButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
         #
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
+        self.mainLayout = QtGui.QVBoxLayout()
+        self.mainLayout.addWidget(buttonBox)
+        self.setLayout(self.mainLayout)
         # define window         xLoc,yLoc,xDim,yDim
         print(self.countProperties())
         self.setGeometry(650, 650, 0, 50)
-        self.setWindowTitle("Choose an Option    ")
+        self.setWindowTitle(self.name+":  Set Properties")
         self.buildPropertiesPanel()
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
     def ignoreProperties(self):
-        return ['ExpressionEngine','Label','Label2','Proxy','Shape','Visibility']
+        return ['ExpressionEngine','Label','Label2','Proxy','Shape', \
+                'Visibility','Placement','aunit','lunit']
 
     def enumProperties(self):
-        return ['aunit','lunit','material']
+        #return ['aunit','lunit','material']
+        return ['material']
 
     def countProperties(self):
         print('Count Properties')
@@ -42,8 +93,12 @@ class propertiesDialog(QtGui.QDialog):
         return len(self.obj.PropertiesList)-len(self.ignoreProperties())
 
     def buildPropertiesPanel(self):
+        self.propLayout = QtGui.QVBoxLayout()
+        self.mainLayout.addLayout(self.propLayout)
         ignore = self.ignoreProperties()
         enums = self.enumProperties()
+        self.propLayout.addWidget(propertyPlacement('Placement',0))
+        self.propLayout.addWidget(propertyUnits(self.obj))
         for o in self.obj.PropertiesList:
             if o not in ignore:
                print(o)
@@ -51,6 +106,7 @@ class propertiesDialog(QtGui.QDialog):
                   print('Enums')
                else: 
                   print(type(o))
+                  self.propLayout.addWidget(propertyEntry(o, 10))
                   print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):

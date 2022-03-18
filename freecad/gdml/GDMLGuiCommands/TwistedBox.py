@@ -13,12 +13,9 @@ class TwistedBoxFeature:
         else:
             vol = objPart.newObject("App::Part", "LV-TwistBox")
         obj = vol.newObject("Part::FeaturePython", "GDMLTwistBox_Box")
-        # self, obj, PhiTwist, x, y, z, aunit, lunit, material, colour=None)
-        #GDMLTwistedbox(obj, 20.0, 10.0, 10.0, 10.0, "deg", "mm", material)
         GDMLTwistedbox(obj, material)
-        dialog = propertiesDialog(obj)
+        dialog = propertiesDialog(obj,'Twisted Box','image.jpg')
         dialog.exec_()
-        # print("GDMLBox initiated")
         ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
