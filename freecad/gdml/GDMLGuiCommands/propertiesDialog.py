@@ -3,14 +3,21 @@ from PySide import QtGui, QtCore
 class propertyFloat(QtGui.QLineEdit):
     def __init__(self, value):
         super().__init__()
-        #self.insert(colhex)
-        #self.setReadOnly(True)
+        self.insert(str(value))
 
 class propertyPlacement(QtGui.QWidget):
     def __init__(self, name, value):
         super().__init__()
         self.hbox = QtGui.QHBoxLayout()
         self.hbox.addWidget(QtGui.QLabel(name))
+        self.hbox.addWidget(propertyFloat(value))
+        self.setLayout(self.hbox)
+
+class propertyMaterial(QtGui.QWidget):
+    def __init__(self, name, value):
+        super().__init__()
+        self.hbox = QtGui.QHBoxLayout()
+        self.hbox.addWidget(QtGui.QLabel('Material'))
         self.hbox.addWidget(propertyFloat(value))
         self.setLayout(self.hbox)
 
@@ -37,7 +44,7 @@ class property_lunits(QtGui.QWidget):
 class propertyUnits(QtGui.QWidget):
     def __init__(self, obj):
         super().__init__()
-        self.vbox = QtGui.QVBoxLayout()
+        self.vbox = QtGui.QHBoxLayout()
         if 'lunit' in obj.PropertiesList:
            self.vbox.addWidget(property_lunits())
         if 'aunit' in obj.PropertiesList:
@@ -74,13 +81,16 @@ class propertiesDialog(QtGui.QDialog):
         buttonBox.addButton(okayButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
         #
-        self.mainLayout = QtGui.QVBoxLayout()
-        self.mainLayout.addWidget(buttonBox)
+        self.mainLayout = QtGui.QGridLayout()
+        self.mainLayout.addWidget(buttonBox,0,0)
         self.setLayout(self.mainLayout)
         # define window         xLoc,yLoc,xDim,yDim
         print(self.countProperties())
         self.setGeometry(650, 650, 0, 50)
         self.setWindowTitle(self.name+":  Set Properties")
+        self.mainLayout.addWidget(propertyPlacement('Placement',0),1,0)
+        self.mainLayout.addWidget(propertyMaterial('Material',0),2,0)
+        self.mainLayout.addWidget(propertyUnits(self.obj),3,0)
         self.buildPropertiesPanel()
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -100,11 +110,9 @@ class propertiesDialog(QtGui.QDialog):
 
     def buildPropertiesPanel(self):
         self.propLayout = QtGui.QGridLayout()
-        self.mainLayout.addLayout(self.propLayout)
+        self.mainLayout.addLayout(self.propLayout,4,0)
         ignore = self.ignoreProperties()
         enums = self.enumProperties()
-        self.propLayout.addWidget(propertyPlacement('Placement',0),0,0)
-        self.propLayout.addWidget(propertyUnits(self.obj),0,1)
         for i, o in enumerate(self.obj.PropertiesList):
             if o not in ignore:
                print(o)
@@ -112,7 +120,8 @@ class propertiesDialog(QtGui.QDialog):
                   print('Enums')
                else: 
                   print(type(o))
-                  self.propLayout.addWidget(propertyEntry(o, 10),i,0)
+                  self.propLayout.addWidget(QtGui.QLabel(o),i,0)
+                  self.propLayout.addWidget(propertyFloat(10),i,1)
                   print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):
