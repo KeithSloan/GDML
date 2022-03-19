@@ -17,15 +17,21 @@ class propertyPlacement(QtGui.QWidget):
 class property_aunits(QtGui.QWidget):
     def __init__(self):
         super().__init__()
-        self.vbox = QtGui.QVBoxLayout()
+        self.vbox = QtGui.QHBoxLayout()
         self.vbox.addWidget(QtGui.QLabel('aunits'))
+        self.units = QtGui.QComboBox()
+        self.units.addItems(["deg","rad"])
+        self.vbox.addWidget(self.units)
         self.setLayout(self.vbox)
 
 class property_lunits(QtGui.QWidget):
     def __init__(self):
         super().__init__()
-        self.vbox = QtGui.QVBoxLayout()
+        self.vbox = QtGui.QHBoxLayout()
         self.vbox.addWidget(QtGui.QLabel('lunits'))
+        self.units = QtGui.QComboBox()
+        self.units.addItems(["mm","cm","m","um","nm"])
+        self.vbox.addWidget(self.units)
         self.setLayout(self.vbox)
 
 class propertyUnits(QtGui.QWidget):
@@ -93,20 +99,20 @@ class propertiesDialog(QtGui.QDialog):
         return len(self.obj.PropertiesList)-len(self.ignoreProperties())
 
     def buildPropertiesPanel(self):
-        self.propLayout = QtGui.QVBoxLayout()
+        self.propLayout = QtGui.QGridLayout()
         self.mainLayout.addLayout(self.propLayout)
         ignore = self.ignoreProperties()
         enums = self.enumProperties()
-        self.propLayout.addWidget(propertyPlacement('Placement',0))
-        self.propLayout.addWidget(propertyUnits(self.obj))
-        for o in self.obj.PropertiesList:
+        self.propLayout.addWidget(propertyPlacement('Placement',0),0,0)
+        self.propLayout.addWidget(propertyUnits(self.obj),0,1)
+        for i, o in enumerate(self.obj.PropertiesList):
             if o not in ignore:
                print(o)
                if o in enums:
                   print('Enums')
                else: 
                   print(type(o))
-                  self.propLayout.addWidget(propertyEntry(o, 10))
+                  self.propLayout.addWidget(propertyEntry(o, 10),i,0)
                   print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):
