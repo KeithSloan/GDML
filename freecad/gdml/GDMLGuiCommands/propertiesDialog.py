@@ -24,32 +24,32 @@ class propertyMaterial(QtGui.QWidget):
 class property_aunits(QtGui.QWidget):
     def __init__(self):
         super().__init__()
-        self.vbox = QtGui.QHBoxLayout()
-        self.vbox.addWidget(QtGui.QLabel('aunits'))
+        self.layout = QtGui.QHBoxLayout()
+        self.layout.addWidget(QtGui.QLabel('aunit'))
         self.units = QtGui.QComboBox()
         self.units.addItems(["deg","rad"])
-        self.vbox.addWidget(self.units)
-        self.setLayout(self.vbox)
+        self.layout.addWidget(self.units)
+        self.setLayout(self.layout)
 
 class property_lunits(QtGui.QWidget):
     def __init__(self):
         super().__init__()
-        self.vbox = QtGui.QHBoxLayout()
-        self.vbox.addWidget(QtGui.QLabel('lunits'))
+        self.layout = QtGui.QHBoxLayout()
+        self.layout.addWidget(QtGui.QLabel('lunit'))
         self.units = QtGui.QComboBox()
         self.units.addItems(["mm","cm","m","um","nm"])
-        self.vbox.addWidget(self.units)
-        self.setLayout(self.vbox)
+        self.layout.addWidget(self.units)
+        self.setLayout(self.layout)
 
 class propertyUnits(QtGui.QWidget):
     def __init__(self, obj):
         super().__init__()
-        self.vbox = QtGui.QHBoxLayout()
+        self.unitsLayout = QtGui.QHBoxLayout()
         if 'lunit' in obj.PropertiesList:
-           self.vbox.addWidget(property_lunits())
+           self.unitsLayout.addWidget(property_lunits())
         if 'aunit' in obj.PropertiesList:
-           self.vbox.addWidget(property_aunits())
-        self.setLayout(self.vbox)
+           self.unitsLayout.addWidget(property_aunits())
+        self.setLayout(self.unitsLayout)
 
 class propertyEntry(QtGui.QWidget):
 
@@ -108,14 +108,15 @@ class propertiesDialog(QtGui.QDialog):
         ignoreLst = self.ignoreProperties()
         fullLst = self.obj.PropertiesList
         self.propertyList = [x for x in fullLst if x not in ignoreLst]
+        self.unitList = [x for x in fullLst if x in ['lunit','aunit']]
         self.propLayout = QtGui.QGridLayout()
         self.mainLayout.addLayout(self.propLayout,4,0)
         for i, o in enumerate(self.propertyList):
-            print(o)
-            print(type(o))
+            #print(o)
+            #print(type(o))
             self.propLayout.addWidget(QtGui.QLabel(o),i,0)
             self.propLayout.addWidget(propertyFloat(10),i,1)
-            print(f'{o} : {type(getattr(self.obj, o))}')
+            #print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):
         #self.obj.setPropertyValues()
@@ -124,14 +125,21 @@ class propertiesDialog(QtGui.QDialog):
         # Process Placement
         # Process Material
         # Process Units
+        units = self.mainLayout.itemAt(3).widget()
+        for i in range(units.unitsLayout.count()):
+            u = units.unitsLayout.itemAt(i).widget()
+            prop = u.layout.itemAt(0).widget().text()
+            value = u.layout.itemAt(1).widget().currentText()
+            print(prop)
+            print(value)
+            setattr(self.obj, prop, value)
         # Process properties
         for y in range(0, self.propLayout.count(), 2):
-            prop = self.propLayout.itemAt(y)
-            value = self.propLayout.itemAt(y+1)
-            print(prop.widget().text())
-            print(value.widget().text())
-            setattr(self.obj,prop.widget().text(), \
-                    float(value.widget().text()))
+            prop = self.propLayout.itemAt(y).widget().text()
+            value = float(self.propLayout.itemAt(y+1).widget().text())
+            print(prop)
+            print(value)
+            setattr(self.obj, prop, value)
         self.close()
 
     def onCancel(self):
