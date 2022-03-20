@@ -96,11 +96,7 @@ class propertiesDialog(QtGui.QDialog):
 
     def ignoreProperties(self):
         return ['ExpressionEngine','Label','Label2','Proxy','Shape', \
-                'Visibility','Placement','aunit','lunit']
-
-    def enumProperties(self):
-        #return ['aunit','lunit','material']
-        return ['material']
+                'Visibility','Placement','material','aunit','lunit']
 
     def countProperties(self):
         print('Count Properties')
@@ -109,25 +105,34 @@ class propertiesDialog(QtGui.QDialog):
         return len(self.obj.PropertiesList)-len(self.ignoreProperties())
 
     def buildPropertiesPanel(self):
+        ignoreLst = self.ignoreProperties()
+        fullLst = self.obj.PropertiesList
+        self.propertyList = [x for x in fullLst if x not in ignoreLst]
         self.propLayout = QtGui.QGridLayout()
         self.mainLayout.addLayout(self.propLayout,4,0)
-        ignore = self.ignoreProperties()
-        enums = self.enumProperties()
-        for i, o in enumerate(self.obj.PropertiesList):
-            if o not in ignore:
-               print(o)
-               if o in enums:
-                  print('Enums')
-               else: 
-                  print(type(o))
-                  self.propLayout.addWidget(QtGui.QLabel(o),i,0)
-                  self.propLayout.addWidget(propertyFloat(10),i,1)
-                  print(f'{o} : {type(getattr(self.obj, o))}')
+        for i, o in enumerate(self.propertyList):
+            print(o)
+            print(type(o))
+            self.propLayout.addWidget(QtGui.QLabel(o),i,0)
+            self.propLayout.addWidget(propertyFloat(10),i,1)
+            print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):
         #self.obj.setPropertyValues()
         print("setPropertyValues")
         print('Okay')
+        # Process Placement
+        # Process Material
+        # Process Units
+        # Process properties
+        for y in range(0, self.propLayout.count(), 2):
+            prop = self.propLayout.itemAt(y)
+            value = self.propLayout.itemAt(y+1)
+            print(prop.widget().text())
+            print(value.widget().text())
+            setattr(self.obj,prop.widget().text(), \
+                    float(value.widget().text()))
+        self.close()
 
     def onCancel(self):
         print('Cancel')

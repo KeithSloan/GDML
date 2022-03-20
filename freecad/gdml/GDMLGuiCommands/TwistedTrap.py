@@ -4,6 +4,7 @@ from PySide import QtGui, QtCore
 class TwistedTrapFeature:
 
     def Activated(self):
+        from .propertiesDialog import propertiesDialog
         from ..GDMLCommands import getSelectedPM
         from ..GDMLObjects import GDMLTwistedtrap, ViewProvider
         objPart, material = getSelectedPM()
@@ -16,6 +17,8 @@ class TwistedTrapFeature:
         #         alpha, aunit, lunit, material
         GDMLTwistedtrap(obj, 30.0, 10.0, 20.0, 20.0, 10.0, 10.0, 10.0, 10.0, \
                         10.0, 10.0, 25.0, "deg", "mm", material)
+        dialog = propertiesDialog(obj,'Twisted Trap','image.jpg')
+        dialog.exec_()
         ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
