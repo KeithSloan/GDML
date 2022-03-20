@@ -1677,25 +1677,31 @@ class GDMLTorus(GDMLsolid):
 
 
 class GDMLTwistedbox(GDMLsolid):
-    #def __init__(self, obj, PhiTwist, x, y, z, aunit, lunit, material,
-    def __init__(self, obj, material, colour=None):
+    def __init__(self, obj, PhiTwist, x, y, z, aunit, lunit, material, \
+                 colour=None):
         super().__init__(obj)
         '''Add some custom properties to our Twisted Box feature'''
         GDMLShared.trace("GDMLTwistedbox init")
         # GDMLShared.trace("material : "+material)
         obj.addProperty("App::PropertyFloat", "x", "GDMLTwistedbox",
-                        "Length x")
+                        "Length x").x=x
         obj.addProperty("App::PropertyFloat", "y", "GDMLTwistedbox",
-                        "Length y")
+                        "Length y").y=y
         obj.addProperty("App::PropertyFloat", "z", "GDMLTwistedbox",
-                        "Length z")
+                        "Length z").z=z
         obj.addProperty("App::PropertyFloat", "PhiTwist", "GDMLTwistedbox",
-                        "Twist Angle")
+                        "Twist Angle").PhiTwist=PhiTwist
         obj.addProperty("App::PropertyEnumeration", "aunit", "GDMLTwistedbox",
                         "aunit")
+        obj.aunit = ["rad", "deg"]
+        obj.aunit = ['rad', 'deg'].index(aunit[0:3])
         obj.addProperty("App::PropertyEnumeration", "lunit", "GDMLTwistedbox",
                         "lunit")
+        setLengthQuantity(obj, lunit)
         obj.addProperty("App::PropertyEnumeration", "material", "GDMLTwistedbox", "Material")
+        setMaterial(obj, material)
+        if FreeCAD.GuiUp:
+            updateColour(obj, colour, material)
         self.Type = 'GDMLTwistedbox'
         self.colour = colour
         obj.Proxy = self
@@ -1720,9 +1726,9 @@ class GDMLTwistedbox(GDMLsolid):
             angle = PhiTwist
 
         self.PhiTwist = angle
-        self.aunit = ["rad", "deg"]
-        self.aunit = ['rad', 'deg'].index(aunit[0:3])
-        setLengthQuantity(obj, lunit)
+        #self.aunit = ["rad", "deg"]
+        #self.aunit = ['rad', 'deg'].index(aunit[0:3])
+        #setLengthQuantity(obj, lunit)
         obj.addProperty("App::PropertyEnumeration", "material", "GDMLTwistedbox", "Material")
         setMaterial(obj, material)
         if FreeCAD.GuiUp:

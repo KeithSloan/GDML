@@ -1,3 +1,5 @@
+import FreeCAD
+
 from PySide import QtGui, QtCore
 
 class propertyFloat(QtGui.QLineEdit):
@@ -115,7 +117,7 @@ class propertiesDialog(QtGui.QDialog):
             #print(o)
             #print(type(o))
             self.propLayout.addWidget(QtGui.QLabel(o),i,0)
-            self.propLayout.addWidget(propertyFloat(10),i,1)
+            self.propLayout.addWidget(propertyFloat(getattr(self.obj,o)),i,1)
             #print(f'{o} : {type(getattr(self.obj, o))}')
 
     def onOkay(self):
@@ -140,9 +142,15 @@ class propertiesDialog(QtGui.QDialog):
             print(prop)
             print(value)
             setattr(self.obj, prop, value)
+        self.retStatus = 1
         self.close()
 
     def onCancel(self):
         print('Cancel')
-        print('Delete Object & LV ???')
+        lvObj = self.obj.InList[0]
+        print(lvObj.Label)
+        doc = FreeCAD.ActiveDocument
+        doc.removeObject(lvObj.Label)
+        doc.removeObject(self.obj.Label)
+        self.retStatus = 2
         self.close()
