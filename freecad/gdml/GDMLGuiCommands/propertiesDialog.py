@@ -62,16 +62,47 @@ class propertyEntry(QtGui.QWidget):
         self.hbox.addWidget(propertyFloat(value))
         self.setLayout(self.hbox)
 
-class propertiesDialog(QtGui.QDialog):
-    def __init__(self, obj, name, image, *args):
-        super(propertiesDialog, self).__init__()
+class propertiesPanel(QtGui.QWidget):
+    def __init__(self, obj):
+        super().__init__()
         self.obj = obj
-        self.name = name
-        self.image = image
-        self.initUI()
+        self.layout = QtGui.QGridLayout()
+        self.layout.addWidget(propertyPlacement('Placement',0),1,0)
+        self.layout.addWidget(propertyMaterial('Material',0),2,0)
+        self.layout.addWidget(propertyUnits(self.obj),3,0)
+        self.buildPropertiesPanel()
+        self.setLayout(self.layout)
 
-    def initUI(self):
-        print(f'Label : {self.obj.Label}')
+    def countProperties(self):
+        print('Count Properties')
+        #print(dir(self.obj))
+        print(self.obj.PropertiesList)
+        return len(self.obj.PropertiesList)-len(self.ignoreProperties())
+
+    def ignoreProperties(self):
+        return ['ExpressionEngine','Label','Label2','Proxy','Shape', \
+                'Visibility','Placement','material','aunit','lunit']
+    
+    def buildPropertiesPanel(self):
+        ignoreLst = self.ignoreProperties()
+        fullLst = self.obj.PropertiesList
+        self.propertyList = [x for x in fullLst if x not in ignoreLst]
+        self.unitList = [x for x in fullLst if x in ['lunit','aunit']]
+        self.propLayout = QtGui.QGridLayout()
+        self.layout.addLayout(self.propLayout,4,0)
+        for i, o in enumerate(self.propertyList):
+            #print(o)
+            #print(type(o))
+            self.propLayout.addWidget(QtGui.QLabel(o),i,0)
+            self.propLayout.addWidget(propertyFloat(getattr(self.obj,o)),i,1)
+            #print(f'{o} : {type(getattr(self.obj, o))}')
+
+class infoActionPanel(QtGui.QWidget):
+    def __init__(self, propLayout):
+        super().__init__()
+        print('infoActionPanel')
+        self.propLayout = propLayout
+        self.layout = QtGui.QVBoxLayout()
         okayButton = QtGui.QPushButton('Okay')
         okayButton.clicked.connect(self.onOkay)
         cancelButton = QtGui.QPushButton('Cancel')
@@ -83,43 +114,8 @@ class propertiesDialog(QtGui.QDialog):
         buttonBox.addButton(okayButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
         #
-        self.mainLayout = QtGui.QGridLayout()
-        self.mainLayout.addWidget(buttonBox,0,0)
-        self.setLayout(self.mainLayout)
-        # define window         xLoc,yLoc,xDim,yDim
-        print(self.countProperties())
-        self.setGeometry(650, 650, 0, 50)
-        self.setWindowTitle(self.name+":  Set Properties")
-        self.mainLayout.addWidget(propertyPlacement('Placement',0),1,0)
-        self.mainLayout.addWidget(propertyMaterial('Material',0),2,0)
-        self.mainLayout.addWidget(propertyUnits(self.obj),3,0)
-        self.buildPropertiesPanel()
-        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
-    def ignoreProperties(self):
-        return ['ExpressionEngine','Label','Label2','Proxy','Shape', \
-                'Visibility','Placement','material','aunit','lunit']
-
-    def countProperties(self):
-        print('Count Properties')
-        #print(dir(self.obj))
-        print(self.obj.PropertiesList)
-        return len(self.obj.PropertiesList)-len(self.ignoreProperties())
-
-    def buildPropertiesPanel(self):
-        ignoreLst = self.ignoreProperties()
-        fullLst = self.obj.PropertiesList
-        self.propertyList = [x for x in fullLst if x not in ignoreLst]
-        self.unitList = [x for x in fullLst if x in ['lunit','aunit']]
-        self.propLayout = QtGui.QGridLayout()
-        self.mainLayout.addLayout(self.propLayout,4,0)
-        for i, o in enumerate(self.propertyList):
-            #print(o)
-            #print(type(o))
-            self.propLayout.addWidget(QtGui.QLabel(o),i,0)
-            self.propLayout.addWidget(propertyFloat(getattr(self.obj,o)),i,1)
-            #print(f'{o} : {type(getattr(self.obj, o))}')
-
+        self.layout.addWidget(buttonBox)
+    
     def onOkay(self):
         #self.obj.setPropertyValues()
         print("setPropertyValues")
@@ -127,7 +123,7 @@ class propertiesDialog(QtGui.QDialog):
         # Process Placement
         # Process Material
         # Process Units
-        units = self.mainLayout.itemAt(3).widget()
+        units = self.propLayout.itemAt(3).widget()
         for i in range(units.unitsLayout.count()):
             u = units.unitsLayout.itemAt(i).widget()
             prop = u.layout.itemAt(0).widget().text()
@@ -142,15 +138,35 @@ class propertiesDialog(QtGui.QDialog):
             print(prop)
             print(value)
             setattr(self.obj, prop, value)
-        self.retStatus = 1
+        super.setRetCode(1)
         self.close()
 
     def onCancel(self):
         print('Cancel')
-        lvObj = self.obj.InList[0]
-        print(lvObj.Label)
-        doc = FreeCAD.ActiveDocument
-        doc.removeObject(lvObj.Label)
-        doc.removeObject(self.obj.Label)
-        self.retStatus = 2
+        super.setRetCode(2)
         self.close()
+
+class propertiesDialog(QtGui.QDialog):
+    def __init__(self, obj, name, image, *args):
+        super(propertiesDialog, self).__init__()
+        self.obj = obj
+        self.name = name
+        self.image = image
+        self.initUI()
+
+    def initUI(self):
+        print(f'Label : {self.obj.Label}')
+        self.mainLayout = QtGui.QHBoxLayout()
+        pp = propertiesPanel(self.obj)
+        self.mainLayout.addWidget(pp)
+        self.mainLayout.addWidget(infoActionPanel(pp.layout))
+        self.setLayout(self.mainLayout)
+        # define window         xLoc,yLoc,xDim,yDim
+        self.setGeometry(650, 650, 300, 50)
+        self.setWindowTitle(self.name+":  Set Properties")
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.retStatus = 2
+
+    def setRetCode(self,code):
+        self.retStatus = code
+

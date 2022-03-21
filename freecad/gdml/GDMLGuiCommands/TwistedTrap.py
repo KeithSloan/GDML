@@ -21,6 +21,9 @@ class TwistedTrapFeature:
         dialog.exec_()
         if dialog.retStatus == 1:
            ViewProvider(obj.ViewObject)
+        if dialog.retStatus == 2:
+           FreeCAD.ActiveDocument.removeObject(vol.Name)
+           FreeCAD.ActiveDocument.removeObject(obj.Name)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
