@@ -555,24 +555,6 @@ def getVertex(v):
     return(FreeCAD.Vector(x, y, z))
 
 
-def facet(f):
-    # vec = FreeCAD.Vector(1.0,1.0,1.0)
-    # print(f"Facet {f}")
-    # print(f.Points)
-    if len(f.Points) == 3:
-        return(triangle(f.Points[0], f.Points[1], f.Points[2]))
-        # if f.Normal.dot(vec) > 0 :
-        #   return(triangle(f.Points[0],f.Points[1],f.Points[2]))
-        # else :
-        #   return(triangle(f.Points[2],f.Points[1],f.Points[0]))
-    else:
-        return(quad(f.Points[0], f.Points[1], f.Points[2], f.Points[3]))
-        # if f.Normal.dot(vec) > 0 :
-        #   return(quad(f.Points[0],f.Points[1],f.Points[2],f.Points[3]))
-        # else :
-        #   return(quad(f.Points[3],f.Points[2],f.Points[1],f.Points[0]))
-
-
 def triangle(v1, v2, v3):
     # passed vertex return face
     # print('v1 : '+str(v1)+' v2 : '+str(v2)+' v3 : '+str(v3))

@@ -3414,7 +3414,24 @@ class GDMLTessellated(GDMLsolid):
             # print('Facet')
             # print(f)
             if flag is True:
-                FCfaces.append(GDMLShared.facet(f))
+               #FCfaces.append(GDMLShared.facet(f))
+               if len(f.Points) == 3:
+                  face = GDMLShared.triangle(triangle(f.Points[0], \
+                         f.Points[1], f.Points[2]))
+                  FCfaces.append(face)
+               else : # Four points might be close to but not coplanar OBJ file
+                  try:
+                     face = GDMLShared.quad(f.Points[0], f.Points[1], \
+                                           f.Points[2], f.Points[3])
+                     FCfaces.append(face)
+                  except:
+                     print('Four points not coplanar use 2 triangular faces')
+                     face = GDMLShared.triangle(f.Points[0], f.Points[1], \
+                                           f.Points[2])
+                     FCfaces.append(face)
+                     face = GDMLShared.triangle(f.Points[1], f.Points[2], \
+                                                     f.Points[3])
+                     FCfaces.append(face)
             else:
                 if len(f) == 3:
                     FCfaces.append(GDMLShared.triangle(
@@ -3422,11 +3439,27 @@ class GDMLTessellated(GDMLsolid):
                         mul*vertex[f[1]],
                         mul*vertex[f[2]]))
                 else:  # len should then be 4
-                    FCfaces.append(GDMLShared.quad(
-                        mul*vertex[f[0]],
-                        mul*vertex[f[1]],
-                        mul*vertex[f[2]],
-                        mul*vertex[f[3]]))
+                    try:
+                       face = GDMLShared.quad(
+                           mul*vertex[f[0]],
+                           mul*vertex[f[1]],
+                           mul*vertex[f[2]],
+                           mul*vertex[f[3]])
+                       FCfaces.append(face)
+
+                    except: # quad may not be coplanar OBJ file
+                       print('Four points not coplanar use 2 triangular faces')
+                       face = GDMLShared.triangle(
+                           mul*vertex[f[0]],
+                           mul*vertex[f[1]],
+                           mul*vertex[f[2]])
+                       FCfaces.append(face)
+                       face = GDMLShared.triangle(
+                           mul*vertex[f[1]],
+                           mul*vertex[f[2]],
+                           mul*vertex[f[3]])
+                       FCfaces.append(face)
+        shell = Part.makeShell(FCfaces)
         shell = Part.makeShell(FCfaces)
         if shell.isValid is False:
             FreeCAD.Console.PrintWarning('Not a valid Shell/n')
