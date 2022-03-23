@@ -97,8 +97,20 @@ class propertiesPanel(QtGui.QWidget):
             self.propLayout.addWidget(propertyFloat(getattr(self.obj,o)),i,1)
             #print(f'{o} : {type(getattr(self.obj, o))}')
 
+class infoImage(QtGui.QWidget):
+    def __init__(self, image):
+        super().__init__()
+        self.layout = QtGui.QVBoxLayout()
+        self.label = QtGui.QLabel(self)
+        pixmap = QtGui.QPixmap(image)
+        self.label.setPixmap(pixmap)
+        self.label.resize(pixmap.width(), pixmap.height())
+        self.layout.addWidget(self.label)
+        self.setLayout(self.layout)
+
+
 class infoActionPanel(QtGui.QWidget):
-    def __init__(self, propLayout):
+    def __init__(self, propLayout, image):
         super().__init__()
         print('infoActionPanel')
         self.propLayout = propLayout
@@ -115,6 +127,8 @@ class infoActionPanel(QtGui.QWidget):
         buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
         #
         self.layout.addWidget(buttonBox)
+        self.layout.addWidget(infoImage(image))
+        self.setLayout(self.layout)
     
     def onOkay(self):
         #self.obj.setPropertyValues()
@@ -159,7 +173,7 @@ class propertiesDialog(QtGui.QDialog):
         self.mainLayout = QtGui.QHBoxLayout()
         pp = propertiesPanel(self.obj)
         self.mainLayout.addWidget(pp)
-        self.mainLayout.addWidget(infoActionPanel(pp.layout))
+        self.mainLayout.addWidget(infoActionPanel(pp.layout,self.image))
         self.setLayout(self.mainLayout)
         # define window         xLoc,yLoc,xDim,yDim
         self.setGeometry(650, 650, 300, 50)
