@@ -527,7 +527,7 @@ to facilitate preparation for FEM analysis
 
 ## Standalone Utilities
 
-The standalone utilities and documentation are now in a submodule repository https://github.com/KeithSloan/GDML_Command_Line_Utils  
+The standalone utilities and documentation are now in a directory CommandLine 
 
   In the [Utils](Utils/) directory, you'll find a python script named **`gdml2step.py`** for creating a STEP file from a GDML file.
 
