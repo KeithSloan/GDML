@@ -3511,7 +3511,7 @@ class GDMLDenseTessellated(GDMLsolid):
         obj.addProperty('App::PropertyVectorList', 'vertsList',
                         'GDMLDenseTessellated',
                         'Vertex list').vertsList = vertsList
-        obj.setEditorMode('vertsPerFacet', 2)
+        obj.setEditorMode('vertsList', 2)
 
         # create list of indexes for each face
         Dict = {}
@@ -3556,8 +3556,12 @@ class GDMLDenseTessellated(GDMLsolid):
             self.createGeometry(fp)
 
     def createGeometry(self, fp):
+        import time
+        
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
+        if int(fp.sampledFraction) == 0:
+            return
         # print('Create Shape')
 
         # The vertx index list, is not uniform, because some facets
@@ -3568,37 +3572,53 @@ class GDMLDenseTessellated(GDMLsolid):
         # problem finding the starting index for each facet. Bit if skip facets,
         # as we do below, then we must build a list of the starting indexes of
         # each facet
-        i0List = [0]*len(fp.vertsPerFacet)
+        '''
+        i0List = []
         i = 0
         for j, nVerts in enumerate(fp.vertsPerFacet):
-            i0List[j] = i
+            i0List.append(i)
             i += nVerts
+        '''
 
         FCfaces = []
         if fp.solidFlag is False:
-            NMax = int(fp.sampledFraction)*fp.facets/100
+            NMax = int(fp.sampledFraction)*fp.facets/100            
             nskip = int(fp.facets/NMax)
             if nskip < 1:
                 nskip = 1
         else:
             nskip = 1
 
+        print(f'nskip {nskip}')
         indexList = fp.indexList
-        for i in range(0, fp.facets, nskip):
-            i0 = i0List[i]
-            nVerts = fp.vertsPerFacet[i]
+        start = time.perf_counter()
+        i = 0
+        for j, nVerts in enumerate(fp.vertsPerFacet):
             if nVerts == 3:
-                FCfaces.append(GDMLShared.triangle(
-                    mul*fp.vertsList[indexList[i0]],
-                    mul*fp.vertsList[indexList[i0+1]],
-                    mul*fp.vertsList[indexList[i0+2]]))
+                i0 = indexList[i]
+                i1 = indexList[i + 1]
+                i2 = indexList[i + 2]
+                if j % nskip == 0:
+                    FCfaces.append(GDMLShared.triangle(
+                        mul*fp.vertsList[i0],
+                        mul*fp.vertsList[i1],
+                        mul*fp.vertsList[i2]))
             else:  # len should then be 4
-                FCfaces.append(GDMLShared.quad(
-                    mul*fp.vertsList[indexList[i0]],
-                    mul*fp.vertsList[indexList[i0+1]],
-                    mul*fp.vertsList[indexList[i0+2]],
-                    mul*fp.vertsList[indexList[i0+3]]))
+                i0 = indexList[i]
+                i1 = indexList[i + 1]
+                i2 = indexList[i + 2]
+                i3 = indexList[i + 3]
+                if j % nskip == 0:
+                    FCfaces.append(GDMLShared.quad(
+                        mul*fp.vertsList[i0],
+                        mul*fp.vertsList[i1],
+                        mul*fp.vertsList[i2],
+                        mul*fp.vertsList[i3]))
+            i += nVerts
+        end = time.perf_counter()
+        print(f'time to generate faces {(end-start)}')
 
+        start = time.perf_counter()
         if fp.solidFlag is False:
             solid = Part.makeCompound(FCfaces)
         else:
@@ -3615,6 +3635,8 @@ class GDMLDenseTessellated(GDMLsolid):
                 # visually able to view at least
                 FreeCAD.Console.PrintWarning('Problem making Solid/n')
                 solid = Part.makeCompound(FCfaces)
+        end = time.perf_counter()
+        print(f'time to make solid {(end-start)}')
 
         fp.Shape = solid
         if hasattr(fp, 'scale'):
