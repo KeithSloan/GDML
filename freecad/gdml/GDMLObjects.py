@@ -3444,11 +3444,24 @@ class GDMLTessellated(GDMLsolid):
                         mul*vertex[f[1]],
                         mul*vertex[f[2]]))
                 else:  # len should then be 4
-                    FCfaces.append(GDMLShared.quad(
+                    try:
+                        face = GDMLShared.quad(
                         mul*vertex[f[0]],
                         mul*vertex[f[1]],
                         mul*vertex[f[2]],
-                        mul*vertex[f[3]]))
+                        mul*vertex[f[3]])
+                        FCfaces.append(face)
+                    except:
+                        face = GDMLShared.triangle(
+                        mul*vertex[f[0]],
+                        mul*vertex[f[1]],
+                        mul*vertex[f[2]])
+                        FCfaces.append(face)
+                        face = GDMLShared.triangle(
+                        mul*vertex[f[1]],
+                        mul*vertex[f[2]],
+                        mul*vertex[f[3]])
+                        FCfaces.append(face)
         shell = Part.makeShell(FCfaces)
         if shell.isValid is False:
             FreeCAD.Console.PrintWarning('Not a valid Shell/n')

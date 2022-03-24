@@ -172,6 +172,6 @@ def processOBJ(doc, filename):
             print('Tag : '+items[0])
             break
 
-    GDMLTessellated(obj, vertex, faces, 'mm', getSelectedMaterial())
+    GDMLTessellated(obj, vertex, faces, False, 'mm', getSelectedMaterial())
     ViewProvider(obj.ViewObject)
     obj.recompute()
