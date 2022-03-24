@@ -1977,6 +1977,7 @@ class SolidExporter:
         "GDMLGenericPolyhedra": "GDMLGenericPolyhedraExporter",
         "GDMLSphere": "GDMLSphereExporter",
         "GDMLTessellated": "GDMLTessellatedExporter",
+        "GDMLDenseTessellated": "GDMLDenseTessellatedExporter",
         "GDMLGmshTessellated": "GDMLGmshTessellatedExporter",
         "GDMLTetra": "GDMLTetraExporter",
         "GDMLTetrahedron": "GDMLTetrahedronExporter",
@@ -2042,6 +2043,7 @@ class SolidExporter:
             elif classname == "RevolutionExporter":
                 return RevolutionExporter(obj)
             else:
+                print(f'classname {classname}')
                 klass = globals()[classname]
                 return klass(obj)
         else:
@@ -2687,6 +2689,49 @@ class GDMLSphereExporter(GDMLSolidExporter):
         self._exportScaled()
 
 
+class GDMLDenseTessellatedExporter(GDMLSolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def export(self):
+        tessName = self.name()
+        # Use more readable version
+        tessVname = tessName + '_'
+        # print(dir(obj))
+
+        verts = self.obj.vertsList
+        tess = ET.SubElement(solids, 'tessellated', {'name': tessName})
+        for i, v in enumerate(verts):
+            exportDefineVertex(tessVname, v, i)
+
+        i = 0
+        indexList = self.obj.indexList
+        for nVerts in self.obj.vertsPerFacet:
+            # print(f'Normal at : {n} dot {dot} {clockWise}')
+            if nVerts == 3:
+                i0 = indexList[i]
+                i1 = indexList[i + 1]
+                i2 = indexList[i + 2]
+                ET.SubElement(tess, 'triangular', {
+                   'vertex1': tessVname+str(i0),
+                   'vertex2': tessVname+str(i1),
+                   'vertex3': tessVname+str(i2),
+                   'type': 'ABSOLUTE'})
+            elif nVerts == 4:
+                i0 = indexList[i]
+                i1 = indexList[i + 1]
+                i2 = indexList[i + 2]
+                i3 = indexList[i + 3]
+                ET.SubElement(tess, 'quadrangular', {
+                   'vertex1': tessVname+str(i0),
+                   'vertex2': tessVname+str(i1),
+                   'vertex3': tessVname+str(i2),
+                   'vertex4': tessVname+str(i3),
+                   'type': 'ABSOLUTE'})
+            i += nVerts
+        self._exportScaled()
+
+
 class GDMLTessellatedExporter(GDMLSolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
@@ -2737,10 +2782,9 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
             exportDefineVertex(tessVname, placementCorrection*v.Point, i)
 
         for f in self.obj.Shape.Faces:
-            print(f'len(f.Edges) {len(f.Edges)}')
+            # print(f'len(f.Edges) {len(f.Edges)}')
             # print(f'Normal at : {n} dot {dot} {clockWise}')
             vertexes = f.OuterWire.OrderedVertexes
-            print(vertexes)
             if len(f.Edges) == 3:
                 i0 = vertexHashcodeDict[vertexes[0].hashCode()]
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]

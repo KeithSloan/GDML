@@ -49,6 +49,7 @@ LengthQuantityList = ['nm', 'um', 'mm', 'cm', 'dm', 'm', 'km']
 
 
 def setLengthQuantity(obj, m):
+    global LengthQuantityList
     if LengthQuantityList is not None:
         obj.lunit = LengthQuantityList
         obj.lunit = 0
@@ -65,7 +66,7 @@ def addMaterialsFromGroup(doc, MatList, grpName):
         if hasattr(mmats, 'Group'):
             for i in mmats.Group:
                 if i.Label != 'Geant4':
-                   MatList.append(i.Label)
+                    MatList.append(i.Label)
 
 
 def rebuildMaterialsList():
@@ -73,12 +74,12 @@ def rebuildMaterialsList():
     print('Restore MaterialsList from Materials Lists')
     doc = FreeCAD.ActiveDocument
     addMaterialsFromGroup(doc, MaterialsList, "Materials")
-    #print(MaterialsList)
+    # print(MaterialsList)
     G4Materials = doc.getObject('G4Materials')
     if G4Materials is not None:
-       for g in G4Materials.Group:
-           #print(g.Label)
-           addMaterialsFromGroup(doc, MaterialsList, g.Label)
+        for g in G4Materials.Group:
+            # print(g.Label)
+            addMaterialsFromGroup(doc, MaterialsList, g.Label)
     # print('MaterialsList')
     # print(MaterialsList)
 
@@ -93,7 +94,7 @@ def checkMaterial(material):
 
 
 def setMaterial(obj, m):
-    # print('setMaterial')
+    print(f'setMaterial {obj} {m}')
     if MaterialsList is not None:
         if len(MaterialsList) > 0:
             obj.material = MaterialsList
@@ -521,7 +522,8 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
                                                   faceYminA, faceYminB,
                                                   faceYmaxA, faceYmaxB,
                                                   faceZmin, faceZmax]))
-        if hasattr(fp,'scale'): super().scale(fp)        
+        if hasattr(fp, 'scale'):
+            super().scale(fp)
         fp.Placement = currPlacement
 
 
@@ -536,6 +538,7 @@ class GDMLBox(GDMLsolid):
         obj.addProperty("App::PropertyFloat", "z", "GDMLBox", "Length z").z = z
         obj.addProperty("App::PropertyEnumeration", "lunit", "GDMLBox", "lunit")
         setLengthQuantity(obj, lunit)
+        obj.lunit = LengthQuantityList.index(lunit)
         obj.addProperty("App::PropertyEnumeration", "material", "GDMLBox", "Material")
         setMaterial(obj, material)
         if FreeCAD.GuiUp:
@@ -3461,6 +3464,162 @@ class GDMLTessellated(GDMLsolid):
             solid = Part.makeCompound(FCfaces)
 
         return solid
+
+
+class GDMLDenseTessellated(GDMLsolid):
+
+    def __init__(self, obj, vertex, facets, lunit, material,
+                 solidFlag, sampledFraction, colour=None):
+        super().__init__(obj)
+        # ########################################
+        # if flag == True  - facets is Mesh.Facets - with Normals
+        # if flag == False - facets is Faces i.e. from import GDMLTessellated
+        # ########################################
+        obj.addProperty('App::PropertyInteger', 'facets', 'GDMLDenseTessellated',
+                        'Facets').facets = len(facets)
+        obj.setEditorMode('facets', 1)
+        obj.addProperty('App::PropertyInteger', 'vertex', 'GDMLDenseTessellated',
+                        'Vertex').vertex = len(vertex)
+        obj.setEditorMode('vertex', 1)
+        obj.addProperty("App::PropertyEnumeration", "lunit",
+                        "GDMLDenseTessellated", "lunit")
+        setLengthQuantity(obj, lunit)
+        obj.addProperty("App::PropertyEnumeration", "material",
+                        "GDMLDenseTessellated", "Material")
+
+        nList = [len(f.Points) for f in facets]
+        obj.addProperty('App::PropertyIntegerList', 'vertsPerFacet',
+                        'GDMLDenseTessellated',
+                        'Number of vertexes in each facet').vertsPerFacet = nList
+        obj.setEditorMode('vertsPerFacet', 2)
+
+        obj.addProperty('App::PropertyBool', 'solidFlag', 'GDMLDenseTessellated',
+                        'Facets').solidFlag = solidFlag
+
+        percentageList = [str(i) for i in range(0, 105, 5)]
+        obj.addProperty('App::PropertyEnumeration', 'sampledFraction', 'GDMLDenseTessellated',
+                        'Sampled percentage').sampledFraction = percentageList
+        obj.sampledFraction = str(sampledFraction)
+
+        # we use a set first to get rid of duplicate points
+        vertsSet = set()
+        for f in facets:
+            for p in f.Points:
+                vertsSet.add(p)
+
+        vertsList = list(vertsSet)
+        obj.addProperty('App::PropertyVectorList', 'vertsList',
+                        'GDMLDenseTessellated',
+                        'Vertex list').vertsList = vertsList
+        obj.setEditorMode('vertsPerFacet', 2)
+
+        # create list of indexes for each face
+        Dict = {}
+        for i, v in enumerate(vertsList):
+            Dict[v] = i
+
+        # now create a list of vert number references for each face
+        # there is probably a way to have lists of lists as a property;
+        # I just don't know about it, so we list the indexs in order
+        # and rely on the nList to get the number of points
+        indexList = []
+        for f in facets:
+            for v in f.Points:
+                indexList.append(Dict[v])
+
+        obj.addProperty('App::PropertyIntegerList', 'indexList',
+                        'GDMLDenseTessellated',
+                        'Index List').indexList = indexList
+        obj.setEditorMode('indexList', 2)
+
+        setMaterial(obj, material)
+        if FreeCAD.GuiUp:
+            updateColour(obj, colour, material)
+        self.Type = 'GDMLDenseTessellated'
+        self.colour = colour
+        obj.Proxy = self
+        obj.Proxy.Type = 'GDMLDenseTessellated'
+
+    def onChanged(self, fp, prop):
+        '''Do something when a property has changed'''
+        # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+        if 'Restore' in fp.State:
+            return
+
+        if prop in ['material']:
+            if FreeCAD.GuiUp:
+                if hasattr(self, 'colour'):
+                    if self.colour is None:
+                        fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+        if prop in ['scale', 'solidFlag', 'sampledFraction']:
+            self.createGeometry(fp)
+
+    def createGeometry(self, fp):
+        currPlacement = fp.Placement
+        mul = GDMLShared.getMult(fp)
+        # print('Create Shape')
+
+        # The vertx index list, is not uniform, because some facets
+        # could have four vertexes, instead of three:
+        # indexList =     [i00, i01, i02,  i10, i11, i12, i13, i20, i21, i22, ....]
+        # vertsPerFacet = [2,              3,                , 2, ...]
+        # if one traverses the facets in order, as we do on export, there is no
+        # problem finding the starting index for each facet. Bit if skip facets,
+        # as we do below, then we must build a list of the starting indexes of
+        # each facet
+        i0List = [0]*len(fp.vertsPerFacet)
+        i = 0
+        for j, nVerts in enumerate(fp.vertsPerFacet):
+            i0List[j] = i
+            i += nVerts
+
+        FCfaces = []
+        if fp.solidFlag is False:
+            NMax = int(fp.sampledFraction)*fp.facets/100
+            nskip = int(fp.facets/NMax)
+            if nskip < 1:
+                nskip = 1
+        else:
+            nskip = 1
+
+        indexList = fp.indexList
+        for i in range(0, fp.facets, nskip):
+            i0 = i0List[i]
+            nVerts = fp.vertsPerFacet[i]
+            if nVerts == 3:
+                FCfaces.append(GDMLShared.triangle(
+                    mul*fp.vertsList[indexList[i0]],
+                    mul*fp.vertsList[indexList[i0+1]],
+                    mul*fp.vertsList[indexList[i0+2]]))
+            else:  # len should then be 4
+                FCfaces.append(GDMLShared.quad(
+                    mul*fp.vertsList[indexList[i0]],
+                    mul*fp.vertsList[indexList[i0+1]],
+                    mul*fp.vertsList[indexList[i0+2]],
+                    mul*fp.vertsList[indexList[i0+3]]))
+
+        if fp.solidFlag is False:
+            solid = Part.makeCompound(FCfaces)
+        else:
+            shell = Part.makeShell(FCfaces)
+            if shell.isValid is False:
+                FreeCAD.Console.PrintWarning('Not a valid Shell/n')
+
+            # shell.check()
+            # solid=Part.Solid(shell).removeSplitter()
+            try:
+                solid = Part.Solid(shell)
+            except:
+                # make compound rather than just barf
+                # visually able to view at least
+                FreeCAD.Console.PrintWarning('Problem making Solid/n')
+                solid = Part.makeCompound(FCfaces)
+
+        fp.Shape = solid
+        if hasattr(fp, 'scale'):
+            super().scale(fp)
+        fp.Placement = currPlacement
 
 
 class GDMLTetra(GDMLsolid):         # 4 point Tetrahedron

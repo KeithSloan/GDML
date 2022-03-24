@@ -82,14 +82,14 @@ def open(filename):
     docName = os.path.splitext(os.path.basename(filename))[0]
     print('path : '+filename)
     if filename.lower().endswith('.gdml'):
-        # import cProfile, pstats
-        # profiler = cProfile.Profile()
-        # profiler.enable()
+        import cProfile, pstats
+        profiler = cProfile.Profile()
+        profiler.enable()
         doc = FreeCAD.newDocument(docName)
         processGDML(doc, filename, True, False)
-        # profiler.disable()
-        # stats = pstats.Stats(profiler).sort_stats('cumtime')
-        # stats.print_stats()
+        profiler.disable()
+        stats = pstats.Stats(profiler).sort_stats('cumtime')
+        stats.print_stats()
 
     elif filename.lower().endswith('.xml'):
         try:

@@ -144,7 +144,21 @@ class ColourMapFeature:
         print('Add colour Map')
         resetGDMLColourMap()
         showGDMLColourMap()
- 
+        return
+
+        # myWidget = QtGui.QDockWidget()
+        # mainWin = FreeCADGui.getMainWindow()
+        # mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
+        mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea,
+                              myWidget)
+        # mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
+        # myWidget.setObjectName("ColourMap")
+        # myWidget.resize(QtCore.QSize(300,100))
+        # title = QtGui.QLabel("Colour Mapping to GDML Materials")
+        # title.setIndent(100)
+        # myWidget.setTitleBarWidget(title)
+        # label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
+
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
             return False
@@ -270,57 +284,6 @@ class GDMLScale(QtGui.QDialog):
         self.initUI()
 
     def initUI(self):
-        '''
-        print('initUI')
-        self.setGeometry(150, 150, 250, 250)
-        self.setWindowTitle("Scale GDML objects")
-        self.setMouseTracking(True)
-        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Scale'))
-        self.buttonSet.clicked.connect(self.onSet)
-        mainLayout = QtGui.QVBoxLayout()
-        self.validator = QtGui.QDoubleValidator()
-        self.validator.setRange(0.001, 1000., 3)
-        xLayout = QtGui.QHBoxLayout()
-        yLayout = QtGui.QHBoxLayout()
-        zLayout = QtGui.QHBoxLayout()
-        xlabel = QtGui.QLabel(self)
-        xlabel.setText(translate('GDML', "X factor"))
-        xLayout.addWidget(xlabel)
-        self.xScale = QtGui.QDoubleSpinBox(self)
-        self.xScale.setProperty("value", 1.0)
-        # self.xScale.setValidator(validator)
-        self.xScale.setRange(0.001, 1000)
-        xLayout.addWidget(self.xScale)
-
-        ylabel = QtGui.QLabel(self)
-        ylabel.setText(translate('GDML', "Y factor"))
-        yLayout.addWidget(ylabel)
-        self.yScale = QtGui.QDoubleSpinBox(self)
-        self.yScale.setProperty("value", 1.0)
-        # self.yScale.setValidator(validator)
-        self.yScale.setRange(0.001, 1000)
-        yLayout.addWidget(self.yScale)
-
-        zlabel = QtGui.QLabel(self)
-        zlabel.setText(translate('GDML', "Z factor"))
-        zLayout.addWidget(zlabel)
-        self.zScale = QtGui.QDoubleSpinBox(self)
-        self.zScale.setProperty("value", 1.0)
-        # self.zScale.setValidator(validator)
-        self.zScale.setRange(0.001, 1000)
-        zLayout.addWidget(self.zScale)
-
-        mainLayout.addItem(xLayout)
-        mainLayout.addItem(yLayout)
-        mainLayout.addItem(zLayout)
-
-        self.uniformScaling = QtGui.QCheckBox(self)
-        self.uniformScaling.setText(translate('GDML', "Uniform scaling"))
-        mainLayout.addWidget(self.uniformScaling)
-
-        # Signals
-        self.xScale.valueChanged.connect(self.scaleChanged)
-        '''
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setMouseTracking(True)
         self.show()
@@ -499,15 +462,15 @@ class SetScaleFeature:
         cnt = 0
         sel = FreeCADGui.Selection.getSelectionEx()
         # print(sel)
-        set = []
+        validSelections = []
         for s in sel:
             # print(s)
             # print(dir(s))
             if hasattr(s.Object, 'Shape'):
                 cnt += 1
-                set.append(s)
+                validSelections.append(s)
         if cnt > 0:
-            dialog = GDMLScale(set)
+            dialog = GDMLScale(validSelections)
             dialog.exec_()
         return
 
@@ -1542,14 +1505,94 @@ class TessellateGmshFeature:
                                                             'Mesh & Tessellate Selected Planar Object')}
 
 
-class Mesh2TessFeature:
+class Mesh2TessDialog(QtGui.QDialog):
+    def __init__(self, selList):
+        super(Mesh2TessDialog, self).__init__()
+        self.selList = selList
+        self.setupUi()
+        self.initUI()
 
-    def Activated(self):
+    def initUI(self):
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.setMouseTracking(True)
+        self.show()
 
+    def setupUi(self):
+        self.setObjectName("Dialog")
+        self.resize(400, 362)
+        self.buttonBox = QtGui.QDialogButtonBox(self)
+        self.buttonBox.setGeometry(QtCore.QRect(30, 320, 341, 32))
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.textEdit = QtGui.QTextEdit(self)
+        self.textEdit.setGeometry(QtCore.QRect(10, 10, 381, 141))
+        self.textEdit.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
+        self.textEdit.setReadOnly(True)
+        self.textEdit.setObjectName("textEdit")
+        self.verticalLayoutWidget = QtGui.QWidget(self)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(60, 150, 271, 151))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.groupBox = QtGui.QGroupBox(self.verticalLayoutWidget)
+        self.groupBox.setObjectName("groupBox")
+        self.fullDisplayRadioButton = QtGui.QRadioButton(self.groupBox)
+        self.fullDisplayRadioButton.setGeometry(QtCore.QRect(10, 30, 105, 22))
+        self.fullDisplayRadioButton.setChecked(True)
+        self.fullDisplayRadioButton.setObjectName("fullDisplayRadioButton")
+        self.samplesRadioButton = QtGui.QRadioButton(self.groupBox)
+        self.samplesRadioButton.setGeometry(QtCore.QRect(10, 60, 105, 22))
+        self.samplesRadioButton.setObjectName("samplesRadioButton")
+        self.horizontalLayoutWidget = QtGui.QWidget(self.groupBox)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 100, 231, 41))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.fractionsLabel = QtGui.QLabel(self.horizontalLayoutWidget)
+        self.fractionsLabel.setEnabled(False)
+        self.fractionsLabel.setObjectName("fractionsLabel")
+        self.horizontalLayout.addWidget(self.fractionsLabel)
+        self.fractionSpinBox = QtGui.QSpinBox(self.horizontalLayoutWidget)
+        self.fractionSpinBox.setEnabled(False)
+        self.fractionSpinBox.setSuffix("")
+        self.fractionSpinBox.setMaximum(100)
+        self.fractionSpinBox.setSingleStep(5)
+        self.fractionSpinBox.setObjectName("fractionSpinBox")
+        self.horizontalLayout.addWidget(self.fractionSpinBox)
+        self.verticalLayout.addWidget(self.groupBox)
+
+        self.retranslateUi()
+        self.buttonBox.accepted.connect(self.tessellate)  # type: ignore
+        self.buttonBox.rejected.connect(self.onCancel)  # type: ignore
+        self.fullDisplayRadioButton.toggled.connect(self.fullDisplayRadioButtonToggled)
+
+    def fullDisplayRadioButtonToggled(self):
+        self.fullDisplayRadioButton.blockSignals(True)
+
+        if self.fullDisplayRadioButton.isChecked():
+            self.fractionSpinBox.setEnabled(False)
+            self.fractionsLabel.setEnabled(False)
+        else:
+            self.fractionSpinBox.setEnabled(True)
+            self.fractionsLabel.setEnabled(True)
+
+        self.fullDisplayRadioButton.blockSignals(False)
+
+    def tessellate(self):
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension
+                  ViewProvider, ViewProviderExtension, GDMLDenseTessellated
 
-        for obj in FreeCADGui.Selection.getSelection():
+        import cProfile, pstats
+
+        solidFlag = self.fullDisplayRadioButton.isChecked()
+        sampledFraction = self.fractionSpinBox.value()
+
+        profiler = cProfile.Profile()
+        profiler.enable()
+        for obj in self.selList:
             # if len(obj.InList) == 0: # allowed only for for top level objects
             print(obj.TypeId)
             if hasattr(obj, 'Mesh'):
@@ -1566,8 +1609,8 @@ class Mesh2TessFeature:
                     mat = getSelectedMaterial()
                 m2t = vol.newObject('Part::FeaturePython',
                                     "GDMLTessellate_Mesh2Tess")
-                GDMLTessellated(m2t, obj.Mesh.Topology[0], obj.Mesh.Facets, True,
-                                "mm", mat)
+                GDMLDenseTessellated(m2t, obj.Mesh.Topology[0], obj.Mesh.Facets,
+                                     "mm", mat, solidFlag, sampledFraction)
                 if FreeCAD.GuiUp:
                     obj.ViewObject.Visibility = False
                     # print(dir(obj.ViewObject))
@@ -1575,6 +1618,38 @@ class Mesh2TessFeature:
 
                 FreeCAD.ActiveDocument.recompute()
                 FreeCADGui.SendMsgToActiveView("ViewFit")
+        profiler.disable()
+        stats = pstats.Stats(profiler).sort_stats('cumtime')
+        stats.print_stats()
+
+        self.accept()
+
+    def onCancel(self):
+        self.reject()
+
+    def retranslateUi(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate("Mesh2TessellateDialog", "Mesh2Tess"))
+        self.textEdit.setHtml(_translate("Mesh2TessellateDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Convert a mesh to a GDML Tessellated solid. For very large meshes, the building of a full solid in python might take a <span style=\" font-weight:600;\">very long</span> time. To speed up conversion, a sampling of the facets can be displayed, instead of creating a full solid. <span style=\" font-weight:600;\">On export to GDML, the full solid will be exported</span>. The fraction of faces displayed can be later changed in the Properties paenl.</p></body></html>"))
+        self.groupBox.setTitle(_translate("Mesh2TessellateDialog", "Tessellation display"))
+        self.fullDisplayRadioButton.setToolTip(_translate("Mesh2TessellateDialog", "Display full solid"))
+        self.fullDisplayRadioButton.setText(_translate("Mesh2TessellateDialog", "Full solid"))
+        self.samplesRadioButton.setToolTip(_translate("Mesh2TessellateDialog", "Sample facets"))
+        self.samplesRadioButton.setText(_translate("Mesh2TessellateDialog", "Samples only"))
+        self.fractionsLabel.setText(_translate("Mesh2TessellateDialog", "Sampled fraction (%)"))
+        self.fractionSpinBox.setToolTip(_translate("Mesh2TessellateDialog", "Percent of facets sampled"))
+
+
+class Mesh2TessFeature:
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        dialog = Mesh2TessDialog(sel)
+        dialog.exec_()
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
