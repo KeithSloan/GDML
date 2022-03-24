@@ -4,6 +4,7 @@ from PySide import QtGui, QtCore
 class TwistedTrapFeature:
 
     def Activated(self):
+        from ..importGDML import joinDir
         from .propertiesDialog import propertiesDialog
         from ..GDMLCommands import getSelectedPM
         from ..GDMLObjects import GDMLTwistedtrap, ViewProvider
@@ -17,7 +18,8 @@ class TwistedTrapFeature:
         #         alpha, aunit, lunit, material
         GDMLTwistedtrap(obj, 30.0, 10.0, 20.0, 20.0, 10.0, 10.0, 10.0, 10.0, \
                         10.0, 10.0, 25.0, "deg", "mm", material)
-        dialog = propertiesDialog(obj,'Twisted Trap','image.jpg')
+        dialog = propertiesDialog(obj,'Twisted Trap', \
+                joinDir("Resources/Geant4images/TwistedTrap.png"))
         dialog.exec_()
         if dialog.retStatus == 1:
            ViewProvider(obj.ViewObject)

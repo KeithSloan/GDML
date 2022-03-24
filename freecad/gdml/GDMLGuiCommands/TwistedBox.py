@@ -16,7 +16,7 @@ class TwistedBoxFeature:
         obj = vol.newObject("Part::FeaturePython", "GDMLTwistBox_Box")
         GDMLTwistedbox(obj, 20.0, 10.0, 10.0, 10.0, "deg", "mm", material)
         dialog = propertiesDialog(obj,'Twisted Box', \
-                joinDir("Resources/Geant4images/TwistedBox.jpg"))
+                joinDir("Resources/Geant4images/TwistedBox.png"))
         dialog.exec_()
         if dialog.retStatus == 1:
            ViewProvider(obj.ViewObject)
