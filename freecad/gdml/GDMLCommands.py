@@ -118,6 +118,9 @@ def getSelectedPM():
             if objPart is not None and material != 0:
                 return objPart, material
 
+    if objPart is None:
+        objPart = FreeCAD.ActiveDocument.getObject('worldVOL')
+
     return objPart, material
 
 
@@ -1583,7 +1586,7 @@ class Mesh2TessDialog(QtGui.QDialog):
 
     def tessellate(self):
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension, GDMLDenseTessellated
+                  ViewProvider, ViewProviderExtension, GDMLSampledTessellated
 
         import cProfile, pstats
 
@@ -1609,7 +1612,7 @@ class Mesh2TessDialog(QtGui.QDialog):
                     mat = getSelectedMaterial()
                 m2t = vol.newObject('Part::FeaturePython',
                                     "GDMLTessellate_Mesh2Tess")
-                GDMLDenseTessellated(m2t, obj.Mesh.Topology[0], obj.Mesh.Facets,
+                GDMLSampledTessellated(m2t, obj.Mesh.Topology[0], obj.Mesh.Facets,
                                      "mm", mat, solidFlag, sampledFraction)
                 if FreeCAD.GuiUp:
                     obj.ViewObject.Visibility = False

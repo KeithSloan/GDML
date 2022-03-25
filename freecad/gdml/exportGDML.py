@@ -1977,7 +1977,7 @@ class SolidExporter:
         "GDMLGenericPolyhedra": "GDMLGenericPolyhedraExporter",
         "GDMLSphere": "GDMLSphereExporter",
         "GDMLTessellated": "GDMLTessellatedExporter",
-        "GDMLDenseTessellated": "GDMLDenseTessellatedExporter",
+        "GDMLSampledTessellated": "GDMLSampledTessellatedExporter",
         "GDMLGmshTessellated": "GDMLGmshTessellatedExporter",
         "GDMLTetra": "GDMLTetraExporter",
         "GDMLTetrahedron": "GDMLTetrahedronExporter",
@@ -2689,7 +2689,7 @@ class GDMLSphereExporter(GDMLSolidExporter):
         self._exportScaled()
 
 
-class GDMLDenseTessellatedExporter(GDMLSolidExporter):
+class GDMLSampledTessellatedExporter(GDMLSolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
 
