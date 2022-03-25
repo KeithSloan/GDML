@@ -118,6 +118,9 @@ def getSelectedPM():
             if objPart is not None and material != 0:
                 return objPart, material
 
+    if objPart is None:
+        objPart = FreeCAD.ActiveDocument.getObject('worldVOL')
+
     return objPart, material
 
 
