@@ -3479,7 +3479,7 @@ class GDMLTessellated(GDMLsolid):
         return solid
 
 
-class GDMLDenseTessellated(GDMLsolid):
+class GDMLSampledTessellated(GDMLsolid):
 
     def __init__(self, obj, vertex, facets, lunit, material,
                  solidFlag, sampledFraction, colour=None, flag=True):
@@ -3489,29 +3489,29 @@ class GDMLDenseTessellated(GDMLsolid):
         # if flag == True  - facets is Mesh.Facets - with Normals
         # if flag == False - facets is Faces i.e. from import GDMLTessellated
         # ########################################
-        obj.addProperty('App::PropertyInteger', 'facets', 'GDMLDenseTessellated',
+        obj.addProperty('App::PropertyInteger', 'facets', 'GDMLSampledTessellated',
                         'Facets').facets = len(facets)
         obj.setEditorMode('facets', 1)
-        obj.addProperty('App::PropertyInteger', 'vertex', 'GDMLDenseTessellated',
+        obj.addProperty('App::PropertyInteger', 'vertex', 'GDMLSampledTessellated',
                         'Vertex').vertex = len(vertex)
         obj.setEditorMode('vertex', 1)
         obj.addProperty("App::PropertyEnumeration", "lunit",
-                        "GDMLDenseTessellated", "lunit")
+                        "GDMLSampledTessellated", "lunit")
         setLengthQuantity(obj, lunit)
         obj.addProperty("App::PropertyEnumeration", "material",
-                        "GDMLDenseTessellated", "Material")
+                        "GDMLSampledTessellated", "Material")
 
         nList = [len(f.Points) for f in facets]
         obj.addProperty('App::PropertyIntegerList', 'vertsPerFacet',
-                        'GDMLDenseTessellated',
+                        'GDMLSampledTessellated',
                         'Number of vertexes in each facet').vertsPerFacet = nList
         obj.setEditorMode('vertsPerFacet', 2)
 
-        obj.addProperty('App::PropertyBool', 'solidFlag', 'GDMLDenseTessellated',
+        obj.addProperty('App::PropertyBool', 'solidFlag', 'GDMLSampledTessellated',
                         'Facets').solidFlag = solidFlag
 
         percentageList = [str(i) for i in range(0, 105, 5)]
-        obj.addProperty('App::PropertyEnumeration', 'sampledFraction', 'GDMLDenseTessellated',
+        obj.addProperty('App::PropertyEnumeration', 'sampledFraction', 'GDMLSampledTessellated',
                         'Sampled percentage').sampledFraction = percentageList
         obj.sampledFraction = str(sampledFraction)
 
@@ -3523,7 +3523,7 @@ class GDMLDenseTessellated(GDMLsolid):
 
         vertsList = list(vertsSet)
         obj.addProperty('App::PropertyVectorList', 'vertsList',
-                        'GDMLDenseTessellated',
+                        'GDMLSampledTessellated',
                         'Vertex list').vertsList = vertsList
         obj.setEditorMode('vertsList', 2)
 
@@ -3542,7 +3542,7 @@ class GDMLDenseTessellated(GDMLsolid):
                 indexList.append(Dict[v])
 
         obj.addProperty('App::PropertyIntegerList', 'indexList',
-                        'GDMLDenseTessellated',
+                        'GDMLSampledTessellated',
                         'Index List').indexList = indexList
         obj.setEditorMode('indexList', 2)
 
@@ -3552,10 +3552,10 @@ class GDMLDenseTessellated(GDMLsolid):
             updateColour(obj, colour, material)
             if sampledFraction == 0:
                 obj.ViewObject.PointColor = (random(), random(), random(), 0.0)
-        self.Type = 'GDMLDenseTessellated'
+        self.Type = 'GDMLSampledTessellated'
         self.colour = colour
         obj.Proxy = self
-        obj.Proxy.Type = 'GDMLDenseTessellated'
+        obj.Proxy.Type = 'GDMLSampledTessellated'
 
     def updateParams(self, vertex, facets, solidFlag, sampledFraction, flag):
         # print('Update Params & Shape')
