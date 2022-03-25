@@ -3469,8 +3469,9 @@ class GDMLTessellated(GDMLsolid):
 class GDMLDenseTessellated(GDMLsolid):
 
     def __init__(self, obj, vertex, facets, lunit, material,
-                 solidFlag, sampledFraction, colour=None):
+                 solidFlag, sampledFraction, colour=None, flag=True):
         super().__init__(obj)
+        from random import random
         # ########################################
         # if flag == True  - facets is Mesh.Facets - with Normals
         # if flag == False - facets is Faces i.e. from import GDMLTessellated
@@ -3533,14 +3534,144 @@ class GDMLDenseTessellated(GDMLsolid):
         obj.setEditorMode('indexList', 2)
 
         setMaterial(obj, material)
+        self.updateParams(vertex, facets, solidFlag, sampledFraction, flag)
         if FreeCAD.GuiUp:
             updateColour(obj, colour, material)
+            if sampledFraction == 0:
+                obj.ViewObject.PointColor = (random(), random(), random(), 0.0)
         self.Type = 'GDMLDenseTessellated'
         self.colour = colour
         obj.Proxy = self
         obj.Proxy.Type = 'GDMLDenseTessellated'
 
+    def updateParams(self, vertex, facets, solidFlag, sampledFraction, flag):
+        # print('Update Params & Shape')
+        self.pshape = self.createShape(vertex, facets, solidFlag, sampledFraction, flag)
+        # print(f"Pshape vertex {len(self.pshape.Vertexes)}")
+        self.facets = len(facets)
+        self.vertex = len(vertex)
+        # print(f"Vertex : {self.vertex} Facets : {self.facets}")
+
     def onChanged(self, fp, prop):
+        '''Do something when a property has changed'''
+        # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+        if 'Restore' in fp.State:
+            return
+
+        if prop in ['material']:
+            if FreeCAD.GuiUp:
+                if hasattr(self, 'colour'):
+                    if self.colour is None:
+                        fp.ViewObject.ShapeColor = colourMaterial(fp.material)
+
+        if prop in ['editable']:
+            if fp.editable is True:
+                self.addProperties()
+
+        if prop in ['scale']:
+            self.createGeometry(fp)
+
+    def addProperties(self):
+        print('Add Properties')
+
+    # def execute(self, fp): in GDMLsolid
+
+    def createGeometry(self, fp):
+        if hasattr(self, 'pshape'):
+            # print('Update Shape')
+            fp.Shape = self.pshape
+            if hasattr(fp, 'pshape'):
+                fp.pshape = self.pshape
+            fp.vertex = self.vertex
+            fp.facets = self.facets
+        if hasattr(fp, 'scale'):
+            super().scale(fp)
+
+    def createShape(self, vertex, facets, solidFlag, sampledFraction, flag):
+        # Viewing outside of face vertex must be counter clockwise
+        # if flag == True  - facets is Mesh.Facets
+        # if flag == False - factes is Faces i.e. from import GDMLTessellated
+        # mul = GDMLShared.getMult(fp)
+        mul = GDMLShared.getMult(self)
+        if sampledFraction == 0:
+            return self.cloud(vertex, facets, flag)
+        # print('Create Shape')
+        if solidFlag is False:
+            NMax = sampledFraction*len(facets)/100
+            nskip = int(len(facets)/NMax)
+            if nskip < 1:
+                nskip = 1
+        else:
+            nskip = 1
+
+        print(f'nskip {nskip}')
+        FCfaces = []
+        for i in range(0, len(facets), nskip):
+            f = facets[i]
+            # print('Facet')
+            # print(f)
+            if flag is True:
+                FCfaces.append(GDMLShared.facet(f))
+            else:
+                if len(f) == 3:
+                    FCfaces.append(GDMLShared.triangle(
+                        mul*vertex[f[0]],
+                        mul*vertex[f[1]],
+                        mul*vertex[f[2]]))
+                else:  # len should then be 4
+                    FCfaces.append(GDMLShared.quad(
+                        mul*vertex[f[0]],
+                        mul*vertex[f[1]],
+                        mul*vertex[f[2]],
+                        mul*vertex[f[3]]))
+        if solidFlag is False:
+            solid = Part.makeCompound(FCfaces)
+        else:
+            shell = Part.makeShell(FCfaces)
+            if shell.isValid is False:
+                FreeCAD.Console.PrintWarning('Not a valid Shell/n')
+
+            # shell.check()
+            # solid=Part.Solid(shell).removeSplitter()
+            try:
+                solid = Part.Solid(shell)
+            except:
+                # make compound rather than just barf
+                # visually able to view at least
+                FreeCAD.Console.PrintWarning('Problem making Solid/n')
+                solid = Part.makeCompound(FCfaces)
+
+        return solid
+
+    def cloud(self, vertex, facets, flag):
+        import math
+        import random
+
+        mul = GDMLShared.getMult(self)
+        pts = []
+        if flag is True:
+            frac = 0.01
+            Npts = int(0.01*(len(facets)))
+            while Npts < 1000 and frac < 1:
+                frac += 0.01
+                Npts = int(frac*(len(facets)))
+            jmax = len(facets)
+            for i in range(Npts):
+                j = random.randrange(jmax)
+                f = facets[j]
+                v = Part.Vertex(f.Points[0])
+                pts.append(v)
+        else:
+            Npts = int(math.sqrt*len(vertex))
+            jmax = len(vertex)
+            for i in range(Npts):
+                j = random.randrange(jmax)
+                v = vertex[j]
+                pts.append(Part.Vertex(mul*v.x, mul*v.y, mul*v.x))
+
+        return Part.makeCompound(pts)
+
+    def onChanged0(self, fp, prop):
         '''Do something when a property has changed'''
         # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         if 'Restore' in fp.State:
@@ -3555,7 +3686,7 @@ class GDMLDenseTessellated(GDMLsolid):
         if prop in ['scale', 'solidFlag', 'sampledFraction']:
             self.createGeometry(fp)
 
-    def createGeometry(self, fp):
+    def createGeometry0(self, fp):
         import time
         
         currPlacement = fp.Placement
