@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # emacs insert date command: Ctrl-U ESC-! date
+# Sun Mar 27 12:57:07 PM PDT 2022
 # Mon Feb 28 12:47:38 PM PST 2022
 # **************************************************************************
 # *                                                                        *
@@ -31,6 +32,7 @@ __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_GDML"]
 
 import FreeCAD
+from PySide import QtGui
 import os, io, sys, re
 import Part, Draft
 
@@ -1011,9 +1013,64 @@ def indexVertex(list, name):
     return i
 
 
+from . import importTess_ui
+
+
+class TessSampleDialog(QtGui.QDialog, importTess_ui.Ui_Dialog):
+    maxFaces = 2000
+    applyToAll = False
+    samplingFraction = 0
+    fullSolid = True
+    
+    def __init__(self, solidName, numVertexes, numFaces):
+        super(TessSampleDialog, self).__init__()
+        self.setupUi(self)
+        self.solidName = solidName
+        self.numVertexes = numVertexes
+        self.numFaces = numFaces
+        self.fullDisplayRadioButton.toggled.connect(self.fullDisplayRadioButtonToggled)
+        self.initUI()
+
+    def initUI(self):
+        self.solidLabel.setText(self.solidName)
+        self.vertexesLabel.setText(str(self.numVertexes))
+        self.facesLabel.setText(str(self.numFaces))
+        self.thresholdSpinBox.setValue(TessSampleDialog.maxFaces)
+        self.applyToAllCheckBox.setChecked(TessSampleDialog.applyToAll)
+        self.fractionSpinBox.setValue(TessSampleDialog.samplingFraction)
+        self.fullDisplayRadioButton.setChecked(TessSampleDialog.fullSolid)
+        self.buttonBox.accepted.connect(self.okClicked) # type: ignore
+        self.buttonBox.rejected.connect(self.cancelClicked) # type: ignore
+
+    def fullDisplayRadioButtonToggled(self):
+        self.fullDisplayRadioButton.blockSignals(True)
+
+        if self.fullDisplayRadioButton.isChecked():
+            self.fractionSpinBox.setEnabled(False)
+            self.fractionsLabel.setEnabled(False)
+        else:
+            self.fractionSpinBox.setEnabled(True)
+            self.fractionsLabel.setEnabled(True)
+
+        self.fullDisplayRadioButton.blockSignals(False)
+
+    def okClicked(self):
+        TessSampleDialog.maxFaces = self.thresholdSpinBox.value()
+        TessSampleDialog.applyToAll = self.applyToAllCheckBox.isChecked()
+        TessSampleDialog.samplingFraction = self.fractionSpinBox.value()
+        TessSampleDialog.fullSolid = self.fullDisplayRadioButton.isChecked()
+        print('TessellationDialog accepted')
+        self.accept()
+
+    def cancelClicked(self):
+        print('TessellationDialog rejected')
+        self.reject()
+
+
 def createTessellated(part, solid, material, colour, px, py, pz, rot,
                       displayMode):
-    from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
+    global maxTessellationFaces
+    from .GDMLObjects import GDMLSampledTessellated, GDMLTriangular, \
           GDMLQuadrangular, ViewProvider, ViewProviderExtension
     # GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTessellated : ")
@@ -1022,57 +1079,75 @@ def createTessellated(part, solid, material, colour, px, py, pz, rot,
     vertex = []
     faces = []
     lunit = getText(solid, 'lunit', "mm")
+
+    # form a set of vertexes. a set has no duplicates,
+    # so we don't need to perform the time-costly list.index method
+    vertsSet = set()
     for elem in solid.getchildren():
         v1name = elem.get('vertex1')
-        # print(v1name)
         v1 = GDMLShared.getDefinedPosition(v1name)
-        # print(v1)
-        v1pos = indexVertex(vertNames, v1name)
-        if v1pos < 0:
-            vertNames.append(v1name)
-            v1pos = len(vertNames) - 1
-            vertex.append(v1)
-        # print(v1pos)
+        vertsSet.add(v1)
         v2name = elem.get('vertex2')
-        # print(v2name)
         v2 = GDMLShared.getDefinedPosition(v2name)
-        # print(v2)
-        v2pos = indexVertex(vertNames, v2name)
-        if v2pos < 0:
-            vertNames.append(v2name)
-            v2pos = len(vertNames) - 1
-            vertex.append(v2)
-        # print(v2pos)
+        vertsSet.add(v2)
         v3name = elem.get('vertex3')
-        # print(v3name)
         v3 = GDMLShared.getDefinedPosition(v3name)
-        # print(v3)
-        v3pos = indexVertex(vertNames, v3name)
-        if v3pos < 0:
-            vertNames.append(v3name)
-            v3pos = len(vertNames) - 1
-            vertex.append(v3)
-        # print(v3pos)
+        vertsSet.add(v3)
+        if elem.tag == 'quadrangular':
+            v4name = elem.get('vertex4')
+            v4 = GDMLShared.getDefinedPosition(v4name)
+            vertsSet.add(v3)
+    # make a list out of the set
+    vertsList = list(vertsSet)
+
+    # create list of indexes for each face
+    Dict = {}
+    for i, v in enumerate(vertsList):
+        vertex.append(v)
+        Dict[v] = i
+
+    for elem in solid.getchildren():
+        v1name = elem.get('vertex1')
+        v1 = GDMLShared.getDefinedPosition(v1name)
+        v1pos = Dict[v1]
+        v2name = elem.get('vertex2')
+        v2 = GDMLShared.getDefinedPosition(v2name)
+        v2pos = Dict[v2]
+        v3name = elem.get('vertex3')
+        v3 = GDMLShared.getDefinedPosition(v3name)
+        v3pos = Dict[v3]
         if elem.tag == 'triangular':
             faces.append([v1pos, v2pos, v3pos])
         if elem.tag == 'quadrangular':
             v4name = elem.get('vertex4')
-            # print(v4name)
             v4 = GDMLShared.getDefinedPosition(v4name)
-            # print(v4)
-            v4pos = indexVertex(vertNames, v4name)
-            if v4pos < 0:
-                vertNames.append(v4name)
-                v4pos = len(vertNames) - 1
-                # print(v4pos)
-                vertex.append(v4)
+            v4pos = Dict[v4]
             faces.append([v1pos, v2pos, v3pos, v4pos])
+
     # print(vertNames)
-    myTess = newPartFeature(part, "GDMLTessellated_"+getName(solid))
-    GDMLTessellated(myTess, vertex, faces, False, lunit, material,
-                    colour)
+    solidName = getName(solid)
+    myTess = newPartFeature(part, "GDMLSampledTessellated_"+solidName)
+    print(f'processing tessleation {solidName}')
     if FreeCAD.GuiUp:
-        ViewProvider(myTess.ViewObject)
+        if len(faces) > TessSampleDialog.maxFaces:
+            if TessSampleDialog.applyToAll is False:
+                dialog = TessSampleDialog(solidName, len(vertex), len(faces))
+                dialog.exec_()
+            solidFlag = TessSampleDialog.fullSolid
+            sampledFraction = TessSampleDialog.samplingFraction
+        else:
+            solidFlag = True
+            sampledFraction = 0
+    else:
+        solidFlag = True
+        sampledFraction = 0
+
+    GDMLSampledTessellated(myTess, vertex, faces,
+                           lunit, material, solidFlag, sampledFraction, colour,
+                           flag=False)
+
+    # GDMLTessellated(myTess, vertex, faces, False, lunit, material,
+    #                 colour)
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px, py, pz)
     myTess.Placement = GDMLShared.processPlacement(base, rot)
@@ -1886,6 +1961,7 @@ def processDefines(root, doc):
 
 
 def processGDML(doc, filename, prompt, initFlg):
+    from FreeCAD import Base
     # Process GDML
 
     import time
@@ -1926,6 +2002,12 @@ def processGDML(doc, filename, prompt, initFlg):
     FilesEntity = False
 
     global setup, define, materials, solids, structure, extension, groupMaterials
+
+    # reset parameters for tessellation dialog:
+    TessSampleDialog.maxFaces = 2000
+    TessSampleDialog.applyToAll = False
+    TessSampleDialog.samplingFraction = 0
+    TessSampleDialog.fullSolid = True
 
     # Add files object so user can change to organise files
     #  from GDMLObjects import GDMLFiles, ViewProvider
