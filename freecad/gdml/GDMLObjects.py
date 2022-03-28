@@ -3501,7 +3501,11 @@ class GDMLSampledTessellated(GDMLsolid):
         obj.addProperty("App::PropertyEnumeration", "material",
                         "GDMLSampledTessellated", "Material")
 
-        nList = [len(f.Points) for f in facets]
+        if flag is True:
+            nList = [len(f.Points) for f in facets]
+        else:
+            nList = [len(f) for f in facets]
+            
         obj.addProperty('App::PropertyIntegerList', 'vertsPerFacet',
                         'GDMLSampledTessellated',
                         'Number of vertexes in each facet').vertsPerFacet = nList
@@ -3518,8 +3522,15 @@ class GDMLSampledTessellated(GDMLsolid):
         # we use a set first to get rid of duplicate points
         vertsSet = set()
         for f in facets:
-            for p in f.Points:
-                vertsSet.add(p)
+            if flag is True:
+                for p in f.Points:
+                    vertsSet.add(p)
+            else:
+                vertsSet.add(vertex[f[0]])
+                vertsSet.add(vertex[f[1]])
+                vertsSet.add(vertex[f[2]])
+                if len(f) == 4:
+                    vertsSet.add(vertex[f[3]])
 
         vertsList = list(vertsSet)
         obj.addProperty('App::PropertyVectorList', 'vertsList',
@@ -3538,8 +3549,15 @@ class GDMLSampledTessellated(GDMLsolid):
         # and rely on the nList to get the number of points
         indexList = []
         for f in facets:
-            for v in f.Points:
-                indexList.append(Dict[v])
+            if flag is True:
+                for v in f.Points:
+                    indexList.append(Dict[v])
+            else:
+                indexList.append(Dict[vertex[f[0]]])
+                indexList.append(Dict[vertex[f[1]]])
+                indexList.append(Dict[vertex[f[2]]])
+                if len(f) == 4:
+                    indexList.append(Dict[vertex[f[3]]])
 
         obj.addProperty('App::PropertyIntegerList', 'indexList',
                         'GDMLSampledTessellated',
@@ -3550,7 +3568,11 @@ class GDMLSampledTessellated(GDMLsolid):
         self.updateParams(vertex, facets, solidFlag, sampledFraction, flag)
         if FreeCAD.GuiUp:
             updateColour(obj, colour, material)
-            if sampledFraction == 0:
+            if sampledFraction == 0 and solidFlag is False:
+                ViewProvider(obj.ViewObject)
+                modes = obj.ViewObject.Proxy.getDisplayModes(obj)
+                if 'Points' in modes:
+                    obj.ViewObject.DisplayMode = 'Points'
                 obj.ViewObject.PointColor = (random(), random(), random(), 0.0)
         self.Type = 'GDMLSampledTessellated'
         self.colour = colour
@@ -3606,8 +3628,9 @@ class GDMLSampledTessellated(GDMLsolid):
         # if flag == False - factes is Faces i.e. from import GDMLTessellated
         # mul = GDMLShared.getMult(fp)
         mul = GDMLShared.getMult(self)
-        if solidFlag is False and sampledFraction == 0:
-            return self.cloud(vertex, facets, flag)
+        if sampledFraction == 0 and solidFlag is False:
+            shape = self.cloud(vertex, facets, flag)
+            return shape
         # print('Create Shape')
         if solidFlag is False:
             NMax = sampledFraction*len(facets)/100
@@ -3617,7 +3640,6 @@ class GDMLSampledTessellated(GDMLsolid):
         else:
             nskip = 1
 
-        print(f'nskip {nskip}')
         FCfaces = []
         for i in range(0, len(facets), nskip):
             f = facets[i]
@@ -3657,14 +3679,14 @@ class GDMLSampledTessellated(GDMLsolid):
         return solid
 
     def cloud(self, vertex, facets, flag):
-        import math
+        print('Cloud called')
         import random
 
         mul = GDMLShared.getMult(self)
         pts = []
         if flag is True:
             frac = 0.01
-            Npts = int(0.01*(len(facets)))
+            Npts = int(frac*(len(facets)))
             while Npts < 1000 and frac < 1:
                 frac += 0.01
                 Npts = int(frac*(len(facets)))
@@ -3675,14 +3697,19 @@ class GDMLSampledTessellated(GDMLsolid):
                 v = Part.Vertex(f.Points[0])
                 pts.append(v)
         else:
-            Npts = int(math.sqrt*len(vertex))
+            frac = 0.01
+            Npts = int(frac*len(vertex))
+            while Npts < 1000 and frac < 1:
+                frac += 0.01
+                Npts = int(frac*(len(vertex)))
             jmax = len(vertex)
             for i in range(Npts):
                 j = random.randrange(jmax)
                 v = vertex[j]
-                pts.append(Part.Vertex(mul*v.x, mul*v.y, mul*v.x))
+                pts.append(Part.Vertex(mul*v[0], mul*v[1], mul*v[2]))
 
-        return Part.makeCompound(pts)
+        ret = Part.makeCompound(pts)
+        return ret
 
     def onChanged0(self, fp, prop):
         '''Do something when a property has changed'''
@@ -4065,6 +4092,7 @@ class ViewProviderExtension(GDMLcommon):
         modes = []
         modes.append("Shaded")
         modes.append("Wireframe")
+        modes.append("Points")
         return modes
 
     def updateData(self, fp, prop):
@@ -4104,6 +4132,7 @@ class ViewProvider(GDMLcommon):
         modes = []
         modes.append("Shaded")
         modes.append("Wireframe")
+        modes.append("Points")
         return modes
 
     def getDefaultDisplayMode(self):
