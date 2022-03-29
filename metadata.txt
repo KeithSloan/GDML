@@ -1,2 +1,2 @@
-workbenches=Part,Mesh
-pylibs=lxml,gmsh
+workbenches=Part, Mesh
+pylibs=lxml, gmsh-dev
