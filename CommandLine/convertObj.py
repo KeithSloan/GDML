@@ -244,7 +244,7 @@ except ImportError:
 path, fileExt = os.path.splitext(iPath)
 print(path)
 tessName = path
-print(tessName)
+#print(tessName)
 if fileExt.lower() != '.obj':
    print('Invalid Obj file extension')
    sys.exit()
