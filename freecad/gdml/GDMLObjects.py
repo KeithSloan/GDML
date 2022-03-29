@@ -3416,8 +3416,8 @@ class GDMLTessellated(GDMLsolid):
             if flag is True:
                #FCfaces.append(GDMLShared.facet(f))
                if len(f.Points) == 3:
-                  face = GDMLShared.triangle(triangle(f.Points[0], \
-                         f.Points[1], f.Points[2]))
+                  face = GDMLShared.triangle(f.Points[0], \
+                         f.Points[1], f.Points[2])
                   FCfaces.append(face)
                else : # Four points might be close to but not coplanar OBJ file
                   try:
