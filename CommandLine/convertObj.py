@@ -36,18 +36,32 @@ def case(*args):
     return any((arg == switch.value for arg in args))
 
 class tessellated:
-    def __init__(self, gdmlStr, name):
-        self.tess = gdmlStr.defineTessellated(name)
+    def __init__(self, name, material):
+        self.elem = ET.Element('tessellated',{'name':name})
+        self.name = name
+        self.material = material
+        self.content = False
 
     def addTriFace(self, vrt1, vrt2, vrt3):
-        ET.SubElement(self.tess,'triangular',{
+        ET.SubElement(self.elem,'triangular',{
           'vertex1' : vrt1, 'vertex2' : vrt2, 'vertex3' : vrt3,
           'type':'ABSOLUTE'})
+        self.content = True
 
     def addQuadFace(self, vrt1, vrt2, vrt3, vrt4):
-        ET.SubElement(self.tess,'quadrangular',{
+        ET.SubElement(self.elem,'quadrangular',{
           'vertex1' : vrt1, 'vertex2' : vrt2, 'vertex3' : vrt3, 'vertex4': vrt4,
           'type':'ABSOLUTE'})
+        self.content = True
+
+    def flush(self, xmlStr):
+        if self.content == True:
+           xmlStr.solids.insert(1,self.elem)
+           lvName = 'LV_'+self.name
+           xmlStr.addVol(lvName, self.material, self.name)
+           xmlStr.addPhysVol(self.name)
+           self.content = False
+
 
 class xmlStructure:
     def __init__(self):
@@ -102,20 +116,20 @@ class xmlStructure:
 
     def addWorldVol(self,name):
         ET.SubElement(self.setup, 'world', {'ref': name})
-        return(self.addVol(name, 'G4_AIR',self.addWorldBox(1000,1000,1000)))
+        self.world = self.addVol(name, 'G4_AIR',self.addWorldBox(1000,1000,1000))
 
     def addVol(self, name, material, solid):
-        vol = ET.SubElement(self.structure, 'volume',{'name': name})
-        ET.SubElement(vol, 'materialref',{'ref': material})
-        ET.SubElement(vol, 'solidref',{'ref': solid})
-        return vol
+        self.elem = ET.Element('volume',{'name': name})
+        ET.SubElement(self.elem, 'materialref',{'ref': material})
+        ET.SubElement(self.elem, 'solidref',{'ref': solid})
+        self.structure.insert(0,self.elem)
+        return(self.elem)
 
-    def addPhysVol(self, vol, name):
-        pvol = ET.SubElement(vol,'physvol', {'name': 'PV'+name})
-        ET.SubElement(pvol, 'volumeref', {'ref': name})
-        ET.SubElement(pvol, 'positionref', {'ref': 'center'})
-        ET.SubElement(pvol, 'rotationref', {'ref': 'identity'})
-
+    def addPhysVol(self, name):
+        self.pvol = ET.SubElement(self.world,'physvol', {'name': 'PV'+name})
+        ET.SubElement(self.pvol, 'volumeref', {'ref': 'LV_'+name})
+        ET.SubElement(self.pvol, 'positionref', {'ref': 'center'})
+        ET.SubElement(self.pvol, 'rotationref', {'ref': 'identity'})
 
     def addVertex(self, x, y, z):
         # Add to Define position name
@@ -137,73 +151,100 @@ class xmlStructure:
                          self.vertex[int(items[3])], \
                          self.vertex[int(items[4])])
         
-    def defineTessellated(self, name):
-        # return Tessellated Element
-        return ET.SubElement(self.solids,'tessellated',{'name': name})
-
     def writeElement(self, path):
         print('Write Element to : '+path)
         self.indent(self.element)
         ET.ElementTree(self.element).write(path, xml_declaration=True)
    
-def processObjFile(xmlStr, objFp, name):
-    tess = tessellated(xmlStr, name)
+def processObjFile(xmlStr, objFp, name, material):
+    xmlStr.addWorldVol('worldVol')
+    tessName = name
+    tess = tessellated(tessName, material)
     for line in objFp:
         #print(line)
-        items = line.split(' ')
-        l = len(items) - 1
-        while switch(items[0]) :
-           if case('v') :
-              #print('Vertex - len : '+str(l))
-              if l >= 3:
-                  xmlStr.addVertex(items[1], items[2],items[3])
-              else :
-                  print('Invalid Vertex')
-                  print(items)
+        items = line.split()
+        if items != []:
+           #print(items)
+           l = len(items) - 1
+           while switch(items[0]) :
+              if case('v'):
+                 #print('Vertex - len : '+str(l))
+                 if l >= 3:
+                     xmlStr.addVertex(items[1], items[2],items[3])
+                 else:
+                     print('Invalid Vertex')
+                     print(items)
+                 break
+
+              if case('f'):
+                 #print('Face')
+                 #print(xmlStr.vertexCount)
+                 if l == 3:
+                     #print('Triangle')
+                     xmlStr.addTriFace(tess, items)
+                 elif l == 4: 
+                    #print('Quad : '+str(items))
+                    xmlStr.addQuadFace(tess, items)
+                 else :
+                    print('Warning Polygon : Number of Face Vertex = '+str(l))
+                    print('Converting to Triangle Faces')
+                    #verts = []
+                    #for i in range(1,l+1) :
+                    #    v = vertex[getVert(items[i])]
+                    #    #print(v)
+                    #    verts.append(v)
+                    ##print(verts)
+                    #verts.append(verts[0])
+                 break
+
+              if case('g'):
+                 print('Group Name')
+                 tessName = items[1]
+                 print(items)
+                 break
+
+              if case('o'):
+                 print('Object Name')
+                 print(items)
+                 tessName = items[1]
+                 break
+
+              if case('s'):
+                 print('Smoothing Group')
+                 tess.flush(xmlStr)
+                 tess = tessellated(tessName, material)
+                 break
+
+              if case('usemtlo'):
+                 print('Material')
+                 print(items)
+                 break
+
+              if case('mtllib'):
+                 print('Material Library')
+                 print(items)
+                 break
+
+              if case('#'):          # Comment ignore
+                 break
+
+              if case('vt'):
+                 break
+
+              if case('vn'):
+                 break
+
+              print('Tag : '+str(items))
               break
 
-           if case('f') :
-              #print('Face')
-              #print(xmlStr.vertexCount)
-              if l == 3 :
-                 #print('Triangle')
-                 xmlStr.addTriFace(tess, items)
-              elif l == 4 : 
-                 #print('Quad : '+str(items))
-                 xmlStr.addQuadFace(tess, items)
-              else :
-                 print('Warning Polygon : Number of Face Vertex = '+str(l))
-                 print('Converting to Triangle Faces')
-                 #verts = []
-                 #for i in range(1,l+1) :
-                 #    v = vertex[getVert(items[i])]
-                 #    #print(v)
-                 #    verts.append(v)
-                 ##print(verts)
-                 #verts.append(verts[0])
-              break
-
-           if case('#') :          # Comment ignore
-              break
-
-           if case('vt') :
-              break
-
-           if case('vn') :
-              break
-
-           print('Tag : '+items[0])
-           break
+    tess.flush(xmlStr)
 
 def convert2GDML(objFp, outPath, tessName, material):
     print('Creating GDML from Obj')
     gdmlStr = xmlStructure()
     gdmlStr.initGDML()
     gdmlStr.init()
-    tessVol = gdmlStr.addVol('LV_'+tessName, material, tessName)
-    worldVol = gdmlStr.addWorldVol('worldVol')
-    gdmlStr.addPhysVol(worldVol, 'LV_'+tessName)
-    processObjFile(gdmlStr, objFp, tessName)
+    processObjFile(gdmlStr, objFp, tessName, material)
     gdmlStr.writeElement(outPath)
 
 def convert2XML(objFp, outPath, tessName, material):
@@ -211,7 +252,7 @@ def convert2XML(objFp, outPath, tessName, material):
     xmlStr = xmlStructure()
     xmlStr.initXML()
     xmlStr.init()
-    processObjFile(xmlStr, objFp, tessName)
+    processObjFile(xmlStr, objFp, tessName, material)
     gdmlStr.writeElement(outPath)
 
 argLen = len(sys.argv)
