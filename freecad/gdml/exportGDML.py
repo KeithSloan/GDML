@@ -1324,15 +1324,17 @@ def processVolAssem(vol, xmlParent, parentName):
     # xmlVol - xml of this volume
     # xmlParent - xml of this volumes Paretnt
     # xmlVol could be created dummy volume
-    print('process volasm '+vol.Label)
-    volName = vol.Label
-    if isContainer(vol):
-        processContainer(vol, xmlParent)
-    elif isAssembly(vol):
-        newXmlVol = insertXMLassembly(volName)
-        processAssembly(vol, newXmlVol, xmlParent, parentName)
-    else:
-        processVolume(vol, xmlParent)
+    if vol.Label[:12] != 'NOT_Expanded':
+       print('process volasm '+vol.Label)
+       volName = vol.Label
+       if isContainer(vol):
+          processContainer(vol, xmlParent)
+       elif isAssembly(vol):
+          newXmlVol = insertXMLassembly(volName)
+          processAssembly(vol, newXmlVol, xmlParent, parentName)
+       else:
+          processVolume(vol, xmlParent)
+    print('skipping '+vol.Label)
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
@@ -1485,13 +1487,18 @@ def assemblyHeads(obj):
     assemblyHeads = []
     if isAssembly(obj):
         for ob in obj.OutList:
-            if ob.TypeId == 'App::Part' or ob.TypeId == 'App::Link':
-                print(f'adding {ob.Label}')
-                assemblyHeads.append(ob)
-            else:
-                if ob.TypeId != 'App::Origin':
-                    print(f'adding {ob.Label}')
-                    assemblyHeads.append(ob)
+            if ob.Label[:12] != 'NOT_Expanded':
+               if ob.TypeId == 'App::Part':
+                  print(f'adding {ob.Label}')
+                  assemblyHeads.append(ob)
+               elif ob.TypeId == 'App::Link':
+                  if ob.LinkedObject.Label[:12] != 'NOT_Expanded':
+                     print(f'adding {ob.Label}')
+                     assemblyHeads.append(ob)
+               else:
+                  if ob.TypeId != 'App::Origin':
+                     print(f'T2 adding {ob.Label}')
+                     assemblyHeads.append(ob)
 
         # now remove any OutList objects from from the subObjs
         for subObj in assemblyHeads[:]:  # the slice is a COPY of the list, not the list itself
