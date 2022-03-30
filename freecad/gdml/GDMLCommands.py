@@ -1847,6 +1847,11 @@ def expandFunction(obj, eNum):
         expandVolume(obj, volRef, eNum, 3)
         obj.Label = name
 
+def recomputeVol(obj):
+    if hasattr(obj,'OutList'):
+       for o in obj.OutList:
+           o.recompute()
+       obj.recompute()
 
 class ExpandFeature:
 
@@ -1864,6 +1869,7 @@ class ExpandFeature:
                 if hasattr(obj, 'LinkedObject'):
                     if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_':
                         expandFunction(obj.LinkedObject, 0)
+            recomputeVol(obj)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -1894,6 +1900,7 @@ class ExpandMaxFeature:
                 if hasattr(obj, 'LinkedObject'):
                     if obj.LinkedObject.Label[0:13] == 'NOT_Expanded_':
                         expandFunction(obj.LinkedObject, -1)
+            recomputeVol(obj)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
