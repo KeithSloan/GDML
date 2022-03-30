@@ -1915,6 +1915,40 @@ class ExpandMaxFeature:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('GDML_Expand_Max',
                                                     'Max Expand Volume')}
 
+class ResetWorldFeature:
+
+    def Activated(self):
+        print('Reset World Coordinates')
+        vol = self.WorldVol
+        if vol is not None:
+           print(self.BoundingBox())
+
+    def WorldVol(self):
+        doc=FreeCAD.ActiveDocument
+        if doc is not None:
+           # Find world Vol
+           for obj in doc.Objects:
+               if obj.TypeID == 'App::Part':
+                  return obj
+        return None
+
+    def BoundingBox(self):
+        print('Calc Bounding Box')
+       
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_ResetWorld',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_ResetWorld',
+                                                     'Reset World Coords'),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP('GDML_ResetWorld',
+                                                    'Reset World Coords')}
+
 
 class CompoundFeature:
 
@@ -2007,6 +2041,7 @@ class CompoundFeature:
 FreeCADGui.addCommand('CycleCommand', CycleFeature())
 FreeCADGui.addCommand('ExpandCommand', ExpandFeature())
 FreeCADGui.addCommand('ExpandMaxCommand', ExpandMaxFeature())
+FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
