@@ -1979,13 +1979,18 @@ class ResetWorldFeature:
        
         print(f'New Calculated BBox : {calcBox}')
         x = calcBox[3] - calcBox[0]
-        y = calcBox[4] - calcBox[1]
-        z = calcBox[5] - calcBox[2]
+        #y = calcBox[4] - calcBox[1]
+        y = max(calcBox[5], calcBox[1])
+        #z = calcBox[5] - calcBox[2]
+        z = max(calcBox[5],calcBox[2])
+        print(f' x {x} y {y} z {z}')
         worldObj.x = 1.30 * x
         worldObj.y = 1.30 * y
         worldObj.z = 1.30 * z
-        worldObj.Placement.Base.y = (calcBox[4] + calcBox[1])/2
-        worldObj.Placement.Base.z = (calcBox[2] + calcBox[5])/2
+        #worldObj.Placement.Base.y = (calcBox[4] + calcBox[1])/2
+        #worldObj.Placement.Base.z = (calcBox[2] + calcBox[5])/2
+        worldObj.recompute()
+        print(worldObj.Shape.BoundBox)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:

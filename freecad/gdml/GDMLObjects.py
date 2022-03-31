@@ -551,7 +551,7 @@ class GDMLBox(GDMLsolid):
 
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
-        # print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+        print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
         # Changing Shape in createGeometry will redrive onChanged
         if ('Restore' in fp.State):
             return
@@ -571,7 +571,7 @@ class GDMLBox(GDMLsolid):
         # execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        # print('createGeometry')
+        print(f'createGeometry : {str(fp)}')
 
         if all((fp.x, fp.y, fp.z)):
             currPlacement = fp.Placement
@@ -585,6 +585,7 @@ class GDMLBox(GDMLsolid):
             box = Part.makeBox(x, y, z)
             base = FreeCAD.Vector(-x/2, -y/2, -z/2)
             fp.Shape = translate(box, base)
+            print('Translate')
             fp.Placement = currPlacement
         if hasattr(fp, 'scale'):
             super().scale(fp)
