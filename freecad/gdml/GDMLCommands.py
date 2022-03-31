@@ -1943,9 +1943,10 @@ class ResetWorldFeature:
 
     def BoundingBox(self, vol, worldObj):
 
+        import Part
         print('Calc Bounding Box')
         print(f'World bbox {worldObj.Shape.BoundBox}')
-        calcBox = None
+        calcBox = FreeCAD.BoundBox()
         for obj in vol.OutList:
             #print(obj.Label)
             if obj.TypeId == 'App::Part':
@@ -1955,42 +1956,16 @@ class ResetWorldFeature:
                          #print(gObj.Label)
                          if hasattr(gObj,'Shape'):
                             #print(f'Obj bbox {gObj.Shape.BoundBox}')
-                            objBox = gObj.Shape.BoundBox
-                            if calcBox is not None :
-                               if objBox.XMin < calcBox[0] :
-                                  calcBox[0] = objBox.XMin
-                               if objBox.YMin < calcBox[1] :
-                                  calcBox[1] = objBox.YMin
-                               if objBox.ZMin < calcBox[2] :
-                                  calcBox[2] = objBox.ZMin
-                               if objBox.XMax > calcBox[3] :
-                                  calcBox[3] = objBox.XMax
-                               if objBox.YMax > calcBox[4] :
-                                  calcBox[4] = objBox.YMax
-                               if objBox.ZMax > calcBox[5] :
-                                  calcBox[5] = objBox.ZMax
-                            else:
-                               calcBox = [objBox.XMin,
-                               objBox.YMin,
-                               objBox.ZMin,
-                               objBox.XMax,
-                               objBox.YMax,
-                               objBox.ZMax]
+                            calcBox.add(gObj.Shape.BoundBox)
        
         print(f'New Calculated BBox : {calcBox}')
-        x = calcBox[3] - calcBox[0]
-        #y = calcBox[4] - calcBox[1]
-        y = max(calcBox[5], calcBox[1])
-        #z = calcBox[5] - calcBox[2]
-        z = max(calcBox[5],calcBox[2])
+        x = 2 * max(abs(calcBox.XMin),abs(calcBox.XMax))
+        y = 2 * max(abs(calcBox.YMin),abs(calcBox.YMax))
+        z = 2 * max(abs(calcBox.ZMin),abs(calcBox.ZMax))
         print(f' x {x} y {y} z {z}')
         worldObj.x = 1.30 * x
         worldObj.y = 1.30 * y
         worldObj.z = 1.30 * z
-        #worldObj.Placement.Base.y = (calcBox[4] + calcBox[1])/2
-        #worldObj.Placement.Base.z = (calcBox[2] + calcBox[5])/2
-        worldObj.recompute()
-        print(worldObj.Shape.BoundBox)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:

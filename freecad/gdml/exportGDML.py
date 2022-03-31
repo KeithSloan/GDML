@@ -1219,7 +1219,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
     GDMLShared.setTrace(True)
-    volName = vol.Label
+    volName = 'V'+vol.Label
     # volName = cleanVolName(vol, vol.Label)
     GDMLShared.trace('Process Assembly : '+volName)
     # if GDMLShared.getTrace() == True :
@@ -1256,7 +1256,7 @@ def processVolume(vol, xmlParent, volName=None):
         return
 
     if volName is None:
-        volName = vol.Label
+        volName = 'V'+vol.Label
     if vol.TypeId == 'App::Part':
         topObject = topObj(vol)
     else:
@@ -2703,7 +2703,7 @@ class GDMLSampledTessellatedExporter(GDMLSolidExporter):
     def export(self):
         tessName = self.name()
         # Use more readable version
-        tessVname = tessName + '_'
+        tessVname = 'v'+tessName + '_'
         # print(dir(obj))
 
         verts = self.obj.vertsList
