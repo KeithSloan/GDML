@@ -39,7 +39,7 @@ import SketcherGui
 import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
-
+from freecad.gdml.GDMLGuiCommands import TwistedGroup
 
 def joinDir(path):
     import os
@@ -108,6 +108,7 @@ class GDML_Workbench (FreeCADGui.Workbench):
                            'ElTubeCommand', 'EllipsoidCommand',
                            'SphereCommand',
                            'TorusCommand', 'TrapCommand', 'TubeCommand',
+                           'TwistedCommands',
                            'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
                            'Part_Mirror', 'Draft_ArrayTools',
                            'SetScaleCommand',

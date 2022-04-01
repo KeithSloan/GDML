@@ -107,7 +107,10 @@ class MultiPlacer:
         print("Can't place base class MultiPlace")
 
     def name(self):
-        return self.obj.Label
+        prefix = 'x'
+        if self.obj.Label[0].isdigit():
+            prefix = 'x'
+        return prefix + self.obj.Label
 
     @staticmethod
     def getPlacer(obj):
@@ -1219,7 +1222,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
     GDMLShared.setTrace(True)
-    volName = 'V'+vol.Label
+    volName = vol.Label
     # volName = cleanVolName(vol, vol.Label)
     GDMLShared.trace('Process Assembly : '+volName)
     # if GDMLShared.getTrace() == True :
@@ -1256,7 +1259,7 @@ def processVolume(vol, xmlParent, volName=None):
         return
 
     if volName is None:
-        volName = 'V'+vol.Label
+        volName = vol.Label
     if vol.TypeId == 'App::Part':
         topObject = topObj(vol)
     else:
@@ -1325,16 +1328,17 @@ def processVolAssem(vol, xmlParent, parentName):
     # xmlParent - xml of this volumes Paretnt
     # xmlVol could be created dummy volume
     if vol.Label[:12] != 'NOT_Expanded':
-       print('process volasm '+vol.Label)
-       volName = vol.Label
-       if isContainer(vol):
-          processContainer(vol, xmlParent)
-       elif isAssembly(vol):
-          newXmlVol = insertXMLassembly(volName)
-          processAssembly(vol, newXmlVol, xmlParent, parentName)
-       else:
-          processVolume(vol, xmlParent)
-    print('skipping '+vol.Label)
+        print('process volasm '+vol.Label)
+        volName = vol.Label
+        if isContainer(vol):
+            processContainer(vol, xmlParent)
+        elif isAssembly(vol):
+            newXmlVol = insertXMLassembly(volName)
+            processAssembly(vol, newXmlVol, xmlParent, parentName)
+        else:
+            processVolume(vol, xmlParent)
+    else:
+        print('skipping '+vol.Label)
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
@@ -1488,17 +1492,17 @@ def assemblyHeads(obj):
     if isAssembly(obj):
         for ob in obj.OutList:
             if ob.Label[:12] != 'NOT_Expanded':
-               if ob.TypeId == 'App::Part':
-                  print(f'adding {ob.Label}')
-                  assemblyHeads.append(ob)
-               elif ob.TypeId == 'App::Link':
-                  if ob.LinkedObject.Label[:12] != 'NOT_Expanded':
-                     print(f'adding {ob.Label}')
-                     assemblyHeads.append(ob)
-               else:
-                  if ob.TypeId != 'App::Origin':
-                     print(f'T2 adding {ob.Label}')
-                     assemblyHeads.append(ob)
+                if ob.TypeId == 'App::Part':
+                    print(f'adding {ob.Label}')
+                    assemblyHeads.append(ob)
+                elif ob.TypeId == 'App::Link':
+                    if ob.LinkedObject.Label[:12] != 'NOT_Expanded':
+                        print(f'adding {ob.Label}')
+                        assemblyHeads.append(ob)
+                else:
+                    if ob.TypeId != 'App::Origin':
+                        print(f'T2 adding {ob.Label}')
+                        assemblyHeads.append(ob)
 
         # now remove any OutList objects from from the subObjs
         for subObj in assemblyHeads[:]:  # the slice is a COPY of the list, not the list itself
@@ -2062,7 +2066,12 @@ class SolidExporter:
         self._name = self.obj.Label
 
     def name(self):
-        return self._name
+        prefix = ''
+        if self._name[0].isdigit():
+            prefix = 'S'
+        ret = prefix + self._name
+        print(prefix, self._name)
+        return ret
 
     def position(self):
         return self.obj.Placement.Base
@@ -2422,7 +2431,10 @@ class GDMLSolidExporter(SolidExporter):
         self._name = nameOfGDMLobject(self.obj)
 
     def name(self):
-        return self._name
+        prefix = ''
+        if self._name[0].isdigit():
+            prefix = 'S'
+        return prefix + self._name
 
 
 class GDMLArb8Exporter(GDMLSolidExporter):
@@ -2702,8 +2714,9 @@ class GDMLSampledTessellatedExporter(GDMLSolidExporter):
 
     def export(self):
         tessName = self.name()
+        print(f'tessname: {tessName}')
         # Use more readable version
-        tessVname = 'v'+tessName + '_'
+        tessVname = tessName + '_'
         # print(dir(obj))
 
         verts = self.obj.vertsList
@@ -2849,7 +2862,7 @@ class GDMLTetrahedronExporter(GDMLSolidExporter):
         print('Len Tet' + str(len(self.obj.Proxy.Tetra)))
         count = 0
         for t in self.obj.Proxy.Tetra:
-            tetraName = 'Tetra_' + str(count)
+            tetraName = tetrahedronName + '_' + str(count)
             v1Name = tetraName + 'v1'
             v2Name = tetraName + 'v2'
             v3Name = tetraName + 'v3'
@@ -3097,9 +3110,6 @@ class OrthoArrayExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
         self._name = 'MultiUnion-' + self.obj.Label
-
-    def name(self):
-        return self._name
 
     def export(self):
         base = self.obj.OutList[0]
@@ -3423,7 +3433,10 @@ class RevolutionExporter(SolidExporter):
 
     def name(self):
         # override default name in SolidExporter
-        return self.lastName
+        prefix = ''
+        if self.lastName[0].isdigit():
+            prefix = 'R'
+        return prefix + self.lastName
 
     def position(self):
         # This presumes export has been called before postion()
@@ -4177,7 +4190,10 @@ class ExtrusionExporter(SolidExporter):
 
     def name(self):
         # override default name in SolidExporter
-        return self.lastName
+        prefix = ''
+        if self.lastName[0].isdigit():
+            prefix = 'X'
+        return prefix + self.lastName
 
     def export(self):
 

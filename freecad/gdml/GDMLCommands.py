@@ -1916,14 +1916,15 @@ class ExpandMaxFeature:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('GDML_Expand_Max',
                                                     'Max Expand Volume')}
 
+
 def getWorldVol():
-    doc=FreeCAD.ActiveDocument
+    doc = FreeCAD.ActiveDocument
     if doc is not None:
-       # Find world Vol
-       for obj in doc.Objects:
-           if hasattr(obj,'TypeId'):
-              if obj.TypeId == 'App::Part':
-                 return obj
+        # Find world Vol
+        for obj in doc.Objects:
+            if hasattr(obj, 'TypeId'):
+                if obj.TypeId == 'App::Part':
+                    return obj
 
 
 class ResetWorldFeature:
@@ -1932,36 +1933,34 @@ class ResetWorldFeature:
         print('Reset World Coordinates')
         vol = getWorldVol()
         if vol is not None:
-           if hasattr(vol,'OutList'):
-              if len(vol.OutList) >= 3:
-                 worldObj = vol.OutList[1]
-                 self.BoundingBox(vol, worldObj)
-                 worldObj.recompute()
-                 if FreeCAD.GuiUp:
-                    FreeCADGui.SendMsgToActiveView("ViewFit")
-
+            if hasattr(vol, 'OutList'):
+                if len(vol.OutList) >= 3:
+                    worldObj = vol.OutList[1]
+                    self.BoundingBox(vol, worldObj)
+                    worldObj.recompute()
+                    if FreeCAD.GuiUp:
+                        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def BoundingBox(self, vol, worldObj):
 
-        import Part
         print('Calc Bounding Box')
         print(f'World bbox {worldObj.Shape.BoundBox}')
         calcBox = FreeCAD.BoundBox()
         for obj in vol.OutList:
-            #print(obj.Label)
+            # print(obj.Label)
             if obj.TypeId == 'App::Part':
-               if hasattr(obj,'OutList'):
-                  if len(obj.OutList) > 0:
-                     for gObj in obj.OutList:
-                         #print(gObj.Label)
-                         if hasattr(gObj,'Shape'):
-                            #print(f'Obj bbox {gObj.Shape.BoundBox}')
-                            calcBox.add(gObj.Shape.BoundBox)
-       
+                if hasattr(obj, 'OutList'):
+                    if len(obj.OutList) > 0:
+                        for gObj in obj.OutList:
+                            # print(gObj.Label)
+                            if hasattr(gObj, 'Shape'):
+                                # print(f'Obj bbox {gObj.Shape.BoundBox}')
+                                calcBox.add(gObj.Shape.BoundBox)
+
         print(f'New Calculated BBox : {calcBox}')
-        x = 2 * max(abs(calcBox.XMin),abs(calcBox.XMax))
-        y = 2 * max(abs(calcBox.YMin),abs(calcBox.YMax))
-        z = 2 * max(abs(calcBox.ZMin),abs(calcBox.ZMax))
+        x = 2 * max(abs(calcBox.XMin), abs(calcBox.XMax))
+        y = 2 * max(abs(calcBox.YMin), abs(calcBox.YMax))
+        z = 2 * max(abs(calcBox.ZMin), abs(calcBox.ZMax))
         print(f' x {x} y {y} z {z}')
         worldObj.x = 1.30 * x
         worldObj.y = 1.30 * y
