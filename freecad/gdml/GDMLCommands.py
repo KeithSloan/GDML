@@ -119,8 +119,8 @@ def getSelectedPM():
                 return objPart, material
 
     if objPart is None:
-       #objPart = FreeCAD.ActiveDocument.getObject('worldVOL')
-       objPart = getWorldVol()
+        # objPart = FreeCAD.ActiveDocument.getObject('worldVOL')
+        objPart = getWorldVol()
 
     return objPart, material
 
@@ -1936,35 +1936,34 @@ class ResetWorldFeature:
             if hasattr(vol, 'OutList'):
                 if len(vol.OutList) >= 3:
                     worldObj = vol.OutList[1]
-                    self.BoundingBox(vol, worldObj)
+                    # self.BoundingBox(vol, worldObj)
+                    bb = self.BoundingBox(vol)
+                    print(bb)
+                    x = 2 * max(abs(bb.XMin), abs(bb.XMax))
+                    y = 2 * max(abs(bb.YMin), abs(bb.YMax))
+                    z = 2 * max(abs(bb.ZMin), abs(bb.ZMax))
+                    print(f' x {x} y {y} z {z}')
+                    print(f'worldObj {worldObj.TypeId}, {worldObj.Label}')
+                    worldObj.x = 1.30 * x
+                    worldObj.y = 1.30 * y
+                    worldObj.z = 1.30 * z
                     worldObj.recompute()
                     if FreeCAD.GuiUp:
                         FreeCADGui.SendMsgToActiveView("ViewFit")
 
-    def BoundingBox(self, vol, worldObj):
-
-        print('Calc Bounding Box')
-        print(f'World bbox {worldObj.Shape.BoundBox}')
-        calcBox = FreeCAD.BoundBox()
-        for obj in vol.OutList:
-            # print(obj.Label)
-            if obj.TypeId == 'App::Part':
-                if hasattr(obj, 'OutList'):
-                    if len(obj.OutList) > 0:
-                        for gObj in obj.OutList:
-                            # print(gObj.Label)
-                            if hasattr(gObj, 'Shape'):
-                                # print(f'Obj bbox {gObj.Shape.BoundBox}')
-                                calcBox.add(gObj.Shape.BoundBox)
-
-        print(f'New Calculated BBox : {calcBox}')
-        x = 2 * max(abs(calcBox.XMin), abs(calcBox.XMax))
-        y = 2 * max(abs(calcBox.YMin), abs(calcBox.YMax))
-        z = 2 * max(abs(calcBox.ZMin), abs(calcBox.ZMax))
-        print(f' x {x} y {y} z {z}')
-        worldObj.x = 1.30 * x
-        worldObj.y = 1.30 * y
-        worldObj.z = 1.30 * z
+    def BoundingBox(self, vol):
+        if hasattr(vol, 'Shape'):
+            return vol.Shape.BoundBox
+        elif vol.TypeId == 'App::Part' or vol.TypeId == 'App::Link':
+            translation = vol.Placement.Base
+            calcBox = FreeCAD.BoundBox()
+            for obj in vol.OutList:
+                bb = self.BoundingBox(obj)
+                bb.move(translation)
+                calcBox.add(bb)
+            return calcBox
+        else:
+            return FreeCAD.BoundBox()
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
