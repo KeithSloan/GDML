@@ -20,7 +20,7 @@
 # *                                                                        *
 # *                                                                        *
 # ***************************************************************************
-__title__ = "convertOBJ - Covert Obj to GDML Tessellated"
+__title__ = "convertOBJ - Convert Obj to GDML Tessellated"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/GDML/Utils"]
 
@@ -290,7 +290,7 @@ if fileExt.lower() != '.obj':
    print('Invalid Obj file extension')
    sys.exit()
 objFp = open(iPath,"r")
-if objFp == None:
+if objFp is None:
    print('Failed to open :'+iPath)
    sys.exit()
 path, fileExt = os.path.splitext(oPath)
