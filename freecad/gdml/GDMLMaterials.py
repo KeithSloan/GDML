@@ -104,11 +104,13 @@ def newGetGroupedMaterials():
     if len(GroupedMaterials) == 0:
         doc = FreeCAD.activeDocument()
         if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):
+            print('Reload Geant4 Materials')
             processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
             docG4Materials = doc.G4Materials
             if not hasattr(docG4Materials, 'version'):
                 refreshG4Materials(doc)
         docG4Materials = doc.G4Materials
+        print('Build Materials SubGroups')
         for g in docG4Materials.Group:
             # print(f'g : {g.Label}')
             for s in g.Group:
@@ -117,6 +119,7 @@ def newGetGroupedMaterials():
                     GroupedMaterials[g.Label].append(s.Label)
                 else:
                     GroupedMaterials[g.Label] = [s.Label]
+        print('Build Non Geant4 Materials')
         matList = []
         docMaterials = doc.Materials
         if docMaterials is not None:

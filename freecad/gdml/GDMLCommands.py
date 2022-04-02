@@ -219,7 +219,11 @@ class GDMLSetMaterial(QtGui.QDialog):
         obj = self.SelList[0].Object
         if hasattr(obj, 'material'):
             mat = obj.material
-            self.lineedit.setText(mat)
+            if mat in self.matList :  # Check valid material in list
+                self.lineedit.setText(mat)
+            else :
+                print(f'Default to {self.materialComboBox.currentText()}')
+                self.lineedit.setText(self.materialComboBox.currentText())
             self.setMaterial(mat)
         self.show()
 
@@ -240,10 +244,12 @@ class GDMLSetMaterial(QtGui.QDialog):
 
     def groupChanged(self, index):
         from .GDMLObjects import GroupedMaterials
+        print('Group Change')
         self.materialComboBox.blockSignals(True)
         self.materialComboBox.clear()
         group = self.groupsCombo.currentText()
         self.materialComboBox.addItems(GroupedMaterials[group])
+        self.lineedit.setText(self.materialComboBox.currentText())
         self.materialComboBox.blockSignals(False)
 
     def materialChanged(self, text):
@@ -259,12 +265,15 @@ class GDMLSetMaterial(QtGui.QDialog):
         print(f'Set Material {mat}')
         for sel in self.SelList:
             obj = sel.Object
-            if hasattr(obj, 'material'):
-                obj.material = mat
-            else:
+            if not hasattr(obj, 'material'): # Make sure obj has material prop
                 obj.addProperty("App::PropertyEnumeration", "material",
                                 "GDML", "Material")
+            if obj.material.find(mat) == True:
+                obj.material = mat
+            else:
+                print('Reset Materials list')
                 obj.material = self.matList
+                print(f'Set Material to {mat}')
                 obj.material = self.matList.index(mat)
 
 
