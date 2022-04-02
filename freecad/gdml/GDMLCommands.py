@@ -1938,12 +1938,9 @@ class ResetWorldFeature:
                     worldObj = vol.OutList[1]
                     # self.BoundingBox(vol, worldObj)
                     bb = self.BoundingBox(vol)
-                    print(bb)
                     x = 2 * max(abs(bb.XMin), abs(bb.XMax))
                     y = 2 * max(abs(bb.YMin), abs(bb.YMax))
                     z = 2 * max(abs(bb.ZMin), abs(bb.ZMax))
-                    print(f' x {x} y {y} z {z}')
-                    print(f'worldObj {worldObj.TypeId}, {worldObj.Label}')
                     worldObj.x = 1.30 * x
                     worldObj.y = 1.30 * y
                     worldObj.z = 1.30 * z
@@ -1955,12 +1952,13 @@ class ResetWorldFeature:
         if hasattr(vol, 'Shape'):
             return vol.Shape.BoundBox
         elif vol.TypeId == 'App::Part' or vol.TypeId == 'App::Link':
-            translation = vol.Placement.Base
+            placement = vol.Placement
+            matrix = placement.Matrix
             calcBox = FreeCAD.BoundBox()
             for obj in vol.OutList:
                 bb = self.BoundingBox(obj)
-                bb.move(translation)
-                calcBox.add(bb)
+                bbtrans = bb.transformed(matrix)
+                calcBox.add(bbtrans)
             return calcBox
         else:
             return FreeCAD.BoundBox()
@@ -1974,9 +1972,9 @@ class ResetWorldFeature:
     def GetResources(self):
         return {'Pixmap': 'GDML_ResetWorld',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('GDML_ResetWorld',
-                                                     'Reset World Coords'),
+                                                     'Resize World to contain all volumes'),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('GDML_ResetWorld',
-                                                    'Reset World Coords')}
+                                                    'Resize World to contain all volumes')}
 
 
 class CompoundFeature:
