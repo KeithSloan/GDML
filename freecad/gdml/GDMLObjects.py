@@ -2213,7 +2213,7 @@ class GDMLXtru(GDMLsolid):
                 xOffset = ptr.xOffset * mul
                 yOffset = ptr.yOffset * mul
                 zPosition = ptr.zPosition * mul
-                sf = ptr.scalingFactor * mul
+                sf = ptr.scalingFactor
                 s = [zOrder, xOffset, yOffset, zPosition, sf]
                 sections.append(s)
         # print('sections : '+str(len(sections)))
@@ -2221,59 +2221,32 @@ class GDMLXtru(GDMLsolid):
         # Deal with Base Face
         #
         # baseList = layerPoints(polyList,sf,xOffset,yOffset,zPosition):
-        baseList = self.layerPoints(polyList, sections[0][4], sections[0][1],
-                                    sections[0][2], sections[0][3])
-        # print('baseList')
-        # print(baseList)
-        w1 = Part.makePolygon(baseList)
-        f1 = Part.Face(w1)
-        f1.reverse()
-        faceList.append(f1)
-        # print("base list")
-        #
-        # Deal with Sides
-        #
-        # print("Start Range "+str(len(sections)-1))
-        for s in range(0, len(sections)-1):
-            xOffset   = sections[s+1][1]
-            yOffset   = sections[s+1][2]
-            zPosition = sections[s+1][3]
-            sf2       = sections[s+1][4]
-            # layerList = layerPoints(polyList,sf,xOffset,yOffset,zPosition)
-            layerList = self.layerPoints(polyList, sf, xOffset, yOffset, zPosition)
-            # deal with side faces
-            # remember first point is added to end of list
-            # print("Number Sides : "+str(len(baseList)-1))
-            for i in range(0, len(baseList)-2):
-                sideList = []
-                sideList.append(baseList[i])
-                sideList.append(baseList[i+1])
-                sideList.append(layerList[i+1])
-                sideList.append(layerList[i])
-                # Close SideList polygon
-                sideList.append(baseList[i])
-                # print("sideList")
-                # print(sideList)
-                w1 = Part.makePolygon(sideList)
-                f1 = Part.Face(w1)
-                faceList.append(f1)
-        #
-        # Deal with Top Face
-        #
-        w1 = Part.makePolygon(layerList)
-        f1 = Part.Face(w1)
-        # f1.reverse()
-        faceList.append(f1)
-        # print("Faces List")
-        # print(faceList)
+        # form all vertexes
+        verts = []
+        for s in sections:
+            verts += self.layerPoints(polyList, s[4], s[1],
+                                      s[2], s[3])
+
+        numverts = len(verts)
+        numsides = len(polyList)
+        stride = numsides + 1
+        # side faces
+        for k0 in range(0, numverts-stride, stride):
+            for i in range(0, numsides):
+                k = k0 + i
+                wire = Part.makePolygon([verts[k], verts[k+stride],
+                                         verts[k+stride+1], verts[k+1],
+                                         verts[k]])
+                faceList.append(Part.Face(wire))
+        # bottom face
+        wire = Part.makePolygon(verts[0:numsides+1])
+        faceList.append(Part.Face(wire))
+        # Top face
+        wire = Part.makePolygon(verts[numverts-numsides-1:])
+        faceList.append(Part.Face(wire))
+
         shell = Part.makeShell(faceList)
-        # solid=Part.Solid(shell).removeSplitter()
-        solid = Part.Solid(shell)
-        # print("Valid Solid : "+str(solid.isValid()))
-        if solid.Volume < 0:
-            solid.reverse()
-        # print(dir(fp))
-        # solid.exportBrep("/tmp/"+fp.Label+".brep")
+        solid = Part.makeSolid(shell)
         fp.Shape = solid
         if hasattr(fp, 'scale'):
             super().scale(fp)
