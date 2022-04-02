@@ -290,7 +290,7 @@ if fileExt.lower() != '.obj':
    print('Invalid Obj file extension')
    sys.exit()
 objFp = open(iPath,"r")
-if objFp == None:
+if objFp is None:
    print('Failed to open :'+iPath)
    sys.exit()
 path, fileExt = os.path.splitext(oPath)
