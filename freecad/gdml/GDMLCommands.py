@@ -1683,7 +1683,8 @@ class Tess2MeshFeature:
             print('Action Tessellate 2 Mesh')
             if hasattr(obj, 'Proxy'):
                 if hasattr(obj.Proxy, 'Type'):
-                    if obj.Proxy.Type in ['GDMLTessellated',
+                    if obj.Proxy.Type in ['GDMLSampledTessellated',
+                                          'GDMLTessellated',
                                           'GDMLGmshTessellated',
                                           'GDMLTetrahedron']:
                         parent = None
