@@ -79,6 +79,26 @@ def verifNameUnique(name):
 
 # ## end modifs lambda
 
+#########################################################
+# Pretty format GDML                                    #
+#########################################################
+
+def indent(elem, level=0):
+    i = "\n" + level*"  "
+    j = "\n" + (level-1)*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for subelem in elem:
+            indent(subelem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = j
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = j
+    return elem
 #################################
 # Switch functions
 ################################
@@ -1681,6 +1701,7 @@ def exportGDMLstructure(dirPath, fileName):
 
 def exportGDML(first, filepath, fileExt):
     from . import GDMLShared
+    from sys import platform
     global zOrder
 
     # GDMLShared.setTrace(True)
@@ -1701,7 +1722,12 @@ def exportGDML(first, filepath, fileExt):
         print("Write to gdml file")
         # ET.ElementTree(gdml).write(filepath, 'utf-8', True)
         # ET.ElementTree(gdml).write(filepath, xml_declaration=True)
-        ET.ElementTree(gdml).write(filepath, pretty_print=True,
+        # Problem with pretty Print on Windows ?
+        if platform == "win32":
+            indent(gdml)
+            ET.ElementTree(gdml).write(filepath, xml_declaration=True)
+        else:
+            ET.ElementTree(gdml).write(filepath, pretty_print=True,
                                    xml_declaration=True)
         print("GDML file written")
 
