@@ -31,6 +31,38 @@ import FreeCAD
 
 from PySide import QtGui, QtCore
 
+class GDMLMaterialsClass():
+    def __init__(self):
+        self.empty = True
+        self.List = []
+        self.GroupDict = {}  # dictionary of material lists by type
+        self.G4Names = ['NIST', 'Element', 'HEP', 'Space', 'BioChemical']
+        self.GroupNames = self.G4Names.append('Normal')
+
+    def loadFromDoc(self):
+        print('Load Materials Defintions from Doc')
+        doc = FreeCAD.ActiveDocument
+        if doc is not None:
+           if hasattr(doc,'Materials'):
+              mats = doc.Materials
+              if hasattr(mats,'Group'):
+                 mg = mats.Group
+                 if mg.Label != 'Geant4':
+                    self.List.append(mg.Label)
+                    self.GroupDict['Normal'].append(mg.Label)
+              if hasattr(doc.Materials,'Geant4'):
+                 G4 = doc.Materials.Geant4
+                 if hasattr(G4,'G4Materials'):
+                    G4Gs = G4.G4Materials
+                    if hasattr(G4Gs,'Group'):
+                       for g in G4Gs.Group:
+                           if hasattr(g,'Group'):
+                              for m in g.Group:
+                                  self.GroupDict[g].append(m)
+                                  self.List.append(m)
+
+global GDMLMaterials
+GDMLMaterials = GDMLMaterialsClass()
 
 class GDMLMaterial(QtGui.QComboBox):
 
