@@ -37,7 +37,10 @@ class GDMLMaterialsClass():
         self.List = []
         self.GroupDict = {}  # dictionary of material lists by type
         self.G4Names = ['NIST', 'Element', 'HEP', 'Space', 'BioChemical']
-        self.GroupNames = self.G4Names.append('Normal')
+        self.GroupNames = self.G4Names + ['Normal']
+        print(self.GroupNames)
+        for grp in self.GroupNames:
+            self.GroupDict[grp] = []
 
     def loadFromDoc(self):
         print('Load Materials Defintions from Doc')
@@ -46,20 +49,22 @@ class GDMLMaterialsClass():
            if hasattr(doc,'Materials'):
               mats = doc.Materials
               if hasattr(mats,'Group'):
-                 mg = mats.Group
-                 if mg.Label != 'Geant4':
-                    self.List.append(mg.Label)
-                    self.GroupDict['Normal'].append(mg.Label)
-              if hasattr(doc.Materials,'Geant4'):
-                 G4 = doc.Materials.Geant4
-                 if hasattr(G4,'G4Materials'):
-                    G4Gs = G4.G4Materials
-                    if hasattr(G4Gs,'Group'):
-                       for g in G4Gs.Group:
-                           if hasattr(g,'Group'):
-                              for m in g.Group:
-                                  self.GroupDict[g].append(m)
-                                  self.List.append(m)
+                 for mg in mats.Group:
+                     m = mg.Label
+                     print(m)
+                     if m != 'Geant4':
+                         self.List.append(m)
+                         self.GroupDict['Normal'].append(m)
+                     else:
+                         for g4g in mg.Group:
+                             print(g4g.Label)
+                             if g4g.Label == 'G4Materials':
+                                for sg in g4g.Group:
+                                    print(sg.Label)
+                                    for m in sg.Group:
+                                        print(m.Label)
+                                        self.GroupDict[sg.Label].append(m.Label)
+                                        self.List.append(m.Label)
 
 global GDMLMaterials
 GDMLMaterials = GDMLMaterialsClass()

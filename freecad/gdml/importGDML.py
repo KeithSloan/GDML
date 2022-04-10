@@ -1946,8 +1946,11 @@ def processGDML(doc, filename, prompt, initFlg):
 
     from .GDMLMaterials import getGroupedMaterials
     from .GDMLMaterials import newGetGroupedMaterials
+    from .GDMLMaterials import GDMLMaterials
     processMaterialsDocSet(doc, root)
     processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+    GDMLMaterials.loadFromDoc()
+    print(GDMLMaterials.GroupDict)
     groupMaterials = newGetGroupedMaterials()
 
     solids = root.find('solids')
