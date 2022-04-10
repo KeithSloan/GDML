@@ -38,10 +38,12 @@ from . import GDMLShared
 # Used for setting material enum in GDMLObjects
 # Will be lost by file save & load
 # So need to be able to rebuild from Objects
-global MaterialsList
-MaterialsList = []
-global GroupedMaterials
-GroupedMaterials = {}  # dictionary of material lists by type
+#global MaterialsList
+#MaterialsList = []
+#global GroupedMaterials
+#GroupedMaterials = {}  # dictionary of material lists by type
+
+from .GDMLMaterials import GDMLMaterials
 
 global LengthQuantityList
 LengthQuantityList = ['nm', 'um', 'mm', 'cm', 'dm', 'm', 'km']
@@ -59,34 +61,36 @@ def setLengthQuantity(obj, m):
         obj.lunit = 2
 
 
-def addMaterialsFromGroup(doc, MatList, grpName):
-    mmats = doc.getObject(grpName)
-    if mmats is not None:
-        if hasattr(mmats, 'Group'):
-            for i in mmats.Group:
-                if i.Label != 'Geant4':
-                   MatList.append(i.Label)
+#def addMaterialsFromGroup(doc, MatList, grpName):
+#    mmats = doc.getObject(grpName)
+#    if mmats is not None:
+#        if hasattr(mmats, 'Group'):
+#            for i in mmats.Group:
+#                if i.Label != 'Geant4':
+#                   MatList.append(i.Label)
 
 
 def rebuildMaterialsList():
-    global MaterialsList
-    print('Restore MaterialsList from Materials Lists')
-    doc = FreeCAD.ActiveDocument
-    addMaterialsFromGroup(doc, MaterialsList, "Materials")
-    #print(MaterialsList)
-    G4Materials = doc.getObject('G4Materials')
-    if G4Materials is not None:
-       for g in G4Materials.Group:
-           #print(g.Label)
-           addMaterialsFromGroup(doc, MaterialsList, g.Label)
-    # print('MaterialsList')
-    # print(MaterialsList)
+     print('rebuildMaterialsList')
+     print('Needs rework')
+#    global MaterialsList
+#    print('Restore MaterialsList from Materials Lists')
+#    doc = FreeCAD.ActiveDocument
+#    addMaterialsFromGroup(doc, MaterialsList, "Materials")
+#    #print(MaterialsList)
+#    G4Materials = doc.getObject('G4Materials')
+#    if G4Materials is not None:
+#       for g in G4Materials.Group:
+#           #print(g.Label)
+#           addMaterialsFromGroup(doc, MaterialsList, g.Label)
+#    # print('MaterialsList')
+#    # print(MaterialsList)
 
 
 def checkMaterial(material):
-    global MaterialsList
+    #global GDMLMaterials
     try:
-        i = MaterialsList.index(material)
+        i = GDMLMaterials.List.index(material)
     except ValueError:
         return False
     return True
@@ -94,16 +98,16 @@ def checkMaterial(material):
 
 def setMaterial(obj, m):
     # print('setMaterial')
-    if MaterialsList is not None:
-        if len(MaterialsList) > 0:
-            obj.material = MaterialsList
+    if GDMLMaterials.empty == False:
+        if len(GDMLMaterials.List) > 0:
+            obj.material = GDMLMaterials.List
             obj.material = 0
             if not (m == 0 or m is None):
                 try:
-                    obj.material = MaterialsList.index(m)
+                    obj.material = GDMLMaterials.List.index(m)
                 except:
                     print('Not in List')
-                    print(MaterialsList)
+                    print(GDMLMaterials.List)
                     obj.material = 0
                 return
             return
@@ -270,17 +274,17 @@ def colorFromRay(rayIn):  # Thanks to Dam
 
 def colourMaterial(m):
 
-    if MaterialsList is None:
+    if GDMLMaterials.empty == True:
         return (0.5, 0.5, 0.5, 0.0)
     else:
         if (m is None):
             return (0.5, 0.5, 0.5, 0, 0)
-        elif(len(MaterialsList) <= 1):
+        elif(len(GDMLMaterials.List) <= 1):
             return (0.5, 0.5, 0.5, 0.0)
-        elif m not in MaterialsList:
+        elif m not in GDMLMaterials.List:
             return (0.5, 0.5, 0.5, 0.0)
         else:
-            coeffRGB = MaterialsList.index(m)
+            coeffRGB = GDMLMaterials.List.index(m)
             return colorFromRay(indiceToRay(coeffRGB))
 
 

@@ -65,6 +65,7 @@ class GDMLMaterialsClass():
                                         print(m.Label)
                                         self.GroupDict[sg.Label].append(m.Label)
                                         self.List.append(m.Label)
+                     self.empty = False
 
 global GDMLMaterials
 GDMLMaterials = GDMLMaterialsClass()
@@ -137,7 +138,8 @@ def refreshG4Materials(doc):
 def newGetGroupedMaterials():
     from .importGDML import joinDir, processGEANT4
     print('New getGroupedMaterials')
-    from .GDMLObjects import GroupedMaterials
+    return
+    #from .GDMLObjects import GroupedMaterials
     if len(GroupedMaterials) == 0:
         doc = FreeCAD.activeDocument()
         if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):

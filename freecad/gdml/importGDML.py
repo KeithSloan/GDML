@@ -1639,8 +1639,7 @@ def processElements(elementsGrp, mats_xml):
 
 
 def processMaterials(materialGrp, mats_xml, subGrp=None):
-    from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
-                            MaterialsList
+    from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite
 
     # print(f'Process Materials : {materialGrp.Name} SubGrp{subGrp}')
     print(f'Process Materials : {materialGrp.Name}')
@@ -1650,7 +1649,6 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
         if name is None:
             print("Missing Name")
         else:
-            MaterialsList.append(name)
             mGrp = materialGrp
             aux = material.find('auxiliary')
             # print(f'Aux {aux}')
@@ -1743,9 +1741,6 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
                 # print('Comp Label : ' +compObj.Label)
                 compObj.Label = ref + ' : ' + str(n)
                 # print('Comp Label : ' +compObj.Label)
-
-    GDMLShared.trace("Materials List :")
-    GDMLShared.trace(MaterialsList)
 
 
 def setupEtree(filename):
