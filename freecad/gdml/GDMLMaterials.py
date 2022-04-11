@@ -70,17 +70,75 @@ class GDMLMaterialsClass():
 global GDMLMaterials
 GDMLMaterials = GDMLMaterialsClass()
 
-class GDMLMaterial(QtGui.QComboBox):
+#class GDMLMaterial(QtGui.QComboBox):
 
-    def __init__(self, matList, mat):
-        super().__init__()
-        self.addItems(matList)
-        self.setEditable(False)
-        if mat is not None:
-            self.setCurrentIndex(matList.index(mat))
+#    def __init__(self, matList, mat):
+#        super().__init__()
+#        self.addItems(matList)
+#        self.setEditable(False)
+#        if mat is not None:
+#            self.setCurrentIndex(matList.index(mat))
 
-    def getItem(self):
-        return str(self.currentText())
+#    def getItem(self):
+#        return str(self.currentText())
+
+class GDMLMaterialWidget(QtGui.QWidget):
+
+   def __init__(self, Materials):
+       super().__init__()
+    
+       self.Materials = Materials 
+       self.groupsCombo = QtGui.QComboBox()
+       groups = [group for group in self.Materials.GroupNames]
+       self.groupsCombo.addItems(groups)
+       self.groupsCombo.currentIndexChanged.connect(self.groupChanged)
+       self.materialComboBox = QtGui.QComboBox()
+       #self.materialComboBox.addItems(self.groupedMaterials[groups[0]])
+       self.materialComboBox.addItems(self.Materials.GroupDict[groups[0]])
+       self.completer = QtGui.QCompleter(self.Materials.List, self)
+       self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+       self.materialComboBox.setCompleter(self.completer)
+       self.materialComboBox.setEditable(True)
+       self.materialComboBox.currentTextChanged.connect(self.materialChanged)
+       self.lineedit = QtGui.QLineEdit()
+       self.lineedit.setCompleter(self.completer)
+       self.completer.activated.connect(self.completionActivated)
+       # self.materialComboBox.setEditable(False)
+       combosLayout = QtGui.QHBoxLayout()
+       combosLayout.addWidget(self.groupsCombo)
+       combosLayout.addWidget(self.materialComboBox) 
+       mainLayout = QtGui.QVBoxLayout()
+       mainLayout.addWidget(self.lineedit)
+       mainLayout.addItem(combosLayout)
+       mainLayout.addWidget(self.buttonSet)
+       self.setLayout(mainLayout)
+       # obj = self.SelList[0].Object
+       # if hasattr(obj, 'material'):
+       #     mat = obj.material
+       #     self.lineedit.setText(mat)
+       #     self.setMaterial(mat)
+       # self.show()
+
+   def setMaterial(self, text):
+       for i, group in enumerate(self.Materials.GroupDict):
+           if text in Materials.GroupDict[group]:
+              self.groupsCombo.blockSignals(True)
+              self.groupsCombo.setCurrentIndex(i)
+              self.groupsCombo.blockSignals(False)
+              self.groupChanged(i)
+              self.materialComboBox.blockSignals(True)
+              self.materialComboBox.setCurrentText(text)
+              self.materialComboBox.blockSignals(False)
+
+   def groupChanged(self, index):
+       self.materialComboBox.blockSignals(True)
+       self.materialComboBox.clear()
+       group = self.groupsCombo.currentText()
+       self.materialComboBox.addItems(GroupedMaterials[group])
+       self.materialComboBox.blockSignals(False)
+
+   def materialChanged(self, text):
+       self.lineedit.setText(text)
 
 
 def getMaterialsList():

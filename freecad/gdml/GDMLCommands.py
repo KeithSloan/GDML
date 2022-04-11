@@ -169,79 +169,26 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.initUI()
 
     def initUI(self):
-        from .GDMLMaterials import GDMLMaterial, newGetGroupedMaterials
+        #from .GDMLMaterials import GDMLMaterialWidget, newGetGroupedMaterials
+        from .GDMLMaterials import GDMLMaterials, GDMLMaterialWidget
 
         print('initUI')
+        self.materials = GDMLMaterials
         self.setGeometry(150, 150, 250, 250)
         self.setWindowTitle("Set GDML Material")
         self.setMouseTracking(True)
         self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set Material'))
         self.buttonSet.clicked.connect(self.onSet)
-        self.groupedMaterials = newGetGroupedMaterials()  # this build, then returns all materials
-        self.groupsCombo = QtGui.QComboBox()
-        groups = [group for group in self.groupedMaterials]
-        self.groupsCombo.addItems(groups)
-        self.groupsCombo.currentIndexChanged.connect(self.groupChanged)
-        self.materialComboBox = QtGui.QComboBox()
-        self.materialComboBox.addItems(self.groupedMaterials[groups[0]])
-        self.matList = []
-        for group in self.groupedMaterials:
-            print(group)
-            self.matList += self.groupedMaterials[group]
-        print(len(self.matList))
-        self.completer = QtGui.QCompleter(self.matList, self)
-        self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        self.materialComboBox.setCompleter(self.completer)
-        self.materialComboBox.setEditable(True)
-        self.materialComboBox.currentTextChanged.connect(self.materialChanged)
-        self.lineedit = QtGui.QLineEdit()
-        self.lineedit.setCompleter(self.completer)
-        self.completer.activated.connect(self.completionActivated)
-        # self.materialComboBox.setEditable(False)
-        combosLayout = QtGui.QHBoxLayout()
-        combosLayout.addWidget(self.groupsCombo)
-        combosLayout.addWidget(self.materialComboBox)
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(self.lineedit)
-        mainLayout.addItem(combosLayout)
-        mainLayout.addWidget(self.buttonSet)
-        self.setLayout(mainLayout)
-        obj = self.SelList[0].Object
-        if hasattr(obj, 'material'):
-            mat = obj.material
-            self.lineedit.setText(mat)
-            self.setMaterial(mat)
+        self.materialWidget = GDMLMaterialWidget(GDMLMaterials)
+        self.layout = QtGui.QVBoxLayout()
+        self.layout.addWidget(self.materialWidget)
+        self.layout.addWidget(self.buttonSet)
         self.show()
 
-    def setMaterial(self, text):
-        from .GDMLObjects import GroupedMaterials
-        for i, group in enumerate(GroupedMaterials):
-            if text in GroupedMaterials[group]:
-                self.groupsCombo.blockSignals(True)
-                self.groupsCombo.setCurrentIndex(i)
-                self.groupsCombo.blockSignals(False)
-                self.groupChanged(i)
-                self.materialComboBox.blockSignals(True)
-                self.materialComboBox.setCurrentText(text)
-                self.materialComboBox.blockSignals(False)
-
-    def completionActivated(self, text):
-        self.setMaterial(text)
-
-    def groupChanged(self, index):
-        from .GDMLObjects import GroupedMaterials
-        self.materialComboBox.blockSignals(True)
-        self.materialComboBox.clear()
-        group = self.groupsCombo.currentText()
-        self.materialComboBox.addItems(GroupedMaterials[group])
-        self.materialComboBox.blockSignals(False)
-
-    def materialChanged(self, text):
-        self.lineedit.setText(text)
 
     def onSet(self):
-        # mat = self.materialComboBox.currentText()
-        mat = self.lineedit.text()
+        # mat = self.materialWidget.materialComboBox.currentText()
+        mat = self.materialWidget.lineedit.text()
         if mat not in self.matList:
             print(f'Material {mat} not defined')
             return
@@ -254,8 +201,8 @@ class GDMLSetMaterial(QtGui.QDialog):
             else:
                 obj.addProperty("App::PropertyEnumeration", "material",
                                 "GDML", "Material")
-                obj.material = self.matList
-                obj.material = self.matList.index(mat)
+                obj.material = self.materials.List
+                obj.material = self.materials.List.index(mat)
 
 
 class GDMLScale(QtGui.QDialog):
