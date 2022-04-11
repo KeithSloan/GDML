@@ -183,13 +183,14 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.layout = QtGui.QVBoxLayout()
         self.layout.addWidget(self.materialWidget)
         self.layout.addWidget(self.buttonSet)
+        self.setLayout(self.layout)
         self.show()
 
 
     def onSet(self):
         # mat = self.materialWidget.materialComboBox.currentText()
         mat = self.materialWidget.lineedit.text()
-        if mat not in self.matList:
+        if mat not in self.materials.List:
             print(f'Material {mat} not defined')
             return
 

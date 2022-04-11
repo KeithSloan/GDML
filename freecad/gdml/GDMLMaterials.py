@@ -110,7 +110,7 @@ class GDMLMaterialWidget(QtGui.QWidget):
        mainLayout = QtGui.QVBoxLayout()
        mainLayout.addWidget(self.lineedit)
        mainLayout.addItem(combosLayout)
-       mainLayout.addWidget(self.buttonSet)
+       #mainLayout.addWidget(self.buttonSet)
        self.setLayout(mainLayout)
        # obj = self.SelList[0].Object
        # if hasattr(obj, 'material'):
@@ -121,7 +121,7 @@ class GDMLMaterialWidget(QtGui.QWidget):
 
    def setMaterial(self, text):
        for i, group in enumerate(self.Materials.GroupDict):
-           if text in Materials.GroupDict[group]:
+           if text in self.Materials.GroupDict[group]:
               self.groupsCombo.blockSignals(True)
               self.groupsCombo.setCurrentIndex(i)
               self.groupsCombo.blockSignals(False)
@@ -129,6 +129,9 @@ class GDMLMaterialWidget(QtGui.QWidget):
               self.materialComboBox.blockSignals(True)
               self.materialComboBox.setCurrentText(text)
               self.materialComboBox.blockSignals(False)
+
+   def completionActivated(self, text):
+       self.setMaterial(text)
 
    def groupChanged(self, index):
        self.materialComboBox.blockSignals(True)
