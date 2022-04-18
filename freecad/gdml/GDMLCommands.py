@@ -1684,6 +1684,7 @@ class Tess2MeshFeature:
             if hasattr(obj, 'Proxy'):
                 if hasattr(obj.Proxy, 'Type'):
                     if obj.Proxy.Type in ['GDMLTessellated',
+                                          'GDMLSampledTessellated',
                                           'GDMLGmshTessellated',
                                           'GDMLTetrahedron']:
                         parent = None
@@ -1694,7 +1695,10 @@ class Tess2MeshFeature:
                         if parent is None:
                             mshObj = FreeCAD.ActiveDocument.addObject(
                                 'Mesh::Feature', obj.Name)
-                        mshObj.Mesh = MeshPart.meshFromShape(obj.Shape)
+                        if obj.Proxy.Type == 'GDMLSampledTessellated':
+                            mshObj.Mesh = obj.Proxy.toMesh(obj)
+                        else:
+                            mshObj.Mesh = MeshPart.meshFromShape(obj.Shape)
 
                         if FreeCAD.GuiUp:
                             obj.ViewObject.Visibility = False

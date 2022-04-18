@@ -3651,6 +3651,35 @@ class GDMLSampledTessellated(GDMLsolid):
 
         return solid
 
+    def toMesh(self, obj):
+        import Mesh
+
+        mesh = Mesh.Mesh()
+        # Viewing outside of face vertex must be counter clockwise
+        # if flag == True  - facets is Mesh.Facets
+        # if flag == False - factes is Faces i.e. from import GDMLTessellated
+        # mul = GDMLShared.getMult(fp)
+        mul = GDMLShared.getMult(self)
+        print(f'mul {mul}')
+        verts = obj.vertsList
+        indexList = obj.indexList
+        i = 0
+        for nVerts in obj.vertsPerFacet:
+            # print(f'Normal at : {n} dot {dot} {clockWise}')
+            i0 = indexList[i]
+            i1 = indexList[i + 1]
+            i2 = indexList[i + 2]
+            if nVerts == 3:
+                mesh.addFacet(mul*verts[i0], mul*verts[i1],
+                              mul*verts[i2])
+            elif nVerts == 4:
+                i3 = indexList[i + 3]
+                mesh.addFacet(mul*verts[i0], mul*verts[i1],
+                              mul*verts[i2], mul*verts[i3])
+            i += nVerts
+
+        return mesh
+
     def cloud(self, vertex, facets, flag):
         print('Cloud called')
         import random
