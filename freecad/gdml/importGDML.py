@@ -1763,6 +1763,7 @@ def processParamvol(vol, parent, paramvol):
 
 def processVol(vol, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
+    global doc
     from .GDMLObjects import checkMaterial
     colour = None
     for aux in vol.findall('auxiliary'):  # could be more than one auxiliary
