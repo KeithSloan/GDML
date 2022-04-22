@@ -1897,7 +1897,7 @@ def processVol(vol, parent, phylvl, displayMode):
     # check for parameterized volumes
     #
     paramvol = vol.find("paramvol")
-    doc = FreeCAD.ActiveDocument()
+    doc = FreeCAD.ActiveDocument
     if doc is not None:
         parentpart = doc.getObject(name)
         print(f'name: {name} parentpart = {parentpart}')
