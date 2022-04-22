@@ -1763,7 +1763,6 @@ def processParamvol(vol, parent, paramvol):
 
 def processVol(vol, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
-    global doc
     from .GDMLObjects import checkMaterial
     colour = None
     for aux in vol.findall('auxiliary'):  # could be more than one auxiliary
@@ -1898,12 +1897,14 @@ def processVol(vol, parent, phylvl, displayMode):
     # check for parameterized volumes
     #
     paramvol = vol.find("paramvol")
-    parentpart = doc.getObject(name)
-    print(f'name: {name} parentpart = {parentpart}')
-    print(f'paramvol = {paramvol}')
-    if (parentpart is not None) and (paramvol is not None):
-        print(f'volume {name} contains a parameterized volume')
-        processParamvol(vol, parentpart, paramvol)
+    doc = FreeCAD.ActiveDocument()
+    if doc is not None:
+        parentpart = doc.getObject(name)
+        print(f'name: {name} parentpart = {parentpart}')
+        print(f'paramvol = {paramvol}')
+        if (parentpart is not None) and (paramvol is not None):
+            print(f'volume {name} contains a parameterized volume')
+            processParamvol(vol, parentpart, paramvol)
 
 
 def expandVolume(parent, name, phylvl, displayMode):
