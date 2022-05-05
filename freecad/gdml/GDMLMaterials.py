@@ -107,11 +107,10 @@ class GDMLMaterialWidget(QtGui.QWidget):
        combosLayout = QtGui.QHBoxLayout()
        combosLayout.addWidget(self.groupsCombo)
        combosLayout.addWidget(self.materialComboBox) 
-       mainLayout = QtGui.QVBoxLayout()
-       mainLayout.addWidget(self.lineedit)
-       mainLayout.addItem(combosLayout)
-       #mainLayout.addWidget(self.buttonSet)
-       self.setLayout(mainLayout)
+       self.mainLayout = QtGui.QVBoxLayout()
+       self.mainLayout.addWidget(self.lineedit)
+       self.mainLayout.addItem(combosLayout)
+       self.setLayout(self.mainLayout)
        # obj = self.SelList[0].Object
        # if hasattr(obj, 'material'):
        #     mat = obj.material

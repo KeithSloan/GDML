@@ -4,7 +4,7 @@ from PySide import QtGui, QtCore
 class TwistedBoxFeature:
 
     def Activated(self):
-        from .propertiesDialog import propertiesDialog
+        from ..GDMLProperties import propertiesDialog
         from ..GDMLCommands import getSelectedPM
         from ..GDMLObjects import GDMLTwistedbox, ViewProvider
         objPart, material = getSelectedPM()

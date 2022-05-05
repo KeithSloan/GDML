@@ -2,26 +2,36 @@ import FreeCAD
 
 from PySide import QtGui, QtCore
 
+from .GDMLMaterials import GDMLMaterials, GDMLMaterialWidget
+
 class propertyFloat(QtGui.QLineEdit):
     def __init__(self, value):
         super().__init__()
         self.insert(str(value))
 
 class propertyPlacement(QtGui.QWidget):
-    def __init__(self, name, value):
+    def __init__(self, x, y, z):
         super().__init__()
-        self.hbox = QtGui.QHBoxLayout()
-        self.hbox.addWidget(QtGui.QLabel(name))
-        self.hbox.addWidget(propertyFloat(value))
-        self.setLayout(self.hbox)
+        self.layout = QtGui.QGridLayout()
+        self.setLayout(self.layout)
+        self.group = QtGui.QGroupBox("Placement")
+        self.layout.addWidget(self.group)
+        self.vbox = QtGui.QVBoxLayout()
+        self.group.setLayout(self.vbox)
+        self.vbox.addWidget(propertyEntry('x', x))
+        self.vbox.addWidget(propertyEntry('y', y))
+        self.vbox.addWidget(propertyEntry('z', z))
 
 class propertyMaterial(QtGui.QWidget):
-    def __init__(self, name, value):
+    def __init__(self, widget):
         super().__init__()
-        self.hbox = QtGui.QHBoxLayout()
-        self.hbox.addWidget(QtGui.QLabel('Material'))
-        self.hbox.addWidget(propertyFloat(value))
-        self.setLayout(self.hbox)
+        self.layout = QtGui.QGridLayout()
+        self.setLayout(self.layout)
+        self.group = QtGui.QGroupBox("Material")
+        self.layout.addWidget(self.group)
+        self.vboxLayout = QtGui.QHBoxLayout()
+        self.group.setLayout(self.vboxLayout)
+        self.vboxLayout.addWidget(widget)
 
 class property_aunits(QtGui.QWidget):
     def __init__(self):
@@ -46,7 +56,12 @@ class property_lunits(QtGui.QWidget):
 class propertyUnits(QtGui.QWidget):
     def __init__(self, obj):
         super().__init__()
+        self.layout = QtGui.QGridLayout()
+        self.setLayout(self.layout)
+        self.group = QtGui.QGroupBox("Units")
+        self.layout.addWidget(self.group)
         self.unitsLayout = QtGui.QHBoxLayout()
+        self.group.setLayout(self.unitsLayout)
         if 'lunit' in obj.PropertiesList:
            self.unitsLayout.addWidget(property_lunits())
         if 'aunit' in obj.PropertiesList:
@@ -90,8 +105,8 @@ class propertiesDialog(QtGui.QDialog):
         print(self.countProperties())
         self.setGeometry(650, 650, 0, 50)
         self.setWindowTitle(self.name+":  Set Properties")
-        self.mainLayout.addWidget(propertyPlacement('Placement',0),1,0)
-        self.mainLayout.addWidget(propertyMaterial('Material',0),2,0)
+        self.mainLayout.addWidget(propertyPlacement(0, 0, 0),1,0)
+        self.mainLayout.addWidget(propertyMaterial(GDMLMaterialWidget(GDMLMaterials)),2,0)
         self.mainLayout.addWidget(propertyUnits(self.obj),3,0)
         self.buildPropertiesPanel()
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
@@ -111,8 +126,13 @@ class propertiesDialog(QtGui.QDialog):
         fullLst = self.obj.PropertiesList
         self.propertyList = [x for x in fullLst if x not in ignoreLst]
         self.unitList = [x for x in fullLst if x in ['lunit','aunit']]
+        self.layout = QtGui.QGridLayout()
+        self.mainLayout.addLayout(self.layout,4,0)
+        self.group = QtGui.QGroupBox("Properties")
+        self.layout.addWidget(self.group)
+        #self.propLayout = QtGui.QHBoxLayout()
         self.propLayout = QtGui.QGridLayout()
-        self.mainLayout.addLayout(self.propLayout,4,0)
+        self.group.setLayout(self.propLayout)
         for i, o in enumerate(self.propertyList):
             #print(o)
             #print(type(o))
@@ -126,6 +146,9 @@ class propertiesDialog(QtGui.QDialog):
         print('Okay')
         # Process Placement
         # Process Material
+        #material = self.mainLayout.itemAt(2).widget()
+        #print(material.mainLayout.itemAt(1).widget().text())
+        #setattr(self.obj, material, value)
         # Process Units
         units = self.mainLayout.itemAt(3).widget()
         for i in range(units.unitsLayout.count()):
