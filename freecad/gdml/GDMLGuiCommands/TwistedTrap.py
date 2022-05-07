@@ -17,7 +17,7 @@ class TwistedTrapFeature:
         #         alpha, aunit, lunit, material
         GDMLTwistedtrap(obj, 30.0, 10.0, 20.0, 20.0, 10.0, 10.0, 10.0, 10.0, \
                         10.0, 10.0, 25.0, "deg", "mm", material)
-        dialog = propertiesDialog(obj,'Twisted Trap','image.jpg')
+        dialog = propertiesDialog(obj,'Twisted Trap','aTwistedTrap.jpg')
         dialog.exec_()
         if dialog.retStatus == 1:
            ViewProvider(obj.ViewObject)

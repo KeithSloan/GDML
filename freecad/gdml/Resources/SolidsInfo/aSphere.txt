@@ -1,0 +1,1 @@
+rmin=100  rmax=120  startphi=0  deltaphi=180  starttheta=0  deltatheta=180

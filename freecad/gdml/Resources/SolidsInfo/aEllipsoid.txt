@@ -1,0 +1,1 @@
+ax=10  by=20  cz=50  zcut1=-10  zcut2=40

@@ -1,0 +1,1 @@
+rmin=20  rmax=30  inst=0.7  outs=0.7  z=50

@@ -77,6 +77,17 @@ class propertyEntry(QtGui.QWidget):
         self.hbox.addWidget(propertyFloat(value))
         self.setLayout(self.hbox)
 
+class solidInfo(QtGui.QWidget):
+    def __init__(self, image):
+        super().__init__()
+        print('solidInfo : '+image)
+        self.label = QtGui.QLabel(self)
+        self.pixmap = QtGui.QPixmap('./Resources/solidsInfo/'+image)
+        self.label.setPixmap(self.pixmap)
+        self.resize(self.pixmap.width(), self.pixmap.height())
+        self.show()
+ 
+
 class propertiesDialog(QtGui.QDialog):
     def __init__(self, obj, name, image, *args):
         super(propertiesDialog, self).__init__()
@@ -107,7 +118,9 @@ class propertiesDialog(QtGui.QDialog):
         self.setWindowTitle(self.name+":  Set Properties")
         self.mainLayout.addWidget(propertyPlacement(0, 0, 0),1,0)
         self.mainLayout.addWidget(propertyMaterial(GDMLMaterialWidget(GDMLMaterials)),2,0)
-        self.mainLayout.addWidget(propertyUnits(self.obj),3,0)
+        #self.mainLayout.addWidget(propertyUnits(self.obj),3,0)
+        #self.mainLayout.addWidget(solidInfo(self.image),3,1)
+        self.mainLayout.addWidget(solidInfo(self.image),3,0)
         self.buildPropertiesPanel()
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 

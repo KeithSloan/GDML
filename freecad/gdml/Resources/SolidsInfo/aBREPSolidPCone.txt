@@ -1,0 +1,10 @@
+startphi=1/4*Pi  deltaphi=3/2*Pi
+rmax=0   z=5
+rmax=10  z=7
+rmax=10  z=9
+rmax=5   z=11
+rmax=5   z=25
+rmax=10  z=27
+rmax=10  z=29
+rmax=2   z=31
+rmax=2   z=35

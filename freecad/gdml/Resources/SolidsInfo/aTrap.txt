@@ -1,0 +1,1 @@
+x1=30  x2=40  y1=40  x3=10  x4=14  y2=16  z=60  theta=20  phi=5  alpha1=10  alpha2=10

@@ -1,0 +1,8 @@
+startphi=-1/4*Pi  deltaphi=5/4*Pi  numsides=3
+rmax=0   zmax=0
+rmax=15  zmax=5
+rmax=15  zmax=8
+rmax=4   zmax=13
+rmax=4   zmax=30
+rmax=10  zmax=32
+rmax=10  zmax=35

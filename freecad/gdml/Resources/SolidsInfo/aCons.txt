@@ -1,0 +1,1 @@
+rmin1=5  rmax1=10  rmin2=20  rmax2=25  z=40  startphi=0  deltaphi=4/3*Pi

@@ -1,0 +1,1 @@
+rmin=12  rmax=20  z=30  deltaphi=270  lowX=0  lowY=-0.7  lowZ=-0.71  highX=0.7  highY=0  highZ=0.71

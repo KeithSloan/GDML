@@ -1,0 +1,4 @@
+vertex1={0,0,sqrt(3)}
+vertex2={0, 2*sqrt(2/3), -1/sqrt(3)}
+vertex3={-sqrt(2), -sqrt(2/3), -1/sqrt(3)}
+vertex4={sqrt(2), -sqrt(2/3), -1/sqrt(3)}
