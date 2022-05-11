@@ -80,11 +80,19 @@ class propertyEntry(QtGui.QWidget):
 class solidInfo(QtGui.QWidget):
     def __init__(self, image):
         super().__init__()
+        from .init_gui import joinDir
         print('solidInfo : '+image)
+        self.layout = QtGui.QGridLayout()
+        self.setLayout(self.layout)
         self.label = QtGui.QLabel(self)
-        self.pixmap = QtGui.QPixmap('./Resources/solidsInfo/'+image)
+        self.pixmap = QtGui.QPixmap(joinDir('Resources/SolidsInfo/'+image))
         self.label.setPixmap(self.pixmap)
         self.resize(self.pixmap.width(), self.pixmap.height())
+        self.group = QtGui.QGroupBox("Solid Info")
+        self.layout.addWidget(self.group)
+        self.vbox = QtGui.QVBoxLayout()
+        self.vbox.addWidget(self.label)
+        self.group.setLayout(self.vbox)
         self.show()
  
 
