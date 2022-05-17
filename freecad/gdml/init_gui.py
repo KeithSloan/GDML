@@ -108,7 +108,6 @@ class GDML_Workbench (FreeCADGui.Workbench):
                            'ElTubeCommand', 'EllipsoidCommand',
                            'SphereCommand',
                            'TorusCommand', 'TrapCommand', 'TubeCommand',
-                           'TwistedCommands',
                            'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
                            'Part_Mirror', 'Draft_ArrayTools',
                            'SetScaleCommand',
