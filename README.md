@@ -22,6 +22,10 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ## Important Notes
 
+#### New Branch Main 
+
+This branch will be tested with the up and coming FreeCAD 0.20 release with the view to become the Default installed branch.
+
 #### ATTENTION WINDOWS users using FreeCAD v0.19.1
 
 The 3rd party python dependency `lxml` should have been installed in prebuilt versions of FreeCAD. 
