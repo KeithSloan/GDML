@@ -117,7 +117,8 @@ by from the FreeCAD python console
 ### gmsh shared library
 
 Gmsh shared library is also required otherwise you will get the following error message in report View
-AttributeError: dlsym(RTLD_DEFAULT, gmshInitialize): symbol not found
+
+      AttributeError: dlsym(RTLD_DEFAULT, gmshInitialize): symbol not found
 
 To download the gmsh shared library you need to obtain a copy of the Gmsh SDK see https://gmsh.info
 
