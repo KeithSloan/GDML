@@ -85,14 +85,14 @@ def open(filename):
     docName = os.path.splitext(os.path.basename(filename))[0]
     print('path : '+filename)
     if filename.lower().endswith('.gdml'):
-        import cProfile, pstats
-        profiler = cProfile.Profile()
-        profiler.enable()
+        #import cProfile, pstats
+        #profiler = cProfile.Profile()
+        #profiler.enable()
         doc = FreeCAD.newDocument(docName)
         processGDML(doc, filename, True, False)
-        profiler.disable()
-        stats = pstats.Stats(profiler).sort_stats('cumtime')
-        stats.print_stats()
+        #profiler.disable()
+        #stats = pstats.Stats(profiler).sort_stats('cumtime')
+        #stats.print_stats()
 
     elif filename.lower().endswith('.xml'):
         try:
@@ -1278,7 +1278,7 @@ def createTessellated(part, solid, material, colour, px, py, pz, rot,
     # print(vertNames)
     solidName = getName(solid)
     myTess = newPartFeature(part, "GDMLSampledTessellated_"+solidName)
-    print(f'processing tessleation {solidName}')
+    print(f'processing tessellation {solidName}')
     if FreeCAD.GuiUp:
         if len(faces) > TessSampleDialog.maxFaces:
             if TessSampleDialog.applyToAll is False:
@@ -1899,8 +1899,8 @@ def processVol(vol, parent, phylvl, displayMode):
     #
     paramvol = vol.find("paramvol")
     parentpart = doc.getObject(name)
-    print(f'name: {name} parentpart = {parentpart}')
-    print(f'paramvol = {paramvol}')
+    # print(f'name: {name} parentpart = {parentpart}')
+    # print(f'paramvol = {paramvol}')
     if (parentpart is not None) and (paramvol is not None):
         print(f'volume {name} contains a parameterized volume')
         processParamvol(vol, parentpart, paramvol)

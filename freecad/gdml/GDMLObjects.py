@@ -94,7 +94,7 @@ def checkMaterial(material):
 
 
 def setMaterial(obj, m):
-    print(f'setMaterial {obj} {m}')
+    # print(f'setMaterial {obj} {m}')
     if MaterialsList is not None:
         if len(MaterialsList) > 0:
             obj.material = MaterialsList
