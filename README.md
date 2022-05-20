@@ -126,27 +126,35 @@ It should then copied to FreeCAD as follows
 #### MacOS
 
 Copy from lib
+
      * gmsh.py
      * libgmsh.4.9.4.dylib
-To :      
+
+To :
+
      /Applications/FreeCAD_0.20.app/Contents/Resources/lib
      
 #### Linux
 
 Copy from lib
+
      * gmsh.py
      * libgmsh.so
-To :      
-     ??????
+To :
+
+    ??????
 
 #### Windows
 
 Copy from lib
+
      * gmsh.py
      * gmsh.lib
      * gmsh-4.10.dll
-To :      
-     ??????
+     
+To : 
+
+    ??????
      
 #### Checking what version of Gmsh is installed
 
