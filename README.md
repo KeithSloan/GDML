@@ -94,29 +94,6 @@ In order to support copies of GDML Volumes the following changes have been made
 
 ## Installation 
 
-### Prerequisites
-
-* FreeCAD (https://freecad.org/)
-* `lxml` (bundled in to FreeCAD v0.19)
-* `gmsh` python library
-
-### gmsh python library
-
-The workbench uses the gmsh python library and must be installed in a location that FreeCAD sees
-
-To check path FreeCAD uses from a command line/window.
-
-    freecad -c
-    import sys
-    print(sys.path)
-
-In a command window / line
-
-    pip install --upgrade --target <Full path to directory> gmsh
-
-Windows: if no --target option upgrade pip
-
-
 ### Install via the Addon Manager
 
 The GDML workbench can be installed via the [Addon Manager](https://wiki.freecad.org/Std_AddonMgr) 
@@ -125,73 +102,52 @@ The GDML workbench can be installed via the [Addon Manager](https://wiki.freecad
 2. Click the `Tools` → `Addon manager` dropdown menu
 3. Browse through the list of workbench and look for GDML
 
-### Prerequisite 3rd party Python libraries 
+### Prerequisites
 
-<details>
-<summary>Click to expand!</summary>
+* FreeCAD (https://freecad.org/)
+* `lxml` (bundled in to FreeCAD v0.19)
+* `gmsh` python library
 
-Currently there are two 3rd party libraries that are necessary for the GDML workbench to function: `lxml` and `gmsh`.
+The Addon Manager should install the preequisite python libraries lxml and gmsh, you can check if it is successful
+by from the FreeCAD python console
 
-#### `lxml`
+* import lxml
+* import gmsh
 
-[lxml](https://lxml.de/) is a Python library that processes XML and HTML. Starting with the below versions of FreeCAD, `lxml` should be auto-bundled as part of the installation:
+### gmsh shared library
 
-   * `FreeCAD_0.19.19424` and above
-   * `FreeCAD_0.19.19409_x64_Conda_Py3QT5-WinVS2015.7z` and above.
-   
+Gmsh shared library is also required otherwise you will get the following error message in report View
+AttributeError: dlsym(RTLD_DEFAULT, gmshInitialize): symbol not found
 
-##### Checking if `lxml` is installed
+To download the gmsh shared library you need to obtain a copy of the Gmsh SDK see https://gmsh.info
 
-To discover if **`lxml`** is installed and accessible by FreeCAD:
+It should then copied to FreeCAD as follows
 
-1. Open the CLI
-2. Invoke the following:
-    ```python
-    freecad -c
-    import sys
-    print(sys.path)
-    ```
-    Result:
+#### MacOS
 
+Copy from lib
+     * gmsh.py
+     * libgmsh.4.9.4.dylib
+To :      
+     /Applications/FreeCAD_0.20.app/Contents/Resources/lib
+     
+#### Linux
 
-**Note:** To check if **`lxml`** is installed correctly:
+Copy from lib
+     * gmsh.py
+     * libgmsh.so
+To :      
+     ??????
 
-  ```python
-  freecad -c
-  import lxml
-  from lxml import etree
-  print(etree.LXML_VERSION)
-  ```
+#### Windows
 
-##### Manual install of lxml
-
-In case there is a need to manually install `lxml`: 
-
-  ```bash
-  pip3 install lxml -t < directory >
-  ```
-
-
-##### FreeCAD v0.18
-
-There are known limitations with FreeCAD 0.18 and **lxml**. Therefore, it is recommended that you use FreeCAD v0.19 as above.
-(Note: You can install both versions v0.18 & v0.19 and still use v0.18 for non GDML related work)
-
-### `Gmsh`
-
-[Gmsh](https://gmsh.info/) is an open source 3D finite element mesh generator. FreeCAD & Gmsh should both be using the same version of OCC (OpenCasCade), the underlying CAD kernel that FreeCAD uses.
-
-|   OCC   |   FreeCAD   |     gmsh      |
-|---------|-------------|---------------|
-|   `7.4` |   `0.19.1`  |`4.7.0 - 4.7.1`|
-|   `7.6` |             |`4.8.0 - 4.8.4`|
-
-At the time of writing a prebuilt version of FreeCAD with OCC 7.6 is not available
-
-Note: The version of OCC with FreeCAD 0.19.2 has a regression with STEP functionality
-
-You can check the version FreeCAD is using with About FreeCAD, copy to clipboard, paste.
-
+Copy from lib
+     * gmsh.py
+     * gmsh.lib
+     * gmsh-4.10.dll
+To :      
+     ??????
+     
 #### Checking what version of Gmsh is installed
 
 To ascertain the Gmsh version, paste the following in to the python console
@@ -202,38 +158,6 @@ To ascertain the Gmsh version, paste the following in to the python console
   print(gmsh.option.getString("General.BuildInfo"))
   gmsh.finalize()
   ```
-
-#### Check the Gmsh version using `gmshVer.py`
-It is also possible to run the `gmshVer.py` script (available in this workbench's `Utils` directory). To see what versions of Gmsh are available to install, open the CLI and type:
-
-  ```bash
-  pip install gmsh==
-  ```
-  **Note:** Gmsh must be installed in a location that FreeCAD can access. To check the path FreeCAD uses, open the CLI and type:
-
-  ```bash
-  freecad -c
-  import sys
-  print(sys.path)
-  ```
-In a command window / line
-
-    pip install --upgrade --target <Full path to directory> gmsh=='version'
-  
-Windows: if no --target option upgrade pip   
-
-    python -m pip install -U pip
-        
-For example on Windows system where FreeCAD is installed on the D drive
-
-    pip install --target="D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages" gmsh
-    
-will create 
-
-    D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\gmsh-4.6.0-py3.8.egg-info
-    D:\FreeCAD 0.19\FreeCAD_0.19\bin\Lib\site-packages\Lib\site-packages\gmsh-4.6.0-Windows64-sdk
-
-</details>
 
 ## Usage 
 
