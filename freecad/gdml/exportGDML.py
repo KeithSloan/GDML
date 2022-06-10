@@ -940,6 +940,58 @@ def processIsotope(obj, item):  # maybe part of material or element (common code
             atom.set('value', str(obj.value))
 
 
+def processMatrix(obj):
+
+    global define
+    print('add matrix to define')
+    ET.SubElement(define, 'matrix', {'name': obj.Name, 'coldim': str(obj.coldim),
+                                       'values': obj.values})
+
+def processSurfaces(obj):
+    global solids
+    print(solids)
+    print('Add opticalsurface')
+    print(str(solids))
+    ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, 'model': obj.model, \
+                      'finish': obj.finish, 'type': obj.type, \
+                      'value': str(obj.value)}) 
+
+def processSkinSurfaces(obj):
+    # Ignore create from Parts with SkinSurface
+    #global structure
+    #print('Add skins')
+    #ET.SubElement(structure,'skinsurface', {'name': obj.Name, \
+    #                         'surfaceproperty' : obj.SkinSurface, \
+    return
+
+ 
+def processOpticals():
+    print('Process Opticals')
+    Grp = FreeCAD.ActiveDocument.getObject('Opticals')
+    if hasattr(Grp, 'Group'):
+       for obj in Grp.Group:
+           print(f'Name : {obj.Name}')
+           while switch(obj.Name):
+              if case("Matrix"):
+                 print("Matrix")
+                 for m in obj.Group:
+                       processMatrix(m)
+                 break
+
+              if case("Surfaces"):
+                 print("Surfaces")
+                 print(obj.Group)
+                 for s in obj.Group:
+                     processSurfaces(s)
+                 break
+
+              if case("SkinSurfaces"):
+                 print("SkinSurfaces")
+                 for s in obj.Group:
+                     processSkinSurfaces(s)
+                 break
+
+
 def processMaterials():
     print("\nProcess Materials")
     global materials
@@ -1265,6 +1317,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
 
 def processVolume(vol, xmlParent, volName=None):
 
+    global structure
     # vol - Volume Object
     # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
@@ -1317,6 +1370,12 @@ def processVolume(vol, xmlParent, volName=None):
             print('SensDet : ' + vol.SensDet)
             ET.SubElement(xmlVol, 'auxiliary', {'auxtype': 'SensDet',
                                                 'auxvalue': vol.SensDet})
+    if hasattr(vol,'SkinSurface'):
+       print("Need to export : skinsurface")
+       ss = ET.SubElement(structure, 'skinsurface', {'name':'skin'+vol.SkinSurface, \
+                                'surfaceproperty': vol.SkinSurface})
+       ET.SubElement(ss, 'volumeref', {'ref':volName})
+
     print(f'Processed Volume : {volName}')
 
     return xmlVol
@@ -1713,6 +1772,7 @@ def exportGDML(first, filepath, fileExt):
     zOrder = 1
     processMaterials()
     exportWorldVol(first, fileExt)
+    processOpticals()
     # format & write GDML file
     # xmlstr = ET.tostring(structure)
     # print('Structure : '+str(xmlstr))

@@ -2204,7 +2204,6 @@ def processPhysVolFile(doc, parent, fname):
 def setSkinSurface(doc, vol, surface):
     print('set SkinSurface : {vol} : {surface}')
     volObj = doc.getObject(vol)
-    print(volObj)
     volObj.SkinSurface = surface
 
 def processSurfaces(doc, structure):
@@ -2283,13 +2282,14 @@ def processOpticals(opticalsGrp, define_xml, solids_xml, struct_xml):
            value = opSurface.get('value')
            GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
 
-    skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
-    for skinSurface in struct_xml.findall('skinsurface'):
-        name = skinSurface.get('name')
-        if name is not None:
-           skinSurfaceObj = newGroupPython(skinGrp, name)
-        prop = skinSurface.get('surfaceproperty')
-        GDMLskinsurface(skinSurfaceObj, name, prop)
+    #Do not set in Doc, export from Part with SkinSurf
+    #skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
+    #for skinSurface in struct_xml.findall('skinsurface'):
+    #    name = skinSurface.get('name')
+    #    if name is not None:
+    #       skinSurfaceObj = newGroupPython(skinGrp, name)
+    #    prop = skinSurface.get('surfaceproperty')
+    #    GDMLskinsurface(skinSurfaceObj, name, prop)
 
 def processNewG4(materialsGrp, mats_xml):
     print('process new G4')
