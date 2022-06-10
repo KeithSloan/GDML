@@ -2210,10 +2210,11 @@ def processSurfaces(doc, structure):
     # find all ???
     print('Process Surfaces')
     skinsurface = structure.find('skinsurface')
-    surface = skinsurface.get('surfaceproperty')
-    volRef = GDMLShared.getRef(skinsurface, "volumeref")
-    print(f'Vol {volRef} surface {surface}')
-    setSkinSurface(doc, volRef, surface)
+    if skinsurface is not None:
+       surface = skinsurface.get('surfaceproperty')
+       volRef = GDMLShared.getRef(skinsurface, "volumeref")
+       print(f'Vol {volRef} surface {surface}')
+       setSkinSurface(doc, volRef, surface)
 
 def processGEANT4(doc, filename):
     print('process GEANT4 Materials : '+filename)
@@ -2262,14 +2263,15 @@ def processMaterialsDocSet(doc,  root):
 def processOpticals(opticalsGrp, define_xml, solids_xml, struct_xml):
     from .GDMLObjects import GDMLmatrix, GDMLopticalsurface, GDMLskinsurface
     print('process Opticals')
-    matrixGrp = newGroupPython(opticalsGrp, "Matrix")
-    for matrix in define_xml.findall('matrix'):
-        name = matrix.get('name')
-        if name is not None:
-           matrixObj = newGroupPython(matrixGrp, name)
-           coldim = matrix.get('coldim')
-           values = matrix.get('values')
-           GDMLmatrix(matrixObj, name, int(coldim), values)
+    if define_xml is not None:
+       matrixGrp = newGroupPython(opticalsGrp, "Matrix")
+       for matrix in define_xml.findall('matrix'):
+           name = matrix.get('name')
+           if name is not None:
+              matrixObj = newGroupPython(matrixGrp, name)
+              coldim = matrix.get('coldim')
+              values = matrix.get('values')
+              GDMLmatrix(matrixObj, name, int(coldim), values)
 
     surfaceGrp = newGroupPython(opticalsGrp, "Surfaces")
     for opSurface in solids_xml.findall('opticalsurface'):
