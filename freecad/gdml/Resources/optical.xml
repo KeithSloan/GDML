@@ -1,0 +1,18 @@
+<xml>
+ <define>
+  <matrix name="prop1" coldim="2" values="1.0 7.0 
+                                          2.0 9.4"/>
+  <matrix name="prop2" coldim="2" values="3.0 -1.0 
+                                          4.0 -9.4
+                                          5.0 -11.1"/>
+  <matrix name="RINDEX" coldim="2" values="1.65*eV 1.58" />
+  <matrix name="REFLECTIVITY" coldim="2" values="1.65*eV 0.8" />
+</define>
+ <solids>
+  <opticalsurface name="surf1" model="glisur" finish="polished" type="dielectric_dielectric" value="1.0"/>
+  <opticalsurface name="surf2" model="glisur" finish="polished" type="dielectric_metal" value="1.0">
+    <property name="REFLECTIVITY" ref="REFLECTIVITY" />
+  </opticalsurface>
+ </solids>
+
+</xml>
