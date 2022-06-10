@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 # insert date with Ctrl-u ESC-! date
 # Wed Jan 26 04:44:48 PM PST 2022
 #
@@ -43,10 +43,12 @@ MaterialsList = []
 global GroupedMaterials
 GroupedMaterials = {}  # dictionary of material lists by type
 
+global SurfsList
+SurfsList = []
+
 global LengthQuantityList
 LengthQuantityList = ['nm', 'um', 'mm', 'cm', 'dm', 'm', 'km']
 # cf definition https://wiki.freecadweb.org/Quantity
-
 
 def setLengthQuantity(obj, m):
     global LengthQuantityList
@@ -58,6 +60,16 @@ def setLengthQuantity(obj, m):
                 obj.lunit = LengthQuantityList.index(m)
     else:
         obj.lunit = 2
+
+def getSurfsListFromGroup(doc):
+    SurfsList = ['None']
+    surfs = doc.getObject('Surfaces')
+    if surfs is not None:
+       if hasattr(surfs, 'Group'):
+          for i in surfs.Group:
+              SurfsList.append(i.Label)
+       return SurfsList
+    return None
 
 
 def addMaterialsFromGroup(doc, MatList, grpName):
