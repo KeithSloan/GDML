@@ -2201,6 +2201,8 @@ def processGEANT4(doc, filename):
 def processMaterialsDocSet(doc,  root):
     print('Process Materials')
     mats_xml = root.find('materials')
+    solids_xml = root.find('solids')
+    struct_xml = root.find('structure')
     if mats_xml is not None:
         try:
             isotopesGrp = FreeCAD.ActiveDocument.Isotopes
@@ -2220,7 +2222,33 @@ def processMaterialsDocSet(doc,  root):
             materialsGrp = doc.addObject("App::DocumentObjectGroupPython",
                                          "Materials")
         processMaterials(materialsGrp, mats_xml)
+        try:
+            opticalsGrp = FreeCAD.ActiveDocument.Opticals
+        except:
+            opticalsGrp = doc.addObject("App::DocumentObjectGroupPython",
+                                         "Opticals")
+        processOpticals(opticalsGrp, define, solids_xml, struct_xml)
 
+
+def processOpticals(opticalsGrp, define_xml, solids_xml, struct_xml):
+    from .GDMLObjects import GDMLmatrix, GDMLopticalsurface, GDMLskinsurface
+    print('process Opticals')
+    matrixGrp = newGroupPython(opticalsGrp, "Matrix")
+    for matrix in define_xml.findall('matrix'):
+        name = matrix.get('name')
+        if name is not None:
+           matrixObj = newGroupPython(matrixGrp, name)
+    surfaceGrp = newGroupPython(opticalsGrp, "Surface")
+    for opSurface in solids_xml.findall('opticalsurface'):
+        name = opSurface.get('name')
+        if name is not None:
+           surfaceObj = newGroupPython(surfaceGrp, name)
+    skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
+    for skinSurface in struct_xml.findall('skinsurface'):
+        name = skinSurface.get('name')
+        prop = skinSurface.get('surfaceproperty')
+        if name is not None:
+           GDMLskinsurface(skinGrp, name, prop)
 
 def processNewG4(materialsGrp, mats_xml):
     print('process new G4')

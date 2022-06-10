@@ -4082,6 +4082,41 @@ class GDMLisotope(GDMLcommon):
         obj.Proxy = self
         self.Object = obj
 
+class GDMLmatrix(GDMLcommon):
+    def __init__(self, obj, name, coldim, values):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyInteger", 'coldim', 'GDMLmatrix', \
+                       "coldin").coldim = coldim
+        obj.addProperty("App::PropertyString", 'values', 'GDMLmatrix', \
+                       'values').values = values
+        obj.Proxy = self
+        self.Object = obj
+
+class GDMLopticalsurface(GDMLcommon):
+    def __init__(self, obj, name, model, finish, type, value):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyString", 'model', 'GDMLoptical' \
+                        "model").model = model
+        obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical' \
+                        "finish").finish = finish
+        obj.finish = ['polished']
+        obj.finish = 0
+        obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
+                        "type").type = type
+        obj.type = ['dielectric_dielectric', 'dielectric_metal']
+        obj.type = 0
+        obj.addProperty("App::PropertyFloat", 'value', 'value').value = value
+        obj.Proxy = self
+        self.Object = obj
+
+class GDMLskinsurface(GDMLcommon):
+    def __init__(self, obj, name, property):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyString", 'property', 'GDMLskin' \
+                        "surfaceproperty").property = property
+        obj.Proxy = self
+        self.Object = obj
+
 
 class ViewProviderExtension(GDMLcommon):
     def __init__(self, obj):
