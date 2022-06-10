@@ -4098,14 +4098,14 @@ class GDMLopticalsurface(GDMLcommon):
         obj.addProperty("App::PropertyString", 'model', 'GDMLoptical' \
                         "model").model = model
         obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical' \
-                        "finish").finish = finish
+                        "finish")
         obj.finish = ['polished']
         obj.finish = 0
         obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
-                        "type").type = type
+                        "type")
         obj.type = ['dielectric_dielectric', 'dielectric_metal']
         obj.type = 0
-        obj.addProperty("App::PropertyFloat", 'value', 'value').value = value
+        obj.addProperty("App::PropertyFloat", 'value', 'GDMLoptical').value = value
         obj.Proxy = self
         self.Object = obj
 

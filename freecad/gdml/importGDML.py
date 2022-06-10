@@ -2238,17 +2238,28 @@ def processOpticals(opticalsGrp, define_xml, solids_xml, struct_xml):
         name = matrix.get('name')
         if name is not None:
            matrixObj = newGroupPython(matrixGrp, name)
+           coldim = matrix.get('coldim')
+           values = matrix.get('values')
+           GDMLmatrix(matrixObj, name, int(coldim), values)
+
     surfaceGrp = newGroupPython(opticalsGrp, "Surface")
     for opSurface in solids_xml.findall('opticalsurface'):
         name = opSurface.get('name')
         if name is not None:
            surfaceObj = newGroupPython(surfaceGrp, name)
+           model = opSurface.get('model')
+           finish = opSurface.get('finish')
+           type = opSurface.get('type')
+           value = opSurface.get('value')
+           GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
+
     skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
     for skinSurface in struct_xml.findall('skinsurface'):
         name = skinSurface.get('name')
-        prop = skinSurface.get('surfaceproperty')
         if name is not None:
-           GDMLskinsurface(skinGrp, name, prop)
+           skinSurfaceObj = newGroupPython(skinGrp, name)
+        prop = skinSurface.get('surfaceproperty')
+        GDMLskinsurface(skinSurfaceObj, name, prop)
 
 def processNewG4(materialsGrp, mats_xml):
     print('process new G4')
