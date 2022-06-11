@@ -126,17 +126,30 @@ def getSelectedPM():
 
 
 def createPartVol(obj):
+    from .importGDML import addSurfList
     # Create Part(GDML Vol) Shared with a number of Features
     LVname = 'LV-'+obj.Label
+    doc = FreeCAD.ActiveDocument
     if hasattr(obj, 'InList'):
         if len(obj.InList) > 0:
             parent = obj.InList[0]
             vol = parent.newObject("App::Part", LVname)
         else:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", LVname)
+            vol = doc.addObject("App::Part", LVname)
+        addSurfList(doc, vol)
         return vol
     return None
 
+def insertPartVol(objPart, LVname, solidName):
+    from .importGDML import addSurfList
+    doc = FreeCAD.ActiveDocument
+    if objPart is None:
+       vol = doc.addObject("App::Part", LVname)
+    else:
+       vol = objPart.newObject("App::Part", LVname)
+    obj = vol.newObject("Part::FeaturePython", solidName)
+    addSurfList(doc, vol)
+    return obj
 
 class ColourMapFeature:
 
@@ -703,11 +716,7 @@ class BoxFeature:
     def Activated(self):
         from .GDMLObjects import GDMLBox, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Box")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Box")
-        obj = vol.newObject("Part::FeaturePython", "GDMLBox_Box")
+        obj = insertPartVol(objPart, "LV-Box", "GDMLBox")
         # print("GDMLBox Object - added")
         # obj, x, y, z, lunits, material
         GDMLBox(obj, 10.0, 10.0, 10.0, "mm", material)
@@ -737,11 +746,7 @@ class ConeFeature:
     def Activated(self):
         from .GDMLObjects import GDMLCone, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Cone")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Cone")
-        obj = vol.newObject("Part::FeaturePython", "GDMLCone_Cone")
+        obj = insertPartVol(objPart, "LV-Cone", "GDMLCone")
         # print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
         GDMLCone(obj, 1, 3, 4, 7, 10.0, 0, 2, "rads", "mm", material)
@@ -772,11 +777,7 @@ class EllispoidFeature:
     def Activated(self):
         from .GDMLObjects import GDMLEllipsoid, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Ellipsoid")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Ellipsoid")
-        obj = vol.newObject("Part::FeaturePython", "GDMLEllipsoid_Ellipsoid")
+        obj = insertPartVol(objPart, "LV-Ellipsoid", "GDMLEllipsoid")
         # print("GDMLEllipsoid Object - added")
         #  obj,ax, by, cz, zcut1, zcut2, lunit,material
         GDMLEllipsoid(obj, 10, 20, 30, 0, 0, "mm", material)
@@ -807,11 +808,7 @@ class ElliTubeFeature:
     def Activated(self):
         from .GDMLObjects import GDMLElTube, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-EllipticalTube")
-        else:
-            vol = objPart.newObject("App::Part", "LV-EllipticalTube")
-        obj = vol.newObject("Part::FeaturePython", "GDMLElTube_Eltube")
+        obj = insertPartVol(objPart, "LV-EllipticalTube", "GDMLElTube")
         # print("GDMLElTube Object - added")
         #  obj,dx, dy, dz, lunit, material
         GDMLElTube(obj, 10, 20, 30, "mm", material)
@@ -844,11 +841,7 @@ class SphereFeature:
         objPart, material = getSelectedPM()
         # print(objPart)
         # print(material)
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Sphere")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Sphere")
-        obj = vol.newObject("Part::FeaturePython", "GDMLSphere_Sphere")
+        obj = insertPartVol(objPart, "LV-Sphere", "GDMLSphere")
         # print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
         #       aunit, lunits, material
@@ -880,12 +873,8 @@ class TorusFeature:
     def Activated(self):
         from .GDMLObjects import GDMLTorus, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Torus")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Torus")
-        myTorus = vol.newObject("Part::FeaturePython", "GDMLTorus_Torus")
-        GDMLTorus(myTorus, 10, 50, 50, 10, 360, "deg", "mm", material)
+        obj = insertPartVol(objPart, "LV-Torus", "GDMLTorus")
+        GDMLTorus(obj, 10, 50, 50, 10, 360, "deg", "mm", material)
         if FreeCAD.GuiUp:
             myTorus.ViewObject.Visibility = True
             ViewProvider(myTorus.ViewObject)
@@ -914,11 +903,7 @@ class TrapFeature:
     def Activated(self):
         from .GDMLObjects import GDMLTrap, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Trap")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Trap")
-        obj = vol.newObject("Part::FeaturePython", "GDMLTrap_Trap")
+        obj = insertPartVol(objPart, "LV-Trap", "GDMLTrap")
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
         # pAlp2, aunits, lunits, material
@@ -951,11 +936,7 @@ class TubeFeature:
     def Activated(self):
         from .GDMLObjects import GDMLTube, ViewProvider
         objPart, material = getSelectedPM()
-        if objPart is None:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", "LV-Tube")
-        else:
-            vol = objPart.newObject("App::Part", "LV-Tube")
-        obj = vol.newObject("Part::FeaturePython", "GDMLTube_Tube")
+        obj = insertPartVol(objPart, "LV-Tube", "GDMLTube")
         # print("GDMLTube Object - added")
         # obj, rmin, rmax, z, startphi, deltaphi, aunit, lunits, material
         GDMLTube(obj, 5.0, 8.0, 10.0, 0.52, 1.57, "rad", "mm", material)
