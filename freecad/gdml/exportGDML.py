@@ -2040,7 +2040,7 @@ def export(exportList, filepath):
                                        'Need to select a Part for export',
                                        'Press OK')
 
-    elif fileExt.lower == '.xml':
+    elif fileExt.lower() == '.xml':
         print('Export XML structure & solids')
         exportGDML(first, filepath, '.xml')
 
