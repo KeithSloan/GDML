@@ -952,9 +952,11 @@ def processSurfaces(obj):
     print(solids)
     print('Add opticalsurface')
     print(str(solids))
-    ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, 'model': obj.model, \
+    op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, 'model': obj.model, \
                       'finish': obj.finish, 'type': obj.type, \
-                      'value': str(obj.value)}) 
+                      'value': str(obj.value)})
+    if hasattr(obj,'propName') and hasattr(obj,'propRef'):
+       ET.SubElement(op, 'property', {'name': obj.propName, 'ref': obj.propRef})
 
 def processSkinSurfaces(obj):
     # Ignore create from Parts with SkinSurface

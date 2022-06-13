@@ -2293,6 +2293,8 @@ def adjustShape(part):
     print(f'Shape Valid {shape.isValid()}')
     print(dir(shape))
     #return shape
+    print(f'Placement Base {part.Placement.Base}')
+    #return translate(part, part.Placement.Base)
     return shape.translate(part.Placement.Base)
 
 def createBorderSurfObject(part0, part1, property):
@@ -2389,6 +2391,16 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
               type = opSurface.get('type')
               value = opSurface.get('value')
               GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
+              for prop in opSurface.findall('property'):
+                  name = prop.get('name')
+                  print(f'Property Name {name}')
+                  ref  = prop.get('ref')
+                  print(f'Property Ref {ref}')
+                  surfaceObj.addProperty("App::PropertyString", "propName", \
+                         "Property Name","Property").propName = name
+                  surfaceObj.addProperty("App::PropertyString", "propRef", \
+                         "Property Ref","Property").propRef = ref
+
 
     #Do not set in Doc, export from Part with SkinSurf
     #skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
