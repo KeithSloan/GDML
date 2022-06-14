@@ -189,6 +189,86 @@ class ColourMapFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',
                                          'Add Colour Map')}
 
+class GDMLSetSkinSurface(QtGui.QDialog):
+    def __init__(self, sel):
+        super(GDMLSetSkinSurface, self).__init__()
+        self.select = sel
+        self.initUI()
+
+    def initUI(self):
+        print('initUI')
+        self.setGeometry(150, 150, 250, 250)
+        self.setWindowTitle("Set Skin Surface")
+        self.surfacesCombo = QtGui.QComboBox()
+        doc = FreeCAD.ActiveDocument
+        print(doc.Opticals.Group)
+        for g in doc.Opticals.Group:
+          if g.Name == "Surfaces":
+             self.surfList= []
+             for s in g.Group:
+                print(s.Name)
+                self.surfList.append(s.Name)
+        self.surfList.append("None")
+        self.surfacesCombo.addItems(self.surfList)
+        #self.surfacesCombo.currentIndexChanged.connect(self.surfaceChanged)
+        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set SkinSurface'))
+        self.buttonSet.clicked.connect(self.onSet)
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.surfacesCombo)
+        layout.addWidget(self.buttonSet)
+        self.setLayout(layout)
+    
+    
+    def onSet(self):
+        surf= self.surfacesCombo.currentText()
+        obj = self.select[0].Object
+        print(self.select[0].Object)
+        print(surf)
+        if hasattr(obj,'SkinSurface'):
+           obj.SkinSurface = surf
+        else:
+           obj.addProperty("App::PropertyEnumeration","SkinSurface", \
+                                "GDML","SkinSurface")
+           obj.SkinSurface = self.surfLst
+           obj.SkinSurface = self.surfList.index(surf)
+        self.close()
+
+    def surfaceChanged(self, index):
+        self.surfacesCombo.blockSignals(True)
+        self.surfacesCombo.clear()
+        surface  = self.surfacesCombo.currentText()
+        print(surface)
+
+
+class SetSkinSurfaceFeature:
+
+    def Activated(self):
+        from PySide import QtGui, QtCore
+
+        print('Add SetSkinSurfacel')
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(sel)
+        for s in sel:
+            # print(s)
+            # print(dir(s))
+            if s.Object.TypeId == 'App::Part':
+                dialog = GDMLSetSkinSurface(sel)
+                dialog.exec_()
+        return
+    
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_SetSkinSurface', 'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
+                                         'Set Skin Surface'), 'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
+                                         'Set Skin Surface')}
+
 
 class GDMLSetMaterial(QtGui.QDialog):
     def __init__(self, selList):
@@ -2056,6 +2136,7 @@ FreeCADGui.addCommand('ExpandMaxCommand', ExpandMaxFeature())
 FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
+FreeCADGui.addCommand('SetSkinSurfaceCommand', SetSkinSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
 FreeCADGui.addCommand('BooleanIntersectionCommand', BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand', BooleanUnionFeature())
