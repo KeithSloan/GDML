@@ -252,7 +252,11 @@ class SetSkinSurfaceFeature:
         for s in sel:
             # print(s)
             # print(dir(s))
-            if s.Object.TypeId == 'App::Part':
+            if hasattr(s.Object,'LinkedObject'):
+               obj = s.Object.LinkedObject
+            else:
+               obj = s.Object
+            if obj.TypeId == 'App::Part':
                 dialog = GDMLSetSkinSurface(sel)
                 dialog.exec_()
         return
