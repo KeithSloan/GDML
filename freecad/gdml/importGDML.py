@@ -2240,6 +2240,19 @@ def processSurfaces(doc, volDict, structure):
            v1 = volDict[surfacePhysVols[1]]
            createBorderSurfObject(v0, v1, property)
 
+def commonFaces2(shp1, shp2, tol = 1e-7):
+    facePairs = []
+    for i1, face1 in enumerate(shp1.Faces):
+        for i2, face2 in enumerate(shp2.Faces):
+            if face1.Surface.Axis.isEqual(face2.Surface.Axis, tol) or face1.Surface.Axis.isEqual(-face2.Surface.Axis, tol):
+                facePairs.append((i1, i2))
+
+    facePairs1 = []
+    for i1, i2 in facePairs:
+        if abs(shp1.Faces[i1].Surface.Axis.dot(shp1.Faces[i1].Surface.Position - shp2.Faces[i2].Surface.Position)) < tol:
+            facePairs1.append((i1,i2))
+    return [(shp1.Faces[i1], shp2.Faces[i2]) for i1, i2 in facePairs1]
+
 def commonFace(shape0, shape1):
     print('Common Face')
     shape0.check()
@@ -2258,6 +2271,8 @@ def commonFace(shape0, shape1):
         for face1 in shape1.Faces :
             distance, points, info = face0.distToShape(face1)
             print(f'Distance {distance} points {points} info {info}')
+            #if distance == 0.0:
+            #   print(f'Distance {distance} points {points} info {info}')
 
 def getGDMLObject(list):
     print('getGDMLObject')
@@ -2281,6 +2296,8 @@ def adjustShape(part):
     print("Adjust Shape")
     print(part.Name)
     print(part.OutList)
+    print(f'Before Placement Base {part.Placement.Base}')
+    beforeBase = part.Placement.Base
     if hasattr(part,'LinkedObject'):
        print(f'Linked Object {part.LinkedObject}')
        part = part.getLinkedObject()
@@ -2293,9 +2310,9 @@ def adjustShape(part):
     print(f'Shape Valid {shape.isValid()}')
     print(dir(shape))
     #return shape
-    print(f'Placement Base {part.Placement.Base}')
+    print(f'After Placement Base {part.Placement.Base}')
     #return translate(part, part.Placement.Base)
-    return shape.translate(part.Placement.Base)
+    return shape.translate(beforeBase)
 
 def createBorderSurfObject(part0, part1, property):
     print('createBorderSurfObject')
@@ -2310,7 +2327,8 @@ def createBorderSurfObject(part0, part1, property):
     #commonFace(obj0, obj1)
     #adjustShape(part0)
     #adjustShape(part1)
-    commonFace(adjustShape(part0), adjustShape(part1))
+    #commonFace(adjustShape(part0), adjustShape(part1))
+    print(commonFaces2(adjustShape(part0), adjustShape(part1)))
 
 def processGEANT4(doc, filename):
     print('process GEANT4 Materials : '+filename)
