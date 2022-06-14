@@ -200,9 +200,10 @@ class GDMLSetSkinSurface(QtGui.QDialog):
         self.setGeometry(150, 150, 250, 250)
         self.setWindowTitle("Set Skin Surface")
         self.surfacesCombo = QtGui.QComboBox()
-        doc = FreeCAD.ActiveDocument
-        print(doc.Opticals.Group)
-        for g in doc.Opticals.Group:
+        # May have been moved
+        opticals = FreeCAD.ActiveDocument.getObject('Opticals')
+        print(opticals.Group)
+        for g in opticals.Group:
           if g.Name == "Surfaces":
              self.surfList= []
              for s in g.Group:
