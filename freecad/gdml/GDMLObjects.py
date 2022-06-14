@@ -4107,11 +4107,43 @@ class GDMLmatrix(GDMLcommon):
 class GDMLopticalsurface(GDMLcommon):
     def __init__(self, obj, name, model, finish, type, value):
         super().__init__(obj)
-        obj.addProperty("App::PropertyString", 'model', 'GDMLoptical' \
-                        "model").model = model
+        obj.addProperty("App::PropertyEnumeration", 'model', 'GDMLoptical' \
+                        "model")
+        obj.model = [
+                'glisur',   # original GEANT3 model \
+                'unified',  # UNIFIED model  \
+                'LUT',      # Look-Up-Table model (LBNL model) \
+                'DAVIS',    # DAVIS model \
+                'dichroic', # dichroic filter \
+                ]
         obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical' \
                         "finish")
-        obj.finish = ['polished']
+        obj.finish = [
+             'polished','ground','polishedlumirrorair', \
+             'polishedair','polishedtefonair','polishedtioair', \
+             'polishedtyvekair','poishedvm2000air', \
+             'polishedvm2000glue', 'etchedlumirrorair' \
+             'etchedlumirrorglue','etchedair', \
+             'etchedteflonair','etchedtioair', \
+             'etchedtyvekair','etchedvm2000air', \
+             'etchedvm2000glue', 'groundlumirrorair', \
+             'groundlumirrorglue','groundair', \
+             'groundteflonair', 'groundtioair', \
+             'groundtyvekair','groundvm2000air' \
+             'groundvm2000glue', \
+             'Rough_LUT',              # rough surface \
+             'RoughTeflon_LUT',        # rough surface wrapped in Teflon tape \
+             'RoughESR_LUT',           # rough surface wrapped with ESR \
+             'RoughESRGrease_LUT',     # rough surface wrapped with ESR \
+                                       # and coupled with optical grease
+             'Polished_LUT',           # polished surface \
+             'PolishedTeflon_LUT',     # polished surface wrapped in Teflon tape \
+             'PolishedESR_LUT',        # polished surface wrapped with ESR \
+             'PolishedESRGrease_LUT',  # polished surface wrapped with ESR \
+                                       # and coupled with optical grease
+             'Detector_LUT'            # polished surface with optical grease
+
+             ]          
         obj.finish = 0
         obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
                         "type")
