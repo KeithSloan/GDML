@@ -2268,11 +2268,16 @@ def commonFace(shape0, shape1):
     print(f'Faces {len(shape0.Faces)}')
     print(f'Faces {len(shape1.Faces)}')
     for face0 in shape0.Faces :
+        axis0 = face0.Surface.Axis
         for face1 in shape1.Faces :
+            axis1 = face1.Surface.Axis
+            print(f'Face Axis0 {axis0} Axis1 {axis1}')
             distance, points, info = face0.distToShape(face1)
-            print(f'Distance {distance} points {points} info {info}')
-            #if distance == 0.0:
-            #   print(f'Distance {distance} points {points} info {info}')
+            #print(f'Distance {distance} points {points} info {info}')
+            if distance == 0.0:
+               if axis0 == axis1 or \
+                  axis0.add(axis1) == FreeCAD.Vector(0.0, 0.0, 0.0) :
+                    print(f'Distance {distance} points {points} info {info}')
 
 def getGDMLObject(list):
     print('getGDMLObject')
@@ -2324,11 +2329,10 @@ def createBorderSurfObject(part0, part1, property):
     print(part1.Placement)
     print(dir(part1))
     #print(property)
-    #commonFace(obj0, obj1)
     #adjustShape(part0)
     #adjustShape(part1)
-    #commonFace(adjustShape(part0), adjustShape(part1))
-    print(commonFaces2(adjustShape(part0), adjustShape(part1)))
+    commonFace(adjustShape(part0), adjustShape(part1))
+    #print(commonFaces2(adjustShape(part0), adjustShape(part1)))
 
 def processGEANT4(doc, filename):
     print('process GEANT4 Materials : '+filename)
