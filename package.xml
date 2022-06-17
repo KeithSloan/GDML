@@ -2,11 +2,11 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>GDML workbench</name>
   <description>An external workbench for creating GDML models for Geant4 and Root></description>
-  <version>1.8 Beta</version>
-  <date>2022-03-06</date>
+  <version>2.0 Beta</version>
+  <date>2022-07-17</date>
   <maintainer email="keith@sloan-home.co.uk">Keith Sloan</maintainer>
   <license file="LICENSE">LGPL-2.1</license>
-  <url type="repository" branch="master">https://github.com/KeithSloan/GDML</url>
+  <url type="repository" branch="Main">https://github.com/KeithSloan/GDML</url>
   <url type="documentation">https://github.com/KeithSloan/GDML/wiki</url>
   <url type="readme">https://github.com/KeithSloan/GDML/blob/master/README.md</url>
 
@@ -15,7 +15,7 @@
       <classname>GDMLWorkbench</classname>
       <subdirectory>./</subdirectory>
       <icon>freecad/gdml/Resources/icons/GDMLWorkbench.svg</icon>
-      <freecadmin>0.19.3</freecadmin>
+      <freecadmin>0.20.0</freecadmin>
     </workbench>
   </content>
 
