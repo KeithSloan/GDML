@@ -206,7 +206,7 @@ will create
 * Converting STEP files to GDML [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
 * Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design](https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects)
 * Creating a GDML object from Sketches, these can be created by
-  * [Extrudeding a sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
+  * [Extruding a sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
   * [Revolving a sketch](https://github.com/KeithSloan/GDML/wiki#revolved-sketches)
 
 
