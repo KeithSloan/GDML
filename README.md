@@ -22,6 +22,8 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ## Important Noticies
 
+### FreeCAD 0.20
+
 Now FreeCAD 0.20 has been released. 
 
 The Default branch is now **Main** rather than **master**.
@@ -30,7 +32,7 @@ Users should delete the GDML workbench and reinstall via the Addon manager
 The Addon manager with FreeCAD 0.20 has the facility to select and change branches,
 so if you want to go back you can use this facility to select **master**
 
-## Use with Realthunders LinkDaily branch
+### Use with Realthunders LinkDaily branch
 
 * the GDML git branch called **link3**. Install it via:
   1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
