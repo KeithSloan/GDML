@@ -1706,7 +1706,7 @@ def exportGDML(first, filepath, fileExt):
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace('exportGDML')
-    print("====> Start GDML Export 1.6")
+    print("====> Start GDML Export 1.8")
     print('File extension : '+fileExt)
 
     GDMLstructure()
