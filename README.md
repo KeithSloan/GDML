@@ -20,27 +20,19 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ![LHCB1](Images/LHCBVelo1.jpg) ![LHCB2](Images/LHCBVelo2.jpg) ![LHCB3](Images/LHCBVelo3.jpg)
 
-## Important Notes
+## Important Noticies
 
-#### ATTENTION WINDOWS users using FreeCAD v0.19.1
+### FreeCAD 0.20
 
-The 3rd party python dependency `lxml` should have been installed in prebuilt versions of FreeCAD. 
-It seems with FreeCAD v0.19.1 going to production this slipped through the cracks. RealThunder's builds (LinkStage3) have the same issue. Seems to only be a problem for Windows users.
+Now FreeCAD 0.20 has been released. 
 
-To resolve you have to install the lxml library where FreeCAD can find it see
-the required libraries section of this README.
+The Default branch is now **Main** rather than **master**.
+Users should delete the GDML workbench and reinstall via the Addon manager
 
-#### Regression with STEP export
+The Addon manager with FreeCAD 0.20 has the facility to select and change branches,
+so if you want to go back you can use this facility to select **master**
 
-With OpenCasCade v7.5.0 and v7.5.1 as used in FreeCAD 0.19.2
-
-#### Problem with export of Rotations
-
-This issues applies to all operating systems. To fix a problem with export and rotations please use
-
-* the FreeCAD_Assembly3 release STABLE or DAILY see https://github.com/realthunder/FreeCAD_assembly3/releases
-  
-  scroll down to Assets.
+### Use with Realthunders LinkDaily branch
 
 * the GDML git branch called **link3**. Install it via:
   1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
@@ -57,11 +49,6 @@ There is also the option to use enhanced rendering which helps with complex mode
    
 If you like what you see you might like to thank Lei Zhang by contributing to his [FreeCAD Patreon](https://www.patreon.com/thundereal/posts)
 
-You can use FreeCAD 0.19.1 but this does not have the toEulerAngles function that facilities the
-fixing of exports with rotations and import speed will still be slow. The toEulerAngles facility should be in the
-process of being added to FreeCAD 0.20
-
-For latest versions of FreeCAD 0.19 see the Assets section of https://github.com/FreeCAD/FreeCAD/releases
 
 **Changes to Placement (GDML Position & Rotation)**
 
@@ -155,11 +142,6 @@ In case there is a need to manually install `lxml`:
   ```
 
 
-##### FreeCAD v0.18
-
-There are known limitations with FreeCAD 0.18 and **lxml**. Therefore, it is recommended that you use FreeCAD v0.19 as above.
-(Note: You can install both versions v0.18 & v0.19 and still use v0.18 for non GDML related work)
-
 ### `Gmsh`
 
 [Gmsh](https://gmsh.info/) is an open source 3D finite element mesh generator. FreeCAD & Gmsh should both be using the same version of OCC (OpenCasCade), the underlying CAD kernel that FreeCAD uses.
@@ -223,7 +205,10 @@ will create
 * To read more about the general usage of the GDML workbench checkout the [GDML Workbench wiki](https://github.com/KeithSloan/GDML/wiki)
 * Converting STEP files to GDML [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
 * Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design](https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects)
-* Creating a GDML object from an [Extruded sketch](https://github.com/KeithSloan/GDML/wiki/GDML-Object-from-FreeCAD-sketches)
+* Creating a GDML object from Sketches, these can be created by
+  * [Extruding a sketch](https://github.com/KeithSloan/GDML/wiki#extruded-sketches))
+  * [Revolving a sketch](https://github.com/KeithSloan/GDML/wiki#revolved-sketches)
+
 
 
 <details>
