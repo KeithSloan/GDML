@@ -515,8 +515,6 @@ In theory other file extension should produfile of the appropriate type, e.g. ig
 
 ## Citing information
 
-[![DOI](Documentation/DOImage.png)](https://zenodo.org/badge/latestdoi/223232841)
-
 [![DOI](Documentation/DOImage.png)](https://doi.org/10.5281/zenodo.3787318)
 
 If you found this Workbench useful in your research we would appreciate being cited
