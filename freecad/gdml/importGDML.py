@@ -2279,6 +2279,28 @@ def commonFace(shape0, shape1):
                   axis0.add(axis1) == FreeCAD.Vector(0.0, 0.0, 0.0) :
                     print(f'Distance {distance} points {points} info {info}')
 
+def printVertexes(i, v1, v2):
+    print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.isEqual(v2)}')
+
+def compareVertex(i, v1, v2, tol = 1e-7):
+    printVertexes(i, v1, v2)
+    #return v1.isEqual(v2, tol)
+    return v1.isEqual(v2)
+
+def checkFaces(i, face1, face2):
+    for v1 in face1.Vertexes:
+        for v2 in face2.Vertexes:
+            if compareVertex(i, v1, v2) == False:
+               return False
+        return True
+
+def commonFace4(shape1, shape2, tol = 1e-7):
+    print('CommonFace 4')
+    for i, face1 in enumerate(shape1.Faces):
+        for face2 in shape2.Faces:
+            if checkFaces(i, face1, face2) == True:
+               print(f'Common Face {i}')
+
 def getGDMLObject(list):
     print('getGDMLObject')
     print(list[0].TypeId)
@@ -2300,6 +2322,7 @@ def getShape(obj):
 def adjustShape(part):
     print("Adjust Shape")
     print(part.Name)
+    print(part.Label)
     print(part.OutList)
     print(f'Before Placement Base {part.Placement.Base}')
     beforeBase = part.Placement.Base
@@ -2307,6 +2330,7 @@ def adjustShape(part):
        print(f'Linked Object {part.LinkedObject}')
        part = part.getLinkedObject()
        print(part.Name)
+       print(part.Label)
        print(part.OutList)
     obj = getGDMLObject(part.OutList)
     obj.recompute()
@@ -2331,7 +2355,7 @@ def createBorderSurfObject(part0, part1, property):
     #print(property)
     #adjustShape(part0)
     #adjustShape(part1)
-    commonFace(adjustShape(part0), adjustShape(part1))
+    commonFace4(adjustShape(part0), adjustShape(part1))
     #print(commonFaces2(adjustShape(part0), adjustShape(part1)))
 
 def processGEANT4(doc, filename):
