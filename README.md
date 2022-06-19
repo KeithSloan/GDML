@@ -590,6 +590,7 @@ Based on `gdml.xsd`
   * chrisb
   * DeepSOIC
   * ickby
+  * edwilliams16
   * looooo
   * easyw-fc
   * bernd
