@@ -2279,13 +2279,14 @@ def commonFace(shape0, shape1):
                   axis0.add(axis1) == FreeCAD.Vector(0.0, 0.0, 0.0) :
                     print(f'Distance {distance} points {points} info {info}')
 
-def printVertexes(i, v1, v2):
-    print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.isEqual(v2)}')
+def printVertexes(i, v1, v2, tol):
+    #print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.Point.isEqual(v2.Point, tol)}')
+    if v1.Point.isEqual(v2.Point, tol):
+       print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.Point.isEqual(v2.Point, tol)}')
 
 def compareVertex(i, v1, v2, tol = 1e-7):
-    printVertexes(i, v1, v2)
-    #return v1.isEqual(v2, tol)
-    return v1.isEqual(v2)
+    printVertexes(i, v1, v2, tol)
+    return v1.Point.isEqual(v2.Point, tol)
 
 def checkFaces(i, face1, face2):
     for v1 in face1.Vertexes:
