@@ -1,5 +1,14 @@
 ## FreeCAD GDML Workbench
 
+### IMPORTANT
+
+FreeCAD 0.20 has been released, the default GDML workbench is now **Main**
+
+* Install FreeCAD 0.20
+* Delete workbench GDML
+* install workbench GDML via the Addon_manager
+  ( use refresh Cache option to make sure latest version )
+
 ### Introduction 
 
 **[FreeCAD](https://freecad.org)** is a Free Libre Open Source multi-platform CAD/CAM/FEM suite.
