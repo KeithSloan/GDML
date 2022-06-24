@@ -4129,6 +4129,20 @@ class GDMLskinsurface(GDMLcommon):
         obj.Proxy = self
         self.Object = obj
 
+# ??? need for GDMLcommon ???
+class GDMLbordersurface(GDMLcommon):
+    def __init__(self, obj, name, property, pv1, pv2):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyString", 'property', 'GDMLborder' \
+                        "surfaceproperty").property = property
+        obj.addProperty("App::PropertyString", 'pv1', 'GDMLborder' \
+                        "physvol pv1").pv1 = pv1
+        obj.setEditorMode('pv1', 2)
+        obj.addProperty("App::PropertyString", 'pv2', 'GDMLborder' \
+                        "physvol pv1").pv1 = pv2
+        obj.setEditorMode('pv2', 2)
+        obj.Proxy = self
+        self.Object = obj
 
 class ViewProviderExtension(GDMLcommon):
     def __init__(self, obj):

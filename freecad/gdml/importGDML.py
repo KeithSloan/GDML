@@ -2211,6 +2211,8 @@ def setSkinSurface(doc, vol, surface):
     volObj.SkinSurface = surface
 
 def processSurfaces(doc, volDict, structure):
+    from .GDMLBorderSurface import createBorderSurfObject
+
     # find all ???
     print('Process Surfaces')
     print('skinsurface')
@@ -2240,124 +2242,6 @@ def processSurfaces(doc, volDict, structure):
            v1 = volDict[surfacePhysVols[1]]
            createBorderSurfObject(v0, v1, property)
 
-def commonFaces2(shp1, shp2, tol = 1e-7):
-    facePairs = []
-    for i1, face1 in enumerate(shp1.Faces):
-        for i2, face2 in enumerate(shp2.Faces):
-            if face1.Surface.Axis.isEqual(face2.Surface.Axis, tol) or face1.Surface.Axis.isEqual(-face2.Surface.Axis, tol):
-                facePairs.append((i1, i2))
-
-    facePairs1 = []
-    for i1, i2 in facePairs:
-        if abs(shp1.Faces[i1].Surface.Axis.dot(shp1.Faces[i1].Surface.Position - shp2.Faces[i2].Surface.Position)) < tol:
-            facePairs1.append((i1,i2))
-    return [(shp1.Faces[i1], shp2.Faces[i2]) for i1, i2 in facePairs1]
-
-def commonFace(shape0, shape1):
-    print('Common Face')
-    shape0.check()
-    shape1.check()
-    print(dir(shape0))
-    print(dir(shape1))
-    print(shape0.TypeId)
-    print(shape1.TypeId)
-    print(shape0.ShapeType)
-    print(shape1.ShapeType)
-    print(f'Vertexes {len(shape0.Vertexes)}')
-    print(f'Vertexes {len(shape1.Vertexes)}')
-    print(f'Faces {len(shape0.Faces)}')
-    print(f'Faces {len(shape1.Faces)}')
-    for face0 in shape0.Faces :
-        axis0 = face0.Surface.Axis
-        for face1 in shape1.Faces :
-            axis1 = face1.Surface.Axis
-            print(f'Face Axis0 {axis0} Axis1 {axis1}')
-            distance, points, info = face0.distToShape(face1)
-            #print(f'Distance {distance} points {points} info {info}')
-            if distance == 0.0:
-               if axis0 == axis1 or \
-                  axis0.add(axis1) == FreeCAD.Vector(0.0, 0.0, 0.0) :
-                    print(f'Distance {distance} points {points} info {info}')
-
-def printVertexes(i, v1, v2, tol):
-    #print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.Point.isEqual(v2.Point, tol)}')
-    if v1.Point.isEqual(v2.Point, tol):
-       print(f'{i} v1 {v1.X} {v1.Y} {v1.Z} v2 {v2.X} {v2.Y} {v2.Z} {v1.Point.isEqual(v2.Point, tol)}')
-
-def compareVertex(i, v1, v2, tol = 1e-7):
-    printVertexes(i, v1, v2, tol)
-    return v1.Point.isEqual(v2.Point, tol)
-
-def checkFaces(i, face1, face2):
-    for v1 in face1.Vertexes:
-        for v2 in face2.Vertexes:
-            if compareVertex(i, v1, v2) == False:
-               return False
-        return True
-
-def commonFace4(shape1, shape2, tol = 1e-7):
-    print('CommonFace 4')
-    for i, face1 in enumerate(shape1.Faces):
-        for face2 in shape2.Faces:
-            if checkFaces(i, face1, face2) == True:
-               print(f'Common Face {i}')
-
-def getGDMLObject(list):
-    print('getGDMLObject')
-    print(list[0].TypeId)
-    if list[0].TypeId == "App::Origin":
-       print(f'Vertex {list[1].Shape.Vertexes}')
-       return list[1]
-    else:
-       print(f'Vertex {list[0].Shape.Vertexes}')
-       return list[0]
-
-def getShape(obj):
-    print(obj.TypeId)
-    print(obj.Name)
-    if hasattr(obj,'Shape'):
-       return obj.Shape.copy()
-    print(dir(obj))
-    return obj
-
-def adjustShape(part):
-    print("Adjust Shape")
-    print(part.Name)
-    print(part.Label)
-    print(part.OutList)
-    print(f'Before Placement Base {part.Placement.Base}')
-    beforeBase = part.Placement.Base
-    if hasattr(part,'LinkedObject'):
-       print(f'Linked Object {part.LinkedObject}')
-       part = part.getLinkedObject()
-       print(part.Name)
-       print(part.Label)
-       print(part.OutList)
-    obj = getGDMLObject(part.OutList)
-    obj.recompute()
-    # Shape is immutable so have to copy
-    shape = getShape(obj)
-    print(f'Shape Valid {shape.isValid()}')
-    print(dir(shape))
-    #return shape
-    print(f'After Placement Base {part.Placement.Base}')
-    #return translate(part, part.Placement.Base)
-    return shape.translate(beforeBase)
-
-def createBorderSurfObject(part0, part1, property):
-    print('createBorderSurfObject')
-    print(part0.TypeId)
-    print(part0.Name)
-    print(dir(part0))
-    print(part0.Placement)
-    print(part1.Name)
-    print(part1.Placement)
-    print(dir(part1))
-    #print(property)
-    #adjustShape(part0)
-    #adjustShape(part1)
-    commonFace4(adjustShape(part0), adjustShape(part1))
-    #print(commonFaces2(adjustShape(part0), adjustShape(part1)))
 
 def processGEANT4(doc, filename):
     print('process GEANT4 Materials : '+filename)

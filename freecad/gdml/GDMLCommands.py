@@ -470,6 +470,42 @@ class SetMaterialFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetMaterial',
                                          'Set Material')}
 
+class SetBorderSurfaceFeature:
+
+    def Activated(self):
+        #from PySide import QtGui, QtCore
+
+        print('Add SetBorderSurface')
+        cnt = 0
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(sel)
+        set = []
+        for s in sel:
+            # print(s)
+            # print(dir(s))
+            #if hasattr(s.Object, 'Shape'):
+            if s.Object.TypeId == 'App::Part':
+                cnt += 1
+                set.append(s)
+        if cnt == 2:
+           print('Create BorderSurface Object')
+        return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDMLBorderSurface',
+                'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDMLBorderSurface',
+                                         'BorderSurface'),
+                'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDMLBorderSurface',
+                                         'Set Border Surface')}
+
 
 class SetScaleFeature:
 
@@ -2056,6 +2092,7 @@ FreeCADGui.addCommand('ExpandMaxCommand', ExpandMaxFeature())
 FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
+FreeCADGui.addCommand('SetBorderSurfaceCommand', SetBorderSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
 FreeCADGui.addCommand('BooleanIntersectionCommand', BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand', BooleanUnionFeature())
