@@ -246,7 +246,7 @@ class SetSkinSurfaceFeature:
     def Activated(self):
         from PySide import QtGui, QtCore
 
-        print('Add SetSkinSurfacel')
+        print('Add SetSkinSurface')
         sel = FreeCADGui.Selection.getSelectionEx()
         # print(sel)
         for s in sel:
@@ -274,6 +274,68 @@ class SetSkinSurfaceFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
                                          'Set Skin Surface')}
 
+
+class SetBorderSurfaceFeature:
+
+    def Activated(self):
+        from PySide import QtGui, QtCore
+        from .GDMLObjects import GDMLbordersurface
+
+        print('Add SetBorderSurface')
+        sel = FreeCADGui.Selection.getSelectionEx()
+        print(len(sel))
+        if len(sel) == 3 :
+           surfaceObj = None
+           partList = []
+           for s in sel:
+               if hasattr(s,'Object'):
+                  print(s.Object)
+                  obj = s.Object
+                  print(obj.TypeId)
+                  if obj.TypeId == "App::Part":
+                     print('Part Added')
+                     partList.append(obj)
+
+                  elif obj.TypeId == "App::DocumentObjectGroupPython":
+                     print(dir(obj))
+                     if hasattr(obj,'InList'):
+                        print(obj.InList)
+                        parent = obj.InList[0]
+                        print(parent.Name)
+                        if parent.Name == "Surfaces":
+                           surfaceObj = obj
+
+           doc = FreeCAD.ActiveDocument
+           print(f'Surface Obj {surfaceObj}')
+           print(f'Part List {partList}')
+           if surfaceObj is not None and len(partList) == 2:
+              print('Action set Border Surface')
+              print(f'Generate Name from {surfaceObj.Name}')
+              surfaceName = self.SurfaceName(doc, surfaceObj.Name)
+              print(f'Surface Name {surfaceName}')
+              obj = doc.addObject("App::FeaturePython", surfaceName)
+              GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
+                       partList[0].Name, partList[1].Name)
+        return
+
+    def SurfaceName(self, doc, name ):
+        index = 1 
+        while doc.getObject(name+str(index)) is not None :
+              index += 1
+        return name + str(index)
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+    
+    def GetResources(self):
+        return {'Pixmap': 'GDML_SetBorderSurface', 'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetBorderSurface',
+                                         'Set Border Surface'), 'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetBorderSurface',
+                                         'Set Border Surface')}
 
 class GDMLSetMaterial(QtGui.QDialog):
     def __init__(self, selList):
@@ -2142,6 +2204,7 @@ FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
 FreeCADGui.addCommand('SetSkinSurfaceCommand', SetSkinSurfaceFeature())
+FreeCADGui.addCommand('SetBorderSurfaceCommand', SetBorderSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
 FreeCADGui.addCommand('BooleanIntersectionCommand', BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand', BooleanUnionFeature())

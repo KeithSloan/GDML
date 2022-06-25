@@ -60,7 +60,7 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDMLmaterial, GDMLfraction, \
                         GDMLcomposite, GDMLisotope, \
                         GDMLelement, GDMLconstant, GDMLvariable, \
-                        GDMLquantity
+                        GDMLquantity, GDMLbordersurface
 
 from . import GDMLShared
 
@@ -964,6 +964,17 @@ def processSkinSurfaces(obj):
     #                         'surfaceproperty' : obj.SkinSurface, \
     return
 
+
+def processBorderSurfaces():
+    print('Export Border Surfaces')
+    doc = FreeCAD.ActiveDocument
+    for obj in doc.Objects:
+        if obj.TypeId == "App::FeaturePython":
+           print(f'TypeId {obj.TypeId} Name {obj.Name}')
+           #print(dir(obj))
+           #print(obj.Proxy)
+           if isinstance(obj.Proxy, GDMLbordersurface):
+              print('Border Surface')
  
 def processOpticals():
     print('Process Opticals')
@@ -1718,6 +1729,7 @@ def exportWorldVol(vol, fileExt):
         xmlVol = insertXMLassembly(vol.Label)
         processAssembly(vol, xmlVol, xmlParent, parentName)
 
+    processBorderSurfaces()
 
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem):
     # gdml is a global
@@ -3153,6 +3165,17 @@ class GDML2dVertexExporter(GDMLSolidExporter):
     def export(self):
         ET.SubElement(solids, 'twoDimVertex', {'x': self.obj.x,
                                                'y': self.obj.y})
+
+class GDMLborderSurfaceExporter(GDMLSolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def export(self):
+        borderSurface = ET.SubElement(structure, 'bordersurface',
+                               {'name': self.obj.Name,
+                                    'surfaceproperty': self.obj.surface })
+        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv1})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv2})
 
 
 class MultiFuseExporter(SolidExporter):
