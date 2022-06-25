@@ -975,6 +975,11 @@ def processBorderSurfaces():
            #print(obj.Proxy)
            if isinstance(obj.Proxy, GDMLbordersurface):
               print('Border Surface')
+              borderSurface = ET.SubElement(structure,'bordersurface', \
+                    {'name': obj.Name, 'surfaceproperty' : obj.Surface})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV1})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV2})
+                   
  
 def processOpticals():
     print('Process Opticals')

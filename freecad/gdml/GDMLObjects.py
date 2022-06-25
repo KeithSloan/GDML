@@ -4166,14 +4166,14 @@ class GDMLbordersurface(GDMLcommon):
     def __init__(self, obj, name, surface, pv1, pv2):
         super().__init__(obj)
         print(f'pv1 : {pv1} pv2 : {pv2}')
-        obj.addProperty("App::PropertyString", 'surface', 'GDMLborder' \
-                        "surface property").surface = surface
-        obj.addProperty("App::PropertyString", 'pv1', 'GDMLborder' \
-                        "physvol pv1").pv1 = pv1
-        obj.setEditorMode('pv1', 1)
-        obj.addProperty("App::PropertyString", 'pv2', 'GDMLborder' \
-                        "physvol pv2").pv2 = pv2
-        obj.setEditorMode('pv2', 1)
+        obj.addProperty("App::PropertyString", 'Surface', 'GDMLborder' \
+                        "surface property").Surface = surface
+        obj.addProperty("App::PropertyString", 'PV1', 'GDMLborder' \
+                        "physvol PV1").PV1 = pv1
+        obj.setEditorMode('PV1', 1)
+        obj.addProperty("App::PropertyString", 'PV2', 'GDMLborder' \
+                        "physvol PV2").PV2 = pv2
+        obj.setEditorMode('PV2', 1)
         obj.Proxy = self
         self.Object = obj
 
