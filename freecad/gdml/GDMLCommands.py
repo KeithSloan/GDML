@@ -32,6 +32,7 @@ This Script includes the GUI Commands of the GDML module
 '''
 
 import FreeCAD, FreeCADGui
+import Part
 from PySide import QtGui, QtCore
 
 
@@ -296,6 +297,11 @@ class SetBorderSurfaceFeature:
                      print('Part Added')
                      partList.append(obj)
 
+                  elif obj.TypeId == "App::Link":
+                     if obj.LinkedObject.TypeId == "App::Part":
+                        print('Linked Part Added')
+                        partList.append(obj)
+                        
                   elif obj.TypeId == "App::DocumentObjectGroupPython":
                      print(dir(obj))
                      if hasattr(obj,'InList'):
@@ -310,12 +316,17 @@ class SetBorderSurfaceFeature:
            print(f'Part List {partList}')
            if surfaceObj is not None and len(partList) == 2:
               print('Action set Border Surface')
-              print(f'Generate Name from {surfaceObj.Name}')
-              surfaceName = self.SurfaceName(doc, surfaceObj.Name)
-              print(f'Surface Name {surfaceName}')
-              obj = doc.addObject("App::FeaturePython", surfaceName)
-              GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
-                       partList[0].Name, partList[1].Name)
+              if self.checkCommonFace(partList) == True:
+                 print('Yes Common Face')
+                 print('Action set Border Surface')
+                 print(f'Generate Name from {surfaceObj.Name}')
+                 surfaceName = self.SurfaceName(doc, surfaceObj.Name)
+                 print(f'Surface Name {surfaceName}')
+                 obj = doc.addObject("App::FeaturePython", surfaceName)
+                 GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
+                          partList[0].Name, partList[1].Name)
+              else:
+                 print('No Valid common Face')
         return
 
     def SurfaceName(self, doc, name ):
@@ -323,6 +334,60 @@ class SetBorderSurfaceFeature:
         while doc.getObject(name+str(index)) is not None :
               index += 1
         return name + str(index)
+
+    def checkCommonFace(self, partList):
+        print('Check Common Face')
+        shape0 = self.adjustShape(partList[0])
+        shape1 = self.adjustShape(partList[1])
+        return self.commonFace(shape0, shape1)
+
+    def commonFace(self, shape0, shape1):
+        print(f'Common Face : {len(shape0.Faces)} : {len(shape1.Faces)}')
+        zero = FreeCAD.Vector(0.0, 0.0, 0.0)
+        for i, face0 in enumerate(shape0.Faces):
+            for j, face1 in enumerate(shape1.Faces):
+               #if face0.isCoplanar(face1):
+               #   print(f'Coplanar shape0 {i} shape1 {j}')
+               #print(f'COM -  face0 {face0.CenterOfMass} face1 {face1.CenterOfMass}') 
+               d = face0.CenterOfMass - face1.CenterOfMass
+               print(f'Distance : {d}')
+               if d == zero:
+                  return True 
+        return False             
+
+    def getGDMLObject(self, list):
+        # need to make more robust check types etc
+        if len(list) > 1:
+           return list[1]
+        else:
+           return list[0]
+           
+    def adjustShape(self, part):
+        print("Adjust Shape")
+        print(part.Name)
+        print(part.OutList)
+        print(f'Placement {part.Placement.Base}')
+        # Save placement
+        #placement = part.Placement.Base
+        matrix = part.Placement.toMatrix()
+        if hasattr(part,'LinkedObject'):
+           print(f'Linked Object {part.LinkedObject}')
+           part = part.getLinkedObject()
+           print(part.Name)
+           print(part.OutList)
+           print(f'Linked Placement {part.Placement.Base}')
+        obj = self.getGDMLObject(part.OutList)
+        obj.recompute()
+        # Shape is immutable so have to copy
+        # Realthunder recommends avoid deep copy
+        shape = Part.Shape(obj.Shape)
+        print(f'Shape Valid {shape.isValid()}')
+        print(dir(shape))
+        #return shape
+        print(f'Placement {part.Placement.Base}')
+        # Use saved Placement in case of linked Object
+        #return shape.translate(placement)
+        return shape.transformGeometry(matrix)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
