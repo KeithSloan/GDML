@@ -947,13 +947,20 @@ def processMatrix(obj):
     ET.SubElement(define, 'matrix', {'name': obj.Name, 'coldim': str(obj.coldim),
                                        'values': obj.values})
 
+def cleanFinish(finish):
+    if finish == 'polished | polished':
+       return 'polished'
+    else:
+       return finish.replace(' | ','')
+
 def processSurfaces(obj):
     global solids
     print(solids)
     print('Add opticalsurface')
     print(str(solids))
+    finish = cleanFinish(obj.finish)
     ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, 'model': obj.model, \
-                      'finish': obj.finish, 'type': obj.type, \
+                      'finish': finish, 'type': obj.type, \
                       'value': str(obj.value)}) 
 
 def processSkinSurfaces(obj):
