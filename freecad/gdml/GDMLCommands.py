@@ -275,12 +275,45 @@ class SetSkinSurfaceFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
                                          'Set Skin Surface')}
 
+class noCommonFacePrompt(QtGui.QDialog):
+    def __init__(self, *args):
+        super(noCommonFacePrompt, self).__init__()
+        self.initUI()
+
+    def initUI(self):
+        overideButton = QtGui.QPushButton('Overide')
+        overideButton.clicked.connect(self.onOveride)
+        cancelButton = QtGui.QPushButton('Cancel')
+        cancelButton .clicked.connect(self.onCancel)
+        #
+        buttonBox = QtGui.QDialogButtonBox()
+        buttonBox.setFixedWidth(400)
+        # buttonBox = Qt.QDialogButtonBox(QtCore.Qt.Vertical)
+        buttonBox.addButton(overideButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
+        #
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(buttonBox)
+        self.setLayout(mainLayout)
+        # self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        # define window         xLoc,yLoc,xDim,yDim
+        self.setGeometry(650, 650, 0, 50)
+        self.setWindowTitle("No Common Face Found")
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.retStatus = 0
+
+    def onOveride(self):
+        self.retStatus = 1
+        self.close()
+
+    def onCancel(self):
+        #self.retStatus = 2
+        self.close()
 
 class SetBorderSurfaceFeature:
 
     def Activated(self):
         from PySide import QtGui, QtCore
-        from .GDMLObjects import GDMLbordersurface
 
         print('Add SetBorderSurface')
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -318,16 +351,27 @@ class SetBorderSurfaceFeature:
               print('Action set Border Surface')
               if self.checkCommonFace(partList) == True:
                  print('Yes Common Face')
-                 print('Action set Border Surface')
-                 print(f'Generate Name from {surfaceObj.Name}')
-                 surfaceName = self.SurfaceName(doc, surfaceObj.Name)
-                 print(f'Surface Name {surfaceName}')
-                 obj = doc.addObject("App::FeaturePython", surfaceName)
-                 GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
-                          partList[0].Name, partList[1].Name)
+                 self.SetBorderSurface(doc, surfaceObj, partList)
+
               else:
                  print('No Valid common Face')
+                 dialog = noCommonFacePrompt()
+                 dialog.exec_()
+                 if dialog.retStatus == 1:
+                    self.SetBorderSurface(doc, surfaceObj, partList)
+
         return
+
+    def SetBorderSurface(self, doc, surfaceObj, partList): 
+        from .GDMLObjects import GDMLbordersurface
+
+        print('Action set Border Surface')
+        print(f'Generate Name from {surfaceObj.Name}')
+        surfaceName = self.SurfaceName(doc, surfaceObj.Name)
+        print(f'Surface Name {surfaceName}')
+        obj = doc.addObject("App::FeaturePython", surfaceName)
+        GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
+                     partList[0].Name, partList[1].Name)
 
     def SurfaceName(self, doc, name ):
         index = 1 
