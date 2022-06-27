@@ -281,15 +281,15 @@ class noCommonFacePrompt(QtGui.QDialog):
         self.initUI()
 
     def initUI(self):
-        overideButton = QtGui.QPushButton('Overide')
-        overideButton.clicked.connect(self.onOveride)
+        overrideButton = QtGui.QPushButton('Override')
+        overrideButton.clicked.connect(self.onOverride)
         cancelButton = QtGui.QPushButton('Cancel')
         cancelButton .clicked.connect(self.onCancel)
         #
         buttonBox = QtGui.QDialogButtonBox()
         buttonBox.setFixedWidth(400)
         # buttonBox = Qt.QDialogButtonBox(QtCore.Qt.Vertical)
-        buttonBox.addButton(overideButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(overrideButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
         #
         mainLayout = QtGui.QVBoxLayout()
@@ -302,7 +302,7 @@ class noCommonFacePrompt(QtGui.QDialog):
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.retStatus = 0
 
-    def onOveride(self):
+    def onOverride(self):
         self.retStatus = 1
         self.close()
 
