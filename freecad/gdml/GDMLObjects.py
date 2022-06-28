@@ -4107,6 +4107,7 @@ class GDMLmatrix(GDMLcommon):
 class GDMLopticalsurface(GDMLcommon):
    def __init__(self, obj, name, model, finish, type, value):
        super().__init__(obj)
+       print(f'passed finish {finish}')
        obj.addProperty("App::PropertyEnumeration", 'model', 'GDMLoptical' \
                        "model")
        obj.model = [
@@ -4167,8 +4168,8 @@ class GDMLopticalsurface(GDMLcommon):
           'Detector_LUT'            # polished surface with optical grease
 
           ]
-       if finish == 'polished':
-          obj.finish = 0
+       if finish == 'polished' or finish == 0 :
+          obj.finish = 'polished | polished'
        elif finish == 'ground':
           obj.finish = 'ground | ground'
        else:
@@ -4177,7 +4178,8 @@ class GDMLopticalsurface(GDMLcommon):
           finish.replace('ground','ground |')
           finish.replace('polished','polished |')
           finish.replace('polished','polished |')
-          obj.finish = finished
+          print(f'finish {finish}')
+          obj.finish = finish
 
        obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
                        "type")

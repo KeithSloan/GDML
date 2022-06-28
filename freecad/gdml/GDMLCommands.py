@@ -390,6 +390,18 @@ class SetBorderSurfaceFeature:
         zero = FreeCAD.Vector(0.0, 0.0, 0.0)
         for i, face0 in enumerate(shape0.Faces):
             for j, face1 in enumerate(shape1.Faces):
+               print('dir surface')
+               #print(face0.isDerivedFrom())
+               print(dir(face0.Surface))
+               print(face0.Surface.TypeId)
+               print(face0.Surface.NbUKnots)
+               print(face0.Surface.NbUPoles)
+               print(face0.Surface.MaxDegree)
+               print(isinstance(face0.Surface, Part.Plane))
+               print(isinstance(face1.Surface, Part.Plane))
+               if isinstance(face0.Surface, Part.Plane) and \
+                  isinstance(face1.Surface, Part.Plane):
+                  print('Both Flat')
                #if face0.isCoplanar(face1):
                #   print(f'Coplanar shape0 {i} shape1 {j}')
                #print(f'COM -  face0 {face0.CenterOfMass} face1 {face1.CenterOfMass}') 
