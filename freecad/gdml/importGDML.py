@@ -81,6 +81,7 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     global doc
+    volDict = {}
     print('Open : '+filename)
     docName = os.path.splitext(os.path.basename(filename))[0]
     print('path : '+filename)
@@ -89,7 +90,7 @@ def open(filename):
         #profiler = cProfile.Profile()
         #profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, filename, True, False)
+        processGDML(doc, volDict, filename, True, False)
         #profiler.disable()
         #stats = pstats.Stats(profiler).sort_stats('cumtime')
         #stats.print_stats()
@@ -112,13 +113,14 @@ def insert(filename, docname):
     "called when freecad imports a file"
     print('Insert filename : '+filename+' docname : '+docname)
     global doc
+    volDict = {}
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc, filename, True, False)
+        processGDML(doc, volDict, filename, True, False)
 
     elif filename.lower().endswith('.xml'):
         processXML(doc, filename)
@@ -1558,7 +1560,7 @@ def addSurfList(doc, part):
        part.SkinSurface = surfLst
        part.SkinSurface = 0
 
-def parsePhysVol(doc, volAsmFlg,  parent, physVol, phylvl, displayMode):
+def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode):
     # if volAsmFlag == True : Volume
     # if volAsmFlag == False : Assembly
     # physvol is xml entity
@@ -1577,14 +1579,18 @@ def parsePhysVol(doc, volAsmFlg,  parent, physVol, phylvl, displayMode):
         # lhcbvelo has duplicate with no copynumber
         # Test if exists
         namedObj = FreeCAD.ActiveDocument.getObject(volRef)
+        PVName = physVol.get('name')
         if namedObj is None:
             part = parent.newObject("App::Part", volRef)
+            print(f'Physvol : {PVName} : Vol:Part {part.Name}')
+            volDict[PVName] = part
             addSurfList(doc, part)
-            expandVolume(doc, part, volRef, phylvl, displayMode)
+            expandVolume(doc, volDict, part, volRef, phylvl, displayMode)
 
         else:  # Object exists create a Linked Object
             GDMLShared.trace('====> Create Link to : '+volRef)
             part = parent.newObject('App::Link', volRef)
+            volDict[PVName] = part
             part.LinkedObject = namedObj
             if part.Name is not volRef:
                 ln = len(volRef)
@@ -1638,9 +1644,9 @@ def getColour(colRef):
 
 # ParseVolume name - structure is global
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(doc, parent, name, phylvl, displayMode):
+def parseVolume(doc, volDict, parent, name, phylvl, displayMode):
     GDMLShared.trace("ParseVolume : "+name)
-    expandVolume(doc, parent, name, phylvl, displayMode)
+    expandVolume(doc, volDict, parent, name, phylvl, displayMode)
 
 
 def processParamvol(vol, parent, paramvol):
@@ -1772,8 +1778,7 @@ def processParamvol(vol, parent, paramvol):
             print(f'GDML does not provide a parameterized {solid_type}_dimensions')
 
 
-
-def processVol(doc, vol, parent, phylvl, displayMode):
+def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
     from .GDMLObjects import checkMaterial
     colour = None
@@ -1873,7 +1878,7 @@ def processVol(doc, vol, parent, phylvl, displayMode):
             # if phylvl >= 0 :
             #   phylvl += 1
             # If negative always parse otherwise increase level
-            part = parsePhysVol(doc, True, parent, pv, phylvl, displayMode)
+            part = parsePhysVol(doc, volDict, True, parent, pv, phylvl, displayMode)
 
         else:  # Just Add to structure
             volRef = GDMLShared.getRef(pv, "volumeref")
@@ -1918,14 +1923,14 @@ def processVol(doc, vol, parent, phylvl, displayMode):
         processParamvol(vol, parentpart, paramvol)
 
 
-def expandVolume(doc, parent, name, phylvl, displayMode):
+def expandVolume(doc, volDict, parent, name, phylvl, displayMode):
     import FreeCAD as App
     # also used in ScanCommand
     # GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
     vol = structure.find("volume[@name='%s']" % name)
     if vol is not None:  # If not volume test for assembly
-        processVol(doc, vol, parent, phylvl, displayMode)
+        processVol(doc, vol, volDict, parent, phylvl, displayMode)
 
     else:
         asm = structure.find("assembly[@name='%s']" % name)
@@ -1933,7 +1938,7 @@ def expandVolume(doc, parent, name, phylvl, displayMode):
             print("Assembly : "+name)
             for pv in asm.findall("physvol"):
                 # obj = parent.newObject("App::Part", name)
-                parsePhysVol(doc, False, parent, pv, phylvl, displayMode)
+                parsePhysVol(doc, volDict, False, parent, pv, phylvl, displayMode)
         else:
             print(name+' is Not a defined Volume or Assembly')
 
@@ -2166,7 +2171,7 @@ def processXML(doc, filename):
     processMaterialsDocSet(doc, root)
 
 
-def processPhysVolFile(doc, parent, fname):
+def processPhysVolFile(doc, volDict, parent, fname):
     global pathName
     print('Process physvol file import')
     print(pathName)
@@ -2195,9 +2200,9 @@ def processPhysVolFile(doc, parent, fname):
         if vName is not None:
             part = parent.newObject("App::Part", vName)
             # expandVolume(None,vName,-1,1)
-            processVol(doc, vol, part, -1, 1)
+            processVol(doc, vol, volDict, part, -1, 1)
 
-    processSurfaces(doc, structure)
+    processSurfaces(doc, volDict, structure)
 
 
 def setSkinSurface(doc, vol, surface):
@@ -2205,15 +2210,38 @@ def setSkinSurface(doc, vol, surface):
     volObj = doc.getObject(vol)
     volObj.SkinSurface = surface
 
-def processSurfaces(doc, structure):
+def processSurfaces(doc, volDict, structure):
+    from .GDMLBorderSurface import createBorderSurfObject
+
     # find all ???
     print('Process Surfaces')
+    print('skinsurface')
     skinsurface = structure.find('skinsurface')
     if skinsurface is not None:
        surface = skinsurface.get('surfaceproperty')
        volRef = GDMLShared.getRef(skinsurface, "volumeref")
        print(f'Vol {volRef} surface {surface}')
        setSkinSurface(doc, volRef, surface)
+
+    print('bordersurface')
+    print(volDict)
+    surfacePhysVols = []
+    for borderSurf in structure.findall('bordersurface'):
+        if borderSurf is not None :
+           name = borderSurf.get('name')
+           property = borderSurf.get('surfaceproperty')
+           for i, pv in enumerate(borderSurf.findall('physvolref')):
+               if pv is not None:
+                  surfacePhysVols.append(pv.get('ref'))
+                  print(f"{i} : {pv.get('ref')}")
+           print(surfacePhysVols)
+           print(volDict)
+           #createBorderSurfObject(VolDict[surfacePhysVols[0]], \
+           #                       VolDict[surfacePhysVols[1]])
+           v0 = volDict[surfacePhysVols[0]]
+           v1 = volDict[surfacePhysVols[1]]
+           createBorderSurfObject(v0, v1, property)
+
 
 def processGEANT4(doc, filename):
     print('process GEANT4 Materials : '+filename)
@@ -2294,6 +2322,16 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
               type = opSurface.get('type')
               value = opSurface.get('value')
               GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
+              for prop in opSurface.findall('property'):
+                  name = prop.get('name')
+                  print(f'Property Name {name}')
+                  ref  = prop.get('ref')
+                  print(f'Property Ref {ref}')
+                  surfaceObj.addProperty("App::PropertyString", "propName", \
+                         "Property Name","Property").propName = name
+                  surfaceObj.addProperty("App::PropertyString", "propRef", \
+                         "Property Ref","Property").propRef = ref
+
 
     #Do not set in Doc, export from Part with SkinSurf
     #skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
@@ -2335,7 +2373,7 @@ def processDefines(root, doc):
     GDMLShared.processExpression(doc)
 
 
-def processGDML(doc, filename, prompt, initFlg):
+def processGDML(doc, volDict, filename, prompt, initFlg):
     from FreeCAD import Base
     # Process GDML
 
@@ -2412,8 +2450,8 @@ def processGDML(doc, filename, prompt, initFlg):
 
     world = GDMLShared.getRef(setup, "world")
     part = doc.addObject("App::Part", world)
-    parseVolume(doc, part, world, phylvl, 3)
-    processSurfaces(doc, structure)
+    parseVolume(doc, volDict, part, world, phylvl, 3)
+    processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg is False:
         worldGDMLobj = part.OutList[1]
