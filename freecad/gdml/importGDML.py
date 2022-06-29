@@ -2211,7 +2211,7 @@ def setSkinSurface(doc, vol, surface):
     volObj.SkinSurface = surface
 
 def processSurfaces(doc, volDict, structure):
-    from .GDMLBorderSurface import createBorderSurfObject
+    from .GDMLObjects import GDMLbordersurface
 
     # find all ???
     print('Process Surfaces')
@@ -2229,18 +2229,17 @@ def processSurfaces(doc, volDict, structure):
     for borderSurf in structure.findall('bordersurface'):
         if borderSurf is not None :
            name = borderSurf.get('name')
-           property = borderSurf.get('surfaceproperty')
+           surface = borderSurf.get('surfaceproperty')
            for i, pv in enumerate(borderSurf.findall('physvolref')):
                if pv is not None:
                   surfacePhysVols.append(pv.get('ref'))
                   print(f"{i} : {pv.get('ref')}")
            print(surfacePhysVols)
            print(volDict)
-           #createBorderSurfObject(VolDict[surfacePhysVols[0]], \
-           #                       VolDict[surfacePhysVols[1]])
-           v0 = volDict[surfacePhysVols[0]]
-           v1 = volDict[surfacePhysVols[1]]
-           createBorderSurfObject(v0, v1, property)
+           pv1 = volDict[surfacePhysVols[0]]
+           pv2 = volDict[surfacePhysVols[1]]
+           obj = doc.addObject("App::FeaturePython",name)
+           GDMLbordersurface(obj, name, surface, pv1.Name, pv2.Name)
 
 
 def processGEANT4(doc, filename):
@@ -2319,6 +2318,7 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
               surfaceObj = newGroupPython(surfaceGrp, name)
               model = opSurface.get('model')
               finish = opSurface.get('finish')
+              print(f'scanned finish : {finish}')
               type = opSurface.get('type')
               value = opSurface.get('value')
               GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
@@ -2327,11 +2327,9 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
                   print(f'Property Name {name}')
                   ref  = prop.get('ref')
                   print(f'Property Ref {ref}')
-                  surfaceObj.addProperty("App::PropertyString", "propName", \
-                         "Property Name","Property").propName = name
-                  surfaceObj.addProperty("App::PropertyString", "propRef", \
-                         "Property Ref","Property").propRef = ref
-
+                  surfaceObj.addProperty("App::PropertyString", name, \
+                         "Properties","Property Name")
+                  setattr(surfaceObj, name, ref)
 
     #Do not set in Doc, export from Part with SkinSurf
     #skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")

@@ -60,7 +60,7 @@ from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
                         GDMLmaterial, GDMLfraction, \
                         GDMLcomposite, GDMLisotope, \
                         GDMLelement, GDMLconstant, GDMLvariable, \
-                        GDMLquantity
+                        GDMLquantity, GDMLbordersurface
 
 from . import GDMLShared
 
@@ -947,16 +947,28 @@ def processMatrix(obj):
     ET.SubElement(define, 'matrix', {'name': obj.Name, 'coldim': str(obj.coldim),
                                        'values': obj.values})
 
+def cleanFinish(finish):
+    if finish == 'polished | polished':
+       return 'polished'
+    else:
+       return finish.replace(' | ','')
+
 def processSurfaces(obj):
     global solids
     print(solids)
     print('Add opticalsurface')
     print(str(solids))
-    op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, 'model': obj.model, \
+    op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
+                      'model': obj.model, \
                       'finish': obj.finish, 'type': obj.type, \
                       'value': str(obj.value)})
     if hasattr(obj,'propName') and hasattr(obj,'propRef'):
        ET.SubElement(op, 'property', {'name': obj.propName, 'ref': obj.propRef})
+    finish = cleanFinish(obj.finish)
+    ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
+                      'model': obj.model, \
+                      'finish': finish, 'type': obj.type, \
+                      'value': str(obj.value)}) 
 
 def processSkinSurfaces(obj):
     # Ignore create from Parts with SkinSurface
@@ -966,6 +978,22 @@ def processSkinSurfaces(obj):
     #                         'surfaceproperty' : obj.SkinSurface, \
     return
 
+
+def processBorderSurfaces():
+    print('Export Border Surfaces')
+    doc = FreeCAD.ActiveDocument
+    for obj in doc.Objects:
+        if obj.TypeId == "App::FeaturePython":
+           print(f'TypeId {obj.TypeId} Name {obj.Name}')
+           #print(dir(obj))
+           #print(obj.Proxy)
+           if isinstance(obj.Proxy, GDMLbordersurface):
+              print('Border Surface')
+              borderSurface = ET.SubElement(structure,'bordersurface', \
+                    {'name': obj.Name, 'surfaceproperty' : obj.Surface})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV1})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV2})
+                   
  
 def processOpticals():
     print('Process Opticals')
@@ -1720,6 +1748,7 @@ def exportWorldVol(vol, fileExt):
         xmlVol = insertXMLassembly(vol.Label)
         processAssembly(vol, xmlVol, xmlParent, parentName)
 
+    processBorderSurfaces()
 
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem):
     # gdml is a global
@@ -3155,6 +3184,17 @@ class GDML2dVertexExporter(GDMLSolidExporter):
     def export(self):
         ET.SubElement(solids, 'twoDimVertex', {'x': self.obj.x,
                                                'y': self.obj.y})
+
+class GDMLborderSurfaceExporter(GDMLSolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def export(self):
+        borderSurface = ET.SubElement(structure, 'bordersurface',
+                               {'name': self.obj.Name,
+                                    'surfaceproperty': self.obj.surface })
+        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv1})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv2})
 
 
 class MultiFuseExporter(SolidExporter):

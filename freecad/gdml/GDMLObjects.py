@@ -4105,76 +4105,140 @@ class GDMLmatrix(GDMLcommon):
         self.Object = obj
 
 class GDMLopticalsurface(GDMLcommon):
-    def __init__(self, obj, name, model, finish, type, value):
-        super().__init__(obj)
-        obj.addProperty("App::PropertyEnumeration", 'model', 'GDMLoptical' \
-                        "model")
-        obj.model = [
+   def __init__(self, obj, name, model, finish, type, value):
+       super().__init__(obj)
+       print(f'passed finish {finish} type {type}')
+       obj.addProperty("App::PropertyEnumeration", 'model', 'GDMLoptical' \
+                       "model")
+       obj.model = [
                 'glisur',   # original GEANT3 model \
                 'unified',  # UNIFIED model  \
                 'LUT',      # Look-Up-Table model (LBNL model) \
                 'DAVIS',    # DAVIS model \
                 'dichroic', # dichroic filter \
                 ]
-        obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical' \
+       obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical' \
                         "finish")
-        obj.finish = [
-             'polished','ground','polishedlumirrorair', \
-             'polishedair','polishedtefonair','polishedtioair', \
-             'polishedtyvekair','poishedvm2000air', \
-             'polishedvm2000glue', 'etchedlumirrorair' \
-             'etchedlumirrorglue','etchedair', \
-             'etchedteflonair','etchedtioair', \
-             'etchedtyvekair','etchedvm2000air', \
-             'etchedvm2000glue', 'groundlumirrorair', \
-             'groundlumirrorglue','groundair', \
-             'groundteflonair', 'groundtioair', \
-             'groundtyvekair','groundvm2000air' \
-             'groundvm2000glue', \
-             'Rough_LUT',              # rough surface \
-             'RoughTeflon_LUT',        # rough surface wrapped in Teflon tape \
-             'RoughESR_LUT',           # rough surface wrapped with ESR \
-             'RoughESRGrease_LUT',     # rough surface wrapped with ESR \
-                                       # and coupled with optical grease
-             'Polished_LUT',           # polished surface \
-             'PolishedTeflon_LUT',     # polished surface wrapped in Teflon tape \
-             'PolishedESR_LUT',        # polished surface wrapped with ESR \
-             'PolishedESRGrease_LUT',  # polished surface wrapped with ESR \
-                                       # and coupled with optical grease
-             'Detector_LUT'            # polished surface with optical grease
+       obj.finish = [
+          'polished | polished',     # smooth perfectly polished surface
+          'polished | frontpainted', # smooth top-layer (front) paint
+          'polished | backpainted',  # same is 'polished' but with a back-paint
+                                  # meltmount
+          'polished | air',       # mechanically polished surface
+          'polished | teflonair', # mechanically polished surface, with teflon
+          'polished | tioair',    # mechanically polished surface, with tio paint
+          'polished | tyvekair',  #  mechanically polished surface, with tyvek
+          'polished | vm2000air', # mechanically polished surface, with esr film
+          'polished | vm2000glue', # mechanically polished surface, with esr film &
+          #// for LBNL LUT model
+          'polished | lumirrorair',   # mechanically polished surface, with lumirror
+          'polished | lumirrorglue',  # mechanically polished surface, with lumirror &
+                                   # meltmount
+          'etched | lumirrorair',  # chemically etched surface, with lumirror
+          'etched | lumirrorglue', # chemically etched surface, with lumirror & meltmount
+          'etched | air',           # chemically etched surface
+          'etched | teflonair',     # chemically etched surface, with teflon
+          'etched | tioair',        # chemically etched surface, with tio paint
+          'etched | tyvekair',      # chemically etched surface, with tyvek
+          'etched | vm2000air',     # chemically etched surface, with esr film
+          'etched | vm2000glue',    # chemically etched surface, with esr film & meltmount
+          'ground | ground',              #// rough surface
+          'ground | frontpainted',  # rough top-layer (front) paint
+          'ground | backpainted',   # same as 'ground' but with a back-paint
 
-             ]          
-        obj.finish = 0
-        obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
-                        "type")
-        obj.type = ['dielectric_dielectric', 'dielectric_metal']
-        obj.type = 0
-        obj.addProperty("App::PropertyFloat", 'value', 'GDMLoptical').value = value
-        obj.Proxy = self
-        self.Object = obj
+          'ground | lumirrorair',   # rough-cut surface, with lumirror
+          'ground | lumirrorglue',  # rough-cut surface, with lumirror & meltmount
+          'ground | air',           # rough-cut surface
+          'ground | teflonair',     # rough-cut surface, with teflon
+          'ground | tioair',        # rough-cut surface, with tio paint
+          'ground | tyvekair',      # rough-cut surface, with tyvek
+
+          'ground | vm2000air',     # rough-cut surface, with esr film
+          'ground | vm2000glue',    # rough-cut surface, with esr film & meltmount
+          'Rough_LUT',              # rough surface \
+          'RoughTeflon_LUT',        # rough surface wrapped in Teflon tape \
+          'RoughESR_LUT',           # rough surface wrapped with ESR \
+          'RoughESRGrease_LUT',     # rough surface wrapped with ESR \
+                                    # and coupled with optical grease
+          'Polished_LUT',           # polished surface \
+          'PolishedTeflon_LUT',     # polished surface wrapped in Teflon tape \
+          'PolishedESR_LUT',        # polished surface wrapped with ESR \
+          'PolishedESRGrease_LUT',  # polished surface wrapped with ESR \
+                                    # and coupled with optical grease
+          'Detector_LUT',           # polished surface with optical grease
+          'extended | 0',
+          'extended | 1',
+          'extended | 2',
+          'extended | 3',
+          'extended | 4',
+          'extended | 5',
+          'extended | 6',
+          'extended | 7',
+          'extended | 8',
+          'extended | 9'
+          ]
+       print(f'finish {finish}')
+       if finish in '0123456789':
+          obj.finish = 'extended | '+finish
+       elif finish == 'polished':
+          obj.finish = 'polished | polished'
+       elif finish == 'ground':
+          obj.finish = 'ground | ground'
+       else:
+          finish.replace('polished','polished |')
+          finish.replace('etched','etched |')
+          finish.replace('ground','ground |')
+          finish.replace('polished','polished |')
+          finish.replace('polished','polished |')
+          obj.finish = finish
+
+       obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical' \
+                       "type")
+       obj.type = ['dielectric_dielectric',
+          'dielectric_metal',
+          'extended | 0',
+          'extended | 1',
+          'extended | 2',
+          'extended | 3',
+          'extended | 4',
+          'extended | 5',
+          'extended | 6',
+          'extended | 7',
+          'extended | 8',
+          'extended | 9'
+          ]
+       if type in '0123456789':
+          obj.type = 'extended | '+type
+       else:
+          obj.type = type
+       obj.addProperty("App::PropertyFloat", 'value', 'GDMLoptical').value = value
+       obj.Proxy = self
+       self.Object = obj
 
 class GDMLskinsurface(GDMLcommon):
     def __init__(self, obj, name, property):
         super().__init__(obj)
-        obj.addProperty("App::PropertyString", 'property', 'GDMLskin' \
-                        "surfaceproperty").property = property
+        obj.addProperty("App::PropertyString", 'surface', 'GDMLskin' \
+                        "surface property").surface = surface
         obj.Proxy = self
         self.Object = obj
 
 # ??? need for GDMLcommon ???
 class GDMLbordersurface(GDMLcommon):
-    def __init__(self, obj, name, property, pv1, pv2):
+    def __init__(self, obj, name, surface, pv1, pv2):
         super().__init__(obj)
-        obj.addProperty("App::PropertyString", 'property', 'GDMLborder' \
-                        "surfaceproperty").property = property
-        obj.addProperty("App::PropertyString", 'pv1', 'GDMLborder' \
-                        "physvol pv1").pv1 = pv1
-        obj.setEditorMode('pv1', 2)
-        obj.addProperty("App::PropertyString", 'pv2', 'GDMLborder' \
-                        "physvol pv1").pv1 = pv2
-        obj.setEditorMode('pv2', 2)
+        print(f'pv1 : {pv1} pv2 : {pv2}')
+        obj.addProperty("App::PropertyString", 'Surface', 'GDMLborder' \
+                        "surface property").Surface = surface
+        obj.addProperty("App::PropertyString", 'PV1', 'GDMLborder' \
+                        "physvol PV1").PV1 = pv1
+        obj.setEditorMode('PV1', 1)
+        obj.addProperty("App::PropertyString", 'PV2', 'GDMLborder' \
+                        "physvol PV2").PV2 = pv2
+        obj.setEditorMode('PV2', 1)
         obj.Proxy = self
         self.Object = obj
+
 
 class ViewProviderExtension(GDMLcommon):
     def __init__(self, obj):
@@ -4316,4 +4380,5 @@ def makecSphere():
 def makeTube():
     a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLTube")
     GDMLTube(a)
-    ViewProvider(a.ViewObject)
+
+    
