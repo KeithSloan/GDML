@@ -1,0 +1,8 @@
+<xml>
+ <solids>
+  <opticalsurface name="surf1" model="glisur" finish="polished" type="dielectric_dielectric" value="1.0"/>
+  <opticalsurface name="surf2" model="glisur" finish="polished" type="dielectric_metal" value="1.0">
+    <property name="REFLECTIVITY" ref="REFLECTIVITY" />
+  </opticalsurface>
+ </solids>
+</xml>

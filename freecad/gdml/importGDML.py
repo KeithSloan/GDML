@@ -81,6 +81,7 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     global doc
+    volDict = {}
     print('Open : '+filename)
     docName = os.path.splitext(os.path.basename(filename))[0]
     print('path : '+filename)
@@ -89,7 +90,7 @@ def open(filename):
         #profiler = cProfile.Profile()
         #profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, filename, True, False)
+        processGDML(doc, volDict, filename, True, False)
         #profiler.disable()
         #stats = pstats.Stats(profiler).sort_stats('cumtime')
         #stats.print_stats()
@@ -112,13 +113,14 @@ def insert(filename, docname):
     "called when freecad imports a file"
     print('Insert filename : '+filename+' docname : '+docname)
     global doc
+    volDict = {}
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc, filename, True, False)
+        processGDML(doc, volDict, filename, True, False)
 
     elif filename.lower().endswith('.xml'):
         processXML(doc, filename)
@@ -1546,8 +1548,19 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name)
     return solid
 
+def addSurfList(doc, part):
+    from .GDMLObjects import getSurfsListFromGroup
 
-def parsePhysVol(volAsmFlg,  parent, physVol, phylvl, displayMode):
+    #print("Add Surflist : "+part.Name)
+    surfLst = getSurfsListFromGroup(doc)
+    #print(surfLst)
+    if surfLst is not None :
+       part.addProperty("App::PropertyEnumeration","SkinSurface", \
+                                "GDML","SkinSurface")
+       part.SkinSurface = surfLst
+       part.SkinSurface = 0
+
+def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode):
     # if volAsmFlag == True : Volume
     # if volAsmFlag == False : Assembly
     # physvol is xml entity
@@ -1566,13 +1579,18 @@ def parsePhysVol(volAsmFlg,  parent, physVol, phylvl, displayMode):
         # lhcbvelo has duplicate with no copynumber
         # Test if exists
         namedObj = FreeCAD.ActiveDocument.getObject(volRef)
+        PVName = physVol.get('name')
         if namedObj is None:
             part = parent.newObject("App::Part", volRef)
-            expandVolume(part, volRef, phylvl, displayMode)
+            #print(f'Physvol : {PVName} : Vol:Part {part.Name}')
+            volDict[PVName] = part
+            addSurfList(doc, part)
+            expandVolume(doc, volDict, part, volRef, phylvl, displayMode)
 
         else:  # Object exists create a Linked Object
             GDMLShared.trace('====> Create Link to : '+volRef)
             part = parent.newObject('App::Link', volRef)
+            volDict[PVName] = part
             part.LinkedObject = namedObj
             if part.Name is not volRef:
                 ln = len(volRef)
@@ -1626,9 +1644,9 @@ def getColour(colRef):
 
 # ParseVolume name - structure is global
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(parent, name, phylvl, displayMode):
+def parseVolume(doc, volDict, parent, name, phylvl, displayMode):
     GDMLShared.trace("ParseVolume : "+name)
-    expandVolume(parent, name, phylvl, displayMode)
+    expandVolume(doc, volDict, parent, name, phylvl, displayMode)
 
 
 def processParamvol(vol, parent, paramvol):
@@ -1760,10 +1778,8 @@ def processParamvol(vol, parent, paramvol):
             print(f'GDML does not provide a parameterized {solid_type}_dimensions')
 
 
-
-def processVol(vol, parent, phylvl, displayMode):
+def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
-    global doc
     from .GDMLObjects import checkMaterial
     colour = None
     for aux in vol.findall('auxiliary'):  # could be more than one auxiliary
@@ -1862,7 +1878,7 @@ def processVol(vol, parent, phylvl, displayMode):
             # if phylvl >= 0 :
             #   phylvl += 1
             # If negative always parse otherwise increase level
-            part = parsePhysVol(True, parent, pv, phylvl, displayMode)
+            part = parsePhysVol(doc, volDict, True, parent, pv, phylvl, displayMode)
 
         else:  # Just Add to structure
             volRef = GDMLShared.getRef(pv, "volumeref")
@@ -1886,6 +1902,7 @@ def processVol(vol, parent, phylvl, displayMode):
                 # Not already defined so create
                 # print('Is new : '+volRef)
                 part = parent.newObject("App::Part", volRef)
+                addSurfList(doc, part)
                 part.Label = "NOT_Expanded_"+part.Name
             part.addProperty("App::PropertyString", "VolRef", "GDML",
                              "volref name").VolRef = volRef
@@ -1906,14 +1923,14 @@ def processVol(vol, parent, phylvl, displayMode):
         processParamvol(vol, parentpart, paramvol)
 
 
-def expandVolume(parent, name, phylvl, displayMode):
+def expandVolume(doc, volDict, parent, name, phylvl, displayMode):
     import FreeCAD as App
     # also used in ScanCommand
     # GDMLShared.setTrace(True)
     GDMLShared.trace("expandVolume : "+name)
     vol = structure.find("volume[@name='%s']" % name)
     if vol is not None:  # If not volume test for assembly
-        processVol(vol, parent, phylvl, displayMode)
+        processVol(doc, vol, volDict, parent, phylvl, displayMode)
 
     else:
         asm = structure.find("assembly[@name='%s']" % name)
@@ -1921,7 +1938,7 @@ def expandVolume(parent, name, phylvl, displayMode):
             print("Assembly : "+name)
             for pv in asm.findall("physvol"):
                 # obj = parent.newObject("App::Part", name)
-                parsePhysVol(False, parent, pv, phylvl, displayMode)
+                parsePhysVol(doc, volDict, False, parent, pv, phylvl, displayMode)
         else:
             print(name+' is Not a defined Volume or Assembly')
 
@@ -1990,10 +2007,10 @@ def processElements(elementsGrp, mats_xml):
         if(len(element.findall('fraction')) > 0):
             for fraction in element.findall('fraction'):
                 ref = fraction.get('ref')
-                print(f'ref {ref}')
+                #print(f'ref {ref}')
                 # n = float(fraction.get('n'))
                 n = GDMLShared.getVal(fraction, 'n')
-                print(f'n {n}')
+                #print(f'n {n}')
                 fractObj = newGroupPython(elementObj, ref)
                 GDMLfraction(fractObj, ref, n)
                 fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
@@ -2125,8 +2142,8 @@ def setupEtree(filename):
         FreeCAD.Console.PrintMessage("running with lxml.etree \n")
         parser = etree.XMLParser(resolve_entities=True)
         root = etree.parse(filename,  parser=parser)
-        # print('error log')
-        # print(parser.error_log)
+        #print('error log')
+        #print(parser.error_log)
 
     except ImportError:
         try:
@@ -2154,7 +2171,7 @@ def processXML(doc, filename):
     processMaterialsDocSet(doc, root)
 
 
-def processPhysVolFile(doc, parent, fname):
+def processPhysVolFile(doc, volDict, parent, fname):
     global pathName
     print('Process physvol file import')
     print(pathName)
@@ -2183,7 +2200,46 @@ def processPhysVolFile(doc, parent, fname):
         if vName is not None:
             part = parent.newObject("App::Part", vName)
             # expandVolume(None,vName,-1,1)
-            processVol(vol, part, -1, 1)
+            processVol(doc, vol, volDict, part, -1, 1)
+
+    processSurfaces(doc, volDict, structure)
+
+
+def setSkinSurface(doc, vol, surface):
+    print('set SkinSurface : {vol} : {surface}')
+    volObj = doc.getObject(vol)
+    volObj.SkinSurface = surface
+
+def processSurfaces(doc, volDict, structure):
+    from .GDMLObjects import GDMLbordersurface
+
+    # find all ???
+    print('Process Surfaces')
+    print('skinsurface')
+    skinsurface = structure.find('skinsurface')
+    if skinsurface is not None:
+       surface = skinsurface.get('surfaceproperty')
+       volRef = GDMLShared.getRef(skinsurface, "volumeref")
+       print(f'Vol {volRef} surface {surface}')
+       setSkinSurface(doc, volRef, surface)
+
+    print('bordersurface')
+    #print(volDict)
+    surfacePhysVols = []
+    for borderSurf in structure.findall('bordersurface'):
+        if borderSurf is not None :
+           name = borderSurf.get('name')
+           surface = borderSurf.get('surfaceproperty')
+           for i, pv in enumerate(borderSurf.findall('physvolref')):
+               if pv is not None:
+                  surfacePhysVols.append(pv.get('ref'))
+                  #print(f"{i} : {pv.get('ref')}")
+           #print(surfacePhysVols)
+           #print(volDict)
+           pv1 = volDict[surfacePhysVols[0]]
+           pv2 = volDict[surfacePhysVols[1]]
+           obj = doc.addObject("App::FeaturePython",name)
+           GDMLbordersurface(obj, name, surface, pv1.Name, pv2.Name)
 
 
 def processGEANT4(doc, filename):
@@ -2199,8 +2255,13 @@ def processGEANT4(doc, filename):
 
 
 def processMaterialsDocSet(doc,  root):
-    print('Process Materials')
+    print('Process Materials DocSet')
+    define_xml = root.find('define')
+    print(define_xml)
     mats_xml = root.find('materials')
+    mats_xml = root.find('materials')
+    solids_xml = root.find('solids')
+    struct_xml = root.find('structure')
     if mats_xml is not None:
         try:
             isotopesGrp = FreeCAD.ActiveDocument.Isotopes
@@ -2220,7 +2281,64 @@ def processMaterialsDocSet(doc,  root):
             materialsGrp = doc.addObject("App::DocumentObjectGroupPython",
                                          "Materials")
         processMaterials(materialsGrp, mats_xml)
+    # Process Opticals
+    try:
+        opticalsGrp = FreeCAD.ActiveDocument.Opticals
+    except:
+        opticalsGrp = doc.addObject("App::DocumentObjectGroupPython",
+                                         "Opticals")
+    processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml)
 
+
+def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
+    from .GDMLObjects import GDMLmatrix, GDMLopticalsurface, GDMLskinsurface
+    print('Process - Opticals')
+    print(define_xml)
+    if define_xml is not None:
+       matrixGrp = doc.getObject("Matrix")
+       if matrixGrp == None :
+          matrixGrp = newGroupPython(opticalsGrp, "Matrix")
+       print('Find all Matrix')
+       for matrix in define_xml.findall('matrix'):
+           name = matrix.get('name')
+           print(name)
+           if name is not None:
+              matrixObj = newGroupPython(matrixGrp, name)
+              coldim = matrix.get('coldim')
+              values = matrix.get('values')
+              GDMLmatrix(matrixObj, name, int(coldim), values)
+
+    if solids_xml is not None:
+       surfaceGrp = doc.getObject("Surfaces")
+       if surfaceGrp == None :
+          surfaceGrp = newGroupPython(opticalsGrp, "Surfaces")
+       for opSurface in solids_xml.findall('opticalsurface'):
+           name = opSurface.get('name')
+           if name is not None:
+              surfaceObj = newGroupPython(surfaceGrp, name)
+              model = opSurface.get('model')
+              finish = opSurface.get('finish')
+              print(f'scanned finish : {finish}')
+              type = opSurface.get('type')
+              value = opSurface.get('value')
+              GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
+              for prop in opSurface.findall('property'):
+                  name = prop.get('name')
+                  print(f'Property Name {name}')
+                  ref  = prop.get('ref')
+                  print(f'Property Ref {ref}')
+                  surfaceObj.addProperty("App::PropertyString", name, \
+                         "Properties","Property Name")
+                  setattr(surfaceObj, name, ref)
+
+    #Do not set in Doc, export from Part with SkinSurf
+    #skinGrp = newGroupPython(opticalsGrp, "SkinSurfaces")
+    #for skinSurface in struct_xml.findall('skinsurface'):
+    #    name = skinSurface.get('name')
+    #    if name is not None:
+    #       skinSurfaceObj = newGroupPython(skinGrp, name)
+    #    prop = skinSurface.get('surfaceproperty')
+    #    GDMLskinsurface(skinSurfaceObj, name, prop)
 
 def processNewG4(materialsGrp, mats_xml):
     print('process new G4')
@@ -2253,7 +2371,7 @@ def processDefines(root, doc):
     GDMLShared.processExpression(doc)
 
 
-def processGDML(doc, filename, prompt, initFlg):
+def processGDML(doc, volDict, filename, prompt, initFlg):
     from FreeCAD import Base
     # Process GDML
 
@@ -2330,7 +2448,8 @@ def processGDML(doc, filename, prompt, initFlg):
 
     world = GDMLShared.getRef(setup, "world")
     part = doc.addObject("App::Part", world)
-    parseVolume(part, world, phylvl, 3)
+    parseVolume(doc, volDict, part, world, phylvl, 3)
+    processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg is False:
         worldGDMLobj = part.OutList[1]
