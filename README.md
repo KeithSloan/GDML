@@ -34,13 +34,7 @@ so if you want to go back you can use this facility to select **master**
 
 ### Use with Realthunders LinkDaily branch
 
-* the GDML git branch called **link3**. Install it via:
-  1. Access your FreeCAD config directory (for example on Linux: `cd ~/.FreeCAD/Mod/GDML`)
-  2. `git fetch origin link3`
-  3. `git checkout link3`
-  4. Restart FreeCAD
-
-You should also see a dramatic improvement especially with LinkDaily in import times with these builds.
+* You should also see a dramatic improvement especially with LinkDaily in import times with these builds.
 
 #### Enhanced Rendering (on Realthunder's LinkDaily branch)
 There is also the option to use enhanced rendering which helps with complex models. To enable enhanced rendering in LinkDaily:
@@ -50,17 +44,12 @@ There is also the option to use enhanced rendering which helps with complex mode
 If you like what you see you might like to thank Lei Zhang by contributing to his [FreeCAD Patreon](https://www.patreon.com/thundereal/posts)
 
 
-**Changes to Placement (GDML Position & Rotation)**
+** Changes to Placement (GDML Position & Rotation) **
 
-In order to support copies of GDML Volumes the following changes have been made
+Export of GDML objects the Position and Rotation are now a combination of the Placement of the FreeCAD App::Part (GDML Volume)
+and tghe Placement of the GDMLObject
 
-  * As per GDML one GDML Volume(FreeCAD Part) contains one Solid
-  * GDML position and Rotation as defined in PhysVol are now transferred to the associated FreeCAD Part
-  * The only time you can change a GDML Objects Placement is when it is part of a Boolean
-  * Copies are implemented as App::Links i.e. Link to Volume being copied.
-  * Copies of Volumes require function only available since FreeCAD 0.19
-
-**New experimental export for GEMC**
+** New experimental export for GEMC**
 
 ## Installation 
 
@@ -206,8 +195,9 @@ will create
 * Converting STEP files to GDML [Convert Step to GDML](https://github.com/KeithSloan/GDML/wiki/Step2Tessellate)
 * Creating Tessellated Objects from FreeCAD Part Design Objects [Tessellate Part Design](https://github.com/KeithSloan/GDML/wiki/Tessellating-Part-Design-Objects)
 * Creating a GDML object from Sketches, these can be created by
-  * [Extruding a sketch](https://github.com/KeithSloan/GDML/wiki#extruded-sketches))
+  * [Extruding a sketch](https://github.com/KeithSloan/GDML/wiki#extruded-sketches)
   * [Revolving a sketch](https://github.com/KeithSloan/GDML/wiki#revolved-sketches)
+* Details of support for GDML [Optical properties](https://github.com/KeithSloan/GDML/wiki/Optical-Support)  
 
 
 
@@ -577,6 +567,7 @@ Based on `gdml.xsd`
 
   * Louis Helary
   * Emmanuel Delage
+  * Ami Hashemi
   * Wouter Deconnick
   * Hilden Timo
   * Atanu Quant
