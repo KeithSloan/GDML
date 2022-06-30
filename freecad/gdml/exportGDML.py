@@ -948,13 +948,16 @@ def processMatrix(obj):
                                        'values': obj.values})
 
 def cleanFinish(finish):
+    print(f'finish {finish}')
     if finish == 'polished | polished':
        return 'polished'
     else:
        ext = 'extended | '
        if ext not in finish:
+          #print('Does not contain')
           return finish.replace(' | ','')
        else:
+          #print(f"Replace {finish.replace(ext,'')}")
           return finish.replace(ext,'')
          
 
@@ -974,7 +977,7 @@ def processOpticalSurface(obj):
     type = cleanExtended(obj.type)
     op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
                       'model': obj.model, \
-                      'finish': obj.finish, 'type': obj.type, \
+                      'finish': finish, 'type': type, \
                       'value': str(obj.value)})
     for prop in obj.PropertiesList:
         if obj.getGroupOfProperty(prop) == 'Properties':
@@ -2004,6 +2007,21 @@ def exportMaterials(first, filename):
         print('File extension must be xml')
 
 
+def exportOpticals(first, filename):
+    if filename.lower().endswith('.xml'):
+        print('Export Opticals to XML file : '+filename)
+        xml = ET.Element('xml')
+        global define
+        define = ET.SubElement(xml, 'define')
+        global solids
+        solids = ET.SubElement(xml, 'solids')
+        processOpticals()
+        indent(xml)
+        ET.ElementTree(xml).write(filename)
+    else:
+        print('File extension must be xml')
+
+
 def create_gcard(path, flag):
     basename = os.path.basename(path)
     print('Create gcard : '+basename)
@@ -2071,9 +2089,9 @@ def export(exportList, filepath):
     if fileExt.lower() == '.gdml':
         if first.TypeId == "App::Part":
             exportGDMLworld(first, filepath, fileExt)
-
-        elif first.Label == "Materials":
-            exportMaterials(first, filepath)
+        # 
+        #elif first.Label == "Materials":
+        #    exportMaterials(first, filepath)
 
         else:
             print("Needs to be a Part for export")
@@ -2083,10 +2101,17 @@ def export(exportList, filepath):
                                        'Press OK')
 
     elif fileExt.lower() == '.xml':
-        print('Export XML structure & solids')
-        exportGDML(first, filepath, '.xml')
+        if first.Label == "Materials":
+            exportMaterials(first, filepath)
+        
+        elif first.Label == "Opticals":
+            exportOpticals(first, filepath)
 
-    if fileExt == '.gemc':
+        else:
+            print('Export XML structure & solids')
+            exportGDML(first, filepath, '.xml')
+
+    elif fileExt == '.gemc':
         exportGEMC(first, path, False)
 
     elif fileExt == '.GEMC':

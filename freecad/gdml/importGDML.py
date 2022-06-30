@@ -1551,9 +1551,9 @@ def getVolSolid(name):
 def addSurfList(doc, part):
     from .GDMLObjects import getSurfsListFromGroup
 
-    print("Add Surflist : "+part.Name)
+    #print("Add Surflist : "+part.Name)
     surfLst = getSurfsListFromGroup(doc)
-    print(surfLst)
+    #print(surfLst)
     if surfLst is not None :
        part.addProperty("App::PropertyEnumeration","SkinSurface", \
                                 "GDML","SkinSurface")
@@ -1582,7 +1582,7 @@ def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode)
         PVName = physVol.get('name')
         if namedObj is None:
             part = parent.newObject("App::Part", volRef)
-            print(f'Physvol : {PVName} : Vol:Part {part.Name}')
+            #print(f'Physvol : {PVName} : Vol:Part {part.Name}')
             volDict[PVName] = part
             addSurfList(doc, part)
             expandVolume(doc, volDict, part, volRef, phylvl, displayMode)
@@ -2007,10 +2007,10 @@ def processElements(elementsGrp, mats_xml):
         if(len(element.findall('fraction')) > 0):
             for fraction in element.findall('fraction'):
                 ref = fraction.get('ref')
-                print(f'ref {ref}')
+                #print(f'ref {ref}')
                 # n = float(fraction.get('n'))
                 n = GDMLShared.getVal(fraction, 'n')
-                print(f'n {n}')
+                #print(f'n {n}')
                 fractObj = newGroupPython(elementObj, ref)
                 GDMLfraction(fractObj, ref, n)
                 fractObj.Label = ref+' : ' + '{0:0.3f}'.format(n)
