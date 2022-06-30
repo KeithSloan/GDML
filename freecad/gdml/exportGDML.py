@@ -951,24 +951,35 @@ def cleanFinish(finish):
     if finish == 'polished | polished':
        return 'polished'
     else:
-       return finish.replace(' | ','')
+       ext = 'extended | '
+       if ext not in finish:
+          return finish.replace(' | ','')
+       else:
+          return finish.replace(ext,'')
+         
 
-def processSurfaces(obj):
+def cleanExtended(var):
+    ext = 'extended | '
+    if ext not in var:
+       return var
+    else:
+       return var.replace(ext,'')
+
+def processOpticalSurface(obj):
     global solids
-    print(solids)
+    #print(solids)
     print('Add opticalsurface')
     print(str(solids))
+    finish = cleanFinish(obj.finish)
+    type = cleanExtended(obj.type)
     op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
                       'model': obj.model, \
                       'finish': obj.finish, 'type': obj.type, \
                       'value': str(obj.value)})
-    if hasattr(obj,'propName') and hasattr(obj,'propRef'):
-       ET.SubElement(op, 'property', {'name': obj.propName, 'ref': obj.propRef})
-    finish = cleanFinish(obj.finish)
-    ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
-                      'model': obj.model, \
-                      'finish': finish, 'type': obj.type, \
-                      'value': str(obj.value)}) 
+    for prop in obj.PropertiesList:
+        if obj.getGroupOfProperty(prop) == 'Properties':
+           ET.SubElement(op, 'property', {'name': prop, \
+                   'ref': getattr(obj, prop)})
 
 def processSkinSurfaces(obj):
     # Ignore create from Parts with SkinSurface
@@ -1012,7 +1023,7 @@ def processOpticals():
                  print("Surfaces")
                  print(obj.Group)
                  for s in obj.Group:
-                     processSurfaces(s)
+                     processOpticalSurface(s)
                  break
 
               if case("SkinSurfaces"):

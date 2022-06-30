@@ -2224,7 +2224,7 @@ def processSurfaces(doc, volDict, structure):
        setSkinSurface(doc, volRef, surface)
 
     print('bordersurface')
-    print(volDict)
+    #print(volDict)
     surfacePhysVols = []
     for borderSurf in structure.findall('bordersurface'):
         if borderSurf is not None :
@@ -2233,9 +2233,9 @@ def processSurfaces(doc, volDict, structure):
            for i, pv in enumerate(borderSurf.findall('physvolref')):
                if pv is not None:
                   surfacePhysVols.append(pv.get('ref'))
-                  print(f"{i} : {pv.get('ref')}")
-           print(surfacePhysVols)
-           print(volDict)
+                  #print(f"{i} : {pv.get('ref')}")
+           #print(surfacePhysVols)
+           #print(volDict)
            pv1 = volDict[surfacePhysVols[0]]
            pv2 = volDict[surfacePhysVols[1]]
            obj = doc.addObject("App::FeaturePython",name)

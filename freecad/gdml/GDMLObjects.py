@@ -4227,7 +4227,7 @@ class GDMLskinsurface(GDMLcommon):
 class GDMLbordersurface(GDMLcommon):
     def __init__(self, obj, name, surface, pv1, pv2):
         super().__init__(obj)
-        print(f'pv1 : {pv1} pv2 : {pv2}')
+        #print(f'pv1 : {pv1} pv2 : {pv2}')
         obj.addProperty("App::PropertyString", 'Surface', 'GDMLborder' \
                         "surface property").Surface = surface
         obj.addProperty("App::PropertyString", 'PV1', 'GDMLborder' \
