@@ -2250,8 +2250,11 @@ def processGEANT4(doc, filename):
     if materials is None:
         materials = doc.addObject("App::DocumentObjectGroupPython",
                                   "Materials")
-    geant4Grp = newGroupPython(materials, "Geant4")
-    processMaterialsG4(geant4Grp, root)
+    # Avoid duplicate Geant4 group - Palo import of GDML
+    geant4Grp = doc.getObject('Geant4')
+    if geant4Grp is None:
+       geant4Grp = newGroupPython(materials, "Geant4")
+       processMaterialsG4(geant4Grp, root)
 
 
 def processMaterialsDocSet(doc,  root):
