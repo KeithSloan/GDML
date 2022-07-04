@@ -317,41 +317,51 @@ class SetBorderSurfaceFeature:
 
         print('Add SetBorderSurface')
         sel = FreeCADGui.Selection.getSelectionEx()
-        print(len(sel))
+        #print(len(sel))
         if len(sel) == 3 :
            surfaceObj = None
            partList = []
            for s in sel:
                if hasattr(s,'Object'):
-                  print(s.Object)
+                  #print(s.Object)
                   obj = s.Object
-                  print(obj.TypeId)
+                  #print(obj.TypeId)
                   if obj.TypeId == "App::Part":
-                     print('Part Added')
+                     #print('Part Added')
                      partList.append(obj)
 
                   elif obj.TypeId == "App::Link":
                      if obj.LinkedObject.TypeId == "App::Part":
-                        print('Linked Part Added')
+                        #print('Linked Part Added')
                         partList.append(obj)
                         
                   elif obj.TypeId == "App::DocumentObjectGroupPython":
-                     print(dir(obj))
+                     #print(dir(obj))
                      if hasattr(obj,'InList'):
-                        print(obj.InList)
+                        #print(obj.InList)
                         parent = obj.InList[0]
-                        print(parent.Name)
+                        #print(parent.Name)
                         if parent.Name == "Surfaces":
                            surfaceObj = obj
 
            doc = FreeCAD.ActiveDocument
-           print(f'Surface Obj {surfaceObj}')
-           print(f'Part List {partList}')
+           print(f'Surface Obj {surfaceObj.Name}')
+           #print(f'Part List {partList}')
            if surfaceObj is not None and len(partList) == 2:
               print('Action set Border Surface')
-              if self.checkCommonFace(partList) == True:
-                 print('Yes Common Face')
-                 self.SetBorderSurface(doc, surfaceObj, partList)
+              commonFaceFlag, commonFaces = self.checkCommonFace(partList)
+              if commonFaceFlag == True:
+                 if len(commonFaces) == 1:
+                    print('Yes Common Face')
+                    self.SetBorderSurface(doc, surfaceObj, partList)
+  
+                 else:
+                    print('More than one Common Face - Error?')
+                    print('commonFace indexs {commonFaces}')
+                    dialog = noCommonFacePrompt()
+                    dialog.exec_()
+                    if dialog.retStatus == 1:
+                       self.SetBorderSurface(doc, surfaceObj, partList)
 
               else:
                  print('No Valid common Face')
@@ -387,29 +397,22 @@ class SetBorderSurfaceFeature:
 
     def commonFace(self, shape0, shape1):
         print(f'Common Face : {len(shape0.Faces)} : {len(shape1.Faces)}')
-        zero = FreeCAD.Vector(0.0, 0.0, 0.0)
+        tolerence = 1e-7
+        commonList = []
         for i, face0 in enumerate(shape0.Faces):
             for j, face1 in enumerate(shape1.Faces):
-               print('dir surface')
-               #print(face0.isDerivedFrom())
-               print(dir(face0.Surface))
-               print(face0.Surface.TypeId)
-               print(face0.Surface.NbUKnots)
-               print(face0.Surface.NbUPoles)
-               print(face0.Surface.MaxDegree)
-               print(isinstance(face0.Surface, Part.Plane))
-               print(isinstance(face1.Surface, Part.Plane))
-               if isinstance(face0.Surface, Part.Plane) and \
-                  isinstance(face1.Surface, Part.Plane):
-                  print('Both Flat')
-               #if face0.isCoplanar(face1):
-               #   print(f'Coplanar shape0 {i} shape1 {j}')
-               #print(f'COM -  face0 {face0.CenterOfMass} face1 {face1.CenterOfMass}') 
-               d = face0.CenterOfMass - face1.CenterOfMass
-               print(f'Distance : {d}')
-               if d == zero:
-                  return True 
-        return False             
+                comShape = face0.common(face1, tolerence)
+                if len(comShape.Faces) > 0:
+                   # Append Tuple
+                   commonList.append((i, j))
+                   print(f'Common Face shape0 {i} shape1 {j}')
+        num = len(commonList)
+        print(f'{num} common Faces')
+        if num > 0:
+           return True, commonList
+        else:
+           return False, None
+
 
     def getGDMLObject(self, list):
         # need to make more robust check types etc
@@ -419,30 +422,27 @@ class SetBorderSurfaceFeature:
            return list[0]
            
     def adjustShape(self, part):
-        print("Adjust Shape")
-        print(part.Name)
-        print(part.OutList)
-        print(f'Placement {part.Placement.Base}')
-        # Save placement
+        #print("Adjust Shape")
+        #print(part.Name)
+        #print(part.OutList)
+        #print(f'Placement {part.Placement.Base}')
+        # Use Matrix rather than Placement in case rotated 
         #placement = part.Placement.Base
         matrix = part.Placement.toMatrix()
         if hasattr(part,'LinkedObject'):
-           print(f'Linked Object {part.LinkedObject}')
+           #print(f'Linked Object {part.LinkedObject}')
            part = part.getLinkedObject()
-           print(part.Name)
-           print(part.OutList)
-           print(f'Linked Placement {part.Placement.Base}')
+           #print(part.Name)
+           #print(part.OutList)
+           #print(f'Linked Placement {part.Placement.Base}')
         obj = self.getGDMLObject(part.OutList)
         obj.recompute()
         # Shape is immutable so have to copy
         # Realthunder recommends avoid deep copy
         shape = Part.Shape(obj.Shape)
-        print(f'Shape Valid {shape.isValid()}')
-        print(dir(shape))
-        #return shape
-        print(f'Placement {part.Placement.Base}')
-        # Use saved Placement in case of linked Object
-        #return shape.translate(placement)
+        #print(f'Shape Valid {shape.isValid()}')
+        #print(dir(shape))
+        # Use saved Matrix in case of linked Object
         return shape.transformGeometry(matrix)
 
     def IsActive(self):
@@ -737,42 +737,6 @@ class SetMaterialFeature:
                                          'Set Material'), 'ToolTip':
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetMaterial',
                                          'Set Material')}
-
-class SetBorderSurfaceFeature:
-
-    def Activated(self):
-        #from PySide import QtGui, QtCore
-
-        print('Add SetBorderSurface')
-        cnt = 0
-        sel = FreeCADGui.Selection.getSelectionEx()
-        # print(sel)
-        set = []
-        for s in sel:
-            # print(s)
-            # print(dir(s))
-            #if hasattr(s.Object, 'Shape'):
-            if s.Object.TypeId == 'App::Part':
-                cnt += 1
-                set.append(s)
-        if cnt == 2:
-           print('Create BorderSurface Object')
-        return
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is None:
-            return False
-        else:
-            return True
-
-    def GetResources(self):
-        return {'Pixmap': 'GDML_SetBorderSurface',
-                'MenuText':
-                QtCore.QT_TRANSLATE_NOOP('GDMLBorderSurface',
-                                         'BorderSurface'),
-                'ToolTip':
-                QtCore.QT_TRANSLATE_NOOP('GDMLBorderSurface',
-                                         'Set Border Surface')}
 
 
 class SetScaleFeature:
