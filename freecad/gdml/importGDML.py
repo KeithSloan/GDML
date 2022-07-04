@@ -81,6 +81,7 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     global doc
+    global volDict
     volDict = {}
     print('Open : '+filename)
     docName = os.path.splitext(os.path.basename(filename))[0]
@@ -90,7 +91,7 @@ def open(filename):
         #profiler = cProfile.Profile()
         #profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, volDict, filename, True, False)
+        processGDML(doc, True, volDict, filename, True, False)
         #profiler.disable()
         #stats = pstats.Stats(profiler).sort_stats('cumtime')
         #stats.print_stats()
@@ -113,14 +114,16 @@ def insert(filename, docname):
     "called when freecad imports a file"
     print('Insert filename : '+filename+' docname : '+docname)
     global doc
-    volDict = {}
+    global volDict
+    print(f'volDict : {volDict}')
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
-        processGDML(doc, volDict, filename, True, False)
+        # False flag indicates import
+        processGDML(doc, False, volDict, filename, True, False)
 
     elif filename.lower().endswith('.xml'):
         processXML(doc, filename)
@@ -2374,7 +2377,17 @@ def processDefines(root, doc):
     GDMLShared.processExpression(doc)
 
 
-def processGDML(doc, volDict, filename, prompt, initFlg):
+def findWorldVol():
+    for obj in doc.Objects:
+        if obj.TypeId == "App::Part":
+           print(f'World Volume {obj.Name}')
+           return obj
+    print('World Volume Not Found')
+    return None
+
+
+def processGDML(doc, flag,  volDict, filename, prompt, initFlg):
+    # flag == True open, flag == False import
     from FreeCAD import Base
     # Process GDML
 
@@ -2448,9 +2461,14 @@ def processGDML(doc, volDict, filename, prompt, initFlg):
 
     solids = root.find('solids')
     structure = root.find('structure')
-
     world = GDMLShared.getRef(setup, "world")
-    part = doc.addObject("App::Part", world)
+    if flag == True:
+       part = doc.addObject("App::Part", world)
+    else:
+       part = findWorldVol()
+       if part is None:
+          part = doc.addObject("App::Part", world)
+
     parseVolume(doc, volDict, part, world, phylvl, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
