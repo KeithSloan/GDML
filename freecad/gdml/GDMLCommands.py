@@ -132,13 +132,16 @@ def createPartVol(obj):
     LVname = 'LV-'+obj.Label
     doc = FreeCAD.ActiveDocument
     if hasattr(obj, 'InList'):
-        if len(obj.InList) > 0:
-            parent = obj.InList[0]
-            vol = parent.newObject("App::Part", LVname)
-        else:
-            vol = doc.addObject("App::Part", LVname)
-        addSurfList(doc, vol)
-        return vol
+       if len(obj.InList) > 0:
+          parent = obj.InList[0]
+          vol = parent.newObject("App::Part", LVname)
+       else:
+          vol = doc.addObject("App::Part", LVname)
+       if hasattr(vol,'Material'):
+          print('Hide Material')
+          vol.setEditorMode('Material', 2)
+       addSurfList(doc, vol)
+       return vol
     return None
 
 def insertPartVol(objPart, LVname, solidName):
@@ -148,6 +151,10 @@ def insertPartVol(objPart, LVname, solidName):
        vol = doc.addObject("App::Part", LVname)
     else:
        vol = objPart.newObject("App::Part", LVname)
+    if hasattr(vol,'Material'):
+       print('Hide Material')
+       vol.setEditorMode('Material', 2)
+
     obj = vol.newObject("Part::FeaturePython", solidName)
     addSurfList(doc, vol)
     return obj
