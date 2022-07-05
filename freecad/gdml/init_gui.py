@@ -66,8 +66,10 @@ class GDML_Workbench (FreeCADGui.Workbench):
             # print(doc.Label)
             # print(doc.FileName)
             # print(dir(doc))
+            global volDict
+            volDict = {}
             if doc.Name == 'Unnamed':
-                processGDML(doc, joinDir(
+                processGDML(doc, True, volDict, joinDir(
                     "Resources/Default.gdml"), False, True)
 
     "GDML workbench object"

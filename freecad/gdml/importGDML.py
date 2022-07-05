@@ -115,7 +115,8 @@ def insert(filename, docname):
     print('Insert filename : '+filename+' docname : '+docname)
     global doc
     global volDict
-    print(f'volDict : {volDict}')
+    volDict = {}
+    #print(f'volDict : {volDict}')
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc = FreeCAD.getDocument(docname)
