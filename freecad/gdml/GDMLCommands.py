@@ -282,6 +282,70 @@ class SetSkinSurfaceFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
                                          'Set Skin Surface')}
 
+class GDMLSetSensDet(QtGui.QDialog):
+    def __init__(self, sel):
+        super(GDMLSetSensDet, self).__init__()
+        self.select = sel
+        self.initUI()
+
+    def initUI(self):
+        print('initUI')
+        self.setGeometry(150, 150, 250, 250)
+        self.setWindowTitle("Set SensDet")
+        self.auxvalue = QtGui.QLineEdit()
+        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set SensDet'))
+        self.buttonSet.clicked.connect(self.onSet)
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.auxvalue)
+        layout.addWidget(self.buttonSet)
+        self.setLayout(layout)
+    
+    
+    def onSet(self):
+        obj = self.select[0].Object
+        auxvalue = self.auxvalue.text()
+        print(f'auxvalue {auxvalue}')
+        if hasattr(obj,'SensDet'):
+           obj.SensDet = auxvalue
+        else:
+           obj.addProperty("App::PropertyString", "SensDet",
+                                       "GDML", "SensDet").SensDet = auxvalue
+        self.close()
+
+
+class SetSensDetFeature:
+
+    def Activated(self):
+        from PySide import QtGui, QtCore
+
+        print('Add SetSensDet')
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(sel)
+        for s in sel:
+            # print(s)
+            # print(dir(s))
+            if hasattr(s.Object,'LinkedObject'):
+               obj = s.Object.LinkedObject
+            else:
+               obj = s.Object
+            if obj.TypeId == 'App::Part':
+                dialog = GDMLSetSensDet(sel)
+                dialog.exec_()
+        return
+    
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_SetSensDet', 'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSensDet',
+                                         'Set SensDet'), 'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSensDet',
+                                         'Set SensDet')}
+
 class noCommonFacePrompt(QtGui.QDialog):
     def __init__(self, *args):
         super(noCommonFacePrompt, self).__init__()
@@ -2331,6 +2395,7 @@ FreeCADGui.addCommand('ExpandMaxCommand', ExpandMaxFeature())
 FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
+FreeCADGui.addCommand('SetSensDetCommand', SetSensDetFeature())
 FreeCADGui.addCommand('SetSkinSurfaceCommand', SetSkinSurfaceFeature())
 FreeCADGui.addCommand('SetBorderSurfaceCommand', SetBorderSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())

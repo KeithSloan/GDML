@@ -1620,7 +1620,6 @@ def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode)
 
         # Hide FreeCAD Part Material
         if hasattr(part, 'Material'):
-           print('Hide Part Material')
            part.setEditorMode('Material',2)
         # Louis gdml file copynumber on non duplicate
         if copyNum is not None:
@@ -1920,7 +1919,6 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
             base = FreeCAD.Vector(nx, ny, nz)
             part.Placement = GDMLShared.processPlacement(base, nrot)
             if hasattr(part,'Material'):
-               print('Hide Part Material')
                part.setEditorMode('Material', 2)
     #
     # check for parameterized volumes
@@ -2211,7 +2209,6 @@ def processPhysVolFile(doc, volDict, parent, fname):
         if vName is not None:
             part = parent.newObject("App::Part", vName)
             if hasattr(part, 'Material'):
-               print('Hide Part Material')
                part.setEditorMode('Material', 2)
             # expandVolume(None,vName,-1,1)
             processVol(doc, vol, volDict, part, -1, 1)
@@ -2480,7 +2477,6 @@ def processGDML(doc, flag,  volDict, filename, prompt, initFlg):
        if part is None:
           part = doc.addObject("App::Part", world)
     if hasattr(part, 'Material'):
-       print('Hide Part Material')
        part.setEditorMode('Material', 2)
 
     parseVolume(doc, volDict, part, world, phylvl, 3)
