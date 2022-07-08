@@ -1409,16 +1409,21 @@ def processVolume(vol, xmlParent, volName=None):
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     if hasattr(vol, 'SensDet'):
-        if vol.SensDet is not None:
+        # SensDet could be enumeration of text value None
+        if vol.SensDet != 'None':
             print('Volume : ' + volName)
             print('SensDet : ' + vol.SensDet)
             ET.SubElement(xmlVol, 'auxiliary', {'auxtype': 'SensDet',
                                                 'auxvalue': vol.SensDet})
     if hasattr(vol,'SkinSurface'):
-       print("Need to export : skinsurface")
-       ss = ET.SubElement(structure, 'skinsurface', {'name':'skin'+vol.SkinSurface, \
-                                'surfaceproperty': vol.SkinSurface})
-       ET.SubElement(ss, 'volumeref', {'ref':volName})
+       print(f'SkinSurf Property : {vol.SkinSurface}')
+       #SkinSurfface could be enumeration of text value None
+       if vol.SkinSurface != 'None':
+          print("Need to export : skinsurface")
+          ss = ET.SubElement(structure, 'skinsurface', \
+               {'name':'skin'+vol.SkinSurface, \
+               'surfaceproperty': vol.SkinSurface})
+          ET.SubElement(ss, 'volumeref', {'ref':volName})
 
     print(f'Processed Volume : {volName}')
 
