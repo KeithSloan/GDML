@@ -154,7 +154,8 @@ class MirrorPlacer(MultiPlacer):
         structure.insert(worldIndex, assembly)
         pos = self.obj.Source.Placement.Base
         name = volRef+'_mirror'
-        pvol = ET.SubElement(assembly, 'physvol')
+        # bordersurface might need physvol to have a name
+        pvol = ET.SubElement(assembly, 'physvol', {'name':'PV-'+self.obj.Label})
         ET.SubElement(pvol, 'volumeref', {'ref': volRef})
         normal = self.obj.Normal
         # reflect the position about the reflection plane
@@ -428,6 +429,7 @@ def createLVandPV(obj, name, solidName):
     ET.SubElement(lvol, 'materialref', {'ref': material})
     ET.SubElement(lvol, 'solidref', {'ref': solidName})
     # Place child physical volume in World Volume
+    # physvol needs name for bordersurface
     phys = ET.SubElement(lvol, 'physvol', {'name': 'PV-'+name})
     ET.SubElement(phys, 'volumeref', {'ref': pvName})
     x = pos[0]
@@ -752,7 +754,8 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
         else:
             cpyNum = str(obj.CopyNumber)
             GDMLShared.trace('CopyNumber : '+cpyNum)
-            pvol = ET.SubElement(xmlVol, 'physvol', {'copynumber': cpyNum})
+            pvol = ET.SubElement(xmlVol, 'physvol', {'name': 'PV-'+volName, \
+                                'copynumber': cpyNum})
 
         ET.SubElement(pvol, 'volumeref', {'ref': refName})
         processPlacement(volName, pvol, placement)
@@ -1005,8 +1008,8 @@ def processBorderSurfaces():
               print('Border Surface')
               borderSurface = ET.SubElement(structure,'bordersurface', \
                     {'name': obj.Name, 'surfaceproperty' : obj.Surface})
-              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV1})
-              ET.SubElement(borderSurface, 'physvolref', {'ref': obj.PV2})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV1})
+              ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV2})
                    
  
 def processOpticals():
@@ -3045,8 +3048,8 @@ class GDMLTetrahedronExporter(GDMLSolidExporter):
             'name': tetrahedronName})
         count = 0
         for t in self.obj.Proxy.Tetra:
-            lvName = 'LVtetra' + str(count)
-            physvol = ET.SubElement(assembly, 'physvol')
+            lvName = 'Tetra' + str(count)
+            physvol = ET.SubElement(assembly, 'physvol', {'name' : 'PV-Tetra' + str(count)})
             ET.SubElement(physvol, 'volumeref', {'ref': lvName})
             # ET.SubElement(physvol, 'position')
             # ET.SubElement(physvol, 'rotation')
@@ -3234,8 +3237,8 @@ class GDMLborderSurfaceExporter(GDMLSolidExporter):
         borderSurface = ET.SubElement(structure, 'bordersurface',
                                {'name': self.obj.Name,
                                     'surfaceproperty': self.obj.surface })
-        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv1})
-        ET.SubElement(borderSurface, 'physvolref', {'ref': self.obj.pv2})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-' +self.obj.pv1})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-' +self.obj.pv2})
 
 
 class MultiFuseExporter(SolidExporter):
