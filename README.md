@@ -77,7 +77,7 @@ Windows: if no --target option upgrade pip
 
 ### Successful installation of workbench & gmsh on Windows.
 
-User @poroserv reports successfully installation as follows
+User @poroserv reports successfull installation as follows
 
 "today I installed the new GDML Workbench 2.0.0 without any problem."
 
