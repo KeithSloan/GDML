@@ -75,6 +75,36 @@ In a command window / line
 
 Windows: if no --target option upgrade pip
 
+### Successful installation of workbench & gmsh on Windows.
+
+User @poroserv reports successfull installation as follows
+
+"today I installed the new GDML Workbench 2.0.0 without any problem."
+
+Below I have compiled a sequence of magic spells to get a working version FreeCAD/GDML/GMSH for Windows:
+
+Install "only for me" to "D:\FreeCAD 0.20" to prevent any file/folder access problems.
+
+Upgrade/Install additional python modules:
+
+````
+D:\FreeCAD 0.20\bin\python -m pip install --upgrade pip
+D:\FreeCAD 0.20\bin\python -m pip install --target="D:\FreeCAD 0.20\bin\Lib\site-packages" --upgrade lxml
+D:\FreeCAD 0.20\bin\python -m pip install --target="D:\FreeCAD 0.20\bin\Lib\site-packages" --upgrade gmsh
+D:\FreeCAD 0.20\bin\python -m pip install -i https://gmsh.info/python-packages --force-reinstall --no-cache-dir --upgrade --target="D:\FreeCAD 0.20\bin\Lib\site-packages" gmsh-dev
+````
+Download the Software Development Kit (SDK) for Windows of GMSH from https://gmsh.info/bin/Windows/gmsh-4.10.5-Windows64-sdk.zip , unpack it and copy:
+````
+..\bin to "D:\FreeCAD 0.20\bin\Lib\site-packages\bin"
+
+..\include to "D:\FreeCAD 0.20\bin\Lib\site-packages\include"
+
+..\lib to "D:\FreeCAD 0.20\bin\Lib\site-packages"
+````
+to add the missed "gmsh.exe", "gmsh-4.10.dll" and update "gmsh.py".
+
+install GDML workbench.
+
 
 ### Install via the Addon Manager
 
