@@ -46,6 +46,7 @@ class GDMLMaterial(QtGui.QComboBox):
 
 
 def getMaterialsList():
+    print('getMaterialsList')
     matList = []
     doc = FreeCAD.activeDocument()
     try:
@@ -66,7 +67,7 @@ def getMaterialsList():
             for m in materials.OutList:
                 if m.Label != "Geant4":
                     matList.append(m.Label)
-                    # print(matList)
+                    print(matList)
     except:
         pass
 
@@ -99,9 +100,11 @@ def refreshG4Materials(doc):
 
 def newGetGroupedMaterials():
     from .importGDML import joinDir, processGEANT4
-    print('New getGroupedMaterials')
     from .GDMLObjects import GroupedMaterials
-    if len(GroupedMaterials) == 0:
+    print(f'New getGroupedMaterials len GroupMaterials {len(GroupedMaterials)}')
+    #if len(GroupedMaterials) == 0:
+    mlen = len(GroupedMaterials)
+    if mlen >= 0 : 
         doc = FreeCAD.activeDocument()
         if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):
             processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
@@ -109,6 +112,7 @@ def newGetGroupedMaterials():
             if not hasattr(docG4Materials, 'version'):
                 refreshG4Materials(doc)
         docG4Materials = doc.G4Materials
+        print(f'doc.G4Materials {docG4Materials}')
         for g in docG4Materials.Group:
             # print(f'g : {g.Label}')
             for s in g.Group:
@@ -119,8 +123,10 @@ def newGetGroupedMaterials():
                     GroupedMaterials[g.Label] = [s.Label]
         matList = []
         docMaterials = doc.Materials
+        print(f'doc.Materials {docMaterials}')
         if docMaterials is not None:
             for m in docMaterials.OutList:
+                print(m.Label)
                 if m.Label != "Geant4":
                     if m.Label not in matList:
                         matList.append(m.Label)

@@ -491,7 +491,7 @@ class GDMLSetMaterial(QtGui.QDialog):
         for group in self.groupedMaterials:
             print(group)
             self.matList += self.groupedMaterials[group]
-        print(len(self.matList))
+        #print(len(self.matList))
         self.completer = QtGui.QCompleter(self.matList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.materialComboBox.setCompleter(self.completer)
@@ -532,11 +532,15 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.setMaterial(text)
 
     def groupChanged(self, index):
+        print('Group Changed')
         from .GDMLObjects import GroupedMaterials
+        print(self.materialComboBox.currentText())
         self.materialComboBox.blockSignals(True)
         self.materialComboBox.clear()
         group = self.groupsCombo.currentText()
         self.materialComboBox.addItems(GroupedMaterials[group])
+        print(self.materialComboBox.currentText())
+        self.lineedit.setText(self.materialComboBox.currentText())
         self.materialComboBox.blockSignals(False)
 
     def materialChanged(self, text):
