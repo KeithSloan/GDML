@@ -557,13 +557,19 @@ class GDMLSetMaterial(QtGui.QDialog):
         for sel in self.SelList:
             obj = sel.Object
             if hasattr(obj, 'material'):
-                obj.material = mat
+               #  May have an invalid enumeration from previous versions 
+               try :
+                   obj.material = mat
+
+               except ValueError:
+                   pass
+
             else:
                 obj.addProperty("App::PropertyEnumeration", "material",
-                                "GDML", "Material")
-                obj.material = self.matList
-                obj.material = self.matList.index(mat)
-
+                            "GDML", "Material")
+            obj.material = self.matList
+            obj.material = self.matList.index(mat)
+           
 
 class GDMLScale(QtGui.QDialog):
     def __init__(self, selList):
