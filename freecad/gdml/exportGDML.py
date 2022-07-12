@@ -2116,7 +2116,9 @@ class SolidExporter:
         return hasattr(self.obj, 'scale') or hasattr(self.obj, 'Scale')
 
     def getScale(self):
-        if hasattr(self.obj, 'scale'):
+        if hasattr(self.obj, 'ScaleVector'):
+            return self.obj.ScaleVector
+        elif hasattr(self.obj, 'scale'):
             return self.obj.scale
         elif hasattr(self.obj, 'Scale'):
             return self.obj.Scale
@@ -2126,6 +2128,8 @@ class SolidExporter:
     def _exportScaled(self):
         if self.hasScale():
             scale = self.getScale()
+            if scale.x == 1.0 and scale.y == 1.0 and scale.z == 1.0:
+                return
             xml = ET.SubElement(solids, 'scaledSolid', {'name': self._name+'_scaled'})
             ET.SubElement(xml, 'solidref', {'ref': self.name()})
             ET.SubElement(xml, 'scale', {'name': self.name()+'_scale',
@@ -3152,16 +3156,16 @@ class OrthoArrayExporter(SolidExporter):
         unionXML = ET.SubElement(solids, 'multiUnion', {'name': self.name()})
         basePos = baseExporter.position()
         for ix in range(self.obj.NumberX):
-            translate = basePos + ix*self.obj.IntervalX
             for iy in range(self.obj.NumberY):
-                translate += iy*self.obj.IntervalY
                 for iz in range(self.obj.NumberZ):
                     nodeName = f'{self.name()}_{ix}_{iy}_{iz}'
-                    translate += iz*self.obj.IntervalZ
+                    translate = basePos + ix*self.obj.IntervalX + \
+                        iy*self.obj.IntervalY + iz*self.obj.IntervalZ
                     nodeXML = ET.SubElement(unionXML, 'multiUnionNode', {
                         'name': nodeName})
                     ET.SubElement(nodeXML, 'solid', {'ref': volRef})
                     ET.SubElement(nodeXML, 'position', {
+                        'name': f'{self.name()}_pos_{ix}_{iy}_{iz}',
                         'x': str(translate.x),
                         'y': str(translate.y),
                         'z': str(translate.z),
