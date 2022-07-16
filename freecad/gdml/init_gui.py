@@ -66,8 +66,10 @@ class GDML_Workbench (FreeCADGui.Workbench):
             # print(doc.Label)
             # print(doc.FileName)
             # print(dir(doc))
+            global volDict
+            volDict = {}
             if doc.Name == 'Unnamed':
-                processGDML(doc, joinDir(
+                processGDML(doc, True, volDict, joinDir(
                     "Resources/Default.gdml"), False, True)
 
     "GDML workbench object"
@@ -84,7 +86,8 @@ class GDML_Workbench (FreeCADGui.Workbench):
         # import GDMLCommands, GDMLResources
         commands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
                     'ExpandMaxCommand', 'ResetWorldCommand', 
-                    'SetMaterialCommand',
+                    'SetMaterialCommand', 
+                    'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
                     'BoxCommand', 'ConeCommand', 'ElTubeCommand',
                     'EllipsoidCommand', 'SphereCommand',
                     'TorusCommand', 'TrapCommand', 'TubeCommand',
@@ -103,6 +106,7 @@ class GDML_Workbench (FreeCADGui.Workbench):
         toolbarcommands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
                            'ExpandMaxCommand', 'ResetWorldCommand', 
                            'SetMaterialCommand',
+                           'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
                            'Separator', 'Std_Part', 'BoxCommand',
                            'ConeCommand',
                            'ElTubeCommand', 'EllipsoidCommand',

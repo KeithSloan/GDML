@@ -32,6 +32,7 @@ This Script includes the GUI Commands of the GDML module
 '''
 
 import FreeCAD, FreeCADGui
+import Part
 from PySide import QtGui, QtCore
 
 
@@ -126,16 +127,38 @@ def getSelectedPM():
 
 
 def createPartVol(obj):
+    from .importGDML import addSurfList
     # Create Part(GDML Vol) Shared with a number of Features
     LVname = 'LV-'+obj.Label
+    doc = FreeCAD.ActiveDocument
     if hasattr(obj, 'InList'):
         if len(obj.InList) > 0:
             parent = obj.InList[0]
             vol = parent.newObject("App::Part", LVname)
         else:
-            vol = FreeCAD.ActiveDocument.addObject("App::Part", LVname)
+            vol = doc.addObject("App::Part", LVname)
+        if hasattr(vol, 'Material'):
+            print('Hide Material')
+            vol.setEditorMode('Material', 2)
+        addSurfList(doc, vol)
         return vol
     return None
+
+
+def insertPartVol(objPart, LVname, solidName):
+    from .importGDML import addSurfList
+    doc = FreeCAD.ActiveDocument
+    if objPart is None:
+        vol = doc.addObject("App::Part", LVname)
+    else:
+        vol = objPart.newObject("App::Part", LVname)
+    if hasattr(vol, 'Material'):
+        print('Hide Material')
+        vol.setEditorMode('Material', 2)
+
+    obj = vol.newObject("Part::FeaturePython", solidName)
+    addSurfList(doc, vol)
+    return obj
 
 
 class ColourMapFeature:
@@ -150,19 +173,6 @@ class ColourMapFeature:
         showGDMLColourMap()
         return
 
-        # myWidget = QtGui.QDockWidget()
-        # mainWin = FreeCADGui.getMainWindow()
-        # mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.TopDockWidgetArea, \
-        mainWin.addDockWidget(QtCore.Qt.LeftDockWidgetArea or QtCore.Qt.TopDockWidgetArea,
-                              myWidget)
-        # mainWin.addDockWidget(Qt::LeftDockWidgetArea or Qt::TopDockWidgetArea, myWidget)
-        # myWidget.setObjectName("ColourMap")
-        # myWidget.resize(QtCore.QSize(300,100))
-        # title = QtGui.QLabel("Colour Mapping to GDML Materials")
-        # title.setIndent(100)
-        # myWidget.setTitleBarWidget(title)
-        # label = QtGui.QLabel("Colour Mapping to GDML Materials",myWidget)
-
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
             return False
@@ -175,6 +185,287 @@ class ColourMapFeature:
                                          'Add Colour Map'), 'ToolTip':
                 QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',
                                          'Add Colour Map')}
+
+
+class GDMLSetSkinSurface(QtGui.QDialog):
+    def __init__(self, sel):
+        super(GDMLSetSkinSurface, self).__init__()
+        self.select = sel
+        self.initUI()
+
+    def initUI(self):
+        print('initUI')
+        self.setGeometry(150, 150, 250, 250)
+        self.setWindowTitle("Set Skin Surface")
+        self.surfacesCombo = QtGui.QComboBox()
+        # May have been moved
+        opticals = FreeCAD.ActiveDocument.getObject('Opticals')
+        print(opticals.Group)
+        for g in opticals.Group:
+            if g.Name == "Surfaces":
+                self.surfList = []
+                for s in g.Group:
+                    print(s.Name)
+                    self.surfList.append(s.Name)
+        self.surfList.append("None")
+        self.surfacesCombo.addItems(self.surfList)
+        # self.surfacesCombo.currentIndexChanged.connect(self.surfaceChanged)
+        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set SkinSurface'))
+        self.buttonSet.clicked.connect(self.onSet)
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.surfacesCombo)
+        layout.addWidget(self.buttonSet)
+        self.setLayout(layout)
+
+    def onSet(self):
+        surf = self.surfacesCombo.currentText()
+        obj = self.select[0].Object
+        print(self.select[0].Object)
+        print(surf)
+        if hasattr(obj, 'SkinSurface'):
+            obj.SkinSurface = surf
+        else:
+            obj.addProperty("App::PropertyEnumeration", "SkinSurface",
+                            "GDML", "SkinSurface")
+            obj.SkinSurface = self.surfLst
+            obj.SkinSurface = self.surfList.index(surf)
+        self.close()
+
+    def surfaceChanged(self, index):
+        self.surfacesCombo.blockSignals(True)
+        self.surfacesCombo.clear()
+        surface = self.surfacesCombo.currentText()
+        print(surface)
+
+
+class SetSkinSurfaceFeature:
+
+    def Activated(self):
+        from PySide import QtGui, QtCore
+
+        print('Add SetSkinSurface')
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(sel)
+        for s in sel:
+            # print(s)
+            # print(dir(s))
+            if hasattr(s.Object, 'LinkedObject'):
+               obj = s.Object.LinkedObject
+            else:
+               obj = s.Object
+            if obj.TypeId == 'App::Part':
+                dialog = GDMLSetSkinSurface(sel)
+                dialog.exec_()
+        return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_SetSkinSurface', 'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
+                                         'Set Skin Surface'), 'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
+                                         'Set Skin Surface')}
+
+
+class noCommonFacePrompt(QtGui.QDialog):
+    def __init__(self, *args):
+        super(noCommonFacePrompt, self).__init__()
+        self.initUI()
+
+    def initUI(self):
+        overrideButton = QtGui.QPushButton('Override')
+        overrideButton.clicked.connect(self.onOverride)
+        cancelButton = QtGui.QPushButton('Cancel')
+        cancelButton .clicked.connect(self.onCancel)
+        #
+        buttonBox = QtGui.QDialogButtonBox()
+        buttonBox.setFixedWidth(400)
+        # buttonBox = Qt.QDialogButtonBox(QtCore.Qt.Vertical)
+        buttonBox.addButton(overrideButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(cancelButton, QtGui.QDialogButtonBox.ActionRole)
+        #
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(buttonBox)
+        self.setLayout(mainLayout)
+        # self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        # define window         xLoc,yLoc,xDim,yDim
+        self.setGeometry(650, 650, 0, 50)
+        self.setWindowTitle("No Common Face Found")
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.retStatus = 0
+
+    def onOverride(self):
+        self.retStatus = 1
+        self.close()
+
+    def onCancel(self):
+        # self.retStatus = 2
+        self.close()
+
+
+class SetBorderSurfaceFeature:
+
+    def Activated(self):
+        from PySide import QtGui, QtCore
+
+        print('Add SetBorderSurface')
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(len(sel))
+        if len(sel) == 3:
+            surfaceObj = None
+            partList = []
+            for s in sel:
+                if hasattr(s, 'Object'):
+                    # print(s.Object)
+                    obj = s.Object
+                    # print(obj.TypeId)
+                    if obj.TypeId == "App::Part":
+                        # print('Part Added')
+                        partList.append(obj)
+
+                    elif obj.TypeId == "App::Link":
+                        if obj.LinkedObject.TypeId == "App::Part":
+                            # print('Linked Part Added')
+                            partList.append(obj)
+
+                    elif obj.TypeId == "App::DocumentObjectGroupPython":
+                        # print(dir(obj))
+                        if hasattr(obj, 'InList'):
+                            # print(obj.InList)
+                            parent = obj.InList[0]
+                            # print(parent.Name)
+                            if parent.Name == "Surfaces":
+                                surfaceObj = obj
+
+            doc = FreeCAD.ActiveDocument
+            print(f'Surface Obj {surfaceObj.Name}')
+            # print(f'Part List {partList}')
+            if surfaceObj is not None and len(partList) == 2:
+                print('Action set Border Surface')
+                commonFaceFlag, commonFaces = self.checkCommonFace(partList)
+                '''
+                # There is no good reason to restrict the number of common faces
+                # to 1
+                if commonFaceFlag is True:
+                    if len(commonFaces) == 1:
+                        print('Yes Common Face')
+                        self.SetBorderSurface(doc, surfaceObj, partList)
+
+                    else:
+                        print('More than one Common Face - Error?')
+                        print('commonFace indexs {commonFaces}')
+                        dialog = noCommonFacePrompt()
+                        dialog.exec_()
+                        if dialog.retStatus == 1:
+                            self.SetBorderSurface(doc, surfaceObj, partList)
+
+                else:
+                    print('No Valid common Face')
+                    dialog = noCommonFacePrompt()
+                    dialog.exec_()
+                    if dialog.retStatus == 1:
+                        self.SetBorderSurface(doc, surfaceObj, partList)
+                '''
+                if commonFaceFlag is True:
+                    self.SetBorderSurface(doc, surfaceObj, partList)
+                else:
+                    print('No Valid common Face')
+                    dialog = noCommonFacePrompt()
+                    dialog.exec_()
+                    if dialog.retStatus == 1:
+                        self.SetBorderSurface(doc, surfaceObj, partList)
+
+        return
+
+    def SetBorderSurface(self, doc, surfaceObj, partList):
+        from .GDMLObjects import GDMLbordersurface
+
+        print('Action set Border Surface')
+        print(f'Generate Name from {surfaceObj.Name}')
+        surfaceName = self.SurfaceName(doc, surfaceObj.Name)
+        print(f'Surface Name {surfaceName}')
+        obj = doc.addObject("App::FeaturePython", surfaceName)
+        GDMLbordersurface(obj, surfaceName, surfaceObj.Name,
+                          partList[0].Name, partList[1].Name)
+
+    def SurfaceName(self, doc, name):
+        index = 1
+        while doc.getObject(name+str(index)) is not None:
+            index += 1
+        return name + str(index)
+
+    def checkCommonFace(self, partList):
+        print('Check Common Face')
+        shape0 = self.adjustShape(partList[0])
+        shape1 = self.adjustShape(partList[1])
+        return self.commonFace(shape0, shape1)
+
+    def commonFace(self, shape0, shape1):
+        print(f'Common Face : {len(shape0.Faces)} : {len(shape1.Faces)}')
+        tolerence = 1e-7
+        commonList = []
+        for i, face0 in enumerate(shape0.Faces):
+            for j, face1 in enumerate(shape1.Faces):
+                comShape = face0.common(face1, tolerence)
+                if len(comShape.Faces) > 0:
+                    # Append Tuple
+                    commonList.append((i, j))
+                    print(f'Common Face shape0 {i} shape1 {j}')
+        num = len(commonList)
+        print(f'{num} common Faces')
+        if num > 0:
+            return True, commonList
+        else:
+            return False, None
+
+    def getGDMLObject(self, list):
+        # need to make more robust check types etc
+        if len(list) > 1:
+            return list[1]
+        else:
+            return list[0]
+
+    def adjustShape(self, part):
+        # print("Adjust Shape")
+        # print(part.Name)
+        # print(part.OutList)
+        # print(f'Placement {part.Placement.Base}')
+        # Use Matrix rather than Placement in case rotated
+        # placement = part.Placement.Base
+        matrix = part.Placement.toMatrix()
+        if hasattr(part, 'LinkedObject'):
+            # print(f'Linked Object {part.LinkedObject}')
+            part = part.getLinkedObject()
+            # print(part.Name)
+            # print(part.OutList)
+            # print(f'Linked Placement {part.Placement.Base}')
+        obj = self.getGDMLObject(part.OutList)
+        obj.recompute()
+        # Shape is immutable so have to copy
+        # Realthunder recommends avoid deep copy
+        shape = Part.Shape(obj.Shape)
+        # print(f'Shape Valid {shape.isValid()}')
+        # print(dir(shape))
+        # Use saved Matrix in case of linked Object
+        return shape.transformGeometry(matrix)
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {'Pixmap': 'GDML_SetBorderSurface', 'MenuText':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetBorderSurface',
+                                         'Set Border Surface'), 'ToolTip':
+                QtCore.QT_TRANSLATE_NOOP('GDML_SetBorderSurface',
+                                         'Set Border Surface')}
 
 
 class GDMLSetMaterial(QtGui.QDialog):
@@ -203,7 +494,7 @@ class GDMLSetMaterial(QtGui.QDialog):
         for group in self.groupedMaterials:
             print(group)
             self.matList += self.groupedMaterials[group]
-        print(len(self.matList))
+        # print(len(self.matList))
         self.completer = QtGui.QCompleter(self.matList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.materialComboBox.setCompleter(self.completer)
@@ -244,11 +535,15 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.setMaterial(text)
 
     def groupChanged(self, index):
+        print('Group Changed')
         from .GDMLObjects import GroupedMaterials
+        print(self.materialComboBox.currentText())
         self.materialComboBox.blockSignals(True)
         self.materialComboBox.clear()
         group = self.groupsCombo.currentText()
         self.materialComboBox.addItems(GroupedMaterials[group])
+        print(self.materialComboBox.currentText())
+        self.lineedit.setText(self.materialComboBox.currentText())
         self.materialComboBox.blockSignals(False)
 
     def materialChanged(self, text):
@@ -265,7 +560,13 @@ class GDMLSetMaterial(QtGui.QDialog):
         for sel in self.SelList:
             obj = sel.Object
             if hasattr(obj, 'material'):
-                obj.material = mat
+                #  May have an invalid enumeration from previous versions
+                try:
+                    obj.material = mat
+
+                except ValueError:
+                    pass
+
             else:
                 obj.addProperty("App::PropertyEnumeration", "material",
                                 "GDML", "Material")
@@ -1852,11 +2153,13 @@ def expandFunction(obj, eNum):
         expandVolume(obj, volRef, eNum, 3)
         obj.Label = name
 
+
 def recomputeVol(obj):
-    if hasattr(obj,'OutList'):
-       for o in obj.OutList:
-           o.recompute()
-       obj.recompute()
+    if hasattr(obj, 'OutList'):
+        for o in obj.OutList:
+            o.recompute()
+        obj.recompute()
+
 
 class ExpandFeature:
 
@@ -2075,6 +2378,8 @@ FreeCADGui.addCommand('ExpandMaxCommand', ExpandMaxFeature())
 FreeCADGui.addCommand('ResetWorldCommand', ResetWorldFeature())
 FreeCADGui.addCommand('ColourMapCommand', ColourMapFeature())
 FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
+FreeCADGui.addCommand('SetSkinSurfaceCommand', SetSkinSurfaceFeature())
+FreeCADGui.addCommand('SetBorderSurfaceCommand', SetBorderSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
 FreeCADGui.addCommand('BooleanIntersectionCommand', BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand', BooleanUnionFeature())
