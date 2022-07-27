@@ -2253,7 +2253,7 @@ def processSurfaces(doc, volDict, structure):
            pv1 = volDict[surfacePhysVols[0]]
            pv2 = volDict[surfacePhysVols[1]]
            obj = doc.addObject("App::FeaturePython",name)
-           GDMLbordersurface(obj, name, surface, pv1.Name, pv2.Name)
+           GDMLbordersurface(obj, name, surface, pv1, pv2)
 
 
 def processGEANT4(doc, filename):

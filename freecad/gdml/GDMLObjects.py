@@ -4230,10 +4230,11 @@ class GDMLbordersurface(GDMLcommon):
         #print(f'pv1 : {pv1} pv2 : {pv2}')
         obj.addProperty("App::PropertyString", 'Surface', 'GDMLborder' \
                         "surface property").Surface = surface
-        obj.addProperty("App::PropertyString", 'PV1', 'GDMLborder' \
+        # Use Link in case Object is changed e.g. Name
+        obj.addProperty("App::PropertyLinkGlobal", 'PV1', 'GDMLborder' \
                         "physvol PV1").PV1 = pv1
         obj.setEditorMode('PV1', 1)
-        obj.addProperty("App::PropertyString", 'PV2', 'GDMLborder' \
+        obj.addProperty("App::PropertyLinkGlobal", 'PV2', 'GDMLborder' \
                         "physvol PV2").PV2 = pv2
         obj.setEditorMode('PV2', 1)
         obj.Proxy = self
