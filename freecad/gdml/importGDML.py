@@ -1326,12 +1326,14 @@ def parseMultiUnion(part, solid, material, colour, px, py, pz, rot,
     myMUobj.Label = muName
     # for s in solid.findall('multiUnionNode') :
     objList = []
+    base = FreeCAD.Vector(px, py, pz)
+    placement = GDMLShared.processPlacement(base, rot)
     for s in solid:
         # each solid may change x, y, z, rot
-        nx = px
-        ny = py
-        nz = pz
-        nrot = rot
+        nx = 0
+        ny = 0
+        nz = 0
+        nrot = None
         if s.tag == 'multiUnionNode':
             for t in s:
                 if t.tag == 'solid':
@@ -1342,15 +1344,23 @@ def parseMultiUnion(part, solid, material, colour, px, py, pz, rot,
                     pname = t.get('ref')
                     nx, ny, nz = GDMLShared.getDefinedPosition(pname)
                     GDMLShared.trace('nx : '+str(nx))
+                if t.tag == 'position':
+                    nx, ny, nz = GDMLShared.getPositionFromAttrib(t)
+                    GDMLShared.trace('nx : '+str(nx))
+                if t.tag == 'rotation':
+                    nrot = GDMLShared.getRotation(t.tag)
                 if t.tag == 'rotationref':
                     rname = t.get('ref')
                     GDMLShared.trace('rotation ref : '+rname)
                     nrot = GDMLShared.getDefinedRotation(rname)
             if sname is not None:        # Did we find at least one solid
-                objList.append(createSolid(part, ssolid, material, colour, nx,
-                                           ny, nz, nrot, displayMode))
+                objList.append(createSolid(part, ssolid, material, colour,
+                                           nx, ny, nz, nrot, displayMode))
+                objList[-1].Placement.Rotation.Angle = -objList[-1].Placement.Rotation.Angle
     # myMUobj = part.newObject('Part::MultiFuse', muName)
     myMUobj.Shapes = objList
+    myMUobj.Placement = placement
+    return myMUobj
 
 
 def parseBoolean(part, solid, objType, material, colour, px, py, pz, rot,
