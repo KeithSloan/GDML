@@ -72,6 +72,17 @@ def getSurfsListFromGroup(doc):
     return None
 
 
+def getSurfsListFromGroup(doc):
+    SurfsList = ['None']
+    surfs = doc.getObject('Surfaces')
+    if surfs is not None:
+        if hasattr(surfs, 'Group'):
+            for i in surfs.Group:
+                SurfsList.append(i.Label)
+        return SurfsList
+    return None
+
+
 def addMaterialsFromGroup(doc, MatList, grpName):
     mmats = doc.getObject(grpName)
     if mmats is not None:
@@ -490,7 +501,7 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
 # http://geant4-userdoc.web.cern.ch/geant4-userdoc/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
 # The order of specification of the coordinates for the vertices in G4GenericTrap is important. The first four points are the vertices sitting on the -hz plane; the last four points are the vertices sitting on the +hz plane.
 #
-#The order of defining the vertices of the solid is the following:
+# The order of defining the vertices of the solid is the following:
 #
 #    point 0 is connected with points 1,3,4
 #    point 1 is connected with points 0,2,5
@@ -3431,21 +3442,21 @@ class GDMLTessellated(GDMLsolid):
                 else:  # len should then be 4
                     try:
                         face = GDMLShared.quad(
-                        mul*vertex[f[0]],
-                        mul*vertex[f[1]],
-                        mul*vertex[f[2]],
-                        mul*vertex[f[3]])
+                            mul*vertex[f[0]],
+                            mul*vertex[f[1]],
+                            mul*vertex[f[2]],
+                            mul*vertex[f[3]])
                         FCfaces.append(face)
                     except:
                         face = GDMLShared.triangle(
-                        mul*vertex[f[0]],
-                        mul*vertex[f[1]],
-                        mul*vertex[f[2]])
+                            mul*vertex[f[0]],
+                            mul*vertex[f[1]],
+                            mul*vertex[f[2]])
                         FCfaces.append(face)
                         face = GDMLShared.triangle(
-                        mul*vertex[f[1]],
-                        mul*vertex[f[2]],
-                        mul*vertex[f[3]])
+                            mul*vertex[f[1]],
+                            mul*vertex[f[2]],
+                            mul*vertex[f[3]])
                         FCfaces.append(face)
         shell = Part.makeShell(FCfaces)
         if shell.isValid is False:
@@ -3490,7 +3501,7 @@ class GDMLSampledTessellated(GDMLsolid):
             nList = [len(f.Points) for f in facets]
         else:
             nList = [len(f) for f in facets]
-            
+
         obj.addProperty('App::PropertyIntegerList', 'vertsPerFacet',
                         'GDMLSampledTessellated',
                         'Number of vertexes in each facet').vertsPerFacet = nList
@@ -3742,7 +3753,7 @@ class GDMLSampledTessellated(GDMLsolid):
 
     def createGeometry0(self, fp):
         import time
-        
+
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         if int(fp.sampledFraction) == 0:
@@ -3767,7 +3778,7 @@ class GDMLSampledTessellated(GDMLsolid):
 
         FCfaces = []
         if fp.solidFlag is False:
-            NMax = int(fp.sampledFraction)*fp.facets/100            
+            NMax = int(fp.sampledFraction)*fp.facets/100
             nskip = int(fp.facets/NMax)
             if nskip < 1:
                 nskip = 1
@@ -4240,6 +4251,152 @@ class GDMLbordersurface(GDMLcommon):
         self.Object = obj
 
 
+class GDMLmatrix(GDMLcommon):
+    def __init__(self, obj, name, coldim, values):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyInteger", 'coldim', 'GDMLmatrix',
+                        "coldin").coldim = coldim
+        obj.addProperty("App::PropertyString", 'values', 'GDMLmatrix',
+                        'values').values = values
+        obj.Proxy = self
+        self.Object = obj
+
+
+class GDMLopticalsurface(GDMLcommon):
+    def __init__(self, obj, name, model, finish, type, value):
+        super().__init__(obj)
+        print(f'passed finish {finish} type {type}')
+        obj.addProperty("App::PropertyEnumeration", 'model', 'GDMLoptical',
+                        "model")
+        obj.model = [
+            'glisur',   # original GEANT3 model \
+            'unified',  # UNIFIED model  \
+            'LUT',      # Look-Up-Table model (LBNL model) \
+            'DAVIS',    # DAVIS model \
+            'dichroic'  # dichroic filter \
+        ]
+        obj.addProperty("App::PropertyEnumeration", 'finish', 'GDMLoptical'
+                        "finish")
+        obj.finish = [
+            'polished | polished',      # smooth perfectly polished surface
+            'polished | frontpainted',  # smooth top-layer (front) paint
+            'polished | backpainted',   # same is 'polished' but with a back-paint
+                                        # meltmount
+            'polished | air',        # mechanically polished surface
+            'polished | teflonair',  # mechanically polished surface, with teflon
+            'polished | tioair',     # mechanically polished surface, with tio paint
+            'polished | tyvekair',   #  mechanically polished surface, with tyvek
+            'polished | vm2000air',  # mechanically polished surface, with esr film
+            'polished | vm2000glue',  # mechanically polished surface, with esr film &
+                                      # // for LBNL LUT model
+            'polished | lumirrorair',   # mechanically polished surface, with lumirror
+            'polished | lumirrorglue',  # mechanically polished surface, with lumirror &
+            # meltmount
+            'etched | lumirrorair',  # chemically etched surface, with lumirror
+            'etched | lumirrorglue',  # chemically etched surface, with lumirror & meltmount
+            'etched | air',           # chemically etched surface
+            'etched | teflonair',     # chemically etched surface, with teflon
+            'etched | tioair',        # chemically etched surface, with tio paint
+            'etched | tyvekair',      # chemically etched surface, with tyvek
+            'etched | vm2000air',     # chemically etched surface, with esr film
+            'etched | vm2000glue',    # chemically etched surface, with esr film & meltmount
+            'ground | ground',              #// rough surface
+            'ground | frontpainted',  # rough top-layer (front) paint
+            'ground | backpainted',   # same as 'ground' but with a back-paint
+            'ground | lumirrorair',   # rough-cut surface, with lumirror
+            'ground | lumirrorglue',  # rough-cut surface, with lumirror & meltmount
+            'ground | air',           # rough-cut surface
+            'ground | teflonair',     # rough-cut surface, with teflon
+            'ground | tioair',        # rough-cut surface, with tio paint
+            'ground | tyvekair',      # rough-cut surface, with tyvek
+            'ground | vm2000air',     # rough-cut surface, with esr film
+            'ground | vm2000glue',    # rough-cut surface, with esr film & meltmount
+            'Rough_LUT',              # rough surface \
+            'RoughTeflon_LUT',        # rough surface wrapped in Teflon tape \
+            'RoughESR_LUT',           # rough surface wrapped with ESR \
+            'RoughESRGrease_LUT',     # rough surface wrapped with ESR \
+            # and coupled with optical grease
+            'Polished_LUT',           # polished surface \
+            'PolishedTeflon_LUT',     # polished surface wrapped in Teflon tape \
+            'PolishedESR_LUT',        # polished surface wrapped with ESR \
+            'PolishedESRGrease_LUT',  # polished surface wrapped with ESR \
+            # and coupled with optical grease
+            'Detector_LUT',           # polished surface with optical grease
+            'extended | 0',
+            'extended | 1',
+            'extended | 2',
+            'extended | 3',
+            'extended | 4',
+            'extended | 5',
+            'extended | 6',
+            'extended | 7',
+            'extended | 8',
+            'extended | 9'
+        ]
+        print(f'finish {finish}')
+        if finish in '0123456789':
+            obj.finish = 'extended | '+finish
+        elif finish == 'polished':
+            obj.finish = 'polished | polished'
+        elif finish == 'ground':
+            obj.finish = 'ground | ground'
+        else:
+            finish.replace('polished', 'polished |')
+            finish.replace('etched', 'etched |')
+            finish.replace('ground', 'ground |')
+            finish.replace('polished', 'polished |')
+            finish.replace('polished', 'polished |')
+            obj.finish = finish
+
+        obj.addProperty("App::PropertyEnumeration", 'type', 'GDMLoptical', 
+                        "type")
+        obj.type = ['dielectric_dielectric',
+                    'dielectric_metal',
+                    'extended | 0',
+                    'extended | 1',
+                    'extended | 2',
+                    'extended | 3',
+                    'extended | 4',
+                    'extended | 5',
+                    'extended | 6',
+                    'extended | 7',
+                    'extended | 8',
+                    'extended | 9'
+                    ]
+        if type in '0123456789':
+            obj.type = 'extended | '+type
+        else:
+            obj.type = type
+        obj.addProperty("App::PropertyFloat", 'value', 'GDMLoptical').value = value
+        obj.Proxy = self
+        self.Object = obj
+
+
+class GDMLskinsurface(GDMLcommon):
+    def __init__(self, obj, name, prop):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyString", 'surface', 'GDMLskin',
+                        "surface property").surface = prop
+        obj.Proxy = self
+        self.Object = obj
+
+# ??? need for GDMLcommon ???
+class GDMLbordersurface(GDMLcommon):
+    def __init__(self, obj, name, surface, pv1, pv2):
+        super().__init__(obj)
+        # print(f'pv1 : {pv1} pv2 : {pv2}')
+        obj.addProperty("App::PropertyString", 'Surface', 'GDMLborder',
+                        "surface property").Surface = surface
+        obj.addProperty("App::PropertyString", 'PV1', 'GDMLborder',
+                        "physvol PV1").PV1 = pv1
+        obj.setEditorMode('PV1', 1)
+        obj.addProperty("App::PropertyString", 'PV2', 'GDMLborder',
+                        "physvol PV2").PV2 = pv2
+        obj.setEditorMode('PV2', 1)
+        obj.Proxy = self
+        self.Object = obj
+
+
 class ViewProviderExtension(GDMLcommon):
     def __init__(self, obj):
         super().__init__(obj)
@@ -4381,4 +4538,3 @@ def makeTube():
     a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLTube")
     GDMLTube(a)
 
-    

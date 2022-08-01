@@ -79,26 +79,6 @@ def verifNameUnique(name):
 
 # ## end modifs lambda
 
-#########################################################
-# Pretty format GDML                                    #
-#########################################################
-
-def indent(elem, level=0):
-    i = "\n" + level*"  "
-    j = "\n" + (level-1)*"  "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for subelem in elem:
-            indent(subelem, level+1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = j
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = j
-    return elem
 #################################
 # Switch functions
 ################################
@@ -155,7 +135,7 @@ class MirrorPlacer(MultiPlacer):
         pos = self.obj.Source.Placement.Base
         name = volRef+'_mirror'
         # bordersurface might need physvol to have a name
-        pvol = ET.SubElement(assembly, 'physvol', {'name':'PV-'+self.obj.Label})
+        pvol = ET.SubElement(assembly, 'physvol', {'name': 'PV-'+self.obj.Label})
         ET.SubElement(pvol, 'volumeref', {'ref': volRef})
         normal = self.obj.Normal
         # reflect the position about the reflection plane
@@ -344,14 +324,14 @@ def quaternion2XYZ(rot):
         [ sin(g)  cos(g)       0]
         [      0       0       1]
 
-    Rederivation from the previous version. Geant processes the rotation from 
+    Rederivation from the previous version. Geant processes the rotation from
     the gdml as R = Rz Ry Rx, i.e, Rx apllied lsat, not first, so now we have
-  
+
     R = Rx Ry Rz =
         [cosb*cosg,	                -cosb*sing,	                     sinb],
         [cosa*sing+cosg*sina*sinb,	cosa*cosg-sina*sinb*sing,	-cosb*sina],
         [sina*sing-cosa*cosg*sinb,	cosa*sinb*sing+cosg*sina,	cosa*cosb]
- 
+
     To get the angles a(lpha), b(eta) for rotations around x, y axes, transform the unit vector (0,0,1)
     [x,y,z] = Q*(0,0,1) = R*(0,0,1) ==>
     x = sin(b)
@@ -754,8 +734,9 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
         else:
             cpyNum = str(obj.CopyNumber)
             GDMLShared.trace('CopyNumber : '+cpyNum)
-            pvol = ET.SubElement(xmlVol, 'physvol', {'name': 'PV-'+volName, \
-                                'copynumber': cpyNum})
+
+            pvol = ET.SubElement(xmlVol, 'physvol', {'name': 'PV-'+volName,
+                                                     'copynumber': cpyNum})
 
         ET.SubElement(pvol, 'volumeref', {'ref': refName})
         processPlacement(volName, pvol, placement)
@@ -948,50 +929,53 @@ def processMatrix(obj):
     global define
     print('add matrix to define')
     ET.SubElement(define, 'matrix', {'name': obj.Name, 'coldim': str(obj.coldim),
-                                       'values': obj.values})
+                                     'values': obj.values})
+
 
 def cleanFinish(finish):
     print(f'finish {finish}')
     if finish == 'polished | polished':
-       return 'polished'
+        return 'polished'
     else:
-       ext = 'extended | '
-       if ext not in finish:
-          #print('Does not contain')
-          return finish.replace(' | ','')
-       else:
-          #print(f"Replace {finish.replace(ext,'')}")
-          return finish.replace(ext,'')
-         
+        ext = 'extended | '
+        if ext not in finish:
+            # print('Does not contain')
+            return finish.replace(' | ', '')
+        else:
+            # print(f"Replace {finish.replace(ext,'')}")
+            return finish.replace(ext, '')
+
 
 def cleanExtended(var):
     ext = 'extended | '
     if ext not in var:
-       return var
+        return var
     else:
-       return var.replace(ext,'')
+        return var.replace(ext, '')
+
 
 def processOpticalSurface(obj):
     global solids
-    #print(solids)
+    # print(solids)
     print('Add opticalsurface')
     print(str(solids))
     finish = cleanFinish(obj.finish)
     type = cleanExtended(obj.type)
-    op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name, \
-                      'model': obj.model, \
-                      'finish': finish, 'type': type, \
-                      'value': str(obj.value)})
+    op = ET.SubElement(solids, 'opticalsurface', {'name': obj.Name,
+                                                  'model': obj.model,
+                                                  'finish': finish, 'type': type,
+                                                  'value': str(obj.value)})
     for prop in obj.PropertiesList:
         if obj.getGroupOfProperty(prop) == 'Properties':
-           ET.SubElement(op, 'property', {'name': prop, \
-                   'ref': getattr(obj, prop)})
+            ET.SubElement(op, 'property', {'name': prop,
+                                           'ref': getattr(obj, prop)})
+
 
 def processSkinSurfaces(obj):
     # Ignore create from Parts with SkinSurface
-    #global structure
-    #print('Add skins')
-    #ET.SubElement(structure,'skinsurface', {'name': obj.Name, \
+    # global structure
+    # print('Add skins')
+    # ET.SubElement(structure,'skinsurface', {'name': obj.Name, \
     #                         'surfaceproperty' : obj.SkinSurface, \
     return
 
@@ -1001,43 +985,44 @@ def processBorderSurfaces():
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
         if obj.TypeId == "App::FeaturePython":
-           print(f'TypeId {obj.TypeId} Name {obj.Name}')
-           #print(dir(obj))
-           #print(obj.Proxy)
-           if isinstance(obj.Proxy, GDMLbordersurface):
-              print('Border Surface')
-              borderSurface = ET.SubElement(structure,'bordersurface', \
-                    {'name': obj.Name, 'surfaceproperty' : obj.Surface})
-              ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV1})
-              ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV2})
-                   
- 
+            print(f'TypeId {obj.TypeId} Name {obj.Name}')
+            # print(dir(obj))
+            # print(obj.Proxy)
+            if isinstance(obj.Proxy, GDMLbordersurface):
+                print('Border Surface')
+                borderSurface = ET.SubElement(structure, 'bordersurface',
+                                              {'name': obj.Name,
+                                               'surfaceproperty': obj.Surface})
+                ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV1})
+                ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV2})
+
+
 def processOpticals():
     print('Process Opticals')
     Grp = FreeCAD.ActiveDocument.getObject('Opticals')
     if hasattr(Grp, 'Group'):
-       for obj in Grp.Group:
-           print(f'Name : {obj.Name}')
-           while switch(obj.Name):
-              if case("Matrix"):
-                 print("Matrix")
-                 for m in obj.Group:
-                       processMatrix(m)
-                 break
+        for obj in Grp.Group:
+            print(f'Name : {obj.Name}')
+            while switch(obj.Name):
+                if case("Matrix"):
+                    print("Matrix")
+                    for m in obj.Group:
+                        processMatrix(m)
+                    break
 
-              if case("Surfaces"):
-                 print("Surfaces")
-                 print(obj.Group)
-                 for s in obj.Group:
-                     processOpticalSurface(s)
-                 break
+                if case("Surfaces"):
+                    print("Surfaces")
+                    print(obj.Group)
+                    for s in obj.Group:
+                        processOpticalSurface(s)
+                    break
 
-              if case("SkinSurfaces"):
-                 print("SkinSurfaces")
-                 for s in obj.Group:
-                     processSkinSurfaces(s)
-                 break
-
+                if case("SkinSurfaces"):
+                    print("SkinSurfaces")
+                    for s in obj.Group:
+                        processSkinSurfaces(s)
+                    break
+                
 
 def processMaterials():
     print("\nProcess Materials")
@@ -1097,6 +1082,12 @@ def createMaterials(group):
             if len(obj.Group) > 0:
                 for o in obj.Group:
                     processFractionsComposites(o, item)
+
+            for prop in obj.PropertiesList:
+                if obj.getGroupOfProperty(prop) == 'Properties':
+                    ET.SubElement(item, 'property', {'name': prop,
+                                                     'ref': getattr(obj, prop)})
+
 
 
 def createElements(group):
@@ -1273,7 +1264,7 @@ def getMaterial(obj):
 def printObjectInfo(xmlVol, volName, xmlParent, parentName):
     print("Process Object : "+obj.Label+' Type '+obj.TypeId)
     if xmlVol is not None :
-       xmlstr = ET.tostring(xmlVol) 
+       xmlstr = ET.tostring(xmlVol)
     else :
        xmlstr = 'None'
     print('Volume : '+volName+' : '+str(xmlstr))
@@ -1418,15 +1409,15 @@ def processVolume(vol, xmlParent, volName=None):
             print('SensDet : ' + vol.SensDet)
             ET.SubElement(xmlVol, 'auxiliary', {'auxtype': 'SensDet',
                                                 'auxvalue': vol.SensDet})
-    if hasattr(vol,'SkinSurface'):
-       print(f'SkinSurf Property : {vol.SkinSurface}')
-       #SkinSurfface could be enumeration of text value None
-       if vol.SkinSurface != 'None':
-          print("Need to export : skinsurface")
-          ss = ET.SubElement(structure, 'skinsurface', \
-               {'name':'skin'+vol.SkinSurface, \
-               'surfaceproperty': vol.SkinSurface})
-          ET.SubElement(ss, 'volumeref', {'ref':volName})
+    if hasattr(vol, 'SkinSurface'):
+        print(f'SkinSurf Property : {vol.SkinSurface}')
+        # SkinSurfface could be enumeration of text value None
+        if vol.SkinSurface != 'None':
+            print("Need to export : skinsurface")
+            ss = ET.SubElement(structure, 'skinsurface',
+                               {'name': 'skin'+vol.SkinSurface,
+                                'surfaceproperty': vol.SkinSurface})
+            ET.SubElement(ss, 'volumeref', {'ref': volName})
 
     print(f'Processed Volume : {volName}')
 
@@ -1772,6 +1763,7 @@ def exportWorldVol(vol, fileExt):
 
     processBorderSurfaces()
 
+
 def exportElementAsXML(dirPath, fileName, flag, elemName, elem):
     # gdml is a global
     global gdml, docString, importStr
@@ -1841,7 +1833,7 @@ def exportGDML(first, filepath, fileExt):
             ET.ElementTree(gdml).write(filepath, xml_declaration=True)
         else:
             ET.ElementTree(gdml).write(filepath, pretty_print=True,
-                                   xml_declaration=True)
+                                       xml_declaration=True)
         print("GDML file written")
 
     if fileExt == '.GDML':
@@ -1891,7 +1883,7 @@ def hexInt(f):
 
 
 def formatPosition(pos):
-    s = str(pos[0]) + '*mm ' + str(pos[1]) + '*mm ' +str(pos[2]) + '*mm'
+    s = str(pos[0]) + '*mm ' + str(pos[1]) + '*mm ' + str(pos[2]) + '*mm'
     print(s)
     return s
 
@@ -2097,9 +2089,6 @@ def export(exportList, filepath):
     if fileExt.lower() == '.gdml':
         if first.TypeId == "App::Part":
             exportGDMLworld(first, filepath, fileExt)
-        # 
-        #elif first.Label == "Materials":
-        #    exportMaterials(first, filepath)
 
         else:
             print("Needs to be a Part for export")
@@ -2111,7 +2100,7 @@ def export(exportList, filepath):
     elif fileExt.lower() == '.xml':
         if first.Label == "Materials":
             exportMaterials(first, filepath)
-        
+
         elif first.Label == "Opticals":
             exportOpticals(first, filepath)
 
@@ -2252,7 +2241,9 @@ class SolidExporter:
         return hasattr(self.obj, 'scale') or hasattr(self.obj, 'Scale')
 
     def getScale(self):
-        if hasattr(self.obj, 'scale'):
+        if hasattr(self.obj, 'ScaleVector'):
+            return self.obj.ScaleVector
+        elif hasattr(self.obj, 'scale'):
             return self.obj.scale
         elif hasattr(self.obj, 'Scale'):
             return self.obj.Scale
@@ -2262,6 +2253,8 @@ class SolidExporter:
     def _exportScaled(self):
         if self.hasScale():
             scale = self.getScale()
+            if scale.x == 1.0 and scale.y == 1.0 and scale.z == 1.0:
+                return
             xml = ET.SubElement(solids, 'scaledSolid', {'name': self._name+'_scaled'})
             ET.SubElement(xml, 'solidref', {'ref': self.name()})
             ET.SubElement(xml, 'scale', {'name': self.name()+'_scale',
@@ -2289,7 +2282,7 @@ class CloneExporter(SolidExporter):
             # need to change: Looking for scaling S', such that
             # S*R v = R*S' v ==>
             # S' = R^-1 * S * R
-            # 
+            #
             # s = FreeCAD.Matrix()
             # s.scale(self.obj.Scale.x, self.obj.Scale.y, self.obj.Scale.z)
             # rot = FreeCAD.Rotation(self.rotation())
@@ -3050,7 +3043,7 @@ class GDMLTetrahedronExporter(GDMLSolidExporter):
         count = 0
         for t in self.obj.Proxy.Tetra:
             lvName = 'Tetra' + str(count)
-            physvol = ET.SubElement(assembly, 'physvol', {'name' : 'PV-Tetra' + str(count)})
+            physvol = ET.SubElement(assembly, 'physvol', {'name': 'PV-Tetra' + str(count)})
             ET.SubElement(physvol, 'volumeref', {'ref': lvName})
             # ET.SubElement(physvol, 'position')
             # ET.SubElement(physvol, 'rotation')
@@ -3242,6 +3235,18 @@ class GDMLborderSurfaceExporter(GDMLSolidExporter):
         ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-' +self.obj.pv2})
 
 
+class GDMLborderSurfaceExporter(GDMLSolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def export(self):
+        borderSurface = ET.SubElement(structure, 'bordersurface',
+                                      {'name': self.obj.Name,
+                                       'surfaceproperty': self.obj.surface})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+self.obj.pv1})
+        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+self.obj.pv2})
+
+
 class MultiFuseExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
@@ -3299,16 +3304,16 @@ class OrthoArrayExporter(SolidExporter):
         unionXML = ET.SubElement(solids, 'multiUnion', {'name': self.name()})
         basePos = baseExporter.position()
         for ix in range(self.obj.NumberX):
-            translate = basePos + ix*self.obj.IntervalX
             for iy in range(self.obj.NumberY):
-                translate += iy*self.obj.IntervalY
                 for iz in range(self.obj.NumberZ):
                     nodeName = f'{self.name()}_{ix}_{iy}_{iz}'
-                    translate += iz*self.obj.IntervalZ
+                    translate = basePos + ix*self.obj.IntervalX + \
+                        iy*self.obj.IntervalY + iz*self.obj.IntervalZ
                     nodeXML = ET.SubElement(unionXML, 'multiUnionNode', {
                         'name': nodeName})
                     ET.SubElement(nodeXML, 'solid', {'ref': volRef})
                     ET.SubElement(nodeXML, 'position', {
+                        'name': f'{self.name()}_pos_{ix}_{iy}_{iz}',
                         'x': str(translate.x),
                         'y': str(translate.y),
                         'z': str(translate.z),
@@ -3786,7 +3791,6 @@ class ExtrudedArcSection(ExtrudedClosedCurve):
         # Note extrusion polyogn will be in absolute coordinates
         # since arc section is relative to that, position is actually (0,0,0)
         # same goes for rotation
-
 
     def midPoint(self):
         edge = self.edgeList[0]
