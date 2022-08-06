@@ -2240,7 +2240,7 @@ def setSkinSurface(doc, vol, surface):
     volObj = doc.getObject(vol)
     volObj.SkinSurface = surface
 
-x
+
 def processSurfaces(doc, volDict, structure):
     from .GDMLObjects import GDMLbordersurface
 
