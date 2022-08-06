@@ -86,7 +86,7 @@ class GDML_Workbench (FreeCADGui.Workbench):
         # import GDMLCommands, GDMLResources
         commands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
                     'ExpandMaxCommand', 'ResetWorldCommand', 
-                    'SetMaterialCommand', 
+                    'SetMaterialCommand', 'SetSensDetCommand',
                     'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
                     'BoxCommand', 'ConeCommand', 'ElTubeCommand',
                     'EllipsoidCommand', 'SphereCommand',
@@ -105,7 +105,7 @@ class GDML_Workbench (FreeCADGui.Workbench):
 
         toolbarcommands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
                            'ExpandMaxCommand', 'ResetWorldCommand', 
-                           'SetMaterialCommand',
+                           'SetMaterialCommand', 'SetSensDetCommand',
                            'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
                            'Separator', 'Std_Part', 'BoxCommand',
                            'ConeCommand',
