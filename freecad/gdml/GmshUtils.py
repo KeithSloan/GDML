@@ -186,10 +186,9 @@ def meshObject(obj, dim, algol, lm, lc, lp) :
     gmsh.clear()
     setMeshParms(algol,lm, lc, lp)
     if hasattr(obj,'Shape') :
-       return(meshObjShape(obj, dim))
-
+        return meshObjShape(obj, dim)
     elif hasattr(obj,'Mesh') :
-       return(meshObjMesh(obj,dim))
+        return meshObjMesh(obj,dim)
 
 def meshObj(obj, dim, meshParms=False, tessObj=None) :
     # Used by Tetrahedron - Retire

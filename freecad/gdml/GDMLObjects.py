@@ -3250,6 +3250,12 @@ class GDMLGmshTessellated(GDMLsolid):
             updateColour(obj, colour, material)
         self.Type = 'GDMLGmshTessellated'
         self.SourceObj = sourceObj
+        self.Object = obj
+        # Set TessObj property so that ignored on export
+        if not hasattr(self.SourceObj, 'TessObj'):
+            self.SourceObj.addProperty("App::PropertyLinkGlobal", "TessObj",
+               "GDML", "Tessellated Object")
+        self.SourceObj.TessObj=self.Object
         self.Vertex = vertex
         self.Facets = facets
         self.Object = obj

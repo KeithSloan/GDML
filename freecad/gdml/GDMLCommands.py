@@ -1819,7 +1819,7 @@ class AddTessellateTask:
 
     def __init__(self, Obj):
         self.obj = Obj
-        self.tess = None
+        self.tess = None  # None if not yet Tessellated else Tessellated Object
         self.form = AddTessellateWidget(Obj.Shape)
         self.form.buttonMesh.clicked.connect(self.actionMesh)
         # self.form.buttonload.clicked.connect(self.loadelement)
@@ -1842,7 +1842,7 @@ class AddTessellateTask:
         from .GDMLObjects import ViewProvider
 
         print('Update Tessellated Object')
-        print(dir(self))
+        # print(dir(self))
         print('Object Name ' + self.obj.Name)
         print('Object Type ' + self.obj.TypeId)
         if hasattr(self.obj, 'Proxy'):
@@ -1856,6 +1856,7 @@ class AddTessellateTask:
         print('Facets : '+str(len(facets)))
         # Update Info of GDML Tessellated Object
         if self.tess is not None:
+            # Previously Tessellated - update
             print('Tesselated Name '+self.tess.Name)
             print('Update parms : '+self.tess.Name)
             if hasattr(self.tess, 'Proxy'):  # If GDML object has Proxy
@@ -1891,7 +1892,7 @@ class AddTessellateTask:
         print('Action Gmsh : '+self.obj.Name)
         initialize()
         typeDict = {0: 6, 1: 8, 2: 9}
-        print(dir(self))
+        # print(dir(self))
         print('Object '+self.obj.Name)
         if self.tess is not None:
             print('Tessellated '+self.tess.Name)
@@ -1983,6 +1984,11 @@ class TessellateFeature:
                 # GDMLTessellated(myTess,mesh.Topology[0],mesh.Topology[1], \
                 GDMLTessellated(myTess, mesh.Topology[0], mesh.Facets, True,
                                 "mm", mat)
+                # Set TessObj property so that ignored on export
+                if not hasattr(obj, 'TessObj'):
+                    obj.addProperty("App::PropertyLinkGlobal", "TessObj",
+                        "GDML", "Tessellated Object")
+                obj.TessObj=myTess
                 # Update Part Placment with source Placement
                 vol.Placement = obj.Placement
                 base = obj.Placement.Base

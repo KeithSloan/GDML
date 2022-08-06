@@ -2166,6 +2166,13 @@ class SolidExporter:
     @staticmethod
     def isSolid(obj):
         print(f'isSolid {obj.Label}')
+        # Do not export if exportFlag is set or object has been Tessellated
+        if hasattr(obj,'exportFlag'):
+            if obj.exportFlag == False:
+                return False
+        if hasattr(obj,'TessObj'):
+            if obj.TessObj is not None:
+                return False        
         if obj.TypeId == "Part::FeaturePython":
             typeId = obj.Proxy.Type
             if typeId == 'Array':
