@@ -1,0 +1,87 @@
+import time
+import FreeCAD
+
+def setNoExportProperty(obj):
+    if not hasattr(obj, 'exportFlag'):
+        obj.addProperty("App::PropertyBool", 'exportFlag', 'GDML', 'Export Flag')
+        obj.exportFlag = False
+
+
+def isrtObject(parent, obj):
+    #print(f'Parent {parent}')
+    if parent is None:
+         new = doc.copyObject(obj)
+    else:
+         #print(f'Add object to {parent.Name}')
+         new =  parent.addObject(doc.copyObject(obj))[0]
+    return new
+    
+
+def getParent(obj):
+       if hasattr(obj, 'InList'):
+           for i, o in enumerate(obj.InList):
+               if o.TypeId == 'App::Part':
+                   return obj.InList[i]
+       return None
+
+
+def processBaseObj(arrayFlag, parent, baseObj, placement, placementList):
+       print(f'Process Base Obj : {baseObj.Name}')
+       # Is this part of an Array expand for each item in placementList
+       if arrayFlag == True:
+           print(f'Len Placement List : {len(placementList)}')
+           for p in placementList:
+                  processBaseObj(False, parent, baseObj, placement*p, None)
+       else:     
+           # Is Base an  Array  
+            if hasattr(baseObj,'ArrayType'):
+                print(f'Is an Array : {baseObj.Name}') 
+                print(f'Process Array Base {baseObj.Base.Name} Placement {placement}')
+                new = processBaseObj(True, parent, baseObj.Base, placement, baseObj.PlacementList)
+            # is it a Part/Vol
+            elif baseObj.TypeId == 'App::Part' :
+                  print(f'process Part : {baseObj.Name}')
+                  newParent = parent.newObject('App::Part', baseObj.Name)
+                  newParent.Placement = placement
+                  if hasattr(baseObj, 'OutList'):
+                     print(f'Part outllst len {len(baseObj.OutList)}')
+                     for obj in baseObj.OutList:
+                           print(obj.Name)
+                           print(obj.TypeId)
+                           if obj.TypeId != 'App::Origin' and obj.TypeId !='App::FeaturePython':
+                               processBaseObj(False, newParent, obj, obj.Placement, None)
+                           #else:
+                           #    isrtObject(newParent, obj)
+            # Is it a FeaturePython
+            elif baseObj.TypeId == 'Part::FeaturePython' :
+                 print(f'Copy {baseObj.Name} Placement : {placement} Base Placement {baseObj.Placement}')
+                 new = isrtObject(parent, baseObj)                     
+                 #new.Placement = baseObj.Placement*placement
+                 #new.Placement = baseObj.Placement*placement
+                 new.Placement = placement
+                 new.Visibility = True
+       if baseObj.TypeId  == 'App::FeaturePython':
+             new = isrtObject(parent, baseObj)   
+  
+def processSelected(array):
+    # Array seems to have TypeId of Part::FeaturePython - test for ArrayType
+    if not hasattr(array,'ArrayType'):
+        print('Selection is Not an Array')
+        return
+    print(array.Base.Name)
+    print(array.Base.InList)
+    parent = getParent(array.Base)
+    processBaseObj(True, parent, array.Base, array.Placement, array.PlacementList)
+    setNoExportProperty(array)
+    array.Visibility = False
+
+doc = App.ActiveDocument
+sel = Gui.Selection.getSelection()
+if len(sel) > 0:
+    array = sel[0]
+    start = time.time()
+    processSelected(array)
+    end = time.time()
+    print(f'Duration : {end-start}')
+    doc.recompute()
+
