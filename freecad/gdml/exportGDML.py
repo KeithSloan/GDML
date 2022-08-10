@@ -889,8 +889,10 @@ def nameOfGDMLobject(obj):
     name = obj.Label
     if len(name) > 4:
         if name[0:4] == 'GDML':
-            if '_' in name:
-                return(name.split('_', 1)[1])
+            #if '_' in name:
+            #    return(name.split('_', 1)[1])
+            # For GDMLTessellate_xxxx return Tessellate_xxxx
+            return name[4:]
     return name
 
 
@@ -1645,6 +1647,7 @@ def assemblyHeads(obj):
 def topObj(obj):
     # The topmost object in an App::Part
     # The App::Part is assumed NOT to be an assembly
+    print(f'topObj {obj} {obj.OutList}')
     if isAssembly(obj):
         print(f'***** Non Assembly expected  for {obj.Label}')
         return
@@ -1657,9 +1660,19 @@ def topObj(obj):
 
     sublist = []
     for ob in obj.OutList:
+        print(obj.Label)
         if ob.TypeId != 'App::Origin':
+            if hasattr(ob,'exportFlag'):
+                if ob.exportFlag == False:
+                    print(f'Object {ob.Label} has been flaged to not export')
+                    continue
+            if hasattr(ob,'TessObj'):
+                if ob.TessObj is not None:
+                    print(f'Object {ob.Label} has been Tessellated ignore')
+                    continue
             sublist.append(ob)
 
+    print(f'sublist {sublist}')
     for subObj in sublist[:]:
         if hasattr(subObj, 'OutList'):
             for o in subObj.OutList:
@@ -2166,13 +2179,6 @@ class SolidExporter:
     @staticmethod
     def isSolid(obj):
         print(f'isSolid {obj.Label}')
-        # Do not export if exportFlag is set or object has been Tessellated
-        if hasattr(obj,'exportFlag'):
-            if obj.exportFlag == False:
-                return False
-        if hasattr(obj,'TessObj'):
-            if obj.TessObj is not None:
-                return False        
         if obj.TypeId == "Part::FeaturePython":
             typeId = obj.Proxy.Type
             if typeId == 'Array':
