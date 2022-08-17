@@ -81,8 +81,6 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     global doc
-    global volDict
-    volDict = {}
     print('Open : '+filename)
     docName = os.path.splitext(os.path.basename(filename))[0]
     print('path : '+filename)
@@ -92,7 +90,7 @@ def open(filename):
         # profiler = cProfile.Profile()
         # profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, True, volDict, filename, True, False)
+        processGDML(doc, True, filename, True, False)
         # profiler.disable()
         # stats = pstats.Stats(profiler).sort_stats('cumtime')
         # stats.print_stats()
@@ -115,8 +113,6 @@ def insert(filename, docname):
     "called when freecad imports a file"
     print('Insert filename : '+filename+' docname : '+docname)
     global doc
-    global volDict
-    volDict = {}
 
     # print(f'volDict : {volDict}')
     groupname = os.path.splitext(os.path.basename(filename))[0]
@@ -126,7 +122,7 @@ def insert(filename, docname):
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.gdml'):
         # False flag indicates import
-        processGDML(doc, False, volDict, filename, True, False)
+        processGDML(doc, False, filename, True, False)
 
     elif filename.lower().endswith('.xml'):
         processXML(doc, filename)
@@ -2255,22 +2251,21 @@ def processSurfaces(doc, volDict, structure):
         setSkinSurface(doc, volRef, surface)
 
     print('bordersurface')
-    # print(volDict)
-    surfacePhysVols = []
+    # print(f'volDict {volDict}')
     for borderSurf in structure.findall('bordersurface'):
         if borderSurf is not None:
             name = borderSurf.get('name')
             surface = borderSurf.get('surfaceproperty')
+            volLst = []
             for i, pv in enumerate(borderSurf.findall('physvolref')):
                 if pv is not None:
-                    surfacePhysVols.append(pv.get('ref'))
-                    # print(f"{i} : {pv.get('ref')}")
-            # print(surfacePhysVols)
-            # print(volDict)
-            pv1 = volDict[surfacePhysVols[0]]
-            pv2 = volDict[surfacePhysVols[1]]
+                    pvRef = pv.get('ref')
+                    # print(f"{i} : {pvRef}")
+                    volRef = volDict[pvRef].Label
+                    print(f'Vol : {volRef}')
+                    volLst.append(volRef)
             obj = doc.addObject("App::FeaturePython", name)
-            GDMLbordersurface(obj, name, surface, pv1.Name, pv2.Name)
+            GDMLbordersurface(obj, name, surface, volLst[0], volLst[1])
 
 
 def processGEANT4(doc, filename):
@@ -2414,10 +2409,11 @@ def findWorldVol():
     return None
 
 
-def processGDML(doc, flag,  volDict, filename, prompt, initFlg):
+def processGDML(doc, flag, filename, prompt, initFlg):
     # flag == True open, flag == False import
     from FreeCAD import Base
     # Process GDML
+    volDict = {}
 
     import time
     from . import GDMLShared

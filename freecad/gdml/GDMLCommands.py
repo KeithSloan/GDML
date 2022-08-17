@@ -688,10 +688,10 @@ class SetBorderSurfaceFeature:
                                 surfaceObj = obj
 
             doc = FreeCAD.ActiveDocument
-            print(f'Surface Obj {surfaceObj.Name}')
             # print(f'Part List {partList}')
             if surfaceObj is not None and len(partList) == 2:
                 print('Action set Border Surface')
+                print(f'Surface Obj {surfaceObj.Name}')
                 commonFaceFlag, commonFaces = self.checkCommonFace(partList)
                 '''
                 # There is no good reason to restrict the number of common faces
@@ -724,7 +724,8 @@ class SetBorderSurfaceFeature:
                     dialog.exec_()
                     if dialog.retStatus == 1:
                         self.SetBorderSurface(doc, surfaceObj, partList)
-
+            else:
+                print('A valid surface is not in the selection')
         return
 
     def SetBorderSurface(self, doc, surfaceObj, partList):
