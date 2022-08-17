@@ -185,7 +185,7 @@ def setDisplayMode(obj, mode):
 
 def newPartFeature(obj, name):
     newobj = obj.newObject("Part::FeaturePython", name)
-    # FreeCAD can change the name i.e. hypen to underscore
+    # FreeCAD can change the name i.e. hyphen to underscore
     # So also set the Objects Label
     newobj.Label = name
     return(newobj)
@@ -193,7 +193,7 @@ def newPartFeature(obj, name):
 
 def newGroupPython(obj, name):
     newobj = obj.newObject("App::DocumentObjectGroupPython", name)
-    # FreeCAD can change the name i.e. hypen to underscore
+    # FreeCAD can change the name i.e. hyphen to underscore
     # So also set the Objects Label
     newobj.Label = name
     return(newobj)

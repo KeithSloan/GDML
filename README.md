@@ -47,7 +47,7 @@ If you like what you see you might like to thank Lei Zhang by contributing to hi
 ** Changes to Placement (GDML Position & Rotation) **
 
 Export of GDML objects the Position and Rotation are now a combination of the Placement of the FreeCAD App::Part (GDML Volume)
-and tghe Placement of the GDMLObject
+and the Placement of the GDMLObject
 
 ** New experimental export for GEMC**
 
@@ -77,7 +77,7 @@ Windows: if no --target option upgrade pip
 
 ### Successful installation of workbench & gmsh on Windows.
 
-User @poroserv reports successfull installation as follows
+User @poroserv reports successful installation as follows
 
 "today I installed the new GDML Workbench 2.0.0 without any problem."
 
