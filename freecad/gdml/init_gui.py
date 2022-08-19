@@ -30,8 +30,8 @@
 # * Also copyright Keith Sloan                                              *
 # ***************************************************************************/
 
-#import FreeCAD
-#from FreeCAD import *
+# import FreeCAD
+# from FreeCAD import *
 import FreeCAD
 import PartGui
 import DraftTools
@@ -41,36 +41,46 @@ import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
 from freecad.gdml.GDMLGuiCommands import TwistedGroup
 
+
 def joinDir(path):
     import os
+
     __dirname__ = os.path.dirname(__file__)
-    return(os.path.join(__dirname__, path))
+    return os.path.join(__dirname__, path)
 
 
 def processDefault(doc):
     from .importGDML import processGDML
+
     processGDML(doc, joinDir("Mod/GDML/Resources/Default.gdml"), False, True)
 
 
-class GDML_Workbench (FreeCADGui.Workbench):
+class GDML_Workbench(FreeCADGui.Workbench):
 
     #    import FreeCAD
 
-    class MyObserver():
+    class MyObserver:
         def __init__(self):
             self.signal = []
 
         def slotCreatedDocument(self, doc):
             from .importGDML import processGDML
+
             # print(doc.Name)
             # print(doc.Label)
             # print(doc.FileName)
             # print(dir(doc))
             global volDict
             volDict = {}
-            if doc.Name == 'Unnamed':
-                processGDML(doc, True, volDict, joinDir(
-                    "Resources/Default.gdml"), False, True)
+            if doc.Name == "Unnamed":
+                processGDML(
+                    doc,
+                    True,
+                    volDict,
+                    joinDir("Resources/Default.gdml"),
+                    False,
+                    True,
+                )
 
     "GDML workbench object"
 
@@ -84,63 +94,104 @@ class GDML_Workbench (FreeCADGui.Workbench):
             return text
 
         # import GDMLCommands, GDMLResources
-        commands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
-                    'ExpandMaxCommand', 'ResetWorldCommand', 
-                    'SetMaterialCommand', 
-                    'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
-                    'BoxCommand', 'ConeCommand', 'ElTubeCommand',
-                    'EllipsoidCommand', 'SphereCommand',
-                    'TorusCommand', 'TrapCommand', 'TubeCommand',
-                    'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
-                    'Part_Mirror', 'Draft_ArrayTools',
-                    'SetScaleCommand',
-                    'BooleanCutCommand', 'BooleanIntersectionCommand',
-                    'BooleanUnionCommand',
-                    'TessellateCommand', 'TessellateGmshCommand',
-                    'DecimateCommand',
-                    'Mesh_FromPartShape', 'Mesh_Evaluation',
-                    'Mesh2TessCommand', 'Tess2MeshCommand',
-                    'TetrahedronCommand',
-                    'AddCompound']
+        commands = [
+            "CycleCommand",
+            "ColourMapCommand",
+            "ExpandCommand",
+            "ExpandMaxCommand",
+            "ResetWorldCommand",
+            "SetMaterialCommand",
+            "SetSensDetCommand",
+            "SetSkinSurfaceCommand",
+            "SetBorderSurfaceCommand",
+            "BoxCommand",
+            "ConeCommand",
+            "ElTubeCommand",
+            "EllipsoidCommand",
+            "SphereCommand",
+            "TorusCommand",
+            "TrapCommand",
+            "TubeCommand",
+            "Sketcher_NewSketch",
+            "Part_Extrude",
+            "Part_Revolve",
+            "Part_Mirror",
+            "Draft_ArrayTools",
+            "SetScaleCommand",
+            "BooleanCutCommand",
+            "BooleanIntersectionCommand",
+            "BooleanUnionCommand",
+            "TessellateCommand",
+            "TessellateGmshCommand",
+            "DecimateCommand",
+            "Mesh_FromPartShape",
+            "Mesh_Evaluation",
+            "Mesh2TessCommand",
+            "Tess2MeshCommand",
+            "TetrahedronCommand",
+            "AddCompound",
+        ]
 
-        toolbarcommands = ['CycleCommand', 'ColourMapCommand', 'ExpandCommand',
-                           'ExpandMaxCommand', 'ResetWorldCommand',
-                           'SetMaterialCommand',
-                           'SetSkinSurfaceCommand', 'SetBorderSurfaceCommand',
-                           'Separator', 'Std_Part', 'BoxCommand',
-                           'ConeCommand',
-                           'ElTubeCommand', 'EllipsoidCommand',
-                           'SphereCommand',
-                           'TorusCommand', 'TrapCommand', 'TubeCommand',
-                           'Sketcher_NewSketch', 'Part_Extrude', 'Part_Revolve',
-                           'Part_Mirror', 'Draft_ArrayTools',
-                           'SetScaleCommand',
-                           'Separator', 'BooleanCutCommand',
-                           'BooleanIntersectionCommand',
-                           'BooleanUnionCommand', 'Separator',
-                           'TessellateCommand', 'TessellateGmshCommand',
-                           'DecimateCommand',
-                           'Mesh_FromPartShape', 'Mesh_Evaluation',
-                           'Mesh2TessCommand', 'Tess2MeshCommand',
-                           'TetrahedronCommand',
-                           'AddCompound']
+        toolbarcommands = [
+            "CycleCommand",
+            "ColourMapCommand",
+            "ExpandCommand",
+            "ExpandMaxCommand",
+            "ResetWorldCommand",
+            "SetMaterialCommand",
+            "SetSensDetCommand",
+            "SetSkinSurfaceCommand",
+            "SetBorderSurfaceCommand",
+            "Separator",
+            "Std_Part",
+            "BoxCommand",
+            "ConeCommand",
+            "ElTubeCommand",
+            "EllipsoidCommand",
+            "SphereCommand",
+            "TorusCommand",
+            "TrapCommand",
+            "TubeCommand",
+            "Sketcher_NewSketch",
+            "Part_Extrude",
+            "Part_Revolve",
+            "Part_Mirror",
+            "Draft_ArrayTools",
+            "SetScaleCommand",
+            "Separator",
+            "BooleanCutCommand",
+            "BooleanIntersectionCommand",
+            "BooleanUnionCommand",
+            "Separator",
+            "TessellateCommand",
+            "TessellateGmshCommand",
+            "DecimateCommand",
+            "Mesh_FromPartShape",
+            "Mesh_Evaluation",
+            "Mesh2TessCommand",
+            "Tess2MeshCommand",
+            "TetrahedronCommand",
+            "AddCompound",
+        ]
 
         # parttoolbarcommands = ['Part_Cut','Part_Fuse','Part_Common']
         # meshtoolbarcommands = ['Mesh_FromPartShape','Mesh_Evaluation']
 
-        self.appendToolbar(QT_TRANSLATE_NOOP(
-            'Workbench', 'GDMLTools'), toolbarcommands)
-        self.appendMenu('GDML', commands)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "GDMLTools"), toolbarcommands
+        )
+        self.appendMenu("GDML", commands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Mesh Tools'),meshtoolbarcommands)
         FreeCADGui.addIconPath(joinDir("Resources/icons"))
         FreeCADGui.addLanguagePath(joinDir("Resources/translations"))
         FreeCADGui.addPreferencePage(
-            joinDir("Resources/ui/GDML-base.ui"), "GDML")
+            joinDir("Resources/ui/GDML-base.ui"), "GDML"
+        )
 
     def Activated(self):
         "This function is executed when the workbench is activated"
-        print ("Activated")
+        print("Activated")
         self.obs = self.MyObserver()
         FreeCAD.addDocumentObserver(self.obs)
         return

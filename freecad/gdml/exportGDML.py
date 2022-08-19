@@ -2434,6 +2434,9 @@ class SolidExporter:
     @staticmethod
     def isSolid(obj):
         print(f"isSolid {obj.Label}")
+        if hasattr(obj, "exportFlag"):
+            if obj.exportFlag == False:
+                return False
         if obj.TypeId == "Part::FeaturePython":
             typeId = obj.Proxy.Type
             if typeId == "Array":
