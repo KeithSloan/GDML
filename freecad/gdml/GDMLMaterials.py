@@ -101,8 +101,7 @@ def refreshG4Materials(doc):
 def newGetGroupedMaterials():
     from .importGDML import joinDir, processGEANT4
     from .GDMLObjects import GroupedMaterials
-    print(
-        f'New getGroupedMaterials len GroupMaterials {len(GroupedMaterials)}')
+    print(f'New getGroupedMaterials len GroupMaterials {len(GroupedMaterials)}')
     # if len(GroupedMaterials) == 0:
     mlen = len(GroupedMaterials)
     if mlen >= 0:
