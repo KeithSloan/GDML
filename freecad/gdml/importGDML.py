@@ -28,14 +28,21 @@
 # *                                                                        *
 # *                                                                        *
 # **************************************************************************
+from math import *
+from . import importTess_ui
+from . import GDMLShared
 __title__ = "FreeCAD - GDML importer"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_GDML"]
 
 import FreeCAD
 from PySide import QtGui
-import os, io, sys, re
-import Part, Draft
+import os
+import io
+import sys
+import re
+import Part
+import Draft
 
 
 def joinDir(path):
@@ -43,8 +50,6 @@ def joinDir(path):
     __dirname__ = os.path.dirname(__file__)
     return(os.path.join(__dirname__, path))
 
-from math import *
-from . import GDMLShared
 
 ##########################
 # Globals Dictionaries    #
@@ -52,9 +57,9 @@ from . import GDMLShared
 
 # global setup, define, mats_xml, solids, structure, extension
 # globals constDict, filesDict
-
 if FreeCAD.GuiUp:
-    import PartGui, FreeCADGui
+    import PartGui
+    import FreeCADGui
     gui = True
 else:
     print("FreeCAD Gui not present.")
@@ -378,7 +383,7 @@ def createEltube(part, solid, material, colour, px, py, pz, rot, displayMode):
 def createGenericPolycone(part, solid, material, colour, px, py, pz, rot,
                           displayMode):
     from .GDMLObjects import GDMLGenericPolycone, GDMLrzpoint, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create GenericPolycone : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startphi')
@@ -418,7 +423,7 @@ def createGenericPolycone(part, solid, material, colour, px, py, pz, rot,
 def createGenericPolyhedra(part, solid, material, colour, px, py, pz, rot,
                            displayMode):
     from .GDMLObjects import GDMLGenericPolyhedra, GDMLrzpoint, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create GenericPolyhedra : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startphi')
@@ -524,7 +529,8 @@ def createHype(part, solid, material, colour, px, py, pz, rot, displayMode,
     if solidName is None:
         solidName = getName(solid)
     myhype = newPartFeature(part, "GDMLHype_"+solidName)
-    GDMLHype(myhype, rmin, rmax, z, inst, outst, aunit, lunit, material, colour)
+    GDMLHype(myhype, rmin, rmax, z, inst, outst,
+             aunit, lunit, material, colour)
     GDMLShared.trace("CreateHype : ")
     GDMLShared.trace("Position : "+str(px)+','+str(py)+','+str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -561,7 +567,7 @@ def createParaboloid(part, solid, material, colour, px, py, pz, rot, displayMode
 
 def createPolycone(part, solid, material, colour, px, py, pz, rot, displayMode):
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polycone : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startphi')
@@ -570,7 +576,8 @@ def createPolycone(part, solid, material, colour, px, py, pz, rot, displayMode):
     lunit = getText(solid, 'lunit', "mm")
     mypolycone = newPartFeature(part, "GDMLPolycone_"+getName(solid))
     mypolycone.addExtension("App::GroupExtensionPython")
-    GDMLPolycone(mypolycone, startphi, deltaphi, aunit, lunit, material, colour)
+    GDMLPolycone(mypolycone, startphi, deltaphi,
+                 aunit, lunit, material, colour)
     if FreeCAD.GuiUp:
         ViewProviderExtension(mypolycone.ViewObject)
 
@@ -581,7 +588,8 @@ def createPolycone(part, solid, material, colour, px, py, pz, rot, displayMode):
         rmin = GDMLShared.getVal(zplane, 'rmin', 0)
         rmax = GDMLShared.getVal(zplane, 'rmax')
         z = GDMLShared.getVal(zplane, 'z')
-        myzplane = FreeCAD.ActiveDocument.addObject('App::FeaturePython', 'zplane')
+        myzplane = FreeCAD.ActiveDocument.addObject(
+            'App::FeaturePython', 'zplane')
         mypolycone.addObject(myzplane)
         # myzplane=mypolycone.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
@@ -597,9 +605,10 @@ def createPolycone(part, solid, material, colour, px, py, pz, rot, displayMode):
         setDisplayMode(mypolycone, displayMode)
     return mypolycone
 
+
 def createPolyhedra(part, solid, material, colour, px, py, pz, rot, displayMode):
     from .GDMLObjects import GDMLPolyhedra, GDMLzplane, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polyhedra : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startphi')
@@ -657,7 +666,8 @@ def createScaledSolid(part, solid, material, colour, px, py, pz, rot, displayMod
     scaledObj.recompute()
     scaledObj.Shape.transformGeometry(mat)
     scaledObj.recompute()
-    scaledObj.addProperty("App::PropertyVector", "scale", "Base", "scale").scale = scaleVec
+    scaledObj.addProperty("App::PropertyVector", "scale",
+                          "Base", "scale").scale = scaleVec
     return scaledObj
 
 
@@ -748,7 +758,7 @@ def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode):
     from .GDMLObjects import GDMLTrap, ViewProvider
     GDMLShared.trace("CreateTrap : ")
     GDMLShared.trace(solid.attrib)
-    z  = GDMLShared.getVal(solid, 'z')
+    z = GDMLShared.getVal(solid, 'z')
     x1 = GDMLShared.getVal(solid, 'x1')
     x2 = GDMLShared.getVal(solid, 'x2')
     x3 = GDMLShared.getVal(solid, 'x3')
@@ -780,7 +790,7 @@ def createTrd(part, solid, material, colour, px, py, pz, rot, displayMode,
     from .GDMLObjects import GDMLTrd, ViewProvider
     GDMLShared.trace("CreateTrd : ")
     GDMLShared.trace(solid.attrib)
-    z  = GDMLShared.getVal(solid, 'z')
+    z = GDMLShared.getVal(solid, 'z')
     x1 = GDMLShared.getVal(solid, 'x1')
     x2 = GDMLShared.getVal(solid, 'x2')
     y1 = GDMLShared.getVal(solid, 'y1')
@@ -840,7 +850,7 @@ def createTwistedtrap(part, solid, material, colour, px, py, pz, rot, displayMod
     GDMLShared.trace("CreateTwistedtrap : ")
     GDMLShared.trace(solid.attrib)
     PhiTwist = GDMLShared.getVal(solid, 'PhiTwist')
-    z  = GDMLShared.getVal(solid, 'z')
+    z = GDMLShared.getVal(solid, 'z')
     x1 = GDMLShared.getVal(solid, 'x1')
     x2 = GDMLShared.getVal(solid, 'x2')
     x3 = GDMLShared.getVal(solid, 'x3')
@@ -871,7 +881,7 @@ def createTwistedtrd(part, solid, material, colour, px, py, pz, rot, displayMode
     from .GDMLObjects import GDMLTwistedtrd,  ViewProvider
     GDMLShared.trace("CreateTwistedtrd : ")
     GDMLShared.trace(solid.attrib)
-    z  = GDMLShared.getVal(solid, 'z')
+    z = GDMLShared.getVal(solid, 'z')
     x1 = GDMLShared.getVal(solid, 'x1')
     x2 = GDMLShared.getVal(solid, 'x2')
     y1 = GDMLShared.getVal(solid, 'y1')
@@ -921,7 +931,7 @@ def createTwistedtubs(part, solid, material, colour, px, py, pz, rot, displayMod
 
 def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode):
     from .GDMLObjects import GDMLXtru,  GDML2dVertex, GDMLSection, \
-             ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("CreateXtru : ")
     # print(solid)
     # print(getName(solid))
@@ -1072,7 +1082,7 @@ def createParameterisedTube(part, solid, material, colour, px, py, pz, rot, disp
 def createParameterisedPolycone(part, solid, material, colour, px, py, pz, rot,
                                 displayMode, solidName=None):
     from .GDMLObjects import GDMLPolycone, GDMLzplane, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polycone : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startPhi')
@@ -1085,7 +1095,8 @@ def createParameterisedPolycone(part, solid, material, colour, px, py, pz, rot,
     mypolycone.addExtension("App::GroupExtensionPython")
     numRZ = GDMLShared.getVal(solid, 'numRZ')
     # TODO: should add numRZ to GDMLParameterisedPolycone, when we get to it
-    GDMLPolycone(mypolycone, startphi, deltaphi, aunit, lunit, material, colour)
+    GDMLPolycone(mypolycone, startphi, deltaphi,
+                 aunit, lunit, material, colour)
     if FreeCAD.GuiUp:
         ViewProviderExtension(mypolycone.ViewObject)
 
@@ -1096,7 +1107,8 @@ def createParameterisedPolycone(part, solid, material, colour, px, py, pz, rot,
         rmin = GDMLShared.getVal(zplane, 'rmin', 0)
         rmax = GDMLShared.getVal(zplane, 'rmax')
         z = GDMLShared.getVal(zplane, 'z')
-        myzplane = FreeCAD.ActiveDocument.addObject('App::FeaturePython', 'zplane')
+        myzplane = FreeCAD.ActiveDocument.addObject(
+            'App::FeaturePython', 'zplane')
         mypolycone.addObject(myzplane)
         # myzplane=mypolycone.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
@@ -1116,7 +1128,7 @@ def createParameterisedPolycone(part, solid, material, colour, px, py, pz, rot,
 def createParameterisedPolyhedra(part, solid, material, colour, px, py, pz, rot,
                                  displayMode, solidName=None):
     from .GDMLObjects import GDMLPolyhedra, GDMLzplane, \
-            ViewProvider, ViewProviderExtension
+        ViewProvider, ViewProviderExtension
     GDMLShared.trace("Create Polyhedra : ")
     GDMLShared.trace(solid.attrib)
     startphi = GDMLShared.getVal(solid, 'startPhi')
@@ -1168,9 +1180,6 @@ def indexVertex(list, name):
     return i
 
 
-from . import importTess_ui
-
-
 class TessSampleDialog(QtGui.QDialog, importTess_ui.Ui_Dialog):
     maxFaces = 2000
     applyToAll = False
@@ -1183,7 +1192,8 @@ class TessSampleDialog(QtGui.QDialog, importTess_ui.Ui_Dialog):
         self.solidName = solidName
         self.numVertexes = numVertexes
         self.numFaces = numFaces
-        self.fullDisplayRadioButton.toggled.connect(self.fullDisplayRadioButtonToggled)
+        self.fullDisplayRadioButton.toggled.connect(
+            self.fullDisplayRadioButtonToggled)
         self.initUI()
 
     def initUI(self):
@@ -1226,7 +1236,7 @@ def createTessellated(part, solid, material, colour, px, py, pz, rot,
                       displayMode):
     global maxTessellationFaces
     from .GDMLObjects import GDMLSampledTessellated, GDMLTriangular, \
-          GDMLQuadrangular, ViewProvider, ViewProviderExtension
+        GDMLQuadrangular, ViewProvider, ViewProviderExtension
     # GDMLShared.setTrace(True)
     GDMLShared.trace("CreateTessellated : ")
     GDMLShared.trace(solid.attrib)
@@ -1549,6 +1559,7 @@ def getVolSolid(name):
     solid = solids.find("*[@name='%s']" % name)
     return solid
 
+
 def addSurfList(doc, part):
     from .GDMLObjects import getSurfsListFromGroup
 
@@ -1560,10 +1571,10 @@ def addSurfList(doc, part):
     surfLst = getSurfsListFromGroup(doc)
     # print(surfLst)
     if surfLst is not None:
-       part.addProperty("App::PropertyEnumeration", "SkinSurface",
-                        "GDML", "SkinSurface")
-       part.SkinSurface = surfLst
-       part.SkinSurface = 0
+        part.addProperty("App::PropertyEnumeration", "SkinSurface",
+                         "GDML", "SkinSurface")
+        part.SkinSurface = surfLst
+        part.SkinSurface = 0
 
 
 def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode):
@@ -1623,7 +1634,7 @@ def parsePhysVol(doc, volDict, volAsmFlg,  parent, physVol, phylvl, displayMode)
 
         # Hide FreeCAD Part Material
         if hasattr(part, 'Material'):
-           part.setEditorMode('Material',2)
+            part.setEditorMode('Material', 2)
         # Louis gdml file copynumber on non duplicate
         if copyNum is not None:
             try:  # try as not working FC 0.18
@@ -1712,17 +1723,17 @@ def processParamvol(vol, parent, paramvol):
                             print("Invalid Colour definition")
                             # print('Aux colour set'+str(colour))
                     else:
-                        colDict = {'Black'   : (0.0,  0.0, 0.0, 0.0),
-                                   'Blue'    : (0.0, 0.0, 1.0, 0.0),
-                                   'Brown'   : (0.45, 0.25, 0.0, 0.0),
-                                   'Cyan'    : (0.0, 1.0, 1.0, 0.0),
-                                   'Gray'    : (0.5, 0.5, 0.5, 0.0),
-                                   'Grey'    : (0.5, 0.5, 0.5, 0.0),
-                                   'Green'   : (0.0, 1.0, 0.0, 0.0),
-                                   'Magenta' : (1.0, 0.0, 1.0, 0.0),
-                                   'Red'     : (1.0, 0.0, 0.0, 0.0),
-                                   'White'   : (1.0, 1.0, 1.0, 0.0),
-                                   'Yellow'  : (1.0, 1.0, 0.0, 0.0)}
+                        colDict = {'Black': (0.0,  0.0, 0.0, 0.0),
+                                   'Blue': (0.0, 0.0, 1.0, 0.0),
+                                   'Brown': (0.45, 0.25, 0.0, 0.0),
+                                   'Cyan': (0.0, 1.0, 1.0, 0.0),
+                                   'Gray': (0.5, 0.5, 0.5, 0.0),
+                                   'Grey': (0.5, 0.5, 0.5, 0.0),
+                                   'Green': (0.0, 1.0, 0.0, 0.0),
+                                   'Magenta': (1.0, 0.0, 1.0, 0.0),
+                                   'Red': (1.0, 0.0, 0.0, 0.0),
+                                   'White': (1.0, 1.0, 1.0, 0.0),
+                                   'Yellow': (1.0, 1.0, 0.0, 0.0)}
                         colour = colDict.get(aValue, (0.0, 0.0, 0.0, 0.0))
                         # print(colour)
         else:
@@ -1785,7 +1796,8 @@ def processParamvol(vol, parent, paramvol):
             createEllipsoid(part, solid, solidName, material,
                             colour, nx, ny, nz, None, 1)
         else:
-            print(f'GDML does not provide a parameterized {solid_type}_dimensions')
+            print(
+                f'GDML does not provide a parameterized {solid_type}_dimensions')
 
 
 def processVol(doc, vol, volDict, parent, phylvl, displayMode):
@@ -1830,17 +1842,17 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                             print("Invalid Colour definition")
                             # print('Aux colour set'+str(colour))
                     else:
-                        colDict = {'Black'   : (0.0,  0.0, 0.0, 0.0),
-                                   'Blue'    : (0.0, 0.0, 1.0, 0.0),
-                                   'Brown'   : (0.45, 0.25, 0.0, 0.0),
-                                   'Cyan'    : (0.0, 1.0, 1.0, 0.0),
-                                   'Gray'    : (0.5, 0.5, 0.5, 0.0),
-                                   'Grey'    : (0.5, 0.5, 0.5, 0.0),
-                                   'Green'   : (0.0, 1.0, 0.0, 0.0),
-                                   'Magenta' : (1.0, 0.0, 1.0, 0.0),
-                                   'Red'     : (1.0, 0.0, 0.0, 0.0),
-                                   'White'   : (1.0, 1.0, 1.0, 0.0),
-                                   'Yellow'  : (1.0, 1.0, 0.0, 0.0)}
+                        colDict = {'Black': (0.0,  0.0, 0.0, 0.0),
+                                   'Blue': (0.0, 0.0, 1.0, 0.0),
+                                   'Brown': (0.45, 0.25, 0.0, 0.0),
+                                   'Cyan': (0.0, 1.0, 1.0, 0.0),
+                                   'Gray': (0.5, 0.5, 0.5, 0.0),
+                                   'Grey': (0.5, 0.5, 0.5, 0.0),
+                                   'Green': (0.0, 1.0, 0.0, 0.0),
+                                   'Magenta': (1.0, 0.0, 1.0, 0.0),
+                                   'Red': (1.0, 0.0, 0.0, 0.0),
+                                   'White': (1.0, 1.0, 1.0, 0.0),
+                                   'Yellow': (1.0, 1.0, 0.0, 0.0)}
                         colour = colDict.get(aValue, (0.0, 0.0, 0.0, 0.0))
                         # print(colour)
         else:
@@ -1888,7 +1900,8 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
             # if phylvl >= 0 :
             #   phylvl += 1
             # If negative always parse otherwise increase level
-            part = parsePhysVol(doc, volDict, True, parent, pv, phylvl, displayMode)
+            part = parsePhysVol(doc, volDict, True, parent,
+                                pv, phylvl, displayMode)
 
         else:  # Just Add to structure
             volRef = GDMLShared.getRef(pv, "volumeref")
@@ -1921,8 +1934,8 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                                  "GDML",  "copynumber").CopyNumber = int(cpyNum)
             base = FreeCAD.Vector(nx, ny, nz)
             part.Placement = GDMLShared.processPlacement(base, nrot)
-            if hasattr(part,'Material'):
-               part.setEditorMode('Material', 2)
+            if hasattr(part, 'Material'):
+                part.setEditorMode('Material', 2)
     #
     # check for parameterized volumes
     #
@@ -1952,7 +1965,8 @@ def expandVolume(doc, volDict, parent, name, phylvl, displayMode):
             print("Assembly : "+name)
             for pv in asm.findall("physvol"):
                 # obj = parent.newObject("App::Part", name)
-                parsePhysVol(doc, volDict, False, parent, pv, phylvl, displayMode)
+                parsePhysVol(doc, volDict, False, parent,
+                             pv, phylvl, displayMode)
         else:
             print(name+' is Not a defined Volume or Assembly')
 
@@ -2039,7 +2053,7 @@ def processElements(elementsGrp, mats_xml):
 
 def processMaterials(materialGrp, mats_xml, subGrp=None):
     from .GDMLObjects import GDMLmaterial, GDMLfraction, GDMLcomposite, \
-                            MaterialsList
+        MaterialsList
 
     # print(f'Process Materials : {materialGrp.Name} SubGrp{subGrp}')
     print(f'Process Materials : {materialGrp.Name}')
@@ -2152,7 +2166,6 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
                                         "Properties", "Property Name")
                 setattr(materialObj, name, ref)
 
-
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 
@@ -2167,7 +2180,7 @@ def setupEtree(filename):
         parser = etree.XMLParser(resolve_entities=True)
         root = etree.parse(filename,  parser=parser)
         #print('error log')
-        #print(parser.error_log)
+        # print(parser.error_log)
 
     except ImportError:
         try:
@@ -2224,7 +2237,7 @@ def processPhysVolFile(doc, volDict, parent, fname):
         if vName is not None:
             part = parent.newObject("App::Part", vName)
             if hasattr(part, 'Material'):
-               part.setEditorMode('Material', 2)
+                part.setEditorMode('Material', 2)
             # expandVolume(None,vName,-1,1)
             processVol(doc, vol, volDict, part, -1, 1)
 
@@ -2349,7 +2362,8 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
                 print(f'scanned finish : {finish}')
                 type = opSurface.get('type')
                 value = opSurface.get('value')
-                GDMLopticalsurface(surfaceObj, name, model, finish, type, float(value))
+                GDMLopticalsurface(surfaceObj, name, model,
+                                   finish, type, float(value))
                 for prop in opSurface.findall('property'):
                     name = prop.get('name')
                     print(f'Property Name {name}')
@@ -2403,8 +2417,8 @@ def processDefines(root, doc):
 def findWorldVol():
     for obj in doc.Objects:
         if obj.TypeId == "App::Part":
-           print(f'World Volume {obj.Name}')
-           return obj
+            print(f'World Volume {obj.Name}')
+            return obj
     print('World Volume Not Found')
     return None
 
@@ -2506,4 +2520,5 @@ def processGDML(doc, flag, filename, prompt, initFlg):
     FreeCAD.Console.PrintMessage('End processing GDML file\n')
     endTime = time.perf_counter()
     # print(f'time : {endTime - startTime:0.4f} seconds')
-    FreeCAD.Console.PrintMessage(f'time : {endTime - startTime:0.4f} seconds\n')
+    FreeCAD.Console.PrintMessage(
+        f'time : {endTime - startTime:0.4f} seconds\n')

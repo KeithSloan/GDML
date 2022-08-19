@@ -25,11 +25,22 @@
 # *                      https://github.com/ignamv/geanTipi                *
 # *                                                                        *
 # ***************************************************************************
+from itertools import islice
+from . import GDMLShared
+from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
+    GDML2dVertex, GDMLSection, \
+    GDMLmaterial, GDMLfraction, \
+    GDMLcomposite, GDMLisotope, \
+    GDMLelement, GDMLconstant, GDMLvariable, \
+    GDMLquantity, GDMLbordersurface
 __title__ = "FreeCAD - GDML exporter Version"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_Geant4"]
 
-import FreeCAD, os, Part, math
+import FreeCAD
+import os
+import Part
+import math
 from FreeCAD import Vector
 from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 # modif add
@@ -55,14 +66,6 @@ except ImportError:
 
 global zOrder
 
-from .GDMLObjects import GDMLQuadrangular, GDMLTriangular, \
-                        GDML2dVertex, GDMLSection, \
-                        GDMLmaterial, GDMLfraction, \
-                        GDMLcomposite, GDMLisotope, \
-                        GDMLelement, GDMLconstant, GDMLvariable, \
-                        GDMLquantity, GDMLbordersurface
-
-from . import GDMLShared
 
 # ***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
@@ -135,7 +138,8 @@ class MirrorPlacer(MultiPlacer):
         pos = self.obj.Source.Placement.Base
         name = volRef+'_mirror'
         # bordersurface might need physvol to have a name
-        pvol = ET.SubElement(assembly, 'physvol', {'name': 'PV-'+self.obj.Label})
+        pvol = ET.SubElement(assembly, 'physvol', {
+                             'name': 'PV-'+self.obj.Label})
         ET.SubElement(pvol, 'volumeref', {'ref': volRef})
         normal = self.obj.Normal
         # reflect the position about the reflection plane
@@ -228,7 +232,7 @@ def GDMLstructure():
     # globals
     ################################
     global gdml, constants, variables, define, materials, solids, \
-           structure, setup
+        structure, setup
     global WorldVOL
     global defineCnt, LVcount, PVcount, POScount, ROTcount, SCLcount
     global centerDefined
@@ -558,17 +562,17 @@ def processPlanar(obj, shape, name):
         NumVrt = len(f.Vertexes)
         if NumVrt == 3:
             ET.SubElement(tess, 'triangular', {
-               'vertex1': vrt1,
-               'vertex2': vrt2,
-               'vertex3': vrt3,
-               'type': 'ABSOLUTE'})
+                'vertex1': vrt1,
+                'vertex2': vrt2,
+                'vertex3': vrt3,
+                'type': 'ABSOLUTE'})
         elif NumVrt == 4:
             ET.SubElement(tess, 'quadrangular', {
-               'vertex1': vrt1,
-               'vertex2': vrt2,
-               'vertex3': vrt3,
-               'vertex4': vrt4,
-               'type': 'ABSOLUTE'})
+                'vertex1': vrt1,
+                'vertex2': vrt2,
+                'vertex3': vrt3,
+                'vertex4': vrt4,
+                'type': 'ABSOLUTE'})
 
 
 def checkShapeAllPlanar(Shape):
@@ -616,8 +620,8 @@ def mesh2Tessellate(mesh, name):
         vrt2 = 'v'+str(baseVrt+fc_facet[1])
         vrt3 = 'v'+str(baseVrt+fc_facet[2])
         ET.SubElement(tess, 'triangular', {
-           'vertex1': vrt1, 'vertex2': vrt2,
-           'vertex3': vrt3, 'type': 'ABSOLUTE'})
+            'vertex1': vrt1, 'vertex2': vrt2,
+            'vertex3': vrt3, 'type': 'ABSOLUTE'})
 
 
 def processMesh(obj, Mesh, Name):
@@ -679,10 +683,10 @@ def processObjectShape(obj):
 def processSection(obj):
     # print("Process Section")
     ET.SubElement(solids, 'section', {
-       'vertex1': obj.v1,
-       'vertex2': obj.v2,
-       'vertex3': obj.v3, 'vertex4': obj.v4,
-       'type': obj.vtype})
+        'vertex1': obj.v1,
+        'vertex2': obj.v2,
+        'vertex3': obj.v3, 'vertex4': obj.v4,
+        'type': obj.vtype})
 
 
 def addPhysVol(xmlVol, volName):
@@ -993,8 +997,10 @@ def processBorderSurfaces():
                 borderSurface = ET.SubElement(structure, 'bordersurface',
                                               {'name': obj.Name,
                                                'surfaceproperty': obj.Surface})
-                ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV1})
-                ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-'+obj.PV2})
+                ET.SubElement(borderSurface, 'physvolref',
+                              {'ref': 'PV-'+obj.PV1})
+                ET.SubElement(borderSurface, 'physvolref',
+                              {'ref': 'PV-'+obj.PV2})
 
 
 def processOpticals():
@@ -1022,7 +1028,7 @@ def processOpticals():
                     for s in obj.Group:
                         processSkinSurfaces(s)
                     break
-                
+
 
 def processMaterials():
     print("\nProcess Materials")
@@ -1057,8 +1063,8 @@ def createMaterials(group):
     for obj in group:
         if obj.Label != 'Geant4':
             item = ET.SubElement(materials, 'material', {
-               'name':
-               nameFromLabel(obj.Label)})
+                'name':
+                nameFromLabel(obj.Label)})
 
             # Dunit & Dvalue must be first for Geant4
             if hasattr(obj, 'Dunit') or hasattr(obj, 'Dvalue'):
@@ -1089,13 +1095,12 @@ def createMaterials(group):
                                                      'ref': getattr(obj, prop)})
 
 
-
 def createElements(group):
     global materials
     for obj in group:
         # print(f'Element : {obj.Label}')
         item = ET.SubElement(materials, 'element', {
-           'name': nameFromLabel(obj.Label)})
+            'name': nameFromLabel(obj.Label)})
         # Common code IsoTope and Elements1
         processIsotope(obj, item)
 
@@ -1197,9 +1202,6 @@ def processGroup(obj):
                 # Do not export predefine in Geant4
                 print("Geant4")
                 break
-
-
-from itertools import islice
 
 
 def consume(iterator):
@@ -1430,7 +1432,8 @@ def processContainer(vol, xmlParent):
     newXmlVol = insertXMLvolume(volName)
     solidExporter = SolidExporter.getExporter(objects[0])
     solidExporter.export()
-    addVolRef(newXmlVol, volName, objects[0], solidExporter.name(), addColor=False)
+    addVolRef(newXmlVol, volName, objects[0],
+              solidExporter.name(), addColor=False)
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
     for obj in objects[1:]:
         if obj.TypeId == 'App::Part':
@@ -1627,7 +1630,8 @@ def assemblyHeads(obj):
                         assemblyHeads.append(ob)
 
         # now remove any OutList objects from from the subObjs
-        for subObj in assemblyHeads[:]:  # the slice is a COPY of the list, not the list itself
+        # the slice is a COPY of the list, not the list itself
+        for subObj in assemblyHeads[:]:
             if hasattr(subObj, 'OutList'):
                 # App:Links has the object they are linked to in their OutList
                 # We do not want to remove the link!
@@ -1667,7 +1671,8 @@ def topObj(obj):
                     sublist.remove(o)
 
     if len(sublist) > 1:
-        print(f'Found more than one top object in {obj.Label}. \n Returning first only')
+        print(
+            f'Found more than one top object in {obj.Label}. \n Returning first only')
     elif len(sublist) == 0:
         return None
 
@@ -2030,7 +2035,7 @@ def create_gcard(path, flag):
     ET.SubElement(gcard, 'detector', {'name': 'target_cad', 'factory': 'CAD'})
     if flag is True:
         ET.SubElement(gcard, 'detector', {
-           'name': 'target_gdml', 'factory': 'GDML'})
+            'name': 'target_gdml', 'factory': 'GDML'})
     indent(gcard)
     path = os.path.join(path, basename + '.gcard')
     ET.ElementTree(gcard).write(path)
@@ -2076,7 +2081,7 @@ def export(exportList, filepath):
     global refPlacement
 
     refPlacement = {}  # a dictionary of name as key, and placement as value
-                       # the name could that of <solid, an <assembly, or a <physvol
+    # the name could that of <solid, an <assembly, or a <physvol
 
     first = exportList[0]
     print(f'Export Volume: {first.Label}')
@@ -2255,7 +2260,8 @@ class SolidExporter:
             scale = self.getScale()
             if scale.x == 1.0 and scale.y == 1.0 and scale.z == 1.0:
                 return
-            xml = ET.SubElement(solids, 'scaledSolid', {'name': self._name+'_scaled'})
+            xml = ET.SubElement(solids, 'scaledSolid', {
+                                'name': self._name+'_scaled'})
             ET.SubElement(xml, 'solidref', {'ref': self.name()})
             ET.SubElement(xml, 'scale', {'name': self.name()+'_scale',
                                          'x': str(scale.x),
@@ -2312,7 +2318,8 @@ class CloneExporter(SolidExporter):
         for i, exporter in enumerate(exporters):
             volRef = exporter.name()
             nodeName = f'{self.name()}_{i}'
-            nodeXML = ET.SubElement(unionXML, 'multiUnionNode', {'name': nodeName})
+            nodeXML = ET.SubElement(
+                unionXML, 'multiUnionNode', {'name': nodeName})
             ET.SubElement(nodeXML, 'solid', {'ref': volRef})
             exportPosition(nodeName, nodeXML, exporter.position())
             rot = FreeCAD.Rotation(exporter.rotation())
@@ -2348,7 +2355,8 @@ class CloneExporter(SolidExporter):
         # fail. There is no way to know if the difference between the scaled
         # position and the clone's position is due to the clone moving or the
         # object moving.
-        clonedPlacement = FreeCAD.Placement(exporter.placement())  # copy the placement
+        clonedPlacement = FreeCAD.Placement(
+            exporter.placement())  # copy the placement
         m = clonedPlacement.Matrix
         invRotation = FreeCAD.Placement(m.inverse()).Rotation
         clonedPosition = clonedPlacement.Base
@@ -2359,7 +2367,8 @@ class CloneExporter(SolidExporter):
         if self.hasScale():
             scale = self.obj.Scale
             r1.scale(scale.x, scale.y, scale.z)
-            delta = self.obj.Placement.Base - objPosition.scale(scale.x, scale.y, scale.z)
+            delta = self.obj.Placement.Base - \
+                objPosition.scale(scale.x, scale.y, scale.z)
         else:
             delta = self.obj.Placement.Base - objPosition
         objRotation = FreeCAD.Rotation(clonedObj.Placement.Rotation)
@@ -2888,21 +2897,21 @@ class GDMLSampledTessellatedExporter(GDMLSolidExporter):
                 i1 = indexList[i + 1]
                 i2 = indexList[i + 2]
                 ET.SubElement(tess, 'triangular', {
-                   'vertex1': tessVname+str(i0),
-                   'vertex2': tessVname+str(i1),
-                   'vertex3': tessVname+str(i2),
-                   'type': 'ABSOLUTE'})
+                    'vertex1': tessVname+str(i0),
+                    'vertex2': tessVname+str(i1),
+                    'vertex3': tessVname+str(i2),
+                    'type': 'ABSOLUTE'})
             elif nVerts == 4:
                 i0 = indexList[i]
                 i1 = indexList[i + 1]
                 i2 = indexList[i + 2]
                 i3 = indexList[i + 3]
                 ET.SubElement(tess, 'quadrangular', {
-                   'vertex1': tessVname+str(i0),
-                   'vertex2': tessVname+str(i1),
-                   'vertex3': tessVname+str(i2),
-                   'vertex4': tessVname+str(i3),
-                   'type': 'ABSOLUTE'})
+                    'vertex1': tessVname+str(i0),
+                    'vertex2': tessVname+str(i1),
+                    'vertex3': tessVname+str(i2),
+                    'vertex4': tessVname+str(i3),
+                    'type': 'ABSOLUTE'})
             i += nVerts
         self._exportScaled()
 
@@ -2965,21 +2974,21 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
                 ET.SubElement(tess, 'triangular', {
-                   'vertex1': tessVname+str(i0),
-                   'vertex2': tessVname+str(i1),
-                   'vertex3': tessVname+str(i2),
-                   'type': 'ABSOLUTE'})
+                    'vertex1': tessVname+str(i0),
+                    'vertex2': tessVname+str(i1),
+                    'vertex3': tessVname+str(i2),
+                    'type': 'ABSOLUTE'})
             elif len(f.Edges) == 4:
                 i0 = vertexHashcodeDict[vertexes[0].hashCode()]
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
                 i3 = vertexHashcodeDict[vertexes[3].hashCode()]
                 ET.SubElement(tess, 'quadrangular', {
-                   'vertex1': tessVname+str(i0),
-                   'vertex2': tessVname+str(i1),
-                   'vertex3': tessVname+str(i2),
-                   'vertex4': tessVname+str(i3),
-                   'type': 'ABSOLUTE'})
+                    'vertex1': tessVname+str(i0),
+                    'vertex2': tessVname+str(i1),
+                    'vertex3': tessVname+str(i2),
+                    'vertex4': tessVname+str(i3),
+                    'type': 'ABSOLUTE'})
         self._exportScaled()
 
 
@@ -3043,7 +3052,8 @@ class GDMLTetrahedronExporter(GDMLSolidExporter):
         count = 0
         for t in self.obj.Proxy.Tetra:
             lvName = 'Tetra' + str(count)
-            physvol = ET.SubElement(assembly, 'physvol', {'name': 'PV-Tetra' + str(count)})
+            physvol = ET.SubElement(assembly, 'physvol', {
+                                    'name': 'PV-Tetra' + str(count)})
             ET.SubElement(physvol, 'volumeref', {'ref': lvName})
             # ET.SubElement(physvol, 'position')
             # ET.SubElement(physvol, 'rotation')
@@ -3223,16 +3233,19 @@ class GDML2dVertexExporter(GDMLSolidExporter):
         ET.SubElement(solids, 'twoDimVertex', {'x': self.obj.x,
                                                'y': self.obj.y})
 
+
 class GDMLborderSurfaceExporter(GDMLSolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
 
     def export(self):
         borderSurface = ET.SubElement(structure, 'bordersurface',
-                               {'name': self.obj.Name,
-                                    'surfaceproperty': self.obj.surface })
-        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-' +self.obj.pv1})
-        ET.SubElement(borderSurface, 'physvolref', {'ref': 'PV-' +self.obj.pv2})
+                                      {'name': self.obj.Name,
+                                       'surfaceproperty': self.obj.surface})
+        ET.SubElement(borderSurface, 'physvolref', {
+                      'ref': 'PV-' + self.obj.pv1})
+        ET.SubElement(borderSurface, 'physvolref', {
+                      'ref': 'PV-' + self.obj.pv2})
 
 
 class GDMLborderSurfaceExporter(GDMLSolidExporter):
@@ -3293,7 +3306,8 @@ class OrthoArrayExporter(SolidExporter):
         base = self.obj.OutList[0]
         print(base.Label)
         if hasattr(base, 'TypeId') and base.TypeId == 'App::Part':
-            print(f'**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***')
+            print(
+                f'**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***')
             return
         baseExporter = SolidExporter.getExporter(base)
         if baseExporter is None:
@@ -3333,7 +3347,8 @@ class PolarArrayExporter(SolidExporter):
         base = self.obj.OutList[0]
         print(base.Label)
         if hasattr(base, 'TypeId') and base.TypeId == 'App::Part':
-            print(f'**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***')
+            print(
+                f'**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***')
             return
         baseExporter = SolidExporter.getExporter(base)
         baseExporter.export()
@@ -3348,11 +3363,13 @@ class PolarArrayExporter(SolidExporter):
             pos = rot*positionVector     # position has to be rotated too!
             rot.Angle = -rot.Angle   # undo angle reversal by exportRotation
             nodeName = f'{self.name()}_{i}'
-            nodeXML = ET.SubElement(unionXML, 'multiUnionNode', {'name': nodeName})
+            nodeXML = ET.SubElement(
+                unionXML, 'multiUnionNode', {'name': nodeName})
             ET.SubElement(nodeXML, 'solid', {'ref': volRef})
             exportPosition(nodeName, nodeXML, pos)
             exportRotation(nodeName, nodeXML, rot)
         self._exportScaled()
+
 
 #
 # -------------------------------------- revolutionExporter ----------------------------------------------------------------
@@ -4017,7 +4034,8 @@ class Extruded2Edges(ExtrudedClosedCurve):
                 if case('Part::GeomCircle'):
                     print('Arc of Circle')
                     arcXtruName = self.name + '_c'+str(i)
-                    arcSection = ExtrudedArcSection(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedArcSection(
+                        arcXtruName, [e], self.height)
                     arcSection.export()
 
                     midpnt = arcSection.midPoint()
@@ -4028,7 +4046,8 @@ class Extruded2Edges(ExtrudedClosedCurve):
                 if case('Part::GeomEllipse'):
                     print('Arc of Ellipse')
                     arcXtruName = self.name+'_e'+str(i)
-                    arcSection = ExtrudedEllipticalSection(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedEllipticalSection(
+                        arcXtruName, [e], self.height)
                     arcSection.export()
                     midpnt = arcSection.midPoint()
                     inside = pointInsideEdge(midpnt, v0, normal)
@@ -4038,7 +4057,8 @@ class Extruded2Edges(ExtrudedClosedCurve):
                 else:
                     print(f'Arc of {e.Curve.TypeId}')
                     arcXtruName = self.name+'_bs'+str(i)
-                    arcSection = ExtrudedClosedCurve(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedClosedCurve(
+                        arcXtruName, [e], self.height)
                     arcSection.export()
 
                     midpnt = arcSection.midPoint()
@@ -4058,9 +4078,11 @@ class Extruded2Edges(ExtrudedClosedCurve):
             inside1 = edgeCurves[1][1]
             sameSide = (inside0 == inside1)
             if sameSide is False:
-                booleanSolid = ET.SubElement(solids, 'union', {'name': self.name})
+                booleanSolid = ET.SubElement(
+                    solids, 'union', {'name': self.name})
             else:
-                booleanSolid = ET.SubElement(solids, 'subtraction', {'name': self.name})
+                booleanSolid = ET.SubElement(
+                    solids, 'subtraction', {'name': self.name})
 
             area0 = edgelistBBoxArea([self.edgeList[0]])
             area1 = edgelistBBoxArea([self.edgeList[1]])
@@ -4105,9 +4127,11 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
         totArea = ftot.Area
         edgeArea = fEdge.Area
         withoutArea = fwithout.Area
-        print(f'totArea {totArea}, edgeArea {edgeArea}, withoutArea {withoutArea}')
+        print(
+            f'totArea {totArea}, edgeArea {edgeArea}, withoutArea {withoutArea}')
 
-        if totArea < 0.999*(edgeArea + withoutArea):  # 0.99 safety margin for totArea = edgeArea+withoutArea
+        # 0.99 safety margin for totArea = edgeArea+withoutArea
+        if totArea < 0.999*(edgeArea + withoutArea):
             if totArea > edgeArea:
                 return True
             else:
@@ -4148,7 +4172,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                     # form face without this edge and then test for midpoint
                     # inside that face.
                     arcXtruName = self.name + '_c'+str(i)
-                    arcSection = ExtrudedArcSection(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedArcSection(
+                        arcXtruName, [e], self.height)
                     inside = self.isSubtraction(e)
                     arcSection.export()
                     # this is not general. Needs to be changed
@@ -4159,7 +4184,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                 if case('Part::GeomEllipse'):
                     print('Arc of Ellipse')
                     arcXtruName = self.name+'_e'+str(i)
-                    arcSection = ExtrudedEllipticalSection(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedEllipticalSection(
+                        arcXtruName, [e], self.height)
                     inside = self.isSubtraction(e)
                     arcSection.export()
                     edgeCurves.append([arcXtruName, inside])
@@ -4168,7 +4194,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                 else:
                     print(f'Curve {e.Curve.TypeId}')
                     arcXtruName = self.name+'_g'+str(i)
-                    arcSection = ExtrudedClosedCurve(arcXtruName, [e], self.height)
+                    arcSection = ExtrudedClosedCurve(
+                        arcXtruName, [e], self.height)
                     bsplineVerts = arcSection.discretize()
                     verts = verts + bsplineVerts
                     break
@@ -4189,14 +4216,16 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                 else:
                     name = 'bool' + curveName
                 if isSubtraction is False:
-                    booleanSolid = ET.SubElement(solids, 'union', {'name': name})
+                    booleanSolid = ET.SubElement(
+                        solids, 'union', {'name': name})
                     ET.SubElement(booleanSolid, 'first', {'ref': currentSolid})
                     ET.SubElement(booleanSolid, 'second', {'ref': curveName})
                 elif isSubtraction is True:
                     secondName = curveName+'_s'  # scale solids along z, so it punches thru
                     secondPos = Vector(0, 0, -0.01*self.height)
                     scaleUp(secondName, curveName, 1.10)
-                    booleanSolid = ET.SubElement(solids, 'subtraction', {'name': name})
+                    booleanSolid = ET.SubElement(
+                        solids, 'subtraction', {'name': name})
                     ET.SubElement(booleanSolid, 'first', {'ref': currentSolid})
                     ET.SubElement(booleanSolid, 'second', {'ref': secondName})
                     exportPosition(secondName, booleanSolid, secondPos)
@@ -4204,7 +4233,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
                     secondName = currentSolid+'_s'  # scale solids along z, so it punches thru
                     secondPos = Vector(0, 0, -0.01*self.height)
                     scaleUp(secondName, currentSolid, 1.10)
-                    booleanSolid = ET.SubElement(solids, 'subtraction', {'name': name})
+                    booleanSolid = ET.SubElement(
+                        solids, 'subtraction', {'name': name})
                     ET.SubElement(booleanSolid, 'first', {'ref': curveName})
                     ET.SubElement(booleanSolid, 'second', {'ref': secondName})
 
@@ -4240,8 +4270,9 @@ class Node:
                     self.left_child = Node(closedCurve, self, 1-self.parity)
                 else:
                     self.left_child.insert(closedCurve)
-            else:  # Since we have no intersecting curves (for well constructed sketch
-                   # if the given curve is not inside this node, it must be outside
+            # Since we have no intersecting curves (for well constructed sketch
+            else:
+                # if the given curve is not inside this node, it must be outside
                 if self.right_sibling is None:
                     self.right_sibling = Node(closedCurve, self, self.parity)
                 else:
@@ -4434,7 +4465,8 @@ class ExtrusionExporter(SolidExporter):
             zAngle = curve.rotation[2] - rootRot[2]
             posName = curve.name+'_pos'
             rotName = curve.name+'_rot'
-            exportDefine(posName, relativePosition)  # position of second relative to first
+            # position of second relative to first
+            exportDefine(posName, relativePosition)
             ET.SubElement(define, 'rotation', {'name': rotName, 'unit': 'deg',
                                                'x': '0', 'y': '0',
                                                'z': str(zAngle)})

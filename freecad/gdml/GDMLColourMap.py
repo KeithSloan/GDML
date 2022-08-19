@@ -243,8 +243,10 @@ class GDMLColourMap(QtGui.QDialog):
                                             material = obj.material
                                         else:
                                             material = None
-                                        self.addColour2Map(colour, colhex, material)
-                                        self.colorDict.update([(colhex, len(self.colorDict))])
+                                        self.addColour2Map(
+                                            colour, colhex, material)
+                                        self.colorDict.update(
+                                            [(colhex, len(self.colorDict))])
                                 if action == 2:  # Update Object Material
                                     if hasattr(obj, 'Shape'):
                                         mapIdx = self.colorDict[colhex]
@@ -258,7 +260,8 @@ class GDMLColourMap(QtGui.QDialog):
                                             obj.material = self.matList
                                         # Ignore GDML objects which will have Proxy
                                         if not hasattr(obj, 'Proxy'):
-                                            obj.material = self.matList.index(m)
+                                            obj.material = self.matList.index(
+                                                m)
 
     def addColour2Map(self, c, hex, material):
         self.mapList.addEntry(QtGui.QColor(c[0]*255, c[1]*255,
@@ -297,7 +300,8 @@ class GDMLColourMap(QtGui.QDialog):
         import csv
         from .importGDML import processXML, joinDir
         print('onLoad')
-        processXML(FreeCAD.ActiveDocument, joinDir('Resources/MapMaterials.xml'))
+        processXML(FreeCAD.ActiveDocument, joinDir(
+            'Resources/MapMaterials.xml'))
         # reset mapList
         self.mapList = GDMLColourMapList(self.matList)
         with open(joinDir('Resources/ColorDict.csv'), 'r') as file:
@@ -379,4 +383,3 @@ class GDMLColourMap(QtGui.QDialog):
 global userCancelled, userOK
 userCancelled = "Cancelled"
 userOK = "OK"
-

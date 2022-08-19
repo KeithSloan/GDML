@@ -31,7 +31,8 @@ __url__ = ["http://www.freecadweb.org"]
 This Script includes the GUI Commands of the GDML module
 '''
 
-import FreeCAD, FreeCADGui
+import FreeCAD
+import FreeCADGui
 import Part
 from PySide import QtGui, QtCore
 
@@ -71,7 +72,7 @@ class importPrompt(QtGui.QDialog):
         self.setLayout(mainLayout)
         # self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
         # define window xLoc,yLoc,xDim,yDim
-        self.setGeometry(	650, 650, 0, 50)
+        self.setGeometry(650, 650, 0, 50)
         self.setWindowTitle("Choose an Option    ")
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.retStatus = 0
@@ -144,20 +145,22 @@ def createPartVol(obj):
         return vol
     return None
 
+
 def insertPartVol(objPart, LVname, solidName):
     from .importGDML import addSurfList
     doc = FreeCAD.ActiveDocument
     if objPart is None:
-       vol = doc.addObject("App::Part", LVname)
+        vol = doc.addObject("App::Part", LVname)
     else:
-       vol = objPart.newObject("App::Part", LVname)
-    if hasattr(vol,'Material'):
-       print('Hide Material')
-       vol.setEditorMode('Material', 2)
+        vol = objPart.newObject("App::Part", LVname)
+    if hasattr(vol, 'Material'):
+        print('Hide Material')
+        vol.setEditorMode('Material', 2)
 
     obj = vol.newObject("Part::FeaturePython", solidName)
     addSurfList(doc, vol)
     return obj
+
 
 def insertPartVol(objPart, LVname, solidName):
     from .importGDML import addSurfList
@@ -200,6 +203,7 @@ class ColourMapFeature:
                 QtCore.QT_TRANSLATE_NOOP('GDMLColourMapFeature',
                                          'Add Colour Map')}
 
+
 class GDMLSetSkinSurface(QtGui.QDialog):
     def __init__(self, sel):
         super(GDMLSetSkinSurface, self).__init__()
@@ -215,40 +219,40 @@ class GDMLSetSkinSurface(QtGui.QDialog):
         opticals = FreeCAD.ActiveDocument.getObject('Opticals')
         print(opticals.Group)
         for g in opticals.Group:
-          if g.Name == "Surfaces":
-             self.surfList= []
-             for s in g.Group:
-                print(s.Name)
-                self.surfList.append(s.Name)
+            if g.Name == "Surfaces":
+                self.surfList = []
+                for s in g.Group:
+                    print(s.Name)
+                    self.surfList.append(s.Name)
         self.surfList.append("None")
         self.surfacesCombo.addItems(self.surfList)
-        #self.surfacesCombo.currentIndexChanged.connect(self.surfaceChanged)
-        self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set SkinSurface'))
+        # self.surfacesCombo.currentIndexChanged.connect(self.surfaceChanged)
+        self.buttonSet = QtGui.QPushButton(
+            translate('GDML', 'Set SkinSurface'))
         self.buttonSet.clicked.connect(self.onSet)
         layout = QtGui.QVBoxLayout()
         layout.addWidget(self.surfacesCombo)
         layout.addWidget(self.buttonSet)
         self.setLayout(layout)
-    
-    
+
     def onSet(self):
-        surf= self.surfacesCombo.currentText()
+        surf = self.surfacesCombo.currentText()
         obj = self.select[0].Object
         print(self.select[0].Object)
         print(surf)
-        if hasattr(obj,'SkinSurface'):
-           obj.SkinSurface = surf
+        if hasattr(obj, 'SkinSurface'):
+            obj.SkinSurface = surf
         else:
-           obj.addProperty("App::PropertyEnumeration","SkinSurface", \
-                                "GDML","SkinSurface")
-           obj.SkinSurface = self.surfLst
-           obj.SkinSurface = self.surfList.index(surf)
+            obj.addProperty("App::PropertyEnumeration", "SkinSurface",
+                            "GDML", "SkinSurface")
+            obj.SkinSurface = self.surfLst
+            obj.SkinSurface = self.surfList.index(surf)
         self.close()
 
     def surfaceChanged(self, index):
         self.surfacesCombo.blockSignals(True)
         self.surfacesCombo.clear()
-        surface  = self.surfacesCombo.currentText()
+        surface = self.surfacesCombo.currentText()
         print(surface)
 
 
@@ -263,15 +267,15 @@ class SetSkinSurfaceFeature:
         for s in sel:
             # print(s)
             # print(dir(s))
-            if hasattr(s.Object,'LinkedObject'):
-               obj = s.Object.LinkedObject
+            if hasattr(s.Object, 'LinkedObject'):
+                obj = s.Object.LinkedObject
             else:
-               obj = s.Object
+                obj = s.Object
             if obj.TypeId == 'App::Part':
                 dialog = GDMLSetSkinSurface(sel)
                 dialog.exec_()
         return
-    
+
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
             return False
@@ -284,6 +288,7 @@ class SetSkinSurfaceFeature:
                                          'Set Skin Surface'), 'ToolTip':
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetSkinSurface',
                                          'Set Skin Surface')}
+
 
 class noCommonFacePrompt(QtGui.QDialog):
     def __init__(self, *args):
@@ -320,6 +325,7 @@ class noCommonFacePrompt(QtGui.QDialog):
         #self.retStatus = 2
         self.close()
 
+
 class SetBorderSurfaceFeature:
 
     def Activated(self):
@@ -328,64 +334,64 @@ class SetBorderSurfaceFeature:
         print('Add SetBorderSurface')
         sel = FreeCADGui.Selection.getSelectionEx()
         print(len(sel))
-        if len(sel) == 3 :
-           surfaceObj = None
-           partList = []
-           for s in sel:
-               if hasattr(s,'Object'):
-                  #print(s.Object)
-                  obj = s.Object
-                  #print(obj.TypeId)
-                  if obj.TypeId == "App::Part":
-                     #print('Part Added')
-                     partList.append(obj)
-
-                  elif obj.TypeId == "App::Link":
-                     if obj.LinkedObject.TypeId == "App::Part":
-                        #print('Linked Part Added')
+        if len(sel) == 3:
+            surfaceObj = None
+            partList = []
+            for s in sel:
+                if hasattr(s, 'Object'):
+                    # print(s.Object)
+                    obj = s.Object
+                    # print(obj.TypeId)
+                    if obj.TypeId == "App::Part":
+                        #print('Part Added')
                         partList.append(obj)
-                        
-                  elif obj.TypeId == "App::DocumentObjectGroupPython":
-                     #print(dir(obj))
-                     if hasattr(obj,'InList'):
-                        #print(obj.InList)
-                        parent = obj.InList[0]
-                        #print(parent.Name)
-                        if parent.Name == "Surfaces":
-                           surfaceObj = obj
 
-           doc = FreeCAD.ActiveDocument
-           #print(f'Part List {partList}')
-           if surfaceObj is not None and len(partList) == 2:
-              print('Action set Border Surface')
-              print(f'Surface Obj {surfaceObj.Name}')
-              commonFaceFlag, commonFaces = self.checkCommonFace(partList)
-              if commonFaceFlag == True:
-                 if len(commonFaces) == 1:
-                    print('Yes Common Face')
-                    self.SetBorderSurface(doc, surfaceObj, partList)
-  
-                 else:
-                    print('More than one Common Face - Error?')
-                    print('commonFace indexs {commonFaces}')
+                    elif obj.TypeId == "App::Link":
+                        if obj.LinkedObject.TypeId == "App::Part":
+                            #print('Linked Part Added')
+                            partList.append(obj)
+
+                    elif obj.TypeId == "App::DocumentObjectGroupPython":
+                        # print(dir(obj))
+                        if hasattr(obj, 'InList'):
+                            # print(obj.InList)
+                            parent = obj.InList[0]
+                            # print(parent.Name)
+                            if parent.Name == "Surfaces":
+                                surfaceObj = obj
+
+            doc = FreeCAD.ActiveDocument
+            #print(f'Part List {partList}')
+            if surfaceObj is not None and len(partList) == 2:
+                print('Action set Border Surface')
+                print(f'Surface Obj {surfaceObj.Name}')
+                commonFaceFlag, commonFaces = self.checkCommonFace(partList)
+                if commonFaceFlag == True:
+                    if len(commonFaces) == 1:
+                        print('Yes Common Face')
+                        self.SetBorderSurface(doc, surfaceObj, partList)
+
+                    else:
+                        print('More than one Common Face - Error?')
+                        print('commonFace indexs {commonFaces}')
+                        dialog = noCommonFacePrompt()
+                        dialog.exec_()
+                        if dialog.retStatus == 1:
+                            self.SetBorderSurface(doc, surfaceObj, partList)
+
+                else:
+                    print('No Valid common Face')
                     dialog = noCommonFacePrompt()
                     dialog.exec_()
                     if dialog.retStatus == 1:
-                       self.SetBorderSurface(doc, surfaceObj, partList)
-
-              else:
-                 print('No Valid common Face')
-                 dialog = noCommonFacePrompt()
-                 dialog.exec_()
-                 if dialog.retStatus == 1:
-                    self.SetBorderSurface(doc, surfaceObj, partList)
-           else:
-               print('Need to select two Parts and One Surface')
+                        self.SetBorderSurface(doc, surfaceObj, partList)
+            else:
+                print('Need to select two Parts and One Surface')
         else:
             print('Need to select two Parts and One Surface')
         return
 
-    def SetBorderSurface(self, doc, surfaceObj, partList): 
+    def SetBorderSurface(self, doc, surfaceObj, partList):
         from .GDMLObjects import GDMLbordersurface
 
         print('Action set Border Surface')
@@ -393,13 +399,13 @@ class SetBorderSurfaceFeature:
         surfaceName = self.SurfaceName(doc, surfaceObj.Name)
         print(f'Surface Name {surfaceName}')
         obj = doc.addObject("App::FeaturePython", surfaceName)
-        GDMLbordersurface(obj, surfaceName, surfaceObj.Name, \
-                     partList[0].Name, partList[1].Name)
+        GDMLbordersurface(obj, surfaceName, surfaceObj.Name,
+                          partList[0].Name, partList[1].Name)
 
-    def SurfaceName(self, doc, name ):
-        index = 1 
-        while doc.getObject(name+str(index)) is not None :
-              index += 1
+    def SurfaceName(self, doc, name):
+        index = 1
+        while doc.getObject(name+str(index)) is not None:
+            index += 1
         return name + str(index)
 
     def checkCommonFace(self, partList):
@@ -416,45 +422,44 @@ class SetBorderSurfaceFeature:
             for j, face1 in enumerate(shape1.Faces):
                 comShape = face0.common(face1, tolerence)
                 if len(comShape.Faces) > 0:
-                   # Append Tuple
-                   commonList.append((i, j))
-                   print(f'Common Face shape0 {i} shape1 {j}')
+                    # Append Tuple
+                    commonList.append((i, j))
+                    print(f'Common Face shape0 {i} shape1 {j}')
         num = len(commonList)
         print(f'{num} common Faces')
         if num > 0:
-           return True, commonList
+            return True, commonList
         else:
-           return False, None
-
+            return False, None
 
     def getGDMLObject(self, list):
         # need to make more robust check types etc
         if len(list) > 1:
-           return list[1]
+            return list[1]
         else:
-           return list[0]
-           
+            return list[0]
+
     def adjustShape(self, part):
         #print("Adjust Shape")
-        #print(part.Name)
-        #print(part.OutList)
+        # print(part.Name)
+        # print(part.OutList)
         #print(f'Placement {part.Placement.Base}')
-        # Use Matrix rather than Placement in case rotated 
+        # Use Matrix rather than Placement in case rotated
         #placement = part.Placement.Base
         matrix = part.Placement.toMatrix()
-        if hasattr(part,'LinkedObject'):
-           #print(f'Linked Object {part.LinkedObject}')
-           part = part.getLinkedObject()
-           #print(part.Name)
-           #print(part.OutList)
-           #print(f'Linked Placement {part.Placement.Base}')
+        if hasattr(part, 'LinkedObject'):
+            #print(f'Linked Object {part.LinkedObject}')
+            part = part.getLinkedObject()
+            # print(part.Name)
+            # print(part.OutList)
+            #print(f'Linked Placement {part.Placement.Base}')
         obj = self.getGDMLObject(part.OutList)
         obj.recompute()
         # Shape is immutable so have to copy
         # Realthunder recommends avoid deep copy
         shape = Part.Shape(obj.Shape)
         #print(f'Shape Valid {shape.isValid()}')
-        #print(dir(shape))
+        # print(dir(shape))
         # Use saved Matrix in case of linked Object
         return shape.transformGeometry(matrix)
 
@@ -463,7 +468,7 @@ class SetBorderSurfaceFeature:
             return False
         else:
             return True
-    
+
     def GetResources(self):
         return {'Pixmap': 'GDML_SetBorderSurface', 'MenuText':
                 QtCore.QT_TRANSLATE_NOOP('GDML_SetBorderSurface',
@@ -487,7 +492,8 @@ class GDMLSetMaterial(QtGui.QDialog):
         self.setMouseTracking(True)
         self.buttonSet = QtGui.QPushButton(translate('GDML', 'Set Material'))
         self.buttonSet.clicked.connect(self.onSet)
-        self.groupedMaterials = newGetGroupedMaterials()  # this build, then returns all materials
+        # this build, then returns all materials
+        self.groupedMaterials = newGetGroupedMaterials()
         self.groupsCombo = QtGui.QComboBox()
         groups = [group for group in self.groupedMaterials]
         self.groupsCombo.addItems(groups)
@@ -573,10 +579,10 @@ class GDMLSetMaterial(QtGui.QDialog):
 
             else:
                 obj.addProperty("App::PropertyEnumeration", "material",
-                            "GDML", "Material")
+                                "GDML", "Material")
             obj.material = self.matList
             obj.material = self.matList.index(mat)
-           
+
 
 class GDMLScale(QtGui.QDialog):
     def __init__(self, selList):
@@ -648,9 +654,12 @@ class GDMLScale(QtGui.QDialog):
         self.xlabel.setText(_translate("GDMLScale", "X factor"))
         self.yLabel.setText(_translate("GDMLScale", "Y factor"))
         self.zLabel.setText(_translate("GDMLScale", "Z factor"))
-        self.xScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
-        self.yScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
-        self.zScale.setToolTip(_translate("GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.xScale.setToolTip(_translate(
+            "GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.yScale.setToolTip(_translate(
+            "GDMLScale", "Scaling factor (0.01 to 100)"))
+        self.zScale.setToolTip(_translate(
+            "GDMLScale", "Scaling factor (0.01 to 100)"))
         self.scaleButton.setText(_translate("GDMLScale", "OK"))
         self.cancelButton.setText(_translate("GDMLScale", "Cancel"))
 
@@ -680,7 +689,8 @@ class GDMLScale(QtGui.QDialog):
                 if hasattr(obj, 'scale'):
                     obj.scale = scale
                 else:
-                    obj.addProperty("App::PropertyVector", "scale", "Base", "scale").scale=scale
+                    obj.addProperty("App::PropertyVector",
+                                    "scale", "Base", "scale").scale = scale
                     obj.recompute()
             else:
                 if not errShown:
@@ -711,7 +721,8 @@ class GDMLScale(QtGui.QDialog):
             obj = sel.Object
             if hasattr(obj, 'Proxy') and isinstance(obj.Proxy, GDMLsolid):
                 if hasattr(obj, 'scale'):
-                    self.initialState[obj] = {'hadScale': True, 'scale': obj.scale}
+                    self.initialState[obj] = {
+                        'hadScale': True, 'scale': obj.scale}
                 else:
                     self.initialState[obj] = {'hadScale': False}
 
@@ -898,7 +909,8 @@ class BooleanIntersectionFeature:
                         base.adjustRelativeLinks(baseVol)
                         toolVol.removeObject(tool)
                         tool.adjustRelativeLinks(toolVol)
-                        boolVol = parent.newObject('App::Part', 'Bool-Intersection')
+                        boolVol = parent.newObject(
+                            'App::Part', 'Bool-Intersection')
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
                         boolObj = boolVol.newObject('Part::Common', 'Common')
@@ -1137,7 +1149,8 @@ class SphereFeature:
         # print("GDMLSphere Object - added")
         # obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta,
         #       aunit, lunits, material
-        GDMLSphere(obj, 10.0, 20.0, 0.0, 2.02, 0.0, 2.02, "rad", "mm", material)
+        GDMLSphere(obj, 10.0, 20.0, 0.0, 2.02, 0.0,
+                   2.02, "rad", "mm", material)
         # print("GDMLSphere initiated")
         ViewProvider(obj.ViewObject)
         # print("GDMLSphere ViewProvided - added")
@@ -1349,14 +1362,16 @@ class AddDecimateWidget(QtGui.QWidget):
         self.parms1layout.addWidget(self.reduction)
         self.grpLay1 = QtGui.QVBoxLayout()
         self.grpLay1.addLayout(self.parms1layout)
-        self.buttonReduction = QtGui.QPushButton(translate('GDML', 'Decimate Reduction'))
+        self.buttonReduction = QtGui.QPushButton(
+            translate('GDML', 'Decimate Reduction'))
         self.grpLay1.addWidget(self.buttonReduction)
         self.group1.setLayout(self.grpLay1)
         self.group2 = QtGui.QGroupBox('Decimate to Size')
         self.targetSize = iField('Target Size', 5, '100')
         self.grpLay2 = QtGui.QVBoxLayout()
         self.grpLay2.addWidget(self.targetSize)
-        self.buttonToSize = QtGui.QPushButton(translate('GDML', 'Decimate To Size'))
+        self.buttonToSize = QtGui.QPushButton(
+            translate('GDML', 'Decimate To Size'))
         self.grpLay2.addWidget(self.buttonToSize)
         self.group2.setLayout(self.grpLay2)
         self.Vlayout = QtGui.QVBoxLayout()
@@ -1451,7 +1466,7 @@ class DecimateFeature:
 
     def Activated(self):
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension
+            ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
             # if len(obj.InList) == 0: # allowed only for for top level objects
@@ -1495,7 +1510,8 @@ class AddTessellateWidget(QtGui.QWidget):
         bboxGroup = QtGui.QGroupBox('Objects Bounding Box')
         laybbox = QtGui.QHBoxLayout()
         laybbox.addWidget(QtGui.QLabel('Width : '+str(Shape.BoundBox.XLength)))
-        laybbox.addWidget(QtGui.QLabel('Height : '+str(Shape.BoundBox.YLength)))
+        laybbox.addWidget(QtGui.QLabel(
+            'Height : '+str(Shape.BoundBox.YLength)))
         laybbox.addWidget(QtGui.QLabel('Depth : '+str(Shape.BoundBox.ZLength)))
         bboxGroup.setLayout(laybbox)
         maxl = int((Shape.BoundBox.XLength + Shape.BoundBox.YLength +
@@ -1609,7 +1625,7 @@ class AddTessellateTask:
 
     def actionMesh(self):
         from .GmshUtils import initialize, meshObject, \
-          getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+            getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
         print('Action Gmsh : '+self.obj.Name)
         initialize()
@@ -1644,7 +1660,8 @@ class AddTessellateTask:
                 if hasattr(self.obj, 'InList'):
                     if len(self.obj.InList) > 0:
                         parent = self.obj.InList[0]
-                        self.tess = parent.newObject('Part::FeaturePython', name)
+                        self.tess = parent.newObject(
+                            'Part::FeaturePython', name)
                     if parent is None:
                         self.tess = FreeCAD.ActiveDocument.addObject(
                             'Part::FeaturePython', name)
@@ -1680,7 +1697,7 @@ class TessellateFeature:
     def Activated(self):
         import MeshPart
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension
+            ViewProvider, ViewProviderExtension
 
         for obj in FreeCADGui.Selection.getSelection():
             # if len(obj.InList) == 0: # allowed only for for top level objects
@@ -1737,10 +1754,10 @@ class TessellateGmshFeature:
     def Activated(self):
 
         from .GmshUtils import initialize, meshObject, \
-              getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
+            getVertex, getFacets, getMeshLen, printMeshInfo, printMyInfo
 
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension
+            ViewProvider, ViewProviderExtension
 
         print('Action Gmsh Activated')
         for obj in FreeCADGui.Selection.getSelection():
@@ -1761,7 +1778,8 @@ class TessellateGmshFeature:
                                                                        str(len(obj.Proxy.Vertex))))
                             panel.form.meshInfoLayout.addWidget(oField('Facets', 6,
                                                                        str(len(obj.Proxy.Facets))))
-                            panel.form.Vlayout.addLayout(panel.form.meshInfoLayout)
+                            panel.form.Vlayout.addLayout(
+                                panel.form.meshInfoLayout)
                             panel.form.setLayout(panel.form.Vlayout)
                     FreeCADGui.Control.showDialog(panel)
                 else:
@@ -1800,11 +1818,13 @@ class Mesh2TessDialog(QtGui.QDialog):
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(30, 320, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(
+            QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.textEdit = QtGui.QTextEdit(self)
         self.textEdit.setGeometry(QtCore.QRect(10, 10, 381, 141))
-        self.textEdit.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
+        self.textEdit.setLocale(QtCore.QLocale(
+            QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName("textEdit")
         self.verticalLayoutWidget = QtGui.QWidget(self)
@@ -1844,7 +1864,8 @@ class Mesh2TessDialog(QtGui.QDialog):
         self.retranslateUi()
         self.buttonBox.accepted.connect(self.tessellate)  # type: ignore
         self.buttonBox.rejected.connect(self.onCancel)  # type: ignore
-        self.fullDisplayRadioButton.toggled.connect(self.fullDisplayRadioButtonToggled)
+        self.fullDisplayRadioButton.toggled.connect(
+            self.fullDisplayRadioButtonToggled)
 
     def fullDisplayRadioButtonToggled(self):
         self.fullDisplayRadioButton.blockSignals(True)
@@ -1860,9 +1881,10 @@ class Mesh2TessDialog(QtGui.QDialog):
 
     def tessellate(self):
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension, GDMLSampledTessellated
+            ViewProvider, ViewProviderExtension, GDMLSampledTessellated
 
-        import cProfile, pstats
+        import cProfile
+        import pstats
 
         solidFlag = self.fullDisplayRadioButton.isChecked()
         sampledFraction = self.fractionSpinBox.value()
@@ -1887,7 +1909,7 @@ class Mesh2TessDialog(QtGui.QDialog):
                 m2t = vol.newObject('Part::FeaturePython',
                                     "GDMLTessellate_Mesh2Tess")
                 GDMLSampledTessellated(m2t, obj.Mesh.Topology[0], obj.Mesh.Facets,
-                                     "mm", mat, solidFlag, sampledFraction)
+                                       "mm", mat, solidFlag, sampledFraction)
                 if FreeCAD.GuiUp:
                     obj.ViewObject.Visibility = False
                     # print(dir(obj.ViewObject))
@@ -1908,17 +1930,24 @@ class Mesh2TessDialog(QtGui.QDialog):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Mesh2TessellateDialog", "Mesh2Tess"))
         self.textEdit.setHtml(_translate("Mesh2TessellateDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Convert a mesh to a GDML Tessellated solid. For very large meshes, the building of a full solid in python might take a <span style=\" font-weight:600;\">very long</span> time. To speed up conversion, a sampling of the facets can be displayed, instead of creating a full solid. <span style=\" font-weight:600;\">On export to GDML, the full solid will be exported</span>. The fraction of faces displayed can be later changed in the Properties paenl.</p></body></html>"))
-        self.groupBox.setTitle(_translate("Mesh2TessellateDialog", "Tessellation display"))
-        self.fullDisplayRadioButton.setToolTip(_translate("Mesh2TessellateDialog", "Display full solid"))
-        self.fullDisplayRadioButton.setText(_translate("Mesh2TessellateDialog", "Full solid"))
-        self.samplesRadioButton.setToolTip(_translate("Mesh2TessellateDialog", "Sample facets"))
-        self.samplesRadioButton.setText(_translate("Mesh2TessellateDialog", "Samples only"))
-        self.fractionsLabel.setText(_translate("Mesh2TessellateDialog", "Sampled fraction (%)"))
-        self.fractionSpinBox.setToolTip(_translate("Mesh2TessellateDialog", "Percent of facets sampled"))
+                                         "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                         "p, li { white-space: pre-wrap; }\n"
+                                         "</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+                                         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Convert a mesh to a GDML Tessellated solid. For very large meshes, the building of a full solid in python might take a <span style=\" font-weight:600;\">very long</span> time. To speed up conversion, a sampling of the facets can be displayed, instead of creating a full solid. <span style=\" font-weight:600;\">On export to GDML, the full solid will be exported</span>. The fraction of faces displayed can be later changed in the Properties paenl.</p></body></html>"))
+        self.groupBox.setTitle(_translate(
+            "Mesh2TessellateDialog", "Tessellation display"))
+        self.fullDisplayRadioButton.setToolTip(_translate(
+            "Mesh2TessellateDialog", "Display full solid"))
+        self.fullDisplayRadioButton.setText(
+            _translate("Mesh2TessellateDialog", "Full solid"))
+        self.samplesRadioButton.setToolTip(_translate(
+            "Mesh2TessellateDialog", "Sample facets"))
+        self.samplesRadioButton.setText(_translate(
+            "Mesh2TessellateDialog", "Samples only"))
+        self.fractionsLabel.setText(_translate(
+            "Mesh2TessellateDialog", "Sampled fraction (%)"))
+        self.fractionSpinBox.setToolTip(_translate(
+            "Mesh2TessellateDialog", "Percent of facets sampled"))
 
 
 class Mesh2TessFeature:
@@ -1947,7 +1976,7 @@ class Tess2MeshFeature:
     def Activated(self):
 
         from .GDMLObjects import GDMLTessellated, GDMLTriangular, \
-                  ViewProvider, ViewProviderExtension
+            ViewProvider, ViewProviderExtension
 
         from .GmshUtils import TessellatedShape2Mesh, Tetrahedron2Mesh
 
@@ -1964,7 +1993,8 @@ class Tess2MeshFeature:
                         if hasattr(obj, 'InList'):
                             if len(obj.InList) > 0:
                                 parent = obj.InList[0]
-                                mshObj = parent.newObject('Mesh::Feature', obj.Name)
+                                mshObj = parent.newObject(
+                                    'Mesh::Feature', obj.Name)
                         if parent is None:
                             mshObj = FreeCAD.ActiveDocument.addObject(
                                 'Mesh::Feature', obj.Name)
@@ -1999,7 +2029,7 @@ class TetrahedronFeature:
 
         from .GDMLObjects import GDMLTetrahedron, ViewProvider
         from .GmshUtils import initialize, meshObj, \
-              getTetrahedrons, printMeshInfo, printMyInfo
+            getTetrahedrons, printMeshInfo, printMyInfo
 
         for obj in FreeCADGui.Selection.getSelection():
             print('Action Tetrahedron')
@@ -2013,11 +2043,13 @@ class TetrahedronFeature:
                     if hasattr(obj, 'InList'):
                         if len(obj.InList) > 0:
                             parent = obj.InList[0]
-                            myTet = parent.newObject('Part::FeaturePython', name)
+                            myTet = parent.newObject(
+                                'Part::FeaturePython', name)
                     if parent is None:
                         myTet = FreeCAD.ActiveDocument.addObject(
                             'Part::FeaturePython', name)
-                    GDMLTetrahedron(myTet, tetraheds, "mm", getSelectedMaterial())
+                    GDMLTetrahedron(myTet, tetraheds, "mm",
+                                    getSelectedMaterial())
                     if FreeCAD.GuiUp:
                         obj.ViewObject.Visibility = False
                         ViewProvider(myTet.ViewObject)
@@ -2025,7 +2057,8 @@ class TetrahedronFeature:
                         FreeCAD.ActiveDocument.recompute()
                         FreeCADGui.SendMsgToActiveView("ViewFit")
                     else:
-                        FreeCAD.Console.PrintMessage('Not able to produce quandrants for this shape')
+                        FreeCAD.Console.PrintMessage(
+                            'Not able to produce quandrants for this shape')
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -2071,7 +2104,7 @@ class CycleFeature:
                     # print(dir(i))
                     # print (i.TypeId)
                     if i.TypeId != "App::Origin":
-                        cycle(i) 
+                        cycle(i)
             elif obj.TypeId == "App::Origin":
                 return
             # print obj.isDerivedFrom('App::DocumentObjectGroupPython')
@@ -2273,7 +2306,8 @@ class CompoundFeature:
                     mat['Name'] = material
                     mat['Density'] = str(n.density) + " kg/m^3"
                     mat['ThermalConductivity'] = str(n.conduct) + " W/m/K"
-                    mat['ThermalExpansionCoefficient'] = str(n.expand) + " m/m/K"
+                    mat['ThermalExpansionCoefficient'] = str(
+                        n.expand) + " m/m/K"
                     mat['SpecificHeat'] = str(n.specific) + " J/kg/K"
                     # print(mat)
                     # print(mat['Density'])
@@ -2353,7 +2387,8 @@ FreeCADGui.addCommand('SetMaterialCommand', SetMaterialFeature())
 FreeCADGui.addCommand('SetSkinSurfaceCommand', SetSkinSurfaceFeature())
 FreeCADGui.addCommand('SetBorderSurfaceCommand', SetBorderSurfaceFeature())
 FreeCADGui.addCommand('BooleanCutCommand', BooleanCutFeature())
-FreeCADGui.addCommand('BooleanIntersectionCommand', BooleanIntersectionFeature())
+FreeCADGui.addCommand('BooleanIntersectionCommand',
+                      BooleanIntersectionFeature())
 FreeCADGui.addCommand('BooleanUnionCommand', BooleanUnionFeature())
 FreeCADGui.addCommand('BoxCommand', BoxFeature())
 FreeCADGui.addCommand('EllipsoidCommand', EllispoidFeature())
