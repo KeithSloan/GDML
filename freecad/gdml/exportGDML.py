@@ -1143,17 +1143,27 @@ def processBorderSurfaces():
             # print(obj.Proxy)
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
+
                 borderSurface = ET.SubElement(
                     structure,
                     "bordersurface",
                     {"name": obj.Name, "surfaceproperty": obj.Surface},
                 )
-                ET.SubElement(
-                    borderSurface, "physvolref", {"ref": "PV-" + obj.PV1}
-                )
-                ET.SubElement(
-                    borderSurface, "physvolref", {"ref": "PV-" + obj.PV2}
-                )
+                if obj.PV1[:3] == "av_":
+                    refname = obj.PV1
+                else:
+                    refname = "PV-" + obj.PV1
+                    # for assembly auto generated names (starting with 'av_' we do not
+                    # include the 'PV_' in the name
+                print(f" {obj.PV1[:3]} refname {refname}")
+                ET.SubElement(borderSurface, "physvolref", {"ref": refname})
+
+                if obj.PV2[:3] == "av_":
+                    refname = obj.PV2
+                else:
+                    refname = "PV-" + obj.PV2
+                print(f" {obj.PV1[:3]} refname {refname}")
+                ET.SubElement(borderSurface, "physvolref", {"ref": refname})
 
 
 def processOpticals():
@@ -1230,7 +1240,15 @@ def createMaterials(group):
                 materials, "material", {"name": nameFromLabel(obj.Label)}
             )
 
-            # Dunit & Dvalue must be first for Geant4
+            # property must be first
+            for prop in obj.PropertiesList:
+                if obj.getGroupOfProperty(prop) == "Properties":
+                    ET.SubElement(
+                        item,
+                        "property",
+                        {"name": prop, "ref": getattr(obj, prop)},
+                    )
+
             if hasattr(obj, "Dunit") or hasattr(obj, "Dvalue"):
                 # print("Dunit or DValue")
                 D = ET.SubElement(item, "D")
@@ -1258,14 +1276,6 @@ def createMaterials(group):
             if len(obj.Group) > 0:
                 for o in obj.Group:
                     processFractionsComposites(o, item)
-
-            for prop in obj.PropertiesList:
-                if obj.getGroupOfProperty(prop) == "Properties":
-                    ET.SubElement(
-                        item,
-                        "property",
-                        {"name": prop, "ref": getattr(obj, prop)},
-                    )
 
 
 def createElements(group):
@@ -1659,16 +1669,6 @@ def processVolAssem(vol, xmlParent, parentName):
     # xmlVol could be created dummy volume
     # exportFlag may have reduced count to zero so return
     print(f"Process VolAsm {vol.Name}")
-    if not hasattr(vol, "OutList"):
-        return
-    else:
-        for obj in vol.OutList:
-            print(obj.Name)
-        cnt = countGDMLObj(vol.OutList)
-        print(f"Count GDML Objects : {cnt}")
-        if cnt == 0:
-            return
-
     if vol.Label[:12] != "NOT_Expanded":
         print("process volasm " + vol.Label)
         volName = vol.Label
@@ -1917,11 +1917,10 @@ def countGDMLObj(objList):
     gcount = 0
     # print(range(len(objList)))
     for obj in objList:
+        print(obj.Label, obj.TypeId)
         if hasattr(obj, "exportFlag"):
             if obj.exportFlag is False:
                 continue
-        if hasattr(obj, "ArrayType"):
-            continue
         if obj.TypeId == "Part::FeaturePython":
             gcount += 1
         if (
@@ -1930,7 +1929,7 @@ def countGDMLObj(objList):
             or obj.TypeId == "Part::Common"
         ):
             gcount -= 1
-    # print('countGDMLObj - Count : '+str(gcount))
+    print("countGDMLObj - Count : " + str(gcount))
     GDMLShared.trace("countGDMLObj - gdml : " + str(gcount))
     return gcount
 
@@ -2434,9 +2433,6 @@ class SolidExporter:
     @staticmethod
     def isSolid(obj):
         print(f"isSolid {obj.Label}")
-        if hasattr(obj, "exportFlag"):
-            if obj.exportFlag == False:
-                return False
         if obj.TypeId == "Part::FeaturePython":
             typeId = obj.Proxy.Type
             if typeId == "Array":
@@ -3738,17 +3734,29 @@ class GDMLborderSurfaceExporter(GDMLSolidExporter):
         super().__init__(obj)
 
     def export(self):
+        doc = FreeCAD.ActiveDocument
         borderSurface = ET.SubElement(
             structure,
             "bordersurface",
             {"name": self.obj.Name, "surfaceproperty": self.obj.surface},
         )
-        ET.SubElement(
-            borderSurface, "physvolref", {"ref": "PV-" + self.obj.pv1}
-        )
-        ET.SubElement(
-            borderSurface, "physvolref", {"ref": "PV-" + self.obj.pv2}
-        )
+
+        print(self.obj.pv1)
+        if self.obj.pv1[:3] == "av_":
+            # for assembly auto generated names (starting with 'av_' we do not
+            # include the 'PV_' in the name
+            ET.SubElement(borderSurface, "physvolref", {"ref": self.obj.pv1})
+        else:
+            ET.SubElement(
+                borderSurface, "physvolref", {"ref": "PV-" + self.obj.pv1}
+            )
+        print(self.obj.pv1)
+        if self.obj.pv2[:3] == "av_":
+            ET.SubElement(borderSurface, "physvolref", {"ref": self.obj.pv2})
+        else:
+            ET.SubElement(
+                borderSurface, "physvolref", {"ref": "PV-" + self.obj.pv2}
+            )
 
 
 class MultiFuseExporter(SolidExporter):
