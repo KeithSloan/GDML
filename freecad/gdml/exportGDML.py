@@ -1718,8 +1718,36 @@ def processContainer(vol, xmlParent):
             _ = processVolume(obj, newXmlVol)
 
 
-# def processArray(vol, xmlParent, parentName):
-#    print("Process Array")
+def processArray(vol, xmlParent):
+    print("Process Array")
+    # Single GDML Object and all the rest are Links
+    # Create Volume with just GDML Object
+    # Create Assembly
+    volName = vol.Label
+    objects = assemblyHeads(vol)
+    # As inserts are at 0 need to insert Assembly first
+    newXmlAsm = insertXMLassembly(volName)
+    # Create lone Volume
+    newXmlVol = insertXMLvolume(objects[0].Name)
+    solidExporter = SolidExporter.getExporter(objects[0])
+    solidExporter.export()
+    addVolRef(
+        newXmlVol, volName, objects[0], solidExporter.name(), addColor=False
+    )
+    addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    for obj in objects:
+        if obj.TypeId == "App::Link":
+            print("Process Link")
+            # objName = cleanVolName(obj, obj.Label)
+            # PhysVol needs to be uniquE
+            if hasattr(obj, "LinkedObject"):
+                volRef = obj.LinkedObject.Label
+            elif hasattr(obj, "VolRef"):
+                volRef = obj.VolRef
+            # print(f"VolRef {volRef}")
+        else:
+            volRef = obj.Name
+        addPhysVolPlacement(obj, newXmlAsm, volName, obj.Placement, volRef)
 
 
 def processVolAssem(vol, xmlParent, parentName):
@@ -1735,12 +1763,12 @@ def processVolAssem(vol, xmlParent, parentName):
         # volName = vol.Name
         vCount, lCount, gCount = countGDMLObj(vol)
         print(f"VolAsm Counts {vCount} {lCount} {gCount}")
-        # if gCount == 1 and lCount > 0 and vCount == 0:
-        #    processArray(vol, xmlParent, parentName)
-        if isContainer(vol):
+        if gCount == 1 and lCount > 0 and vCount == 0:
+            processArray(vol, xmlParent)
+        elif isContainer(vol):
             processContainer(vol, xmlParent)
-        # elif isAssembly(vol):
-        if isAssembly(vol):
+        elif isAssembly(vol):
+            # if isAssembly(vol):
             newXmlVol = insertXMLassembly(volName)
             processAssembly(vol, newXmlVol, xmlParent, parentName)
         else:
