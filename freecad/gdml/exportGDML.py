@@ -1737,8 +1737,8 @@ def processVolAssem(vol, xmlParent, parentName):
         print(f"VolAsm Counts {vCount} {lCount} {gCount}")
         # if gCount == 1 and lCount > 0 and vCount == 0:
         #    processArray(vol, xmlParent, parentName)
-        # if isContainer(vol):
-        #    processContainer(vol, xmlParent)
+        if isContainer(vol):
+            processContainer(vol, xmlParent)
         # elif isAssembly(vol):
         if isAssembly(vol):
             newXmlVol = insertXMLassembly(volName)
