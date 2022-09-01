@@ -820,10 +820,8 @@ def cleanVolName(obj, volName):
     return volName
 
 
-def getPVName(obj):
-    print(f"Get PVName obj {obj.Name}")
-    # Use Name not Label to make Unique
-    pvName = "PV-" + obj.Name
+def volPartOfAssembly(obj):
+    print(f"Part of Assembly {obj.Name}")
     if hasattr(obj, "InList"):
         parent = obj.InList[0]
         print(f"Parent {parent.Name}")
@@ -831,8 +829,22 @@ def getPVName(obj):
         print(f"Counts {vCount} {lCount} {gCount}")
         if vCount > 0 and gCount == 0:
             print("PV in Assembly")
-            # Munther to add return
-            return pvName
+            return "gw_" + obj.Name
+    return "PV-" + obj.Name
+
+
+def getPVNameByText(name):
+    print(f"getPVNameByText {name}")
+    obj = FreeCAD.ActiveDocument.getObject(name)
+    if obj is not None:
+        return volPartOfAssembly(obj)
+    return "PV-" + name
+
+
+def getPVName(obj):
+    print(f"Get PVName obj {obj.Name}")
+    # Use Name not Label to make Unique
+    pvName = "PV-" + obj.Name
     if hasattr(obj, "CopyNumber"):
         pvName = pvName + "-" + str(obj.CopyNumber)
     print(f"Returning PV Name : {pvName}")
@@ -1172,20 +1184,28 @@ def processBorderSurfaces():
                     "bordersurface",
                     {"name": obj.Name, "surfaceproperty": obj.Surface},
                 )
-                if obj.PV1[:3] == "av_":
-                    refname = obj.PV1
-                else:
-                    refname = "PV-" + obj.PV1
-                    # for assembly auto generated names (starting with 'av_' we do not
-                    # include the 'PV_' in the name
-                print(f" {obj.PV1[:3]} refname {refname}")
+                # if obj.PV1[:3] == "av_":
+                #    refname = obj.PV1
+                # else:
+                #    refname = "PV-" + obj.PV1
+                # for assembly auto generated names (starting with 'av_' we do not
+                # include the 'PV_' in the name
+                # print(f" {obj.PV1[:3]} refname {refname}")
+                # refname = getPVNameByText(obj.PV1)
+                # Current export always part of an assemble
+                refname = "av_" + obj.PV1
+                print(f"Refname {refname}")
                 ET.SubElement(borderSurface, "physvolref", {"ref": refname})
 
-                if obj.PV2[:3] == "av_":
-                    refname = obj.PV2
-                else:
-                    refname = "PV-" + obj.PV2
-                print(f" {obj.PV1[:3]} refname {refname}")
+                # if obj.PV2[:3] == "av_":
+                #    refname = obj.PV2
+                # else:
+                #    refname = "PV-" + obj.PV2
+                # print(f" {obj.PV1[:3]} refname {refname}")
+                # refname = getPVNameByText(obj.PV2)
+                # Current export always part of an assemble
+                refname = "av_" + obj.PV2
+                print(f"Refname {refname}")
                 ET.SubElement(borderSurface, "physvolref", {"ref": refname})
 
 
