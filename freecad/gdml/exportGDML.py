@@ -1739,8 +1739,7 @@ def processVolAssem(vol, xmlParent, parentName):
         #    processArray(vol, xmlParent, parentName)
         if isContainer(vol):
             processContainer(vol, xmlParent)
-        # elif isAssembly(vol):
-        if isAssembly(vol):
+        elif isAssembly(vol):
             newXmlVol = insertXMLassembly(volName)
             processAssembly(vol, newXmlVol, xmlParent, parentName)
         else:
