@@ -1623,7 +1623,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-    entry = Assembly(vol.Name, vol.OutList, len(AssemblyDict), 1)
+    entry = Assembly(vol.Name, vol.OutList, 1)
     AssemblyDict.update({vol.Name: entry})
     # for obj in assemObjs:
     for obj in vol.OutList:

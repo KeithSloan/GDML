@@ -1,9 +1,12 @@
 class Assembly:
-    def __init__(self, name, ObjList, www, xxx):
+    instCount = 0
+
+    def __init__(self, name, ObjList, xxx):
+        Assembly.instCount += 1
         self.name = name
         self.list = ObjList
-        self.www = www
         self.xxx = xxx
+        self.www = Assembly.instCount
 
     def index(self, name):
         idx = 0
