@@ -1168,8 +1168,20 @@ def processSkinSurfaces(obj):
     return
 
 
+def getPVentry(doc, Obj, PVname):
+    obj = doc.getObject(PVname)
+    print(f"Found Object {obj.Name}")
+    if obj is not None:
+        if hasattr(obj, "InList"):
+            parent = obj.InList[0]
+            print(f"Parent {parent.Name}")
+            return AssemblyDict.get(parent.Name)
+    return None
+
+
 def processBorderSurfaces():
     print("Export Border Surfaces")
+    # print(AssemblyDict)
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
         if obj.TypeId == "App::FeaturePython":
@@ -1184,27 +1196,18 @@ def processBorderSurfaces():
                     "bordersurface",
                     {"name": obj.Name, "surfaceproperty": obj.Surface},
                 )
-                # if obj.PV1[:3] == "av_":
-                #    refname = obj.PV1
-                # else:
-                #    refname = "PV-" + obj.PV1
-                # for assembly auto generated names (starting with 'av_' we do not
-                # include the 'PV_' in the name
-                # print(f" {obj.PV1[:3]} refname {refname}")
-                # refname = getPVNameByText(obj.PV1)
-                # Current export always part of an assemble
-                refname = "av_" + obj.PV1
+                ent1 = getPVentry(doc, obj, obj.PV1)
+                if ent1 is None:
+                    refname = "PV-" + obj.PV1
+                else:
+                    refname = en1.getPVname()
                 print(f"Refname {refname}")
                 ET.SubElement(borderSurface, "physvolref", {"ref": refname})
-
-                # if obj.PV2[:3] == "av_":
-                #    refname = obj.PV2
-                # else:
-                #    refname = "PV-" + obj.PV2
-                # print(f" {obj.PV1[:3]} refname {refname}")
-                # refname = getPVNameByText(obj.PV2)
-                # Current export always part of an assemble
-                refname = "av_" + obj.PV2
+                ent2 = getPVentry(doc, obj, obj.PV2)
+                if ent2 is None:
+                    refname = "PV-" + obj.PV2
+                else:
+                    refname = en1.getPVname()
                 print(f"Refname {refname}")
                 ET.SubElement(borderSurface, "physvolref", {"ref": refname})
 
@@ -1602,6 +1605,8 @@ def createXMLvol(name):
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName):
+    from .AssemDict import Assembly
+
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volumes Paretnt
@@ -1618,6 +1623,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
+    entry = Assembly(vol.Name, vol.OutList, len(AssemblyDict), 1)
+    AssemblyDict.update({vol.Name: entry})
     # for obj in assemObjs:
     for obj in vol.OutList:
         if obj.TypeId == "App::Part":
@@ -2193,6 +2200,8 @@ def exportGDML(first, filepath, fileExt):
     from sys import platform
 
     global zOrder
+    global AssemblyDict
+    AssemblyDict = {}
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
