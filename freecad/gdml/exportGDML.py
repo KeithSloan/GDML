@@ -1,4 +1,3 @@
-# Thu Mar 03 12:50:19 PM PST 2022
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -820,31 +819,35 @@ def cleanVolName(obj, volName):
     return volName
 
 
-def volPartOfAssembly(obj):
-    print(f"Part of Assembly {obj.Name}")
-    if hasattr(obj, "InList"):
-        parent = obj.InList[0]
-        print(f"Parent {parent.Name}")
-        vCount, lCount, gCount = countGDMLObj(parent)
-        print(f"Counts {vCount} {lCount} {gCount}")
-        if vCount > 0 and gCount == 0:
-            print("PV in Assembly")
-            return "gw_" + obj.Name
-    return "PV-" + obj.Name
+# def volPartOfAssembly(obj):
+#    print(f"Part of Assembly {obj.Name}")
+#    if hasattr(obj, "InList"):
+#        parent = obj.InList[0]
+#        print(f"Parent {parent.Name}")
+#        vCount, lCount, gCount = countGDMLObj(parent)
+#        print(f"Counts {vCount} {lCount} {gCount}")
+#        if vCount > 0 and gCount == 0:
+#            print("PV in Assembly")
+#            return "gw_" + obj.Name
+#    return "PV-" + obj.Name
 
 
-def getPVNameByText(name):
-    print(f"getPVNameByText {name}")
-    obj = FreeCAD.ActiveDocument.getObject(name)
-    if obj is not None:
-        return volPartOfAssembly(obj)
-    return "PV-" + name
+# def getPVNameByText(name):
+#    print(f"getPVNameByText {name}")
+#    obj = FreeCAD.ActiveDocument.getObject(name)
+#    if obj is not None:
+#        return volPartOfAssembly(obj)
+#    return "PV-" + name
 
 
 def getPVName(obj):
     print(f"Get PVName obj {obj.Name}")
+    if hasattr(obj, "LinkedObject"):
+        name = obj.LinkedObject.Name
+    else:
+        name = obj.Name
     # Use Name not Label to make Unique
-    pvName = "PV-" + obj.Name
+    pvName = "PV-" + name
     if hasattr(obj, "CopyNumber"):
         pvName = pvName + "-" + str(obj.CopyNumber)
     print(f"Returning PV Name : {pvName}")
@@ -1168,15 +1171,86 @@ def processSkinSurfaces(obj):
     return
 
 
-def getPVentry(doc, Obj, PVname):
+def getPVobject(doc, Obj, PVname):
     obj = doc.getObject(PVname)
     print(f"Found Object {obj.Name}")
-    if obj is not None:
-        if hasattr(obj, "InList"):
-            parent = obj.InList[0]
-            print(f"Parent {parent.Name}")
-            return AssemblyDict.get(parent.Name)
-    return None
+    return obj
+
+
+def getPVname(obj):
+    print(f"getPVname {obj.Name}")
+    if hasattr(obj, "InList"):
+        parent = obj.InList[0]
+        print(f"Parent {parent.Name}")
+        entry = AssemblyDict.get(parent.Name)
+        print(f"entry {entry}")
+        if entry is not None:
+            print("Is an Assembly")
+            if hasattr(obj, "LinkedObject"):
+                name = obj.LinkedObject.Name
+            else:
+                name = obj.Name
+            return entry.getPVname(name)
+    return "PV-" + obj.Name
+
+
+def exportSurfaceProperty(Name, Surface, ref1, ref2):
+    borderSurface = ET.SubElement(
+        structure, "bordersurface", {"name": Name, "surfaceproperty": Surface}
+    )
+    ET.SubElement(borderSurface, "physvolref", {"ref": ref1})
+    ET.SubElement(borderSurface, "physvolref", {"ref": ref2})
+
+
+def checkFaces(obj1, obj2):
+    return True
+    tolerence = 1e-7
+    if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
+        faces1 = obj1.Shape.Faces
+        faces2 = obj2.Shape.Faces
+        for f in faces1:
+            comShape = f.common(faces2, tolerence)
+            if len(comShape.Faces) > 0:
+                return True
+    return False
+
+
+def processCandidates(name, surface, list1, list2):
+    cnt = 1
+    for obj1 in list1:
+        for obj2 in list2:
+            if checkFaces(obj1, obj2):
+                ref1 = getPVname(obj1)
+                print(f"ref1 {ref1}")
+                ref2 = getPVname(obj2)
+                print(f"ref2 {ref2}")
+                exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
+                cnt += 1
+
+
+def getCandidates(cList, Obj):
+    print(f"getCandidates {Obj.Name} {cList}")
+    if hasattr(Obj, "OutList"):
+        # print(Obj.OutList)
+        for obj in Obj.OutList:
+            tObj = obj
+            print(obj.Name)
+            if obj.TypeId == "App::Part":
+                cList = cList + getCandidates(cList, obj)
+                # print(cList)
+            if hasattr(obj, "LinkedObject"):
+                tObj = obj.LinkedObject
+                # tObj is to be tested - obj to be appended
+            if hasattr(tObj, "Proxy"):
+                if hasattr(tObj.Proxy, "Type"):
+                    if tObj.Proxy.Type[:4] == "GDML":
+                        # print(f"Pre-Appended {cList}")
+                        cList.append(obj)
+                        # print(f"Appended {cList}")
+    else:
+        print("No OutList")
+    print(f"{Obj.Name} Returning {cList}")
+    return cList
 
 
 def processBorderSurfaces():
@@ -1190,26 +1264,13 @@ def processBorderSurfaces():
             # print(obj.Proxy)
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
-
-                borderSurface = ET.SubElement(
-                    structure,
-                    "bordersurface",
-                    {"name": obj.Name, "surfaceproperty": obj.Surface},
-                )
-                ent1 = getPVentry(doc, obj, obj.PV1)
-                if ent1 is None:
-                    refname = "PV-" + obj.PV1
-                else:
-                    refname = en1.getPVname()
-                print(f"Refname {refname}")
-                ET.SubElement(borderSurface, "physvolref", {"ref": refname})
-                ent2 = getPVentry(doc, obj, obj.PV2)
-                if ent2 is None:
-                    refname = "PV-" + obj.PV2
-                else:
-                    refname = en1.getPVname()
-                print(f"Refname {refname}")
-                ET.SubElement(borderSurface, "physvolref", {"ref": refname})
+                obj1 = getPVobject(doc, obj, obj.PV1)
+                candList1 = getCandidates([], obj1)
+                print(f"Candidates 1 : {candList1}")
+                obj2 = getPVobject(doc, obj, obj.PV2)
+                candList2 = getCandidates([], obj2)
+                print(f"Candidates 2 : {candList2}")
+                processCandidates(obj.Name, obj.Surface, candList1, candList2)
 
 
 def processOpticals():
@@ -1574,36 +1635,6 @@ def createXMLvol(name):
     return ET.SubElement(structure, "volume", {"name": name})
 
 
-#########################################################
-#
-#   Assembly dictionary
-#
-#########################################################
-# Geant4 generates its own internal names for the
-# physical volumes that are included in the assembly.
-# The names are of the form
-# av_WWW_impr_XXX_YYY_ZZZ
-# where:
-# WWW - assembly volume instance number. I gather this is a number that starts
-#       at 1 when the first assembly structure is encountered in the gdml file
-#       and then is incremented by one every time a new <assembly structure
-#       is encounterd
-# XXX - assembly volume imprint number. I am not sure what this is. I assume that
-#       a given assembly can be placed inside several logical volume mothers
-#       and that the imprint number keeps track of how many times the one and same
-#       assembly has been placed. For now I am going to take this as 1. I.e, no more
-#       than one placement for each assembly
-# YYY - the name of the placed logical volume. geant seems to append an '_pv'
-#       to out generated logical volume names, which for current exportGDML is
-#        'V-' + copied solid name
-# ZZZ - the logical volume index inside the assembly volume. This is a counter
-#       that increases sequentially with the number of solids in the assembly
-# to keep track of what a bordersurface is replaced by we use the following
-# dictionaries. Each has as key the name of the App::Part  that appears
-# in the PV1, PV2 properties of the bordersurface
-#
-
-
 def processAssembly(vol, xmlVol, xmlParent, parentName):
     from .AssemDict import Assembly
 
@@ -1756,12 +1787,16 @@ def processContainer(vol, xmlParent):
 
 
 def processArray(vol, xmlParent):
+    from .AssemDict import Assembly
+
     print("Process Array")
     # Single GDML Object and all the rest are Links
     # Create Volume with just GDML Object
     # Create Assembly
     volName = vol.Label
     objects = assemblyHeads(vol)
+    entry = Assembly(vol.Name, objects, 1)
+    AssemblyDict.update({vol.Name: entry})
     # As inserts are at 0 need to insert Assembly first
     newXmlAsm = insertXMLassembly(volName)
     # Create lone Volume
@@ -1772,6 +1807,7 @@ def processArray(vol, xmlParent):
         newXmlVol, volName, objects[0], solidExporter.name(), addColor=False
     )
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    # process all objects
     for obj in objects:
         if obj.TypeId == "App::Link":
             print("Process Link")
