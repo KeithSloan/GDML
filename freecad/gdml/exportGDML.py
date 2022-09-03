@@ -1186,11 +1186,9 @@ def getPVname(obj):
         print(f"entry {entry}")
         if entry is not None:
             print("Is an Assembly")
-            if hasattr(obj, "LinkedObject"):
-                name = obj.LinkedObject.Name
-            else:
-                name = obj.Name
-            return entry.getPVname(name)
+            if hasattr(obj, "CopyNumber"):
+                print(f"CopyNumber {obj.CopyNumber}")
+            return entry.getPVname(obj)
         else:
             return "PV-" + parent.Name
     return "PV-" + obj.Name
@@ -1218,6 +1216,7 @@ def checkFaces(obj1, obj2):
 
 
 def processCandidates(name, surface, list1, list2):
+    print(f"process Candidates {len(list1)} {len(list2)}")
     cnt = 1
     for obj1 in list1:
         for obj2 in list2:
@@ -1268,9 +1267,11 @@ def processBorderSurfaces():
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
                 candList1 = getCandidates([], obj1)
+                print(f"Candidates 1 : {len(candList1)}")
                 print(f"Candidates 1 : {candList1}")
                 obj2 = getPVobject(doc, obj, obj.PV2)
                 candList2 = getCandidates([], obj2)
+                print(f"Candidates 2 : {len(candList2)}")
                 print(f"Candidates 2 : {candList2}")
                 processCandidates(obj.Name, obj.Surface, candList1, candList2)
 

@@ -50,17 +50,26 @@ class Assembly:
                 idx += 1
         return None
 
-    def getPVname(self, name):
-        print(f"getPVname {self.name} www {self.www} xxx {self.xxx} {name}")
-        idx = self.indexName(name)
-        print(f"zzz {idx}")
+    def printList(self):
+        print(f"List {self.name} >>>>>>>")
+        for obj in self.list:
+            print(obj.Name)
+        print(f"List {self.name} <<<<<<<<")
+
+    def getPVname(self, obj):
+        print(f"getPVname {self.name} www {self.www} xxx {self.xxx}")
+        # self.printList()
+        idx = self.indexName(obj.Name)
+        if hasattr(obj, "LinkedObject"):
+            obj = obj.LinkedObject
+        print(f"zzz {idx} should be one less than CopyNumber")
         return (
             "av_"
             + str(self.www)
             + "_impr_"
             + str(self.xxx)
             + "_"
-            + name
+            + obj.Name
             + "_pv_"
             + str(idx)
         )
