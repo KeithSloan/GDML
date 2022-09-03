@@ -1601,43 +1601,34 @@ def exportCone(name, radius, height):
     return cylEl
 
 
-def insertXMLvolume(name):
-    # Insert at beginning for sub volumes
-    GDMLShared.trace("insert xml volume : " + name)
+def createXMLvolume(name):
+    GDMLShared.trace("create xml volume : " + name)
     elem = ET.Element("volume", {"name": name})
-    global structure
-    structure.insert(0, elem)
     return elem
 
 
-def insertXMLvolObj(obj):
+def createXMLvolObj(obj):
     # name = cleanVolName(obj, obj.Label)
     name = obj.Label
-    return insertXMLvolume(name)
+    return createXMLvolume(name)
 
 
-def insertXMLassembly(name):
-    # Insert at beginning for sub volumes
-    GDMLShared.trace("insert xml assembly : " + name)
+def createXMLassembly(name):
+    GDMLShared.trace("create  xml assembly : " + name)
     elem = ET.Element("assembly", {"name": name})
-    global structure
-    structure.insert(0, elem)
     return elem
 
 
-def insertXMLassemObj(obj):
+def createXMLassemObj(obj):
     # name = cleanVolName(obj, obj.Label)
     name = obj.Label
-    return insertXMLassembly(name)
-
-
-def createXMLvol(name):
-    return ET.SubElement(structure, "volume", {"name": name})
+    return createXMLassembly(name)
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName):
     from .AssemDict import Assembly
 
+    global structure
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volumes Paretnt
@@ -1674,6 +1665,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
             _ = processVolume(obj, xmlVol)
 
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    structure.append(xmlVol)
 
 
 def processVolume(vol, xmlParent, volName=None):
@@ -1720,7 +1712,7 @@ def processVolume(vol, xmlParent, volName=None):
         # 1- adds a <volume element to <structure with name volName
         if volName == solidExporter.name():
             volName = "V-" + solidExporter.name()
-        xmlVol = insertXMLvolume(volName)
+        xmlVol = createXMLvolume(volName)
         # 2- add material info to the generated <volume pointerd to by xmlVol
         addVolRef(xmlVol, volName, topObject, solidExporter.name())
         # 3- add a <physvol. A <physvol, can go under the <worlVol, or under
@@ -1755,17 +1747,17 @@ def processVolume(vol, xmlParent, volName=None):
                 },
             )
             ET.SubElement(ss, "volumeref", {"ref": volName})
-
+    structure.append(xmlVol)
     print(f"Processed Volume : {volName}")
-
     return xmlVol
 
 
 def processContainer(vol, xmlParent):
     print("Process Container")
+    global structure
     volName = vol.Label
     objects = assemblyHeads(vol)
-    newXmlVol = insertXMLvolume(volName)
+    newXmlVol = createXMLvolume(volName)
     solidExporter = SolidExporter.getExporter(objects[0])
     solidExporter.export()
     addVolRef(
@@ -1785,6 +1777,8 @@ def processContainer(vol, xmlParent):
         else:
             _ = processVolume(obj, newXmlVol)
 
+    structure.append(newXmlVol)
+
 
 def processVolAssem(vol, xmlParent, parentName):
     # vol - Volume Object
@@ -1800,7 +1794,7 @@ def processVolAssem(vol, xmlParent, parentName):
             processContainer(vol, xmlParent)
         elif isAssembly(vol):
             # if isAssembly(vol):
-            newXmlVol = insertXMLassembly(volName)
+            newXmlVol = createXMLassembly(volName)
             processAssembly(vol, newXmlVol, xmlParent, parentName)
         else:
             processVolume(vol, xmlParent)
@@ -1843,7 +1837,7 @@ def processMultiPlacement(obj, xmlParent):
             exporter.export()
             solidName = exporter.name()
             volName = "LV-" + solidName
-            volXML = insertXMLvolume(volName)
+            volXML = createXMLvolume(volName)
             addVolRef(volXML, obj.Label, s, solidName)
             addPhysVolPlacement(s, xmlParent, volName, exporter.placement())
             break
@@ -2112,7 +2106,7 @@ def exportWorldVol(vol, fileExt):
 
         if checkGDMLstructure(vol) is False:
             GDMLShared.trace("Insert Dummy Volume")
-            createXMLvol("dummy")
+            createXMLvolume("dummy")
             xmlParent = createWorldVol(vol.Label)
             parentName = vol.Label
             addPhysVol(xmlParent, "dummy")
@@ -2139,7 +2133,7 @@ def exportWorldVol(vol, fileExt):
     #    else:
     #        xmlVol = processVolume(vol, xmlParent)
     # else:  # no volume defining world
-    #    xmlVol = insertXMLassembly(vol.Label)
+    #    xmlVol = createXMLassembly(vol.Label)
     #    processAssembly(vol, xmlVol, xmlParent, parentName)
 
     # processVolAssem(vol, xmlVol, WorldVOL)

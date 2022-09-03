@@ -35,6 +35,7 @@ class Assembly:
 
     def __init__(self, name, ObjList, xxx):
         Assembly.instCount += 1
+        print(f"Assemmbly {name} {Assembly.instCount}")
         self.name = name
         self.list = ObjList
         self.xxx = xxx
