@@ -1786,43 +1786,6 @@ def processContainer(vol, xmlParent):
             _ = processVolume(obj, newXmlVol)
 
 
-def processArray(vol, xmlParent):
-    from .AssemDict import Assembly
-
-    print("Process Array")
-    # Single GDML Object and all the rest are Links
-    # Create Volume with just GDML Object
-    # Create Assembly
-    volName = vol.Label
-    objects = assemblyHeads(vol)
-    entry = Assembly(vol.Name, objects, 1)
-    AssemblyDict.update({vol.Name: entry})
-    # As inserts are at 0 need to insert Assembly first
-    newXmlAsm = insertXMLassembly(volName)
-    # Create lone Volume
-    newXmlVol = insertXMLvolume(objects[0].Name)
-    solidExporter = SolidExporter.getExporter(objects[0])
-    solidExporter.export()
-    addVolRef(
-        newXmlVol, volName, objects[0], solidExporter.name(), addColor=False
-    )
-    addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
-    # process all objects
-    for obj in objects:
-        if obj.TypeId == "App::Link":
-            print("Process Link")
-            # objName = cleanVolName(obj, obj.Label)
-            # PhysVol needs to be uniquE
-            if hasattr(obj, "LinkedObject"):
-                volRef = obj.LinkedObject.Label
-            elif hasattr(obj, "VolRef"):
-                volRef = obj.VolRef
-            # print(f"VolRef {volRef}")
-        else:
-            volRef = obj.Name
-        addPhysVolPlacement(obj, newXmlAsm, volName, obj.Placement, volRef)
-
-
 def processVolAssem(vol, xmlParent, parentName):
     # vol - Volume Object
     # xmlVol - xml of this volume
@@ -1833,12 +1796,7 @@ def processVolAssem(vol, xmlParent, parentName):
     if vol.Label[:12] != "NOT_Expanded":
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
-        # volName = vol.Name
-        vCount, lCount, gCount = countGDMLObj(vol)
-        print(f"VolAsm Counts {vCount} {lCount} {gCount}")
-        if gCount == 1 and lCount > 0 and vCount == 0:
-            processArray(vol, xmlParent)
-        elif isContainer(vol):
+        if isContainer(vol):
             processContainer(vol, xmlParent)
         elif isAssembly(vol):
             # if isAssembly(vol):
@@ -2622,21 +2580,24 @@ class SolidExporter:
     @staticmethod
     def isSolid(obj):
         print(f"isSolid {obj.Label}")
-        if obj.TypeId == "Part::FeaturePython":
-            typeId = obj.Proxy.Type
+        obj1 = obj
+        if obj.TypeId == "App::Link":
+            obj1 = obj.LinkedObject
+        if obj1.TypeId == "Part::FeaturePython":
+            typeId = obj1.Proxy.Type
             if typeId == "Array":
-                if obj.ArrayType == "ortho":
+                if obj1.ArrayType == "ortho":
                     return True
-                elif obj.ArrayType == "polar":
+                elif obj1.ArrayType == "polar":
                     return True
             elif typeId == "Clone":
-                clonedObj = obj.Objects[0]
+                clonedObj = obj1.Objects[0]
                 return SolidExporter.isSolid(clonedObj)
 
             else:
-                return obj.Proxy.Type in SolidExporter.solidExporters
+                return obj1.Proxy.Type in SolidExporter.solidExporters
         else:
-            return obj.TypeId in SolidExporter.solidExporters
+            return obj1.TypeId in SolidExporter.solidExporters
 
     @staticmethod
     def getExporter(obj):
