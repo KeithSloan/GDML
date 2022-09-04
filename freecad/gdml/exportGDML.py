@@ -506,7 +506,7 @@ def reportObject(obj):
 
     GDMLShared.trace("Report Object")
     GDMLShared.trace(obj)
-    GDMLShared.trace("Name : " + obj.Name)
+    GDMLShared.trace("Name : " + obj.Label)
     GDMLShared.trace("Type : " + obj.TypeId)
     if hasattr(obj, "Placement"):
         print("Placement")
@@ -774,12 +774,12 @@ def processObjectShape(obj):
     # print(planar)
 
     if planar:
-        return processPlanar(obj, shape, obj.Name)
+        return processPlanar(obj, shape, obj.Label)
 
     else:
         # Create Mesh from shape & then Process Mesh
         # to create Tessellated Solid in Geant4
-        return processMesh(obj, shape2Mesh(shape), obj.Name)
+        return processMesh(obj, shape2Mesh(shape), obj.Label)
 
 
 def processSection(obj):
@@ -841,7 +841,7 @@ def cleanVolName(obj, volName):
 
 
 def getPVName(obj):
-    print(f"Get PVName obj {obj.Name}")
+    print(f"Get PVName obj {obj.Label}")
     if hasattr(obj, "LinkedObject"):
         name = obj.LinkedObject.Label
     else:
@@ -1004,14 +1004,14 @@ def processPosition(obj, solid):
     if obj.Placement.Base == FreeCAD.Vector(0, 0, 0):
         return
     GDMLShared.trace("Define position & references to Solid")
-    exportPosition(obj.Name, solid, obj.Placement.Base)
+    exportPosition(obj.Label, solid, obj.Placement.Base)
 
 
 def processRotation(obj, solid):
     if obj.Placement.Rotation.Angle == 0:
         return
     GDMLShared.trace("Deal with Rotation")
-    exportRotation(obj.Name, solid, obj.Placement.Rotation)
+    exportRotation(obj.Label, solid, obj.Placement.Rotation)
 
 
 def testDefaultPlacement(obj):
@@ -1111,7 +1111,7 @@ def processMatrix(obj):
     ET.SubElement(
         define,
         "matrix",
-        {"name": obj.Name, "coldim": str(obj.coldim), "values": obj.values},
+        {"name": obj.Label, "coldim": str(obj.coldim), "values": obj.values},
     )
 
 
@@ -1148,7 +1148,7 @@ def processOpticalSurface(obj):
         solids,
         "opticalsurface",
         {
-            "name": obj.Name,
+            "name": obj.Label,
             "model": obj.model,
             "finish": finish,
             "type": type,
@@ -1166,23 +1166,23 @@ def processSkinSurfaces(obj):
     # Ignore create from Parts with SkinSurface
     # global structure
     # print('Add skins')
-    # ET.SubElement(structure,'skinsurface', {'name': obj.Name, \
+    # ET.SubElement(structure,'skinsurface', {'name': obj.Label, \
     #                         'surfaceproperty' : obj.SkinSurface, \
     return
 
 
 def getPVobject(doc, Obj, PVname):
     obj = doc.getObject(PVname)
-    print(f"Found Object {obj.Name}")
+    print(f"Found Object {obj.Label}")
     return obj
 
 
 def getPVname(obj):
-    print(f"getPVname {obj.Name}")
+    print(f"getPVname {obj.Label}")
     if hasattr(obj, "InList"):
         parent = obj.InList[0]
-        print(f"Parent {parent.Name}")
-        entry = AssemblyDict.get(parent.Name)
+        print(f"Parent {parent.Label}")
+        entry = AssemblyDict.get(parent.Label)
         print(f"entry {entry}")
         if entry is not None:
             print("Is an Assembly")
@@ -1190,8 +1190,8 @@ def getPVname(obj):
                 print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
         else:
-            return "PV-" + parent.Name
-    return "PV-" + obj.Name
+            return "PV-" + parent.Label
+    return "PV-" + obj.Label
 
 
 def exportSurfaceProperty(Name, Surface, ref1, ref2):
@@ -1230,12 +1230,12 @@ def processCandidates(name, surface, list1, list2):
 
 
 def getCandidates(cList, Obj):
-    print(f"getCandidates {Obj.Name} {cList}")
+    print(f"getCandidates {Obj.Label} {cList}")
     if hasattr(Obj, "OutList"):
         # print(Obj.OutList)
         for obj in Obj.OutList:
             tObj = obj
-            print(obj.Name)
+            print(obj.Label)
             if obj.TypeId == "App::Part":
                 cList = getCandidates(cList, obj)
                 # print(cList)
@@ -1250,7 +1250,7 @@ def getCandidates(cList, Obj):
                         # print(f"Appended {cList}")
     else:
         print("No OutList")
-    print(f"{Obj.Name} Returning {cList}")
+    print(f"{Obj.Label} Returning {cList}")
     return cList
 
 
@@ -1264,7 +1264,7 @@ def processBorderSurfaces():
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
         if obj.TypeId == "App::FeaturePython":
-            print(f"TypeId {obj.TypeId} Name {obj.Name}")
+            print(f"TypeId {obj.TypeId} Name {obj.Label}")
             # print(dir(obj))
             # print(obj.Proxy)
             if isinstance(obj.Proxy, GDMLbordersurface):
@@ -1277,7 +1277,7 @@ def processBorderSurfaces():
                 candList2 = getCandidates([], obj2)
                 print(f"Candidates 2 : {len(candList2)}")
                 print(f"Candidates 2 : {candList2}")
-                processCandidates(obj.Name, obj.Surface, candList1, candList2)
+                processCandidates(obj.Label, obj.Surface, candList1, candList2)
 
 
 def processOpticals():
@@ -1285,8 +1285,8 @@ def processOpticals():
     Grp = FreeCAD.ActiveDocument.getObject("Opticals")
     if hasattr(Grp, "Group"):
         for obj in Grp.Group:
-            print(f"Name : {obj.Name}")
-            while switch(obj.Name):
+            print(f"Name : {obj.Label}")
+            while switch(obj.Label):
                 if case("Matrix"):
                     print("Matrix")
                     for m in obj.Group:
@@ -1320,7 +1320,7 @@ def processMaterials():
     ]:
         Grp = FreeCAD.ActiveDocument.getObject(GName)
         if Grp is not None:
-            # print(Grp.TypeId+" : "+Grp.Name)
+            # print(Grp.TypeId+" : "+Grp.Label)
             print(Grp.Label)
             if processGroup(Grp) is False:
                 break
@@ -1473,7 +1473,7 @@ def processGroup(obj):
     if hasattr(obj, "Group"):
         # print("   Object List : "+obj.Label)
         # print(obj)
-        while switch(obj.Name):
+        while switch(obj.Label):
             if case("Constants"):
                 # print("Constants")
                 createConstants(obj.Group)
@@ -1534,7 +1534,7 @@ def getDefaultMaterial():
 
 
 def getBooleanCount(obj):
-    GDMLShared.trace("get Count : " + obj.Name)
+    GDMLShared.trace("get Count : " + obj.Label)
     if hasattr(obj, "Tool"):
         GDMLShared.trace("Has tool - check Base")
         baseCnt = getBooleanCount(obj.Base)
@@ -1652,9 +1652,9 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-    # entry = Assembly(vol.Name, vol.OutList)
-    entry = Assembly(vol.Name, assemObjs)
-    AssemblyDict.update({vol.Name: entry})
+    # entry = Assembly(vol.Label, vol.OutList)
+    entry = Assembly(vol.Label, assemObjs)
+    AssemblyDict.update({vol.Label: entry})
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName)
@@ -1698,8 +1698,8 @@ def processVolume(vol, xmlParent, volName=None):
         return
 
     if volName is None:
-        # volName = vol.Label
-        volName = vol.Name
+        volName = vol.Label
+
     if vol.TypeId == "App::Part":
         topObject = topObj(vol)
     else:
