@@ -843,9 +843,9 @@ def cleanVolName(obj, volName):
 def getPVName(obj):
     print(f"Get PVName obj {obj.Name}")
     if hasattr(obj, "LinkedObject"):
-        name = obj.LinkedObject.Name
+        name = obj.LinkedObject.Label
     else:
-        name = obj.Name
+        name = obj.Label
     # Use Name not Label to make Unique
     pvName = "PV-" + name
     if hasattr(obj, "CopyNumber"):
