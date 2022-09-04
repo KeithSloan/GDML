@@ -121,16 +121,16 @@ class MultiPlacer:
 
     def name(self):
         prefix = "x"
-        if self.obj.Label[0].isdigit():
+        if self.obj.Name[0].isdigit():
             prefix = "x"
-        return prefix + self.obj.Label
+        return prefix + self.obj.Name
 
     @staticmethod
     def getPlacer(obj):
         if obj.TypeId == "Part::Mirroring":
             return MirrorPlacer(obj)
         else:
-            print(f"{obj.Label} is not a placer")
+            print(f"{obj.Name} is not a placer")
             return None
 
 
@@ -140,7 +140,7 @@ class MirrorPlacer(MultiPlacer):
 
     def place(self, volRef):
         global structure
-        assembly = ET.Element("assembly", {"name": self.obj.Label})
+        assembly = ET.Element("assembly", {"name": self.obj.Name})
         # structure.insert(0, assembly)
         # insert just before worlVol, which should be last
         worldIndex = len(structure) - 1
@@ -149,7 +149,7 @@ class MirrorPlacer(MultiPlacer):
         name = volRef + "_mirror"
         # bordersurface might need physvol to have a name
         pvol = ET.SubElement(
-            assembly, "physvol", {"name": "PV-" + self.obj.Label}
+            assembly, "physvol", {"name": "PV-" + self.obj.Name}
         )
         ET.SubElement(pvol, "volumeref", {"ref": volRef})
         normal = self.obj.Normal
@@ -843,9 +843,9 @@ def cleanVolName(obj, volName):
 def getPVName(obj):
     print(f"Get PVName obj {obj.Name}")
     if hasattr(obj, "LinkedObject"):
-        name = obj.LinkedObject.Label
+        name = obj.LinkedObject.Name
     else:
-        name = obj.Label
+        name = obj.Name
     # Use Name not Label to make Unique
     pvName = "PV-" + name
     if hasattr(obj, "CopyNumber"):
@@ -874,7 +874,7 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
     # reference to it must also not have any cleanup
     if refName is None:
         # refName = cleanVolName(obj, volName)
-        refName = obj.Label
+        refName = obj.Name
     # GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : " + volName)
     # print(ET.tostring(xmlVol))
@@ -1061,7 +1061,7 @@ def addVolRef(volxml, volName, obj, solidName=None, addColor=True):
 
 
 def nameOfGDMLobject(obj):
-    name = obj.Label
+    name = obj.Name
     if len(name) > 4:
         if name[0:4] == "GDML":
             if "_" in name:
@@ -1321,7 +1321,7 @@ def processMaterials():
         Grp = FreeCAD.ActiveDocument.getObject(GName)
         if Grp is not None:
             # print(Grp.TypeId+" : "+Grp.Name)
-            print(Grp.Label)
+            print(Grp.Name)
             if processGroup(Grp) is False:
                 break
 
@@ -1329,12 +1329,12 @@ def processMaterials():
 def processFractionsComposites(obj, item):
     # Fractions are used in Material and Elements
     if isinstance(obj.Proxy, GDMLfraction):
-        # print("GDML fraction :" + obj.Label)
+        # print("GDML fraction :" + obj.Name)
         # need to strip number making it unique
         ET.SubElement(
             item,
             "fraction",
-            {"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
+            {"n": str(obj.n), "ref": nameFromLabel(obj.Name)},
         )
 
     if isinstance(obj.Proxy, GDMLcomposite):
@@ -1342,16 +1342,16 @@ def processFractionsComposites(obj, item):
         ET.SubElement(
             item,
             "composite",
-            {"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
+            {"n": str(obj.n), "ref": nameFromLabel(obj.Name)},
         )
 
 
 def createMaterials(group):
     global materials
     for obj in group:
-        if obj.Label != "Geant4":
+        if obj.Name != "Geant4":
             item = ET.SubElement(
-                materials, "material", {"name": nameFromLabel(obj.Label)}
+                materials, "material", {"name": nameFromLabel(obj.Name)}
             )
 
             # property must be first
@@ -1395,9 +1395,9 @@ def createMaterials(group):
 def createElements(group):
     global materials
     for obj in group:
-        # print(f'Element : {obj.Label}')
+        # print(f'Element : {obj.Name}')
         item = ET.SubElement(
-            materials, "element", {"name": nameFromLabel(obj.Label)}
+            materials, "element", {"name": nameFromLabel(obj.Name)}
         )
         # Common code IsoTope and Elements1
         processIsotope(obj, item)
@@ -1415,7 +1415,7 @@ def createConstants(group):
             # print(dir(obj))
 
             ET.SubElement(
-                define, "constant", {"name": obj.Label, "value": obj.value}
+                define, "constant", {"name": obj.Name, "value": obj.value}
             )
 
 
@@ -1427,7 +1427,7 @@ def createVariables(group):
             # print(dir(obj))
 
             ET.SubElement(
-                define, "variable", {"name": obj.Label, "value": obj.value}
+                define, "variable", {"name": obj.Name, "value": obj.value}
             )
 
 
@@ -1442,7 +1442,7 @@ def createQuantities(group):
                 define,
                 "quantity",
                 {
-                    "name": obj.Label,
+                    "name": obj.Name,
                     "type": obj.type,
                     "unit": obj.unit,
                     "value": obj.value,
@@ -1457,21 +1457,21 @@ def createIsotopes(group):
             # print("GDML isotope")
             # item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
             #                                           'Z': str(obj.Z), \
-            #                                           'name' : obj.Label})
+            #                                           'name' : obj.Name})
             # ET.SubElement(item,'atom',{'unit': obj.unit, \
             #                           'value': str(obj.value)})
-            item = ET.SubElement(materials, "isotope", {"name": obj.Label})
+            item = ET.SubElement(materials, "isotope", {"name": obj.Name})
             processIsotope(obj, item)
 
 
 def processGroup(obj):
-    print("Process Group " + obj.Label)
+    print("Process Group " + obj.Name)
     # print(obj.TypeId)
     # print(obj.Group)
     #      if hasattr(obj,'Group') :
     # return
     if hasattr(obj, "Group"):
-        # print("   Object List : "+obj.Label)
+        # print("   Object List : "+obj.Name)
         # print(obj)
         while switch(obj.Name):
             if case("Constants"):
@@ -1521,9 +1521,9 @@ def getXmlVolume(volObj):
     global structure
     if volObj is None:
         return None
-    xmlvol = structure.find("volume[@name='%s']" % volObj.Label)
+    xmlvol = structure.find("volume[@name='%s']" % volObj.Name)
     if xmlvol is None:
-        print(volObj.Label + " Not Found")
+        print(volObj.Name + " Not Found")
     return xmlvol
 
 
@@ -1551,8 +1551,8 @@ def getMaterial(obj):
     # the default material is Geant4, and SetMaterials fails to change it
     from .GDMLMaterials import getMaterialsList
 
-    GDMLShared.trace("get Material : " + obj.Label)
-    print(f"get Material : {obj.Label}")
+    GDMLShared.trace("get Material : " + obj.Name)
+    print(f"get Material : {obj.Name}")
     if hasattr(obj, "material"):
         material = obj.material
         return material
@@ -1574,7 +1574,7 @@ def getMaterial(obj):
 
 """
 def printObjectInfo(xmlVol, volName, xmlParent, parentName):
-    print("Process Object : "+obj.Label+' Type '+obj.TypeId)
+    print("Process Object : "+obj.Name+' Type '+obj.TypeId)
     if xmlVol is not None :
        xmlstr = ET.tostring(xmlVol)
     else :
@@ -1615,8 +1615,8 @@ def createXMLvolume(name):
 
 
 def createXMLvolObj(obj):
-    # name = cleanVolName(obj, obj.Label)
-    name = obj.Label
+    # name = cleanVolName(obj, obj.Name)
+    name = obj.Name
     return createXMLvolume(name)
 
 
@@ -1627,8 +1627,8 @@ def createXMLassembly(name):
 
 
 def createXMLassemObj(obj):
-    # name = cleanVolName(obj, obj.Label)
-    name = obj.Label
+    # name = cleanVolName(obj, obj.Name)
+    name = obj.Name
     return createXMLassembly(name)
 
 
@@ -1644,8 +1644,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
     # GDMLShared.setTrace(True)
-    volName = vol.Label
-    # volName = cleanVolName(vol, vol.Label)
+    volName = vol.Name
+    # volName = cleanVolName(vol, vol.Name)
     # GDMLShared.trace("Process Assembly : " + volName)
     # if GDMLShared.getTrace() == True :
     #   printVolumeInfo(vol, xmlVol, xmlParent, parentName)
@@ -1661,10 +1661,10 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
             entry.incrementImpression()
         elif obj.TypeId == "App::Link":
             print("Process Link")
-            # objName = cleanVolName(obj, obj.Label)
+            # objName = cleanVolName(obj, obj.Name)
             # PhysVol needs to be uniquE
             if hasattr(obj, "LinkedObject"):
-                volRef = obj.LinkedObject.Label
+                volRef = obj.LinkedObject.Name
             elif hasattr(obj, "VolRef"):
                 volRef = obj.VolRef
             print(f"VolRef {volRef}")
@@ -1687,18 +1687,18 @@ def processVolume(vol, xmlParent, volName=None):
     # xmlVol could be created dummy volume
     if vol.TypeId == "App::Link":
         print("Volume is Link")
-        # objName = cleanVolName(obj, obj.Label)
+        # objName = cleanVolName(obj, obj.Name)
         addPhysVolPlacement(
             vol,
             xmlParent,
-            vol.Label,
+            vol.Name,
             vol.Placement,
-            refName=vol.LinkedObject.Label,
+            refName=vol.LinkedObject.Name,
         )
         return
 
     if volName is None:
-        # volName = vol.Label
+        # volName = vol.Name
         volName = vol.Name
     if vol.TypeId == "App::Part":
         topObject = topObj(vol)
@@ -1763,7 +1763,7 @@ def processVolume(vol, xmlParent, volName=None):
 def processContainer(vol, xmlParent):
     print("Process Container")
     global structure
-    volName = vol.Label
+    volName = vol.Name
     objects = assemblyHeads(vol)
     newXmlVol = createXMLvolume(volName)
     solidExporter = SolidExporter.getExporter(objects[0])
@@ -1777,10 +1777,10 @@ def processContainer(vol, xmlParent):
             processVolAssem(obj, newXmlVol, volName)
         elif obj.TypeId == "App::Link":
             print("Process Link")
-            volRef = obj.LinkedObject.Label
-            # objName = cleanVolName(obj, obj.Label)
+            volRef = obj.LinkedObject.Name
+            # objName = cleanVolName(obj, obj.Name)
             addPhysVolPlacement(
-                obj, newXmlVol, obj.Label, obj.Placement, volRef
+                obj, newXmlVol, obj.Name, obj.Placement, volRef
             )
         else:
             _ = processVolume(obj, newXmlVol)
@@ -1808,7 +1808,7 @@ def processVolAssem(vol, xmlParent, parentName):
         else:
             processVolume(vol, xmlParent)
     else:
-        print("skipping " + vol.Label)
+        print("skipping " + vol.Name)
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
@@ -1817,7 +1817,7 @@ def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
     else:
         xmlstr = "None"
     print(xmlstr)
-    GDMLShared.trace("     " + vol.Label + " - " + str(xmlstr))
+    GDMLShared.trace("     " + vol.Name + " - " + str(xmlstr))
     if xmlParent is not None:
         xmlstr = ET.tostring(xmlParent)
     else:
@@ -1827,7 +1827,7 @@ def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
 
 def processMultiPlacement(obj, xmlParent):
 
-    print(f"procesMultiPlacement {obj.Label}")
+    print(f"procesMultiPlacement {obj.Name}")
 
     def getChildren(obj):
         children = []
@@ -1847,7 +1847,7 @@ def processMultiPlacement(obj, xmlParent):
             solidName = exporter.name()
             volName = "LV-" + solidName
             volXML = createXMLvolume(volName)
-            addVolRef(volXML, obj.Label, s, solidName)
+            addVolRef(volXML, obj.Name, s, solidName)
             addPhysVolPlacement(s, xmlParent, volName, exporter.placement())
             break
     placers = children[:i]  # placers without the solids
@@ -1984,11 +1984,11 @@ def assemblyHeads(obj):
                 # App:Links has the object they are linked to in their OutList
                 # We do not want to remove the link!
                 if subObj.TypeId == "App::Link":
-                    print(f"skipping {subObj.Label}")
+                    print(f"skipping {subObj.Name}")
                     continue
                 for o in subObj.OutList:
                     if o in assemblyHeads:
-                        print(f"removing {ob.Label}")
+                        print(f"removing {ob.Name}")
                         assemblyHeads.remove(o)
 
     return assemblyHeads
@@ -2005,7 +2005,7 @@ def topObj(obj):
     # The topmost object in an App::Part
     # The App::Part is assumed NOT to be an assembly
     if isAssembly(obj):
-        print(f"***** Non Assembly expected  for {obj.Label}")
+        print(f"***** Non Assembly expected  for {obj.Name}")
         return
 
     if not hasattr(obj, "OutList"):
@@ -2027,7 +2027,7 @@ def topObj(obj):
 
     if len(sublist) > 1:
         print(
-            f"Found more than one top object in {obj.Label}. \n Returning first only"
+            f"Found more than one top object in {obj.Name}. \n Returning first only"
         )
     elif len(sublist) == 0:
         return None
@@ -2052,7 +2052,7 @@ def countGDMLObj(Obj):
     # GDMLShared.trace("countGDMLObj")
     vCount = lCount = gCount = 0
     for obj in Obj.OutList:
-        # print(obj.Label, obj.TypeId)
+        # print(obj.Name, obj.TypeId)
         if hasattr(obj, "exportFlag"):
             if obj.exportFlag is False:
                 continue
@@ -2100,24 +2100,24 @@ def checkGDMLstructure(obj):
 
 def locateXMLvol(vol):
     global structure
-    xmlVol = structure.find("volume[@name='%s']" % vol.Label)
+    xmlVol = structure.find("volume[@name='%s']" % vol.Name)
     return xmlVol
 
 
 def exportWorldVol(vol, fileExt):
 
     global WorldVOL
-    WorldVOL = vol.Label
+    WorldVOL = vol.Name
     if fileExt != ".xml":
-        print("Export World Process Volume : " + vol.Label)
-        GDMLShared.trace("Export Word Process Volume" + vol.Label)
-        ET.SubElement(setup, "world", {"ref": vol.Label})
+        print("Export World Process Volume : " + vol.Name)
+        GDMLShared.trace("Export Word Process Volume" + vol.Name)
+        ET.SubElement(setup, "world", {"ref": vol.Name})
 
         if checkGDMLstructure(vol) is False:
             GDMLShared.trace("Insert Dummy Volume")
             createXMLvolume("dummy")
-            xmlParent = createWorldVol(vol.Label)
-            parentName = vol.Label
+            xmlParent = createWorldVol(vol.Name)
+            parentName = vol.Name
             addPhysVol(xmlParent, "dummy")
         else:
             GDMLShared.trace("Valid Structure")
@@ -2142,7 +2142,7 @@ def exportWorldVol(vol, fileExt):
     #    else:
     #        xmlVol = processVolume(vol, xmlParent)
     # else:  # no volume defining world
-    #    xmlVol = createXMLassembly(vol.Label)
+    #    xmlVol = createXMLassembly(vol.Name)
     #    processAssembly(vol, xmlVol, xmlParent, parentName)
 
     # processVolAssem(vol, xmlVol, WorldVOL)
@@ -2290,7 +2290,7 @@ def scanForStl(first, gxml, path, flag):
 
     # if flag == True ignore Parts that convert
     print("scanForStl")
-    print(first.Name + " : " + first.Label + " : " + first.TypeId)
+    print(first.Name + " : " + first.Name + " : " + first.TypeId)
     while switch(first.TypeId):
 
         if case("App::Origin"):
@@ -2353,15 +2353,15 @@ def scanForStl(first, gxml, path, flag):
             print(
                 "===> Name : "
                 + first.Name
-                + " Label : "
-                + first.Label
+                + " Name : "
+                + first.Name
                 + " \
             Type :"
                 + first.TypeId
                 + " : "
                 + str(hasattr(first, "Shape"))
             )
-            newpath = os.path.join(path, first.Label + ".stl")
+            newpath = os.path.join(path, first.Name + ".stl")
             print("Exporting : " + newpath)
             first.Shape.exportStl(newpath)
             # Set Defaults
@@ -2381,7 +2381,7 @@ def scanForStl(first, gxml, path, flag):
                         gxml,
                         "volume",
                         {
-                            "name": first.Label,
+                            "name": first.Name,
                             "color": colHex,
                             "material": mat,
                             "position": pos,
@@ -2491,7 +2491,7 @@ def export(exportList, filepath):
     # the name could that of <solid, an <assembly, or a <physvol
 
     first = exportList[0]
-    print(f"Export Volume: {first.Label}")
+    print(f"Export Volume: {first.Name}")
 
     import os
 
@@ -2503,7 +2503,7 @@ def export(exportList, filepath):
         if first.TypeId == "App::Part":
             exportGDMLworld(first, filepath, fileExt)
         #
-        # elif first.Label == "Materials":
+        # elif first.Name == "Materials":
         #    exportMaterials(first, filepath)
 
         else:
@@ -2515,10 +2515,10 @@ def export(exportList, filepath):
             )
 
     elif fileExt.lower() == ".xml":
-        if first.Label == "Materials":
+        if first.Name == "Materials":
             exportMaterials(first, filepath)
 
-        elif first.Label == "Opticals":
+        elif first.Name == "Opticals":
             exportOpticals(first, filepath)
 
         else:
@@ -2585,7 +2585,7 @@ class SolidExporter:
 
     @staticmethod
     def isSolid(obj):
-        print(f"isSolid {obj.Label}")
+        print(f"isSolid {obj.Name}")
         obj1 = obj
         if obj.TypeId == "App::Link":
             obj1 = obj.LinkedObject
@@ -2632,12 +2632,12 @@ class SolidExporter:
                 klass = globals()[classname]
                 return klass(obj)
         else:
-            print(f"{obj.Label} does not have a Solid Exporter")
+            print(f"{obj.Name} does not have a Solid Exporter")
             return None
 
     def __init__(self, obj):
         self.obj = obj
-        self._name = self.obj.Label
+        self._name = self.obj.Name
 
     def name(self):
         prefix = ""
@@ -3024,7 +3024,7 @@ class BooleanExporter(SolidExporter):
             operation = self.boolOperation(obj1)
             if operation is None:
                 continue
-            solidName = obj1.Label
+            solidName = obj1.Name
             boolXML = ET.SubElement(
                 solids, str(operation), {"name": solidName}
             )
@@ -3920,7 +3920,7 @@ class MultiFuseExporter(SolidExporter):
         super().__init__(obj)
 
     def name(self):
-        solidName = "MultiFuse" + self.obj.Label
+        solidName = "MultiFuse" + self.obj.Name
         return solidName
 
     def export(self):
@@ -3955,19 +3955,19 @@ class MultiFuseExporter(SolidExporter):
 class OrthoArrayExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
-        self._name = "MultiUnion-" + self.obj.Label
+        self._name = "MultiUnion-" + self.obj.Name
 
     def export(self):
         base = self.obj.OutList[0]
-        print(base.Label)
+        print(base.Name)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
-                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+                f"**** Arrays of {base.TypeId} ({base.Name}) currently not supported ***"
             )
             return
         baseExporter = SolidExporter.getExporter(base)
         if baseExporter is None:
-            print(f"Cannot export {base.Label}")
+            print(f"Cannot export {base.Name}")
             return
         baseExporter.export()
         volRef = baseExporter.name()
@@ -4006,15 +4006,15 @@ class PolarArrayExporter(SolidExporter):
         super().__init__(obj)
 
     def name(self):
-        solidName = "MultiUnion-" + self.obj.Label
+        solidName = "MultiUnion-" + self.obj.Name
         return solidName
 
     def export(self):
         base = self.obj.OutList[0]
-        print(base.Label)
+        print(base.Name)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
-                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+                f"**** Arrays of {base.TypeId} ({base.Name}) currently not supported ***"
             )
             return
         baseExporter = SolidExporter.getExporter(base)
@@ -4316,7 +4316,7 @@ class RevolutionExporter(SolidExporter):
     def __init__(self, revolveObj):
         super().__init__(revolveObj)
         self.sketchObj = revolveObj.Source
-        self.lastName = self.obj.Label  # initial name: might be modified later
+        self.lastName = self.obj.Name  # initial name: might be modified later
 
     def name(self):
         # override default name in SolidExporter
@@ -4349,7 +4349,7 @@ class RevolutionExporter(SolidExporter):
         # Make names based on Revolve name
         angle = revolveObj.Angle
         axis = revolveObj.Axis
-        eName = revolveObj.Label
+        eName = revolveObj.Name
         # get a list of curves (instances of class ClosedCurve)
         # for each set of closed edges
         curves = []
@@ -5146,7 +5146,7 @@ class ExtrusionExporter(SolidExporter):
         global Deviation
         super().__init__(extrudeObj)
         self.sketchObj = extrudeObj.Base
-        self.lastName = self.obj.Label  # initial name: might be modified later
+        self.lastName = self.obj.Name  # initial name: might be modified later
         Deviation = self.obj.ViewObject.Deviation / 100.0
 
     def position(self):
@@ -5178,7 +5178,7 @@ class ExtrusionExporter(SolidExporter):
         # getCurve returns one of the sub classes of ClosedCurve that
         # knows how to export the specific closed edges
         # Make names based on Extrude name
-        # curves = [getCurve(edges, extrudeObj.Label + str(i)) for i, edges
+        # curves = [getCurve(edges, extrudeObj.Name + str(i)) for i, edges
         # in enumerate(sortededges)]
         if extrudeObj.Symmetric is True:
             height = extrudeObj.LengthFwd.Value
