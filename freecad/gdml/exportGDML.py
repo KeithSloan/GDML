@@ -1237,7 +1237,7 @@ def getCandidates(cList, Obj):
             tObj = obj
             print(obj.Name)
             if obj.TypeId == "App::Part":
-                cList = cList + getCandidates(cList, obj)
+                cList = getCandidates(cList, obj)
                 # print(cList)
             if hasattr(obj, "LinkedObject"):
                 tObj = obj.LinkedObject
@@ -1255,8 +1255,12 @@ def getCandidates(cList, Obj):
 
 
 def processBorderSurfaces():
-    print("Export Border Surfaces")
+    print("==============================================")
+    print(f"Export Border Surfaces - Assemblies {len(AssemblyDict)}")
+    print("==============================================")
     # print(AssemblyDict)
+    for ent in AssemblyDict.values():
+        ent.printInfo()
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
         if obj.TypeId == "App::FeaturePython":
@@ -1645,15 +1649,16 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     # GDMLShared.trace("Process Assembly : " + volName)
     # if GDMLShared.getTrace() == True :
     #   printVolumeInfo(vol, xmlVol, xmlParent, parentName)
-    # assemObjs = assemblyHeads(vol)
+    assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-    entry = Assembly(vol.Name, vol.OutList, 2)
+    # entry = Assembly(vol.Name, vol.OutList)
+    entry = Assembly(vol.Name, assemObjs)
     AssemblyDict.update({vol.Name: entry})
-    # for obj in assemObjs:
-    for obj in vol.OutList:
+    for obj in assemObjs:
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName)
+            entry.incrementImpression()
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # objName = cleanVolName(obj, obj.Label)
@@ -1784,6 +1789,7 @@ def processContainer(vol, xmlParent):
 
 
 def processVolAssem(vol, xmlParent, parentName):
+
     # vol - Volume Object
     # xmlVol - xml of this volume
     # xmlParent - xml of this volumes Paretnt
@@ -2188,11 +2194,14 @@ def exportGDMLstructure(dirPath, fileName):
 
 def exportGDML(first, filepath, fileExt):
     from . import GDMLShared
+    from .AssemDict import Assembly
     from sys import platform
 
     global zOrder
     global AssemblyDict
     AssemblyDict = {}
+    Assembly.instCount = 0
+    Assembly.imprCount = 0
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")

@@ -31,15 +31,20 @@
 
 class Assembly:
     instCount = 0
+    imprCount = 0
     ignore = ["App::Origin"]
 
-    def __init__(self, name, ObjList, xxx):
+    def __init__(self, name, ObjList):
         Assembly.instCount += 1
-        print(f"Assemmbly {name} {Assembly.instCount}")
+        Assembly.imprCount += 1
+        print(f"Assemmbly {name} {Assembly.instCount} {Assembly.imprCount}")
         self.name = name
         self.list = ObjList
-        self.xxx = xxx
+        self.xxx = Assembly.imprCount
         self.www = Assembly.instCount
+
+    def incrementImpression(self):
+        Assembly.imprCount += 1
 
     def indexName(self, name):
         idx = 0
@@ -56,8 +61,11 @@ class Assembly:
             print(obj.Name)
         print(f"List {self.name} <<<<<<<<")
 
+    def printInfo(self):
+        print(f"Entry {self.name} www {self.www} xxx {self.xxx}")
+
     def getPVname(self, obj):
-        print(f"getPVname {self.name} www {self.www} xxx {self.xxx}")
+        self.printInfo()
         # self.printList()
         idx = self.indexName(obj.Name)
         if hasattr(obj, "LinkedObject"):
