@@ -43,6 +43,10 @@ class Assembly:
         self.xxx = Assembly.imprCount
         self.www = Assembly.instCount
 
+    def resetCounts(self):
+        Assembly.instCount = 0
+        Assembly.imprCount = 0
+
     def incrementImpression(self):
         Assembly.imprCount += 1
 
@@ -65,6 +69,8 @@ class Assembly:
         print(f"Entry {self.name} www {self.www} xxx {self.xxx}")
 
     def getPVname(self, obj):
+        from .exportGDML import getVolumeName
+
         self.printInfo()
         # self.printList()
         idx = self.indexName(obj.Name)
@@ -77,7 +83,7 @@ class Assembly:
             + "_impr_"
             + str(self.xxx)
             + "_"
-            + obj.Name
+            + getVolumeName(obj)
             + "_pv_"
             + str(idx)
         )
