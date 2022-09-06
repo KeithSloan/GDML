@@ -1,0 +1,63 @@
+<xml>
+ <solidsGroups>
+    <solidGroup name="Cones"/>
+        <solid name="GDMLCone"/>
+            <variable name="rmin1" type="Length" value="0" description="Min Radius 1"/>
+            <variable name="rmax1" type="Length" value="10.0" description="Max Radius 1"/>
+            <variable name="rmin2" type="Length" value="5.0" description="Min Radius 2"/>
+            <variable name="rmax2" type="Length" value="15.0" description="Max Radius 2"/>
+            <variable name="z" type="Length" value="20" description="Height of Cone"/>
+           <variable name="startphi" type="Float" value="0.0" description="Start Angle"/>
+            <variable name="deltaphi" type="Float" value="360.0" description="Delta Angle"/>
+            <variable name="aunit" type="enum" value="Degree" description="aunit"/>
+            <variable name="lunit" type="enum" value="mm" description="lunit"/>
+            <variable name="material" type="material" value="G4_Steel" description="Material"/>
+        </solid>
+        <solid name="GDMLElCone"/>
+            <variable name="dx" type="Length" value="10.0" description="dx"/>
+            <variable name="dy" type="Length" value="20.0" description="dy"/>
+            <variable name="zmax" type="Length" value="20.0" description="zmax"/>
+            <variable name="zcut" type="Length" value="5.0" description="zcut"/>
+            <variable name="lunit" type="enum" value="mm" description="lunit"/>
+            <variable name="material" type="material" value="G4_Steel" description="Material"/>
+        </solid>
+    </solidGroup>     
+    <solidGroup name="Twisted"/>
+        <solid name="GDMLTwistedbox"/>
+            <variable name="x" type="Length" value="10.0" description="Length x"/>
+            <variable name="y" type="Length" value="10.0" description="Length y"/>
+            <variable name="z" type="Length" value="10.0" description="Length z"/>
+            <variable name="PhiTwist" type="Float" value="15.0" description="Twist Angle"/>
+            <variable name="aunit" type="enum" value="Degree" description="aunit"/>
+            <variable name="lunit" type="enum" value="mm" description="lunit"/>
+            <variable name="material" type="material" value="G4_Steel" description="Material"/>
+        </solid>
+        <solid name="GDMLTwistedtrap"/>
+            <variable name="z" type="Length" value="15.0" description="Length z"/>
+            <variable name="PhiTwist" type="Float" value="15.0" description="Twist Angle"/>
+            <variable name="Theta" type="Float" value="15.0" description="Theta"/>
+            <variable name="Phi" type="Float" value="15.0" description="Phi"/>
+            <variable name="x1" type="Length" value="15.0" description="Length x at y= -y1/2 of face at -z/2"/>
+            <variable name="x2" type="Length" value="25.0" description="Length x at y= +y1/2 of face at -z/2"/>
+            <variable name="x3" type="Length" value="30.0" 2escription="Length x at y= -y1/2 of face at +z/2"/>
+            <variable name="x4" type="Length" value="22.0" description="Length x at y= +y1/2 of face at +z/2"/>
+            <variable name="y1" type="Length" value="10.0" description="Length y at face -z/2"/>
+            <variable name="y2" type="Length" value="30.0" description="Length y at face +z/2"/>
+            <variable name="Alph" type="Float" value="12.0" description="Alph"/>
+            <variable name="aunit" type="enum" value="Degree" description="aunit"/>
+            <variable name="lunit" type="enum" value="mm" description="lunit"/>
+            <variable name="material" type="material" value="G4_Steel" description="Material"/>
+        </solid>
+        <solid name="GDMLTwistedtrd"/>
+            <variable name="z" type="Length" value="15.0" description="Length z"/>
+            <variable name="x1" type="Length" value="5.0" description="Length x at face -z/2"/>
+            <variable name="x2" type="Length" value="25.0" description="Length x at face +z/2"/>
+            <variable name="y1" type="Length" value="5.0" description="Length y at face -z/2"/>
+            <variable name="y2" type="Length" value="25.0" description="Length y at face +z/2"/>
+            <variable name="lunit" type="enum" value="mm" description="lunit"/>
+            <variable name="material" type="material" value="G4_Steel" description="Material"/>
+        <solid name="GDMLTwistedtubs"/>
+        </solid>
+    </solidGroup>     
+ </solidsGroups>
+</xml>
