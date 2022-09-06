@@ -1136,22 +1136,31 @@ def processSkinSurfaces(obj):
 
 
 def getPVobject(doc, Obj, PVname):
-    obj = doc.getObject(PVname)
-    print(f"Found Object {obj.Label}")
-    return obj
+    print(f"getPVobject {type(PVname)}")
+    if hasattr(PVname, "TypeId"):
+        print(PVname.TypeId)
+        if PVname.TypeId == "App::Part":
+            return PVname
+        else:
+            print("Not handled")
+    else:
+        print("Old type : string")
+        obj = doc.getObject(PVname)
+        print(f"Found Object {obj.Label}")
+        return obj
 
 
 def getPVname(obj):
     print(f"getPVname {obj.Label}")
     if hasattr(obj, "InList"):
         parent = obj.InList[0]
-        print(f"Parent {parent.Label}")
+        # print(f"Parent {parent.Label}")
         entry = AssemblyDict.get(parent.Label)
-        print(f"entry {entry}")
+        # print(f"entry {entry}")
         if entry is not None:
-            print("Is an Assembly")
-            if hasattr(obj, "CopyNumber"):
-                print(f"CopyNumber {obj.CopyNumber}")
+            # print("Is an Assembly")
+            # if hasattr(obj, "CopyNumber"):
+            # print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
         else:
             return "PV-" + parent.Label
@@ -1167,7 +1176,6 @@ def exportSurfaceProperty(Name, Surface, ref1, ref2):
 
 
 def checkFaces(obj1, obj2):
-    return True
     tolerence = 1e-7
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
         faces1 = obj1.Shape.Faces
@@ -1179,18 +1187,30 @@ def checkFaces(obj1, obj2):
     return False
 
 
-def processCandidates(name, surface, list1, list2):
-    print(f"process Candidates {len(list1)} {len(list2)}")
+def processSurface(name, cnt, surface, obj1, obj2):
+    ref1 = getPVname(obj1)
+    print(f"ref1 {ref1}")
+    ref2 = getPVname(obj2)
+    print(f"ref2 {ref2}")
+    exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
+    return cnt + 1
+
+
+def processCandidates(name, surface, check, list1, list2):
+    print(f"process Candidates {check} {len(list1)} {len(list2)}")
     cnt = 1
     for obj1 in list1:
         for obj2 in list2:
-            if checkFaces(obj1, obj2):
-                ref1 = getPVname(obj1)
-                print(f"ref1 {ref1}")
-                ref2 = getPVname(obj2)
-                print(f"ref2 {ref2}")
-                exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
-                cnt += 1
+            if check:
+                if checkFaces(obj1, obj2):
+                    cnt = processSurface(name, cnt, surface, obj1, obj2)
+                    cnt += 1
+                else:
+                    print(
+                        f"<<< No common face : {obj1.Label} : {obj2.Label} >>>"
+                    )
+            else:
+                cnt = processSurface(name, cnt, surface, obj1, obj2)
 
 
 def getCandidates(cList, Obj):
@@ -1241,7 +1261,13 @@ def processBorderSurfaces():
                 candList2 = getCandidates([], obj2)
                 print(f"Candidates 2 : {len(candList2)}")
                 print(f"Candidates 2 : {candList2}")
-                processCandidates(obj.Label, obj.Surface, candList1, candList2)
+                # default for old borderSurface Objects
+                check = True
+                if hasattr(obj, "CheckCommonFaces"):
+                    check = obj.CheckCommonFaces
+                processCandidates(
+                    obj.Label, obj.Surface, check, candList1, candList2
+                )
 
 
 def processOpticals():
