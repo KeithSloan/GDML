@@ -1152,7 +1152,8 @@ def getPVobject(doc, Obj, PVname):
         return obj
 
 
-def getPVname(obj):
+def getPVname(Obj, obj):
+    # Obj is the source used to create candidates
     print(f"getPVname {obj.Label}")
     if hasattr(obj, "InList"):
         parent = obj.InList[0]
@@ -1165,9 +1166,12 @@ def getPVname(obj):
             # print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
 
-        # Get candidates get Children
-        # return "PV-"+parent.Label
+        print(f"Not in an Assembly : Parent {parent.Label} {Obj.Label}")
+        # Obj is the Object used to create candidates
+        return "PV-" + Obj.Label
 
+    else:
+        print("No Parent")
     return "PV-" + obj.Label
 
 
@@ -1194,17 +1198,9 @@ def checkFaces(obj1, obj2):
 def processSurface(name, cnt, surface, Obj1, obj1, Obj2, obj2):
     print(f"processSurface {name} {surface}")
     print(f" {Obj1.Label} {obj1.Label} {Obj2.Label} {obj2.Label}")
-    if hasattr(obj1, "LinkedObject"):
-        print(f"Linked Object {obj1.Label}")
-        ref1 = getPVname(obj1)
-        print(f"ref1 {ref1}")
-        ref2 = getPVname(obj2)
-        print(f"ref2 {ref2}")
-    else:
-        ref1 = Obj1.Label
-        ref2 = Obj2.Label
+    ref1 = getPVname(Obj1, obj1)
+    ref2 = getPVname(Obj2, obj2)
     exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
-    # exportSurfaceProperty(name + str(cnt), surface, obj1.Label, obj2.Label)
     return cnt + 1
 
 
@@ -1295,7 +1291,7 @@ def processBorderSurfaces():
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
-                check = True
+                check = False
                 if hasattr(obj, "CheckCommonFaces"):
                     check = obj.CheckCommonFaces
                 processCandidates(
