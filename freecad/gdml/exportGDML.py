@@ -808,10 +808,10 @@ def addPhysVol(xmlVol, volName):
 def getPVName(obj):
     print(f"Get PVName obj {obj.Label}")
     if hasattr(obj, "LinkedObject"):
-        name = obj.LinkedObject.Label
+        # name = obj.LinkedObject.Label
+        name = obj.Label
     else:
         name = obj.Label
-    # Use Name not Label to make Unique
     pvName = "PV-" + name
     if hasattr(obj, "CopyNumber"):
         pvName = pvName + "-" + str(obj.CopyNumber)
@@ -1138,8 +1138,10 @@ def processSkinSurfaces(obj):
 def getPVobject(doc, Obj, PVname):
     print(f"getPVobject {type(PVname)}")
     if hasattr(PVname, "TypeId"):
-        print(PVname.TypeId)
+        print(f"{PVname.Label} {PVname.TypeId}")
         if PVname.TypeId == "App::Part":
+            return PVname
+        elif PVname.TypeId == "App::Link":
             return PVname
         else:
             print("Not handled")
@@ -1162,9 +1164,11 @@ def getPVname(obj):
             # if hasattr(obj, "CopyNumber"):
             # print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
-        else:
-            return "PV-" + parent.Label
-    return "PV-" + nameOfGDMLobject(obj)
+
+        # Get candidates get Children
+        # return "PV-"+parent.Label
+
+    return "PV-" + obj.Label
 
 
 def exportSurfaceProperty(Name, Surface, ref1, ref2):
@@ -1187,55 +1191,84 @@ def checkFaces(obj1, obj2):
     return False
 
 
-def processSurface(name, cnt, surface, obj1, obj2):
-    ref1 = getPVname(obj1)
-    print(f"ref1 {ref1}")
-    ref2 = getPVname(obj2)
-    print(f"ref2 {ref2}")
+def processSurface(name, cnt, surface, Obj1, obj1, Obj2, obj2):
+    print(f"processSurface {name} {surface}")
+    print(f" {Obj1.Label} {obj1.Label} {Obj2.Label} {obj2.Label}")
+    if hasattr(obj1, "LinkedObject"):
+        print(f"Linked Object {obj1.Label}")
+        ref1 = getPVname(obj1)
+        print(f"ref1 {ref1}")
+        ref2 = getPVname(obj2)
+        print(f"ref2 {ref2}")
+    else:
+        ref1 = Obj1.Label
+        ref2 = Obj2.Label
     exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
+    # exportSurfaceProperty(name + str(cnt), surface, obj1.Label, obj2.Label)
     return cnt + 1
 
 
-def processCandidates(name, surface, check, list1, list2):
-    print(f"process Candidates {check} {len(list1)} {len(list2)}")
+def processCandidates(name, surface, check, Obj1, set1, Obj2, set2):
+    print(f"process Candidates {check} {len(set1)} {len(set2)}")
     cnt = 1
-    for obj1 in list1:
-        for obj2 in list2:
-            if check:
-                if checkFaces(obj1, obj2):
-                    cnt = processSurface(name, cnt, surface, obj1, obj2)
-                    cnt += 1
+    for obj1 in set1:
+        for obj2 in set2:
+            if obj1 != obj2:
+                if check:
+                    if checkFaces(obj1, obj2):
+                        cnt = processSurface(
+                            name, cnt, surface, Obj1, obj1, Obj2, obj2
+                        )
+                        cnt += 1
+                    else:
+                        print(
+                            f"<<< No common face : {Obj1.Label} : {Obj2.Label} >>>"
+                        )
                 else:
-                    print(
-                        f"<<< No common face : {obj1.Label} : {obj2.Label} >>>"
+                    cnt = processSurface(
+                        name, cnt, surface, Obj1, obj1, Obj2, obj2
                     )
-            else:
-                cnt = processSurface(name, cnt, surface, obj1, obj2)
 
 
-def getCandidates(cList, Obj):
-    print(f"getCandidates {Obj.Label} {cList}")
+def printListObj(name, list):
+    print(f"<=== Object {name} list ===>")
+    for obj in list:
+        print(obj.Label)
+    print("<===============================")
+
+
+def printSet(name, set):
+    print(f"<=== Object Set{name} len {len(set)} ===>")
+    for obj in set:
+        print(obj.Label)
+    print("<===============================")
+
+
+def getCandidates(cSet, Obj):
+    print(f"getCandidates : Object {Obj.Label} {len(cSet)}")
+    # Linked Objects and Parts can have different locations so need to be added
     if hasattr(Obj, "OutList"):
-        # print(Obj.OutList)
+        printListObj(Obj.Label, Obj.OutList)
         for obj in Obj.OutList:
             tObj = obj
-            print(obj.Label)
-            if obj.TypeId == "App::Part":
-                cList = getCandidates(cList, obj)
-                # print(cList)
+            # print(obj.Label)
             if hasattr(obj, "LinkedObject"):
                 tObj = obj.LinkedObject
-                # tObj is to be tested - obj to be appended
+                print(f"Linked Object {obj.Label} {tObj.Label}")
+            if tObj.TypeId == "App::Part":
+                cSet = getCandidates(cSet, tObj)
+                # print(cSet)
             if hasattr(tObj, "Proxy"):
                 if hasattr(tObj.Proxy, "Type"):
                     if tObj.Proxy.Type[:4] == "GDML":
                         # print(f"Pre-Appended {cList}")
-                        cList.append(obj)
-                        # print(f"Appended {cList}")
+                        # Add original not Linked
+                        cSet.add(obj)
+                        # print(f"Appended {cSet}")
     else:
         print("No OutList")
-    print(f"{Obj.Label} Returning {cList}")
-    return cList
+    printSet(Obj.Label + " Returning", cSet)
+    return cSet
 
 
 def processBorderSurfaces():
@@ -1254,19 +1287,25 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                candList1 = getCandidates([], obj1)
-                print(f"Candidates 1 : {len(candList1)}")
-                print(f"Candidates 1 : {candList1}")
+                candSet1 = getCandidates(set(), obj1)
+                print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
+                printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                candList2 = getCandidates([], obj2)
-                print(f"Candidates 2 : {len(candList2)}")
-                print(f"Candidates 2 : {candList2}")
+                candSet2 = getCandidates(set(), obj2)
+                print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
+                printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
                 check = True
                 if hasattr(obj, "CheckCommonFaces"):
                     check = obj.CheckCommonFaces
                 processCandidates(
-                    obj.Label, obj.Surface, check, candList1, candList2
+                    obj.Label,
+                    obj.Surface,
+                    check,
+                    obj1,
+                    candSet1,
+                    obj2,
+                    candSet2,
                 )
 
 

@@ -5091,7 +5091,7 @@ class GDMLskinsurface(GDMLcommon):
 
 # ??? need for GDMLcommon ???
 class GDMLbordersurface(GDMLcommon):
-    def __init__(self, obj, name, surface, pv1, pv2):
+    def __init__(self, obj, name, surface, pv1, pv2, check=True):
         super().__init__(obj)
         # print(f'pv1 : {pv1} pv2 : {pv2}')
         obj.addProperty(
@@ -5103,7 +5103,7 @@ class GDMLbordersurface(GDMLcommon):
             "GDMLborder",
             "Perform check of common faces on export",
         )
-        obj.CheckCommonFaces = True
+        obj.CheckCommonFaces = check
         obj.addProperty(
             "App::PropertyLinkGlobal", "PV1", "GDMLborder", "physvol PV1"
         ).PV1 = pv1
