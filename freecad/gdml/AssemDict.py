@@ -31,14 +31,24 @@
 
 class Assembly:
     instCount = 0
+    imprCount = 0
     ignore = ["App::Origin"]
 
-    def __init__(self, name, ObjList, xxx):
+    def __init__(self, name, ObjList):
         Assembly.instCount += 1
+        Assembly.imprCount += 1
+        print(f"Assemmbly {name} {Assembly.instCount} {Assembly.imprCount}")
         self.name = name
         self.list = ObjList
-        self.xxx = xxx
+        self.xxx = Assembly.imprCount
         self.www = Assembly.instCount
+
+    def resetCounts(self):
+        Assembly.instCount = 0
+        Assembly.imprCount = 0
+
+    def incrementImpression(self):
+        Assembly.imprCount += 1
 
     def indexName(self, name):
         idx = 0
@@ -49,17 +59,31 @@ class Assembly:
                 idx += 1
         return None
 
-    def getPVname(self, name):
-        print(f"getPVname {self.name} www {self.www} xxx {self.xxx} {name}")
-        idx = self.indexName(name)
-        print(f"zzz {idx}")
+    def printList(self):
+        print(f"List {self.name} >>>>>>>")
+        for obj in self.list:
+            print(obj.Name)
+        print(f"List {self.name} <<<<<<<<")
+
+    def printInfo(self):
+        print(f"Entry {self.name} www {self.www} xxx {self.xxx}")
+
+    def getPVname(self, obj):
+        from .exportGDML import getVolumeName
+
+        self.printInfo()
+        # self.printList()
+        idx = self.indexName(obj.Name)
+        if hasattr(obj, "LinkedObject"):
+            obj = obj.LinkedObject
+        print(f"zzz {idx} should be one less than CopyNumber")
         return (
             "av_"
             + str(self.www)
             + "_impr_"
             + str(self.xxx)
             + "_"
-            + name
+            + getVolumeName(obj)
             + "_pv_"
             + str(idx)
         )
