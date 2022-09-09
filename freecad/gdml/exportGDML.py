@@ -254,10 +254,12 @@ def GDMLstructure():
     global centerDefined
     global identityDefined
     global gxml
+    global skinSurfaces
 
     centerDefined = False
     identityDefined = False
     defineCnt = LVcount = PVcount = POScount = ROTcount = SCLcount = 1
+    skinSurfaces = []
 
     gdml = initGDML()
     define = ET.SubElement(gdml, "define")
@@ -1126,12 +1128,13 @@ def processOpticalSurface(obj):
             )
 
 
-def processSkinSurfaces(obj):
-    # Ignore create from Parts with SkinSurface
-    # global structure
-    # print('Add skins')
-    # ET.SubElement(structure,'skinsurface', {'name': obj.Label, \
-    #                         'surfaceproperty' : obj.SkinSurface, \
+def processSkinSurfaces():
+    global structure
+    global skinSurfaces
+
+    for ss in skinSurfaces:
+        structure.append(ss)
+
     return
 
 
@@ -1165,7 +1168,6 @@ def getPVname(Obj, obj):
             # if hasattr(obj, "CopyNumber"):
             # print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
-
         print(f"Not in an Assembly : Parent {parent.Label} {Obj.Label}")
         # Obj is the Object used to create candidates
         return "PV-" + Obj.Label
@@ -1240,6 +1242,20 @@ def printSet(name, set):
     print("<===============================")
 
 
+def getSubVols(vol):
+    volsList = []
+    if not isAssembly(vol):
+        return [vol]
+
+    for obj in assemblyHeads(vol):
+        if isAssembly(obj):
+            volsList += getSubVols(obj)
+        else:
+            volsList.append(obj.Label)
+
+    return volsList
+
+
 def getCandidates(cSet, Obj):
     print(f"getCandidates : Object {Obj.Label} {len(cSet)}")
     # Linked Objects and Parts can have different locations so need to be added
@@ -1283,11 +1299,13 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                candSet1 = getCandidates(set(), obj1)
+                #                candSet1 = getCandidates(set(), obj1)
+                candSet1 = getSubVols(obj1)
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
                 printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                candSet2 = getCandidates(set(), obj2)
+                #                candSet2 = getCandidates(set(), obj2)
+                candSet2 = getSubVols(obj2)
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
@@ -1305,6 +1323,49 @@ def processBorderSurfaces():
                 )
 
 
+def processSpreadsheetMatrix(sheet):
+    # Stupid way of finding how many rows. columns:
+    # increase col, row until we get an exception for that cell
+    # You would think the API would provide a simple function
+    def ncols():
+        n = 0
+        try:
+            while n < 26 * 26:
+                sheet.get(chr(ord("A") + n) + "1")
+                n += 1
+        except:
+            pass
+        return n
+
+    def nrows():
+        n = 0
+        try:
+            while n < 256 * 256:
+                sheet.get("A" + str(n + 1))
+                n += 1
+        except:
+            pass
+        return n
+
+    global define
+    print("add matrix to define")
+
+    coldim = ncols()
+    rows = nrows()
+
+    s = ""
+    for row in range(0, rows):
+        for col in range(0, coldim):
+            cell = chr(ord("A") + col) + str(row + 1)
+            s += str(sheet.get(cell)) + " "
+
+    ET.SubElement(
+        define,
+        "matrix",
+        {"name": sheet.Label, "coldim": str(coldim), "values": s[:-1]},
+    )
+
+
 def processOpticals():
     print("Process Opticals")
     Grp = FreeCAD.ActiveDocument.getObject("Opticals")
@@ -1315,7 +1376,10 @@ def processOpticals():
                 if case("Matrix"):
                     print("Matrix")
                     for m in obj.Group:
-                        processMatrix(m)
+                        if m.TypeId == "Spreadsheet::Sheet":
+                            processSpreadsheetMatrix(m)
+                        else:
+                            processMatrix(m)
                     break
 
                 if case("Surfaces"):
@@ -1668,6 +1732,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
 def processVolume(vol, xmlParent, volName=None):
 
     global structure
+    global skinSurfaces
+
     # vol - Volume Object
     # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
@@ -1719,6 +1785,8 @@ def processVolume(vol, xmlParent, volName=None):
             partPlacement = vol.Placement * partPlacement
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    structure.append(xmlVol)
+
     if hasattr(vol, "SensDet"):
         # SensDet could be enumeration of text value None
         if vol.SensDet != "None":
@@ -1734,8 +1802,7 @@ def processVolume(vol, xmlParent, volName=None):
         # SkinSurfface could be enumeration of text value None
         if vol.SkinSurface != "None":
             print("Need to export : skinsurface")
-            ss = ET.SubElement(
-                structure,
+            ss = ET.Element(
                 "skinsurface",
                 {
                     "name": "skin" + vol.SkinSurface,
@@ -1743,8 +1810,9 @@ def processVolume(vol, xmlParent, volName=None):
                 },
             )
             ET.SubElement(ss, "volumeref", {"ref": volName})
-    structure.append(xmlVol)
     print(f"Processed Volume : {volName}")
+    skinSurfaces.append(ss)
+
     return xmlVol
 
 
@@ -2135,6 +2203,7 @@ def exportWorldVol(vol, fileExt):
     # processVolAssem(vol, xmlVol, WorldVOL)
     processVolAssem(vol, xmlParent, WorldVOL)
 
+    processSkinSurfaces()
     processBorderSurfaces()
 
 
