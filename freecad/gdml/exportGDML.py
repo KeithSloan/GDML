@@ -254,12 +254,10 @@ def GDMLstructure():
     global centerDefined
     global identityDefined
     global gxml
-    global skinSurfaces
 
     centerDefined = False
     identityDefined = False
     defineCnt = LVcount = PVcount = POScount = ROTcount = SCLcount = 1
-    skinSurfaces = []
 
     gdml = initGDML()
     define = ET.SubElement(gdml, "define")
@@ -1128,13 +1126,12 @@ def processOpticalSurface(obj):
             )
 
 
-def processSkinSurfaces():
-    global structure
-    global skinSurfaces
-
-    for ss in skinSurfaces:
-        structure.append(ss)
-
+def processSkinSurfaces(obj):
+    # Ignore create from Parts with SkinSurface
+    # global structure
+    # print('Add skins')
+    # ET.SubElement(structure,'skinsurface', {'name': obj.Label, \
+    #                         'surfaceproperty' : obj.SkinSurface, \
     return
 
 
@@ -1168,6 +1165,7 @@ def getPVname(Obj, obj):
             # if hasattr(obj, "CopyNumber"):
             # print(f"CopyNumber {obj.CopyNumber}")
             return entry.getPVname(obj)
+
         print(f"Not in an Assembly : Parent {parent.Label} {Obj.Label}")
         # Obj is the Object used to create candidates
         return "PV-" + Obj.Label
@@ -1185,29 +1183,15 @@ def exportSurfaceProperty(Name, Surface, ref1, ref2):
     ET.SubElement(borderSurface, "physvolref", {"ref": ref2})
 
 
-def checkFaces(pair1, pair2):
+def checkFaces(obj1, obj2):
     tolerence = 1e-7
-    obj1 = pair1[0]
-    matrix1 = pair1[1].Matrix
-    obj2 = pair2[0]
-    matrix2 = pair2[1].Matrix
-
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
-        faces1 = (obj1.Shape.transformGeometry(matrix1)).Faces
-        faces2 = (obj2.Shape.transformGeometry(matrix2)).Faces
-        #        faces1 = obj1.Shape.Faces
-        #        faces2 = obj2.Shape.Faces
-        for f1 in faces1:
-            for f2 in faces2:
-                print(
-                    f"face centers {f1.CenterOfGravity} {f2.CenterOfGravity}"
-                )
-                comShape = f1.common([f2], tolerence)
-                if len(comShape.Faces) > 0:
-                    print("Common")
-                    return True
-                else:
-                    print("Not common")
+        faces1 = obj1.Shape.Faces
+        faces2 = obj2.Shape.Faces
+        for f in faces1:
+            comShape = f.common(faces2, tolerence)
+            if len(comShape.Faces) > 0:
+                return True
     return False
 
 
@@ -1223,23 +1207,18 @@ def processSurface(name, cnt, surface, Obj1, obj1, Obj2, obj2):
 def processCandidates(name, surface, check, Obj1, set1, Obj2, set2):
     print(f"process Candidates {check} {len(set1)} {len(set2)}")
     cnt = 1
-    for pair1 in set1:
-        obj1 = pair1[0]
-        for pair2 in set2:
-            obj2 = pair2[0]
-            if pair1 != pair2:
+    for obj1 in set1:
+        for obj2 in set2:
+            if obj1 != obj2:
                 if check:
-                    if checkFaces(pair1, pair2):
+                    if checkFaces(obj1, obj2):
                         cnt = processSurface(
                             name, cnt, surface, Obj1, obj1, Obj2, obj2
-                        )
-                        print(
-                            f"<<< Common face : {obj1.Label} : {obj2.Label} >>>"
                         )
                         cnt += 1
                     else:
                         print(
-                            f"<<< No common face : {obj1.Label} : {obj2.Label} >>>"
+                            f"<<< No common face : {Obj1.Label} : {Obj2.Label} >>>"
                         )
                 else:
                     cnt = processSurface(
@@ -1247,41 +1226,16 @@ def processCandidates(name, surface, check, Obj1, set1, Obj2, set2):
                     )
 
 
-def printListObj(name, listArg):
+def printListObj(name, list):
     print(f"<=== Object {name} list ===>")
-    for obj in listArg:
+    for obj in list:
         print(obj.Label)
     print("<===============================")
 
 
-def getSubVols(vol, placement):
-    print(f"getSubVols {vol.Label} {placement}")
-    volsList = []
-    if hasattr(vol, "OutList"):
-        if len(vol.OutList) == 0:
-            return [(vol, placement)]
-
-        for obj in vol.OutList:
-            typeId = obj.TypeId
-            tObj = obj
-            # print(obj.Label)
-            if hasattr(obj, "LinkedObject"):
-                typeId = obj.LinkedObject.TypeId
-                tObj = obj.OutList[0]
-            if typeId == "App::Part":
-                volsList += getSubVols(tObj, placement * obj.Placement)
-            else:
-                if typeId == "Part::FeaturePython":
-                    volsList.append((obj, placement))
-    else:
-        print("No OutList")
-
-    return volsList
-
-
 def printSet(name, set):
     print(f"<=== Object Set{name} len {len(set)} ===>")
-    for obj in set[0]:
+    for obj in set:
         print(obj.Label)
     print("<===============================")
 
@@ -1329,12 +1283,13 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                candSet1 = getSubVols(obj1, FreeCAD.Placement())
+                candSet1 = getCandidates(set(), obj1)
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
+                printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                candSet2 = getSubVols(obj2, FreeCAD.Placement())
-
+                candSet2 = getCandidates(set(), obj2)
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
+                printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
                 check = False
                 if hasattr(obj, "CheckCommonFaces"):
@@ -1350,51 +1305,6 @@ def processBorderSurfaces():
                 )
 
 
-def processSpreadsheetMatrix(sheet):
-    # Stupid way of finding how many rows. columns:
-    # increase col, row until we get an exception for that cell
-    # You would think the API would provide a simple function
-    def ncols():
-        n = 0
-        try:
-            while n < 26 * 26:
-                sheet.get(chr(ord("A") + n) + "1")
-
-                n += 1
-        except:
-            pass
-        return n
-
-    def nrows():
-        n = 0
-        try:
-            while n < 256 * 256:
-                sheet.get("A" + str(n + 1))
-
-                n += 1
-        except:
-            pass
-        return n
-
-    global define
-    print("add matrix to define")
-
-    coldim = ncols()
-    rows = nrows()
-
-    s = ""
-    for row in range(0, rows):
-        for col in range(0, coldim):
-            cell = chr(ord("A") + col) + str(row + 1)
-            s += str(sheet.get(cell)) + " "
-
-    ET.SubElement(
-        define,
-        "matrix",
-        {"name": sheet.Label, "coldim": str(coldim), "values": s[:-1]},
-    )
-
-
 def processOpticals():
     print("Process Opticals")
     Grp = FreeCAD.ActiveDocument.getObject("Opticals")
@@ -1405,10 +1315,7 @@ def processOpticals():
                 if case("Matrix"):
                     print("Matrix")
                     for m in obj.Group:
-                        if m.TypeId == "Spreadsheet::Sheet":
-                            processSpreadsheetMatrix(m)
-                        else:
-                            processMatrix(m)
+                        processMatrix(m)
                     break
 
                 if case("Surfaces"):
@@ -1716,7 +1623,7 @@ def createXMLassembly(name):
     return elem
 
 
-def processAssembly(vol, xmlVol, xmlParent, parentName):
+def processAssembly(vol, xmlVol, xmlParent, parentName, instCnt, imprNum):
     from .AssemDict import Assembly
 
     global structure
@@ -1736,12 +1643,13 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
     # entry = Assembly(vol.Label, vol.OutList)
-    entry = Assembly(vol.Label, assemObjs)
+    if not hasattr(vol, "LinkedObject"):
+        instCnt += 1
+    entry = Assembly(vol.Label, instCnt, imprNum, assemObjs)
     AssemblyDict.update({vol.Label: entry})
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
-            processVolAssem(obj, xmlVol, volName)
-            entry.incrementImpression()
+            instCnt = processVolAssem(obj, xmlVol, volName, instCnt, imprNum)
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # PhysVol needs to be uniquE
@@ -1756,13 +1664,12 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
 
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
     structure.append(xmlVol)
+    return instCnt
 
 
 def processVolume(vol, xmlParent, volName=None):
 
     global structure
-    global skinSurfaces
-
     # vol - Volume Object
     # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
@@ -1814,8 +1721,6 @@ def processVolume(vol, xmlParent, volName=None):
             partPlacement = vol.Placement * partPlacement
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
-    structure.append(xmlVol)
-
     if hasattr(vol, "SensDet"):
         # SensDet could be enumeration of text value None
         if vol.SensDet != "None":
@@ -1831,7 +1736,8 @@ def processVolume(vol, xmlParent, volName=None):
         # SkinSurfface could be enumeration of text value None
         if vol.SkinSurface != "None":
             print("Need to export : skinsurface")
-            ss = ET.Element(
+            ss = ET.SubElement(
+                structure,
                 "skinsurface",
                 {
                     "name": "skin" + vol.SkinSurface,
@@ -1839,13 +1745,12 @@ def processVolume(vol, xmlParent, volName=None):
                 },
             )
             ET.SubElement(ss, "volumeref", {"ref": volName})
-            skinSurfaces.append(ss)
-
+    structure.append(xmlVol)
     print(f"Processed Volume : {volName}")
     return xmlVol
 
 
-def processContainer(vol, xmlParent):
+def processContainer(vol, xmlParent, instCnt, imprNum):
     print("Process Container")
     global structure
     volName = getVolumeName(vol)
@@ -1858,21 +1763,24 @@ def processContainer(vol, xmlParent):
     )
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
     for obj in objects[1:]:
-        if obj.TypeId == "App::Part":
-            processVolAssem(obj, newXmlVol, volName)
-        elif obj.TypeId == "App::Link":
+        if obj.TypeId == "App::Link":
             print("Process Link")
             volRef = getVolumeName(obj.LinkedObject)
             addPhysVolPlacement(
                 obj, newXmlVol, obj.Label, obj.Placement, volRef
             )
+        elif obj.TypeId == "App::Part":
+            instCnt = processVolAssem(
+                obj, newXmlVol, volName, instCnt, imprNum
+            )
         else:
             _ = processVolume(obj, newXmlVol)
 
     structure.append(newXmlVol)
+    return instCnt
 
 
-def processVolAssem(vol, xmlParent, parentName):
+def processVolAssem(vol, xmlParent, parentName, instCnt, imprNum):
 
     # vol - Volume Object
     # xmlVol - xml of this volume
@@ -1884,15 +1792,20 @@ def processVolAssem(vol, xmlParent, parentName):
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
         if isContainer(vol):
-            processContainer(vol, xmlParent)
+            processContainer(vol, xmlParent, instCnt, imprNum)
         elif isAssembly(vol):
-            # if isAssembly(vol):
             newXmlVol = createXMLassembly(volName)
-            processAssembly(vol, newXmlVol, xmlParent, parentName)
+            # if not hasattr(vol, "LinkedObject"):
+            #   instCnt += 1
+            # instCnt += 1
+            instCnt = processAssembly(
+                vol, newXmlVol, xmlParent, parentName, instCnt, imprNum + 1
+            )
         else:
             processVolume(vol, xmlParent)
     else:
         print("skipping " + vol.Label)
+    return instCnt
 
 
 def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
@@ -2230,9 +2143,8 @@ def exportWorldVol(vol, fileExt):
     #    processAssembly(vol, xmlVol, xmlParent, parentName)
 
     # processVolAssem(vol, xmlVol, WorldVOL)
-    processVolAssem(vol, xmlParent, WorldVOL)
+    processVolAssem(vol, xmlParent, WorldVOL, 0, 0)
 
-    processSkinSurfaces()
     processBorderSurfaces()
 
 
@@ -2286,11 +2198,10 @@ def exportGDML(first, filepath, fileExt):
     global AssemblyDict
     AssemblyDict = {}
     Assembly.instCount = 0
-    Assembly.imprCount = 0
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
-    print("====> Start GDML Export 1.9")
+    print("====> Start GDML Export 1.8")
     print("File extension : " + fileExt)
 
     GDMLstructure()

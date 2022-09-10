@@ -30,25 +30,14 @@
 
 
 class Assembly:
-    instCount = 0
-    imprCount = 0
     ignore = ["App::Origin"]
 
-    def __init__(self, name, ObjList):
-        Assembly.instCount += 1
-        Assembly.imprCount += 1
-        print(f"Assemmbly {name} {Assembly.instCount} {Assembly.imprCount}")
+    def __init__(self, name, instCount, imprCount, ObjList):
+        print(f"Assemmbly {name} {Assembly.instCount} {imprCount}")
         self.name = name
         self.list = ObjList
-        self.xxx = Assembly.imprCount
-        self.www = Assembly.instCount
-
-    def resetCounts(self):
-        Assembly.instCount = 0
-        Assembly.imprCount = 0
-
-    def incrementImpression(self):
-        Assembly.imprCount += 1
+        self.xxx = imprCount
+        self.www = instCount
 
     def indexName(self, name):
         idx = 0
