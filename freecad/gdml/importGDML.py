@@ -2703,6 +2703,29 @@ def setSkinSurface(doc, vol, surface):
     volObj.SkinSurface = surface
 
 
+def volFromPV(name):
+    if name[:3] == "av_":
+        print(name)
+        parsePV = name.split("_")
+        parseLen = len(parsePV)
+        print(f"ParseLen {parseLen}")
+        if parseLen == 7:
+            return parsePV[4]
+        else:
+            retName = ""
+            for n in range(4, parseLen - 7):
+                retName + parePV[n]
+            return retName
+    else:
+        print("Dict lookup {name}")
+        volRef = volDict[name]
+        if volRef is not None:
+            return volRef
+        elif name[:3] == "PV-":
+            return name[3:]
+        return None
+
+
 def processSurfaces(doc, volDict, structure):
     from .GDMLObjects import GDMLbordersurface
 
@@ -2718,6 +2741,7 @@ def processSurfaces(doc, volDict, structure):
 
     print("bordersurface")
     # print(f'volDict {volDict}')
+    bsSet = set()
     for borderSurf in structure.findall("bordersurface"):
         if borderSurf is not None:
             name = borderSurf.get("name")
@@ -2726,20 +2750,31 @@ def processSurfaces(doc, volDict, structure):
             for i, pv in enumerate(borderSurf.findall("physvolref")):
                 if pv is not None:
                     pvRef = pv.get("ref")
+                    volRef = volFromPV(pvRef)
                     # print(f"{i} : {pvRef}")
-                    volRef = volDict[pvRef]
-                    print(f"Vol : {volRef.Label}")
+                    # volRef = volDict[pvRef]
+                    print(f"VolRef : {volRef}")
                     if volRef is not None:
                         volLst.append(volRef)
                     else:
-                        print(f"Volume {pvRef} not found")
-            if len(volLst) == 2:
-                obj = doc.addObject("App::FeaturePython", name)
-                GDMLbordersurface(
-                    obj, name, surface, volLst[0], volLst[1], False
-                )
+                        print(f"Volref {pvRef} not found")
+
+            if len(volLst) >= 2:
+                bsSet.add((surface, volLst[0], volLst[1]))
+            #    obj = doc.addObject("App::FeaturePython", name)
+            #    GDMLbordersurface(
+            #        obj, name, surface, volLst[0], volLst[1], False
+            #    )
             else:
                 print(f"Invalid bordersurface {name}")
+    for i, bs in enumerate(bsSet):
+        obj = doc.addObject("App::FeaturePython", name)
+        print(bs)
+        print(bs[1])
+        vol1 = doc.getObjectsByLabel(bs[1])
+        print(vol1)
+        vol2 = doc.getObjectsByLabel(bs[2])
+        GDMLbordersurface(obj, bs[0] + str(i), bs[0], vol1[0], vol2[0], False)
 
 
 def processGEANT4(doc, filename):
