@@ -1254,13 +1254,6 @@ def printListObj(name, listArg):
     print("<===============================")
 
 
-def printSet(name, setArg):
-    print(f"<=== Object Set{name} len {len(setArg)} ===>")
-    for obj in setArg:
-        print(obj[0].Label)
-    print("<===============================")
-
-
 def getSubVols(vol, placement):
     print(f"getSubVols {vol.Label} {placement}")
     volsList = []
@@ -1288,7 +1281,7 @@ def getSubVols(vol, placement):
 
 def printSet(name, set):
     print(f"<=== Object Set{name} len {len(set)} ===>")
-    for obj in set:
+    for obj in set[0]:
         print(obj.Label)
     print("<===============================")
 
@@ -1336,16 +1329,12 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                #                candSet1 = getCandidates(set(), obj1)
                 candSet1 = getSubVols(obj1, FreeCAD.Placement())
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
-                printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                #                candSet2 = getCandidates(set(), obj2)
                 candSet2 = getSubVols(obj2, FreeCAD.Placement())
 
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
-                printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
                 check = False
                 if hasattr(obj, "CheckCommonFaces"):
