@@ -398,7 +398,7 @@ class noCommonFacePrompt(QtGui.QDialog):
 class SetBorderSurfaceFeature:
     def Activated(self):
         from PySide import QtGui, QtCore
-        from .exportGDML import getSubVols
+        from .exportGDML import getSubVols, checkFaces
 
         print("Add SetBorderSurface")
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -437,56 +437,19 @@ class SetBorderSurfaceFeature:
         if surfaceObj is not None and len(partList) == 2:
             print("Action set Border Surface")
             #            commonFaceFlag, commonFaces = self.checkCommonFace(partList)
-            part1 = partList[0]
-            list1 = getSubVols(part1)
-            part2 = partList[1]
-            list2 = getSubVols(part2)
+            list1 = getSubVols(partList[0], FreeCAD.Placement())
+            list2 = getSubVols(partList[1], FreeCAD.Placement())
             commonFaceFlag = False
-            tolerence = 1e-7
-            for obj1 in list1:
-                if hasattr(obj1, "Shape"):
-                    if not hasattr(obj1, "LinkedObject"):
-                        shape1 = self.adjustShape(obj1.Shape, part1.Placement)
-                    else:
-                        shape1 = self.adjustShape(
-                            obj1.Shape, part1.Placement, obj1.LinkedPlacement
-                        )
-                else:
-                    continue
-
-                for obj2 in list2:
-                    if hasattr(obj1, "Shape"):
-                        if not hasattr(obj1, "LinkedObject"):
-                            shape2 = self.adjustShape(
-                                obj2.Shape, part2.Placement
-                            )
-                        else:
-                            shape2 = self.adjustShape(
-                                obj2.Shape,
-                                part2.Placement,
-                                obj2.LinkedPlacement,
-                            )
-                    else:
-                        continue
-                    for face1 in shape1.Faces:
-                        for face2 in shape2.Faces:
-                            if face1.common(face2, tolerence):
-                                print("Common Face")
-                                commonFaceFlag = True
-                                # break
-
+            for pair1 in list1:
+                for pair2 in list2:
+                    obj1 = pair1[0]
+                    obj2 = pair2[0]
+                    if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
+                        commonFaceFlag = checkFaces(pair1, pair2)
+                        if commonFaceFlag is True:
+                            break
             if commonFaceFlag is True:
-                #               if len(commonFaces) == 1:
-                #                   print("Yes Common Face")
                 self.SetBorderSurface(doc, surfaceObj, partList)
-
-            #               else:
-            #                   print("More than one Common Face - Error?")
-            #                   print("commonFace indexs {commonFaces}")
-            #                   dialog = noCommonFacePrompt()
-            #                   dialog.exec_()
-            #                   if dialog.retStatus == 1:
-            #                       self.SetBorderSurface(doc, surfaceObj, partList)
 
             else:
                 print("No Valid common Face")
@@ -546,42 +509,29 @@ class SetBorderSurfaceFeature:
         else:
             return list[0]
 
-    def adjustLink(obj):
-        # Assume already checked for LinkedObject
+    def adjustShape(self, part):
+        # print("Adjust Shape")
+        # print(part.Name)
+        # print(part.OutList)
+        # print(f'Placement {part.Placement.Base}')
+        # Use Matrix rather than Placement in case rotated
+        # placement = part.Placement.Base
+        matrix = part.Placement.toMatrix()
+        if hasattr(part, "LinkedObject"):
+            # print(f'Linked Object {part.LinkedObject}')
+            part = part.getLinkedObject()
+            # print(part.Name)
+            # print(part.OutList)
+            # print(f'Linked Placement {part.Placement.Base}')
+        obj = self.getGDMLObject(part.OutList)
+        obj.recompute()
         # Shape is immutable so have to copy
         # Realthunder recommends avoid deep copy
         shape = Part.Shape(obj.Shape)
         # print(f'Shape Valid {shape.isValid()}')
         # print(dir(shape))
         # Use saved Matrix in case of linked Object
-        matrix = obj.LinkPlacement.toMatrix()
         return shape.transformGeometry(matrix)
-
-    def adjustShape(self, shape, partPlace, linkPlace=None):
-        print(f"Adjust Shape {partPlace}")
-        # print(part.Name)
-        # print(part.OutList)
-        # print(f'Placement {part.Placement.Base}')
-        # Use Matrix rather than Placement in case rotated
-        # placement = part.Placement.Base
-        partMatrix = partPlace.toMatrix()
-        print(f"partMatrix {partMatrix}")
-        # obj = self.getGDMLObject(part.OutList)
-        # obj.recompute()
-        # Shape is immutable so have to copy
-        # Realthunder recommends avoid deep copy
-        newshape = Part.Shape(shape)
-        # print(f'Shape Valid {shape.isValid()}')
-        # print(dir(shape))
-        # Use saved Matrix in case of linked Object
-        if linkPlace is not None:
-            print(f"Link Placement {linkPlace}")
-            linkMatrix = linkPlace.toMatrix()
-            shape1 = shape.transformGeometry(linkMatrix)
-            return shape1.transformGeometry(partMatrix)
-        shape1 = shape.transformGeometry(partMatrix)
-        print(shape == shape1)
-        return shape1
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
