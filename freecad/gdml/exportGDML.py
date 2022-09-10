@@ -1286,6 +1286,13 @@ def getSubVols(vol, placement):
     return volsList
 
 
+def printSet(name, set):
+    print(f"<=== Object Set{name} len {len(set)} ===>")
+    for obj in set:
+        print(obj.Label)
+    print("<===============================")
+
+
 def getCandidates(cSet, Obj):
     print(f"getCandidates : Object {Obj.Label} {len(cSet)}")
     # Linked Objects and Parts can have different locations so need to be added
@@ -1336,6 +1343,7 @@ def processBorderSurfaces():
                 obj2 = getPVobject(doc, obj, obj.PV2)
                 #                candSet2 = getCandidates(set(), obj2)
                 candSet2 = getSubVols(obj2, FreeCAD.Placement())
+
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
@@ -1362,6 +1370,7 @@ def processSpreadsheetMatrix(sheet):
         try:
             while n < 26 * 26:
                 sheet.get(chr(ord("A") + n) + "1")
+
                 n += 1
         except:
             pass
@@ -1372,6 +1381,7 @@ def processSpreadsheetMatrix(sheet):
         try:
             while n < 256 * 256:
                 sheet.get("A" + str(n + 1))
+
                 n += 1
         except:
             pass
@@ -1841,8 +1851,8 @@ def processVolume(vol, xmlParent, volName=None):
             )
             ET.SubElement(ss, "volumeref", {"ref": volName})
             skinSurfaces.append(ss)
-    print(f"Processed Volume : {volName}")
 
+    print(f"Processed Volume : {volName}")
     return xmlVol
 
 
@@ -2291,7 +2301,7 @@ def exportGDML(first, filepath, fileExt):
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
-    print("====> Start GDML Export 1.8")
+    print("====> Start GDML Export 1.9")
     print("File extension : " + fileExt)
 
     GDMLstructure()
