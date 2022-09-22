@@ -437,17 +437,19 @@ class SetBorderSurfaceFeature:
         if surfaceObj is not None and len(partList) == 2:
             print("Action set Border Surface")
 #            commonFaceFlag, commonFaces = self.checkCommonFace(partList)
-            list1 = getSubVols(partList[0], FreeCAD.Placement())
-            list2 = getSubVols(partList[1], FreeCAD.Placement())
+            dict1 = getSubVols(partList[0], FreeCAD.Placement())
+            dict2 = getSubVols(partList[1], FreeCAD.Placement())
             commonFaceFlag = False
-            for pair1 in list1:
-                for pair2 in list2:
-                    obj1 = pair1[0]
-                    obj2 = pair2[0]
-                    if hasattr(obj1, 'Shape') and hasattr(obj2, 'Shape'):
-                        commonFaceFlag = checkFaces(pair1, pair2)
-                        if commonFaceFlag is True:
-                            break
+            for assem1, list1 in dict1.items():
+                for assem2, list2 in dict2.items():
+                    for pair1 in list1:
+                        for pair2 in list2:
+                            obj1 = pair1[0]
+                            obj2 = pair2[0]
+                            if hasattr(obj1, 'Shape') and hasattr(obj2, 'Shape'):
+                                commonFaceFlag = checkFaces(pair1, pair2)
+                                if commonFaceFlag is True:
+                                    break
             if commonFaceFlag is True:
                 self.SetBorderSurface(doc, surfaceObj, partList)
 
