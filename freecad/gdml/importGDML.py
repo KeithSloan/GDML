@@ -2763,7 +2763,6 @@ def processMaterialsDocSet(doc, root):
     print("Process Materials DocSet")
     define_xml = root.find("define")
     print(define_xml)
-    # mats_xml = root.find("materials")
     mats_xml = root.find("materials")
     solids_xml = root.find("solids")
     struct_xml = root.find("structure")

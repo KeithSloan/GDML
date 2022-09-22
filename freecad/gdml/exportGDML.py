@@ -1,3 +1,4 @@
+# Mon Sep 19 10:36:46 AM PDT 2022
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -254,10 +255,12 @@ def GDMLstructure():
     global centerDefined
     global identityDefined
     global gxml
+    global skinSurfaces
 
     centerDefined = False
     identityDefined = False
     defineCnt = LVcount = PVcount = POScount = ROTcount = SCLcount = 1
+    skinSurfaces = []
 
     gdml = initGDML()
     define = ET.SubElement(gdml, "define")
@@ -1126,12 +1129,13 @@ def processOpticalSurface(obj):
             )
 
 
-def processSkinSurfaces(obj):
-    # Ignore create from Parts with SkinSurface
-    # global structure
-    # print('Add skins')
-    # ET.SubElement(structure,'skinsurface', {'name': obj.Label, \
-    #                         'surfaceproperty' : obj.SkinSurface, \
+def processSkinSurfaces():
+    global structure
+    global skinSurfaces
+
+    for ss in skinSurfaces:
+        structure.append(ss)
+
     return
 
 
@@ -1152,26 +1156,15 @@ def getPVobject(doc, Obj, PVname):
         return obj
 
 
-def getPVname(Obj, obj):
+def getPVname(Obj, obj, idx, dictKey):
     # Obj is the source used to create candidates
     print(f"getPVname {obj.Label}")
-    if hasattr(obj, "InList"):
-        parent = obj.InList[0]
-        # print(f"Parent {parent.Label}")
-        entry = AssemblyDict.get(parent.Label)
-        # print(f"entry {entry}")
-        if entry is not None:
-            # print("Is an Assembly")
-            # if hasattr(obj, "CopyNumber"):
-            # print(f"CopyNumber {obj.CopyNumber}")
-            return entry.getPVname(obj)
-        print(f"Not in an Assembly : Parent {parent.Label} {Obj.Label}")
-        # Obj is the Object used to create candidates
-        return "PV-" + Obj.Label
-
+    if dictKey in AssemblyDict:
+        entry = AssemblyDict[dictKey]
+        return entry.getPVname(obj, idx)
     else:
         print("No Parent")
-    return "PV-" + obj.Label
+    return "PV-" + Obj.Label
 
 
 def exportSurfaceProperty(Name, Surface, ref1, ref2):
@@ -1182,63 +1175,161 @@ def exportSurfaceProperty(Name, Surface, ref1, ref2):
     ET.SubElement(borderSurface, "physvolref", {"ref": ref2})
 
 
-def checkFaces(obj1, obj2):
+def checkFaces(pair1, pair2):
     tolerence = 1e-7
+    obj1 = pair1[0]
+    matrix1 = pair1[1].Matrix
+    obj2 = pair2[0]
+    matrix2 = pair2[1].Matrix
+
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
-        faces1 = obj1.Shape.Faces
-        faces2 = obj2.Shape.Faces
-        for f in faces1:
-            comShape = f.common(faces2, tolerence)
+        faces1 = (obj1.Shape.transformGeometry(matrix1)).Faces
+        faces2 = (obj2.Shape.transformGeometry(matrix2)).Faces
+#        faces1 = obj1.Shape.Faces
+#        faces2 = obj2.Shape.Faces
+        for f1 in faces1:
+            comShape = f1.common(faces2, tolerence)
             if len(comShape.Faces) > 0:
+                print('Common')
                 return True
+            else:
+                print('Not common')
     return False
 
 
-def processSurface(name, cnt, surface, Obj1, obj1, Obj2, obj2):
+def processSurface(name, cnt, surface,
+                   Obj1, obj1, idx1, dictKey1,
+                   Obj2, obj2, idx2, dictKey2):
     print(f"processSurface {name} {surface}")
     print(f" {Obj1.Label} {obj1.Label} {Obj2.Label} {obj2.Label}")
-    ref1 = getPVname(Obj1, obj1)
-    ref2 = getPVname(Obj2, obj2)
+    ref1 = getPVname(Obj1, obj1, idx1, dictKey1)
+    ref2 = getPVname(Obj2, obj2, idx2, dictKey2)
     exportSurfaceProperty(name + str(cnt), surface, ref1, ref2)
     return cnt + 1
 
 
-def processCandidates(name, surface, check, Obj1, set1, Obj2, set2):
-    print(f"process Candidates {check} {len(set1)} {len(set2)}")
+def processCandidates(name, surface, check, Obj1, dict1, Obj2, dict2):
     cnt = 1
-    for obj1 in set1:
-        for obj2 in set2:
-            if obj1 != obj2:
-                if check:
-                    if checkFaces(obj1, obj2):
-                        cnt = processSurface(
-                            name, cnt, surface, Obj1, obj1, Obj2, obj2
-                        )
-                        cnt += 1
-                    else:
-                        print(
-                            f"<<< No common face : {Obj1.Label} : {Obj2.Label} >>>"
-                        )
-                else:
-                    cnt = processSurface(
-                        name, cnt, surface, Obj1, obj1, Obj2, obj2
-                    )
+    for assem1, set1 in dict1.items():
+        print(f"process Candidates {assem1} {check} {len(set1)}")
+        for assem2, set2 in dict2.items():
+            print(f"process Candidates {assem2} {check} {len(set2)}")
+            for idx1, items1 in enumerate(set1):
+                obj1 = items1[0]
+                for idx2, items2 in enumerate(set2):
+                    obj2 = items2[0]
+                    if items1 != items2:
+                        if check:
+                            pairStr = f'{obj1.Label} : {obj2.Label} '
+                            if checkFaces(items1, items2):
+                                cnt = processSurface(name, cnt, surface,
+                                                     Obj1, obj1, idx1, assem1,
+                                                     Obj2, obj2, idx2, assem2)
+                                print(f"<<< Common face : {pairStr} >>>")
+                                cnt += 1
+                            else:
+                                print(f"<<< No common face : {pairStr} >>>")
+                        else:
+                            cnt = processSurface(
+                                name, cnt, surface,
+                                Obj1, obj1, idx1, assem1,
+                                Obj2, obj2, idx2, assem2
+                            )
 
 
-def printListObj(name, list):
+def printListObj(name, listArg):
     print(f"<=== Object {name} list ===>")
-    for obj in list:
+    for obj in listArg:
         print(obj.Label)
     print("<===============================")
 
 
-def printSet(name, set):
-    print(f"<=== Object Set{name} len {len(set)} ===>")
-    for obj in set:
-        print(obj.Label)
+def printSet(name, dictArg):
+    print(f"<=== Object Set {name} len {len(dictArg)} ===>")
+    for k, v in dictArg.items():
+        print(k)
+        for obj in v:
+            print(f'\t {obj[0].Label}')
     print("<===============================")
 
 
+def _getSubVols(vol, placement, volLabel):
+    """ return a flattened list of terminal solids that fall
+    under this vol. By flattened we mean something like:
+       vol
+         subVol1
+            subVol2
+               solid1
+               solid2
+                ...
+            subVol3
+               solid3
+               solid4
+                ....
+
+    Then the returned list will be
+             ((solid1, placement1), (solid2, placement2), (solid3, placement3), ...
+    """
+    print(f'getSubVols {vol.Label} {volLabel} {placement} ')
+    volsList = []
+    if hasattr(vol, "OutList"):
+        if len(vol.OutList) == 0:
+            return [(vol, placement)]
+
+        for obj in vol.OutList:
+            typeId = obj.TypeId
+            tObj = obj
+            # print(obj.Label)
+            if hasattr(obj, "LinkedObject"):
+                typeId = obj.LinkedObject.TypeId
+                tObj = obj.OutList[0]
+
+            if typeId == "App::Part":
+                volsList += _getSubVols(tObj, placement*obj.Placement, obj.Label)
+            else:
+                if typeId == "Part::FeaturePython":
+                    volsList.append((obj, placement, volLabel))
+    else:
+        print("No OutList")
+
+    return volsList
+
+
+def getSubVols(vol, placement):
+    """
+    given a structure of the form
+       vol
+         subVol1
+            subVol2
+               solid1
+               solid2
+                ...
+            subVol3
+               solid3
+               solid4
+                ....
+
+    return a dictionary:
+    {subVol2.Label: ((solid1, placement1), (solid2, placement2)), 
+     subVol3.Label: ((solid1, placement1), (solid2, placement2))}
+    """
+
+    flattenedList = _getSubVols(vol, placement, vol.Label)
+    solidsDict = {}
+    for item in flattenedList:
+        vol = item[0]
+        # TODO need to double check that there is an Inlist and that the parent
+        # is the first element
+        parentLabel = item[2]
+        if parentLabel in solidsDict:
+            solidsDict[parentLabel].append((item[0], item[1]))
+        else:
+            solidsDict[parentLabel] = [(item[0], item[1])]
+
+    return solidsDict
+
+
+# Not used in this version of exportGDML
 def getCandidates(cSet, Obj):
     print(f"getCandidates : Object {Obj.Label} {len(cSet)}")
     # Linked Objects and Parts can have different locations so need to be added
@@ -1271,9 +1362,8 @@ def processBorderSurfaces():
     print(f"Export Border Surfaces - Assemblies {len(AssemblyDict)}")
     print("==============================================")
     # print(AssemblyDict)
-    for ent in AssemblyDict.values():
-        ent.printInfo()
     doc = FreeCAD.ActiveDocument
+
     for obj in doc.Objects:
         if obj.TypeId == "App::FeaturePython":
             print(f"TypeId {obj.TypeId} Name {obj.Label}")
@@ -1282,11 +1372,13 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                candSet1 = getCandidates(set(), obj1)
+#                candSet1 = getCandidates(set(), obj1)
+                candSet1 = getSubVols(obj1, FreeCAD.Placement())
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
                 printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                candSet2 = getCandidates(set(), obj2)
+#                candSet2 = getCandidates(set(), obj2)
+                candSet2 = getSubVols(obj2, FreeCAD.Placement())
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
@@ -1311,6 +1403,7 @@ def processSpreadsheetMatrix(sheet):
     def ncols():
         n = 0
         try:
+            # TODO: deal with case n > 26
             while n < 26*26:
                 sheet.get(chr(ord('A')+n)+'1')
                 n += 1
@@ -1327,7 +1420,7 @@ def processSpreadsheetMatrix(sheet):
         except:
             pass
         return n
-    
+
     global define
     print("add matrix to define")
 
@@ -1355,7 +1448,7 @@ def processOpticals():
             print(f"Name : {obj.Label}")
             while switch(obj.Label):
                 if case("Matrix"):
-                    print("Matrix")                    
+                    print("Matrix")
                     for m in obj.Group:
                         if m.TypeId == "Spreadsheet::Sheet":
                             processSpreadsheetMatrix(m)
@@ -1629,7 +1722,7 @@ def printObjectInfo(xmlVol, volName, xmlParent, parentName):
        xmlstr = 'None'
     print('Volume : '+volName+' : '+str(xmlstr))
     if xmlParent is not None :
-       xmlstr = ET.tostring(xmlParent) 
+       xmlstr = ET.tostring(xmlParent)
     else :
        xmlstr = 'None'
     print('Parent : '+str(parentName)+' : '+str(xmlstr))
@@ -1656,6 +1749,73 @@ def exportCone(name, radius, height):
     return cylEl
 
 
+def buildAssemblyTree(worldVol):
+    from .AssemblyHelper import AssemblyHelper
+    global AssemblyDict
+
+    def processContainer(vol):
+        objects = assemblyHeads(vol)
+        imprNum = 1
+        for obj in objects[1:]:
+            print(f' buildAssemblyTree::processContainer {obj.Label} {obj.TypeId} ')
+            processVolAssem(obj, imprNum)
+
+    def processVolAssem(vol, imprNum):
+        # vol - Volume Object
+        # xmlParent - xml of this volumes Parent
+        if vol.Label[:12] != "NOT_Expanded":
+            if isContainer(vol):
+                processContainer(vol)
+            elif isAssembly(vol):
+                processAssembly(vol, imprNum)
+            elif vol.TypeId == "App::Link":
+                processLink(vol, imprNum)
+            else:
+                print(f'{vol.Label} is neither a link, nor an assembly nor a container')
+
+    def processLink(vol, imprNum):
+        linkedObj = vol.getLinkedObject()
+        if linkedObj.Label in AssemblyDict:
+            entry = AssemblyDict[linkedObj.Label]
+            instCnt = entry.www
+            imprNum = entry.xxx + 1
+            entry = AssemblyHelper(vol, instCnt, imprNum)
+            AssemblyDict[vol.Label] = entry
+        else:
+            processVolAssem(linkedObj, imprNum)
+
+    def processAssembly(vol, imprNum):
+        print(f'{vol.Label} typeId= {vol.TypeId}')
+        if hasattr(vol, "LinkedObject"):
+            print(f'{vol.Lable} has a LinkedObject')
+            linkedObj = vol.getLinkedObject()
+            if linkedObj.Label in AssemblyDict:
+                entry = AssemblyDict[linkedObj.Label]
+                instCnt = entry.www
+                imprNum = entry.xxx + 1
+        else:
+            instCnt = AssemblyHelper.maxWww + 1
+        entry = AssemblyHelper(vol, instCnt, imprNum)
+        print(f'AssemDict[{vol.Label}]')
+        AssemblyDict[vol.Label] = entry
+        assemObjs = assemblyHeads(vol)
+        imprNum += 1
+        for obj in assemObjs:
+            print(f' buildAssemblyTree::processAssembly {obj.Label} {obj.TypeId} ')
+            if obj.TypeId == "App::Part":
+                processVolAssem(obj, imprNum)
+            elif obj.TypeId == "App::Link":
+                processLink(obj, imprNum)
+            else:
+                if SolidExporter.isSolid(obj):
+                    entry.addSolid(obj)
+
+    processContainer(worldVol)
+
+    for k, v in AssemblyDict.items():
+        print(f'Assembly: {k} av_{v.www}_impr_{v.xxx}')
+
+
 def createXMLvolume(name):
     GDMLShared.trace("create xml volume : " + name)
     elem = ET.Element("volume", {"name": name})
@@ -1669,15 +1829,13 @@ def createXMLassembly(name):
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName):
-    from .AssemDict import Assembly
-
     global structure
+    # global imprNum
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
-    # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
     # GDMLShared.setTrace(True)
     volName = getVolumeName(vol)
@@ -1687,16 +1845,12 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-    # entry = Assembly(vol.Label, vol.OutList)
-    entry = Assembly(vol.Label, assemObjs)
-    AssemblyDict.update({vol.Label: entry})
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName)
-            entry.incrementImpression()
         elif obj.TypeId == "App::Link":
             print("Process Link")
-            # PhysVol needs to be uniquE
+            # PhysVol needs to be unique
             if hasattr(obj, "LinkedObject"):
                 volRef = getVolumeName(obj.LinkedObject)
             elif hasattr(obj, "VolRef"):
@@ -1713,6 +1867,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
 def processVolume(vol, xmlParent, volName=None):
 
     global structure
+    global skinSurfaces
+
     # vol - Volume Object
     # xmlParent - xml of this volumes Paretnt
     # App::Part will have Booleans & Multifuse objects also in the list
@@ -1764,6 +1920,8 @@ def processVolume(vol, xmlParent, volName=None):
             partPlacement = vol.Placement * partPlacement
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    structure.append(xmlVol)
+
     if hasattr(vol, "SensDet"):
         # SensDet could be enumeration of text value None
         if vol.SensDet != "None":
@@ -1779,8 +1937,7 @@ def processVolume(vol, xmlParent, volName=None):
         # SkinSurfface could be enumeration of text value None
         if vol.SkinSurface != "None":
             print("Need to export : skinsurface")
-            ss = ET.SubElement(
-                structure,
+            ss = ET.Element(
                 "skinsurface",
                 {
                     "name": "skin" + vol.SkinSurface,
@@ -1788,12 +1945,14 @@ def processVolume(vol, xmlParent, volName=None):
                 },
             )
             ET.SubElement(ss, "volumeref", {"ref": volName})
-    structure.append(xmlVol)
+            skinSurfaces.append(ss)
     print(f"Processed Volume : {volName}")
+
     return xmlVol
 
 
 def processContainer(vol, xmlParent):
+    # vol: a container: a volume that has a solid that contains other volume
     print("Process Container")
     global structure
     volName = getVolumeName(vol)
@@ -1805,15 +1964,17 @@ def processContainer(vol, xmlParent):
         newXmlVol, volName, objects[0], solidExporter.name(), addColor=False
     )
     addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    # The solid containing the daughter volumes has been exported above
+    # so start at the next object
     for obj in objects[1:]:
-        if obj.TypeId == "App::Part":
-            processVolAssem(obj, newXmlVol, volName)
-        elif obj.TypeId == "App::Link":
+        if obj.TypeId == "App::Link":
             print("Process Link")
             volRef = getVolumeName(obj.LinkedObject)
             addPhysVolPlacement(
                 obj, newXmlVol, obj.Label, obj.Placement, volRef
             )
+        elif obj.TypeId == "App::Part":
+            processVolAssem(obj, newXmlVol, volName)
         else:
             _ = processVolume(obj, newXmlVol)
 
@@ -1823,11 +1984,7 @@ def processContainer(vol, xmlParent):
 def processVolAssem(vol, xmlParent, parentName):
 
     # vol - Volume Object
-    # xmlVol - xml of this volume
-    # xmlParent - xml of this volumes Paretnt
-    # xmlVol could be created dummy volume
-    # exportFlag may have reduced count to zero so return
-    # print(f"Process VolAsm {vol.Name}")
+    # xmlParent - xml of this volumes Parent
     if vol.Label[:12] != "NOT_Expanded":
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
@@ -1920,7 +2077,7 @@ def isContainer(obj):
     # <volume ....>
     #   <solidref = first solid
     #   <physvol ..ref to first App::Part>
-    #   <physvol ..ref to first App::Part>
+    #   <physvol ..ref to second App::Part>
     # </volume>
     #
     # This is in contract to assembly, which is exported as
@@ -2009,9 +2166,8 @@ def assemblyHeads(obj):
                         assemblyHeads.append(ob)
 
         # now remove any OutList objects from from the subObjs
-        for subObj in assemblyHeads[
-            :
-        ]:  # the slice is a COPY of the list, not the list itself
+        # the slice is a COPY of the list, not the list itself
+        for subObj in assemblyHeads[:]:
             if hasattr(subObj, "OutList"):
                 # App:Links has the object they are linked to in their OutList
                 # We do not want to remove the link!
@@ -2177,9 +2333,11 @@ def exportWorldVol(vol, fileExt):
     #    xmlVol = createXMLassembly(vol.Label)
     #    processAssembly(vol, xmlVol, xmlParent, parentName)
 
-    # processVolAssem(vol, xmlVol, WorldVOL)
+    # The world volume does not have a prent
     processVolAssem(vol, xmlParent, WorldVOL)
 
+    processSkinSurfaces()
+    buildAssemblyTree(vol)
     processBorderSurfaces()
 
 
@@ -2226,14 +2384,13 @@ def exportGDMLstructure(dirPath, fileName):
 
 def exportGDML(first, filepath, fileExt):
     from . import GDMLShared
-    from .AssemDict import Assembly
     from sys import platform
+    from .AssemblyHelper import AssemblyHelper
 
     global zOrder
     global AssemblyDict
     AssemblyDict = {}
-    Assembly.instCount = 0
-    Assembly.imprCount = 0
+    AssemblyHelper.maxWww = 0
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
@@ -2990,7 +3147,7 @@ class BooleanExporter(SolidExporter):
         if obj.TypeId in opsDict:
             return opsDict[obj.TypeId]
         else:
-            print(f"Boolean type {obj.TypId} not handled yet")
+            print(f"Boolean type {obj.TypeId} not handled yet")
             return None
 
     def export(self):
@@ -3922,7 +4079,6 @@ class GDMLborderSurfaceExporter(GDMLSolidExporter):
         super().__init__(obj)
 
     def export(self):
-        doc = FreeCAD.ActiveDocument
         borderSurface = ET.SubElement(
             structure,
             "bordersurface",
@@ -4638,18 +4794,21 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
         thet2 = edge.LastParameter  # in radians, in onrated ellipse
         thetmid = (thet1+thet2)/2 + angleXU
 
-        # Major axis angle seems to be off by pi for some ellipse. Restrict it to be
-        # be between 0 an pi
+        # Major axis angle seems to be off by pi for some ellipse.
+        # Restrict it to be be between 0 an pi
         if angleXU < 0:
             angleXU += 180
 
         # TODO must deal with case where cutting chord is along major axis
-        # u_vc_vcenter = vc_vcenter.normalize()  # unit vector fom center of circle to center of chord
+        # u_vc_vcenter = vc_vcenter.normalize()
+        # unit vector fom center of circle to center of chord
 
         # vertexes of triangle formed by chord ends and ellise mid point
-        # In polar coordinates equation of ellipse is r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
+        # In polar coordinates equation of ellipse is
+        # r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
         # if the ellipse is rotatated by an angle AngleXU, then
-        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU), for thet in frame of unrotated ellipse
+        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU),
+        # for thet in frame of unrotated ellipse
         # now edge.FirstParameter is beginning angle of unrotated ellipse
 
         def sqr(x):
@@ -4674,9 +4833,11 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
         b = dy = edge.Curve.MinorRadius
 
         # vertexes of triangle formed by chord ends and ellise mid point
-        # In polar coordinates equation of ellipse is r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
+        # In polar coordinates equation of ellipse is
+        # r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
         # if the ellipse is rotatated by an angle AngleXU, then
-        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU), for thet in frame of unrotated ellipse
+        # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU),
+        # for thet in frame of unrotated ellipse
         # now edge.FirstParameter is beginning angle of unrotated ellipse
         # polar equation of ellipse, with r measured from FOCUS. Focus at a*eps
         # r = lambda thet: a*(1-eps*eps)/(1+eps*math.cos(thet))
@@ -4698,7 +4859,8 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
         vc = (v1 + v2) / 2
         v = v2 - v1
         u = v.normalize()  # unit vector from v1 to v2
-        # extend the ends of the chord so extrusion can cut all of ellipse, if needed
+        # extend the ends of the chord so extrusion can cut all of ellipse,
+        # if needed
         v1 = vc + 2 * a * u
         v2 = vc - 2 * a * u
 
@@ -4758,7 +4920,8 @@ class Extruded2Edges(ExtrudedClosedCurve):
     def export(self):
         global solids
 
-        # form normals to the edges. For case of two edges, sidedness is irrelevant
+        # form normals to the edges. For case of two edges,
+        # sidedness is irrelevant
         v0 = self.edgeList[0].Vertexes[0].Point
         v1 = self.edgeList[0].Vertexes[1].Point
         e = v1 - v0
@@ -4823,7 +4986,8 @@ class Extruded2Edges(ExtrudedClosedCurve):
 
         if len(edgeCurves) == 1:
             # change our name to be that of the constructed curve
-            # not a violation of the contract of a unique name, since the curve name is based on ours
+            # not a violation of the contract of a unique name,
+            # since the curve name is based on ours
             self.position = arcSection.position
             self.rotation = arcSection.rotation
             self.name = edgeCurves[0][0]
@@ -5019,8 +5183,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
 
 class Node:
     def __init__(self, closedCurve, parent, parity):
-        # the nomenclature is redundant, but a reminder that left is a child and right
-        # a sibling
+        # the nomenclature is redundant, but a reminder that
+        # left is a child and right a sibling
         self.parent = parent
         if parent is None:
             self.parity = (
@@ -5038,7 +5202,8 @@ class Node:
         if self.closedCurve:  # not sure why this test is necessary
             if self.closedCurve.isInside(closedCurve):
                 # given curve is inside this curve:
-                # if this node does not have a child, insert it as the left_child
+                # if this node does not have a child,
+                # insert it as the left_child
                 # otherwise check if it is a child of the child
                 if self.left_child is None:
                     self.left_child = Node(closedCurve, self, 1 - self.parity)
@@ -5290,9 +5455,9 @@ class ExtrusionExporter(SolidExporter):
         )
 
         # Because the position of each closed curve might not be at the
-        # origin, whereas primitives (tubes, cones, etc, are created centered at
-        # the origin, we need to shift the position of the very first node by its
-        # position, in addition to the shift by the Extrusion placement
+        # origin, whereas primitives (tubes, cones, etc, are created centered
+        # at the origin, we need to shift the position of the very first node
+        # by its position, in addition to the shift by the Extrusion placement
         extrudeObj = self.obj
         extrudePosition = extrudeObj.Placement.Base
         if extrudeObj.Symmetric is False:
@@ -5304,7 +5469,8 @@ class ExtrusionExporter(SolidExporter):
             zoffset = Vector(0, 0, extrudeObj.LengthFwd.Value / 2)
 
         angles = quaternion2XYZ(extrudeObj.Placement.Rotation)
-        # need to add rotations of elliptical tubes. Assume extrusion is on z-axis
+        # need to add rotations of elliptical tubes.
+        # Assume extrusion is on z-axis
         # Probably will not work in general
         zAngle = angles[2] + rootRot[2]
         rootPos = rotatedPos(rootCurve, extrudeObj.Placement.Rotation)

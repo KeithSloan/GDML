@@ -398,61 +398,65 @@ class noCommonFacePrompt(QtGui.QDialog):
 class SetBorderSurfaceFeature:
     def Activated(self):
         from PySide import QtGui, QtCore
+        from .exportGDML import getSubVols, checkFaces
 
         print("Add SetBorderSurface")
         sel = FreeCADGui.Selection.getSelectionEx()
         # print(len(sel))
-        if len(sel) == 3:
-            surfaceObj = None
-            partList = []
-            for s in sel:
-                if hasattr(s, "Object"):
-                    # print(s.Object)
-                    obj = s.Object
-                    # print(obj.TypeId)
-                    if obj.TypeId == "App::Part":
-                        # print('Part Added')
+        if len(sel) != 3:
+            return
+        
+        surfaceObj = None
+        partList = []
+        for s in sel:
+            if hasattr(s, "Object"):
+                # print(s.Object)
+                obj = s.Object
+                # print(obj.TypeId)
+                if obj.TypeId == "App::Part":
+                    # print('Part Added')
+                    partList.append(obj)
+
+                elif obj.TypeId == "App::Link":
+                    if obj.LinkedObject.TypeId == "App::Part":
+                        # print('Linked Part Added')
                         partList.append(obj)
 
-                    elif obj.TypeId == "App::Link":
-                        if obj.LinkedObject.TypeId == "App::Part":
-                            # print('Linked Part Added')
-                            partList.append(obj)
+                elif obj.TypeId == "App::DocumentObjectGroupPython":
+                    # print(dir(obj))
+                    if hasattr(obj, "InList"):
+                        # print(obj.InList)
+                        parent = obj.InList[0]
+                        # print(parent.Name)
+                        if parent.Name == "Surfaces":
+                            surfaceObj = obj
 
-                    elif obj.TypeId == "App::DocumentObjectGroupPython":
-                        # print(dir(obj))
-                        if hasattr(obj, "InList"):
-                            # print(obj.InList)
-                            parent = obj.InList[0]
-                            # print(parent.Name)
-                            if parent.Name == "Surfaces":
-                                surfaceObj = obj
+        doc = FreeCAD.ActiveDocument
+        print(f"Surface Obj {surfaceObj.Name}")
+        # print(f'Part List {partList}')
+        if surfaceObj is not None and len(partList) == 2:
+            print("Action set Border Surface")
+#            commonFaceFlag, commonFaces = self.checkCommonFace(partList)
+            list1 = getSubVols(partList[0], FreeCAD.Placement())
+            list2 = getSubVols(partList[1], FreeCAD.Placement())
+            commonFaceFlag = False
+            for pair1 in list1:
+                for pair2 in list2:
+                    obj1 = pair1[0]
+                    obj2 = pair2[0]
+                    if hasattr(obj1, 'Shape') and hasattr(obj2, 'Shape'):
+                        commonFaceFlag = checkFaces(pair1, pair2)
+                        if commonFaceFlag is True:
+                            break
+            if commonFaceFlag is True:
+                self.SetBorderSurface(doc, surfaceObj, partList)
 
-            doc = FreeCAD.ActiveDocument
-            print(f"Surface Obj {surfaceObj.Name}")
-            # print(f'Part List {partList}')
-            if surfaceObj is not None and len(partList) == 2:
-                print("Action set Border Surface")
-                commonFaceFlag, commonFaces = self.checkCommonFace(partList)
-                if commonFaceFlag == True:
-                    if len(commonFaces) == 1:
-                        print("Yes Common Face")
-                        self.SetBorderSurface(doc, surfaceObj, partList)
-
-                    else:
-                        print("More than one Common Face - Error?")
-                        print("commonFace indexs {commonFaces}")
-                        dialog = noCommonFacePrompt()
-                        dialog.exec_()
-                        if dialog.retStatus == 1:
-                            self.SetBorderSurface(doc, surfaceObj, partList)
-
-                else:
-                    print("No Valid common Face")
-                    dialog = noCommonFacePrompt()
-                    dialog.exec_()
-                    if dialog.retStatus == 1:
-                        self.SetBorderSurface(doc, surfaceObj, partList)
+            else:
+                print("No Valid common Face")
+                dialog = noCommonFacePrompt()
+                dialog.exec_()
+                if dialog.retStatus == 1:
+                    self.SetBorderSurface(doc, surfaceObj, partList)
 
         return
 
