@@ -1185,21 +1185,21 @@ def checkFaces(pair1, pair2):
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
         faces1 = (obj1.Shape.transformGeometry(matrix1)).Faces
         faces2 = (obj2.Shape.transformGeometry(matrix2)).Faces
-#        faces1 = obj1.Shape.Faces
-#        faces2 = obj2.Shape.Faces
+        #        faces1 = obj1.Shape.Faces
+        #        faces2 = obj2.Shape.Faces
         for f1 in faces1:
             comShape = f1.common(faces2, tolerence)
             if len(comShape.Faces) > 0:
-                print('Common')
+                print("Common")
                 return True
             else:
-                print('Not common')
+                print("Not common")
     return False
 
 
-def processSurface(name, cnt, surface,
-                   Obj1, obj1, idx1, dictKey1,
-                   Obj2, obj2, idx2, dictKey2):
+def processSurface(
+    name, cnt, surface, Obj1, obj1, idx1, dictKey1, Obj2, obj2, idx2, dictKey2
+):
     print(f"processSurface {name} {surface}")
     print(f" {Obj1.Label} {obj1.Label} {Obj2.Label} {obj2.Label}")
     ref1 = getPVname(Obj1, obj1, idx1, dictKey1)
@@ -1220,20 +1220,38 @@ def processCandidates(name, surface, check, Obj1, dict1, Obj2, dict2):
                     obj2 = items2[0]
                     if items1 != items2:
                         if check:
-                            pairStr = f'{obj1.Label} : {obj2.Label} '
+                            pairStr = f"{obj1.Label} : {obj2.Label} "
                             if checkFaces(items1, items2):
-                                cnt = processSurface(name, cnt, surface,
-                                                     Obj1, obj1, idx1, assem1,
-                                                     Obj2, obj2, idx2, assem2)
+                                cnt = processSurface(
+                                    name,
+                                    cnt,
+                                    surface,
+                                    Obj1,
+                                    obj1,
+                                    idx1,
+                                    assem1,
+                                    Obj2,
+                                    obj2,
+                                    idx2,
+                                    assem2,
+                                )
                                 print(f"<<< Common face : {pairStr} >>>")
                                 cnt += 1
                             else:
                                 print(f"<<< No common face : {pairStr} >>>")
                         else:
                             cnt = processSurface(
-                                name, cnt, surface,
-                                Obj1, obj1, idx1, assem1,
-                                Obj2, obj2, idx2, assem2
+                                name,
+                                cnt,
+                                surface,
+                                Obj1,
+                                obj1,
+                                idx1,
+                                assem1,
+                                Obj2,
+                                obj2,
+                                idx2,
+                                assem2,
                             )
 
 
@@ -1249,12 +1267,12 @@ def printSet(name, dictArg):
     for k, v in dictArg.items():
         print(k)
         for obj in v:
-            print(f'\t {obj[0].Label}')
+            print(f"\t {obj[0].Label}")
     print("<===============================")
 
 
 def _getSubVols(vol, placement, volLabel):
-    """ return a flattened list of terminal solids that fall
+    """return a flattened list of terminal solids that fall
     under this vol. By flattened we mean something like:
        vol
          subVol1
@@ -1270,7 +1288,7 @@ def _getSubVols(vol, placement, volLabel):
     Then the returned list will be
              ((solid1, placement1), (solid2, placement2), (solid3, placement3), ...
     """
-    print(f'getSubVols {vol.Label} {volLabel} {placement} ')
+    print(f"getSubVols {vol.Label} {volLabel} {placement} ")
     volsList = []
     if hasattr(vol, "OutList"):
         if len(vol.OutList) == 0:
@@ -1285,7 +1303,9 @@ def _getSubVols(vol, placement, volLabel):
                 tObj = obj.OutList[0]
 
             if typeId == "App::Part":
-                volsList += _getSubVols(tObj, placement*obj.Placement, obj.Label)
+                volsList += _getSubVols(
+                    tObj, placement * obj.Placement, obj.Label
+                )
             else:
                 if typeId == "Part::FeaturePython":
                     volsList.append((obj, placement, volLabel))
@@ -1310,7 +1330,7 @@ def getSubVols(vol, placement):
                 ....
 
     return a dictionary:
-    {subVol2.Label: ((solid1, placement1), (solid2, placement2)), 
+    {subVol2.Label: ((solid1, placement1), (solid2, placement2)),
      subVol3.Label: ((solid1, placement1), (solid2, placement2))}
     """
 
@@ -1372,12 +1392,12 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-#                candSet1 = getCandidates(set(), obj1)
+                #                candSet1 = getCandidates(set(), obj1)
                 candSet1 = getSubVols(obj1, FreeCAD.Placement())
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
                 printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-#                candSet2 = getCandidates(set(), obj2)
+                #                candSet2 = getCandidates(set(), obj2)
                 candSet2 = getSubVols(obj2, FreeCAD.Placement())
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
@@ -1404,8 +1424,8 @@ def processSpreadsheetMatrix(sheet):
         n = 0
         try:
             # TODO: deal with case n > 26
-            while n < 26*26:
-                sheet.get(chr(ord('A')+n)+'1')
+            while n < 26 * 26:
+                sheet.get(chr(ord("A") + n) + "1")
                 n += 1
         except:
             pass
@@ -1414,8 +1434,8 @@ def processSpreadsheetMatrix(sheet):
     def nrows():
         n = 0
         try:
-            while n < 256*256:
-                sheet.get('A'+str(n+1))
+            while n < 256 * 256:
+                sheet.get("A" + str(n + 1))
                 n += 1
         except:
             pass
@@ -1430,7 +1450,7 @@ def processSpreadsheetMatrix(sheet):
     s = ""
     for row in range(0, rows):
         for col in range(0, coldim):
-            cell = chr(ord('A')+col)+str(row+1)
+            cell = chr(ord("A") + col) + str(row + 1)
             s += str(sheet.get(cell)) + " "
 
     ET.SubElement(
@@ -1751,13 +1771,16 @@ def exportCone(name, radius, height):
 
 def buildAssemblyTree(worldVol):
     from .AssemblyHelper import AssemblyHelper
+
     global AssemblyDict
 
     def processContainer(vol):
         objects = assemblyHeads(vol)
         imprNum = 1
         for obj in objects[1:]:
-            print(f' buildAssemblyTree::processContainer {obj.Label} {obj.TypeId} ')
+            print(
+                f" buildAssemblyTree::processContainer {obj.Label} {obj.TypeId} "
+            )
             processVolAssem(obj, imprNum)
 
     def processVolAssem(vol, imprNum):
@@ -1771,7 +1794,9 @@ def buildAssemblyTree(worldVol):
             elif vol.TypeId == "App::Link":
                 processLink(vol, imprNum)
             else:
-                print(f'{vol.Label} is neither a link, nor an assembly nor a container')
+                print(
+                    f"{vol.Label} is neither a link, nor an assembly nor a container"
+                )
 
     def processLink(vol, imprNum):
         linkedObj = vol.getLinkedObject()
@@ -1785,9 +1810,9 @@ def buildAssemblyTree(worldVol):
             processVolAssem(linkedObj, imprNum)
 
     def processAssembly(vol, imprNum):
-        print(f'{vol.Label} typeId= {vol.TypeId}')
+        print(f"{vol.Label} typeId= {vol.TypeId}")
         if hasattr(vol, "LinkedObject"):
-            print(f'{vol.Lable} has a LinkedObject')
+            print(f"{vol.Lable} has a LinkedObject")
             linkedObj = vol.getLinkedObject()
             if linkedObj.Label in AssemblyDict:
                 entry = AssemblyDict[linkedObj.Label]
@@ -1796,12 +1821,13 @@ def buildAssemblyTree(worldVol):
         else:
             instCnt = AssemblyHelper.maxWww + 1
         entry = AssemblyHelper(vol, instCnt, imprNum)
-        print(f'AssemDict[{vol.Label}]')
         AssemblyDict[vol.Label] = entry
         assemObjs = assemblyHeads(vol)
         imprNum += 1
         for obj in assemObjs:
-            print(f' buildAssemblyTree::processAssembly {obj.Label} {obj.TypeId} ')
+            print(
+                f" buildAssemblyTree::processAssembly {obj.Label} {obj.TypeId} "
+            )
             if obj.TypeId == "App::Part":
                 processVolAssem(obj, imprNum)
             elif obj.TypeId == "App::Link":
@@ -1813,7 +1839,7 @@ def buildAssemblyTree(worldVol):
     processContainer(worldVol)
 
     for k, v in AssemblyDict.items():
-        print(f'Assembly: {k} av_{v.www}_impr_{v.xxx}')
+        print(f"Assembly: {k} av_{v.www}_impr_{v.xxx}")
 
 
 def createXMLvolume(name):
