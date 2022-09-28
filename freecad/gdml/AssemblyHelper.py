@@ -28,62 +28,60 @@
 # dictionaries. Each has as key the name of the App::Part  that appears
 # in the PV1, PV2 properties of the bordersurface
 
+from .exportGDML import isAssembly, assemblyHeads
 
-class Assembly:
-    instCount = 0
-    imprCount = 0
-    ignore = ["App::Origin"]
 
-    def __init__(self, name, ObjList):
-        Assembly.instCount += 1
-        Assembly.imprCount += 1
-        print(f"Assemmbly {name} {Assembly.instCount} {Assembly.imprCount}")
-        self.name = name
-        self.list = ObjList
-        self.xxx = Assembly.imprCount
-        self.www = Assembly.instCount
+class AssemblyHelper:
+    maxWww = 0
 
-    def resetCounts(self):
-        Assembly.instCount = 0
-        Assembly.imprCount = 0
+    def __init__(self, assemblyVol, instCount, imprNum):
+        self.assemblyVol = assemblyVol
+        self.xxx = imprNum
+        self.www = instCount
+        if self.www > AssemblyHelper.maxWww:
+            AssemblyHelper.maxWww = instCount
+        self.solids = []
 
-    def incrementImpression(self):
-        Assembly.imprCount += 1
+    def addSolid(self, obj):
+        self.solids.append(obj)
 
-    def indexName(self, name):
-        idx = 0
-        for obj in self.list:
-            if obj.Name == name:
-                return idx
-            if obj.TypeId not in Assembly.ignore:
-                idx += 1
-        return None
-
-    def printList(self):
-        print(f"List {self.name} >>>>>>>")
-        for obj in self.list:
-            print(obj.Name)
-        print(f"List {self.name} <<<<<<<<")
-
-    def printInfo(self):
-        print(f"Entry {self.name} www {self.www} xxx {self.xxx}")
-
-    def getPVname(self, obj):
+    def getPVname(self, obj, idx):
         from .exportGDML import getVolumeName
 
-        self.printInfo()
-        # self.printList()
-        idx = self.indexName(obj.Name)
         if hasattr(obj, "LinkedObject"):
-            obj = obj.LinkedObject
-        print(f"zzz {idx} should be one less than CopyNumber")
-        return (
-            "av_"
-            + str(self.www)
-            + "_impr_"
-            + str(self.xxx)
-            + "_"
-            + getVolumeName(obj)
-            + "_pv_"
-            + str(idx)
-        )
+            return (
+                "av_"
+                + str(self.www)
+                + "_impr_"
+                + str(self.xxx)
+                + "_"
+                + getVolumeName(obj)
+                + "_pv_"
+                + str(idx)
+            )
+
+
+class AssemblyTreeNode:
+    from .exportGDML import assemblyHeads
+
+    def __init__(self, assemObj, parent):
+        self.parent = parent
+        self.assemObj = assemObj
+        self.assemHeads = assemblyHeads(assemObj)
+        self.left_child = None
+        self.right_sibling = None
+
+    def insert(self, assemObj):
+        if self.assemObj:
+            if assemObj in self.assemblyHeads:
+                if self.left_child is None:
+                    self.left_child = AssemblyTreeNode(assemObj, self)
+                else:
+                    self.left_child.insert(assemObj)
+            else:
+                if self.right_sibling is None:
+                    self.right_sibling = AssemblyTreeNode(assemObj, self)
+                else:
+                    self.right_sibling.insert(assemObj)
+        else:
+            self.assemObj = assemObj
