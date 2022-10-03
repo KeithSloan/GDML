@@ -49,16 +49,17 @@ class AssemblyHelper:
         from .exportGDML import getVolumeName
 
         if hasattr(obj, "LinkedObject"):
-            return (
-                "av_"
-                + str(self.www)
-                + "_impr_"
-                + str(self.xxx)
-                + "_"
-                + getVolumeName(obj)
-                + "_pv_"
-                + str(idx)
-            )
+            obj = obj.LinkedObject
+        return (
+            "av_"
+            + str(self.www)
+            + "_impr_"
+            + str(self.xxx)
+            + "_"
+            + getVolumeName(obj)
+            + "_pv_"
+            + str(idx)
+        )
 
 
 class AssemblyTreeNode:

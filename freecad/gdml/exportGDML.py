@@ -1353,8 +1353,6 @@ def processBorderSurfaces():
     print(f"Export Border Surfaces - Assemblies {len(AssemblyDict)}")
     print("==============================================")
     # print(AssemblyDict)
-    for ent in AssemblyDict.values():
-        ent.printInfo()
     doc = FreeCAD.ActiveDocument
 
     for obj in doc.Objects:
@@ -1846,7 +1844,6 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName)
-            entry.incrementImpression()
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # PhysVol needs to be unique
@@ -2382,13 +2379,12 @@ def exportGDMLstructure(dirPath, fileName):
 
 def exportGDML(first, filepath, fileExt):
     from . import GDMLShared
-    from .AssemDict import Assembly
     from sys import platform
     from .AssemblyHelper import AssemblyHelper
 
     global zOrder
     global AssemblyDict
-
+    AssemblyDict = {}
     AssemblyHelper.maxWww = 0
 
     # GDMLShared.setTrace(True)
