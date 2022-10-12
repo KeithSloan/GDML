@@ -1805,6 +1805,16 @@ def createXMLassembly(name):
     return elem
 
 
+def invPlacement(placement):
+    inv = placement.inverse()
+    return inv
+    # tra = inv.Base
+    # rot = inv.Rotation
+    # T = FreeCAD.Placement(tra, FreeCAD.Rotation())
+    # R = FreeCAD.Placement(FreeCAD.Vector(), rot)
+    # return R*T
+
+
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     global structure
     # vol - Volume Object
@@ -1847,7 +1857,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     # for its placement, if any, given in the argument
     placement = vol.Placement
     if psPlacement is not None:
-        placement = placement*psPlacement.inverse()
+        placement = invPlacement(psPlacement) * placement
     addPhysVolPlacement(vol, xmlParent, volName, placement)
     structure.append(xmlVol)
 
@@ -1867,8 +1877,8 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         print("Volume is Link")
         placement = vol.Placement
         if psPlacement is not None:
-            placement = placement*psPlacement.inverse()
-            
+            placement = invPlacement(psPlacement) * placement
+
         addPhysVolPlacement(
             vol,
             xmlParent,
@@ -1892,7 +1902,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         xmlVol, volName = processMultiPlacement(topObject, xmlParent)
         partPlacement = topObject.Placement
         if psPlacement is not None:
-            partPlacement = partPlacement*psPlacement.inverse()
+            partPlacement = partPlacement*invPlacement(psPlacement)
     else:
         solidExporter = SolidExporter.getExporter(topObject)
         if solidExporter is None:
@@ -1912,7 +1922,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         if vol.TypeId == "App::Part":
             partPlacement = vol.Placement * partPlacement
             if psPlacement is not None:
-                partPlacement = partPlacement*psPlacement.inverse()
+                partPlacement = partPlacement*invPlacement(psPlacement)
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
@@ -1967,7 +1977,7 @@ def processContainer(vol, xmlParent, psPlacement):
     # just used an identity placement which has an identity inverse
     #
     if psPlacement is not None:
-        partPlacement = partPlacement*psPlacement.inverse()
+        partPlacement = invPlacement(psPlacement) * partPlacement
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     # N.B. the parent solid placement (psPlacement) only directly
     # affects vol, the container volume. All the daughters are placed
@@ -1990,7 +2000,7 @@ def processContainer(vol, xmlParent, psPlacement):
             volRef = getVolumeName(obj.LinkedObject)
             addPhysVolPlacement(
                 obj, newXmlVol, obj.Label,
-                obj.Placement*solidPlacement.inverse(), volRef
+                invPlacement(solidPlacement) * obj.Placement, volRef
             )
         elif obj.TypeId == "App::Part":
             processVolAssem(obj, newXmlVol, volName, myPlacement)
