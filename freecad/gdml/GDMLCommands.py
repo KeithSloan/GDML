@@ -405,7 +405,7 @@ class SetBorderSurfaceFeature:
         # print(len(sel))
         if len(sel) != 3:
             return
-        
+
         surfaceObj = None
         partList = []
         for s in sel:
@@ -436,7 +436,7 @@ class SetBorderSurfaceFeature:
         # print(f'Part List {partList}')
         if surfaceObj is not None and len(partList) == 2:
             print("Action set Border Surface")
-#            commonFaceFlag, commonFaces = self.checkCommonFace(partList)
+            #            commonFaceFlag, commonFaces = self.checkCommonFace(partList)
             dict1 = getSubVols(partList[0], FreeCAD.Placement())
             dict2 = getSubVols(partList[1], FreeCAD.Placement())
             commonFaceFlag = False
@@ -446,7 +446,9 @@ class SetBorderSurfaceFeature:
                         for pair2 in list2:
                             obj1 = pair1[0]
                             obj2 = pair2[0]
-                            if hasattr(obj1, 'Shape') and hasattr(obj2, 'Shape'):
+                            if hasattr(obj1, "Shape") and hasattr(
+                                obj2, "Shape"
+                            ):
                                 commonFaceFlag = checkFaces(pair1, pair2)
                                 if commonFaceFlag is True:
                                     break
@@ -1331,8 +1333,8 @@ class TorusFeature:
         obj = insertPartVol(objPart, "LV-Torus", "GDMLTorus")
         GDMLTorus(obj, 10, 50, 50, 10, 360, "deg", "mm", material)
         if FreeCAD.GuiUp:
-            myTorus.ViewObject.Visibility = True
-            ViewProvider(myTorus.ViewObject)
+            obj.ViewObject.Visibility = True
+            ViewProvider(obj.ViewObject)
 
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.SendMsgToActiveView("ViewFit")
