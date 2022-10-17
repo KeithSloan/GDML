@@ -1823,12 +1823,22 @@ def createXMLassembly(name):
     return elem
 
 
-def processAssembly(vol, xmlVol, xmlParent, parentName):
+def invPlacement(placement):
+    inv = placement.inverse()
+    return inv
+    # tra = inv.Base
+    # rot = inv.Rotation
+    # T = FreeCAD.Placement(tra, FreeCAD.Rotation())
+    # R = FreeCAD.Placement(FreeCAD.Vector(), rot)
+    # return R*T
+
+
+def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     global structure
-    # global imprNum
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volumes Paretnt
+    # psPlacement: parent solid placement, may be None
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
     # xmlVol could be created dummy volume
@@ -1840,10 +1850,14 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
     assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-
+    #
+    # Note that the assembly object are under an App::Part, not
+    # a solid, so there is no neede to adjust for a "parent solid"
+    # placement.
+    #
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
-            processVolAssem(obj, xmlVol, volName)
+            processVolAssem(obj, xmlVol, volName, None)
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # PhysVol needs to be unique
@@ -1854,13 +1868,18 @@ def processAssembly(vol, xmlVol, xmlParent, parentName):
             print(f"VolRef {volRef}")
             addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
         else:
-            _ = processVolume(obj, xmlVol)
+            _ = processVolume(obj, xmlVol, None)
 
-    addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    # the assembly could be placed in a container; adjust
+    # for its placement, if any, given in the argument
+    placement = vol.Placement
+    if psPlacement is not None:
+        placement = invPlacement(psPlacement) * placement
+    addPhysVolPlacement(vol, xmlParent, volName, placement)
     structure.append(xmlVol)
 
 
-def processVolume(vol, xmlParent, volName=None):
+def processVolume(vol, xmlParent, psPlacement, volName=None):
 
     global structure
     global skinSurfaces
@@ -1873,11 +1892,15 @@ def processVolume(vol, xmlParent, volName=None):
     # xmlVol could be created dummy volume
     if vol.TypeId == "App::Link":
         print("Volume is Link")
+        placement = vol.Placement
+        if psPlacement is not None:
+            placement = invPlacement(psPlacement) * placement
+
         addPhysVolPlacement(
             vol,
             xmlParent,
             vol.Label,
-            vol.Placement,
+            placement,
             refName=vol.LinkedObject.Label,
         )
         return
@@ -1895,7 +1918,8 @@ def processVolume(vol, xmlParent, volName=None):
     if isMultiPlacement(topObject):
         xmlVol, volName = processMultiPlacement(topObject, xmlParent)
         partPlacement = topObject.Placement
-
+        if psPlacement is not None:
+            partPlacement = partPlacement * invPlacement(psPlacement)
     else:
         solidExporter = SolidExporter.getExporter(topObject)
         if solidExporter is None:
@@ -1906,7 +1930,7 @@ def processVolume(vol, xmlParent, volName=None):
         if volName == solidExporter.name():
             volName = "V-" + solidExporter.name()
         xmlVol = createXMLvolume(volName)
-        # 2- add material info to the generated <volume pointerd to by xmlVol
+        # 2- add material info to the generated <volume pointed to by xmlVol
         addVolRef(xmlVol, volName, topObject, solidExporter.name())
         # 3- add a <physvol. A <physvol, can go under the <worlVol, or under
         #    a <assembly
@@ -1914,6 +1938,8 @@ def processVolume(vol, xmlParent, volName=None):
         partPlacement = solidExporter.placement()
         if vol.TypeId == "App::Part":
             partPlacement = vol.Placement * partPlacement
+            if psPlacement is not None:
+                partPlacement = partPlacement * invPlacement(psPlacement)
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
@@ -1947,8 +1973,10 @@ def processVolume(vol, xmlParent, volName=None):
     return xmlVol
 
 
-def processContainer(vol, xmlParent):
+def processContainer(vol, xmlParent, psPlacement):
     # vol: a container: a volume that has a solid that contains other volume
+    # psPlacement: placement of parent solid. Could be None.
+    #
     print("Process Container")
     global structure
     volName = getVolumeName(vol)
@@ -1959,38 +1987,67 @@ def processContainer(vol, xmlParent):
     addVolRef(
         newXmlVol, volName, objects[0], solidExporter.name(), addColor=False
     )
-    addPhysVolPlacement(vol, xmlParent, volName, vol.Placement)
+    solidPlacement = solidExporter.placement()
+    partPlacement = vol.Placement * solidPlacement
+    #
+    # Note that instead of testing for None, I could have
+    # just used an identity placement which has an identity inverse
+    #
+    if psPlacement is not None:
+        partPlacement = invPlacement(psPlacement) * partPlacement
+    addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    # N.B. the parent solid placement (psPlacement) only directly
+    # affects vol, the container volume. All the daughters are placed
+    # relative to that, so do not need the extra shift of psPlacement
+    # directly.
+    # However, if the container solid has a non-dentity placement
+    # then the daughters need adjustment by that
     # The solid containing the daughter volumes has been exported above
-    # so start at the next object
+    # so start at the next object.
+    if solidPlacement == FreeCAD.Placement():
+        # No adjustment of daughters needed
+        myPlacement = None
+    else:
+        # adjust by our solids non-zero placement
+        myPlacement = solidPlacement
+
     for obj in objects[1:]:
         if obj.TypeId == "App::Link":
             print("Process Link")
             volRef = getVolumeName(obj.LinkedObject)
             addPhysVolPlacement(
-                obj, newXmlVol, obj.Label, obj.Placement, volRef
+                obj,
+                newXmlVol,
+                obj.Label,
+                invPlacement(solidPlacement) * obj.Placement,
+                volRef,
             )
         elif obj.TypeId == "App::Part":
-            processVolAssem(obj, newXmlVol, volName)
+            processVolAssem(obj, newXmlVol, volName, myPlacement)
         else:
-            _ = processVolume(obj, newXmlVol)
+            _ = processVolume(obj, newXmlVol, myPlacement)
 
     structure.append(newXmlVol)
 
 
-def processVolAssem(vol, xmlParent, parentName):
+def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
 
     # vol - Volume Object
     # xmlParent - xml of this volumes Parent
+    # psPlacement = parent solid placement.
+    #               If the vol is placed inside a solid
+    #               and that solid has a non-zero placement
+    #               we need to shift vol by inverse of the psPlacement
     if vol.Label[:12] != "NOT_Expanded":
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
         if isContainer(vol):
-            processContainer(vol, xmlParent)
+            processContainer(vol, xmlParent, psPlacement)
         elif isAssembly(vol):
             newXmlVol = createXMLassembly(volName)
-            processAssembly(vol, newXmlVol, xmlParent, parentName)
+            processAssembly(vol, newXmlVol, xmlParent, parentName, psPlacement)
         else:
-            processVolume(vol, xmlParent)
+            processVolume(vol, xmlParent, psPlacement)
     else:
         print("skipping " + vol.Label)
 
@@ -2389,7 +2446,7 @@ def exportGDML(first, filepath, fileExt):
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
-    print("====> Start GDML Export 1.9")
+    print("====> Start GDML Export 1.9b")
     print("File extension : " + fileExt)
 
     GDMLstructure()
