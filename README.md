@@ -22,6 +22,11 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ## Important Noticies
 
+### New branch **loops**
+
+Munther has created a new branch which add support for importing GDML files with loops.
+We would welcome feedback on any success or issues.
+
 ### FreeCAD 0.20
 
 Now FreeCAD 0.20 has been released. 
