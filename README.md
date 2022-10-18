@@ -232,6 +232,10 @@ will create
 * Creating a GDML object from Sketches, these can be created by
   * [Extruding a sketch](https://github.com/KeithSloan/GDML/wiki#extruded-sketches)
   * [Revolving a sketch](https://github.com/KeithSloan/GDML/wiki#revolved-sketches)
+* Support for GDML Objects as subject of 
+  * [Arrays](https://github.com/KeithSloan/GDML/wiki#arrays-of-objects)
+  * [Mirrors](https://github.com/KeithSloan/GDML/wiki#mirrored-objects)
+  * [Scaled](https://github.com/KeithSloan/GDML/wiki#scaled-objects)
 * Details of support for GDML [Optical properties](https://github.com/KeithSloan/GDML/wiki/Optical-Support)  
 
 
