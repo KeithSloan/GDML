@@ -8,7 +8,7 @@
   <license file="LICENSE">LGPL-2.1</license>
   <url type="repository" branch="Main">https://github.com/KeithSloan/GDML</url>
   <url type="documentation">https://github.com/KeithSloan/GDML/wiki</url>
-  <url type="readme">https://github.com/KeithSloan/GDML/blob/master/README.md</url>
+  <url type="readme">https://github.com/KeithSloan/GDML/blob/Main/README.md</url>
 
   <content>
     <workbench>
