@@ -1902,7 +1902,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         xmlVol, volName = processMultiPlacement(topObject, xmlParent)
         partPlacement = topObject.Placement
         if psPlacement is not None:
-            partPlacement = partPlacement*invPlacement(psPlacement)
+            partPlacement = invPlacement(psPlacement)*partPlacement
     else:
         solidExporter = SolidExporter.getExporter(topObject)
         if solidExporter is None:
@@ -1922,7 +1922,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         if vol.TypeId == "App::Part":
             partPlacement = vol.Placement * partPlacement
             if psPlacement is not None:
-                partPlacement = partPlacement*invPlacement(psPlacement)
+                partPlacement = invPlacement(psPlacement)*partPlacement
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
@@ -2817,6 +2817,8 @@ class SolidExporter:
                     return True
                 elif obj1.ArrayType == "polar":
                     return True
+            elif typeId == "PathArray":
+                return True    
             elif typeId == "Clone":
                 clonedObj = obj1.Objects[0]
                 return SolidExporter.isSolid(clonedObj)
@@ -2835,6 +2837,8 @@ class SolidExporter:
                     return OrthoArrayExporter(obj)
                 elif obj.ArrayType == "polar":
                     return PolarArrayExporter(obj)
+            elif typeId == "PathArray":
+                return PathArrayExporter(obj)
             elif typeId == "Clone":
                 return CloneExporter(obj)
         else:
@@ -4259,8 +4263,45 @@ class PolarArrayExporter(SolidExporter):
         self._exportScaled()
 
 
+class PathArrayExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def name(self):
+        solidName = "MultiUnion-" + self.obj.Label
+        return solidName
+
+    def export(self):
+        base = self.obj.OutList[0]
+        print(base.Label)
+        if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+            print(
+                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+            )
+            return
+        baseExporter = SolidExporter.getExporter(base)
+        baseExporter.export()
+        volRef = baseExporter.name()
+        unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
+        count = self.obj.Count
+        positionVector = baseExporter.position()
+        extraTranslation = self.obj.ExtraTranslation
+        pathObj = self.obj.PathObject
+        path = pathObj.Shape.Edges[0]
+        points = path.discretize(Number=count)
+        for i, point in enumerate(points):
+            pos = point + positionVector + extraTranslation
+            nodeName = f"{self.name()}_{i}"
+            nodeXML = ET.SubElement(
+                unionXML, "multiUnionNode", {"name": nodeName}
+            )
+            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+            exportPosition(nodeName, nodeXML, pos)
+        self._exportScaled()
+
+
 #
-# -------------------------------------- revolutionExporter ----------------------------------------------------------------
+# ------------------------------revolutionExporter ----------------------------
 #
 global Deviation  # Fractional deviation of revolve object
 #############################################
