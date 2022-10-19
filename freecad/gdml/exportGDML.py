@@ -2818,7 +2818,9 @@ class SolidExporter:
                 elif obj1.ArrayType == "polar":
                     return True
             elif typeId == "PathArray":
-                return True    
+                return True
+            elif typeId == "PointArray":
+                return True
             elif typeId == "Clone":
                 clonedObj = obj1.Objects[0]
                 return SolidExporter.isSolid(clonedObj)
@@ -2839,6 +2841,8 @@ class SolidExporter:
                     return PolarArrayExporter(obj)
             elif typeId == "PathArray":
                 return PathArrayExporter(obj)
+            elif typeId == "PointArray":
+                return PointArrayExporter(obj)
             elif typeId == "Clone":
                 return CloneExporter(obj)
         else:
@@ -4285,6 +4289,7 @@ class PathArrayExporter(SolidExporter):
         unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
         count = self.obj.Count
         positionVector = baseExporter.position()
+        rot = base.Placement.Rotation
         extraTranslation = self.obj.ExtraTranslation
         pathObj = self.obj.PathObject
         path = pathObj.Shape.Edges[0]
@@ -4297,6 +4302,47 @@ class PathArrayExporter(SolidExporter):
             )
             ET.SubElement(nodeXML, "solid", {"ref": volRef})
             exportPosition(nodeName, nodeXML, pos)
+            exportRotation(nodeName, nodeXML, rot)
+        self._exportScaled()
+
+
+class PointArrayExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def name(self):
+        solidName = "MultiUnion-" + self.obj.Label
+        return solidName
+
+    def export(self):
+        base = self.obj.OutList[0]
+        print(base.Label)
+        if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+            print(
+                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+            )
+            return
+        baseExporter = SolidExporter.getExporter(base)
+        baseExporter.export()
+        volRef = baseExporter.name()
+        unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
+        positionVector = baseExporter.position()
+        rotBase = base.Placement.Rotation 
+        extraTranslation = self.obj.ExtraPlacement.Base
+        extraRotation = self.obj.ExtraPlacement.Rotation
+        extraRotation.Angle = -extraRotation.Angle
+        rot = extraRotation*rotBase        
+        pointObj = self.obj.PointObject
+        points = pointObj.OutList
+        for i, point in enumerate(points):
+            pos = point.Placement.Base + positionVector + extraTranslation
+            nodeName = f"{self.name()}_{i}"
+            nodeXML = ET.SubElement(
+                unionXML, "multiUnionNode", {"name": nodeName}
+            )
+            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+            exportPosition(nodeName, nodeXML, pos)
+            exportRotation(nodeName, nodeXML, rot)
         self._exportScaled()
 
 
