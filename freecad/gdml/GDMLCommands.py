@@ -1281,6 +1281,38 @@ class ElliTubeFeature:
         }
 
 
+class LoopFeature:
+    # def IsActive(self):
+    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        from .GDMLObjects import GDMLloop, ViewProvider
+
+        GDMLloop(obj)
+        # print("GDMLloop")
+        ViewProvider(obj.ViewObject)
+        # print("GDMLloop ViewProvided - added")
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDMLloopFeature",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "GDMLloopFeature", "Loop Object"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "GDMLloopFeature", "Loop Object"
+            ),
+        }
+
+
 class SphereFeature:
     # def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -2737,6 +2769,7 @@ FreeCADGui.addCommand("BoxCommand", BoxFeature())
 FreeCADGui.addCommand("EllipsoidCommand", EllispoidFeature())
 FreeCADGui.addCommand("ElTubeCommand", ElliTubeFeature())
 FreeCADGui.addCommand("ConeCommand", ConeFeature())
+FreeCADGui.addCommand("LoopCommand", LoopFeature())
 FreeCADGui.addCommand("SphereCommand", SphereFeature())
 FreeCADGui.addCommand("TorusCommand", TorusFeature())
 FreeCADGui.addCommand("TrapCommand", TrapFeature())
