@@ -155,6 +155,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "Part_Mirror",
             "Draft_ArrayTools",
             "SetScaleCommand",
+            "LoopCommand",
             "Separator",
             "BooleanCutCommand",
             "BooleanIntersectionCommand",

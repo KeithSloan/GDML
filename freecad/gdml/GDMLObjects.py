@@ -2762,6 +2762,33 @@ class GDMLXtru(GDMLsolid):
         fp.Placement = currPlacement
 
 
+class GDMLloop(GDMLsolid):
+    def __init__(self, obj):
+        super().__init__(obj)
+        obj.addProperty("App::PropertyEnumeration", "_for", "Variable", "for")
+        obj._for = ["i", "j", "k"]
+        obj._for = 0
+        obj.addProperty("App::PropertyInteger", "_from", "Variable", "from")
+        obj._from = 1
+        obj.addProperty("App::PropertyInteger", "_to", "Variable", "to")
+        obj._to = 5
+        obj.addProperty("App::PropertyInteger", "_step", "Variable", "step")
+        obj._step = 1
+        obj.addProperty("App::PropertyString", "name", "Variable", "name")
+        obj.name = "Loop"
+        obj.Proxy = self
+
+    def onChanged(self, fp, prop):
+        """Do something when a property has changed"""
+        pass
+
+    def createGeometry(self, fp):
+        pass
+
+    def execute(self, fp):
+        pass
+
+
 class GDML2dVertex(GDMLcommon):
     def __init__(self, obj, x, y):
         super().__init__(obj)
@@ -5256,4 +5283,3 @@ def makecSphere():
 
 def makeTube():
     a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLTube")
-    GDMLTube(a)

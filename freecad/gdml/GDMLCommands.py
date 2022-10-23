@@ -1288,9 +1288,27 @@ class LoopFeature:
     def Activated(self):
         from .GDMLObjects import GDMLloop, ViewProvider
 
-        GDMLloop(obj)
+        print("Loop Feature")
+        sel = FreeCADGui.Selection.getSelectionEx()
+        # print(len(sel))
+        for s in sel:
+            if hasattr(s, "Object"):
+                print(s.Object.Label)
+                target = s.Object
+                if hasattr(target, "InList"):
+                    parent = target.InList[0]
+                    obj = parent.newObject("Part::FeaturePython", "Loop")
+                    obj.addProperty(
+                        "App::PropertyLinkGlobal", "target", "Loop", "target"
+                    ).target = target
+                    GDMLloop(obj)
+                    # Adjust lists
+                    target.InList[0] = obj
+                    ViewProvider(obj.ViewObject)
+
+        # GDMLloop(obj)
         # print("GDMLloop")
-        ViewProvider(obj.ViewObject)
+        # ViewProvider(obj.ViewObject)
         # print("GDMLloop ViewProvided - added")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
