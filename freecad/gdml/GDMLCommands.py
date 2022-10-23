@@ -1294,17 +1294,16 @@ class LoopFeature:
         for s in sel:
             if hasattr(s, "Object"):
                 print(s.Object.Label)
-                target = s.Object
-                if hasattr(target, "InList"):
-                    parent = target.InList[0]
-                    obj = parent.newObject("Part::FeaturePython", "Loop")
-                    obj.addProperty(
-                        "App::PropertyLinkGlobal", "target", "Loop", "target"
-                    ).target = target
-                    GDMLloop(obj)
-                    # Adjust lists
-                    target.InList[0] = obj
-                    ViewProvider(obj.ViewObject)
+                print(s.Object.TypeId)
+                if s.Object.TypeId == "App::Part":
+                    parent = s.Object
+                    _vars = ["i", "j", "k"]
+                    for i in range(3):
+                        obj = parent.newObject(
+                            "Part::FeaturePython", "Loop_" + _vars[i]
+                        )
+                        GDMLloop(obj, i, 1, 2, 1)
+                        ViewProvider(obj.ViewObject)
 
         # GDMLloop(obj)
         # print("GDMLloop")

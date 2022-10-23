@@ -2763,19 +2763,19 @@ class GDMLXtru(GDMLsolid):
 
 
 class GDMLloop(GDMLsolid):
-    def __init__(self, obj):
+    def __init__(self, obj, _for, _from, _to, _step):
         super().__init__(obj)
         obj.addProperty("App::PropertyEnumeration", "_for", "Variable", "for")
-        obj._for = ["i", "j", "k"]
-        obj._for = 0
+        obj._for = ["i", "j", "k", "l", "m", "n"]
+        obj._for = _for
         obj.addProperty("App::PropertyInteger", "_from", "Variable", "from")
-        obj._from = 1
+        obj._from = _from
         obj.addProperty("App::PropertyInteger", "_to", "Variable", "to")
-        obj._to = 5
+        obj._to = _to
         obj.addProperty("App::PropertyInteger", "_step", "Variable", "step")
-        obj._step = 1
-        obj.addProperty("App::PropertyString", "name", "Variable", "name")
-        obj.name = "Loop"
+        obj._step = _step
+        # obj.addProperty("App::PropertyString", "name", "Variable", "name")
+        # obj.name = "Loop"
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
