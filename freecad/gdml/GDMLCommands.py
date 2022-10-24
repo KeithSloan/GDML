@@ -2003,6 +2003,96 @@ class TessellateFeature:
         }
 
 
+class GmshGroup:
+    """Group of Gmsh Commands"""
+
+    def GetCommands(self):
+        """Tuple of Commands"""
+        return ("TessellateGmshCommand", "TessMinGmshCommand")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "Gmsh_Group",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Gmsh Group", "Gmsh Group"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Gmsh Group", " Group of Gmsh Commands"
+            ),
+        }
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+
+class TessGmshMinFeature:
+    def Activated(self):
+
+        from .GmshUtils import (
+            initialize,
+            meshObject,
+            getVertex,
+            getFacets,
+            getMeshLen,
+            printMeshInfo,
+            printMyInfo,
+        )
+
+        from .GDMLObjects import (
+            GDMLGmshTessellated,
+            GDMLTriangular,
+            ViewProvider,
+            ViewProviderExtension,
+        )
+
+        print("Action Gmsh Activated")
+        for obj in FreeCADGui.Selection.getSelection():
+            # if len(obj.InList) == 0: # allowed only for for top level objects
+            print("Action Gmsh Tessellate")
+            # print(dir(obj))
+            print(obj.Name)
+            if hasattr(obj, "Shape") and obj.TypeId != "App::Part":
+                if FreeCADGui.Control.activeDialog() is False:
+                    print("Build panel for TO BE Gmeshed")
+                    panel = AddTessellateTask(obj)
+                    if hasattr(obj, "Proxy"):
+                        print(obj.Proxy.Type)
+                        if obj.Proxy.Type == "GDMLGmshTessellated":
+                            print("Build panel for EXISTING Gmsh Tessellate")
+                            panel.form.meshInfoLayout = QtGui.QHBoxLayout()
+                            panel.form.meshInfoLayout.addWidget(
+                                oField("Vertex", 6, str(len(obj.Proxy.Vertex)))
+                            )
+                            panel.form.meshInfoLayout.addWidget(
+                                oField("Facets", 6, str(len(obj.Proxy.Facets)))
+                            )
+                    FreeCADGui.Control.showDialog(panel)
+                else:
+                    print("Already an Active Task")
+            return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDML_Tess_Gmsh_Min",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup", "Gmsh Min & Tessellate"
+            ),
+            "Tessellate_Gmsh": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup", "Mesh & Tessellate Selected Planar Object"
+            ),
+        }
+
+
 class TessellateGmshFeature:
     def Activated(self):
 
@@ -2744,7 +2834,9 @@ FreeCADGui.addCommand("TubeCommand", TubeFeature())
 FreeCADGui.addCommand("PolyHedraCommand", PolyHedraFeature())
 FreeCADGui.addCommand("AddCompound", CompoundFeature())
 FreeCADGui.addCommand("TessellateCommand", TessellateFeature())
+FreeCADGui.addCommand("GmshGroupCommand", GmshGroup())
 FreeCADGui.addCommand("TessellateGmshCommand", TessellateGmshFeature())
+FreeCADGui.addCommand("TessGmshMinCommand", TessGmshMinFeature())
 FreeCADGui.addCommand("DecimateCommand", DecimateFeature())
 FreeCADGui.addCommand("Mesh2TessCommand", Mesh2TessFeature())
 FreeCADGui.addCommand("Tess2MeshCommand", Tess2MeshFeature())

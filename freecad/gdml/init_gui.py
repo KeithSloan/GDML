@@ -39,7 +39,6 @@ import SketcherGui
 import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
-from freecad.gdml.GDMLGuiCommands import TwistedGroup
 
 
 def joinDir(path):
@@ -120,6 +119,8 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "BooleanUnionCommand",
             "TessellateCommand",
             "TessellateGmshCommand",
+            "TessGmshMinCommand",
+            "GmshGroupCommand",
             "DecimateCommand",
             "Mesh_FromPartShape",
             "Mesh_Evaluation",
@@ -161,7 +162,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "BooleanUnionCommand",
             "Separator",
             "TessellateCommand",
-            "TessellateGmshCommand",
+            "GmshGroupCommand",
             "DecimateCommand",
             "Mesh_FromPartShape",
             "Mesh_Evaluation",
