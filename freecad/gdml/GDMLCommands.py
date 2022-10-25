@@ -2008,13 +2008,13 @@ class GmshGroup:
 
     def GetCommands(self):
         """Tuple of Commands"""
-        return ("TessellateGmshCommand", "TessMinGmshCommand")
+        return ("TessellateGmshCommand", "TessGmshMinCommand")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
         return {
-            "Pixmap": "Gmsh_Group",
+            "Pixmap": "GDML_Gmsh_Group",
             "MenuText": QtCore.QT_TRANSLATE_NOOP("Gmsh Group", "Gmsh Group"),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "Gmsh Group", " Group of Gmsh Commands"
