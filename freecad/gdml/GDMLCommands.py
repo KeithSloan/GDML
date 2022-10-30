@@ -1831,8 +1831,7 @@ class AddMinTessellateTask:
 
     def actionMesh(self):
         from .GmshUtils import (
-            initialize,
-            meshObject,
+            minMeshObject,
             getVertex,
             getFacets,
             getMeshLen,
@@ -1842,7 +1841,7 @@ class AddMinTessellateTask:
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
 
         print("Action Min Gmsh : " + self.obj.Name)
-        initialize()
+        # initialize()
         typeDict = {0: 6, 1: 8, 2: 9}
         print(dir(self))
         print("Object " + self.obj.Name)
@@ -1867,13 +1866,13 @@ class AddMinTessellateTask:
             if hasattr(self.obj.Proxy, "SourceObj"):
                 print("Has source Object")
                 if (
-                    meshObject(
+                    minMeshObject(
                         self.obj.Proxy.SourceObj,
-                        2,
-                        ty,
-                        float(ml),
-                        float(cl),
-                        float(pl),
+                        # 2,
+                        # ty,
+                        # float(ml),
+                        # float(cl),
+                        # float(pl),
                     )
                     is True
                 ):
@@ -1883,7 +1882,14 @@ class AddMinTessellateTask:
                     return
 
         if (
-            meshObject(self.obj, 2, ty, float(ml), float(cl), float(pl))
+            minMeshObject(
+                self.obj,
+                # 2,
+                # ty,
+                # float(ml),
+                # float(cl),
+                # float(pl),
+            )
             is True
         ):
             facets = getFacets()

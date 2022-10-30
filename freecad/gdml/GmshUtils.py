@@ -28,16 +28,18 @@ import os
 import numpy as np
 import sys
 import FreeCAD
+
 __title__ = "FreeCAD GDML Workbench - Gmsh Utils"
 __author__ = "Keith Sloan"
 __url__ = ["http://www.freecadweb.org"]
 
-'''
+"""
 This Script includes the GUI Commands of the GDML module
-'''
+"""
 
 sys.path.append(
-    '/usr/local/lib/python3.7/site-packages/gmsh-4.5.6-MacOSX-sdk/lib')
+    "/usr/local/lib/python3.7/site-packages/gmsh-4.5.6-MacOSX-sdk/lib"
+)
 
 
 def Gmsh(obj):
@@ -46,10 +48,10 @@ def Gmsh(obj):
     from femmesh.gmshtools import GmshTools
 
     doc = FreeCAD.ActiveDocument
-    print('Action Tessellate Mesh')
+    print("Action Tessellate Mesh")
     femmesh_obj = ObjectsFem.makeMeshGmsh(doc, obj.Name + "_Mesh")
     femmesh_obj.Part = obj
-    femmesh_obj.Algorithm2D = 'DelQuad'
+    femmesh_obj.Algorithm2D = "DelQuad"
     doc.recompute()
     gm = GmshTools(femmesh_obj)
     error = gm.create_mesh()
@@ -60,22 +62,22 @@ def Gmsh(obj):
 def initialize():
     gmsh.initialize()
     # gmsh.option.setNumber('Mesh.Algorithm',6)
-    gmsh.option.setNumber('Mesh.Algorithm3D', 1)
-    #gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
+    gmsh.option.setNumber("Mesh.Algorithm3D", 1)
+    # gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
-    #gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
+    # gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
     # Netgen crashes
     try:
         threads = max(1, os.cpu_count() - 2)
     except:
         threads = 1
-    print('Gmsh to use '+str(threads)+' threads')
+    print("Gmsh to use " + str(threads) + " threads")
     gmsh.option.setNumber("Mesh.MaxNumThreads2D", threads)
     gmsh.option.setNumber("Mesh.MaxNumThreads3D", threads)
-    gmsh.option.setString("Geometry.OCCTargetUnit", 'mm')
-    gmsh.option.setString("General.ErrorFileName", '/tmp/error.log')
-    gmsh.option.setNumber('General.Terminal', 1)
+    gmsh.option.setString("Geometry.OCCTargetUnit", "mm")
+    gmsh.option.setString("General.ErrorFileName", "/tmp/error.log")
+    gmsh.option.setNumber("General.Terminal", 1)
 
 
 def maxCord(bbox):
@@ -85,14 +87,24 @@ def maxCord(bbox):
 
 
 def getMeshLen(obj):
-    if hasattr(obj, 'Shape'):
+    if hasattr(obj, "Shape"):
         bbox = obj.Shape.BoundBox
 
-    elif hasattr(obj, 'Mesh'):
+    elif hasattr(obj, "Mesh"):
         bbox = obj.Mesh.BoundBox
     ml = maxCord(bbox) / 10
-    print('Mesh length : '+str(ml))
+    print("Mesh length : " + str(ml))
     return ml
+
+
+def setMinMeshParms():
+    gmsh.option.setNumber("Mesh.StlLinearDeflection", 1)
+    gmsh.option.setNumber("Mesh.StlLinearDeflectionRelative", 0)
+    gmsh.option.setNumber("Mesh.StlAngularDeflection", 0.5)
+    gmsh.option.setNumber("Mesh.RecombinationAlgorithm", 0)
+    gmsh.option.setNumber("Mesh.RecombineOptimizeTopology", 0)
+    gmsh.option.setNumber("Mesh.RecombineNodeRepositioning", 0)
+    gmsh.option.setNumber("Mesh.RecombineMinimumQuality", 1e-3)
 
 
 def setMeshParms(algol, lm, lc, lp):
@@ -109,24 +121,27 @@ def setAltMeshParms(meshParms, obj, tessObj):
         gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", ml)
         gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", ml)
     else:
-        gmsh.option.setNumber("Mesh.CharacteristicLengthMax",
-                              tessObj.m_maxLength)
-        gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature",
-                              tessObj.m_curveLen)
-        gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints",
-                              tessObj.m_pointLen)
+        gmsh.option.setNumber(
+            "Mesh.CharacteristicLengthMax", tessObj.m_maxLength
+        )
+        gmsh.option.setNumber(
+            "Mesh.CharacteristicLengthFromCurvature", tessObj.m_curveLen
+        )
+        gmsh.option.setNumber(
+            "Mesh.CharacteristicLengthFromPoints", tessObj.m_pointLen
+        )
 
 
 def meshObjShape(obj, dim):
     import tempfile
 
-    print('Mesh Object Shape')
-    tmpFile = tempfile.NamedTemporaryFile(suffix='.brep').name
+    print("Mesh Object Shape")
+    tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
     obj.Shape.exportBrep(tmpFile)
     gmsh.open(tmpFile)
     gmsh.model.occ.synchronize()
     gmsh.model.mesh.generate(dim)
-    print('Mesh Generated')
+    print("Mesh Generated")
     gmsh.model.mesh.renumberNodes()
     return True
 
@@ -134,7 +149,7 @@ def meshObjShape(obj, dim):
 def meshObjSTL(obj, dim):
     import tempfile
 
-    tmpFile = tempfile.NamedTemporaryFile(suffix='.stl').name
+    tmpFile = tempfile.NamedTemporaryFile(suffix=".stl").name
     obj.Mesh.write(tmpFile)
     # gmsh.option.setNumber("Mesh.RecombinationAlgorithm",2)
     # gmsh.option.setNumber("Mesh.Optimize",1)
@@ -142,20 +157,20 @@ def meshObjSTL(obj, dim):
     gmsh.merge(tmpFile)
     n = gmsh.model.getDimension()
     s = gmsh.model.getEntities(n)
-    #l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
+    # l = gmsh.model.geo.addSurfaceLoop([s[i][1] for i in range(len(s))])
     # gmsh.model.geo.addVolume([l])
-    #print("Volume added")
+    # print("Volume added")
     gmsh.model.geo.synchronize()
     gmsh.model.mesh.generate(dim)
-    print('Mesh Generated '+str(dim))
+    print("Mesh Generated " + str(dim))
     # gmsh.model.mesh.renumberNodes()
     return True
 
 
 def createGmshModelFromFC(fcMesh):
-    print('CreateGsmhModelFromFC')
+    print("CreateGsmhModelFromFC")
     # Not currently used
-    gmsh.model.add('X2')
+    gmsh.model.add("X2")
     gmsh.logger.start()
     print(dir(fcMesh.Points[0]))
     print(fcMesh.Points)
@@ -164,12 +179,12 @@ def createGmshModelFromFC(fcMesh):
     for p in fcMesh.Points:
         coords.append([p.x, p.y, p.z])
 
-    #gmsh.model.mesh.addNodes(2, 1, nodes, coords)
+    # gmsh.model.mesh.addNodes(2, 1, nodes, coords)
     for v in fcMesh.Facets:
-        print('\n Facet')
+        print("\n Facet")
         print(dir(v))
-        print('Index : '+str(v.Index))
-        print('PointIndices : '+str(v.PointIndices))
+        print("Index : " + str(v.Index))
+        print("PointIndices : " + str(v.PointIndices))
         print(v.Points)
         print(dir(v.Points))
         # Type 2 for 3-node triangle elements:
@@ -183,23 +198,41 @@ def createGmshModelFromFC(fcMesh):
 
 
 def meshObjMesh(obj, dim):
-    'Create GMSH from Mesh'
-    print('Create gmsh from Mesh')
+    "Create GMSH from Mesh"
+    print("Create gmsh from Mesh")
     meshObjSTL(obj, dim)
     return True
+
+
+def minMeshObject(obj):
+    import gmsh, tempfile
+
+    # Create gmsh from shape or mesh
+    # Clear any previous models
+    # print('mesh Object - first Clear')
+    # gmsh.clear()
+    if hasattr(obj, "Shape"):
+        print("minMesh Shape")
+        tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
+        obj.Shape.exportBrep(tmpFile)
+        gmsh.initialize()
+        setMinMeshParms()
+        gmsh.model.mesh.importStl()
+        gmsh.model.mesh.removeDuplicateNodes()  # optional
+        gmsh.model.mesh.recombine()
 
 
 def meshObject(obj, dim, algol, lm, lc, lp):
     # Create gmsh from shape or mesh
     # Clear any previous models
-    print('mesh Object - first Clear')
+    print("mesh Object - first Clear")
     gmsh.clear()
     setMeshParms(algol, lm, lc, lp)
-    if hasattr(obj, 'Shape'):
-        return(meshObjShape(obj, dim))
+    if hasattr(obj, "Shape"):
+        return meshObjShape(obj, dim)
 
-    elif hasattr(obj, 'Mesh'):
-        return(meshObjMesh(obj, dim))
+    elif hasattr(obj, "Mesh"):
+        return meshObjMesh(obj, dim)
 
 
 def meshObj(obj, dim, meshParms=False, tessObj=None):
@@ -208,22 +241,22 @@ def meshObj(obj, dim, meshParms=False, tessObj=None):
     # Clear any previous models
     gmsh.clear()
     setAltMeshParms(meshParms, obj, tessObj)
-    if hasattr(obj, 'Shape'):
-        return(meshObjShape(obj, dim))
+    if hasattr(obj, "Shape"):
+        return meshObjShape(obj, dim)
 
-    elif hasattr(obj, 'Mesh'):
-        return(meshObjMesh(obj, dim))
+    elif hasattr(obj, "Mesh"):
+        return meshObjMesh(obj, dim)
 
 
 def getVertex():
     # Attempt at bulk getting coordinate
-    print('Gmsh - GetNodes')
+    print("Gmsh - GetNodes")
     nodes, coordLst, pcords = gmsh.model.mesh.getNodes()
-    #print('coords datatype : '+str(coordLst.dtype))
+    # print('coords datatype : '+str(coordLst.dtype))
     # int does not work needs to be float at least
-    #coordLst = coordLst.astype('int32')
-    coords = [coordLst[x:x+3] for x in range(0, len(coordLst), 3)]
-    print('Number coords : '+str(len(coords)))
+    # coordLst = coordLst.astype('int32')
+    coords = [coordLst[x : x + 3] for x in range(0, len(coordLst), 3)]
+    print("Number coords : " + str(len(coords)))
     vertex = []
     # print('Coords')
     for n in coords:
@@ -234,22 +267,22 @@ def getVertex():
 
 
 def getFacets():
-    print('Get Vertex Facets')
+    print("Get Vertex Facets")
     # Element type 0 point, 1 line, 2 triangle 3 quadrangle 4 tetrahedron
     # Face types 3 triangle 4 quadrangle
     # Get Triangle Facets
     # Get Elements
-    #eTypes, tags, faceNodes = gmsh.model.mesh.getElements(-1,-1)
+    # eTypes, tags, faceNodes = gmsh.model.mesh.getElements(-1,-1)
     # print(eTypes[0:3])
     tags, faceNodes = gmsh.model.mesh.getElementsByType(2)
-    #print('faceNodes datatype : '+str(faceNodes.dtype))
-    faceNodes = faceNodes.astype('int32')
+    # print('faceNodes datatype : '+str(faceNodes.dtype))
+    faceNodes = faceNodes.astype("int32")
     # nodes, coords are numpy arrays
     maxIdx = np.amax(faceNodes)
-    print('Max : ' + str(np.amax(faceNodes)))
+    print("Max : " + str(np.amax(faceNodes)))
     minIdx = int(np.amin(faceNodes))
-    print('Min : ' + str(minIdx))
-    print('faceNodes : '+str(len(faceNodes)))
+    print("Min : " + str(minIdx))
+    print("faceNodes : " + str(len(faceNodes)))
     # gmsh index starts 1
     # fc index starts 0
     # if minIdx > 1 :
@@ -259,8 +292,8 @@ def getFacets():
     #
     facetList = np.subtract(faceNodes, minIdx)
 
-    facets = [facetList[x:x+3] for x in range(0, len(facetList), 3)]
-    print('Number of facets : '+str(len(facets)))
+    facets = [facetList[x : x + 3] for x in range(0, len(facetList), 3)]
+    print("Number of facets : " + str(len(facets)))
     # print('Facets')
     # for f in facets :
     #   print(f)
@@ -268,31 +301,32 @@ def getFacets():
 
 
 def getTetrahedrons():
-    print('Get Tetrahedrons')
+    print("Get Tetrahedrons")
     tags, nodesLst = gmsh.model.mesh.getElementsByType(4)
     nodes = np.subtract(nodesLst, 1)
 
     vertex = getVertex()
     if len(nodes) > 0:
-        print('nodes : '+str(len(nodes)))
+        print("nodes : " + str(len(nodes)))
         FCnodes = []
         for n in nodes:
-            #print('n : '+str(n))
+            # print('n : '+str(n))
             FCnodes.append(vertex[n])
-        TetList = [FCnodes[x:x+4] for x in range(0, len(FCnodes), 4)]
+        TetList = [FCnodes[x : x + 4] for x in range(0, len(FCnodes), 4)]
         return TetList
     else:
         FreeCAD.Console.PrintWarning(
-            'Unable to create quad faces for this shape')
+            "Unable to create quad faces for this shape"
+        )
         return None
 
 
 def vertex2Vector(v):
-    return(FreeCAD.Vector(v.X, v.Y, v.Z))
+    return FreeCAD.Vector(v.X, v.Y, v.Z)
 
 
 def addFacet(msh, v0, v1, v2):
-    #print('Add Facet')
+    # print('Add Facet')
     # msh.addFacet(v0[0],v0[1],v0[2],v1[0],v1[1],v1[2],v2[0],v2[1],v2[2])
     # print(v0)
     # print(v1)
@@ -303,17 +337,18 @@ def addFacet(msh, v0, v1, v2):
 
 def TessellatedShape2Mesh(obj):
     import Mesh
+
     msh = Mesh.Mesh()
-    #v = obj.Shape.Vertexes
+    # v = obj.Shape.Vertexes
     # print(dir(obj.Shape.Faces))
     for f in obj.Shape.Faces:
-        #print('Deal with Triangular Faces')
-        #addFacet(msh,v[f.Vertexes[0]], v[f.Vertexes[1]],  v[f.Vertexes[2]])
-        addFacet(msh, f.Vertexes[0], f.Vertexes[1],  f.Vertexes[2])
+        # print('Deal with Triangular Faces')
+        # addFacet(msh,v[f.Vertexes[0]], v[f.Vertexes[1]],  v[f.Vertexes[2]])
+        addFacet(msh, f.Vertexes[0], f.Vertexes[1], f.Vertexes[2])
         if len(f.Edges) == 4:
-            #print('Deal with Quad Faces')
-            #addFacet(msh,v[f.Vertexes[0]], v[f.vertexes[2]],  v[f.vertexes[3]])
-            addFacet(msh, f.Vertexes[0], f.vertexes[2],  f.vertexes[3])
+            # print('Deal with Quad Faces')
+            # addFacet(msh,v[f.Vertexes[0]], v[f.vertexes[2]],  v[f.vertexes[3]])
+            addFacet(msh, f.Vertexes[0], f.vertexes[2], f.vertexes[3])
     return msh
 
 
@@ -321,18 +356,18 @@ def Tessellated2Mesh(obj):
     # Should now be redundant as replaced by TessellatedShape2Mesh
     import Mesh
 
-    print('Tessellated 2 Mesh : '+obj.Label)
-    if hasattr(obj.Proxy, 'Facets'):
-        print('Has proxy - Create Mesh')
+    print("Tessellated 2 Mesh : " + obj.Label)
+    if hasattr(obj.Proxy, "Facets"):
+        print("Has proxy - Create Mesh")
         msh = Mesh.Mesh()
         v = obj.Proxy.Vertex
         # print(v)
         for f in obj.Proxy.Facets:
             # print(f)
             # print(type(v[0]))
-            addFacet(msh, v[f[0]], v[f[1]],  v[f[2]])
+            addFacet(msh, v[f[0]], v[f[1]], v[f[2]])
             if len(f) == 4:
-                addFacet(msh, v[f[0]], v[f[2]],  v[f[3]])
+                addFacet(msh, v[f[0]], v[f[2]], v[f[3]])
         return msh
     else:
         print(dir(obj))
@@ -340,13 +375,14 @@ def Tessellated2Mesh(obj):
 
 def Tetrahedron2Mesh(obj):
     import Mesh
-    print('Tetrahedron 2 Mesh')
+
+    print("Tetrahedron 2 Mesh")
     print(dir(obj.Proxy))
     print(obj.Proxy.Tetra[:10])
     tetList = obj.Proxy.Tetra
-    #print('Len tetra : '+str(len(tetList)))
+    # print('Len tetra : '+str(len(tetList)))
     # print(tetList[:8])
-    #print('Create Mesh')
+    # print('Create Mesh')
     msh = Mesh.Mesh()
     for tet in tetList:
         # print('tet')
@@ -362,23 +398,23 @@ def printMyInfo():
     # 5 pyramid, 6 hexahedron
     # Face types 3 triangle 4 quadrangle
     faces = gmsh.model.mesh.getElementFaceNodes(2, 3)
-    print('Face Nodes')
+    print("Face Nodes")
     print(len(faces))
     nodes, coords, parm = gmsh.model.mesh.getNodes(-1, 2)
-    print('Nodes with tag = 2')
+    print("Nodes with tag = 2")
     print(len(nodes))
     enodes, coords, parms = gmsh.model.mesh.getNodesByElementType(2)
-    print('Nodes of type 2')
+    print("Nodes of type 2")
     print(len(enodes))
     # print(enodes)
     faceNodes = gmsh.model.mesh.getElementFaceNodes(0, 3)
-    print('Face Node')
+    print("Face Node")
     print(len(faceNodes))
     nodeTags, nodeCoords, _ = gmsh.model.mesh.getNodes(2)
-    print('Get Nodes 2')
+    print("Get Nodes 2")
     print(len(nodeTags))
     # print(nodeTags)
-    #print('Get Elements')
+    # print('Get Elements')
     elem, tags = gmsh.model.mesh.getElementsByType(2)
     # print(len(elem))
     # print(elem)
@@ -389,30 +425,54 @@ def printMyInfo():
 def printMeshInfo():
     entities = gmsh.model.getEntities()
     for e in entities:
-        print("Entity " + str(e) + " of type " +
-              gmsh.model.getType(e[0], e[1]))
+        print(
+            "Entity " + str(e) + " of type " + gmsh.model.getType(e[0], e[1])
+        )
         # get the mesh nodes for each elementary entity
-        nodeTags, nodeCoords, nodeParams = \
-            gmsh.model.mesh.getNodes(e[0], e[1])
+        nodeTags, nodeCoords, nodeParams = gmsh.model.mesh.getNodes(e[0], e[1])
         # get the mesh elements for each elementary entity
-        elemTypes, elemTags, elemNodeTags = \
-            gmsh.model.mesh.getElements(e[0], e[1])
+        elemTypes, elemTags, elemNodeTags = gmsh.model.mesh.getElements(
+            e[0], e[1]
+        )
         # count number of elements
         numElem = sum(len(i) for i in elemTags)
-        print(" - mesh has " + str(len(nodeTags)) + " nodes and " +
-              str(numElem) + " elements")
+        print(
+            " - mesh has "
+            + str(len(nodeTags))
+            + " nodes and "
+            + str(numElem)
+            + " elements"
+        )
         boundary = gmsh.model.getBoundary([e])
         print(" - boundary entities " + str(boundary))
         partitions = gmsh.model.getPartitions(e[0], e[1])
         if len(partitions):
-            print(" - Partition tag(s): " + str(partitions) +
-                  " - parent entity " + str(self.Gmsh.model.getParent(e[0], e[1])))
+            print(
+                " - Partition tag(s): "
+                + str(partitions)
+                + " - parent entity "
+                + str(self.Gmsh.model.getParent(e[0], e[1]))
+            )
         for t in elemTypes:
-            name, dim, order, numv, parv, _ =  \
-                gmsh.model.mesh.getElementProperties(t)
-            print(" - Element type: " + name + ", order " + str(order) +
-                  " (" + str(numv) + " nodes in param coord: " +
-                  str(parv) + ")")
+            (
+                name,
+                dim,
+                order,
+                numv,
+                parv,
+                _,
+            ) = gmsh.model.mesh.getElementProperties(t)
+            print(
+                " - Element type: "
+                + name
+                + ", order "
+                + str(order)
+                + " ("
+                + str(numv)
+                + " nodes in param coord: "
+                + str(parv)
+                + ")"
+            )
 
     # all mesh node coordinates
     nodeTags, nodeCoords, _ = gmsh.model.mesh.getNodes()
