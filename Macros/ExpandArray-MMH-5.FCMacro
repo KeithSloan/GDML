@@ -1,0 +1,232 @@
+import time
+import FreeCAD
+
+#
+#  read explanations below
+#
+
+def getParent(obj):
+    if hasattr(obj, 'InList'):
+        for i, o in enumerate(obj.InList):
+            if o.TypeId == 'App::Part':
+                return obj.InList[i]
+    return None
+
+
+def removeArray(array):
+    ignore = ['App::Origin', 'App::Line', 'App::Plane']
+    if hasattr(array, 'OutList'):
+        for obj in array.OutList:
+            # print(obj.Name)
+            removeArray(obj)
+    if array.TypeId not in ignore:
+        print(f'Remove {array.Name}')
+        FreeCAD.ActiveDocument.removeObject(array.Name)
+
+
+def polarArrayPlacements(obj):
+    placements = []
+    dthet = obj.Angle / obj.NumberPolar
+    axis = obj.Axis
+    positionVector = obj.Base.Placement.Base
+    for i in range(obj.NumberPolar):
+        rot = FreeCAD.Rotation(axis, i * dthet)
+        pos = rot * positionVector  # position has to be rotated too!
+        placements.append(FreeCAD.Placement(pos, FreeCAD.Rotation(rot)))
+    return placements
+
+
+def orthoArrayPlacements(obj):
+    placements = []
+    basePos = obj.Base.Placement.Base
+    rot = obj.Base.Placement.Rotation
+    for ix in range(obj.NumberX):
+        for iy in range(obj.NumberY):
+            for iz in range(obj.NumberZ):
+                translate = (
+                    basePos
+                    + ix * obj.IntervalX
+                    + iy * obj.IntervalY
+                    + iz * obj.IntervalZ
+                )
+                placements.append(FreeCAD.Placement(translate, rot))
+    return placements
+
+
+def getArrayPlacementList(arrayObj):
+    if arrayObj.ArrayType == "polar":
+        return polarArrayPlacements(arrayObj)
+    elif arrayObj.ArrayType == "ortho":
+        return orthoArrayPlacements(arrayObj)
+    else:
+        print(f'ArrayType {arrayObj.ArrayType} not implemented in this Macro')
+        return list()
+
+
+def getArrayPlacements(arrayObj, placement):
+    placements = []
+    base = arrayObj.Base
+    if hasattr(arrayObj, 'PlacementList'):
+        placementList = arrayObj.PlacementList
+    else:
+        placementList = getArrayPlacementList(arrayObj)
+    for p in placementList:
+        if hasattr(base, 'ArrayType'):
+            placements += getArrayPlacements(base, p)
+        else:
+            placements.append(placement*p)
+    return placements
+
+
+def getBase(array):
+    base = array.Base
+    if hasattr(base, 'ArrayType'):
+        return getBase(array.Base)
+    else:
+        return base
+
+
+def processSelected(array):
+    global replacementDict
+    expandedList = []
+    # Array seems to have TypeId of Part::FeaturePython - test for ArrayType
+    if not hasattr(array, 'ArrayType'):
+        print('Selection is Not an Array')
+        return
+    parent = getParent(array)
+    placement = array.Placement
+    placements = getArrayPlacements(array, placement)
+    base = getBase(array)
+    for p in placements:
+        new = doc.copyObject(base)
+        new.Placement = p
+        new.ViewObject.Visibility = True
+        parent.addObject(new)
+        expandedList.append(new.Name)
+
+    removeArray(array)
+    parentName = parent.Name
+    replacementDict[parentName] = expandedList
+
+
+def isBorderSurface(obj):
+    # return isinstance(obj.Proxy, GDMLbordersurface)
+    return (hasattr(obj, 'PV1') and hasattr(obj, 'PV2')
+            and hasattr(obj, 'Surface'))
+
+
+def getPVName(PV):
+    if hasattr(PV, 'Label'):
+        return PV.Label
+    else:
+        return PV
+
+
+def processBorderSurfaces():
+    global replacementDict
+    global instanceDict
+    global imprintDict
+    tolerence = 1e-7
+    for surface in borderSurfaces:
+        www1 = instanceDict[getPVName(surface.PV1)]
+        www2 = instanceDict[getPVName(surface.PV2)]
+        xxx1 = imprintDict[getPVName(surface.PV1)]
+        xxx2 = imprintDict[getPVName(surface.PV2)]
+        nm1 = f'av_{www1}_impr_{xxx1}'
+        nm2 = f'av_{www2}_impr_{xxx2}'
+        # print(f'nm1 {nm1} nm2 {nm2}')
+        pv1Replacements = replacementDict[getPVName(surface.PV1)]
+        pv2Replacements = replacementDict[getPVName(surface.PV2)]
+        # apriori we do not know which of the expanded array
+        # elements forms a border with which. So we check which
+        # solids in the expanded array of PV1 have common sides
+        # with solids of expanded array of PV2. This is the
+        # double loop below. This is the most time consuming piece code
+        for zzz1, pv1Name in enumerate(pv1Replacements):
+            for zzz2, pv2Name in enumerate(pv2Replacements):
+                # print(f'zz1 {zzz1} zzz2 {zzz2}')
+                obj1 = doc.getObject(pv1Name)
+                obj2 = doc.getObject(pv2Name)
+                if hasattr(obj1, 'Shape') and hasattr(obj2, 'Shape'):
+                    faces1 = obj1.Shape.Faces
+                    faces2 = obj2.Shape.Faces
+                    for f in faces1:
+                        comShape = f.common(faces2, tolerence)
+                        if len(comShape.Faces) > 0:
+                            new = doc.copyObject(surface)
+                            name1 = f'{nm1}_V-{obj1.Label}_pv_{zzz1}'
+                            name2 = f'{nm2}_V-{obj2.Label}_pv_{zzz2}'
+                            # print(f"Common faces found for {name1}, {name2}")
+                            new.PV1 = name1
+                            new.PV2 = name2
+                            break
+        doc.removeObject(surface.Name)
+
+
+doc = App.ActiveDocument
+sel = Gui.Selection.getSelection()
+
+borderSurfaces = []
+#
+# This version expands arrays recursively under each App:Part. So each
+# App:Part that had an array underneath it, will contain, upon expansion
+# a list of solids ( each a copy of the base solid of the array), appropriately
+# placed. Current version of exportGDML.py (2022-08-28) exports multiple
+# items under an App::Part as a gdml <assembly. Geant4 generates its own internal
+# names for the physical volumes that are included in the assembly.
+# The names are of the form
+# av_WWW_impr_XXX_YYY_ZZZ
+# where:
+# WWW - assembly volume instance number. I gather this is a number that starts
+#       at 1 when the first assembly structure is encountered in the gdml file
+#       and then is incremented by one every time a new <assembly structure
+#       is encounterd
+# XXX - assembly volume imprint number. I am not sure what this is. I assume that
+#       a given assembly can be placed inside several logical volume mothers
+#       and that the imprint number keeps track of how many times the one and same
+#       assembly has been placed. For now I am going to take this as 1. I.e, no more
+#       than one placement for each assembly
+# YYY - the name of the placed logical volume. geant seems to append an '_pv'
+#       to out generated logical volume names, which for current exportGDML is
+#        'V-' + copied solid name
+# ZZZ - the logical volume index inside the assembly volume. This is a counter
+#       that increases sequentially with the number of solids in the assembly
+# to keep track of what a bordersurface is replaced by we use the following
+# dictionaries. Each has as key the name of the App::Part  that appears
+# in the PV1, PV2 properties of the bordersurface
+#
+# a dictionary of original part name as key and
+# a list of the names of the parts created for each array element to replace it
+# This dictionary will be used in constructing the bordersurface replacements
+replacementDict = {}
+#
+# dictionaries to keep track of the instance nmber and imprint number of
+# each volume (PV) tha appears in the  bordersurface
+instanceDict = {}
+imprintDict = {}
+
+
+for obj in sel:
+    if isBorderSurface(obj):
+        borderSurfaces.append(obj)
+        # initialize the replacement dictionary with the original
+        # PV1, PV2, in case only one array object is selected for expansion
+        replacementDict[obj.PV1] = [obj.PV1]
+        replacementDict[obj.PV2] = [obj.PV2]
+        print('Found a border surface')
+
+print(f'BorderSurfaces: {len(borderSurfaces)}')
+
+start = time.time()
+for i, array in enumerate(sel):
+    if hasattr(array, 'ArrayType'):
+        parent = getParent(array)
+        instanceDict[parent.Label] = i+1
+        imprintDict[parent.Label] = 1  # this only works of each asm vol is placed once
+        processSelected(array)
+
+# processBorderSurfaces()
+doc.recompute()
+end = time.time()
+print(f'Duration : {end-start}')
+
