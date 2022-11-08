@@ -1175,6 +1175,21 @@ def exportSurfaceProperty(Name, Surface, ref1, ref2):
 
 
 def checkFaces(pair1, pair2):
+    def preCheck(shape1, shape2):
+        #
+        # Precheck common faces, by checking
+        # if bounding boxes separation is comparable
+        # to sum of half-lengths
+        #
+        b1 = shape1.BoundBox
+        b2 = shape2.BoundBox
+        vcc = b2.Center - b1.Center
+        if (abs(vcc.x) > (b1.XLength + b2.XLength)*1.01/2 or
+            abs(vcc.y) > (b1.YLength + b2.YLength)*1.01/2 or
+            abs(vcc.z) > (b1.ZLength + b2.ZLength)*1.01/2):
+            return False
+        else:
+            return True
     tolerence = 1e-7
     obj1 = pair1[0]
     matrix1 = pair1[1].Matrix
@@ -1182,8 +1197,14 @@ def checkFaces(pair1, pair2):
     matrix2 = pair2[1].Matrix
 
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
-        faces1 = (obj1.Shape.transformGeometry(matrix1)).Faces
-        faces2 = (obj2.Shape.transformGeometry(matrix2)).Faces
+        obj1t = obj1.Shape.transformGeometry(matrix1)
+        obj2t = obj2.Shape.transformGeometry(matrix2)
+        if not preCheck(obj1t, obj2t):
+            print("Fails precheck")
+            return False
+
+        faces1 = obj1t.Faces
+        faces2 = obj2t.Faces
         #        faces1 = obj1.Shape.Faces
         #        faces2 = obj2.Shape.Faces
         for f1 in faces1:
@@ -2721,6 +2742,10 @@ def export(exportList, filepath):
     print("file extension : " + fileExt)
 
     if fileExt.lower() == ".gdml":
+        # import cProfile, pstats
+        # profiler = cProfile.Profile()
+        # profiler.enable()
+
         if first.TypeId == "App::Part":
             exportGDMLworld(first, filepath, fileExt)
         #
@@ -2734,6 +2759,9 @@ def export(exportList, filepath):
             QtGui.QMessageBox.critical(
                 None, "Need to select a Part for export", "Press OK"
             )
+        # profiler.disable()
+        # stats = pstats.Stats(profiler).sort_stats('cumtime')
+        # stats.print_stats()
 
     elif fileExt.lower() == ".xml":
         if first.Label == "Materials":
