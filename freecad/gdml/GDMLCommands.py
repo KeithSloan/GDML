@@ -1863,6 +1863,7 @@ class AddMinTessellateTask:
         )
         if hasattr(self.obj, "Proxy"):
             print("has proxy")
+            # Is this a remesh
             if hasattr(self.obj.Proxy, "SourceObj"):
                 print("Has source Object")
                 if (
@@ -1876,9 +1877,9 @@ class AddMinTessellateTask:
                     )
                     is True
                 ):
-                    facets = getFacets()
-                    vertex = getVertex()
-                    self.processMesh(vertex, facets)
+                    self.facets = getFacets()
+                    self.vertex = getVertex()
+                    self.processMesh(self.vertex, self.facets)
                     return
 
         if (
@@ -1892,8 +1893,9 @@ class AddMinTessellateTask:
             )
             is True
         ):
-            facets = getFacets()
-            vertex = getVertex()
+            print("get facets and vertex")
+            self.facets = getFacets()
+            self.vertex = getVertex()
             if self.tess is None:
                 name = "GDMLTessellate_" + self.obj.Name
                 parent = None
@@ -1911,27 +1913,28 @@ class AddMinTessellateTask:
                         self.tess,
                         self.obj,
                         getMeshLen(self.obj),
-                        vertex,
-                        facets,
+                        self.vertex,
+                        self.facets,
                         "mm",
                         getSelectedMaterial(),
                     )
             else:
-                self.processMesh(vertex, facets)
+                self.processMesh(self.vertex, self.facets)
 
         print("Check Form")
         # print(dir(self.form))
-        if not hasattr(self.form, "infoGroup"):
-            self.form.infoGroup = QtGui.QGroupBox("Mesh Information")
-            print("Mesh Info Layout")
-            layMeshInfo = QtGui.QHBoxLayout()
-            layMeshInfo.addWidget(self.form.Vertex)
-            layMeshInfo.addWidget(self.form.Facets)
-            # layMeshInfo.addWidget(self.form.Nodes)
-            self.form.infoGroup.setLayout(layMeshInfo)
-            self.form.Vlayout.addWidget(self.form.infoGroup)
-            # self.form.setLayout(self.form.Vlayout)
-            self.processMesh(vertex, facets)
+        if self.tess is not None:
+            if not hasattr(self.form, "infoGroup"):
+                self.form.infoGroup = QtGui.QGroupBox("Mesh Information")
+                print("Mesh Info Layout")
+                layMeshInfo = QtGui.QHBoxLayout()
+                layMeshInfo.addWidget(self.form.Vertex)
+                layMeshInfo.addWidget(self.form.Facets)
+                # layMeshInfo.addWidget(self.form.Nodes)
+                self.form.infoGroup.setLayout(layMeshInfo)
+                self.form.Vlayout.addWidget(self.form.infoGroup)
+                # self.form.setLayout(self.form.Vlayout)
+                self.processMesh(self.vertex, self.facets)
 
     def leaveEvent(self, event):
         print("Leave Event II")

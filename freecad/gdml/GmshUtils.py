@@ -216,10 +216,13 @@ def minMeshObject(obj):
         tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
         obj.Shape.exportBrep(tmpFile)
         gmsh.initialize()
+        gmsh.open(tmpFile)
         setMinMeshParms()
         gmsh.model.mesh.importStl()
         gmsh.model.mesh.removeDuplicateNodes()  # optional
         gmsh.model.mesh.recombine()
+        # gmsh.finalize()
+        return True
 
 
 def meshObject(obj, dim, algol, lm, lc, lp):
@@ -277,6 +280,7 @@ def getFacets():
     tags, faceNodes = gmsh.model.mesh.getElementsByType(2)
     # print('faceNodes datatype : '+str(faceNodes.dtype))
     faceNodes = faceNodes.astype("int32")
+    print(faceNodes)
     # nodes, coords are numpy arrays
     maxIdx = np.amax(faceNodes)
     print("Max : " + str(np.amax(faceNodes)))
