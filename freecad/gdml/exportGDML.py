@@ -1366,11 +1366,11 @@ def processBorderSurfaces():
             if isinstance(obj.Proxy, GDMLbordersurface):
                 print("Border Surface")
                 obj1 = getPVobject(doc, obj, obj.PV1)
-                candSet1 = getSubVols(obj1, FreeCAD.Placement())
+                candSet1 = getSubVols(obj1, obj1.Placement)
                 print(f"Candidates 1 : {obj1.Label} {len(candSet1)}")
                 printSet("Candidate1", candSet1)
                 obj2 = getPVobject(doc, obj, obj.PV2)
-                candSet2 = getSubVols(obj2, FreeCAD.Placement())
+                candSet2 = getSubVols(obj2, obj2.Placement)
                 print(f"Candidates 2 : {obj2.Label} {len(candSet2)}")
                 printSet("Candidate2", candSet2)
                 # default for old borderSurface Objects
