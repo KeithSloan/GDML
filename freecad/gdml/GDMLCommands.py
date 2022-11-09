@@ -453,18 +453,20 @@ class SetBorderSurfaceFeature:
                                 if commonFaceFlag is True:
                                     break
             if commonFaceFlag is True:
-                self.SetBorderSurface(doc, surfaceObj, partList)
+                self.SetBorderSurface(
+                    doc, surfaceObj, partList, commonFaceFlag
+                )
 
             else:
                 print("No Valid common Face")
                 dialog = noCommonFacePrompt()
                 dialog.exec_()
                 if dialog.retStatus == 1:
-                    self.SetBorderSurface(doc, surfaceObj, partList)
+                    self.SetBorderSurface(doc, surfaceObj, partList, False)
 
         return
 
-    def SetBorderSurface(self, doc, surfaceObj, partList):
+    def SetBorderSurface(self, doc, surfaceObj, partList, commonFaceFlg):
         from .GDMLObjects import GDMLbordersurface
 
         print("Action set Border Surface")
@@ -473,7 +475,12 @@ class SetBorderSurfaceFeature:
         print(f"Surface Name {surfaceName}")
         obj = doc.addObject("App::FeaturePython", surfaceName)
         GDMLbordersurface(
-            obj, surfaceName, surfaceObj.Name, partList[0], partList[1]
+            obj,
+            surfaceName,
+            surfaceObj.Name,
+            partList[0],
+            partList[1],
+            commonFaceFlg,
         )
 
     def SurfaceName(self, doc, name):
