@@ -2264,7 +2264,7 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     if coloref is not None:
         colour = getColour(coloref)
     solidref = GDMLShared.getRef(vol, "solidref")
-    # print(f"solidref : {solidref}")
+    print(f"solidref : {solidref}")
     name = vol.get("name")
     if solidref is not None:
         solid = solids.find("*[@name='%s']" % solidref)
@@ -2929,6 +2929,7 @@ def findWorldVol():
 def processGDML(doc, flag, filename, prompt, initFlg):
     # flag == True open, flag == False import
     from FreeCAD import Base
+    from . import preProcessLoops
 
     # Process GDML
     volDict = {}
@@ -2998,6 +2999,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
     if define is not None:
         processDefines(root, doc)
         GDMLShared.trace(setup.attrib)
+        preProcessLoops.preprocessLoops(root)
 
     from .GDMLMaterials import getGroupedMaterials
     from .GDMLMaterials import newGetGroupedMaterials

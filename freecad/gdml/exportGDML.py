@@ -1175,6 +1175,24 @@ def exportSurfaceProperty(Name, Surface, ref1, ref2):
 
 
 def checkFaces(pair1, pair2):
+    def preCheck(shape1, shape2):
+        #
+        # Precheck common faces, by checking
+        # if bounding boxes separation is comparable
+        # to sum of half-lengths
+        #
+        b1 = shape1.BoundBox
+        b2 = shape2.BoundBox
+        vcc = b2.Center - b1.Center
+        if (
+            abs(vcc.x) > (b1.XLength + b2.XLength) * 1.01 / 2
+            or abs(vcc.y) > (b1.YLength + b2.YLength) * 1.01 / 2
+            or abs(vcc.z) > (b1.ZLength + b2.ZLength) * 1.01 / 2
+        ):
+            return False
+        else:
+            return True
+
     tolerence = 1e-7
     obj1 = pair1[0]
     matrix1 = pair1[1].Matrix
@@ -1182,8 +1200,14 @@ def checkFaces(pair1, pair2):
     matrix2 = pair2[1].Matrix
 
     if hasattr(obj1, "Shape") and hasattr(obj2, "Shape"):
-        faces1 = (obj1.Shape.transformGeometry(matrix1)).Faces
-        faces2 = (obj2.Shape.transformGeometry(matrix2)).Faces
+        obj1t = obj1.Shape.transformGeometry(matrix1)
+        obj2t = obj2.Shape.transformGeometry(matrix2)
+        if not preCheck(obj1t, obj2t):
+            print("Fails precheck")
+            return False
+
+        faces1 = obj1t.Faces
+        faces2 = obj2t.Faces
         #        faces1 = obj1.Shape.Faces
         #        faces2 = obj2.Shape.Faces
         for f1 in faces1:
@@ -1919,7 +1943,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         xmlVol, volName = processMultiPlacement(topObject, xmlParent)
         partPlacement = topObject.Placement
         if psPlacement is not None:
-            partPlacement = partPlacement * invPlacement(psPlacement)
+            partPlacement = invPlacement(psPlacement) * partPlacement
     else:
         solidExporter = SolidExporter.getExporter(topObject)
         if solidExporter is None:
@@ -1939,7 +1963,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         if vol.TypeId == "App::Part":
             partPlacement = vol.Placement * partPlacement
             if psPlacement is not None:
-                partPlacement = partPlacement * invPlacement(psPlacement)
+                partPlacement = invPlacement(psPlacement) * partPlacement
 
     addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
@@ -2741,6 +2765,10 @@ def export(exportList, filepath):
     print("file extension : " + fileExt)
 
     if fileExt.lower() == ".gdml":
+        # import cProfile, pstats
+        # profiler = cProfile.Profile()
+        # profiler.enable()
+
         if first.TypeId == "App::Part":
             exportGDMLworld(first, filepath, fileExt)
         #
@@ -2754,6 +2782,9 @@ def export(exportList, filepath):
             QtGui.QMessageBox.critical(
                 None, "Need to select a Part for export", "Press OK"
             )
+        # profiler.disable()
+        # stats = pstats.Stats(profiler).sort_stats('cumtime')
+        # stats.print_stats()
 
     elif fileExt.lower() == ".xml":
         if first.Label == "Materials":
@@ -2837,6 +2868,10 @@ class SolidExporter:
                     return True
                 elif obj1.ArrayType == "polar":
                     return True
+            elif typeId == "PathArray":
+                return True
+            elif typeId == "PointArray":
+                return True
             elif typeId == "Clone":
                 clonedObj = obj1.Objects[0]
                 return SolidExporter.isSolid(clonedObj)
@@ -2855,6 +2890,10 @@ class SolidExporter:
                     return OrthoArrayExporter(obj)
                 elif obj.ArrayType == "polar":
                     return PolarArrayExporter(obj)
+            elif typeId == "PathArray":
+                return PathArrayExporter(obj)
+            elif typeId == "PointArray":
+                return PointArrayExporter(obj)
             elif typeId == "Clone":
                 return CloneExporter(obj)
         else:
@@ -4279,8 +4318,87 @@ class PolarArrayExporter(SolidExporter):
         self._exportScaled()
 
 
+class PathArrayExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def name(self):
+        solidName = "MultiUnion-" + self.obj.Label
+        return solidName
+
+    def export(self):
+        base = self.obj.OutList[0]
+        print(base.Label)
+        if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+            print(
+                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+            )
+            return
+        baseExporter = SolidExporter.getExporter(base)
+        baseExporter.export()
+        volRef = baseExporter.name()
+        unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
+        count = self.obj.Count
+        positionVector = baseExporter.position()
+        rot = base.Placement.Rotation
+        extraTranslation = self.obj.ExtraTranslation
+        pathObj = self.obj.PathObject
+        path = pathObj.Shape.Edges[0]
+        points = path.discretize(Number=count)
+        for i, point in enumerate(points):
+            pos = point + positionVector + extraTranslation
+            nodeName = f"{self.name()}_{i}"
+            nodeXML = ET.SubElement(
+                unionXML, "multiUnionNode", {"name": nodeName}
+            )
+            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+            exportPosition(nodeName, nodeXML, pos)
+            exportRotation(nodeName, nodeXML, rot)
+        self._exportScaled()
+
+
+class PointArrayExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def name(self):
+        solidName = "MultiUnion-" + self.obj.Label
+        return solidName
+
+    def export(self):
+        base = self.obj.OutList[0]
+        print(base.Label)
+        if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+            print(
+                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+            )
+            return
+        baseExporter = SolidExporter.getExporter(base)
+        baseExporter.export()
+        volRef = baseExporter.name()
+        unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
+        positionVector = baseExporter.position()
+        rotBase = base.Placement.Rotation
+        extraTranslation = self.obj.ExtraPlacement.Base
+        extraRotation = self.obj.ExtraPlacement.Rotation
+        extraRotation.Angle = -extraRotation.Angle
+        rot = extraRotation * rotBase
+        pointObj = self.obj.PointObject
+        points = pointObj.OutList
+        for i, point in enumerate(points):
+            pos = point.Placement.Base + positionVector + extraTranslation
+            nodeName = f"{self.name()}_{i}"
+            nodeXML = ET.SubElement(
+                unionXML, "multiUnionNode", {"name": nodeName}
+            )
+            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+            exportPosition(nodeName, nodeXML, pos)
+            exportRotation(nodeName, nodeXML, rot)
+        self._exportScaled()
+
+
 #
-# -------------------------------------- revolutionExporter ----------------------------------------------------------------
+# ------------------------------revolutionExporter ----------------------------
 #
 global Deviation  # Fractional deviation of revolve object
 #############################################
