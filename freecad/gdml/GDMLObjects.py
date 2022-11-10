@@ -5044,11 +5044,10 @@ class GDMLopticalsurface(GDMLcommon):
         elif finish == "ground":
             obj.finish = "ground | ground"
         else:
-            finish.replace("polished", "polished |")
-            finish.replace("etched", "etched |")
-            finish.replace("ground", "ground |")
-            finish.replace("polished", "polished |")
-            finish.replace("polished", "polished |")
+            print(f"last finish {finish}")
+            finish = finish.replace("polished", "polished | ")
+            finish = finish.replace("etched", "etched | ")
+            finish = finish.replace("ground", "ground | ")
             obj.finish = finish
 
         obj.addProperty(
