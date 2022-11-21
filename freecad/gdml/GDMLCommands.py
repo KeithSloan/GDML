@@ -2071,6 +2071,7 @@ class AddTessellateTask:
             is True
         ):
             facets = getFacets()
+            print(f"Number of Facets {len(facets)}")
             vertex = getVertex()
             if self.tess is None:
                 name = "GDMLTessellate_" + self.obj.Name
