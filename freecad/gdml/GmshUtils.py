@@ -210,7 +210,7 @@ def minMeshObject(obj):
     # Create gmsh from shape or mesh
     # Clear any previous models
     # print('mesh Object - first Clear')
-    # gmsh.clear()
+    gmsh.clear()
     if hasattr(obj, "Shape"):
         print("minMesh Shape")
         tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
