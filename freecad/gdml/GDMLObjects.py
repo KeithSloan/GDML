@@ -4044,14 +4044,31 @@ class GDMLGmshTessellated(GDMLsolid):
                     )
                 )
             else:  # len should then be 4
-                FCfaces.append(
-                    GDMLShared.quad(
-                        mul * self.Vertex[f[0]],
-                        mul * self.Vertex[f[1]],
-                        mul * self.Vertex[f[2]],
-                        mul * self.Vertex[f[3]],
-                    )
+                quadFace = GDMLShared.quad(
+                    mul * self.Vertex[f[0]],
+                    mul * self.Vertex[f[1]],
+                    mul * self.Vertex[f[2]],
+                    mul * self.Vertex[f[3]],
                 )
+                if quadFace is not None:
+                    FCfaces.append(quadFace)
+                else:
+                    print(f"Create Quad Failed {f[0]} {f[1]} {f[2]} {f[3]}")
+                    print(f"Creating as two triangles")
+                    FCfaces.append(
+                        GDMLShared.triangle(
+                            mul * self.Vertex[f[0]],
+                            mul * self.Vertex[f[1]],
+                            mul * self.Vertex[f[2]],
+                        )
+                    )
+                    FCfaces.append(
+                        GDMLShared.triangle(
+                            mul * self.Vertex[f[1]],
+                            mul * self.Vertex[f[2]],
+                            mul * self.Vertex[f[3]],
+                        )
+                    )
         shell = Part.makeShell(FCfaces)
         if shell.isValid is False:
             FreeCAD.Console.PrintWarning("Not a valid Shell/n")
