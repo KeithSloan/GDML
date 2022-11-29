@@ -1837,11 +1837,12 @@ class AddMinTessellateTask:
             getMeshLen,
             printMeshInfo,
             printMyInfo,
+            initialize,
         )
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
 
         print("Action Min Gmsh : " + self.obj.Name)
-        # initialize()
+        initialize()
         typeDict = {0: 6, 1: 8, 2: 9}
         print(dir(self))
         print("Object " + self.obj.Name)
