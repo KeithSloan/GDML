@@ -72,6 +72,7 @@ def initialize():
         threads = max(1, os.cpu_count() - 2)
     except:
         threads = 1
+    threads = 1
     print("Gmsh to use " + str(threads) + " threads")
     gmsh.option.setNumber("Mesh.MaxNumThreads2D", threads)
     gmsh.option.setNumber("Mesh.MaxNumThreads3D", threads)
@@ -229,6 +230,7 @@ def meshObject(obj, dim, algol, lm, lc, lp):
     # Create gmsh from shape or mesh
     # Clear any previous models
     print("mesh Object - first Clear")
+    print(f"dim {dim} algol {algol} lm {lm} lc {lc} lp{lp}")
     gmsh.clear()
     setMeshParms(algol, lm, lc, lp)
     if hasattr(obj, "Shape"):
