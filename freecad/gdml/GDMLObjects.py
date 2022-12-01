@@ -80,6 +80,18 @@ def addMaterialsFromGroup(doc, MatList, grpName):
             for i in mmats.Group:
                 if i.Label != "Geant4":
                     MatList.append(i.Label)
+    else:
+        # rebuild Materials from scratch
+        print(f"Rebuilding Materials Structure")
+        from .importGDML import processGDML
+
+        processGDML(
+            doc,
+            True,
+            joinDir("Resources/Default.gdml"),
+            False,
+            True,
+        )
 
 
 def rebuildMaterialsList():
