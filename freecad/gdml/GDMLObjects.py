@@ -4048,22 +4048,40 @@ class GDMLGmshTessellated(GDMLsolid):
         FCfaces = []
         for f in self.Facets:
             if len(f) == 3:
-                FCfaces.append(
-                    GDMLShared.triangle(
+                face = GDMLShared.triangle(
+                    mul * self.Vertex[f[0]],
+                    mul * self.Vertex[f[1]],
+                    mul * self.Vertex[f[2]],
+                )
+                if face is not None:
+                    FCfaces.append(face)
+            else:  # len should then be 4
+                quadFace = GDMLShared.quad(
+                    mul * self.Vertex[f[0]],
+                    mul * self.Vertex[f[1]],
+                    mul * self.Vertex[f[2]],
+                    mul * self.Vertex[f[3]],
+                )
+                if quadFace is not None:
+                    FCfaces.append(quadFace)
+                else:
+                    print(f"Create Quad Failed {f[0]} {f[1]} {f[2]} {f[3]}")
+                    print("Creating as two triangles")
+                    face = GDMLShared.triangle(
                         mul * self.Vertex[f[0]],
                         mul * self.Vertex[f[1]],
                         mul * self.Vertex[f[2]],
                     )
-                )
-            else:  # len should then be 4
-                FCfaces.append(
-                    GDMLShared.quad(
+                    if face is not None:
+                        FCfaces.append(face)
+                    face = GDMLShared.triangle(
                         mul * self.Vertex[f[0]],
-                        mul * self.Vertex[f[1]],
                         mul * self.Vertex[f[2]],
                         mul * self.Vertex[f[3]],
                     )
-                )
+                    if face is not None:
+                        FCfaces.append(face)
+
         shell = Part.makeShell(FCfaces)
         if shell.isValid is False:
             FreeCAD.Console.PrintWarning("Not a valid Shell/n")
@@ -4209,7 +4227,7 @@ class GDMLTessellated(GDMLsolid):
                         )
                         FCfaces.append(face)
                         face = GDMLShared.triangle(
-                            mul * vertex[f[1]],
+                            mul * vertex[f[0]],
                             mul * vertex[f[2]],
                             mul * vertex[f[3]],
                         )

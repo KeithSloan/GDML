@@ -1706,7 +1706,7 @@ class DecimateFeature:
 
 
 class AddTessellateWidget(QtGui.QWidget):
-    def __init__(self, Shape, *args):
+    def __init__(self, Shape, GmshType, *args):
         QtGui.QWidget.__init__(self, *args)
         bboxGroup = QtGui.QGroupBox("Objects Bounding Box")
         laybbox = QtGui.QHBoxLayout()
@@ -1742,7 +1742,7 @@ class AddTessellateWidget(QtGui.QWidget):
         self.meshParmsLayout.addWidget(self.curveLen, 1, 0)
         self.meshParmsLayout.addWidget(self.pointLen, 1, 1)
         self.group.setLayout(self.meshParmsLayout)
-        self.buttonMesh = QtGui.QPushButton(translate("GDML", "Mesh"))
+        self.buttonMesh = QtGui.QPushButton(translate("GDML", GmshType))
         layoutAction = QtGui.QHBoxLayout()
         layoutAction.addWidget(self.buttonMesh)
         self.Vlayout = QtGui.QVBoxLayout()
@@ -1766,11 +1766,196 @@ class AddTessellateWidget(QtGui.QWidget):
         self.setWindowTitle(translate("GDML", "Tessellate with Gmsh"))
 
 
+class AddMinTessellateTask:
+    def __init__(self, Obj):
+        self.obj = Obj
+        self.tess = None
+        self.form = AddTessellateWidget(Obj.Shape, "Min Gmsh")
+        self.form.buttonMesh.clicked.connect(self.actionMesh)
+        # self.form.buttonload.clicked.connect(self.loadelement)
+        # self.form.buttonsave.clicked.connect(self.saveelement)
+        # self.form.buttonrefresh.clicked.connect(self.refreshelement)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def processMesh(self, vertex, facets):
+        from .GDMLObjects import ViewProvider
+
+        print("Update Tessellated Object")
+        print(dir(self))
+        print("Object Name " + self.obj.Name)
+        print("Object Type " + self.obj.TypeId)
+        if hasattr(self.obj, "Proxy"):
+            print("Proxy")
+            print(self.obj.Proxy.Type)
+            if (
+                self.obj.Proxy.Type == "GDMLGmshTessellated"
+                or self.obj.Proxy.Type == "GDMLTessellated"
+            ):
+                self.obj.Proxy.updateParams(vertex, facets, False)
+        # print(dir(self.form))
+        print("Vertex : " + str(len(vertex)))
+        print("Facets : " + str(len(facets)))
+        # Update Info of GDML Tessellated Object
+        if self.tess is not None:
+            print("Tesselated Name " + self.tess.Name)
+            print("Update parms : " + self.tess.Name)
+            if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
+                print(dir(self.tess.Proxy))
+                self.tess.Proxy.updateParams(vertex, facets, False)
+            else:
+                self.tess.updateParams(vertex, facets, False)
+            # print('Update parms : '+self.tess.Name)
+            # self.tess.updateParams(vertex,facets,False)
+        # self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
+        self.form.Vertex.value.setText(str(len(vertex)))
+        # self.form.Facets.value.setText(QtCore.QString(len(facets)))
+        self.form.Facets.value.setText(str(len(facets)))
+
+        if FreeCAD.GuiUp:
+            if self.tess is not None:
+                self.obj.ViewObject.Visibility = False
+                ViewProvider(self.tess.ViewObject)
+                self.tess.ViewObject.DisplayMode = "Wireframe"
+                self.tess.recompute()
+                # FreeCAD.ActiveDocument.recompute()
+            else:
+                print("Recompute : " + self.obj.Name)
+                self.obj.recompute()
+                self.obj.ViewObject.Visibility = True
+            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.updateGui()
+
+    def actionMesh(self):
+        from .GmshUtils import (
+            minMeshObject,
+            getVertex,
+            getFacets,
+            getMeshLen,
+            printMeshInfo,
+            printMyInfo,
+            initialize,
+        )
+        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
+
+        print("Action Min Gmsh : " + self.obj.Name)
+        initialize()
+        typeDict = {0: 6, 1: 8, 2: 9}
+        print(dir(self))
+        print("Object " + self.obj.Name)
+        if self.tess is not None:
+            print("Tessellated " + self.tess.Name)
+        ty = typeDict[self.form.type.currentIndex()]
+        ml = self.form.maxLen.value.text()
+        cl = self.form.curveLen.value.text()
+        pl = self.form.pointLen.value.text()
+        print(
+            "type :  "
+            + str(ty)
+            + " ml : "
+            + ml
+            + " cl : "
+            + cl
+            + " pl : "
+            + pl
+        )
+        if hasattr(self.obj, "Proxy"):
+            print("has proxy")
+            # Is this a remesh
+            if hasattr(self.obj.Proxy, "SourceObj"):
+                print("Has source Object")
+                if (
+                    minMeshObject(
+                        self.obj.Proxy.SourceObj,
+                        # 2,
+                        # ty,
+                        # float(ml),
+                        # float(cl),
+                        # float(pl),
+                    )
+                    is True
+                ):
+                    self.facets = getFacets()
+                    self.vertex = getVertex()
+                    self.processMesh(self.vertex, self.facets)
+                    return
+
+        if (
+            minMeshObject(
+                self.obj,
+                # 2,
+                # ty,
+                # float(ml),
+                # float(cl),
+                # float(pl),
+            )
+            is True
+        ):
+            print("get facets and vertex")
+            self.facets = getFacets()
+            self.vertex = getVertex()
+            if self.tess is None:
+                name = "GDMLTessellate_" + self.obj.Name
+                parent = None
+                if hasattr(self.obj, "InList"):
+                    if len(self.obj.InList) > 0:
+                        parent = self.obj.InList[0]
+                        self.tess = parent.newObject(
+                            "Part::FeaturePython", name
+                        )
+                    if parent is None:
+                        self.tess = FreeCAD.ActiveDocument.addObject(
+                            "Part::FeaturePython", name
+                        )
+                    GDMLGmshTessellated(
+                        self.tess,
+                        self.obj,
+                        getMeshLen(self.obj),
+                        self.vertex,
+                        self.facets,
+                        "mm",
+                        getSelectedMaterial(),
+                    )
+            else:
+                self.processMesh(self.vertex, self.facets)
+
+        print("Check Form")
+        # print(dir(self.form))
+        if self.tess is not None:
+            if not hasattr(self.form, "infoGroup"):
+                self.form.infoGroup = QtGui.QGroupBox("Mesh Information")
+                print("Mesh Info Layout")
+                layMeshInfo = QtGui.QHBoxLayout()
+                layMeshInfo.addWidget(self.form.Vertex)
+                layMeshInfo.addWidget(self.form.Facets)
+                # layMeshInfo.addWidget(self.form.Nodes)
+                self.form.infoGroup.setLayout(layMeshInfo)
+                self.form.Vlayout.addWidget(self.form.infoGroup)
+                # self.form.setLayout(self.form.Vlayout)
+                self.processMesh(self.vertex, self.facets)
+
+    def leaveEvent(self, event):
+        print("Leave Event II")
+
+    def focusOutEvent(self, event):
+        print("Out of Focus II")
+
+
 class AddTessellateTask:
     def __init__(self, Obj):
         self.obj = Obj
         self.tess = None
-        self.form = AddTessellateWidget(Obj.Shape)
+        self.form = AddTessellateWidget(Obj.Shape, "Gmsh")
         self.form.buttonMesh.clicked.connect(self.actionMesh)
         # self.form.buttonload.clicked.connect(self.loadelement)
         # self.form.buttonsave.clicked.connect(self.saveelement)
@@ -1894,6 +2079,7 @@ class AddTessellateTask:
             is True
         ):
             facets = getFacets()
+            print(f"Number of Facets {len(facets)}")
             vertex = getVertex()
             if self.tess is None:
                 name = "GDMLTessellate_" + self.obj.Name
@@ -2006,6 +2192,96 @@ class TessellateFeature:
             ),
             "Tessellate_Planar": QtCore.QT_TRANSLATE_NOOP(
                 "GDML_PolyGroup", "Tesselate Selected Planar Object"
+            ),
+        }
+
+
+class GmshGroup:
+    """Group of Gmsh Commands"""
+
+    def GetCommands(self):
+        """Tuple of Commands"""
+        return ("TessellateGmshCommand", "TessGmshMinCommand")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "GDML_Gmsh_Group",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Gmsh Group", "Gmsh Group"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Gmsh Group", " Group of Gmsh Commands"
+            ),
+        }
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+
+class TessGmshMinFeature:
+    def Activated(self):
+
+        from .GmshUtils import (
+            initialize,
+            meshObject,
+            getVertex,
+            getFacets,
+            getMeshLen,
+            printMeshInfo,
+            printMyInfo,
+        )
+
+        from .GDMLObjects import (
+            GDMLGmshTessellated,
+            GDMLTriangular,
+            ViewProvider,
+            ViewProviderExtension,
+        )
+
+        print("Action Min Gmsh Activated")
+        for obj in FreeCADGui.Selection.getSelection():
+            # if len(obj.InList) == 0: # allowed only for for top level objects
+            print("Action Min Gmsh Tessellate")
+            # print(dir(obj))
+            print(obj.Name)
+            if hasattr(obj, "Shape") and obj.TypeId != "App::Part":
+                if FreeCADGui.Control.activeDialog() is False:
+                    print("Build panel for TO BE Gmeshed")
+                    panel = AddMinTessellateTask(obj)
+                    if hasattr(obj, "Proxy"):
+                        print(obj.Proxy.Type)
+                        if obj.Proxy.Type == "GDMLGmshTessellated":
+                            print("Build panel for EXISTING Gmsh Tessellate")
+                            panel.form.meshInfoLayout = QtGui.QHBoxLayout()
+                            panel.form.meshInfoLayout.addWidget(
+                                oField("Vertex", 6, str(len(obj.Proxy.Vertex)))
+                            )
+                            panel.form.meshInfoLayout.addWidget(
+                                oField("Facets", 6, str(len(obj.Proxy.Facets)))
+                            )
+                    FreeCADGui.Control.showDialog(panel)
+                else:
+                    print("Already an Active Task")
+            return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDML_Tess_Gmsh_Min",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup", "Gmsh Min & Tessellate"
+            ),
+            "Tessellate_Gmsh": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup", "Mesh & Tessellate Selected Planar Object"
             ),
         }
 
@@ -2751,7 +3027,9 @@ FreeCADGui.addCommand("TubeCommand", TubeFeature())
 FreeCADGui.addCommand("PolyHedraCommand", PolyHedraFeature())
 FreeCADGui.addCommand("AddCompound", CompoundFeature())
 FreeCADGui.addCommand("TessellateCommand", TessellateFeature())
+FreeCADGui.addCommand("GmshGroupCommand", GmshGroup())
 FreeCADGui.addCommand("TessellateGmshCommand", TessellateGmshFeature())
+FreeCADGui.addCommand("TessGmshMinCommand", TessGmshMinFeature())
 FreeCADGui.addCommand("DecimateCommand", DecimateFeature())
 FreeCADGui.addCommand("Mesh2TessCommand", Mesh2TessFeature())
 FreeCADGui.addCommand("Tess2MeshCommand", Tess2MeshFeature())

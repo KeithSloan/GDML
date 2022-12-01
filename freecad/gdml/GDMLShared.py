@@ -43,19 +43,19 @@ printverbose = False
 
 def setTrace(flag):
     global tracefp
-    print('Trace set to : ' + str(flag))
+    print("Trace set to : " + str(flag))
     global printverbose
     printverbose = flag
     if flag is True:
         tracePath = FreeCAD.getUserAppDataDir()
-        tracefp = open(tracePath + 'FC-trace', 'w')
-        print('Trace path : ' + tracePath)
+        tracefp = open(tracePath + "FC-trace", "w")
+        print("Trace path : " + tracePath)
 
 
 def getTrace():
     global printverbose
     # print('Get Trace : '+str(printverbose))
-    return(printverbose)
+    return printverbose
 
 
 def trace(s):
@@ -67,14 +67,16 @@ def trace(s):
     return
 
 
-def errorDialog(msg, title='Warning', type=2):
+def errorDialog(msg, title="Warning", type=2):
     # Create a simple dialog QMessageBox
-    # type indicates the icon used: one of QtGui.QMessageBox.{NoIcon, Information, Warning, Critical, Question} 
-    typeDict = {0: QtGui.QMessageBox.NoIcon,
-                1: QtGui.QMessageBox.Information,
-                2: QtGui.QMessageBox.Warning,
-                3: QtGui.QMessageBox.Critical,
-                4: QtGui.QMessageBox.Question}
+    # type indicates the icon used: one of QtGui.QMessageBox.{NoIcon, Information, Warning, Critical, Question}
+    typeDict = {
+        0: QtGui.QMessageBox.NoIcon,
+        1: QtGui.QMessageBox.Information,
+        2: QtGui.QMessageBox.Warning,
+        3: QtGui.QMessageBox.Critical,
+        4: QtGui.QMessageBox.Question,
+    }
     diag = QtGui.QMessageBox(Dict(type), title, msg)
     diag.setWindowModality(QtCore.Qt.ApplicationModal)
     diag.exec_()
@@ -104,26 +106,29 @@ def processConstants(doc):
     # all of math must be imported at global level
     # setTrace(True)
     trace("Process Constants")
-    constantGrp = doc.getObject('Constants')
+    constantGrp = doc.getObject("Constants")
     if constantGrp is None:
-        constantGrp = doc.addObject("App::DocumentObjectGroupPython",
-                                    "Constants")
+        constantGrp = doc.addObject(
+            "App::DocumentObjectGroupPython", "Constants"
+        )
     from .GDMLObjects import GDMLconstant
-    for cdefine in define.findall('constant'):
+
+    for cdefine in define.findall("constant"):
         # print cdefine.attrib
-        name = str(cdefine.attrib.get('name'))
-        trace('name : ' + name)
-        value = cdefine.attrib.get('value')
-        trace('value : ' + value)
+        name = str(cdefine.attrib.get("name"))
+        trace("name : " + name)
+        value = cdefine.attrib.get("value")
+        trace("value : " + value)
         # constDict[name] = value
         # trace(name)
         # print(dir(name))
         try:
             globals()[name] = eval(value)
-        except:		# eg 5*cm
+        except:  # eg 5*cm
             globals()[name] = value
-        constObj = constantGrp.newObject("App::DocumentObjectGroupPython",
-                                         name)
+        constObj = constantGrp.newObject(
+            "App::DocumentObjectGroupPython", name
+        )
         GDMLconstant(constObj, name, value)
 
     # print("Globals")
@@ -133,22 +138,23 @@ def processConstants(doc):
 def processVariables(doc):
     # all of math must be imported at global level
     trace("Process Variables")
-    variablesGrp = doc.getObject('Variables')
+    variablesGrp = doc.getObject("Variables")
     if variablesGrp is None:
-        variablesGrp = doc.addObject("App::DocumentObjectGroupPython",
-                                     "Variables")
+        variablesGrp = doc.addObject(
+            "App::DocumentObjectGroupPython", "Variables"
+        )
     from .GDMLObjects import GDMLconstant
     from .GDMLObjects import GDMLvariable
 
-    globals()['false'] = False
-    globals()['true'] = True
+    globals()["false"] = False
+    globals()["true"] = True
 
-    for cdefine in define.findall('variable'):
+    for cdefine in define.findall("variable"):
         # print cdefine.attrib
-        name = str(cdefine.attrib.get('name'))
-        trace('name : '+name)
-        value = cdefine.attrib.get('value')
-        trace('value : ' + value)
+        name = str(cdefine.attrib.get("name"))
+        trace("name : " + name)
+        value = cdefine.attrib.get("value")
+        trace("value : " + value)
         # constDict[name] = value
         trace(name)
         # print(dir(name))
@@ -159,8 +165,9 @@ def processVariables(doc):
         except:
             globals()[name] = value
             # print('Value String : '+value)
-        variableObj = variablesGrp.newObject("App::DocumentObjectGroupPython",
-                                                 name)
+        variableObj = variablesGrp.newObject(
+            "App::DocumentObjectGroupPython", name
+        )
         GDMLvariable(variableObj, name, value)
     # print("Globals")
     # print(str(globals()))
@@ -169,22 +176,23 @@ def processVariables(doc):
 def processQuantities(doc):
     # all of math must be imported at global level
     trace("Process Quantitities")
-    quantityGrp = doc.getObject('Quantities')
+    quantityGrp = doc.getObject("Quantities")
     if quantityGrp is None:
-        quantityGrp = doc.addObject("App::DocumentObjectGroupPython",
-                                    "Quantities")
+        quantityGrp = doc.addObject(
+            "App::DocumentObjectGroupPython", "Quantities"
+        )
     from .GDMLObjects import GDMLquantity
 
-    for cdefine in define.findall('quantity'):
+    for cdefine in define.findall("quantity"):
         # print cdefine.attrib
-        name = str(cdefine.attrib.get('name'))
-        trace('name : '+name)
-        type = cdefine.attrib.get('type')
-        trace('type : ' + type)
-        unit = cdefine.attrib.get('unit')
-        trace('unit : ' + unit)
-        value = cdefine.attrib.get('value')
-        trace('value : ' + value)
+        name = str(cdefine.attrib.get("name"))
+        trace("name : " + name)
+        type = cdefine.attrib.get("type")
+        trace("type : " + type)
+        unit = cdefine.attrib.get("unit")
+        trace("unit : " + unit)
+        value = cdefine.attrib.get("value")
+        trace("value : " + value)
         # constDict[name] = value
         trace(name)
         # print(dir(name))
@@ -195,39 +203,39 @@ def processQuantities(doc):
         except:
             globals()[name] = value
             # print('Value String : '+value)
-        quantityObj = quantityGrp.newObject("App::DocumentObjectGroupPython",
-                                            name)
+        quantityObj = quantityGrp.newObject(
+            "App::DocumentObjectGroupPython", name
+        )
         GDMLquantity(quantityObj, name, type, unit, value)
     # print("Globals")
     # print(str(globals()))
 
 
 def processPositions(doc):
-    print('Process Positions')
+    print("Process Positions")
     # need to be done ?
     global positions
     positions = {}
-    for elem in define.findall('position'):
+    for elem in define.findall("position"):
         atts = elem.attrib
-        if 'unit' in atts:
-            unit = atts['unit']
+        if "unit" in atts:
+            unit = atts["unit"]
         else:
-            unit = 'mm'
-        if 'x' in atts:
-            x = getFloatVal(atts['x'])
+            unit = "mm"
+        if "x" in atts:
+            x = getFloatVal(atts["x"])
         else:
             x = 0
-        if 'y' in atts:
-            y = getFloatVal(atts['y'])
+        if "y" in atts:
+            y = getFloatVal(atts["y"])
         else:
             y = 0
-        if 'z' in atts:
-            z = getFloatVal(atts['z'])
+        if "z" in atts:
+            z = getFloatVal(atts["z"])
         else:
             z = 0
 
-        positions[atts['name']] = {'unit': unit,
-                                   'x': x, 'y': y, 'z': z}
+        positions[atts["name"]] = {"unit": unit, "x": x, "y": y, "z": z}
 
     trace("Positions processed")
 
@@ -250,7 +258,7 @@ def getVal(ptr, var, default=0):
         # if yes get its value
         vval = ptr.attrib.get(var)
         trace(var + " : " + str(vval))
-        if vval[0] == '&':  # Is this referring to an HTML entity constant
+        if vval[0] == "&":  # Is this referring to an HTML entity constant
             chkval = vval[1:]
         else:
             chkval = vval
@@ -264,9 +272,10 @@ def getVal(ptr, var, default=0):
                 print("Illegal float: {}" % chkval)
                 ret = 0.0
 
-        trace('return value : ' + str(ret))
-        return(ret)
+        trace("return value : " + str(ret))
+        return ret
     return default
+
 
 # get ref e.g name world, solidref, materialref
 
@@ -274,48 +283,58 @@ def getVal(ptr, var, default=0):
 def getRef(ptr, name):
     wrk = ptr.find(name)
     if wrk is not None:
-        ref = wrk.get('ref')
-        trace(name + ' : ' + ref)
+        ref = wrk.get("ref")
+        trace(name + " : " + ref)
         return ref
     return wrk
 
 
 def getMult(fp):
-    unit = 'mm'  # set default
+    unit = "mm"  # set default
     # Watch for unit and lunit
     # print('getMult : '+str(fp))
-    if hasattr(fp, 'lunit'):
-        trace('lunit : '+fp.lunit)
+    if hasattr(fp, "lunit"):
+        trace("lunit : " + fp.lunit)
         unit = fp.lunit
-    elif hasattr(fp, 'unit'):
-        trace('unit : ' + fp.unit)
+    elif hasattr(fp, "unit"):
+        trace("unit : " + fp.unit)
         unit = fp.unit
-    elif hasattr(fp, 'attrib'):
-        if 'unit' in fp.attrib:
-            unit = fp.attrib['unit']
-        elif 'lunit' in fp.attrib:
-            unit = fp.attrib['lunit']
+    elif hasattr(fp, "attrib"):
+        if "unit" in fp.attrib:
+            unit = fp.attrib["unit"]
+        elif "lunit" in fp.attrib:
+            unit = fp.attrib["lunit"]
     else:
         return 1
 
-    unitsDict = {'mm': 1, 'cm': 10, 'm': 1000, 'um': 0.001, 'nm': 0.000001,
-                 'dm': 100, 'm': 1000, 'km': 1000000}
+    unitsDict = {
+        "mm": 1,
+        "cm": 10,
+        "m": 1000,
+        "um": 0.001,
+        "nm": 0.000001,
+        "dm": 100,
+        "m": 1000,
+        "km": 1000000,
+    }
     if unit in unitsDict:
         return unitsDict[unit]
 
-    print('unit not handled : ' + unit)
+    print("unit not handled : " + unit)
 
 
 def getDegrees(flag, r):
     import math
+
     if flag is True:
-        return r * 180/math.pi
+        return r * 180 / math.pi
     else:
         return r
 
 
 def getRadians(flag, r):
     import math
+
     if flag is True:
         return r
     else:
@@ -337,39 +356,39 @@ def processPlacement(base, rot):
         trace(rot.attrib)
         x = y = z = 0
 
-        if 'name' in rot.attrib:
-            if rot.attrib['name'] == 'identity':
-                trace('identity')
+        if "name" in rot.attrib:
+            if rot.attrib["name"] == "identity":
+                trace("identity")
                 return FreeCAD.Placement(base, FreeCAD.Rotation(0, 0, 0, 1))
 
         radianFlg = True
-        if 'unit' in rot.attrib:
+        if "unit" in rot.attrib:
             # print(rot.attrib['unit'][:3])
-            if rot.attrib['unit'][:3] == 'deg':
+            if rot.attrib["unit"][:3] == "deg":
                 radianFlg = False
 
-        if 'x' in rot.attrib:
-            trace('x : ' + rot.attrib['x'])
+        if "x" in rot.attrib:
+            trace("x : " + rot.attrib["x"])
             # print(eval('HALFPI'))
-            trace(eval(rot.attrib['x']))
-            x = getDegrees(radianFlg, float(eval(rot.attrib['x'])))
-            trace('x deg : ' + str(x))
+            trace(eval(rot.attrib["x"]))
+            x = getDegrees(radianFlg, float(eval(rot.attrib["x"])))
+            trace("x deg : " + str(x))
 
-        if 'y' in rot.attrib:
-            trace('y : ' + rot.attrib['y'])
-            y = getDegrees(radianFlg, float(eval(rot.attrib['y'])))
-            trace('y deg : ' + str(y))
+        if "y" in rot.attrib:
+            trace("y : " + rot.attrib["y"])
+            y = getDegrees(radianFlg, float(eval(rot.attrib["y"])))
+            trace("y deg : " + str(y))
 
-        if 'z' in rot.attrib:
-            trace('z : '+rot.attrib['z'])
-            z = getDegrees(radianFlg, float(eval(rot.attrib['z'])))
-            trace('z deg : ' + str(z))
+        if "z" in rot.attrib:
+            trace("z : " + rot.attrib["z"])
+            z = getDegrees(radianFlg, float(eval(rot.attrib["z"])))
+            trace("z deg : " + str(z))
 
         rotX = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), -x)
         rotY = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), -y)
         rotZ = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), -z)
 
-        rot = rotX*rotY*rotZ
+        rot = rotX * rotY * rotZ
         # rot = rotX.multiply(rotY).multiply(rotZ)
         # rot = rotX
         # c_rot =  FreeCAD.Vector(0,0,0)  # Center of rotation
@@ -395,9 +414,9 @@ def getPositionFromAttrib(pos):
     #   if name == 'center' :
     #      return(0,0,0)
     mul = getMult(pos)
-    px = mul * getVal(pos, 'x')
-    py = mul * getVal(pos, 'y')
-    pz = mul * getVal(pos, 'z')
+    px = mul * getVal(pos, "x")
+    py = mul * getVal(pos, "y")
+    pz = mul * getVal(pos, "z")
     return px, py, pz
 
 
@@ -410,19 +429,27 @@ def getPositionFromDict(pos):
     #   name = pos.get('name')
     #   if name == 'center' :
     #      return(0,0,0)
-    unit = pos['unit']
+    unit = pos["unit"]
     mul = 1
 
-    unitsDict = {'mm': 1, 'cm': 10, 'm': 1000, 'um': 0.001, 'nm': 0.000001,
-                 'dm': 100, 'm': 1000, 'km': 1000000}
+    unitsDict = {
+        "mm": 1,
+        "cm": 10,
+        "m": 1000,
+        "um": 0.001,
+        "nm": 0.000001,
+        "dm": 100,
+        "m": 1000,
+        "km": 1000000,
+    }
 
     if unit in unitsDict:
         mul = unitsDict[unit]
 
     try:
-        px = mul * float(pos['x'])
-        py = mul * float(pos['y'])
-        pz = mul * float(pos['z'])
+        px = mul * float(pos["x"])
+        py = mul * float(pos["y"])
+        pz = mul * float(pos["z"])
     except:
         px = py = pz = 0
 
@@ -437,7 +464,7 @@ def getElementPosition(xmlElem):
     pos = xmlElem.find("position")
     if pos is not None:
         trace(pos.attrib)
-        return(getPositionFromAttrib(pos))
+        return getPositionFromAttrib(pos)
     else:
         return 0, 0, 0
 
@@ -450,7 +477,7 @@ def getDefinedPosition(name):
         # print('Position : '+str(pos))
         trace(pos)
         # return(getPositionFromAttrib(pos))
-        return(getPositionFromDict(pos))
+        return getPositionFromDict(pos)
     else:
         return 0, 0, 0
 
@@ -458,37 +485,37 @@ def getDefinedPosition(name):
 def getPosition(xmlEntity):
     # Get position via reference
     # setTrace(True)
-    trace('GetPosition via Reference if any')
+    trace("GetPosition via Reference if any")
     posName = getRef(xmlEntity, "positionref")
     if posName is not None:
         trace("positionref : " + posName)
-        return(getDefinedPosition(posName))
+        return getDefinedPosition(posName)
     else:
-        return(getElementPosition(xmlEntity))
+        return getElementPosition(xmlEntity)
 
 
 def testPosition(xmlEntity, px, py, pz):
     posName = getRef(xmlEntity, "positionref")
     if posName is not None:
         trace("positionref : " + posName)
-        return(getDefinedPosition(posName))
+        return getDefinedPosition(posName)
     pos = xmlEntity.find("position")
     if pos is not None:
         trace(pos.attrib)
-        return(getPositionFromAttrib(pos))
+        return getPositionFromAttrib(pos)
     else:
         return px, py, pz
 
 
 def getDefinedRotation(name):
     # Just get definition - used by parseMultiUnion passed to create solids
-    return(define.find("rotation[@name='%s']" % name))
+    return define.find("rotation[@name='%s']" % name)
 
 
 def getRotation(xmlEntity):
-    trace('GetRotation')
+    trace("GetRotation")
     rotref = getRef(xmlEntity, "rotationref")
-    trace('rotref : ' + str(rotref))
+    trace("rotref : " + str(rotref))
     if rotref is not None:
         rot = define.find("rotation[@name='%s']" % rotref)
     else:
@@ -501,7 +528,7 @@ def getRotation(xmlEntity):
 def getRotFromRefs(ptr):
     printverbose = True
     trace("getRotFromRef")
-    rot = define.find("rotation[@name='%s']" % getRef(ptr, 'rotationref'))
+    rot = define.find("rotation[@name='%s']" % getRef(ptr, "rotationref"))
     if rot is not None:
         trace(rot.attrib)
     return rot
@@ -513,29 +540,29 @@ def getDefinedVector(solid, v):
     name = solid.get(v)
     pos = define.find("position[@name='%s']" % name)
     # print(pos.attrib)
-    x = getVal(pos, 'x')
-    y = getVal(pos, 'y')
-    z = getVal(pos, 'z')
-    return(FreeCAD.Vector(x, y, z))
+    x = getVal(pos, "x")
+    y = getVal(pos, "y")
+    z = getVal(pos, "z")
+    return FreeCAD.Vector(x, y, z)
 
 
 def getPlacement(pvXML):
     base = FreeCAD.Vector(getPosition(pvXML))
     # print('base: '+str(base))
     rot = getRotation(pvXML)
-    return(processPlacement(base, rot))
+    return processPlacement(base, rot)
 
 
 def getScale(pvXML):
     # print(ET.tostring(pvXML))
-    scale = pvXML.find('scale')
-    x = y = z = 1.
+    scale = pvXML.find("scale")
+    x = y = z = 1.0
     if scale is not None:
         # print(ET.tostring(scale))
-        x = getVal(scale, 'x')
-        y = getVal(scale, 'y')
-        z = getVal(scale, 'z')
-    return(FreeCAD.Vector(x, y, z))
+        x = getVal(scale, "x")
+        y = getVal(scale, "y")
+        z = getVal(scale, "z")
+    return FreeCAD.Vector(x, y, z)
 
 
 def getVertex(v):
@@ -545,13 +572,13 @@ def getVertex(v):
     pos = define.find("position[@name='%s']" % v)
     # print("Position")
     # print(dir(pos))
-    x = getVal(pos, 'x')
-    trace('x : ' + str(x))
-    y = getVal(pos, 'y')
-    trace('y : ' + str(y))
-    z = getVal(pos, 'z')
-    trace('z : ' + str(z))
-    return(FreeCAD.Vector(x, y, z))
+    x = getVal(pos, "x")
+    trace("x : " + str(x))
+    y = getVal(pos, "y")
+    trace("y : " + str(y))
+    z = getVal(pos, "z")
+    trace("z : " + str(z))
+    return FreeCAD.Vector(x, y, z)
 
 
 def facet(f):
@@ -559,13 +586,13 @@ def facet(f):
     # print(f"Facet {f}")
     # print(f.Points)
     if len(f.Points) == 3:
-        return(triangle(f.Points[0], f.Points[1], f.Points[2]))
+        return triangle(f.Points[0], f.Points[1], f.Points[2])
         # if f.Normal.dot(vec) > 0 :
         #   return(triangle(f.Points[0],f.Points[1],f.Points[2]))
         # else :
         #   return(triangle(f.Points[2],f.Points[1],f.Points[0]))
     else:
-        return(quad(f.Points[0], f.Points[1], f.Points[2], f.Points[3]))
+        return quad(f.Points[0], f.Points[1], f.Points[2], f.Points[3])
         # if f.Normal.dot(vec) > 0 :
         #   return(quad(f.Points[0],f.Points[1],f.Points[2],f.Points[3]))
         # else :
@@ -575,13 +602,20 @@ def facet(f):
 def triangle(v1, v2, v3):
     # passed vertex return face
     # print('v1 : '+str(v1)+' v2 : '+str(v2)+' v3 : '+str(v3))
-    w1 = Part.makePolygon([v1, v2, v3, v1])
-    f1 = Part.Face(w1)
-    return(f1)
+    try:
+        w1 = Part.makePolygon([v1, v2, v3, v1])
+        f1 = Part.Face(w1)
+        return f1
+    except:
+        return None
 
 
 def quad(v1, v2, v3, v4):
     # passed vertex return face
     w1 = Part.makePolygon([v1, v2, v3, v4, v1])
-    f1 = Part.Face(w1)
-    return(f1)
+    try:
+        f1 = Part.Face(w1)
+        return f1
+    except:
+        print(f"Failed to create Face {v1} {v2} {v3} {v4}")
+        return None
