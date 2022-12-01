@@ -83,7 +83,7 @@ def addMaterialsFromGroup(doc, MatList, grpName):
     else:
         # rebuild Materials from scratch
         print(f"Rebuilding Materials Structure")
-        from .importGDML import processGDML
+        from .importGDML import processGDML, joinDir
 
         processGDML(
             doc,
