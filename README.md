@@ -22,6 +22,11 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ## Important Noticies
 
+### New Gmsh facility - Gmsh Min Tessellate (12/22)
+
+Uses a recent facility in Gmsh to Tessellate and then **recombine** facets, reducing the
+complexity of the mesh. Trival example is that a cube will be 6 Quad Facets, rather than 12 Triangular Facets.
+
 ### New branch **loops**
 
 Munther has created a new branch which adds support for importing GDML files with loops.
