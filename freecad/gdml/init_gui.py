@@ -127,6 +127,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "Mesh2TessCommand",
             "Tess2MeshCommand",
             "TetrahedronCommand",
+            "atVertexCommand",
             "AddCompound",
         ]
 
@@ -169,6 +170,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "Mesh2TessCommand",
             "Tess2MeshCommand",
             "TetrahedronCommand",
+            "atVertexCommand",
             "AddCompound",
         ]
 

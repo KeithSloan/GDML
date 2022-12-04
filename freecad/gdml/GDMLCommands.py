@@ -840,6 +840,62 @@ class GDMLScale(QtGui.QDialog):
                 obj.recompute()
 
 
+class atVertexFeature:
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 2:
+            print(sel)
+            selObj = "Gui::SelectionObject"
+            gdml = None
+            solid = None
+            for s in sel:
+                # print(dir(s))
+                if hasattr(s, "Object"):
+                    print(s.Object.Label)
+                    if hasattr(s.Object, "Proxy"):
+                        if hasattr(s.Object.Proxy, "Type"):
+                            if s.Object.Proxy.Type[0:4] == "GDML":
+                                print("found GDML Object")
+                                gdml = s.Object
+                    # print(dir(s.Object))
+                    if hasattr(s.Object, "Shape"):
+                        # print(dir(s.Object.Shape))
+                        if hasattr(s.Object.Shape, "Vertexes"):
+                            print("Found Solid")
+                            solid = s.Object
+            if gdml is not None and solid is not None:
+                print("Attach at Vertex")
+                if hasattr(solid, "InList"):
+                    if len(solid.InList) > 0:
+                        parent = solid.InList[0]
+                    else:
+                        doc = FreeCAD.ActiveDocument
+                        parent = doc.addObject("App::Part", "LV-" + solid.Name)
+                for v in solid.Shape.Vertexes:
+                    print(f"v {v}")
+                    print(dir(v))
+                    new = parent.newObject("App::Link", "Link_" + solid.Name)
+                    new.LinkedObject = gdml
+                    new.LinkPlacement.Base = FreeCAD.Vector(v.X, v.Y, v.Z)
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDMLatVertex",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "gdmlBooleanFeature", "GDML atVertex"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "gdmlBooleanFeature", "GDML atVertex"
+            ),
+        }
+
+
 class SetMaterialFeature:
     def Activated(self):
         from PySide import QtGui, QtCore
@@ -3011,6 +3067,7 @@ FreeCADGui.addCommand("SetMaterialCommand", SetMaterialFeature())
 FreeCADGui.addCommand("SetSensDetCommand", SetSensDetFeature())
 FreeCADGui.addCommand("SetSkinSurfaceCommand", SetSkinSurfaceFeature())
 FreeCADGui.addCommand("SetBorderSurfaceCommand", SetBorderSurfaceFeature())
+FreeCADGui.addCommand("atVertexCommand", atVertexFeature())
 FreeCADGui.addCommand("BooleanCutCommand", BooleanCutFeature())
 FreeCADGui.addCommand(
     "BooleanIntersectionCommand", BooleanIntersectionFeature()
