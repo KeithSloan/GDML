@@ -4051,7 +4051,7 @@ class GDMLGmshTessellated(GDMLsolid):
                 face = GDMLShared.triangle(
                     mul * self.Vertex[f[0]],
                     mul * self.Vertex[f[1]],
-                    mul * self.Vertex[f[2]],
+                    mul * self.Vertex[f[2]]
                 )
                 if face is not None:
                     FCfaces.append(face)
@@ -4060,7 +4060,7 @@ class GDMLGmshTessellated(GDMLsolid):
                     mul * self.Vertex[f[0]],
                     mul * self.Vertex[f[1]],
                     mul * self.Vertex[f[2]],
-                    mul * self.Vertex[f[3]],
+                    mul * self.Vertex[f[3]]
                 )
                 if quadFace is not None:
                     FCfaces.append(quadFace)
@@ -4070,14 +4070,14 @@ class GDMLGmshTessellated(GDMLsolid):
                     face = GDMLShared.triangle(
                         mul * self.Vertex[f[0]],
                         mul * self.Vertex[f[1]],
-                        mul * self.Vertex[f[2]],
+                        mul * self.Vertex[f[2]]
                     )
                     if face is not None:
                         FCfaces.append(face)
                     face = GDMLShared.triangle(
                         mul * self.Vertex[f[0]],
                         mul * self.Vertex[f[2]],
-                        mul * self.Vertex[f[3]],
+                        mul * self.Vertex[f[3]]
                     )
                     if face is not None:
                         FCfaces.append(face)
@@ -4207,7 +4207,7 @@ class GDMLTessellated(GDMLsolid):
                         GDMLShared.triangle(
                             mul * vertex[f[0]],
                             mul * vertex[f[1]],
-                            mul * vertex[f[2]],
+                            mul * vertex[f[2]]
                         )
                     )
                 else:  # len should then be 4
@@ -4216,20 +4216,20 @@ class GDMLTessellated(GDMLsolid):
                             mul * vertex[f[0]],
                             mul * vertex[f[1]],
                             mul * vertex[f[2]],
-                            mul * vertex[f[3]],
+                            mul * vertex[f[3]]
                         )
                         FCfaces.append(face)
                     except:
                         face = GDMLShared.triangle(
                             mul * vertex[f[0]],
                             mul * vertex[f[1]],
-                            mul * vertex[f[2]],
+                            mul * vertex[f[2]]
                         )
                         FCfaces.append(face)
                         face = GDMLShared.triangle(
                             mul * vertex[f[0]],
                             mul * vertex[f[2]],
-                            mul * vertex[f[3]],
+                            mul * vertex[f[3]]
                         )
                         FCfaces.append(face)
         shell = Part.makeShell(FCfaces)
@@ -4468,7 +4468,7 @@ class GDMLSampledTessellated(GDMLsolid):
                         GDMLShared.triangle(
                             mul * vertex[f[0]],
                             mul * vertex[f[1]],
-                            mul * vertex[f[2]],
+                            mul * vertex[f[2]]
                         )
                     )
                 else:  # len should then be 4
@@ -4477,7 +4477,7 @@ class GDMLSampledTessellated(GDMLsolid):
                             mul * vertex[f[0]],
                             mul * vertex[f[1]],
                             mul * vertex[f[2]],
-                            mul * vertex[f[3]],
+                            mul * vertex[f[3]]
                         )
                     )
         if solidFlag is False:
@@ -4629,7 +4629,7 @@ class GDMLSampledTessellated(GDMLsolid):
                         GDMLShared.triangle(
                             mul * fp.vertsList[i0],
                             mul * fp.vertsList[i1],
-                            mul * fp.vertsList[i2],
+                            mul * fp.vertsList[i2]
                         )
                     )
             else:  # len should then be 4
