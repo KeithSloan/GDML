@@ -651,6 +651,8 @@ def processPlanar(obj, shape, name):
                 },
             )
         elif NumVrt == 4:
+            if vrt4 == vrt2 :
+                print("Gmsh problem")
             ET.SubElement(
                 tess,
                 "quadrangular",
@@ -3822,36 +3824,45 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
             # print(f'len(f.Edges) {len(f.Edges)}')
             # print(f'Normal at : {n} dot {dot} {clockWise}')
             vertexes = f.OuterWire.OrderedVertexes
+            print(f"Face Area : {f.Area}")
             if len(f.Edges) == 3:
                 i0 = vertexHashcodeDict[vertexes[0].hashCode()]
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
-                ET.SubElement(
-                    tess,
-                    "triangular",
-                    {
-                        "vertex1": tessVname + str(i0),
-                        "vertex2": tessVname + str(i1),
-                        "vertex3": tessVname + str(i2),
-                        "type": "ABSOLUTE",
-                    },
-                )
+                if f.Area > 0.0001:
+                    ET.SubElement(
+                        tess,
+                        "triangular",
+                        {
+                            "vertex1": tessVname + str(i0),
+                            "vertex2": tessVname + str(i1),
+                            "vertex3": tessVname + str(i2),
+                            "type": "ABSOLUTE",
+                        },
+                    )
+                else :
+                    print(f"Triangle too small")    
             elif len(f.Edges) == 4:
                 i0 = vertexHashcodeDict[vertexes[0].hashCode()]
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
                 i3 = vertexHashcodeDict[vertexes[3].hashCode()]
-                ET.SubElement(
-                    tess,
-                    "quadrangular",
-                    {
-                        "vertex1": tessVname + str(i0),
-                        "vertex2": tessVname + str(i1),
-                        "vertex3": tessVname + str(i2),
-                        "vertex4": tessVname + str(i3),
-                        "type": "ABSOLUTE",
-                    },
-                )
+                if i1 == i3 :
+                    print("Gmsh problem")
+                if f.Area > 0.0001:
+                    ET.SubElement(
+                        tess,
+                        "quadrangular",
+                        {
+                            "vertex1": tessVname + str(i0),
+                            "vertex2": tessVname + str(i1),
+                            "vertex3": tessVname + str(i2),
+                            "vertex4": tessVname + str(i3),
+                            "type": "ABSOLUTE",
+                        }
+                    )
+                else:
+                    print(f" Quad too small")       
         self._exportScaled()
 
 
