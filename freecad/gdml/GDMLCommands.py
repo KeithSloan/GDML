@@ -1793,7 +1793,8 @@ class AddMinTessellateTask:
 
         print("Update Tessellated Object")
         print(dir(self))
-        print("Object Name " + self.obj.Name)
+        #print("Object Name " + self.obj.Name)
+        print("Object Name " + self.obj.Label)
         print("Object Type " + self.obj.TypeId)
         if hasattr(self.obj, "Proxy"):
             print("Proxy")
@@ -1808,8 +1809,10 @@ class AddMinTessellateTask:
         print("Facets : " + str(len(facets)))
         # Update Info of GDML Tessellated Object
         if self.tess is not None:
-            print("Tesselated Name " + self.tess.Name)
-            print("Update parms : " + self.tess.Name)
+            #print("Tesselated Name " + self.tess.Name)
+            #print("Update parms : " + self.tess.Name)
+            print("Tesselated Name " + self.tess.Label)
+            print("Update parms : " + self.tess.Label)
             if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
                 print(dir(self.tess.Proxy))
                 self.tess.Proxy.updateParams(vertex, facets, False)
@@ -1830,7 +1833,8 @@ class AddMinTessellateTask:
                 self.tess.recompute()
                 # FreeCAD.ActiveDocument.recompute()
             else:
-                print("Recompute : " + self.obj.Name)
+                #print("Recompute : " + self.obj.Name)
+                print("Recompute : " + self.obj.Label)
                 self.obj.recompute()
                 self.obj.ViewObject.Visibility = True
             FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -1848,13 +1852,16 @@ class AddMinTessellateTask:
         )
         from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
 
-        print("Action Min Gmsh : " + self.obj.Name)
+        #print("Action Min Gmsh : " + self.obj.Name)
+        print("Action Min Gmsh : " + self.obj.Label)
         initialize()
         typeDict = {0: 6, 1: 8, 2: 9}
         print(dir(self))
-        print("Object " + self.obj.Name)
+        #print("Object " + self.obj.Name)
+        print("Object " + self.obj.Label)
         if self.tess is not None:
-            print("Tessellated " + self.tess.Name)
+            #print("Tessellated " + self.tess.Name)
+            print("Tessellated " + self.tess.Label)
         ty = typeDict[self.form.type.currentIndex()]
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
@@ -1905,7 +1912,8 @@ class AddMinTessellateTask:
             self.facets = getFacets()
             self.vertex = getVertex()
             if self.tess is None:
-                name = "GDMLTessellate_" + self.obj.Name
+                #name = "GDMLTessellate_" + self.obj.Name
+                name = "GDMLTessellate_" + self.obj.Label
                 parent = None
                 if hasattr(self.obj, "InList"):
                     if len(self.obj.InList) > 0:
@@ -2247,7 +2255,8 @@ class TessGmshMinFeature:
             # if len(obj.InList) == 0: # allowed only for for top level objects
             print("Action Min Gmsh Tessellate")
             # print(dir(obj))
-            print(obj.Name)
+            #print(obj.Name)
+            print(obj.Label)
             if hasattr(obj, "Shape") and obj.TypeId != "App::Part":
                 if FreeCADGui.Control.activeDialog() is False:
                     print("Build panel for TO BE Gmeshed")
