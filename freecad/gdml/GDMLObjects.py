@@ -4054,6 +4054,7 @@ class GDMLGmshTessellated(GDMLsolid):
                     mul * self.Vertex[f[2]]
                 )
                 if face is not None:
+                    print(f"Triangle Area : {face.Area}")
                     FCfaces.append(face)
             else:  # len should then be 4
                 quadFace = GDMLShared.quad(
@@ -4063,6 +4064,7 @@ class GDMLGmshTessellated(GDMLsolid):
                     mul * self.Vertex[f[3]]
                 )
                 if quadFace is not None:
+                    print(f"Quad Area : {quadFace.Area}")
                     FCfaces.append(quadFace)
                 else:
                     print(f"Create Quad Failed {f[0]} {f[1]} {f[2]} {f[3]}")

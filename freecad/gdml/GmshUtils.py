@@ -227,6 +227,13 @@ def minMeshObject(obj):
         gmsh.model.mesh.importStl()
         gmsh.model.mesh.removeDuplicateNodes()  # optional
         gmsh.model.mesh.recombine()
+
+        #gmsh.write("/tmp/GeoFile.geo")
+        doc = FreeCAD.ActiveDocument
+        fname = "/tmp/"+doc.Name
+        obj.Shape.exportBrep(fname+"Brep.brep")
+        gmsh.write(fname+"Stl.stl")
+        gmsh.write(fname+"Msh.msh")
         # gmsh.finalize()
         return True
 
