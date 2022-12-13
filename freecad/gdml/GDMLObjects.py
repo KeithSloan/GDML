@@ -407,8 +407,19 @@ class GDMLsolid:
         Since we have some un-serializable parts here -- the Coin stuff --
         we must define this method\
         to return a tuple of all serializable objects or None."""
+        ret_tuple=()
+        print(ret_tuple)
         if hasattr(self, "Type"):
-            return {"type": self.Type}
+            ret_tuple += (self.Type,)
+            #return {"type": self.Type}
+        if hasattr(self.Vertex):
+            vertex = self.Vertex.tolist()
+            ret_tuple += (vertex,)
+        if hasattr(self.Facets):
+            facets = self.Facets.tolist()
+            ret_tuple += (factes,)
+        if len(ret_tuple) > 0:
+            return ret_tuple    
         else:
             pass
 
