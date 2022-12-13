@@ -5265,7 +5265,7 @@ class ViewProvider(GDMLcommon):
 #
 #   Need to add variables to these functions or delete?
 #
-def makeBox(x, y, z, lunit, material, color=None):
+def makeBox(x, y, z, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLBox")
     GDMLBox(obj, x, y, z, lunit, material, color=None)
     ViewProvider(obj.ViewObject)
