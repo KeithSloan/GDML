@@ -5267,7 +5267,7 @@ class ViewProvider(GDMLcommon):
 #
 def makeBox(x, y, z, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLBox")
-    GDMLBox(obj, x, y, z, lunit, material, color=None)
+    GDMLBox(obj, x, y, z, lunit, material, colour=None)
     ViewProvider(obj.ViewObject)
     return obj
 
