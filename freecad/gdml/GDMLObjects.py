@@ -5265,24 +5265,45 @@ class ViewProvider(GDMLcommon):
 #
 #   Need to add variables to these functions or delete?
 #
-def makeBox():
-    a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLBox")
-    GDMLBox(a)
-    ViewProvider(a.ViewObject)
+def makeBox(x, y, z, lunit, material, color=None):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLBox")
+    GDMLBox(obj, x, y, z, lunit, material, color=None)
+    ViewProvider(obj.ViewObject)
+    return obj
 
 
-def makeCone():
-    a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLCone")
-    GDMLCone(a)
-    ViewProvider(a.ViewObject)
+def makeCone(rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
+       aunit, lunit, material, colour=None):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLCone")
+    GDMLCone(obj, rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
+       aunit, lunit, material, colour=None)
+    ViewProvider(obj.ViewObject)
+    return obj
 
 
-def makecSphere():
-    a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLSphere")
-    GDMLSphere(a)
-    ViewProvider(a.ViewObject)
+def makeSphere(rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
+        aunit, lunit, material, colour=None):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLSphere")
+    GDMLSphere(obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
+        aunit, lunit, material, colour=None)
+    ViewProvider(obj.ViewObject)
+    return obj
 
 
-def makeTube():
-    a = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLTube")
-    GDMLTube(a)
+def makeTube(rmin, rmax, z, startphi, deltaphi, aunit, lunit, material, \
+        colour=None):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLTube")
+    GDMLTube(obj, rmin, rmax, z, startphi, deltaphi, aunit, lunit, \
+        material, colour=None)
+    ViewProvider(obj.ViewObject)
+    return obj
+   
+
+def makeArb8(v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
+        v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "GDMLArb8")
+    GDMLArb8(obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
+        v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None)
+    ViewProvider(obj.ViewObject)
+    return obj
+
