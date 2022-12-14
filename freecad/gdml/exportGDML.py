@@ -1024,6 +1024,40 @@ def addVolRef(volxml, volName, obj, solidName=None, addColor=True):
         ET.SubElement(
             volxml, "auxiliary", {"auxtype": "Color", "auxvalue": colStr}
         )
+
+    # Temp Fix ??? porosev issue 97
+    print(f"Temp Fix {obj.Label}")
+    # obj.Parents does not work?
+    if hasattr(obj, "InList"):
+        parent = obj.InList[0]
+        print(f"Parent {parent.Label}")
+        if hasattr(parent, "SensDet"):
+            print(f"Parent {parent.Label} has SensDet")
+            # SensDet could be enumeration of text value None
+            if parent.SensDet != "None":
+                print("Volume : " + volName)
+                print("SensDet : " + parent.SensDet)
+                ET.SubElement(
+                    volxml,
+                    "auxiliary",
+                    {"auxtype": "SensDet", "auxvalue": parent.SensDet},
+                )
+        if hasattr(parent, "SkinSurface"):
+            print(f"SkinSurf Property : {vol.SkinSurface}")
+            # SkinSurfface could be enumeration of text value None
+            if vol.SkinSurface != "None":
+                print("Need to export : skinsurface")
+                ss = ET.Element(
+                    "skinsurface",
+                    {
+                        "name": "skin" + parent.SkinSurface,
+                        "surfaceproperty": parent.SkinSurface,
+                    },
+                )
+                ET.SubElement(ss, "volumeref", {"ref": volName})
+
+                skinSurfaces.append(ss)
+    # End Temp Fix        
     # print(ET.tostring(volxml))
 
 
