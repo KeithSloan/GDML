@@ -5267,48 +5267,53 @@ class ViewProvider(GDMLcommon):
 #
 def makeBox(x, y, z, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLBox")
-    GDMLBox(obj, x, y, z, lunit, material, colour=None)
-    ViewProvider(obj.ViewObject)
-    obj.recompute()
+    if obj is not None:
+        GDMLBox(obj, x, y, z, lunit, material, colour=None)
+        ViewProvider(obj.ViewObject)
+        obj.recompute()
     return obj
 
 
 def makeCone(rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
        aunit, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLCone")
-    GDMLCone(obj, rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
-       aunit, lunit, material, colour=None)
-    ViewProvider(obj.ViewObject)
-    obj.recompute()
+    if obj is not None:
+        GDMLCone(obj, rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
+            aunit, lunit, material, colour=None)
+        ViewProvider(obj.ViewObject)
+        obj.recompute()
     return obj
 
 
 def makeSphere(rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
         aunit, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLSphere")
-    GDMLSphere(obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
-        aunit, lunit, material, colour=None)
-    ViewProvider(obj.ViewObject)
-    obj.recompute()
+    if obj is not None:
+        GDMLSphere(obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
+            aunit, lunit, material, colour=None)
+        ViewProvider(obj.ViewObject)
+        obj.recompute()
     return obj
 
 
 def makeTube(rmin, rmax, z, startphi, deltaphi, aunit, lunit, material, \
         colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLTube")
-    GDMLTube(obj, rmin, rmax, z, startphi, deltaphi, aunit, lunit, \
-        material, colour=None)
-    ViewProvider(obj.ViewObject)
-    obj.recompute()
+    if obj is not None:
+        GDMLTube(obj, rmin, rmax, z, startphi, deltaphi, aunit, lunit, \
+            material, colour=None)
+        ViewProvider(obj.ViewObject)
+        obj.recompute()
     return obj
    
 
 def makeArb8(v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
         v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLArb8")
-    GDMLArb8(obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
-        v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None)
-    ViewProvider(obj.ViewObject)
-    obj.recompute()
+    if obj is not None:
+        GDMLArb8(obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
+            v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None)
+        ViewProvider(obj.ViewObject)
+        obj.recompute()
     return obj
 
