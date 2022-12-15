@@ -896,6 +896,49 @@ class atVertexFeature:
         }
 
 
+class atVertexPointFeature:
+
+    def Activated(self):
+        print(f"Add Vertex Point")
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDMLatVertexPoint",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "Create Centre Vertex Point", "Centre Point"
+
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Create Centre Vertex Point", "Centre Point"
+            ),
+        }
+
+
+class atVertexGroup:
+    """Group of Gmsh Commands"""
+
+    def GetCommands(self):
+        """Tuple of Commands"""
+        return ("atVertexCommand", "atVertexPointCommand")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "GDML_atVertex_Group",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("atVertex Group", "at Vertex Group"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "atVertex Group", " Group at Vertex Commands"
+            ),
+        }
+
+
 class SetMaterialFeature:
     def Activated(self):
         from PySide import QtGui, QtCore
@@ -3068,6 +3111,8 @@ FreeCADGui.addCommand("SetSensDetCommand", SetSensDetFeature())
 FreeCADGui.addCommand("SetSkinSurfaceCommand", SetSkinSurfaceFeature())
 FreeCADGui.addCommand("SetBorderSurfaceCommand", SetBorderSurfaceFeature())
 FreeCADGui.addCommand("atVertexCommand", atVertexFeature())
+FreeCADGui.addCommand("atVertexPointCommand", atVertexPointFeature())
+FreeCADGui.addCommand("atVertexGroupCommand", atVertexGroup())
 FreeCADGui.addCommand("BooleanCutCommand", BooleanCutFeature())
 FreeCADGui.addCommand(
     "BooleanIntersectionCommand", BooleanIntersectionFeature()
