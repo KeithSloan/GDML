@@ -83,7 +83,8 @@ def initialize():
     gmsh.option.setNumber("General.Terminal", 1)
     gmsh.option.setNumber("Mesh.CharacteristicLengthMax", 11)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 10)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthMin", 1e-3)
+    #gmsh.option.setNumber("Mesh.CharacteristicLengthMin", 1e-3)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMin", 1)
     gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 10)
 
 
