@@ -1043,9 +1043,9 @@ def addVolRef(volxml, volName, obj, solidName=None, addColor=True):
                     {"auxtype": "SensDet", "auxvalue": parent.SensDet},
                 )
         if hasattr(parent, "SkinSurface"):
-            print(f"SkinSurf Property : {vol.SkinSurface}")
+            print(f"SkinSurf Property : {parent.SkinSurface}")
             # SkinSurfface could be enumeration of text value None
-            if vol.SkinSurface != "None":
+            if parent.SkinSurface != "None":
                 print("Need to export : skinsurface")
                 ss = ET.Element(
                     "skinsurface",
