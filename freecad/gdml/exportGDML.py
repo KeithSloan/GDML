@@ -3860,6 +3860,17 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
                 i0 = vertexHashcodeDict[vertexes[0].hashCode()]
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
+                triFace = GDMLShared.triangle( vertexes[0].Point,
+                    vertexes[1].Point, vertexes[2].Point)
+                if triFace is not None:
+                    triArea = triFace.Area
+                    print(f"Tri face area {triArea}")
+                    if triArea < 0.01:
+                        print(f"Invalid Tri Area")
+                else:
+                    print(f"Invalid Triangle")
+
+
                 ET.SubElement(
                     tess,
                     "triangular",
@@ -3895,10 +3906,26 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
                 if quadFace is not None:
                     quadArea = quadFace.Area
                     print(f"Quad face area {quadArea}")
+                    if quadArea < 0.01:
+                        print(f"Invalid Quad Area")
+                else:
+                    print(f"Invalid Quad")
+
+                quadFace2 = GDMLShared.quad(
+                    vertexes[0].Point * placementCorrection,
+                    vertexes[1].Point * placementCorrection, 
+                    vertexes[2].Point * placementCorrection, 
+                    vertexes[3].Point * placementCorrection)
+
+
+                if quadFace is not None:
+                    quadArea = quadFace.Area
+                    print(f"Quad face area {quadArea}")
                     if quadArea < 0.001:
                         print(f"Invalid Quad Area")
                 else:
                     print(f"Invalid Quad")
+
 
                 ET.SubElement(
                     tess,
