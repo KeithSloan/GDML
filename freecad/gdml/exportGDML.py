@@ -3875,6 +3875,31 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
                 i1 = vertexHashcodeDict[vertexes[1].hashCode()]
                 i2 = vertexHashcodeDict[vertexes[2].hashCode()]
                 i3 = vertexHashcodeDict[vertexes[3].hashCode()]
+                # Check valid Quad
+                from .GDMLShared import quad
+                mul = 1.0
+                #print(dir(vertexes[0]))
+                print(f"vertex {i0} {i1} {i2} {i3}")
+                #print(f"vertex {vertexes[0]} {vertexes[1]} {vertexes[2]} {vertexes[3]}")
+                print(f"vertex {vertexes[0].Point} {vertexes[1].Point} {vertexes[2].Point} {vertexes[3].Point}")
+                #quadFace = GDMLShared.quad(
+                #    mul * vertexes[0],
+                #    mul * vertexes[1],
+                #    mul * vertexes[2],
+                #    mul * vertexes[3]
+                #    )
+                quadFace = GDMLShared.quad( vertexes[0].Point,
+                 vertexes[1].Point, vertexes[2].Point, vertexes[3].Point)
+
+
+                if quadFace is not None:
+                    quadArea = quadFace.Area
+                    print(f"Quad face area {quadArea}")
+                    if quadArea < 0.001:
+                        print(f"Invalid Quad Area")
+                else:
+                    print(f"Invalid Quad")
+
                 ET.SubElement(
                     tess,
                     "quadrangular",
