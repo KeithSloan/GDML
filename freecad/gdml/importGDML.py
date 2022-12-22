@@ -1640,7 +1640,8 @@ def parseMultiUnion(
                     nx, ny, nz = GDMLShared.getPositionFromAttrib(t)
                     GDMLShared.trace("nx : " + str(nx))
                 if t.tag == "rotation":
-                    nrot = GDMLShared.getRotation(t.tag)
+                    #nrot = GDMLShared.getRotation(t.tag)
+                    nrot = GDMLShared.getRotation(t)
                 if t.tag == "rotationref":
                     rname = t.get("ref")
                     GDMLShared.trace("rotation ref : " + rname)
