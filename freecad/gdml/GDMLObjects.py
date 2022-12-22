@@ -4054,6 +4054,8 @@ class GDMLGmshTessellated(GDMLsolid):
                     mul * self.Vertex[f[2]]
                 )
                 if face is not None:
+                    if face.Area < 0.1:
+                        print(f"Invalid triangle area {face.Area}")
                     FCfaces.append(face)
             else:  # len should then be 4
                 quadFace = GDMLShared.quad(
@@ -4063,6 +4065,8 @@ class GDMLGmshTessellated(GDMLsolid):
                     mul * self.Vertex[f[3]]
                 )
                 if quadFace is not None:
+                    if quadFace.Area < 0.1:
+                        print(f"Invalid quad area {face.Area}")
                     FCfaces.append(quadFace)
                 else:
                     print(f"Create Quad Failed {f[0]} {f[1]} {f[2]} {f[3]}")

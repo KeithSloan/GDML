@@ -230,6 +230,9 @@ def minMeshObject(obj):
         gmsh.model.mesh.removeDuplicateNodes()  # optional
         gmsh.model.mesh.recombine()
         # gmsh.finalize()
+        obj.Shape.exportBrep("/tmp/test.brep")
+        gmsh.write("/tmp/test.stl")
+        gmsh.write("/tmp/test.msh")
         return True
 
 
