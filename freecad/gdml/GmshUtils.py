@@ -65,6 +65,7 @@ def initialize():
     gmsh.clear()
     gmsh.option.setNumber("Mesh.Algorithm3D", 1)
     gmsh.option.setNumber("Mesh.Algorithm", 6)
+    # Use only on importSTL minMesh
     # gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
     gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
     gmsh.option.setNumber("Mesh.SaveAll", 0)
@@ -113,6 +114,9 @@ def setMinMeshParms():
     gmsh.option.setNumber("Mesh.RecombineOptimizeTopology", 0)
     gmsh.option.setNumber("Mesh.RecombineNodeRepositioning", 0)
     gmsh.option.setNumber("Mesh.RecombineMinimumQuality", 1e-3)
+    gmsh.option.setNumber("Geometry.OCCBoundsUseStl", 1)
+    gmsh.option.setNumber("Geometry.OCCFixDegenerated", 1)
+    gmsh.option.setNumber("Geometry.OCCFixSmallFaces", 1)
 
 
 def setMeshParms(algol, lm, lc, lp):
@@ -223,6 +227,8 @@ def minMeshObject(obj):
         print("minMesh Shape")
         tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
         obj.Shape.exportBrep(tmpFile)
+        #tmpFile = tempfile.NamedTemporaryFile(suffix=".stl").name
+        #obj.Shape.exportStl(tmpFile)
         gmsh.initialize()
         gmsh.open(tmpFile)
         setMinMeshParms()
@@ -230,7 +236,7 @@ def minMeshObject(obj):
         gmsh.model.mesh.removeDuplicateNodes()  # optional
         gmsh.model.mesh.recombine()
         # gmsh.finalize()
-        obj.Shape.exportBrep("/tmp/test.brep")
+        #obj.Shape.exportBrep("/tmp/test.brep")
         gmsh.write("/tmp/test.stl")
         gmsh.write("/tmp/test.msh")
         return True
