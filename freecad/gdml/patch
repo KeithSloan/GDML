@@ -1,0 +1,312 @@
+diff --git a/freecad/gdml/exportGDML.py b/freecad/gdml/exportGDML.py
+index a89a0ab..d0ac303 100644
+--- a/freecad/gdml/exportGDML.py
++++ b/freecad/gdml/exportGDML.py
+@@ -1279,36 +1245,18 @@ def processCandidates(name, surface, check, Obj1, dict1, Obj2, dict2):
+                         if check:
+                             pairStr = f"{obj1.Label} : {obj2.Label} "
+                             if checkFaces(items1, items2):
+-                                cnt = processSurface(
+-                                    name,
+-                                    cnt,
+-                                    surface,
+-                                    Obj1,
+-                                    obj1,
+-                                    idx1,
+-                                    assem1,
+-                                    Obj2,
+-                                    obj2,
+-                                    idx2,
+-                                    assem2,
+-                                )
++                                cnt = processSurface(name, cnt, surface,
++                                                     Obj1, obj1, idx1, assem1,
++                                                     Obj2, obj2, idx2, assem2)
+                                 print(f"<<< Common face : {pairStr} >>>")
+                                 cnt += 1
+                             else:
+                                 print(f"<<< No common face : {pairStr} >>>")
+                         else:
+                             cnt = processSurface(
+-                                name,
+-                                cnt,
+-                                surface,
+-                                Obj1,
+-                                obj1,
+-                                idx1,
+-                                assem1,
+-                                Obj2,
+-                                obj2,
+-                                idx2,
+-                                assem2,
++                                name, cnt, surface,
++                                Obj1, obj1, idx1, assem1,
++                                Obj2, obj2, idx2, assem2
+                             )
+ 
+ 
+@@ -1908,6 +1856,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
+     assemObjs = assemblyHeads(vol)
+     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
+     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
++
+     #
+     # Note that the assembly object are under an App::Part, not
+     # a solid, so there is no neede to adjust for a "parent solid"
+@@ -2025,9 +1974,9 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
+                 },
+             )
+             ET.SubElement(ss, "volumeref", {"ref": volName})
+-
+             skinSurfaces.append(ss)
+     print(f"Processed Volume : {volName}")
++
+     return xmlVol
+ 
+ 
+@@ -2074,11 +2023,8 @@ def processContainer(vol, xmlParent, psPlacement):
+             print("Process Link")
+             volRef = getVolumeName(obj.LinkedObject)
+             addPhysVolPlacement(
+-                obj,
+-                newXmlVol,
+-                obj.Label,
+-                invPlacement(solidPlacement) * obj.Placement,
+-                volRef,
++                obj, newXmlVol, obj.Label,
++                invPlacement(solidPlacement) * obj.Placement, volRef
+             )
+         elif obj.TypeId == "App::Part":
+             processVolAssem(obj, newXmlVol, volName, myPlacement)
+@@ -4455,6 +4401,66 @@ class ClosedCurve:
+             otherCurve.edgeList[0].Vertexes[0].Point, 0.001, True
+         )
+ 
++    @staticmethod
++    def isCircle(arc1, arc2):
++        '''
++        test if two arcs can be joined into a single circle
++        return true if so, false if not
++        TODO: make tests in terms of some small fraction epsilon
++        '''
++        # Both must be circular arcs
++        c1 = arc1.Curve
++        c2 = arc2.Curve
++        if (c1.TypeId != "Part::GeomCircle" or
++             c2.TypeId != "Part::GeomCircle"):
++            print("Not Arc")
++            return False
++        # They must have same radius
++        if c1.Radius != c2.Radius:
++            print("Not same radius")
++            return False
++        # They must have the same center
++        if c1.Center != c2.Center:
++            print("not same center")
++            return False
++        # They must join end to end
++        # for reasons I don't understand, both arcs
++        # have the same first and last parameters and the
++        # the last parameter is 2*pi. The sort edges must
++        # not calculating edges correctly
++        '''
++        if (c1.FirstParameter != c2.LastParameter or
++            c1.LastParameter != c2.FirstParameter):
++            print("dont match ends")
++            print(f'c1.0 {c1.FirstParameter} c1.1 {c1.LastParameter}')
++            print(f'c2.0 {c2.FirstParameter} c2.1 {c2.LastParameter}')
++            return False
++        '''
++        if (arc1.Vertexes[0].Point != arc2.Vertexes[1].Point or
++            arc1.Vertexes[1].Point != arc2.Vertexes[0].Point):
++            print("dont match ends")
++            print(f'c1.0 {arc1.Vertexes[0].Point} c1.1 {arc1.Vertexes[1].Point}')
++            print(f'c2.0 {arc2.Vertexes[0].Point} c2.1 {arc2.Vertexes[1].Point}')
++            return False
++
++        # They must be in the same plane
++        if c1.Axis != c2.Axis:
++            print("not same axis")
++            return False
++
++        return True
++
++    @staticmethod
++    def arcs2circle(arc1, arc2):
++        '''
++        combine two arc edges into a single circle edge
++        '''
++        circle = None
++        if ClosedCurve.isCircle(arc1, arc2):
++            curve = arc1.Curve
++            circle = Part.makeCircle(curve.Radius, curve.Center, curve.Axis)
++        return circle
++
+ 
+ class RevolvedClosedCurve(ClosedCurve):
+     def __init__(self, name, edgelist, angle, axis):
+@@ -4851,21 +4857,6 @@ class RevolutionExporter(SolidExporter):
+ # One of the closed curves (list of edges) representing a part
+ # of the sketch
+ 
+-
+-class ClosedCurve:
+-    def __init__(self, name, edgeList):
+-        self.name = name
+-        self.face = Part.Face(Part.Wire(edgeList))
+-        self.edgeList = edgeList
+-
+-    def isInside(self, otherCurve):
+-        # ClosedCurves are closed: so if ANY vertex of the otherCurve
+-        # is inside, then the whole curve is inside
+-        return self.face.isInside(
+-            otherCurve.edgeList[0].Vertexes[0].Point, 0.001, True
+-        )
+-
+-
+ class ExtrudedClosedCurve(ClosedCurve):
+     def __init__(self, name, edgelist, height):
+         super().__init__(name, edgelist)
+@@ -5270,54 +5261,16 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
+     def export(self):
+         global solids
+ 
+-        verts = []
+-        for e in self.edgeList:
+-            if len(e.Vertexes) > 1:
+-                verts.append(e.Vertexes[0].Point)
+-        verts.append(verts[0])
+-
+-        # face = Part.Face(Part.makePolygon(verts))
+-
+-        edgeCurves = []  # list of ExtrudedClosedCurve's
+         verts = []
+ 
+         for i, e in enumerate(self.edgeList):
+-            if len(e.Vertexes) > 1:
+-                verts.append(e.Vertexes[0].Point)
+             while switch(e.Curve.TypeId):
+                 if case("Part::GeomLineSegment"):
+-                    # verts.append(e.Vertexes[0].Point)
++                    verts.append(e.Vertexes[0].Point)
+                     break
+ 
+                 if case("Part::GeomLine"):
+-                    # verts.append(e.Vertexes[0].Point)
+-                    break
+-
+-                if case("Part::GeomCircle"):
+-                    print("Arc of Circle")
+-                    # this turns out more intricate than meets the eye.
+-                    # form face without this edge and then test for midpoint
+-                    # inside that face.
+-                    arcXtruName = self.name + "_c" + str(i)
+-                    arcSection = ExtrudedArcSection(
+-                        arcXtruName, [e], self.height
+-                    )
+-                    inside = self.isSubtraction(e)
+-                    arcSection.export()
+-                    # this is not general. Needs to be changed
+-                    # to a test against sidedness of edge of section
+-                    edgeCurves.append([arcXtruName, inside])
+-                    break
+-
+-                if case("Part::GeomEllipse"):
+-                    print("Arc of Ellipse")
+-                    arcXtruName = self.name + "_e" + str(i)
+-                    arcSection = ExtrudedEllipticalSection(
+-                        arcXtruName, [e], self.height
+-                    )
+-                    inside = self.isSubtraction(e)
+-                    arcSection.export()
+-                    edgeCurves.append([arcXtruName, inside])
++                    verts.append(e.Vertexes[0].Point)
+                     break
+ 
+                 else:
+@@ -5332,53 +5285,8 @@ class ExtrudedNEdges(ExtrudedClosedCurve):
+ 
+         verts.append(verts[0])
+         xtruName = self.name
+-        if len(edgeCurves) > 0:
+-            xtruName += "_xtru"
+         exportXtru(xtruName, verts, self.height)
+ 
+-        currentSolid = xtruName
+-        if len(edgeCurves) > 0:
+-            for i, c in enumerate(edgeCurves):
+-                curveName = c[0]
+-                isSubtraction = c[1]
+-                if i == len(edgeCurves) - 1:
+-                    name = (
+-                        self.name
+-                    )  # last boolean must have this classes name
+-                else:
+-                    name = "bool" + curveName
+-                if isSubtraction is False:
+-                    booleanSolid = ET.SubElement(
+-                        solids, "union", {"name": name}
+-                    )
+-                    ET.SubElement(booleanSolid, "first", {"ref": currentSolid})
+-                    ET.SubElement(booleanSolid, "second", {"ref": curveName})
+-                elif isSubtraction is True:
+-                    secondName = (
+-                        curveName + "_s"
+-                    )  # scale solids along z, so it punches thru
+-                    secondPos = Vector(0, 0, -0.01 * self.height)
+-                    scaleUp(secondName, curveName, 1.10)
+-                    booleanSolid = ET.SubElement(
+-                        solids, "subtraction", {"name": name}
+-                    )
+-                    ET.SubElement(booleanSolid, "first", {"ref": currentSolid})
+-                    ET.SubElement(booleanSolid, "second", {"ref": secondName})
+-                    exportPosition(secondName, booleanSolid, secondPos)
+-                else:  # neither true, not false, must reverse subtraction order
+-                    secondName = (
+-                        currentSolid + "_s"
+-                    )  # scale solids along z, so it punches thru
+-                    secondPos = Vector(0, 0, -0.01 * self.height)
+-                    scaleUp(secondName, currentSolid, 1.10)
+-                    booleanSolid = ET.SubElement(
+-                        solids, "subtraction", {"name": name}
+-                    )
+-                    ET.SubElement(booleanSolid, "first", {"ref": curveName})
+-                    ET.SubElement(booleanSolid, "second", {"ref": secondName})
+-
+-                currentSolid = name
+-
+ 
+ # Node of a tree that represents the topology of the sketch being exported
+ # a left_child is a ClosedCurve that is inside of its parent
+@@ -5467,9 +5375,16 @@ def exportTube(name, radius, height):
+     )
+ 
+ 
+-def exportXtru(name, vlist, height, zoffset=0):
++def exportXtru(name, vlist, height):
+     global solids
+ 
++    # We are assuming that the points to that form the
++    # the edges to be extruded are al coplanar and in the x-y plane
++    # with a possible zoffset, whch is taken as the common
++    # z-coordinate of the first vertex
++    if len(vlist) == 0:
++        return
++    zoffset = vlist[0].z
+     xtru = ET.SubElement(solids, "xtru", {"name": name, "lunit": "mm"})
+     for v in vlist:
+         ET.SubElement(xtru, "twoDimVertex", {"x": str(v.x), "y": str(v.y)})
+@@ -5537,7 +5452,12 @@ def getExtrudedCurve(name, edges, height):
+                 return ExtrudedClosedCurve(name, edges, height)
+ 
+     elif len(edges) == 2:  # exactly two edges
+-        return Extruded2Edges(name, edges, height)
++        # if the two edges are tow arcs that make a circle, extrude resulting circle
++        edge = ClosedCurve.arcs2circle(edges[0], edges[1])
++        if edge is not None:
++            return ExtrudedCircle(name, [edge], height)
++        else:
++            return ExtrudedNEdges(name, edges, height)
+     else:  # three or more edges
+         return ExtrudedNEdges(name, edges, height)
+ 
