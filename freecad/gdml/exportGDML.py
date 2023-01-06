@@ -3810,6 +3810,7 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
     def export(self):
         tessName = self.name()
         # Use more readable version
+        print(f"Tess name {tessName}")
         tessVname = tessName + "_"
         # print(dir(obj))
         vertexHashcodeDict = {}
@@ -3848,6 +3849,8 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
         """
         tess = ET.SubElement(solids, "tessellated", {"name": tessName})
         placementCorrection = self.obj.Placement.inverse()
+        placmentCorrection = FreeCAD.Vector(1.0, 1.0, 1.0)
+        print(f"Plaacment Correction {placementCorrection}")
         for i, v in enumerate(self.obj.Shape.Vertexes):
             vertexHashcodeDict[v.hashCode()] = i
             exportDefineVertex(tessVname, placementCorrection * v.Point, i)

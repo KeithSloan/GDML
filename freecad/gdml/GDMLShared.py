@@ -612,6 +612,10 @@ def triangle(v1, v2, v3):
 
 def quad(v1, v2, v3, v4):
     # passed vertex return face
+    print(dir(v1))
+    print(f" v1 {v1}")
+    print(f" v1 type {type(v1)}")
+    print(f"Quad Face {v1} {v2} {v3} {v4}")
     w1 = Part.makePolygon([v1, v2, v3, v4, v1])
     try:
         f1 = Part.Face(w1)
