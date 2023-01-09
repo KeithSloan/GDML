@@ -166,6 +166,30 @@ def insertPartVol(objPart, LVname, solidName):
     addSurfList(doc, vol)
     return obj
 
+class Geant4RunFeature:
+    def Activated(self):
+        from .Geant4 import runGeant4
+        print("Run Geant4")
+        runGeant4()
+        return
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "Geant4RunFeature",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "Geant4RunFeauture", "Run Geant4"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Geant4RunFeature", "Run Geant4"
+            ),
+        }
+
 
 class ColourMapFeature:
     def Activated(self):
@@ -3015,6 +3039,7 @@ FreeCADGui.addCommand("CycleCommand", CycleFeature())
 FreeCADGui.addCommand("ExpandCommand", ExpandFeature())
 FreeCADGui.addCommand("ExpandMaxCommand", ExpandMaxFeature())
 FreeCADGui.addCommand("ResetWorldCommand", ResetWorldFeature())
+FreeCADGui.addCommand("Geant4RunCommand", Geant4RunFeature())
 FreeCADGui.addCommand("ColourMapCommand", ColourMapFeature())
 FreeCADGui.addCommand("SetMaterialCommand", SetMaterialFeature())
 FreeCADGui.addCommand("SetSensDetCommand", SetSensDetFeature())
