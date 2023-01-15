@@ -1265,9 +1265,9 @@
    <materialref ref="sVeloVeloCarbonFibre"/>
    <solidref ref="MSILO1"/>
   </volume>
-  <volume name="VeloSupportslvMSILO2">
+  <!-- <volume name="VeloSupportslvMSILO2">
    <materialref ref="sVeloVeloCarbonFibre"/>
-   <solidref ref="MSILO2"/>
+   <solidref ref="MSILO2"/>-->
   </volume>
   <volume name="VeloSupportslvSpBase">
    <materialref ref="sAluminium"/>
@@ -1281,11 +1281,11 @@
     <positionref ref="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportp"/>
     <rotationref ref="VeloSupportslvVeloSupportbase01llinVeloSupportslvVeloSupportr"/>
    </physvol>
-   <physvol>
+   <!-- <physvol>
     <volumeref ref="VeloSupportslvMSILO2"/>
     <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportp"/>
     <rotationref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO2BinVeloSupportslvVeloSupportr"/>
-   </physvol>
+   </physvol>-->
    <physvol>
     <volumeref ref="VeloSupportslvMSILO1"/>
     <positionref ref="VeloSupportslvVeloSupportPaddle00lsVMSILO1BinVeloSupportslvVeloSupportp"/>
