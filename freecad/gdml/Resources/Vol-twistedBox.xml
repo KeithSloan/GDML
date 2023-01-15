@@ -1,0 +1,9 @@
+<xml>
+ <solids>
+  <twistedbox name="atwistedbox" PhiTwist="1" x="30" y="30" z="30" aunit="rad" lunit="mm"/>
+ </solids>
+ <volume name="Vol-twistedBox">
+    <materialref ref="G4_AIR"/>
+    <solidref ref="atwistedbox"/>
+ </volume>    
+</xml>
