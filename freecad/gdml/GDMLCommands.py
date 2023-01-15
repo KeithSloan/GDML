@@ -1720,13 +1720,8 @@ class AddTessellateWidget(QtGui.QWidget):
             QtGui.QLabel("Depth : " + str(Shape.BoundBox.ZLength))
         )
         bboxGroup.setLayout(laybbox)
-        maxl = int(
-            (
-                Shape.BoundBox.XLength
-                + Shape.BoundBox.YLength
-                + Shape.BoundBox.ZLength
-            )
-            / 15
+        maxl = int( ( Shape.BoundBox.XLength + Shape.BoundBox.YLength \
+             + Shape.BoundBox.ZLength) / 15
         )
         self.type = QtGui.QComboBox()
         self.type.addItems(["Triangular", "Quadrangular", "Parallelograms"])
@@ -1765,12 +1760,68 @@ class AddTessellateWidget(QtGui.QWidget):
         self.buttonMesh.setText(translate("GDML", "Mesh"))
         self.setWindowTitle(translate("GDML", "Tessellate with Gmsh"))
 
+class AddMinTessellateWidget(QtGui.QWidget):
+    def __init__(self, Shape, GmshType, *args):
+        QtGui.QWidget.__init__(self, *args)
+        bboxGroup = QtGui.QGroupBox("Objects Bounding Box")
+        laybbox = QtGui.QHBoxLayout()
+        laybbox.addWidget(
+            QtGui.QLabel("Width : " + str(Shape.BoundBox.XLength))
+        )
+        laybbox.addWidget(
+            QtGui.QLabel("Height : " + str(Shape.BoundBox.YLength))
+        )
+        laybbox.addWidget(
+            QtGui.QLabel("Depth : " + str(Shape.BoundBox.ZLength))
+        )
+        bboxGroup.setLayout(laybbox)
+        maxl = int( ( Shape.BoundBox.XLength + Shape.BoundBox.YLength \
+             + Shape.BoundBox.ZLength) / 15
+        )
+        #self.type = QtGui.QComboBox()
+        #self.type.addItems(["Triangular", "Quadrangular", "Parallelograms"])
+        self.group = QtGui.QGroupBox("Mesh Characteristics")
+        self.maxLen = iField("Max Length", 5, str(maxl))
+        self.curveLen = iField("Curve Length", 5, "10")
+        self.pointLen = iField("Length from Point", 5, "10")
+        self.Vertex = oField("Vertex", 6, "")
+        self.Facets = oField("Facets", 6, "")
+        self.meshParmsLayout = QtGui.QGridLayout()
+        #self.meshParmsLayout.addWidget(self.type, 0, 0)
+        self.meshParmsLayout.addWidget(self.maxLen, 0, 1)
+        self.meshParmsLayout.addWidget(self.curveLen, 1, 0)
+        self.meshParmsLayout.addWidget(self.pointLen, 1, 1)
+        self.group.setLayout(self.meshParmsLayout)
+        self.buttonMesh = QtGui.QPushButton(translate("GDML", GmshType))
+        layoutAction = QtGui.QHBoxLayout()
+        layoutAction.addWidget(self.buttonMesh)
+        self.Vlayout = QtGui.QVBoxLayout()
+        self.Vlayout.addWidget(bboxGroup)
+        self.Vlayout.addWidget(self.group)
+        self.Vlayout.addLayout(layoutAction)
+        self.setLayout(self.Vlayout)
+        self.setWindowTitle(translate("GDML", "Tessellate with Gmsh Min"))
+
+
+    def leaveEvent(self, event):
+        print("Leave Event")
+        # FreeCADGui.Control.closeDialog()
+        # closeDialog()
+        # QtCore.QMetaObject.invokeMethod(FreeCADGui.Control, 'closeDialog', QtCore.Qt.QueuedConnection)
+        # QtCore.QTimer.singleShot(0, FreeCADGui.Control, SLOT('closeDialog()'))
+        # QtCore.QTimer.singleShot(0, FreeCADGui.Control, QtCore.SLOT('closeDialog()'))
+        QtCore.QTimer.singleShot(0, lambda: FreeCADGui.Control.closeDialog())
+
+    def retranslateUi(self, widget=None):
+        self.buttonMesh.setText(translate("GDML", "Mesh"))
+        self.setWindowTitle(translate("GDML", "Tessellate with Gmsh Min"))
+
 
 class AddMinTessellateTask:
     def __init__(self, Obj):
         self.obj = Obj
         self.tess = None
-        self.form = AddTessellateWidget(Obj.Shape, "Min Gmsh")
+        self.form = AddMinTessellateWidget(Obj.Shape, "Min Gmsh")
         self.form.buttonMesh.clicked.connect(self.actionMesh)
         # self.form.buttonload.clicked.connect(self.loadelement)
         # self.form.buttonsave.clicked.connect(self.saveelement)
@@ -1855,59 +1906,30 @@ class AddMinTessellateTask:
         #print("Action Min Gmsh : " + self.obj.Name)
         print("Action Min Gmsh : " + self.obj.Label)
         initialize()
-        typeDict = {0: 6, 1: 8, 2: 9}
-        print(dir(self))
         #print("Object " + self.obj.Name)
         print("Object " + self.obj.Label)
         if self.tess is not None:
             #print("Tessellated " + self.tess.Name)
-            print("Tessellated " + self.tess.Label)
-        ty = typeDict[self.form.type.currentIndex()]
+            print("Min Tessellated " + self.tess.Label)
         ml = self.form.maxLen.value.text()
         cl = self.form.curveLen.value.text()
         pl = self.form.pointLen.value.text()
-        print(
-            "type :  "
-            + str(ty)
-            + " ml : "
-            + ml
-            + " cl : "
-            + cl
-            + " pl : "
-            + pl
-        )
+        print( " ml : " + ml + " cl : " + cl + " pl : " + pl)
         if hasattr(self.obj, "Proxy"):
             print("has proxy")
             # Is this a remesh
             if hasattr(self.obj.Proxy, "SourceObj"):
                 print("Has source Object")
-                if (
-                    minMeshObject(
-                        self.obj.Proxy.SourceObj,
-                        # 2,
-                        # ty,
-                        # float(ml),
-                        # float(cl),
-                        # float(pl),
-                    )
-                    is True
-                ):
+                if (minMeshObject(
+                       self.obj.Proxy.SourceObj, float(ml), float(cl),
+                            float(pl)) is True):
                     self.facets = getFacets()
                     self.vertex = getVertex()
                     self.processMesh(self.vertex, self.facets)
                     return
 
         if (
-            minMeshObject(
-                self.obj,
-                # 2,
-                # ty,
-                # float(ml),
-                # float(cl),
-                # float(pl),
-            )
-            is True
-        ):
+            minMeshObject( self.obj, float(ml), float(cl), float(pl),) is True):
             print("get facets and vertex")
             self.facets = getFacets()
             self.vertex = getVertex()
@@ -1918,21 +1940,17 @@ class AddMinTessellateTask:
                 if hasattr(self.obj, "InList"):
                     if len(self.obj.InList) > 0:
                         parent = self.obj.InList[0]
-                        self.tess = parent.newObject(
-                            "Part::FeaturePython", name
+                        if parent.TypeId != "PartDesign::Body" and \
+                                parent is not None:
+                           self.tess = parent.newObject(
+                                 "Part::FeaturePython", name)
+                        else:    
+                            self.tess = FreeCAD.ActiveDocument.addObject(
+                                "Part::FeaturePython", name
                         )
-                    if parent is None:
-                        self.tess = FreeCAD.ActiveDocument.addObject(
-                            "Part::FeaturePython", name
-                        )
-                    GDMLGmshTessellated(
-                        self.tess,
-                        self.obj,
-                        getMeshLen(self.obj),
-                        self.vertex,
-                        self.facets,
-                        "mm",
-                        getSelectedMaterial(),
+                    GDMLGmshTessellated( self.tess, self.obj,
+                         getMeshLen(self.obj), self.vertex, self.facets,
+                        "mm", getSelectedMaterial(),
                     )
             else:
                 self.processMesh(self.vertex, self.facets)

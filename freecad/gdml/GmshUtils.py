@@ -105,7 +105,7 @@ def getMeshLen(obj):
     return ml
 
 
-def setMinMeshParms():
+def setMinMeshParms(lm, lc, lp):
     gmsh.option.setNumber("Mesh.StlLinearDeflection", 1)
     gmsh.option.setNumber("Mesh.StlLinearDeflectionRelative", 0)
     gmsh.option.setNumber("Mesh.StlAngularDeflection", 0.5)
@@ -113,6 +113,10 @@ def setMinMeshParms():
     gmsh.option.setNumber("Mesh.RecombineOptimizeTopology", 0)
     gmsh.option.setNumber("Mesh.RecombineNodeRepositioning", 0)
     gmsh.option.setNumber("Mesh.RecombineMinimumQuality", 1e-3)
+
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", lm)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", lc)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", lp)
 
 
 def setMeshParms(algol, lm, lc, lp):
@@ -212,7 +216,7 @@ def meshObjMesh(obj, dim):
     return True
 
 
-def minMeshObject(obj):
+def minMeshObject(obj, lm, lc, lp):
     import gmsh, tempfile
 
     # Create gmsh from shape or mesh
@@ -225,7 +229,7 @@ def minMeshObject(obj):
         obj.Shape.exportBrep(tmpFile)
         gmsh.initialize()
         gmsh.open(tmpFile)
-        setMinMeshParms()
+        setMinMeshParms(lm, lc, lp)
         gmsh.model.mesh.importStl()
         gmsh.model.mesh.removeDuplicateNodes()  # optional
         gmsh.model.mesh.recombine()
