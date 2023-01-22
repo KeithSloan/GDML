@@ -1654,6 +1654,7 @@ class AddDecimateTask:
         print("Out of Focus II")
 
 class RecombineFeature:
+
     def Activated(self):
         from .GDMLObjects import (
             GDMLGmshTessellated,
@@ -1667,23 +1668,31 @@ class RecombineFeature:
 
         for obj in FreeCADGui.Selection.getSelection():
             # if len(obj.InList) == 0: # allowed only for for top level objects
-            print("Action Gmsh Recombine")
+            print(f"Action Gmsh Recombine {obj.TypeId}")
             if obj.TypeId == "Mesh::Feature":
-                self.gmshRecombine(obj.Mesh)
+                print(f"Recombine Mesh")
+                recombineMeshObject(obj.Mesh)
                 vol = createPartVol(obj)
                 if hasattr(obj, "material"):
                     mat = obj.material
                 else:
                     mat = getSelectedMaterial()
-                recombObj = vol.newObject(
-                    "Part::FeaturePython", "GDMLTessellated_RecombinedMesh")
+                recombObj = vol.newObject("Part::FeaturePython",
+                             "GDMLTessellated_RecombinedMesh"+obj.Label)
 
-                vertex = getFacets()
-                facets = getVertex()
-                meshLen = getMeshLen()
+                vertex = getVertex()
+                facets = getFacets()
+                meshLen = 0.1   # We don't know Mesh parameters
                 GDMLGmshTessellated(recombObj, obj,
                          meshLen, vertex, facets,
                         "mm", getSelectedMaterial())
+                if FreeCAD.GuiUp:
+                   obj.ViewObject.Visibility = False
+                   ViewProvider(recombObj.ViewObject)
+                   recombObj.ViewObject.DisplayMode = "Wireframe"
+                   recombObj.recompute()
+                   FreeCADGui.SendMsgToActiveView("ViewFit")
+
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -1701,10 +1710,6 @@ class RecombineFeature:
                 "GDML_TessGroup", "Recombine Selected Mesh"
             ),
         }
-
-    def gmshRecombine(self, obj):
-        if obj.TypeId == "Mesh::Feature":
-            recombineMeshObject(obj.mesh)
 
 
 
@@ -1897,7 +1902,7 @@ class AddMinTessellateTask:
         from .GDMLObjects import ViewProvider
 
         print("Update Tessellated Object")
-        print(dir(self))
+        #print(dir(self))
         #print("Object Name " + self.obj.Name)
         print("Object Name " + self.obj.Label)
         print("Object Type " + self.obj.TypeId)
@@ -1919,7 +1924,7 @@ class AddMinTessellateTask:
             print("Tesselated Name " + self.tess.Label)
             print("Update parms : " + self.tess.Label)
             if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
-                print(dir(self.tess.Proxy))
+                #print(dir(self.tess.Proxy))
                 self.tess.Proxy.updateParams(vertex, facets, False)
             else:
                 self.tess.updateParams(vertex, facets, False)
@@ -1971,24 +1976,22 @@ class AddMinTessellateTask:
         #print( " ml : " + ml + " cl : " + cl + " pl : " + pl)
         surfaceDev = self.form.surfaceDeviation.value.text()
         angularDev = self.form.angularDeviation.value.text()
+        # Is this a remesh of GDMLGmshTessellated
         if hasattr(self.obj, "Proxy"):
-            print("has proxy")
-            print(dir(self.obj))
-            # Is this a remesh
-            #if hasattr(self.obj.Proxy, "SourceObj"):
-            #    print("Has source Object")
-            #if minMeshObject(self.obj.Proxy.Shape,
-            if minMeshObject(self.obj,
+            print(f"has proxy Type {self.obj.Proxy.Type}")
+            if hasattr(self.obj.Proxy, "Type"):
+                if self.obj.Proxy.Type == "GDMLGmshTessellated":
+                    if hasattr(self.obj.Proxy, "SourceObj"):
+                        print("Has source Object")
+                        if minMeshObject(self.obj,
                             float(surfaceDev),
                             float(angularDev)):
-                    self.facets = getFacets()
-                    self.vertex = getVertex()
-                    self.processMesh(self.vertex, self.facets)
-                    return
+                                self.facets = getFacets()
+                                self.vertex = getVertex()
+                                self.processMesh(self.vertex, self.facets)
+                                return
 
-        if ( minMeshObject(self.obj,
-                float(surfaceDev),
-                float(angularDev))):
+        if minMeshObject(self.obj, float(surfaceDev), float(angularDev)):
             print("get facets and vertex")
             self.facets = getFacets()
             self.vertex = getVertex()
@@ -2081,7 +2084,6 @@ class AddTessellateTask:
             print("Tesselated Name " + self.tess.Name)
             print("Update parms : " + self.tess.Name)
             if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
-                print(dir(self.tess.Proxy))
                 self.tess.Proxy.updateParams(vertex, facets, False)
             else:
                 self.tess.updateParams(vertex, facets, False)
