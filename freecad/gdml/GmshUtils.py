@@ -216,25 +216,51 @@ def meshObjMesh(obj, dim):
     return True
 
 
-def minMeshObject(obj, lm, lc, lp):
+#def minMeshObject(obj, lm, lc, lp):
+def minMeshObject(obj, sd, ad):
+    import gmsh, math, MeshPart, tempfile
+
+    # Create gmsh from shape or mesh
+    # Clear any previous models
+    # print('mesh Object - first Clear')
+    print(f"minMeshObject")
+    gmsh.clear()
+    if hasattr(obj, "Shape"):
+        print("minMesh Shape")
+        tmpFile = tempfile.NamedTemporaryFile(suffix=".stl").name
+        shape = obj.Shape.copy(False)
+        #mesh = MeshPart.meshFromShape( Shape=shape, Fineness=2,
+        #    SecondOrder=0, Optimize=1, AllowQuad=0,)
+        mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=sd,
+               AngularDeflection = math.radians(ad), Relative=False)
+        mesh.write(tmpFile)
+        mesh.write("/tmp/meshFile.stl")
+        gmsh.initialize()
+        gmsh.open(tmpFile)
+        #setMinMeshParms(lm, lc, lp)
+        gmsh.model.mesh.importStl()
+        gmsh.model.mesh.removeDuplicateNodes()  # optional
+        gmsh.model.mesh.recombine()
+        # gmsh.finalize()
+        return True
+
+
+def recombineMeshObject(fcMesh):
     import gmsh, tempfile
 
     # Create gmsh from shape or mesh
     # Clear any previous models
     # print('mesh Object - first Clear')
     gmsh.clear()
-    if hasattr(obj, "Shape"):
-        print("minMesh Shape")
-        tmpFile = tempfile.NamedTemporaryFile(suffix=".brep").name
-        obj.Shape.exportBrep(tmpFile)
-        gmsh.initialize()
-        gmsh.open(tmpFile)
-        setMinMeshParms(lm, lc, lp)
-        gmsh.model.mesh.importStl()
-        gmsh.model.mesh.removeDuplicateNodes()  # optional
-        gmsh.model.mesh.recombine()
-        # gmsh.finalize()
-        return True
+    tmpFile = tempfile.NamedTemporaryFile(suffix=".stl").name
+    fcMesh.save(tmpFile)
+    gmsh.initialize()
+    gmsh.open(tmpFile)
+    gmsh.model.mesh.importStl()
+    gmsh.model.mesh.removeDuplicateNodes()  # optional
+    gmsh.model.mesh.recombine()
+    # gmsh.finalize()
+    return True
 
 
 def meshObject(obj, dim, algol, lm, lc, lp):

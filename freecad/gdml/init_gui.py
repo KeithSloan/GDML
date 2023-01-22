@@ -124,6 +124,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "DecimateCommand",
             "Mesh_FromPartShape",
             "Mesh_Evaluation",
+            "Mesh2TessGroupCommand",
             "Mesh2TessCommand",
             "Tess2MeshCommand",
             "TetrahedronCommand",
@@ -166,8 +167,8 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "DecimateCommand",
             "Mesh_FromPartShape",
             "Mesh_Evaluation",
-            "Mesh2TessCommand",
-            "Tess2MeshCommand",
+            "Mesh2TessGroupCommand",
+            #"Tess2MeshCommand",
             "TetrahedronCommand",
             "AddCompound",
         ]
