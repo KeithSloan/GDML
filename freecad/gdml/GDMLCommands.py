@@ -1837,11 +1837,13 @@ class AddMinTessellateWidget(QtGui.QWidget):
         maxl = int( ( Shape.BoundBox.XLength + Shape.BoundBox.YLength \
              + Shape.BoundBox.ZLength) / 15
         )
+        sd = max(max(Shape.BoundBox.XLength, Shape.BoundBox.YLength,
+                 Shape.BoundBox.ZLength)/500, .1)
         #self.type = QtGui.QComboBox()
         #self.type.addItems(["Triangular", "Quadrangular", "Parallelograms"])
         self.group = QtGui.QGroupBox("Mesh Characteristics")
         #self.maxLen = iField("Max Length", 5, str(maxl))
-        self.surfaceDeviation = iField("Surface Deviation", 5, ".10")
+        self.surfaceDeviation = iField("Surface Deviation", 5, str(sd))
         self.angularDeviation = iField("Angular Deviation", 5, "30")
         self.Vertex = oField("Vertex", 6, "")
         self.Facets = oField("Facets", 6, "")
@@ -2006,14 +2008,13 @@ class AddMinTessellateTask:
                                 parent is not None:
                            self.tess = parent.newObject(
                                  "Part::FeaturePython", name)
-                        else:    
-                            self.tess = FreeCAD.ActiveDocument.addObject(
-                                "Part::FeaturePython", name
-                        )
-                    GDMLGmshTessellated( self.tess, self.obj,
+                if self.tess is None:    
+                   self.tess = FreeCAD.ActiveDocument.addObject(
+                                "Part::FeaturePython", name)
+                print(f"self.tess {self.tess}")        
+                GDMLGmshTessellated(self.tess, self.obj,
                          getMeshLen(self.obj), self.vertex, self.facets,
-                        "mm", getSelectedMaterial(),
-                    )
+                        "mm", getSelectedMaterial())
             else:
                 self.processMesh(self.vertex, self.facets)
 
