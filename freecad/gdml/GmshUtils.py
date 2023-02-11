@@ -60,7 +60,10 @@ def Gmsh(obj):
 
 
 def initialize():
-    gmsh.initialize()
+    try:
+        gmsh.initialize()
+    except:
+        print(f"Gmsh shared library must be copied to FreeCAD Resources")    
     print(f"Gmsh version {gmsh.GMSH_API_VERSION}")
     gmsh.clear()
     gmsh.option.setNumber("Mesh.Algorithm3D", 1)
