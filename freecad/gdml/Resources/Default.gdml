@@ -7,7 +7,7 @@
   <materials>
   </materials>
 <solids>
-<box lunit="mm" name="WorldBox" x="20.0" y="20.0" z="20.0" />
+<box lunit="mm" name="WorldBox" x="100.0" y="100.0" z="100.0" />
 </solids>
 <structure>
   <volume name="worldVOL">

@@ -223,7 +223,7 @@ def minMeshObject(obj, sd, ad):
     # Create gmsh from shape or mesh
     # Clear any previous models
     # print('mesh Object - first Clear')
-    print(f"minMeshObject")
+    print(f"minMeshObject sd {sd} ad {ad}")
     gmsh.clear()
     if hasattr(obj, "Shape"):
         print("minMesh Shape")
@@ -791,7 +791,7 @@ def minMeshObject(obj, sd, ad):
     # Create gmsh from shape or mesh
     # Clear any previous models
     # print('mesh Object - first Clear')
-    print(f"minMeshObject")
+    print(f"minMeshObject sd {sd} ad {ad}")
     gmsh.clear()
     if hasattr(obj, "Shape"):
         print("minMesh Shape")

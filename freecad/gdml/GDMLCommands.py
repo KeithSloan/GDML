@@ -1,4 +1,4 @@
-# **************************************************************************
+# **************************************************************************d
 # *                                                                        *
 # *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
 # *             (c) Dam Lambert 2020                                       *
@@ -1633,7 +1633,7 @@ class AddDecimateTask:
         from .GmshUtils import TessellatedShape2Mesh
 
         print("Action Decimate To Size : " + self.obj.Name)
-        print(dir(self))
+        #print(dir(self))
         if hasattr(self.obj, "Mesh"):
             mesh = self.obj.Mesh
         else:
@@ -1820,46 +1820,79 @@ class AddTessellateWidget(QtGui.QWidget):
         self.setWindowTitle(translate("GDML", "Tessellate with Gmsh"))
 
 class AddMinTessellateWidget(QtGui.QWidget):
-    def __init__(self, Shape, GmshType, *args):
+    def __init__(self, Obj, GmshType, *args):
         QtGui.QWidget.__init__(self, *args)
+        self.Obj = Obj
+        self.setWindowTitle(translate("GDML", "Tessellate with Gmsh Min"))
+        # Bounding Box Infp
         bboxGroup = QtGui.QGroupBox("Objects Bounding Box")
         laybbox = QtGui.QHBoxLayout()
         laybbox.addWidget(
-            QtGui.QLabel("Width : " + str(Shape.BoundBox.XLength))
-        )
+            QtGui.QLabel("Width : " + str(Obj.Shape.BoundBox.XLength))
+            )
         laybbox.addWidget(
-            QtGui.QLabel("Height : " + str(Shape.BoundBox.YLength))
-        )
+            QtGui.QLabel("Height : " + str(Obj.Shape.BoundBox.YLength))
+            )
         laybbox.addWidget(
-            QtGui.QLabel("Depth : " + str(Shape.BoundBox.ZLength))
-        )
+            QtGui.QLabel("Depth : " + str(Obj.Shape.BoundBox.ZLength))
+            )
         bboxGroup.setLayout(laybbox)
-        maxl = int( ( Shape.BoundBox.XLength + Shape.BoundBox.YLength \
-             + Shape.BoundBox.ZLength) / 15
+        maxl = int( ( Obj.Shape.BoundBox.XLength + Obj.Shape.BoundBox.YLength \
+             + Obj.Shape.BoundBox.ZLength) / 15
         )
-        #self.type = QtGui.QComboBox()
-        #self.type.addItems(["Triangular", "Quadrangular", "Parallelograms"])
-        self.group = QtGui.QGroupBox("Mesh Characteristics")
+        # Current Mesh Info
+        self.meshInfoGroup = QtGui.QGroupBox("Mesh Info")
+        meshInfo = QtGui.QHBoxLayout()
+        vertex = facets = ""
+        meshCounts = False
+        self.tess = self.Obj
+        if hasattr(self.Obj, 'tessellated'):
+            if self.Obj.tessellated is not None:
+                self.tess = self.Obj.tessellated
+        if hasattr(self.tess, 'vertex'):
+            vertex = str(self.tess.vertex)
+            meshCounts = True
+        if hasattr(self.tess, 'facets'):
+            facets = str(self.tess.facets)
+            meshCounts = True
+        self.Vertex = oField("Vertex", 6, vertex)
+        self.Facets = oField("Facets", 6, facets)
+        meshInfo.addWidget(self.Vertex)
+        meshInfo.addWidget(self.Facets)
+        self.meshInfoGroup.setLayout(meshInfo)
         #self.maxLen = iField("Max Length", 5, str(maxl))
-        self.surfaceDeviation = iField("Surface Deviation", 5, ".10")
-        self.angularDeviation = iField("Angular Deviation", 5, "30")
-        self.Vertex = oField("Vertex", 6, "")
-        self.Facets = oField("Facets", 6, "")
+        # Mesh Parameters
+        self.meshParmsGroup = QtGui.QGroupBox("Mesh Characteristics")
+        if hasattr(Obj, "surfaceDev"):
+            sd = str(Obj.surfaceDev)
+        else:
+            sd = ".10"    
+        self.surfaceDeviation = iField("Surface Deviation", 5, sd)
+        if hasattr(Obj, "angularDev"):
+            ad = str(Obj.angularDev)
+        else:
+            ad = "30"
+        self.angularDeviation = iField("Angular Deviation", 5, ad)
         self.meshParmsLayout = QtGui.QGridLayout()
         #self.meshParmsLayout.addWidget(self.type, 0, 0)
         #self.meshParmsLayout.addWidget(self.maxLen, 0, 1)
         self.meshParmsLayout.addWidget(self.surfaceDeviation, 1, 0)
         self.meshParmsLayout.addWidget(self.angularDeviation, 1, 1)
-        self.group.setLayout(self.meshParmsLayout)
+        self.meshParmsGroup.setLayout(self.meshParmsLayout)
+        # Action Buttons
         self.buttonMesh = QtGui.QPushButton(translate("GDML", GmshType))
         layoutAction = QtGui.QHBoxLayout()
         layoutAction.addWidget(self.buttonMesh)
+        # Panel Layout
         self.Vlayout = QtGui.QVBoxLayout()
         self.Vlayout.addWidget(bboxGroup)
-        self.Vlayout.addWidget(self.group)
+        self.Vlayout.addWidget(self.meshInfoGroup)
+        self.Vlayout.addWidget(self.meshParmsGroup)
         self.Vlayout.addLayout(layoutAction)
         self.setLayout(self.Vlayout)
-        self.setWindowTitle(translate("GDML", "Tessellate with Gmsh Min"))
+        if meshCounts == False:
+            print(f"Not previusly Tessellated")
+            self.meshInfoGroup.setVisible(False)
 
 
     def leaveEvent(self, event):
@@ -1879,8 +1912,7 @@ class AddMinTessellateWidget(QtGui.QWidget):
 class AddMinTessellateTask:
     def __init__(self, Obj):
         self.obj = Obj
-        self.tess = None
-        self.form = AddMinTessellateWidget(Obj.Shape, "Min Gmsh")
+        self.form = AddMinTessellateWidget(Obj, "Min Gmsh")
         self.form.buttonMesh.clicked.connect(self.actionMesh)
         # self.form.buttonload.clicked.connect(self.loadelement)
         # self.form.buttonsave.clicked.connect(self.saveelement)
@@ -1913,30 +1945,37 @@ class AddMinTessellateTask:
                 self.obj.Proxy.Type == "GDMLGmshTessellated"
                 or self.obj.Proxy.Type == "GDMLTessellated"
             ):
+                self.tess = self.obj.Proxy
+                #self.tess = self.obj
                 self.obj.Proxy.updateParams(vertex, facets, False)
         # print(dir(self.form))
         print("Vertex : " + str(len(vertex)))
         print("Facets : " + str(len(facets)))
         # Update Info of GDML Tessellated Object
-        if self.tess is not None:
-            #print("Tesselated Name " + self.tess.Name)
-            #print("Update parms : " + self.tess.Name)
-            print("Tesselated Name " + self.tess.Label)
-            print("Update parms : " + self.tess.Label)
-            if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
-                #print(dir(self.tess.Proxy))
-                self.tess.Proxy.updateParams(vertex, facets, False)
-            else:
-                self.tess.updateParams(vertex, facets, False)
+        if hasattr(self.obj, "tessellated"):
+            if self.obj.tessellated is not None:
+                self.tess = self.obj.tessellated
+                #print("Tesselated Name " + self.tess.Name)
+                #print("Update parms : " + self.tess.Name)
+                print("Tesselated Name " + self.tess.Label)
+                print("Update parms : " + self.tess.Label)
+                if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
+                    #print(dir(self.tess.Proxy))
+                    self.tess.Proxy.updateParams(vertex, facets, False)
+                else:
+                    self.tess.updateParams(vertex, facets, False)
             # print('Update parms : '+self.tess.Name)
             # self.tess.updateParams(vertex,facets,False)
-        # self.form.Vertex.value.setText(QtCore.QString(len(vertex)))
         self.form.Vertex.value.setText(str(len(vertex)))
-        # self.form.Facets.value.setText(QtCore.QString(len(facets)))
         self.form.Facets.value.setText(str(len(facets)))
 
         if FreeCAD.GuiUp:
             if self.tess is not None:
+                print(dir(self.obj))
+                print(self.obj.TypeId)
+                print(dir(self.tess))
+                print(self.tess.TypeId)
+                print(f"self.obj {self.obj.Name} self.tess {self.tess.Name}")
                 self.obj.ViewObject.Visibility = False
                 ViewProvider(self.tess.ViewObject)
                 self.tess.ViewObject.DisplayMode = "Wireframe"
@@ -1960,42 +1999,36 @@ class AddMinTessellateTask:
             printMyInfo,
             initialize,
         )
-        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular
+        from .GDMLObjects import GDMLGmshTessellated, GDMLTriangular, \
+                setLengthQuantity
 
         #print("Action Min Gmsh : " + self.obj.Name)
         print("Action Min Gmsh : " + self.obj.Label)
         initialize()
         #print("Object " + self.obj.Name)
         print("Object " + self.obj.Label)
-        if self.tess is not None:
-            #print("Tessellated " + self.tess.Name)
-            print("Min Tessellated " + self.tess.Label)
-        #ml = self.form.maxLen.value.text()
-        #cl = self.form.curveLen.value.text()
-        #pl = self.form.pointLen.value.text()
-        #print( " ml : " + ml + " cl : " + cl + " pl : " + pl)
-        surfaceDev = self.form.surfaceDeviation.value.text()
-        angularDev = self.form.angularDeviation.value.text()
-        # Is this a remesh of GDMLGmshTessellated
+        #if self.Obj.tessellated is not None:
+        #    self.tess = self.Obj.tessellated
+        #    #print("Tessellated " + self.tess.Name)
+        #    print("Previously Tessellated " + self.tess.Label)
+        obj2Mesh = self.obj
         if hasattr(self.obj, "Proxy"):
             print(f"has proxy Type {self.obj.Proxy.Type}")
+            #print(dir(self.obj.Proxy))
+            #print(dir(self.obj))
+            surfaceDev = self.form.surfaceDeviation.value.text()
+            angularDev = self.form.angularDeviation.value.text()
+            # Is this a remesh of GDMLGmshTessellated
             if hasattr(self.obj.Proxy, "Type"):
                 if self.obj.Proxy.Type == "GDMLGmshTessellated":
                     if hasattr(self.obj.Proxy, "SourceObj"):
-                        print("Has source Object")
-                        if minMeshObject(self.obj,
-                            float(surfaceDev),
-                            float(angularDev)):
-                                self.facets = getFacets()
-                                self.vertex = getVertex()
-                                self.processMesh(self.vertex, self.facets)
-                                return
-
-        if minMeshObject(self.obj, float(surfaceDev), float(angularDev)):
+                        print("Has source Object - ReMesh")
+                        obj2Mesh = self.obj.Proxy.SourceObj
+        if minMeshObject(obj2Mesh, float(surfaceDev), float(angularDev)):
             print("get facets and vertex")
             self.facets = getFacets()
             self.vertex = getVertex()
-            if self.tess is None:
+            if not hasattr(obj2Mesh, "tessellated"):
                 #name = "GDMLTessellate_" + self.obj.Name
                 name = "GDMLTessellate_" + self.obj.Label
                 parent = None
@@ -2008,29 +2041,44 @@ class AddMinTessellateTask:
                                  "Part::FeaturePython", name)
                         else:    
                             self.tess = FreeCAD.ActiveDocument.addObject(
-                                "Part::FeaturePython", name
-                        )
+                                "Part::FeaturePython", name)
                     GDMLGmshTessellated( self.tess, self.obj,
                          getMeshLen(self.obj), self.vertex, self.facets,
-                        "mm", getSelectedMaterial(),
-                    )
-            else:
-                self.processMesh(self.vertex, self.facets)
+                        "mm", getSelectedMaterial())
+                    self.tess.addProperty(
+                        "App::PropertyFloat","surfaceDev","GmshParms", \
+                        "Surface Deviation")
+                    self.tess.addProperty(
+                        "App::PropertyFloat","angularDev","GmshParms", \
+                        "Angular Deviation")
+                    setLengthQuantity(self.tess, self.obj.lunit)
+                    self.tess.surfaceDev = float(surfaceDev)
+                    self.tess.angularDev = float(angularDev)
+                    # Make Mesh Info Visible
+                    self.form.meshInfoGroup.setVisible(True)
+                    # Indicate that Object has been Tessellated
+                    self.obj.addProperty("App::PropertyLinkGlobal","tessellated","Base")
+                    self.obj.tessellated = self.tess
+            #else:
+            #    self.processMesh(self.vertex, self.facets)
+            self.processMesh(self.vertex, self.facets)
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(self.tess)
 
-        print("Check Form")
+        #print("Check Form")
         # print(dir(self.form))
-        if self.tess is not None:
-            if not hasattr(self.form, "infoGroup"):
-                self.form.infoGroup = QtGui.QGroupBox("Mesh Information")
-                print("Mesh Info Layout")
-                layMeshInfo = QtGui.QHBoxLayout()
-                layMeshInfo.addWidget(self.form.Vertex)
-                layMeshInfo.addWidget(self.form.Facets)
-                # layMeshInfo.addWidget(self.form.Nodes)
-                self.form.infoGroup.setLayout(layMeshInfo)
-                self.form.Vlayout.addWidget(self.form.infoGroup)
-                # self.form.setLayout(self.form.Vlayout)
-                self.processMesh(self.vertex, self.facets)
+        #if self.tess is not None:
+        #    if not hasattr(self.form, "infoGroup"):
+        #        self.form.infoGroup = QtGui.QGroupBox("Mesh Information")
+        #        print("Mesh Info Layout")
+        #        layMeshInfo = QtGui.QHBoxLayout()
+        #        #layMeshInfo.addWidget(self.form.Vertex)
+        #        #layMeshInfo.addWidget(self.form.Facets)
+        #        # layMeshInfo.addWidget(self.form.Nodes)
+        #        self.form.infoGroup.setLayout(layMeshInfo)
+        #        self.form.Vlayout.addWidget(self.form.infoGroup)
+        #       # self.form.setLayout(self.form.Vlayout)
+        #        self.processMesh(self.vertex, self.facets)
 
     def leaveEvent(self, event):
         print("Leave Event II")
@@ -2340,7 +2388,7 @@ class TessGmshMinFeature:
                     if hasattr(obj, "Proxy"):
                         print(obj.Proxy.Type)
                         if obj.Proxy.Type == "GDMLGmshTessellated":
-                            print("Build panel for EXISTING Gmsh Tessellate")
+                            print("Update panel for EXISTING Gmsh Tessellate")
                             panel.form.meshInfoLayout = QtGui.QHBoxLayout()
                             panel.form.meshInfoLayout.addWidget(
                                 oField("Vertex", 6, str(len(obj.Proxy.Vertex)))

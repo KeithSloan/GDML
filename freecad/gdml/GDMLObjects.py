@@ -3952,24 +3952,25 @@ class GDMLGmshTessellated(GDMLsolid):
             "App::PropertyInteger", "vertex", "GDMLGmshTessellated", "Vertex"
         ).vertex = len(vertex)
         obj.setEditorMode("vertex", 1)
-        obj.addProperty(
-            "App::PropertyFloat",
-            "m_maxLength",
-            "GDMLGmshTessellated",
-            "Max Length",
-        ).m_maxLength = meshLen
-        obj.addProperty(
-            "App::PropertyFloat",
-            "m_curveLen",
-            "GDMLGmshTessellated",
-            "Curve Length",
-        ).m_curveLen = meshLen
-        obj.addProperty(
-            "App::PropertyFloat",
-            "m_pointLen",
-            "GDMLGmshTessellated",
-            "Point Length",
-        ).m_pointLen = meshLen
+        # Properties NOT the same GmshTessellate GmshMinTessellate
+        #obj.addProperty(
+        #    "App::PropertyFloat",
+        #    "m_maxLength",
+        #    "GDMLGmshTessellated",
+        #    "Max Length",
+        #).m_maxLength = meshLen
+        #obj.addProperty(
+        #    "App::PropertyFloat",
+        #    "m_curveLen",
+        #    "GDMLGmshTessellated",
+        #    "Curve Length",
+        #).m_curveLen = meshLen
+        #obj.addProperty(
+        #    "App::PropertyFloat",
+        #    "m_pointLen",
+        #    "GDMLGmshTessellated",
+        #    "Point Length",
+        #).m_pointLen = meshLen
         obj.addProperty(
             "App::PropertyEnumeration", "lunit", "GDMLGmshTessellated", "lunit"
         )
