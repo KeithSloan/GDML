@@ -911,7 +911,7 @@ class GDMLElCone(GDMLsolid):
         # https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
         # the parametric equation of the elliptical cone:
         # x = dx*(zmax - u) * cos(v), v = 0..2Pi (note, as of 2021-11-21,
-        # web page mistakingly shows /u)
+        # web page mistakenly shows /u)
         # y = dy*(zmax - u) * sin(v)
         # z = u, u = -zcut..zcut
         # Therefore the bottom base of the cone (at z=u=-zcut) has
@@ -2597,7 +2597,7 @@ class GDMLTwistedtubs(GDMLsolid):
             rout = fp.endouterrad * mul
             if rin > rout:
                 print(
-                    f"Erro: Inner radius ({rin}) greater than outer radius ({rout})"
+                    f"Error: Inner radius ({rin}) greater than outer radius ({rout})"
                 )
                 return
             zlen = fp.zlen * mul
@@ -4591,7 +4591,7 @@ class GDMLSampledTessellated(GDMLsolid):
             return
         # print('Create Shape')
 
-        # The vertx index list, is not uniform, because some facets
+        # The vertex index list, is not uniform, because some facets
         # could have four vertexes, instead of three:
         # indexList =     [i00, i01, i02,  i10, i11, i12, i13, i20, i21, i22, ....]
         # vertsPerFacet = [2,              3,                , 2, ...]

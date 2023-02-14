@@ -1794,7 +1794,7 @@ def buildAssemblyTree(worldVol):
 
     def processVolAssem(vol, imprNum):
         # vol - Volume Object
-        # xmlParent - xml of this volumes Parent
+        # xmlParent - xml of this volume's Parent
         if vol.Label[:12] != "NOT_Expanded":
             if isContainer(vol):
                 processContainer(vol)
@@ -1821,7 +1821,7 @@ def buildAssemblyTree(worldVol):
     def processAssembly(vol, imprNum):
         print(f"{vol.Label} typeId= {vol.TypeId}")
         if hasattr(vol, "LinkedObject"):
-            print(f"{vol.Lable} has a LinkedObject")
+            print(f"{vol.Label} has a LinkedObject")
             linkedObj = vol.getLinkedObject()
             if linkedObj.Label in AssemblyDict:
                 entry = AssemblyDict[linkedObj.Label]
@@ -1877,7 +1877,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     global structure
     # vol - Volume Object
     # xmlVol - xml of this assembly
-    # xmlParent - xml of this volumes Paretnt
+    # xmlParent - xml of this volume's Parent
     # psPlacement: parent solid placement, may be None
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
@@ -1892,8 +1892,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
 
     #
-    # Note that the assembly object are under an App::Part, not
-    # a solid, so there is no neede to adjust for a "parent solid"
+    # Note that the assembly object is under an App::Part, not
+    # a solid, so there is no need to adjust for a "parent solid"
     # placement.
     #
     for obj in assemObjs:
@@ -1926,7 +1926,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
     global skinSurfaces
 
     # vol - Volume Object
-    # xmlParent - xml of this volumes Paretnt
+    # xmlParent - xml of this volume's Parent
     # App::Part will have Booleans & Multifuse objects also in the list
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
@@ -2071,7 +2071,7 @@ def processContainer(vol, xmlParent, psPlacement):
 def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
 
     # vol - Volume Object
-    # xmlParent - xml of this volumes Parent
+    # xmlParent - xml of this volume's Parent
     # psPlacement = parent solid placement.
     #               If the vol is placed inside a solid
     #               and that solid has a non-zero placement
@@ -5030,12 +5030,12 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
 
         # TODO must deal with case where cutting chord is along major axis
         # u_vc_vcenter = vc_vcenter.normalize()
-        # unit vector fom center of circle to center of chord
+        # unit vector from center of circle to center of chord
 
         # vertexes of triangle formed by chord ends and ellise mid point
         # In polar coordinates equation of ellipse is
         # r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
-        # if the ellipse is rotatated by an angle AngleXU, then
+        # if the ellipse is rotated by an angle AngleXU, then
         # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU),
         # for thet in frame of unrotated ellipse
         # now edge.FirstParameter is beginning angle of unrotated ellipse
@@ -5064,7 +5064,7 @@ class ExtrudedEllipticalSection(ExtrudedClosedCurve):
         # vertexes of triangle formed by chord ends and ellise mid point
         # In polar coordinates equation of ellipse is
         # r(thet) = a*(1-eps*eps)/(1+eps*cos(thet))
-        # if the ellipse is rotatated by an angle AngleXU, then
+        # if the ellipse is rotated by an angle AngleXU, then
         # x = r*cos(thet+angleXU), y = r*sin(thet+angleXU),
         # for thet in frame of unrotated ellipse
         # now edge.FirstParameter is beginning angle of unrotated ellipse
@@ -5414,7 +5414,7 @@ def exportXtru(name, vlist, height):
 
     # We are assuming that the points to that form the
     # the edges to be extruded are al coplanar and in the x-y plane
-    # with a possible zoffset, whch is taken as the common
+    # with a possible zoffset, which is taken as the common
     # z-coordinate of the first vertex
     if len(vlist) == 0:
         return

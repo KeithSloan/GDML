@@ -180,7 +180,7 @@ borderSurfaces = []
 # WWW - assembly volume instance number. I gather this is a number that starts
 #       at 1 when the first assembly structure is encountered in the gdml file
 #       and then is incremented by one every time a new <assembly structure
-#       is encounterd
+#       is encountered
 # XXX - assembly volume imprint number. I am not sure what this is. I assume that
 #       a given assembly can be placed inside several logical volume mothers
 #       and that the imprint number keeps track of how many times the one and same
@@ -192,7 +192,7 @@ borderSurfaces = []
 # ZZZ - the logical volume index inside the assembly volume. This is a counter
 #       that increases sequentially with the number of solids in the assembly
 # to keep track of what a bordersurface is replaced by we use the following
-# dictionaries. Each has as key the name of the App::Part  that appears
+# dictionaries. Each has as key the name of the App::Part that appears
 # in the PV1, PV2 properties of the bordersurface
 #
 # a dictionary of original part name as key and
@@ -200,8 +200,8 @@ borderSurfaces = []
 # This dictionary will be used in constructing the bordersurface replacements
 replacementDict = {}
 #
-# dictionaries to keep track of the instance nmber and imprint number of
-# each volume (PV) tha appears in the  bordersurface
+# dictionaries to keep track of the instance number and imprint number of
+# each volume (PV) that appears in the  bordersurface
 instanceDict = {}
 imprintDict = {}
 
