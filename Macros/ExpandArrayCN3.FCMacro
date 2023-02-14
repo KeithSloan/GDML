@@ -124,7 +124,7 @@ def processBaseObj(arrayFlag, parent, baseObj, cnCount, placement, placementList
                   new.LinkedObject = baseObj
                   new.LinkPlacement = placement
                   cnCount = setCopyNumber(new, cnCount)
-                  # treat as a link so no need to process OutList other than imbedded Array
+                  # treat as a link so no need to process OutList other than embedded Array
                   if hasattr(baseObj, 'OutList'):
                      print(f'Part outllst len {len(baseObj.OutList)}')
                      for obj in baseObj.OutList:

@@ -25,7 +25,7 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 ### New Gmsh facility - (12/22) [Gmsh Min Tessellate](https://github.com/KeithSloan/GDML/wiki/Gmsh---Min-Tessellate)
 
 Uses a recent facility in Gmsh to Tessellate and then **recombine** facets, reducing the
-complexity of the mesh. Trival example is that a cube will be 6 Quad Facets, rather than 12 Triangular Facets.
+complexity of the mesh. Trivial example is that a cube will be 6 Quad Facets, rather than 12 Triangular Facets.
 
 ### New branch **loops**
 

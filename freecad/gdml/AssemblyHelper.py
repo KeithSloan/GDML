@@ -13,7 +13,7 @@
 # WWW - assembly volume instance number. I gather this is a number that starts
 #       at 1 when the first assembly structure is encountered in the gdml file
 #       and then is incremented by one every time a new <assembly structure
-#       is encounterd
+#       is encountered
 # XXX - assembly volume imprint number. I am not sure what this is. I assume that
 #       a given assembly can be placed inside several logical volume mothers
 #       and that the imprint number keeps track of how many times the one and same

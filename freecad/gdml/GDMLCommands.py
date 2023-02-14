@@ -1703,7 +1703,7 @@ class AddDecimateTask:
 #        return {
 #            "Pixmap": "GDML_Recombine",
 #            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-#                "GDML_TessGroup", "Recombine Mesh to GDML Tesselation"
+#                "GDML_TessGroup", "Recombine Mesh to GDML Tessellation"
 #            ),
 #            "Decimate": QtCore.QT_TRANSLATE_NOOP(
 #                "GDML_TessGroup", "Recombine Selected Mesh"
@@ -1958,9 +1958,9 @@ class AddMinTessellateTask:
         if hasattr(self.obj, "tessellated"):
             if self.obj.tessellated is not None:
                 self.tess = self.obj.tessellated
-                #print("Tesselated Name " + self.tess.Name)
+                #print("Tessellated Name " + self.tess.Name)
                 #print("Update parms : " + self.tess.Name)
-                print("Tesselated Name " + self.tess.Label)
+                print("Tessellated Name " + self.tess.Label)
                 print("Update parms : " + self.tess.Label)
                 if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
                     #print(dir(self.tess.Proxy))
@@ -2123,7 +2123,7 @@ class AddTessellateTask:
         print("Facets : " + str(len(facets)))
         # Update Info of GDML Tessellated Object
         if self.tess is not None:
-            print("Tesselated Name " + self.tess.Name)
+            print("Tessellated Name " + self.tess.Name)
             print("Update parms : " + self.tess.Name)
             if hasattr(self.tess, "Proxy"):  # If GDML object has Proxy
                 self.tess.Proxy.updateParams(vertex, facets, False)
@@ -2317,7 +2317,7 @@ class TessellateFeature:
                 "GDML_TessGroup", "GDML Tessellate Selected Object"
             ),
             "Tessellate_Planar": QtCore.QT_TRANSLATE_NOOP(
-                "GDML_PolyGroup", "Tesselate Selected Planar Object"
+                "GDML_PolyGroup", "Tessellate Selected Planar Object"
             ),
         }
 

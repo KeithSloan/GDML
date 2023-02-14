@@ -19,7 +19,7 @@
 # *   USA                                                                  *
 # *                                                                        *
 # ***************************************************************************
-__title__ = "convertOBJ - Covert Obj to GDML Tessellated"
+__title__ = "convertOBJ - Convert Obj to GDML Tessellated"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/GDML/Utils"]
 
