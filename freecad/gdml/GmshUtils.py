@@ -187,7 +187,7 @@ def createGmshModelFromFC(fcMesh):
     # Not currently used
     gmsh.model.add("X2")
     gmsh.logger.start()
-    print(dir(fcMesh.Points[0]))
+    #print(dir(fcMesh.Points[0]))
     print(fcMesh.Points)
     nodes = range(0, fcMesh.CountPoints)
     coords = []
@@ -252,7 +252,7 @@ def minMeshObject(obj, sd, ad):
 def meshObject(obj, dim, algol, lm, lc, lp):
     # Create gmsh from shape or mesh
     # Clear any previous models
-    print("mesh Object - first Clear")
+    print(f"mesh Object dim {dim} algol {algol} lm {lm} lc {lc} lp {lp}")
     gmsh.clear()
     setMeshParms(algol, lm, lc, lp)
     if hasattr(obj, "Shape"):
@@ -464,7 +464,7 @@ def Tetrahedron2Mesh(obj):
     import Mesh
 
     print("Tetrahedron 2 Mesh")
-    print(dir(obj.Proxy))
+    #print(dir(obj.Proxy))
     print(obj.Proxy.Tetra[:10])
     tetList = obj.Proxy.Tetra
     # print('Len tetra : '+str(len(tetList)))
@@ -755,7 +755,7 @@ def createGmshModelFromFC(fcMesh):
     # Not currently used
     gmsh.model.add("X2")
     gmsh.logger.start()
-    print(dir(fcMesh.Points[0]))
+    #print(dir(fcMesh.Points[0]))
     print(fcMesh.Points)
     nodes = range(0, fcMesh.CountPoints)
     coords = []
@@ -765,11 +765,11 @@ def createGmshModelFromFC(fcMesh):
     # gmsh.model.mesh.addNodes(2, 1, nodes, coords)
     for v in fcMesh.Facets:
         print("\n Facet")
-        print(dir(v))
+        #print(dir(v))
         print("Index : " + str(v.Index))
         print("PointIndices : " + str(v.PointIndices))
         print(v.Points)
-        print(dir(v.Points))
+        #print(dir(v.Points))
         # Type 2 for 3-node triangle elements:
         try:
             gmsh.model.mesh.addElementsByType(v.Index, 2, [], v.PointIndices)
@@ -817,18 +817,6 @@ def minMeshObject(obj, sd, ad):
         return True
 
 
-def meshObject(obj, dim, algol, lm, lc, lp):
-    # Create gmsh from shape or mesh
-    # Clear any previous models
-    print("mesh Object - first Clear")
-    gmsh.clear()
-    setMeshParms(algol, lm, lc, lp)
-    if hasattr(obj, "Shape"):
-        return meshObjShape(obj, dim)
-
-    elif hasattr(obj, "Mesh"):
-        return meshObjMesh(obj, dim)
-
 
 def meshObj(obj, dim, meshParms=False, tessObj=None):
     # Used by Tetrahedron - Retire
@@ -1032,7 +1020,7 @@ def Tetrahedron2Mesh(obj):
     import Mesh
 
     print("Tetrahedron 2 Mesh")
-    print(dir(obj.Proxy))
+    #print(dir(obj.Proxy))
     print(obj.Proxy.Tetra[:10])
     tetList = obj.Proxy.Tetra
     # print('Len tetra : '+str(len(tetList)))
@@ -1323,7 +1311,7 @@ def createGmshModelFromFC(fcMesh):
     # Not currently used
     gmsh.model.add("X2")
     gmsh.logger.start()
-    print(dir(fcMesh.Points[0]))
+    #print(dir(fcMesh.Points[0]))
     print(fcMesh.Points)
     nodes = range(0, fcMesh.CountPoints)
     coords = []
@@ -1333,11 +1321,11 @@ def createGmshModelFromFC(fcMesh):
     # gmsh.model.mesh.addNodes(2, 1, nodes, coords)
     for v in fcMesh.Facets:
         print("\n Facet")
-        print(dir(v))
+        #print(dir(v))
         print("Index : " + str(v.Index))
         print("PointIndices : " + str(v.PointIndices))
         print(v.Points)
-        print(dir(v.Points))
+        #print(dir(v.Points))
         # Type 2 for 3-node triangle elements:
         try:
             gmsh.model.mesh.addElementsByType(v.Index, 2, [], v.PointIndices)
@@ -1410,19 +1398,6 @@ def recombineMeshObject(fcMesh):
     return True
 
 
-def meshObject(obj, dim, algol, lm, lc, lp):
-    # Create gmsh from shape or mesh
-    # Clear any previous models
-    print("mesh Object - first Clear")
-    gmsh.clear()
-    setMeshParms(algol, lm, lc, lp)
-    if hasattr(obj, "Shape"):
-        return meshObjShape(obj, dim)
-
-    elif hasattr(obj, "Mesh"):
-        return meshObjMesh(obj, dim)
-
-
 def meshObj(obj, dim, meshParms=False, tessObj=None):
     # Used by Tetrahedron - Retire
     # Create gmsh from shape or mesh
@@ -1625,7 +1600,7 @@ def Tetrahedron2Mesh(obj):
     import Mesh
 
     print("Tetrahedron 2 Mesh")
-    print(dir(obj.Proxy))
+    #print(dir(obj.Proxy))
     print(obj.Proxy.Tetra[:10])
     tetList = obj.Proxy.Tetra
     # print('Len tetra : '+str(len(tetList)))
