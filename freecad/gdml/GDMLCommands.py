@@ -1997,6 +1997,7 @@ class AddMinTessellateTask:
         print("Vertex : " + str(len(vertex)))
         print("Facets : " + str(len(facets)))
         # Update Info of GDML Tessellated Object
+        self.tess = None
         if hasattr(self.obj, "tessellated"):
             if self.obj.tessellated is not None:
                 self.tess = self.obj.tessellated
@@ -2017,15 +2018,17 @@ class AddMinTessellateTask:
         if FreeCAD.GuiUp:
             if self.operationType in [1, 2]:
                 self.obj.ViewObject.Visibility = False
-                ViewProvider(self.tess.ViewObject)
-                self.tess.ViewObject.DisplayMode = "Wireframe"
-                self.tess.recompute()
-                # FreeCAD.ActiveDocument.recompute()
+                if self.tess is not None:
+                    ViewProvider(self.tess.ViewObject)
+                    self.tess.ViewObject.DisplayMode = "Wireframe"
+                    self.tess.recompute()
+                    # FreeCAD.ActiveDocument.recompute()
             else:
                 #print("Recompute : " + self.obj.Name)
                 print("Recompute : " + self.obj.Label)
                 self.obj.recompute()
                 self.obj.ViewObject.Visibility = True
+            print(f"View Fit Gmsh Min")
             FreeCADGui.SendMsgToActiveView("ViewFit")
             FreeCADGui.updateGui()
 
@@ -2049,15 +2052,17 @@ class AddMinTessellateTask:
         print("Object " + self.obj.Label)
         self.operationType = 1
         obj2Mesh = self.obj
+        self.tess = None
         if hasattr(self.obj, 'tessellated'):
             if self.obj.tessellated is not None:
+                self.tess = self.obj.tessellated
                 self.operationType = 2
+        surfaceDev = self.form.surfaceDeviation.value.text()
+        angularDev = self.form.angularDeviation.value.text()
         if hasattr(self.obj, "Proxy"):
             print(f"Has proxy {self.obj.Proxy}")
             #print(dir(self.obj.Proxy))
             #print(dir(self.obj))
-            surfaceDev = self.form.surfaceDeviation.value.text()
-            angularDev = self.form.angularDeviation.value.text()
             # Is this a remesh of GDMLGmshTessellated
             if hasattr(self.obj.Proxy, "Type"):
                 if self.obj.Proxy.Type == "GDMLGmshTessellated":
@@ -2104,17 +2109,13 @@ class AddMinTessellateTask:
             #else:
             #    self.processMesh(self.vertex, self.facets)
             self.processMesh(self.vertex, self.facets)
-            print(f"Operation {self.operationType}")
+            print(f"MinMsh Operation {self.operationType}")
             if self.operationType == 3:
-                self.obj.meshType = mshType
-                self.obj.meshMaxLen = int(mshMaxLen)
-                self.obj.meshCurveLen = int(mshCurveLen)
-                self.obj.meshPointLen = int(mshPointLen)
+                self.obj.surfaceDev = float(surfaceDev)
+                self.obj.angularDev = float(angularDev)
             elif self.operationType == 2:
-                self.obj.tessellated.meshType = mshType
-                self.obj.tessellated.meshMaxLen = int(mshMaxLen)    
-                self.obj.tessellated.meshCurveLen = int(mshCurveLen)
-                self.obj.tessellated.meshPointLen = float(mshpointLen)
+                self.obj.tessellated.surfaceDev = float(surfaceDev)
+                self.obj.tessellated.angularDev = float(angularDev)
             elif self.operationType == 1:
                 FreeCADGui.Selection.clearSelection()
                 FreeCADGui.Selection.addSelection(self.tess)
