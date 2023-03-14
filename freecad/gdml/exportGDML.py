@@ -245,7 +245,7 @@ def initGDML():
 
 
 def GDMLstructure():
-    # print("Setup GDML structure")
+    print("Setup GDML structure")
     #################################
     # globals
     ################################
@@ -1872,9 +1872,36 @@ def invPlacement(placement):
     # R = FreeCAD.Placement(FreeCAD.Vector(), rot)
     # return R*T
 
+def processArrayParts(vol, xmlVol):
+    global structure
+    print(f"structure {len(structure)} {structure}")
+    if hasattr(vol, 'ArrayType'):
+        print(f"Process Array {vol.Label} Type {vol.ArrayType}")
+        if vol.ArrayType == "ortho":
+            print(f"AssemblyDict {AssemblyDict}")
+            for ix in range(vol.NumberX):
+                for iy in range(vol.NumberY):
+                    for iz in range(vol.NumberZ):
+                        arrayVolName = vol.Label+'_'+str(ix)+'_'+str(iy)+ \
+                                  '_'+str(iz)
+                        print(arrayVolName)
+                        if isAssembly(vol.Base):
+                            print("isAssembly")
+                            newVol = createXMLassembly(volName)
+                            AssemblyDict[volName] = 4
+                        else:
+                            print("isVolume")
+                            newVol = createXMLvolume(arrayVolName)
+                        structure.append(newVol)
+        print(f"structure {len(structure)} {structure}")
+
+    else:
+        print(f"Error Not an Array")    
+
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     global structure
+    print(structure)
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volume's Parent
@@ -1889,7 +1916,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     #   printVolumeInfo(vol, xmlVol, xmlParent, parentName)
     assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
-    print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
+    print(f"ProcessAssembly: {vol.Name} Label {vol.Label} {len(structure)}")
 
     #
     # Note that the assembly object is under an App::Part, not
@@ -1897,6 +1924,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     # placement.
     #
     for obj in assemObjs:
+        print(f"Assembly Obj {obj.Label} TypeId {obj.TypeId}")
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName, None)
         elif obj.TypeId == "App::Link":
@@ -1908,6 +1936,10 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
                 volRef = obj.VolRef
             print(f"VolRef {volRef}")
             addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
+        # Is it an Array process on the way down?  
+        elif hasattr(obj, 'ArrayType'):
+            print(f"This is an Array {obj.ArrayType} Base {obj.Base.Label}")
+            processArrayParts(obj, xmlVol)
         else:
             _ = processVolume(obj, xmlVol, None)
 
@@ -4254,9 +4286,14 @@ class OrthoArrayExporter(SolidExporter):
         base = self.obj.OutList[0]
         print(base.Label)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
-            print(
-                f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
-            )
+            #print(
+            #    f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
+            #
+            #)
+            for ix in range(self.obj.NumberX):
+                for iy in range(self.obj.NumberY):
+                    for iz in range(self.obj.NumberZ):
+                        print(f"Process Obj {self.obj.Label+'_'+str(ix)+'_'+str(iy)+'_'+str(iz)}")
             return
         baseExporter = SolidExporter.getExporter(base)
         if baseExporter is None:
