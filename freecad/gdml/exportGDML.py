@@ -1167,6 +1167,7 @@ def processSkinSurfaces():
     global structure
     global skinSurfaces
 
+    print(f"Structure {len(structure)}")
     for ss in skinSurfaces:
         structure.append(ss)
     return
@@ -1471,6 +1472,7 @@ def processSpreadsheetMatrix(sheet):
 
 def processOpticals():
     print("Process Opticals")
+    print(f"Stucture {structure} {len(structure)}")
     Grp = FreeCAD.ActiveDocument.getObject("Opticals")
     if hasattr(Grp, "Group"):
         for obj in Grp.Group:
@@ -1833,6 +1835,7 @@ def buildAssemblyTree(worldVol):
         AssemblyDict[vol.Label] = entry
         assemObjs = assemblyHeads(vol)
         imprNum += 1
+        print(f"Structure {structure} {len(structure)}")
         for obj in assemObjs:
             print(
                 f" buildAssemblyTree::processAssembly {obj.Label} {obj.TypeId} "
@@ -1874,7 +1877,7 @@ def invPlacement(placement):
 
 def processArrayParts(vol, xmlVol):
     global structure
-    print(f"structure {len(structure)} {structure}")
+    #print(f"structure {len(structure)} {structure}")
     if hasattr(vol, 'ArrayType'):
         print(f"Process Array {vol.Label} Type {vol.ArrayType}")
         if vol.ArrayType == "ortho":
@@ -1887,13 +1890,14 @@ def processArrayParts(vol, xmlVol):
                         print(arrayVolName)
                         if isAssembly(vol.Base):
                             print("isAssembly")
-                            newVol = createXMLassembly(volName)
+                            newVol = createXMLassembly(arrayVolName)
                             AssemblyDict[volName] = 4
                         else:
                             print("isVolume")
                             newVol = createXMLvolume(arrayVolName)
                         structure.append(newVol)
-        print(f"structure {len(structure)} {structure}")
+                        processVolAssem(vol.Base, newVol, arrayVolName, None)
+        #print(f"structure {len(structure)} {structure}")
 
     else:
         print(f"Error Not an Array")    
@@ -1901,7 +1905,7 @@ def processArrayParts(vol, xmlVol):
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     global structure
-    print(structure)
+    print(f"{structure} {len(structure)}")
     # vol - Volume Object
     # xmlVol - xml of this assembly
     # xmlParent - xml of this volume's Parent
@@ -1957,6 +1961,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
     global structure
     global skinSurfaces
 
+    print(f"{structure} {len(structure)}")
     # vol - Volume Object
     # xmlParent - xml of this volume's Parent
     # App::Part will have Booleans & Multifuse objects also in the list
@@ -1980,7 +1985,6 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
 
     if volName is None:
         volName = getVolumeName(vol)
-
     if vol.TypeId == "App::Part":
         topObject = topObj(vol)
     else:
@@ -2052,6 +2056,7 @@ def processContainer(vol, xmlParent, psPlacement):
     #
     print("Process Container")
     global structure
+    print(f"structure {structure} {len(structure)}")
     volName = getVolumeName(vol)
     objects = assemblyHeads(vol)
     newXmlVol = createXMLvolume(volName)
@@ -2518,8 +2523,8 @@ def exportGDML(first, filepath, fileExt):
     GDMLShared.trace("exportGDML")
     print("====> Start GDML Export 1.9b")
     print("File extension : " + fileExt)
-
-    GDMLstructure()
+    global structure
+    structure = GDMLstructure()
     zOrder = 1
     processMaterials()
     exportWorldVol(first, fileExt)
@@ -2531,6 +2536,7 @@ def exportGDML(first, filepath, fileExt):
         # indent(gdml)
         print(len(list(solids)))
         print("Write to gdml file")
+        print(f"structure {structure} {len(structure)}")
         # ET.ElementTree(gdml).write(filepath, 'utf-8', True)
         # ET.ElementTree(gdml).write(filepath, xml_declaration=True)
         # Problem with pretty Print on Windows ?
