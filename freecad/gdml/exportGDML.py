@@ -822,7 +822,7 @@ def getPVName(obj):
     return pvName
 
 
-def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
+def addPhysVolPlacement(obj, xmlVol, volName, placement, pvName=None, refName=None):
     # obj: App:Part to be placed.
     # xmlVol: the xml that the <physvol is a subelement of.
     # It may be a <volume, or an <assembly
@@ -846,7 +846,8 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, refName=None):
     GDMLShared.trace("Add PhysVol to Vol : " + volName)
     # print(ET.tostring(xmlVol))
     if xmlVol is not None:
-        pvName = getPVName(obj)
+        if pvName is None:
+            pvName = getPVName(obj)
         print(f"pvName {pvName}")
         if not hasattr(obj, "CopyNumber"):
             pvol = ET.SubElement(xmlVol, "physvol", {"name": pvName})
@@ -1872,8 +1873,23 @@ def invPlacement(placement):
     # R = FreeCAD.Placement(FreeCAD.Vector(), rot)
     # return R*T
 
+#def processArrayPart(vol, xmlVol): ?????
+def processArrayPart(vol, xmlVol, xmlParent, parentName, psPlacement):
+    print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol} Parent {parentName}")
+    processVolAssem(vol.Base, xmlVol, vol.Base.Label, physVol = False)
+    for ix in range(vol.NumberX):
+        for iy in range(vol.NumberY):
+            for iz in range(vol.NumberZ):
+                baseName = vol.Base.Label + '_' +str(ix) + '_'+str(iy)+ \
+                        '_'+str(iz)
+                print(f"Base Name {baseName}")
+                placement = vol.Base.Placement
+                print(f"Add Placement to {parentName} volref {vol.Base.Label}")
+                addPhysVolPlacement(vol.Base, xmlVol, vol.Base.Label,\
+                    placement, baseName)
 
-def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
+
+def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=True):
     global structure
     # vol - Volume Object
     # xmlVol - xml of this assembly
@@ -1890,7 +1906,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     assemObjs = assemblyHeads(vol)
     #  print(f"ProcessAssembly: vol.TypeId {vol.TypeId}")
     print(f"ProcessAssembly: {vol.Name} Label {vol.Label}")
-
+    print(f"Assem Objs {assemObjs}")
     #
     # Note that the assembly object is under an App::Part, not
     # a solid, so there is no need to adjust for a "parent solid"
@@ -1898,7 +1914,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     #
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
-            processVolAssem(obj, xmlVol, volName, None)
+            processVolAssem(obj, xmlVol, volName, None, physVol)
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # PhysVol needs to be unique
@@ -1907,20 +1923,24 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
             elif hasattr(obj, "VolRef"):
                 volRef = obj.VolRef
             print(f"VolRef {volRef}")
-            addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
+            if physvol:
+                addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
+        elif hasattr(obj, "ArrayType"):
+            processArrayPart(obj, xmlVol, None, None, psPlacement)
         else:
-            _ = processVolume(obj, xmlVol, None)
+            _ = processVolume(obj, xmlVol, physVol, volName=None)
 
     # the assembly could be placed in a container; adjust
     # for its placement, if any, given in the argument
-    placement = vol.Placement
-    if psPlacement is not None:
-        placement = invPlacement(psPlacement) * placement
-    addPhysVolPlacement(vol, xmlParent, volName, placement)
+    if physVol:
+        placement = vol.Placement
+        if psPlacement is not None:
+            placement = invPlacement(psPlacement) * placement
+        addPhysVolPlacement(vol, xmlParent, volName, placement)
     structure.append(xmlVol)
 
 
-def processVolume(vol, xmlParent, psPlacement, volName=None):
+def processVolume(vol, xmlParent, psPlacement, physVol=True, volName=None):
 
     global structure
     global skinSurfaces
@@ -1966,7 +1986,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
         if solidExporter is None:
             return
         solidExporter.export()
-        print(f"solids count {len(list(solids))}")
+        print(f"Process Volume - solids count {len(list(solids))}")
         # 1- adds a <volume element to <structure with name volName
         if volName == solidExporter.name():
             volName = "V-" + solidExporter.name()
@@ -1982,7 +2002,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
             if psPlacement is not None:
                 partPlacement = invPlacement(psPlacement) * partPlacement
 
-    addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    if physVol : addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
 
     if hasattr(vol, "SensDet"):
@@ -2014,7 +2034,7 @@ def processVolume(vol, xmlParent, psPlacement, volName=None):
     return xmlVol
 
 
-def processContainer(vol, xmlParent, psPlacement):
+def processContainer(vol, xmlParent, psPlacement, physVol=True):
     # vol: a container: a volume that has a solid that contains other volume
     # psPlacement: placement of parent solid. Could be None.
     #
@@ -2034,9 +2054,10 @@ def processContainer(vol, xmlParent, psPlacement):
     # Note that instead of testing for None, I could have
     # just used an identity placement which has an identity inverse
     #
-    if psPlacement is not None:
-        partPlacement = invPlacement(psPlacement) * partPlacement
-    addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    if physVol:
+        if psPlacement is not None:
+            partPlacement = invPlacement(psPlacement) * partPlacement
+        addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     # N.B. the parent solid placement (psPlacement) only directly
     # affects vol, the container volume. All the daughters are placed
     # relative to that, so do not need the extra shift of psPlacement
@@ -2068,7 +2089,7 @@ def processContainer(vol, xmlParent, psPlacement):
     structure.append(newXmlVol)
 
 
-def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
+def processVolAssem(vol, xmlParent, parentName, psPlacement=None, physVol=True):
 
     # vol - Volume Object
     # xmlParent - xml of this volume's Parent
@@ -2080,12 +2101,13 @@ def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
         if isContainer(vol):
-            processContainer(vol, xmlParent, psPlacement)
+            processContainer(vol, xmlParent, psPlacement, physVol)
         elif isAssembly(vol):
             newXmlVol = createXMLassembly(volName)
-            processAssembly(vol, newXmlVol, xmlParent, parentName, psPlacement)
+            processAssembly(vol, newXmlVol, xmlParent, parentName, \
+                psPlacement, physVol)
         else:
-            processVolume(vol, xmlParent, psPlacement)
+            processVolume(vol, xmlParent, psPlacement, physVol, volName=None)
     else:
         print("skipping " + vol.Label)
 
@@ -4252,7 +4274,7 @@ class OrthoArrayExporter(SolidExporter):
 
     def export(self):
         base = self.obj.OutList[0]
-        print(base.Label)
+        print(f"Base {base.Label}")
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
                 f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
