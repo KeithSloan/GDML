@@ -840,17 +840,17 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, pvName=None, refName=No
     # I am commenting this out I don't know why it's needed.
     # the <volume or <assembly name is created withoutout any cleanup,m so the
     # reference to it must also not have any cleanup
-    print(f"addPhysVolPlacment {pvName} {refName}")
+    #print(f"addPhysVolPlacement {pvName} {refName}")
     if refName is None:
         refName = getVolumeName(obj)
     # GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : " + volName)
     # print(ET.tostring(xmlVol))
     if xmlVol is not None:
-        print(f"pvName {pvName}")
+        #print(f"pvName {pvName}")
         if pvName is None:
             pvName = getPVName(obj)
-        print(f"pvName {pvName}")
+        #print(f"pvName {pvName}")
         if not hasattr(obj, "CopyNumber"):
             pvol = ET.SubElement(xmlVol, "physvol", {"name": pvName})
         else:
@@ -1888,14 +1888,14 @@ def processArrayPart(vol, xmlVol, parentVol):
                 baseName = parent.Label + '-' +str(ix) + '-'+str(iy)+ \
                         '-'+str(iz)
                 print(f"Base Name {baseName}")
-                print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+                #print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
 
                 pos = ix * vol.IntervalX + \
                       iy * vol.IntervalY + \
                       iz * vol.IntervalZ
-                print(f"pos {pos}")
+                #print(f"pos {pos}")
                 newPlace = FreeCAD.Placement(pos,FreeCAD.Rotation())
-                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,parent.Placement*newPlace, pvName=baseName, refName=vol.Base.Label)
+                addPhysVolPlacement(parent, xmlVol, vol.Base.Label, parent.Placement*newPlace, pvName=str(baseName),  refName=vol.Base.Label)
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=True):
