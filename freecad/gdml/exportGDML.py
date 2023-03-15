@@ -840,12 +840,14 @@ def addPhysVolPlacement(obj, xmlVol, volName, placement, pvName=None, refName=No
     # I am commenting this out I don't know why it's needed.
     # the <volume or <assembly name is created withoutout any cleanup,m so the
     # reference to it must also not have any cleanup
+    print(f"addPhysVolPlacment {pvName} {refName}")
     if refName is None:
         refName = getVolumeName(obj)
     # GDMLShared.setTrace(True)
     GDMLShared.trace("Add PhysVol to Vol : " + volName)
     # print(ET.tostring(xmlVol))
     if xmlVol is not None:
+        print(f"pvName {pvName}")
         if pvName is None:
             pvName = getPVName(obj)
         print(f"pvName {pvName}")
@@ -1873,20 +1875,27 @@ def invPlacement(placement):
     # R = FreeCAD.Placement(FreeCAD.Vector(), rot)
     # return R*T
 
-#def processArrayPart(vol, xmlVol): ?????
-def processArrayPart(vol, xmlVol, xmlParent, parentName, psPlacement):
-    print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol} Parent {parentName}")
+#def processArrayPart(vol, xmlVol, xmlParent, parentName, psPlacement):
+#    print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol} Parent {parentName}")
+def processArrayPart(vol, xmlVol, parentVol):
+    print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol}")
     processVolAssem(vol.Base, xmlVol, vol.Base.Label, physVol = False)
+    parent = vol.InList[0]
+    print(f"parent {parent}")
     for ix in range(vol.NumberX):
         for iy in range(vol.NumberY):
             for iz in range(vol.NumberZ):
-                baseName = vol.Base.Label + '_' +str(ix) + '_'+str(iy)+ \
-                        '_'+str(iz)
+                baseName = parent.Label + '-' +str(ix) + '-'+str(iy)+ \
+                        '-'+str(iz)
                 print(f"Base Name {baseName}")
-                placement = vol.Base.Placement
-                print(f"Add Placement to {parentName} volref {vol.Base.Label}")
-                addPhysVolPlacement(vol.Base, xmlVol, vol.Base.Label,\
-                    placement, baseName)
+                print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+
+                pos = ix * vol.IntervalX + \
+                      iy * vol.IntervalY + \
+                      iz * vol.IntervalZ
+                print(f"pos {pos}")
+                newPlace = FreeCAD.Placement(pos,FreeCAD.Rotation())
+                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,parent.Placement*newPlace, pvName=baseName, refName=vol.Base.Label)
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=True):
@@ -1926,7 +1935,8 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=Tru
             if physvol:
                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
         elif hasattr(obj, "ArrayType"):
-            processArrayPart(obj, xmlVol, None, None, psPlacement)
+            #processArrayPart(obj, xmlVol, vol.Name, None, psPlacement)
+            processArrayPart(obj, xmlVol, vol)
         else:
             _ = processVolume(obj, xmlVol, physVol, volName=None)
 
