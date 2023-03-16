@@ -1882,21 +1882,37 @@ def processArrayPart(vol, xmlVol, parentVol):
     processVolAssem(vol.Base, xmlVol, vol.Base.Label, physVol = False)
     parent = vol.InList[0]
     print(f"parent {parent}")
-    for ix in range(vol.NumberX):
-        for iy in range(vol.NumberY):
-            for iz in range(vol.NumberZ):
-                baseName = parent.Label + '-' +str(ix) + '-'+str(iy)+ \
+    if vol.ArrayType == "orthor":
+        for ix in range(vol.NumberX):
+            for iy in range(vol.NumberY):
+                for iz in range(vol.NumberZ):
+                    baseName = parent.Label + '-' +str(ix) + '-'+str(iy)+ \
                         '-'+str(iz)
-                print(f"Base Name {baseName}")
-                #print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+                    print(f"Base Name {baseName}")
+                    #print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
 
-                pos = ix * vol.IntervalX + \
-                      iy * vol.IntervalY + \
-                      iz * vol.IntervalZ
-                #print(f"pos {pos}")
-                newPlace = FreeCAD.Placement(pos,FreeCAD.Rotation())
-                addPhysVolPlacement(parent, xmlVol, vol.Base.Label, parent.Placement*newPlace, pvName=str(baseName),  refName=vol.Base.Label)
+                    pos = ix * vol.IntervalX + \
+                          iy * vol.IntervalY + \
+                          iz * vol.IntervalZ
+                    #print(f"pos {pos}")
+                    newPlace = FreeCAD.Placement(pos,FreeCAD.Rotation())
+                    addPhysVolPlacement(parent, xmlVol, vol.Base.Label, \
+                        parent.Placement*newPlace, pvName=str(baseName), \
+                        refName=vol.Base.Label)
 
+    elif vol.ArrayType == "polar":
+        dthet = vol.Angle / vol.NumberPolar
+        positionVector = vol.Placement.Base
+        axis = vol.Axis
+        for i in range(vol.NumberPolar):
+            baseName = parent.Label + '-' +str(i)
+            rot = FreeCAD.Rotation(axis, i * dthet)
+            pos = rot * positionVector  # position has to be rotated too!
+            rot.Angle = -rot.Angle  # undo angle reversal by exportRotation
+            newPlace = FreeCAD.Placement(pos,rot)
+            addPhysVolPlacement(parent, xmlVol, vol.Base.Label, \
+                parent.Placement*newPlace, pvName=str(baseName), \
+                refName=vol.Base.Label)
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=True):
     global structure
@@ -1935,7 +1951,6 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=Tru
             if physvol:
                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
         elif hasattr(obj, "ArrayType"):
-            #processArrayPart(obj, xmlVol, vol.Name, None, psPlacement)
             processArrayPart(obj, xmlVol, vol)
         else:
             _ = processVolume(obj, xmlVol, physVol, volName=None)
