@@ -1879,10 +1879,10 @@ def invPlacement(placement):
 #    print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol} Parent {parentName}")
 def processArrayPart(vol, xmlVol, parentVol):
     print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol}")
-    processVolAssem(vol.Base, xmlVol, vol.Base.Label, physVol = False)
+    processVolAssem(vol.Base, xmlVol, vol.Base.Label, isPhysVol = False)
     parent = vol.InList[0]
     print(f"parent {parent}")
-    if vol.ArrayType == "orthor":
+    if vol.ArrayType == "ortho":
         for ix in range(vol.NumberX):
             for iy in range(vol.NumberY):
                 for iz in range(vol.NumberZ):
@@ -1914,7 +1914,7 @@ def processArrayPart(vol, xmlVol, parentVol):
                 parent.Placement*newPlace, pvName=str(baseName), \
                 refName=vol.Base.Label)
 
-def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=True):
+def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
     global structure
     # vol - Volume Object
     # xmlVol - xml of this assembly
@@ -1939,7 +1939,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=Tru
     #
     for obj in assemObjs:
         if obj.TypeId == "App::Part":
-            processVolAssem(obj, xmlVol, volName, None, physVol)
+            processVolAssem(obj, xmlVol, volName, None, isPhysVol)
         elif obj.TypeId == "App::Link":
             print("Process Link")
             # PhysVol needs to be unique
@@ -1948,16 +1948,16 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=Tru
             elif hasattr(obj, "VolRef"):
                 volRef = obj.VolRef
             print(f"VolRef {volRef}")
-            if physvol:
+            if isPhysVol:
                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
         elif hasattr(obj, "ArrayType"):
             processArrayPart(obj, xmlVol, vol)
         else:
-            _ = processVolume(obj, xmlVol, physVol, volName=None)
+            _ = processVolume(obj, xmlVol, isPhysVol, volName=None)
 
     # the assembly could be placed in a container; adjust
     # for its placement, if any, given in the argument
-    if physVol:
+    if isPhysVol:
         placement = vol.Placement
         if psPlacement is not None:
             placement = invPlacement(psPlacement) * placement
@@ -1965,7 +1965,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, physVol=Tru
     structure.append(xmlVol)
 
 
-def processVolume(vol, xmlParent, psPlacement, physVol=True, volName=None):
+def processVolume(vol, xmlParent, psPlacement, isPhysVol=True, volName=None):
 
     global structure
     global skinSurfaces
@@ -2027,7 +2027,7 @@ def processVolume(vol, xmlParent, psPlacement, physVol=True, volName=None):
             if psPlacement is not None:
                 partPlacement = invPlacement(psPlacement) * partPlacement
 
-    if physVol : addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
+    if isPhysVol : addPhysVolPlacement(vol, xmlParent, volName, partPlacement)
     structure.append(xmlVol)
 
     if hasattr(vol, "SensDet"):
@@ -2114,7 +2114,7 @@ def processContainer(vol, xmlParent, psPlacement, physVol=True):
     structure.append(newXmlVol)
 
 
-def processVolAssem(vol, xmlParent, parentName, psPlacement=None, physVol=True):
+def processVolAssem(vol, xmlParent, parentName, psPlacement=None, isPhysVol=True):
 
     # vol - Volume Object
     # xmlParent - xml of this volume's Parent
@@ -2126,13 +2126,13 @@ def processVolAssem(vol, xmlParent, parentName, psPlacement=None, physVol=True):
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = vol.Label
         if isContainer(vol):
-            processContainer(vol, xmlParent, psPlacement, physVol)
+            processContainer(vol, xmlParent, psPlacement, isPhysVol)
         elif isAssembly(vol):
             newXmlVol = createXMLassembly(volName)
             processAssembly(vol, newXmlVol, xmlParent, parentName, \
-                psPlacement, physVol)
+                psPlacement, isPhysVol)
         else:
-            processVolume(vol, xmlParent, psPlacement, physVol, volName=None)
+            processVolume(vol, xmlParent, psPlacement, isPhysVol, volName=None)
     else:
         print("skipping " + vol.Label)
 

@@ -1,0 +1,2395 @@
+<gdml>
+  <define>
+    <constant name="HALFPI" value="pi/2." />
+    <constant name="PI" value="1.*pi" />
+    <constant name="TWOPI" value="2.*pi" />
+    </define>
+  <materials>
+      <element Z="1" formula="H" name="H_element" >
+        <atom value="1.008" />
+      </element>
+      <element Z="2" formula="He" name="He_element" >
+        <atom value="4.002602" />
+      </element>
+      <element Z="3" formula="Li" name="Li_element" >
+        <atom value="6.94" />
+      </element>
+      <element Z="4" formula="Be" name="Be_element" >
+        <atom value="9.0121831" />
+      </element>
+      <element Z="5" formula="B" name="B_element" >
+        <atom value="10.81" />
+      </element>
+      <element Z="6" formula="C" name="C_element" >
+        <atom value="12.011" />
+      </element>
+      <element Z="7" formula="N" name="N_element" >
+        <atom value="14.007" />
+      </element>
+      <element Z="8" formula="O" name="O_element" >
+        <atom value="15.999" />
+      </element>
+      <element Z="9" formula="F" name="F_element" >
+        <atom value="18.998403163" />
+      </element>
+      <element Z="10" formula="Ne" name="Ne_element" >
+        <atom value="20.1797" />
+      </element>
+      <element Z="11" formula="Na" name="Na_element" >
+        <atom value="22.98976928" />
+      </element>
+      <element Z="12" formula="Mg" name="Mg_element" >
+        <atom value="24.305" />
+      </element>
+      <element Z="13" formula="Al" name="Al_element" >
+        <atom value="26.9815384" />
+      </element>
+      <element Z="14" formula="Si" name="Si_element" >
+        <atom value="28.085" />
+      </element>
+      <element Z="15" formula="P" name="P_element" >
+        <atom value="30.973761998" />
+      </element>
+      <element Z="16" formula="S" name="S_element" >
+        <atom value="32.06" />
+      </element>
+      <element Z="17" formula="Cl" name="Cl_element" >
+        <atom value="35.45" />
+      </element>
+      <element Z="18" formula="Ar" name="Ar_element" >
+        <atom value="39.95" />
+      </element>
+      <element Z="19" formula="K" name="K_element" >
+        <atom value="39.0983" />
+      </element>
+      <element Z="20" formula="Ca" name="Ca_element" >
+        <atom value="40.078" />
+      </element>
+      <element Z="21" formula="Sc" name="Sc_element" >
+        <atom value="44.955908" />
+      </element>
+      <element Z="22" formula="Ti" name="Ti_element" >
+        <atom value="47.867" />
+      </element>
+      <element Z="23" formula="V" name="V_element" >
+        <atom value="50.9415" />
+      </element>
+      <element Z="24" formula="Cr" name="Cr_element" >
+        <atom value="51.9961" />
+      </element>
+      <element Z="25" formula="Mn" name="Mn_element" >
+        <atom value="54.938043" />
+      </element>
+      <element Z="26" formula="Fe" name="Fe_element" >
+        <atom value="55.845" />
+      </element>
+      <element Z="27" formula="Co" name="Co_element" >
+        <atom value="58.933194" />
+      </element>
+      <element Z="28" formula="Ni" name="Ni_element" >
+        <atom value="58.6934" />
+      </element>
+      <element Z="29" formula="Cu" name="Cu_element" >
+        <atom value="63.546" />
+      </element>
+      <element Z="30" formula="Zn" name="Zn_element" >
+        <atom value="65.38" />
+      </element>
+      <element Z="31" formula="Ga" name="Ga_element" >
+        <atom value="69.723" />
+      </element>
+      <element Z="32" formula="Ge" name="Ge_element" >
+        <atom value="72.630" />
+      </element>
+      <element Z="33" formula="As" name="As_element" >
+        <atom value="74.921595" />
+      </element>
+      <element Z="34" formula="Se" name="Se_element" >
+        <atom value="78.971" />
+      </element>
+      <element Z="35" formula="Br" name="Br_element" >
+        <atom value="79.904" />
+      </element>
+      <element Z="36" formula="Kr" name="Kr_element" >
+        <atom value="83.798" />
+      </element>
+      <element Z="37" formula="Rb" name="Rb_element" >
+        <atom value="85.4678" />
+      </element>
+      <element Z="38" formula="Sr" name="Sr_element" >
+        <atom value="87.62" />
+      </element>
+      <element Z="39" formula="Y" name="Y_element" >
+        <atom value="88.90584" />
+      </element>
+      <element Z="40" formula="Zr" name="Zr_element" >
+        <atom value="91.224" />
+      </element>
+      <element Z="41" formula="Nb" name="Nb_element" >
+        <atom value="92.90637" />
+      </element>
+      <element Z="42" formula="Mo" name="Mo_element" >
+        <atom value="95.95" />
+      </element>
+      <element Z="43" formula="Tc" name="Tc_element" >
+        <atom value="97" />
+      </element>
+      <element Z="44" formula="Ru" name="Ru_element" >
+        <atom value="101.07" />
+      </element>
+      <element Z="45" formula="Rh" name="Rh_element" >
+        <atom value="102.90549" />
+      </element>
+      <element Z="46" formula="Pd" name="Pd_element" >
+        <atom value="106.42" />
+      </element>
+      <element Z="47" formula="Ag" name="Ag_element" >
+        <atom value="107.8682" />
+      </element>
+      <element Z="48" formula="Cd" name="Cd_element" >
+        <atom value="112.414" />
+      </element>
+      <element Z="49" formula="In" name="In_element" >
+        <atom value="114.818" />
+      </element>
+      <element Z="50" formula="Sn" name="Sn_element" >
+        <atom value="118.71" />
+      </element>
+      <element Z="51" formula="Sb" name="Sb_element" >
+        <atom value="121.76" />
+      </element>
+      <element Z="52" formula="Te" name="Te_element" >
+        <atom value="127.6" />
+      </element>
+      <element Z="53" formula="I" name="I_element" >
+        <atom value="126.90447" />
+      </element>
+      <element Z="54" formula="Xe" name="Xe_element" >
+        <atom value="131.293" />
+      </element>
+      <element Z="55" formula="Cs" name="Cs_element" >
+        <atom value="132.90545196" />
+      </element>
+      <element Z="56" formula="Ba" name="Ba_element" >
+        <atom value="137.327" />
+      </element>
+      <element Z="57" formula="La" name="La_element" >
+        <atom value="138.90547" />
+      </element>
+      <element Z="58" formula="Ce" name="Ce_element" >
+        <atom value="140.116" />
+      </element>
+      <element Z="59" formula="Pr" name="Pr_element" >
+        <atom value="140.90766" />
+      </element>
+      <element Z="60" formula="Nd" name="Nd_element" >
+        <atom value="144.242" />
+      </element>
+      <element Z="61" formula="Pm" name="Pm_element" >
+        <atom value="145" />
+      </element>
+      <element Z="62" formula="Sm" name="Sm_element" >
+        <atom value="150.36" />
+      </element>
+      <element Z="63" formula="Eu" name="Eu_element" >
+        <atom value="151.964" />
+      </element>
+      <element Z="64" formula="Gd" name="Gd_element" >
+        <atom value="157.25" />
+      </element>
+      <element Z="65" formula="Tb" name="Tb_element" >
+        <atom value="158.925354" />
+      </element>
+      <element Z="66" formula="Dy" name="Dy_element" >
+        <atom value="162.5" />
+      </element>
+      <element Z="67" formula="Ho" name="Ho_element" >
+        <atom value="164.930328" />
+      </element>
+      <element Z="68" formula="Er" name="Er_element" >
+        <atom value="167.259" />
+      </element>
+      <element Z="69" formula="Tm" name="Tm_element" >
+        <atom value="168.934218" />
+      </element>
+      <element Z="70" formula="Yb" name="Yb_element" >
+        <atom value="173.045" />
+      </element>
+      <element Z="71" formula="Lu" name="Lu_element" >
+        <atom value="174.9668" />
+      </element>
+      <element Z="72" formula="Hf" name="Hf_element" >
+        <atom value="178.49" />
+      </element>
+      <element Z="73" formula="Ta" name="Ta_element" >
+        <atom value="180.94788" />
+      </element>
+      <element Z="74" formula="W" name="W_element" >
+        <atom value="183.84" />
+      </element>
+      <element Z="75" formula="Re" name="Re_element" >
+        <atom value="186.207" />
+      </element>
+      <element Z="76" formula="Os" name="Os_element" >
+        <atom value="190.23" />
+      </element>
+      <element Z="77" formula="Ir" name="Ir_element" >
+        <atom value="192.217" />
+      </element>
+      <element Z="78" formula="Pt" name="Pt_element" >
+        <atom value="195.084" />
+      </element>
+      <element Z="79" formula="Au" name="Au_element" >
+        <atom value="196.96657" />
+      </element>
+      <element Z="80" formula="Hg" name="Hg_element" >
+        <atom value="200.592" />
+      </element>
+      <element Z="81" formula="Tl" name="Tl_element" >
+        <atom value="204.38" />
+      </element>
+      <element Z="82" formula="Pb" name="Pb_element" >
+        <atom value="207.2" />
+      </element>
+      <element Z="83" formula="Bi" name="Bi_element" >
+        <atom value="208.9804" />
+      </element>
+      <element Z="84" formula="Po" name="Po_element" >
+        <atom value="209" />
+      </element>
+      <element Z="85" formula="At" name="At_element" >
+        <atom value="210" />
+      </element>
+      <element Z="86" formula="Rn" name="Rn_element" >
+        <atom value="222" />
+      </element>
+      <element Z="87" formula="Fr" name="Fr_element" >
+        <atom value="223" />
+      </element>
+      <element Z="88" formula="Ra" name="Ra_element" >
+        <atom value="226" />
+      </element>
+      <element Z="89" formula="Ac" name="Ac_element" >
+        <atom value="227" />
+      </element>
+      <element Z="90" formula="Th" name="Th_element" >
+        <atom value="232.0377" />
+      </element>
+      <element Z="91" formula="Pa" name="Pa_element" >
+        <atom value="231.03588" />
+      </element>
+      <element Z="92" formula="U" name="U_element" >
+        <atom value="238.02891" />
+      </element>
+      <element Z="93" formula="Np" name="Np_element" >
+        <atom value="237" />
+      </element>
+      <element Z="94" formula="Pu" name="Pu_element" >
+        <atom value="244" />
+      </element>
+      <element Z="95" formula="Am" name="Am_element" >
+        <atom value="243" />
+      </element>
+      <element Z="96" formula="Cm" name="Cm_element" >
+        <atom value="247" />
+      </element>
+      <element Z="97" formula="Bk" name="Bk_element" >
+        <atom value="247" />
+      </element>
+      <element Z="98" formula="Cf" name="Cf_element" >
+        <atom value="251" />
+      </element>
+      <material formula="G4_A-150_TISSUE" name="G4_A-150_TISSUE" >
+        <D unit="g/cm3" value="1.127" />
+        <fraction n="0.101327" ref="H_element"/>
+        <fraction n="0.7755" ref="C_element"/>
+        <fraction n="0.035057" ref="N_element"/>
+        <fraction n="0.0523159" ref="O_element"/>
+        <fraction n="0.017422" ref="F_element"/>
+        <fraction n="0.018378" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ACETONE" name="G4_ACETONE" >
+        <D unit="g/cm3" value="0.7899" />
+        <composite n="3" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ACETYLENE" name="G4_ACETYLENE" >
+        <D unit="g/cm3" value="0.0010967" />
+        <composite n="2" ref="C_element"/>
+        <composite n="2" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ADENINE" name="G4_ADENINE" >
+        <D unit="g/cm3" value="1.6" />
+        <composite n="5" ref="C_element"/>
+        <composite n="5" ref="H_element"/>
+        <composite n="5" ref="N_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ADIPOSE_TISSUE_ICRP" name="G4_ADIPOSE_TISSUE_ICRP" >
+        <D unit="g/cm3" value="0.95" />
+        <fraction n="0.114" ref="H_element"/>
+        <fraction n="0.598" ref="C_element"/>
+        <fraction n="0.007" ref="N_element"/>
+        <fraction n="0.278" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.001" ref="S_element"/>
+        <fraction n="0.001" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_AIR" name="G4_AIR" >
+        <D unit="g/cm3" value="0.00120479" />
+        <fraction n="0.000124" ref="C_element"/>
+        <fraction n="0.755268" ref="N_element"/>
+        <fraction n="0.231781" ref="O_element"/>
+        <fraction n="0.012827" ref="Ar_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ALANINE" name="G4_ALANINE" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="3" ref="C_element"/>
+        <composite n="7" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ALUMINUM_OXIDE" name="G4_ALUMINUM_OXIDE" >
+        <D unit="g/cm3" value="3.97" />
+        <composite n="2" ref="Al_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_AMBER" name="G4_AMBER" >
+        <D unit="g/cm3" value="1.1" />
+        <fraction n="0.10593" ref="H_element"/>
+        <fraction n="0.788974" ref="C_element"/>
+        <fraction n="0.105096" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_AMMONIA" name="G4_AMMONIA" >
+        <D unit="g/cm3" value="0.000826019" />
+        <composite n="1" ref="N_element"/>
+        <composite n="3" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ANILINE" name="G4_ANILINE" >
+        <D unit="g/cm3" value="1.0235" />
+        <composite n="6" ref="C_element"/>
+        <composite n="7" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ANTHRACENE" name="G4_ANTHRACENE" >
+        <D unit="g/cm3" value="1.283" />
+        <composite n="14" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_B-100_BONE" name="G4_B-100_BONE" >
+        <D unit="g/cm3" value="1.45" />
+        <fraction n="0.0654709" ref="H_element"/>
+        <fraction n="0.536944" ref="C_element"/>
+        <fraction n="0.0215" ref="N_element"/>
+        <fraction n="0.032085" ref="O_element"/>
+        <fraction n="0.167411" ref="F_element"/>
+        <fraction n="0.176589" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BAKELITE" name="G4_BAKELITE" >
+        <D unit="g/cm3" value="1.25" />
+        <fraction n="0.057441" ref="H_element"/>
+        <fraction n="0.774591" ref="C_element"/>
+        <fraction n="0.167968" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BARIUM_FLUORIDE" name="G4_BARIUM_FLUORIDE" >
+        <D unit="g/cm3" value="4.89" />
+        <composite n="1" ref="Ba_element"/>
+        <composite n="2" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BARIUM_SULFATE" name="G4_BARIUM_SULFATE" >
+        <D unit="g/cm3" value="4.5" />
+        <composite n="1" ref="Ba_element"/>
+        <composite n="1" ref="S_element"/>
+        <composite n="4" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BENZENE" name="G4_BENZENE" >
+        <D unit="g/cm3" value="0.87865" />
+        <composite n="6" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BERYLLIUM_OXIDE" name="G4_BERYLLIUM_OXIDE" >
+        <D unit="g/cm3" value="3.01" />
+        <composite n="1" ref="Be_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BGO" name="G4_BGO" >
+        <D unit="g/cm3" value="7.13" />
+        <composite n="4" ref="Bi_element"/>
+        <composite n="3" ref="Ge_element"/>
+        <composite n="12" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BLOOD_ICRP" name="G4_BLOOD_ICRP" >
+        <D unit="g/cm3" value="1.06" />
+        <fraction n="0.102" ref="H_element"/>
+        <fraction n="0.11" ref="C_element"/>
+        <fraction n="0.033" ref="N_element"/>
+        <fraction n="0.745" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.001" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.003" ref="Cl_element"/>
+        <fraction n="0.002" ref="K_element"/>
+        <fraction n="0.001" ref="Fe_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BONE_COMPACT_ICRU" name="G4_BONE_COMPACT_ICRU" >
+        <D unit="g/cm3" value="1.85" />
+        <fraction n="0.064" ref="H_element"/>
+        <fraction n="0.278" ref="C_element"/>
+        <fraction n="0.027" ref="N_element"/>
+        <fraction n="0.41" ref="O_element"/>
+        <fraction n="0.002" ref="Mg_element"/>
+        <fraction n="0.07" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.147" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BONE_CORTICAL_ICRP" name="G4_BONE_CORTICAL_ICRP" >
+        <D unit="g/cm3" value="1.92" />
+        <fraction n="0.034" ref="H_element"/>
+        <fraction n="0.155" ref="C_element"/>
+        <fraction n="0.042" ref="N_element"/>
+        <fraction n="0.435" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.002" ref="Mg_element"/>
+        <fraction n="0.103" ref="P_element"/>
+        <fraction n="0.003" ref="S_element"/>
+        <fraction n="0.225" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BORON_CARBIDE" name="G4_BORON_CARBIDE" >
+        <D unit="g/cm3" value="2.52" />
+        <composite n="4" ref="B_element"/>
+        <composite n="1" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BORON_OXIDE" name="G4_BORON_OXIDE" >
+        <D unit="g/cm3" value="1.812" />
+        <composite n="2" ref="B_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BRAIN_ICRP" name="G4_BRAIN_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.107" ref="H_element"/>
+        <fraction n="0.145" ref="C_element"/>
+        <fraction n="0.022" ref="N_element"/>
+        <fraction n="0.712" ref="O_element"/>
+        <fraction n="0.002" ref="Na_element"/>
+        <fraction n="0.004" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.003" ref="Cl_element"/>
+        <fraction n="0.003" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_BUTANE" name="G4_BUTANE" >
+        <D unit="g/cm3" value="0.00249343" />
+        <composite n="4" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N-BUTYL_ALCOHOL" name="G4_N-BUTYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.8098" />
+        <composite n="4" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_C-552" name="G4_C-552" >
+        <D unit="g/cm3" value="1.76" />
+        <fraction n="0.02468" ref="H_element"/>
+        <fraction n="0.501611" ref="C_element"/>
+        <fraction n="0.004527" ref="O_element"/>
+        <fraction n="0.465209" ref="F_element"/>
+        <fraction n="0.003973" ref="Si_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CADMIUM_TELLURIDE" name="G4_CADMIUM_TELLURIDE" >
+        <D unit="g/cm3" value="6.2" />
+        <composite n="1" ref="Cd_element"/>
+        <composite n="1" ref="Te_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CADMIUM_TUNGSTATE" name="G4_CADMIUM_TUNGSTATE" >
+        <D unit="g/cm3" value="7.9" />
+        <composite n="1" ref="Cd_element"/>
+        <composite n="1" ref="W_element"/>
+        <composite n="4" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CALCIUM_CARBONATE" name="G4_CALCIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.8" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="1" ref="C_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CALCIUM_FLUORIDE" name="G4_CALCIUM_FLUORIDE" >
+        <D unit="g/cm3" value="3.18" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="2" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CALCIUM_OXIDE" name="G4_CALCIUM_OXIDE" >
+        <D unit="g/cm3" value="3.3" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CALCIUM_SULFATE" name="G4_CALCIUM_SULFATE" >
+        <D unit="g/cm3" value="2.96" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="1" ref="S_element"/>
+        <composite n="4" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CALCIUM_TUNGSTATE" name="G4_CALCIUM_TUNGSTATE" >
+        <D unit="g/cm3" value="6.062" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="1" ref="W_element"/>
+        <composite n="4" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CARBON_DIOXIDE" name="G4_CARBON_DIOXIDE" >
+        <D unit="g/cm3" value="0.00184212" />
+        <composite n="1" ref="C_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CARBON_TETRACHLORIDE" name="G4_CARBON_TETRACHLORIDE" >
+        <D unit="g/cm3" value="1.594" />
+        <composite n="1" ref="C_element"/>
+        <composite n="4" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CELLULOSE_CELLOPHANE" name="G4_CELLULOSE_CELLOPHANE" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="6" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+        <composite n="5" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CELLULOSE_BUTYRATE" name="G4_CELLULOSE_BUTYRATE" >
+        <D unit="g/cm3" value="1.2" />
+        <fraction n="0.067125" ref="H_element"/>
+        <fraction n="0.545403" ref="C_element"/>
+        <fraction n="0.387472" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CELLULOSE_NITRATE" name="G4_CELLULOSE_NITRATE" >
+        <D unit="g/cm3" value="1.49" />
+        <fraction n="0.029216" ref="H_element"/>
+        <fraction n="0.271296" ref="C_element"/>
+        <fraction n="0.121276" ref="N_element"/>
+        <fraction n="0.578212" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CERIC_SULFATE" name="G4_CERIC_SULFATE" >
+        <D unit="g/cm3" value="1.03" />
+        <fraction n="0.107596" ref="H_element"/>
+        <fraction n="0.0008" ref="N_element"/>
+        <fraction n="0.874976" ref="O_element"/>
+        <fraction n="0.014627" ref="S_element"/>
+        <fraction n="0.002001" ref="Ce_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CESIUM_FLUORIDE" name="G4_CESIUM_FLUORIDE" >
+        <D unit="g/cm3" value="4.115" />
+        <composite n="1" ref="Cs_element"/>
+        <composite n="1" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CESIUM_IODIDE" name="G4_CESIUM_IODIDE" >
+        <D unit="g/cm3" value="4.51" />
+        <composite n="1" ref="Cs_element"/>
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CHLOROBENZENE" name="G4_CHLOROBENZENE" >
+        <D unit="g/cm3" value="1.1058" />
+        <composite n="6" ref="C_element"/>
+        <composite n="5" ref="H_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CHLOROFORM" name="G4_CHLOROFORM" >
+        <D unit="g/cm3" value="1.4832" />
+        <composite n="1" ref="C_element"/>
+        <composite n="1" ref="H_element"/>
+        <composite n="3" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CONCRETE" name="G4_CONCRETE" >
+        <D unit="g/cm3" value="2.3" />
+        <fraction n="0.01" ref="H_element"/>
+        <fraction n="0.001" ref="C_element"/>
+        <fraction n="0.529107" ref="O_element"/>
+        <fraction n="0.016" ref="Na_element"/>
+        <fraction n="0.002" ref="Mg_element"/>
+        <fraction n="0.033872" ref="Al_element"/>
+        <fraction n="0.337021" ref="Si_element"/>
+        <fraction n="0.013" ref="K_element"/>
+        <fraction n="0.044" ref="Ca_element"/>
+        <fraction n="0.014" ref="Fe_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_CYCLOHEXANE" name="G4_CYCLOHEXANE" >
+        <D unit="g/cm3" value="0.779" />
+        <composite n="6" ref="C_element"/>
+        <composite n="12" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_1.2-DICHLOROBENZENE" name="G4_1.2-DICHLOROBENZENE" >
+        <D unit="g/cm3" value="1.3048" />
+        <composite n="6" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+        <composite n="2" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_DICHLORODIETHYL_ETHER" name="G4_DICHLORODIETHYL_ETHER" >
+        <D unit="g/cm3" value="1.2199" />
+        <composite n="4" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+        <composite n="2" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_1.2-DICHLOROETHANE" name="G4_1.2-DICHLOROETHANE" >
+        <D unit="g/cm3" value="1.2351" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+        <composite n="2" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_DIETHYL_ETHER" name="G4_DIETHYL_ETHER" >
+        <D unit="g/cm3" value="0.71378" />
+        <composite n="4" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N.N-DIMETHYL_FORMAMIDE" name="G4_N.N-DIMETHYL_FORMAMIDE" >
+        <D unit="g/cm3" value="0.9487" />
+        <composite n="3" ref="C_element"/>
+        <composite n="7" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_DIMETHYL_SULFOXIDE" name="G4_DIMETHYL_SULFOXIDE" >
+        <D unit="g/cm3" value="1.1014" />
+        <composite n="2" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+        <composite n="1" ref="S_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ETHANE" name="G4_ETHANE" >
+        <D unit="g/cm3" value="0.00125324" />
+        <composite n="2" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ETHYL_ALCOHOL" name="G4_ETHYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.7893" />
+        <composite n="2" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ETHYL_CELLULOSE" name="G4_ETHYL_CELLULOSE" >
+        <D unit="g/cm3" value="1.13" />
+        <fraction n="0.090027" ref="H_element"/>
+        <fraction n="0.585182" ref="C_element"/>
+        <fraction n="0.324791" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_ETHYLENE" name="G4_ETHYLENE" >
+        <D unit="g/cm3" value="0.00117497" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_EYE_LENS_ICRP" name="G4_EYE_LENS_ICRP" >
+        <D unit="g/cm3" value="1.07" />
+        <fraction n="0.096" ref="H_element"/>
+        <fraction n="0.195" ref="C_element"/>
+        <fraction n="0.057" ref="N_element"/>
+        <fraction n="0.646" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.001" ref="P_element"/>
+        <fraction n="0.003" ref="S_element"/>
+        <fraction n="0.001" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FERRIC_OXIDE" name="G4_FERRIC_OXIDE" >
+        <D unit="g/cm3" value="5.2" />
+        <composite n="2" ref="Fe_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FERROBORIDE" name="G4_FERROBORIDE" >
+        <D unit="g/cm3" value="7.15" />
+        <composite n="1" ref="Fe_element"/>
+        <composite n="1" ref="B_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FERROUS_OXIDE" name="G4_FERROUS_OXIDE" >
+        <D unit="g/cm3" value="5.7" />
+        <composite n="1" ref="Fe_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FERROUS_SULFATE" name="G4_FERROUS_SULFATE" >
+        <D unit="g/cm3" value="1.024" />
+        <fraction n="0.108259" ref="H_element"/>
+        <fraction n="2.7e-05" ref="N_element"/>
+        <fraction n="0.878636" ref="O_element"/>
+        <fraction n="2.2e-05" ref="Na_element"/>
+        <fraction n="0.012968" ref="S_element"/>
+        <fraction n="3.4e-05" ref="Cl_element"/>
+        <fraction n="5.4e-05" ref="Fe_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FREON-12" name="G4_FREON-12" >
+        <D unit="g/cm3" value="1.12" />
+        <fraction n="0.099335" ref="C_element"/>
+        <fraction n="0.314247" ref="F_element"/>
+        <fraction n="0.586418" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FREON-12B2" name="G4_FREON-12B2" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.057245" ref="C_element"/>
+        <fraction n="0.181096" ref="F_element"/>
+        <fraction n="0.761659" ref="Br_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FREON-13" name="G4_FREON-13" >
+        <D unit="g/cm3" value="0.95" />
+        <fraction n="0.114983" ref="C_element"/>
+        <fraction n="0.545621" ref="F_element"/>
+        <fraction n="0.339396" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FREON-13B1" name="G4_FREON-13B1" >
+        <D unit="g/cm3" value="1.5" />
+        <composite n="1" ref="C_element"/>
+        <composite n="3" ref="F_element"/>
+        <composite n="1" ref="Br_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_FREON-13I1" name="G4_FREON-13I1" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.061309" ref="C_element"/>
+        <fraction n="0.290924" ref="F_element"/>
+        <fraction n="0.647767" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GADOLINIUM_OXYSULFIDE" name="G4_GADOLINIUM_OXYSULFIDE" >
+        <D unit="g/cm3" value="7.44" />
+        <composite n="2" ref="Gd_element"/>
+        <composite n="2" ref="O_element"/>
+        <composite n="1" ref="S_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GALLIUM_ARSENIDE" name="G4_GALLIUM_ARSENIDE" >
+        <D unit="g/cm3" value="5.31" />
+        <composite n="1" ref="Ga_element"/>
+        <composite n="1" ref="As_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GEL_PHOTO_EMULSION" name="G4_GEL_PHOTO_EMULSION" >
+        <D unit="g/cm3" value="1.2914" />
+        <fraction n="0.08118" ref="H_element"/>
+        <fraction n="0.41606" ref="C_element"/>
+        <fraction n="0.11124" ref="N_element"/>
+        <fraction n="0.38064" ref="O_element"/>
+        <fraction n="0.01088" ref="S_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_Pyrex_Glass" name="G4_Pyrex_Glass" >
+        <D unit="g/cm3" value="2.23" />
+        <fraction n="0.0400639" ref="B_element"/>
+        <fraction n="0.539561" ref="O_element"/>
+        <fraction n="0.0281909" ref="Na_element"/>
+        <fraction n="0.011644" ref="Al_element"/>
+        <fraction n="0.377219" ref="Si_element"/>
+        <fraction n="0.00332099" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GLASS_LEAD" name="G4_GLASS_LEAD" >
+        <D unit="g/cm3" value="6.22" />
+        <fraction n="0.156453" ref="O_element"/>
+        <fraction n="0.080866" ref="Si_element"/>
+        <fraction n="0.008092" ref="Ti_element"/>
+        <fraction n="0.002651" ref="As_element"/>
+        <fraction n="0.751938" ref="Pb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GLASS_PLATE" name="G4_GLASS_PLATE" >
+        <D unit="g/cm3" value="2.4" />
+        <fraction n="0.4598" ref="O_element"/>
+        <fraction n="0.0964411" ref="Na_element"/>
+        <fraction n="0.336553" ref="Si_element"/>
+        <fraction n="0.107205" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GLUTAMINE" name="G4_GLUTAMINE" >
+        <D unit="g/cm3" value="1.46" />
+        <composite n="5" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+        <composite n="2" ref="N_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GLYCEROL" name="G4_GLYCEROL" >
+        <D unit="g/cm3" value="1.2613" />
+        <composite n="3" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GUANINE" name="G4_GUANINE" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="5" ref="C_element"/>
+        <composite n="5" ref="H_element"/>
+        <composite n="5" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GYPSUM" name="G4_GYPSUM" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="1" ref="Ca_element"/>
+        <composite n="1" ref="S_element"/>
+        <composite n="6" ref="O_element"/>
+        <composite n="4" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N-HEPTANE" name="G4_N-HEPTANE" >
+        <D unit="g/cm3" value="0.68376" />
+        <composite n="7" ref="C_element"/>
+        <composite n="16" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N-HEXANE" name="G4_N-HEXANE" >
+        <D unit="g/cm3" value="0.6603" />
+        <composite n="6" ref="C_element"/>
+        <composite n="14" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_KAPTON" name="G4_KAPTON" >
+        <D unit="g/cm3" value="1.42" />
+        <composite n="22" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+        <composite n="2" ref="N_element"/>
+        <composite n="5" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LANTHANUM_OXYBROMIDE" name="G4_LANTHANUM_OXYBROMIDE" >
+        <D unit="g/cm3" value="6.28" />
+        <composite n="1" ref="La_element"/>
+        <composite n="1" ref="Br_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LANTHANUM_OXYSULFIDE" name="G4_LANTHANUM_OXYSULFIDE" >
+        <D unit="g/cm3" value="5.86" />
+        <composite n="2" ref="La_element"/>
+        <composite n="2" ref="O_element"/>
+        <composite n="1" ref="S_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LEAD_OXIDE" name="G4_LEAD_OXIDE" >
+        <D unit="g/cm3" value="9.53" />
+        <fraction n="0.071682" ref="O_element"/>
+        <fraction n="0.928318" ref="Pb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_AMIDE" name="G4_LITHIUM_AMIDE" >
+        <D unit="g/cm3" value="1.178" />
+        <composite n="1" ref="Li_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="2" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_CARBONATE" name="G4_LITHIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.11" />
+        <composite n="2" ref="Li_element"/>
+        <composite n="1" ref="C_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_FLUORIDE" name="G4_LITHIUM_FLUORIDE" >
+        <D unit="g/cm3" value="2.635" />
+        <composite n="1" ref="Li_element"/>
+        <composite n="1" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_HYDRIDE" name="G4_LITHIUM_HYDRIDE" >
+        <D unit="g/cm3" value="0.82" />
+        <composite n="1" ref="Li_element"/>
+        <composite n="1" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_IODIDE" name="G4_LITHIUM_IODIDE" >
+        <D unit="g/cm3" value="3.494" />
+        <composite n="1" ref="Li_element"/>
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_OXIDE" name="G4_LITHIUM_OXIDE" >
+        <D unit="g/cm3" value="2.013" />
+        <composite n="2" ref="Li_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LITHIUM_TETRABORATE" name="G4_LITHIUM_TETRABORATE" >
+        <D unit="g/cm3" value="2.44" />
+        <composite n="2" ref="Li_element"/>
+        <composite n="4" ref="B_element"/>
+        <composite n="7" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_LUNG_ICRP" name="G4_LUNG_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.105" ref="H_element"/>
+        <fraction n="0.083" ref="C_element"/>
+        <fraction n="0.023" ref="N_element"/>
+        <fraction n="0.779" ref="O_element"/>
+        <fraction n="0.002" ref="Na_element"/>
+        <fraction n="0.001" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.003" ref="Cl_element"/>
+        <fraction n="0.002" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_M3_WAX" name="G4_M3_WAX" >
+        <D unit="g/cm3" value="1.05" />
+        <fraction n="0.114318" ref="H_element"/>
+        <fraction n="0.655824" ref="C_element"/>
+        <fraction n="0.0921831" ref="O_element"/>
+        <fraction n="0.134792" ref="Mg_element"/>
+        <fraction n="0.002883" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MAGNESIUM_CARBONATE" name="G4_MAGNESIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.958" />
+        <composite n="1" ref="Mg_element"/>
+        <composite n="1" ref="C_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MAGNESIUM_FLUORIDE" name="G4_MAGNESIUM_FLUORIDE" >
+        <D unit="g/cm3" value="3" />
+        <composite n="1" ref="Mg_element"/>
+        <composite n="2" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MAGNESIUM_OXIDE" name="G4_MAGNESIUM_OXIDE" >
+        <D unit="g/cm3" value="3.58" />
+        <composite n="1" ref="Mg_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MAGNESIUM_TETRABORATE" name="G4_MAGNESIUM_TETRABORATE" >
+        <D unit="g/cm3" value="2.53" />
+        <composite n="1" ref="Mg_element"/>
+        <composite n="4" ref="B_element"/>
+        <composite n="7" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MERCURIC_IODIDE" name="G4_MERCURIC_IODIDE" >
+        <D unit="g/cm3" value="6.36" />
+        <composite n="1" ref="Hg_element"/>
+        <composite n="2" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_METHANE" name="G4_METHANE" >
+        <D unit="g/cm3" value="0.000667151" />
+        <composite n="1" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_METHANOL" name="G4_METHANOL" >
+        <D unit="g/cm3" value="0.7914" />
+        <composite n="1" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MIX_D_WAX" name="G4_MIX_D_WAX" >
+        <D unit="g/cm3" value="0.99" />
+        <fraction n="0.13404" ref="H_element"/>
+        <fraction n="0.77796" ref="C_element"/>
+        <fraction n="0.03502" ref="O_element"/>
+        <fraction n="0.038594" ref="Mg_element"/>
+        <fraction n="0.014386" ref="Ti_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MS20_TISSUE" name="G4_MS20_TISSUE" >
+        <D unit="g/cm3" value="1" />
+        <fraction n="0.081192" ref="H_element"/>
+        <fraction n="0.583442" ref="C_element"/>
+        <fraction n="0.017798" ref="N_element"/>
+        <fraction n="0.186381" ref="O_element"/>
+        <fraction n="0.130287" ref="Mg_element"/>
+        <fraction n="0.0009" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MUSCLE_SKELETAL_ICRP" name="G4_MUSCLE_SKELETAL_ICRP" >
+        <D unit="g/cm3" value="1.05" />
+        <fraction n="0.102" ref="H_element"/>
+        <fraction n="0.143" ref="C_element"/>
+        <fraction n="0.034" ref="N_element"/>
+        <fraction n="0.71" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.002" ref="P_element"/>
+        <fraction n="0.003" ref="S_element"/>
+        <fraction n="0.001" ref="Cl_element"/>
+        <fraction n="0.004" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MUSCLE_STRIATED_ICRU" name="G4_MUSCLE_STRIATED_ICRU" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.102102" ref="H_element"/>
+        <fraction n="0.123123" ref="C_element"/>
+        <fraction n="0.035035" ref="N_element"/>
+        <fraction n="0.72973" ref="O_element"/>
+        <fraction n="0.001001" ref="Na_element"/>
+        <fraction n="0.002002" ref="P_element"/>
+        <fraction n="0.004004" ref="S_element"/>
+        <fraction n="0.003003" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MUSCLE_WITH_SUCROSE" name="G4_MUSCLE_WITH_SUCROSE" >
+        <D unit="g/cm3" value="1.11" />
+        <fraction n="0.0982341" ref="H_element"/>
+        <fraction n="0.156214" ref="C_element"/>
+        <fraction n="0.035451" ref="N_element"/>
+        <fraction n="0.710101" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MUSCLE_WITHOUT_SUCROSE" name="G4_MUSCLE_WITHOUT_SUCROSE" >
+        <D unit="g/cm3" value="1.07" />
+        <fraction n="0.101969" ref="H_element"/>
+        <fraction n="0.120058" ref="C_element"/>
+        <fraction n="0.035451" ref="N_element"/>
+        <fraction n="0.742522" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NAPHTHALENE" name="G4_NAPHTHALENE" >
+        <D unit="g/cm3" value="1.145" />
+        <composite n="10" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NITROBENZENE" name="G4_NITROBENZENE" >
+        <D unit="g/cm3" value="1.19867" />
+        <composite n="6" ref="C_element"/>
+        <composite n="5" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NITROUS_OXIDE" name="G4_NITROUS_OXIDE" >
+        <D unit="g/cm3" value="0.00183094" />
+        <composite n="2" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NYLON-8062" name="G4_NYLON-8062" >
+        <D unit="g/cm3" value="1.08" />
+        <fraction n="0.103509" ref="H_element"/>
+        <fraction n="0.648416" ref="C_element"/>
+        <fraction n="0.0995361" ref="N_element"/>
+        <fraction n="0.148539" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NYLON-6-6" name="G4_NYLON-6-6" >
+        <D unit="g/cm3" value="1.14" />
+        <composite n="6" ref="C_element"/>
+        <composite n="11" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NYLON-6-10" name="G4_NYLON-6-10" >
+        <D unit="g/cm3" value="1.14" />
+        <fraction n="0.107062" ref="H_element"/>
+        <fraction n="0.680449" ref="C_element"/>
+        <fraction n="0.099189" ref="N_element"/>
+        <fraction n="0.1133" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_NYLON-11_RILSAN" name="G4_NYLON-11_RILSAN" >
+        <D unit="g/cm3" value="1.425" />
+        <fraction n="0.115476" ref="H_element"/>
+        <fraction n="0.720818" ref="C_element"/>
+        <fraction n="0.0764169" ref="N_element"/>
+        <fraction n="0.0872889" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_OCTANE" name="G4_OCTANE" >
+        <D unit="g/cm3" value="0.7026" />
+        <composite n="8" ref="C_element"/>
+        <composite n="18" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PARAFFIN" name="G4_PARAFFIN" >
+        <D unit="g/cm3" value="0.93" />
+        <composite n="25" ref="C_element"/>
+        <composite n="52" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N-PENTANE" name="G4_N-PENTANE" >
+        <D unit="g/cm3" value="0.6262" />
+        <composite n="5" ref="C_element"/>
+        <composite n="12" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PHOTO_EMULSION" name="G4_PHOTO_EMULSION" >
+        <D unit="g/cm3" value="3.815" />
+        <fraction n="0.0141" ref="H_element"/>
+        <fraction n="0.072261" ref="C_element"/>
+        <fraction n="0.01932" ref="N_element"/>
+        <fraction n="0.066101" ref="O_element"/>
+        <fraction n="0.00189" ref="S_element"/>
+        <fraction n="0.349103" ref="Br_element"/>
+        <fraction n="0.474105" ref="Ag_element"/>
+        <fraction n="0.00312" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PLASTIC_SC_VINYLTOLUENE" name="G4_PLASTIC_SC_VINYLTOLUENE" >
+        <D unit="g/cm3" value="1.032" />
+        <composite n="9" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PLUTONIUM_DIOXIDE" name="G4_PLUTONIUM_DIOXIDE" >
+        <D unit="g/cm3" value="11.46" />
+        <composite n="1" ref="Pu_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYACRYLONITRILE" name="G4_POLYACRYLONITRILE" >
+        <D unit="g/cm3" value="1.17" />
+        <composite n="3" ref="C_element"/>
+        <composite n="3" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYCARBONATE" name="G4_POLYCARBONATE" >
+        <D unit="g/cm3" value="1.2" />
+        <composite n="16" ref="C_element"/>
+        <composite n="14" ref="H_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYCHLOROSTYRENE" name="G4_POLYCHLOROSTYRENE" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="8" ref="C_element"/>
+        <composite n="7" ref="H_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYETHYLENE" name="G4_POLYETHYLENE" >
+        <D unit="g/cm3" value="0.94" />
+        <composite n="1" ref="C_element"/>
+        <composite n="2" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_MYLAR" name="G4_MYLAR" >
+        <D unit="g/cm3" value="1.4" />
+        <composite n="10" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+        <composite n="4" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PLEXIGLASS" name="G4_PLEXIGLASS" >
+        <D unit="g/cm3" value="1.19" />
+        <composite n="5" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYOXYMETHYLENE" name="G4_POLYOXYMETHYLENE" >
+        <D unit="g/cm3" value="1.425" />
+        <composite n="1" ref="C_element"/>
+        <composite n="2" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYPROPYLENE" name="G4_POLYPROPYLENE" >
+        <D unit="g/cm3" value="0.9" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYSTYRENE" name="G4_POLYSTYRENE" >
+        <D unit="g/cm3" value="1.06" />
+        <composite n="8" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TEFLON" name="G4_TEFLON" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYTRIFLUOROCHLOROETHYLENE" name="G4_POLYTRIFLUOROCHLOROETHYLENE" >
+        <D unit="g/cm3" value="2.1" />
+        <composite n="2" ref="C_element"/>
+        <composite n="3" ref="F_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYL_ACETATE" name="G4_POLYVINYL_ACETATE" >
+        <D unit="g/cm3" value="1.19" />
+        <composite n="4" ref="C_element"/>
+        <composite n="6" ref="H_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYL_ALCOHOL" name="G4_POLYVINYL_ALCOHOL" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYL_BUTYRAL" name="G4_POLYVINYL_BUTYRAL" >
+        <D unit="g/cm3" value="1.12" />
+        <composite n="8" ref="C_element"/>
+        <composite n="14" ref="H_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYL_CHLORIDE" name="G4_POLYVINYL_CHLORIDE" >
+        <D unit="g/cm3" value="1.3" />
+        <composite n="2" ref="C_element"/>
+        <composite n="3" ref="H_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYLIDENE_CHLORIDE" name="G4_POLYVINYLIDENE_CHLORIDE" >
+        <D unit="g/cm3" value="1.7" />
+        <composite n="2" ref="C_element"/>
+        <composite n="2" ref="H_element"/>
+        <composite n="2" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYLIDENE_FLUORIDE" name="G4_POLYVINYLIDENE_FLUORIDE" >
+        <D unit="g/cm3" value="1.76" />
+        <composite n="2" ref="C_element"/>
+        <composite n="2" ref="H_element"/>
+        <composite n="2" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POLYVINYL_PYRROLIDONE" name="G4_POLYVINYL_PYRROLIDONE" >
+        <D unit="g/cm3" value="1.25" />
+        <composite n="6" ref="C_element"/>
+        <composite n="9" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POTASSIUM_IODIDE" name="G4_POTASSIUM_IODIDE" >
+        <D unit="g/cm3" value="3.13" />
+        <composite n="1" ref="K_element"/>
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_POTASSIUM_OXIDE" name="G4_POTASSIUM_OXIDE" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="2" ref="K_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PROPANE" name="G4_PROPANE" >
+        <D unit="g/cm3" value="0.00187939" />
+        <composite n="3" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_lPROPANE" name="G4_lPROPANE" >
+        <D unit="g/cm3" value="0.43" />
+        <composite n="3" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_N-PROPYL_ALCOHOL" name="G4_N-PROPYL_ALCOHOL" >
+        <D unit="g/cm3" value="0.8035" />
+        <composite n="3" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_PYRIDINE" name="G4_PYRIDINE" >
+        <D unit="g/cm3" value="0.9819" />
+        <composite n="5" ref="C_element"/>
+        <composite n="5" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_RUBBER_BUTYL" name="G4_RUBBER_BUTYL" >
+        <D unit="g/cm3" value="0.92" />
+        <fraction n="0.143711" ref="H_element"/>
+        <fraction n="0.856289" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_RUBBER_NATURAL" name="G4_RUBBER_NATURAL" >
+        <D unit="g/cm3" value="0.92" />
+        <fraction n="0.118371" ref="H_element"/>
+        <fraction n="0.881629" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_RUBBER_NEOPRENE" name="G4_RUBBER_NEOPRENE" >
+        <D unit="g/cm3" value="1.23" />
+        <fraction n="0.05692" ref="H_element"/>
+        <fraction n="0.542646" ref="C_element"/>
+        <fraction n="0.400434" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SILICON_DIOXIDE" name="G4_SILICON_DIOXIDE" >
+        <D unit="g/cm3" value="2.32" />
+        <composite n="1" ref="Si_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SILVER_BROMIDE" name="G4_SILVER_BROMIDE" >
+        <D unit="g/cm3" value="6.473" />
+        <composite n="1" ref="Ag_element"/>
+        <composite n="1" ref="Br_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SILVER_CHLORIDE" name="G4_SILVER_CHLORIDE" >
+        <D unit="g/cm3" value="5.56" />
+        <composite n="1" ref="Ag_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SILVER_HALIDES" name="G4_SILVER_HALIDES" >
+        <D unit="g/cm3" value="6.47" />
+        <fraction n="0.422895" ref="Br_element"/>
+        <fraction n="0.573748" ref="Ag_element"/>
+        <fraction n="0.003357" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SILVER_IODIDE" name="G4_SILVER_IODIDE" >
+        <D unit="g/cm3" value="6.01" />
+        <composite n="1" ref="Ag_element"/>
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SKIN_ICRP" name="G4_SKIN_ICRP" >
+        <D unit="g/cm3" value="1.09" />
+        <fraction n="0.1" ref="H_element"/>
+        <fraction n="0.204" ref="C_element"/>
+        <fraction n="0.042" ref="N_element"/>
+        <fraction n="0.645" ref="O_element"/>
+        <fraction n="0.002" ref="Na_element"/>
+        <fraction n="0.001" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.003" ref="Cl_element"/>
+        <fraction n="0.001" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SODIUM_CARBONATE" name="G4_SODIUM_CARBONATE" >
+        <D unit="g/cm3" value="2.532" />
+        <composite n="2" ref="Na_element"/>
+        <composite n="1" ref="C_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SODIUM_IODIDE" name="G4_SODIUM_IODIDE" >
+        <D unit="g/cm3" value="3.667" />
+        <composite n="1" ref="Na_element"/>
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SODIUM_MONOXIDE" name="G4_SODIUM_MONOXIDE" >
+        <D unit="g/cm3" value="2.27" />
+        <composite n="2" ref="Na_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SODIUM_NITRATE" name="G4_SODIUM_NITRATE" >
+        <D unit="g/cm3" value="2.261" />
+        <composite n="1" ref="Na_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="3" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_STILBENE" name="G4_STILBENE" >
+        <D unit="g/cm3" value="0.9707" />
+        <composite n="14" ref="C_element"/>
+        <composite n="12" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_SUCROSE" name="G4_SUCROSE" >
+        <D unit="g/cm3" value="1.5805" />
+        <composite n="12" ref="C_element"/>
+        <composite n="22" ref="H_element"/>
+        <composite n="11" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TERPHENYL" name="G4_TERPHENYL" >
+        <D unit="g/cm3" value="1.24" />
+        <composite n="18" ref="C_element"/>
+        <composite n="14" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TESTIS_ICRP" name="G4_TESTIS_ICRP" >
+        <D unit="g/cm3" value="1.04" />
+        <fraction n="0.106" ref="H_element"/>
+        <fraction n="0.099" ref="C_element"/>
+        <fraction n="0.02" ref="N_element"/>
+        <fraction n="0.766" ref="O_element"/>
+        <fraction n="0.002" ref="Na_element"/>
+        <fraction n="0.001" ref="P_element"/>
+        <fraction n="0.002" ref="S_element"/>
+        <fraction n="0.002" ref="Cl_element"/>
+        <fraction n="0.002" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TETRACHLOROETHYLENE" name="G4_TETRACHLOROETHYLENE" >
+        <D unit="g/cm3" value="1.625" />
+        <composite n="2" ref="C_element"/>
+        <composite n="4" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_THALLIUM_CHLORIDE" name="G4_THALLIUM_CHLORIDE" >
+        <D unit="g/cm3" value="7.004" />
+        <composite n="1" ref="Tl_element"/>
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TISSUE_SOFT_ICRP" name="G4_TISSUE_SOFT_ICRP" >
+        <D unit="g/cm3" value="1.03" />
+        <fraction n="0.105" ref="H_element"/>
+        <fraction n="0.256" ref="C_element"/>
+        <fraction n="0.027" ref="N_element"/>
+        <fraction n="0.602" ref="O_element"/>
+        <fraction n="0.001" ref="Na_element"/>
+        <fraction n="0.002" ref="P_element"/>
+        <fraction n="0.003" ref="S_element"/>
+        <fraction n="0.002" ref="Cl_element"/>
+        <fraction n="0.002" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TISSUE_SOFT_ICRU-4" name="G4_TISSUE_SOFT_ICRU-4" >
+        <D unit="g/cm3" value="1" />
+        <fraction n="0.101" ref="H_element"/>
+        <fraction n="0.111" ref="C_element"/>
+        <fraction n="0.026" ref="N_element"/>
+        <fraction n="0.762" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TISSUE-METHANE" name="G4_TISSUE-METHANE" >
+        <D unit="g/cm3" value="0.00106409" />
+        <fraction n="0.101869" ref="H_element"/>
+        <fraction n="0.456179" ref="C_element"/>
+        <fraction n="0.035172" ref="N_element"/>
+        <fraction n="0.40678" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TISSUE-PROPANE" name="G4_TISSUE-PROPANE" >
+        <D unit="g/cm3" value="0.00182628" />
+        <fraction n="0.102672" ref="H_element"/>
+        <fraction n="0.56894" ref="C_element"/>
+        <fraction n="0.035022" ref="N_element"/>
+        <fraction n="0.293366" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TITANIUM_DIOXIDE" name="G4_TITANIUM_DIOXIDE" >
+        <D unit="g/cm3" value="4.26" />
+        <composite n="1" ref="Ti_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TOLUENE" name="G4_TOLUENE" >
+        <D unit="g/cm3" value="0.8669" />
+        <composite n="7" ref="C_element"/>
+        <composite n="8" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TRICHLOROETHYLENE" name="G4_TRICHLOROETHYLENE" >
+        <D unit="g/cm3" value="1.46" />
+        <composite n="2" ref="C_element"/>
+        <composite n="1" ref="H_element"/>
+        <composite n="3" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TRIETHYL_PHOSPHATE" name="G4_TRIETHYL_PHOSPHATE" >
+        <D unit="g/cm3" value="1.07" />
+        <composite n="6" ref="C_element"/>
+        <composite n="15" ref="H_element"/>
+        <composite n="4" ref="O_element"/>
+        <composite n="1" ref="P_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_TUNGSTEN_HEXAFLUORIDE" name="G4_TUNGSTEN_HEXAFLUORIDE" >
+        <D unit="g/cm3" value="2.4" />
+        <composite n="1" ref="W_element"/>
+        <composite n="6" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_URANIUM_DICARBIDE" name="G4_URANIUM_DICARBIDE" >
+        <D unit="g/cm3" value="11.28" />
+        <composite n="1" ref="U_element"/>
+        <composite n="2" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_URANIUM_MONOCARBIDE" name="G4_URANIUM_MONOCARBIDE" >
+        <D unit="g/cm3" value="13.63" />
+        <composite n="1" ref="U_element"/>
+        <composite n="1" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_URANIUM_OXIDE" name="G4_URANIUM_OXIDE" >
+        <D unit="g/cm3" value="10.96" />
+        <composite n="1" ref="U_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_UREA" name="G4_UREA" >
+        <D unit="g/cm3" value="1.323" />
+        <composite n="1" ref="C_element"/>
+        <composite n="4" ref="H_element"/>
+        <composite n="2" ref="N_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_VALINE" name="G4_VALINE" >
+        <D unit="g/cm3" value="1.23" />
+        <composite n="5" ref="C_element"/>
+        <composite n="11" ref="H_element"/>
+        <composite n="1" ref="N_element"/>
+        <composite n="2" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_VITON" name="G4_VITON" >
+        <D unit="g/cm3" value="1.8" />
+        <fraction n="0.009417" ref="H_element"/>
+        <fraction n="0.280555" ref="C_element"/>
+        <fraction n="0.710028" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_WATER" name="G4_WATER" >
+        <D unit="g/cm3" value="1" />
+        <composite n="2" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_WATER_VAPOR" name="G4_WATER_VAPOR" >
+        <D unit="g/cm3" value="0.000756182" />
+        <composite n="2" ref="H_element"/>
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_XYLENE" name="G4_XYLENE" >
+        <D unit="g/cm3" value="0.87" />
+        <composite n="8" ref="C_element"/>
+        <composite n="10" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="G4_GRAPHITE" name="G4_GRAPHITE" >
+        <D unit="g/cm3" value="2.21" />
+        <composite n="1" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="NIST"/>
+      </material>
+      <material formula="H" name="G4_H" >
+        <D unit="g/cm3" value="0.000083748" />
+        <composite n="1" ref="H_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="He" name="G4_He" >
+        <D unit="g/cm3" value="0.000166322" />
+        <composite n="1" ref="He_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Li" name="G4_Li" >
+        <D unit="g/cm3" value="0.534" />
+        <composite n="1" ref="Li_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Be" name="G4_Be" >
+        <D unit="g/cm3" value="1.848" />
+        <composite n="1" ref="Be_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="B" name="G4_B" >
+        <D unit="g/cm3" value="2.37" />
+        <composite n="1" ref="B_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="C" name="G4_C" >
+        <D unit="g/cm3" value="2" />
+        <composite n="1" ref="C_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="N" name="G4_N" >
+        <D unit="g/cm3" value="0.0011652" />
+        <composite n="1" ref="N_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="O" name="G4_O" >
+        <D unit="g/cm3" value="0.00133151" />
+        <composite n="1" ref="O_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="F" name="G4_F" >
+        <D unit="g/cm3" value="0.00158029" />
+        <composite n="1" ref="F_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ne" name="G4_Ne" >
+        <D unit="g/cm3" value="0.000838505" />
+        <composite n="1" ref="Ne_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Na" name="G4_Na" >
+        <D unit="g/cm3" value="0.971" />
+        <composite n="1" ref="Na_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Mg" name="G4_Mg" >
+        <D unit="g/cm3" value="1.74" />
+        <composite n="1" ref="Mg_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Al" name="G4_Al" >
+        <D unit="g/cm3" value="2.699" />
+        <composite n="1" ref="Al_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Si" name="G4_Si" >
+        <D unit="g/cm3" value="2.33" />
+        <composite n="1" ref="Si_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="P" name="G4_P" >
+        <D unit="g/cm3" value="2.2" />
+        <composite n="1" ref="P_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="S" name="G4_S" >
+        <D unit="g/cm3" value="2" />
+        <composite n="1" ref="S_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cl" name="G4_Cl" >
+        <D unit="g/cm3" value="0.00299473" />
+        <composite n="1" ref="Cl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ar" name="G4_Ar" >
+        <D unit="g/cm3" value="0.00166201" />
+        <composite n="1" ref="Ar_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="K" name="G4_K" >
+        <D unit="g/cm3" value="0.862" />
+        <composite n="1" ref="K_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ca" name="G4_Ca" >
+        <D unit="g/cm3" value="1.55" />
+        <composite n="1" ref="Ca_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Sc" name="G4_Sc" >
+        <D unit="g/cm3" value="2.989" />
+        <composite n="1" ref="Sc_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ti" name="G4_Ti" >
+        <D unit="g/cm3" value="4.54" />
+        <composite n="1" ref="Ti_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="V" name="G4_V" >
+        <D unit="g/cm3" value="6.11" />
+        <composite n="1" ref="V_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cr" name="G4_Cr" >
+        <D unit="g/cm3" value="7.18" />
+        <composite n="1" ref="Cr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Mn" name="G4_Mn" >
+        <D unit="g/cm3" value="7.44" />
+        <composite n="1" ref="Mn_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Fe" name="G4_Fe" >
+        <D unit="g/cm3" value="7.874" />
+        <composite n="1" ref="Fe_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Co" name="G4_Co" >
+        <D unit="g/cm3" value="8.9" />
+        <composite n="1" ref="Co_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ni" name="G4_Ni" >
+        <D unit="g/cm3" value="8.902" />
+        <composite n="1" ref="Ni_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cu" name="G4_Cu" >
+        <D unit="g/cm3" value="8.96" />
+        <composite n="1" ref="Cu_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Zn" name="G4_Zn" >
+        <D unit="g/cm3" value="7.133" />
+        <composite n="1" ref="Zn_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ga" name="G4_Ga" >
+        <D unit="g/cm3" value="5.904" />
+        <composite n="1" ref="Ga_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ge" name="G4_Ge" >
+        <D unit="g/cm3" value="5.323" />
+        <composite n="1" ref="Ge_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="As" name="G4_As" >
+        <D unit="g/cm3" value="5.73" />
+        <composite n="1" ref="As_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Se" name="G4_Se" >
+        <D unit="g/cm3" value="4.5" />
+        <composite n="1" ref="Se_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Br" name="G4_Br" >
+        <D unit="g/cm3" value="0.0070721" />
+        <composite n="1" ref="Br_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Kr" name="G4_Kr" >
+        <D unit="g/cm3" value="0.00347832" />
+        <composite n="1" ref="Kr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Rb" name="G4_Rb" >
+        <D unit="g/cm3" value="1.532" />
+        <composite n="1" ref="Rb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Sr" name="G4_Sr" >
+        <D unit="g/cm3" value="2.54" />
+        <composite n="1" ref="Sr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Y" name="G4_Y" >
+        <D unit="g/cm3" value="4.469" />
+        <composite n="1" ref="Y_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Zr" name="G4_Zr" >
+        <D unit="g/cm3" value="6.506" />
+        <composite n="1" ref="Zr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Nb" name="G4_Nb" >
+        <D unit="g/cm3" value="8.57" />
+        <composite n="1" ref="Nb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Mo" name="G4_Mo" >
+        <D unit="g/cm3" value="10.22" />
+        <composite n="1" ref="Mo_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Tc" name="G4_Tc" >
+        <D unit="g/cm3" value="11.5" />
+        <composite n="1" ref="Tc_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ru" name="G4_Ru" >
+        <D unit="g/cm3" value="12.41" />
+        <composite n="1" ref="Ru_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Rh" name="G4_Rh" >
+        <D unit="g/cm3" value="12.41" />
+        <composite n="1" ref="Rh_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pd" name="G4_Pd" >
+        <D unit="g/cm3" value="12.02" />
+        <composite n="1" ref="Pd_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ag" name="G4_Ag" >
+        <D unit="g/cm3" value="10.5" />
+        <composite n="1" ref="Ag_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cd" name="G4_Cd" >
+        <D unit="g/cm3" value="8.65" />
+        <composite n="1" ref="Cd_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="In" name="G4_In" >
+        <D unit="g/cm3" value="7.31" />
+        <composite n="1" ref="In_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Sn" name="G4_Sn" >
+        <D unit="g/cm3" value="7.31" />
+        <composite n="1" ref="Sn_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Sb" name="G4_Sb" >
+        <D unit="g/cm3" value="6.691" />
+        <composite n="1" ref="Sb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Te" name="G4_Te" >
+        <D unit="g/cm3" value="6.24" />
+        <composite n="1" ref="Te_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="I" name="G4_I" >
+        <D unit="g/cm3" value="4.93" />
+        <composite n="1" ref="I_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Xe" name="G4_Xe" >
+        <D unit="g/cm3" value="0.00548536" />
+        <composite n="1" ref="Xe_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cs" name="G4_Cs" >
+        <D unit="g/cm3" value="1.873" />
+        <composite n="1" ref="Cs_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ba" name="G4_Ba" >
+        <D unit="g/cm3" value="3.5" />
+        <composite n="1" ref="Ba_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="La" name="G4_La" >
+        <D unit="g/cm3" value="6.154" />
+        <composite n="1" ref="La_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ce" name="G4_Ce" >
+        <D unit="g/cm3" value="6.657" />
+        <composite n="1" ref="Ce_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pr" name="G4_Pr" >
+        <D unit="g/cm3" value="6.71" />
+        <composite n="1" ref="Pr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Nd" name="G4_Nd" >
+        <D unit="g/cm3" value="6.9" />
+        <composite n="1" ref="Nd_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pm" name="G4_Pm" >
+        <D unit="g/cm3" value="7.22" />
+        <composite n="1" ref="Pm_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Sm" name="G4_Sm" >
+        <D unit="g/cm3" value="7.46" />
+        <composite n="1" ref="Sm_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Eu" name="G4_Eu" >
+        <D unit="g/cm3" value="5.243" />
+        <composite n="1" ref="Eu_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Gd" name="G4_Gd" >
+        <D unit="g/cm3" value="7.9004" />
+        <composite n="1" ref="Gd_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Tb" name="G4_Tb" >
+        <D unit="g/cm3" value="8.229" />
+        <composite n="1" ref="Tb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Dy" name="G4_Dy" >
+        <D unit="g/cm3" value="8.55" />
+        <composite n="1" ref="Dy_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ho" name="G4_Ho" >
+        <D unit="g/cm3" value="8.795" />
+        <composite n="1" ref="Ho_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Er" name="G4_Er" >
+        <D unit="g/cm3" value="9.066" />
+        <composite n="1" ref="Er_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Tm" name="G4_Tm" >
+        <D unit="g/cm3" value="9.321" />
+        <composite n="1" ref="Tm_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Yb" name="G4_Yb" >
+        <D unit="g/cm3" value="6.73" />
+        <composite n="1" ref="Yb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Lu" name="G4_Lu" >
+        <D unit="g/cm3" value="9.84" />
+        <composite n="1" ref="Lu_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Hf" name="G4_Hf" >
+        <D unit="g/cm3" value="13.31" />
+        <composite n="1" ref="Hf_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ta" name="G4_Ta" >
+        <D unit="g/cm3" value="16.654" />
+        <composite n="1" ref="Ta_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="W" name="G4_W" >
+        <D unit="g/cm3" value="19.3" />
+        <composite n="1" ref="W_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Re" name="G4_Re" >
+        <D unit="g/cm3" value="21.02" />
+        <composite n="1" ref="Re_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Os" name="G4_Os" >
+        <D unit="g/cm3" value="22.57" />
+        <composite n="1" ref="Os_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ir" name="G4_Ir" >
+        <D unit="g/cm3" value="22.42" />
+        <composite n="1" ref="Ir_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pt" name="G4_Pt" >
+        <D unit="g/cm3" value="21.45" />
+        <composite n="1" ref="Pt_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Au" name="G4_Au" >
+        <D unit="g/cm3" value="19.32" />
+        <composite n="1" ref="Au_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Hg" name="G4_Hg" >
+        <D unit="g/cm3" value="13.546" />
+        <composite n="1" ref="Hg_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Tl" name="G4_Tl" >
+        <D unit="g/cm3" value="11.72" />
+        <composite n="1" ref="Tl_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pb" name="G4_Pb" >
+        <D unit="g/cm3" value="11.35" />
+        <composite n="1" ref="Pb_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Bi" name="G4_Bi" >
+        <D unit="g/cm3" value="9.747" />
+        <composite n="1" ref="Bi_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Po" name="G4_Po" >
+        <D unit="g/cm3" value="9.32" />
+        <composite n="1" ref="Po_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="At" name="G4_At" >
+        <D unit="g/cm3" value="9.32" />
+        <composite n="1" ref="At_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Rn" name="G4_Rn" >
+        <D unit="g/cm3" value="0.00900662" />
+        <composite n="1" ref="Rn_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Fr" name="G4_Fr" >
+        <D unit="g/cm3" value="1" />
+        <composite n="1" ref="Fr_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ra" name="G4_Ra" >
+        <D unit="g/cm3" value="5" />
+        <composite n="1" ref="Ra_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Ac" name="G4_Ac" >
+        <D unit="g/cm3" value="10.07" />
+        <composite n="1" ref="Ac_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Th" name="G4_Th" >
+        <D unit="g/cm3" value="11.72" />
+        <composite n="1" ref="Th_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pa" name="G4_Pa" >
+        <D unit="g/cm3" value="15.37" />
+        <composite n="1" ref="Pa_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="U" name="G4_U" >
+        <D unit="g/cm3" value="18.95" />
+        <composite n="1" ref="U_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Np" name="G4_Np" >
+        <D unit="g/cm3" value="20.25" />
+        <composite n="1" ref="Np_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Pu" name="G4_Pu" >
+        <D unit="g/cm3" value="19.84" />
+        <composite n="1" ref="Pu_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Am" name="G4_Am" >
+        <D unit="g/cm3" value="13.67" />
+        <composite n="1" ref="Am_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cm" name="G4_Cm" >
+        <D unit="g/cm3" value="13.51" />
+        <composite n="1" ref="Cm_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Bk" name="G4_Bk" >
+        <D unit="g/cm3" value="14" />
+        <composite n="1" ref="Bk_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+      <material formula="Cf" name="G4_Cf" >
+        <D unit="g/cm3" value="10" />
+        <composite n="1" ref="Cf_element"/>
+		<auxiliary auxtype="Material-type" auxvalue="Element"/>
+      </material>
+	<material formula="G4_lH2" name="G4_lH2" >
+		<D unit="g/cm3" value="0.0708" />
+		<composite n="2" ref="H_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lN2" name="G4_lN2" >
+		<D unit="g/cm3" value="0.807" />
+		<composite n="2" ref="N_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lO2" name="G4_lO2" >
+		<D unit="g/cm3" value="1.141" />
+		<composite n="2" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lAr" name="G4_lAr" >
+		<D unit="g/cm3" value="1.396" />
+		<composite n="1" ref="Ar" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lBr" name="G4_lBr" >
+		<D unit="g/cm3" value="3.1028" />
+		<composite n="1" ref="Br" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lKr" name="G4_lKr" >
+		<D unit="g/cm3" value="2.418" />
+		<composite n="1" ref="Kr" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_lXe" name="G4_lXe" >
+		<D unit="g/cm3" value="2.953" />
+		<composite n="1" ref="Xe" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_PbWO4" name="G4_PbWO4" >
+		<D unit="g/cm3" value="8.28" />
+		<composite n="4" ref="O_element" />
+		<composite n="1" ref="Pb_element" />
+		<composite n="1" ref="W_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_Galactic" name="G4_Galactic" >
+		<D unit="g/cm3" value="1e-25" />
+		<composite n="1" ref="alactic" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_GRAPHITE_POROUS" name="G4_GRAPHITE_POROUS" >
+		<D unit="g/cm3" value="1.7" />
+		<composite n="1" ref="RAPHITE_POROUS" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_LUCITE" name="G4_LUCITE" >
+		<D unit="g/cm3" value="1.19" />
+		<fraction n="0.080538" ref="H_element" />
+		<fraction n="0.599848" ref="C_element" />
+		<fraction n="0.319614" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_BRASS" name="G4_BRASS" >
+		<D unit="g/cm3" value="8.52" />
+		<composite n="62" ref="Cu_element" />
+		<composite n="35" ref="Zn_element" />
+		<composite n="3" ref="Pb_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_BRONZE" name="G4_BRONZE" >
+		<D unit="g/cm3" value="8.82" />
+		<composite n="89" ref="Cu_element" />
+		<composite n="9" ref="Zn_element" />
+		<composite n="2" ref="Pb_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_STAINLESS-STEEL" name="G4_STAINLESS-STEEL" >
+		<D unit="g/cm3" value="8.0" />
+		<composite n="74" ref="Fe_element" />
+		<composite n="18" ref="Cr_element" />
+		<composite n="8" ref="Ni_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_CR39" name="G4_CR39" >
+		<D unit="g/cm3" value="1.32" />
+		<composite n="18" ref="H_element" />
+		<composite n="12" ref="C_element" />
+		<composite n="7" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_OCTADECANOL" name="G4_OCTADECANOL" >
+		<D unit="g/cm3" value="0.812" />
+		<composite n="38" ref="H_element" />
+		<composite n="18" ref="C_element" />
+		<composite n="1" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
+	</material>
+	<material formula="G4_KEVLAR" name="G4_KEVLAR" >
+		<D unit="g/cm3" value="1.44" />
+		<composite n="14" ref="C_element" />
+		<composite n="10" ref="H_element" />
+		<composite n="2" ref="O_element" />
+		<composite n="2" ref="N_element" />
+		<auxiliary auxtype="Material-type" auxvalue="Space"/>
+	</material>
+	<material formula="G4_DACRON" name="G4_DACRON" >
+		<D unit="g/cm3" value="1.4" />
+		<composite n="10" ref="C_element" />
+		<composite n="8" ref="H_element" />
+		<composite n="4" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="Space"/>
+	</material>
+	<material formula="G4_NEOPRENE" name="G4_NEOPRENE" >
+		<D unit="g/cm3" value="1.23" />
+		<composite n="4" ref="C_element" />
+		<composite n="5" ref="H_element" />
+		<composite n="1" ref="Cl_element" />
+		<auxiliary auxtype="Material-type" auxvalue="Space"/>
+	</material>
+	<material formula="G4_CYTOSINE" name="G4_CYTOSINE" >
+		<D unit="g/cm3" value="1.55" />
+		<composite n="5" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="1" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_THYMINE" name="G4_THYMINE" >
+		<D unit="g/cm3" value="1.23" />
+		<composite n="6" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_URACIL" name="G4_URACIL" >
+		<D unit="g/cm3" value="1.32" />
+		<composite n="4" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_ADENINE" name="G4_DNA_ADENINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_GUANINE" name="G4_DNA_GUANINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="1" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_CYTOSINE" name="G4_DNA_CYTOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="4" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="1" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_THYMINE" name="G4_DNA_THYMINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="5" ref="H_element" />
+		<composite n="5" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_URACIL" name="G4_DNA_URACIL" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="3" ref="H_element" />
+		<composite n="4" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="2" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_ADENOSINE" name="G4_DNA_ADENOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="4" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_GUANOSINE" name="G4_DNA_GUANOSINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="5" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_CYTIDINE" name="G4_DNA_CYTIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="5" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_URIDINE" name="G4_DNA_URIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="9" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="6" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_METHYLURIDINE" name="G4_DNA_METHYLURIDINE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="11" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="6" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_MONOPHOSPHATE" name="G4_DNA_MONOPHOSPHATE" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="1" ref="P_element" />
+		<composite n="3" ref="O_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_A" name="G4_DNA_A" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="7" ref="O_element" />
+		<composite n="1" ref="P_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_G" name="G4_DNA_G" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="5" ref="N_element" />
+		<composite n="8" ref="O_element" />
+		<composite n="1" ref="P_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_C" name="G4_DNA_C" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="10" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="3" ref="N_element" />
+		<composite n="8" ref="O_element" />
+		<composite n="1" ref="P_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_U" name="G4_DNA_U" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="9" ref="H_element" />
+		<composite n="9" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="9" ref="O_element" />
+		<composite n="1" ref="P_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+	<material formula="G4_DNA_MU" name="G4_DNA_MU" >
+		<D unit="g/cm3" value="1.0" />
+		<composite n="11" ref="H_element" />
+		<composite n="10" ref="C_element" />
+		<composite n="2" ref="N_element" />
+		<composite n="9" ref="O_element" />
+		<composite n="1" ref="P_element" />
+		<auxiliary auxtype="Material-type" auxvalue="BioChemical"/>
+	</material>
+</materials>
+<solids>
+<box lunit="mm" name="WorldBox" x="100.0" y="100.0" z="100.0" />
+</solids>
+<structure>
+  <volume name="worldVOL">
+      <materialref ref="G4_AIR" />
+    <solidref ref="WorldBox" />
+    </volume>
+  </structure>
+<setup name="Default" version="1.0">
+    <world ref="worldVOL" />
+  </setup>
+</gdml>
