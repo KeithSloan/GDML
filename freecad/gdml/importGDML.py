@@ -2515,7 +2515,8 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
                     matType = aux.get("auxvalue")
                     # print(matType)
                     # print(materialGrp.Group)
-                    mGrp = materialGrp.Group[subGrp.index(matType)]
+                    if subGrp is not None:
+                        mGrp = materialGrp.Group[subGrp.index(matType)]
 
             materialObj = newGroupPython(mGrp, name)
             GDMLmaterial(materialObj, name)
