@@ -1,4 +1,4 @@
-# Mon Sep 19 10:36:46 AM PDT 2022
+# Sat Mar 25 8:44 AM PDT 2023
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -1257,9 +1257,9 @@ def checkFaces(pair1, pair2):
     return False
 
 
-def processSurface(
-    name, cnt, surface, Obj1, obj1, idx1, dictKey1, Obj2, obj2, idx2, dictKey2
-):
+def processSurface(name, cnt, surface,
+                   Obj1, obj1, idx1, dictKey1,
+                   Obj2, obj2, idx2, dictKey2):
     print(f"processSurface {name} {surface}")
     print(f" {Obj1.Label} {obj1.Label} {Obj2.Label} {obj2.Label}")
     ref1 = getPVname(Obj1, obj1, idx1, dictKey1)
@@ -1587,19 +1587,88 @@ def createMaterials(group):
                     processFractionsComposites(o, item)
 
 
-def createElements(group):
+def postCreateGeantMaterials():
+    '''
+    Geant4 materials are not added or created in createMaterials.
+    Here we add those materials to the materials group
+    '''
     global materials
-    for obj in group:
-        # print(f'Element : {obj.Label}')
-        item = ET.SubElement(
-            materials, "element", {"name": nameFromLabel(obj.Label)}
-        )
-        # Common code IsoTope and Elements1
-        processIsotope(obj, item)
+    global usedGeant4Materials
 
+    usedElements = set()
+
+    # collect the used elements in all the used materials
+    for mat in usedGeant4Materials:
+        obj = FreeCAD.ActiveDocument.getObjectsByLabel(mat)[0]
+        for grpItem in obj.Group:
+            words = grpItem.Label.split(':')
+            elemName = words[0][:-1]
+            usedElements.add(elemName)
+    # create <elements> for them
+    for elemName in usedElements:
+        obj = FreeCAD.ActiveDocument.getObject(elemName)
+        createElement(obj)
+
+    for mat in usedGeant4Materials:
+        obj = FreeCAD.ActiveDocument.getObjectsByLabel(mat)[0]
+        item = ET.SubElement(
+            materials, "material", {"name": str(mat)}
+        )
+        # property must be first
+        for prop in obj.PropertiesList:
+            if obj.getGroupOfProperty(prop) == "Properties":
+                ET.SubElement(
+                    item,
+                    "property",
+                    {"name": prop, "ref": getattr(obj, prop)},
+                )
+
+        if hasattr(obj, "Dunit") or hasattr(obj, "Dvalue"):
+            # print("Dunit or DValue")
+            D = ET.SubElement(item, "D")
+            if hasattr(obj, "Dunit"):
+                D.set("unit", str(obj.Dunit))
+
+            if hasattr(obj, "Dvalue"):
+                D.set("value", str(obj.Dvalue))
+
+            if hasattr(obj, "Tunit") and hasattr(obj, "Tvalue"):
+                ET.SubElement(
+                    item,
+                    "T",
+                    {"unit": obj.Tunit, "value": str(obj.Tvalue)},
+                )
+
+            if hasattr(obj, "MEEunit"):
+                ET.SubElement(
+                    item,
+                    "MEE",
+                    {"unit": obj.MEEunit, "value": str(obj.MEEvalue)},
+                )
+        # process common options material / element
+        processIsotope(obj, item)
         if len(obj.Group) > 0:
             for o in obj.Group:
                 processFractionsComposites(o, item)
+
+
+def createElements(group):
+    global materials
+    for obj in group:
+        createElement(obj)
+
+
+def createElement(obj):
+    global materials
+    item = ET.SubElement(
+        materials, "element", {"name": nameFromLabel(obj.Label)}
+    )
+    # Common code IsoTope and Elements1
+    processIsotope(obj, item)
+
+    if len(obj.Group) > 0:
+        for o in obj.Group:
+            processFractionsComposites(o, item)
 
 
 def createConstants(group):
@@ -1723,26 +1792,28 @@ def getMaterial(obj):
     # Somehow (now Feb 20) if a new gdml object is added
     # the default material is Geant4, and SetMaterials fails to change it
     from .GDMLMaterials import getMaterialsList
+    global usedGeant4Materials
 
     GDMLShared.trace("get Material : " + obj.Label)
-    print(f"get Material : {obj.Label}")
     if hasattr(obj, "material"):
         material = obj.material
-        return material
     elif hasattr(obj, "Tool"):
         GDMLShared.trace("Has tool - check Base")
         material = getMaterial(obj.Base)
-        return material
     elif hasattr(obj, "Base"):
         GDMLShared.trace("Has Base - check Base")
         material = getMaterial(obj.Base)
-        return material
     elif hasattr(obj, "Objects"):
         GDMLShared.trace("Has Objects - check Objects")
         material = getMaterial(obj.Objects[0])
-        return material
     else:
-        return getDefaultMaterial()
+        material = getDefaultMaterial()
+
+    if material[0:3] == "G4_":
+        print(f"Found Geant material {material}")
+        usedGeant4Materials.add(material)
+
+    return material
 
 
 """
@@ -2529,6 +2600,9 @@ def exportGDML(first, filepath, fileExt):
     AssemblyDict = {}
     AssemblyHelper.maxWww = 0
 
+    global usedGeant4Materials
+    usedGeant4Materials = set()
+
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
     print("====> Start GDML Export 1.9b")
@@ -2538,6 +2612,12 @@ def exportGDML(first, filepath, fileExt):
     zOrder = 1
     processMaterials()
     exportWorldVol(first, fileExt)
+    params = FreeCAD.ParamGet(
+        "User parameter:BaseApp/Preferences/Mod/GDML"
+    )
+    exportG4Materials = params.GetBool('exportG4Materials', False)
+    if exportG4Materials:
+        postCreateGeantMaterials()
     processOpticals()
     # format & write GDML file
     # xmlstr = ET.tostring(structure)

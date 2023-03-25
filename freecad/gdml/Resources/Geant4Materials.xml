@@ -2126,22 +2126,22 @@
 	</material>
 	<material formula="G4_lAr" name="G4_lAr" >
 		<D unit="g/cm3" value="1.396" />
-		<composite n="1" ref="Ar" />
+		<composite n="1" ref="Ar_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_lBr" name="G4_lBr" >
 		<D unit="g/cm3" value="3.1028" />
-		<composite n="1" ref="Br" />
+		<composite n="1" ref="Br_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_lKr" name="G4_lKr" >
 		<D unit="g/cm3" value="2.418" />
-		<composite n="1" ref="Kr" />
+		<composite n="1" ref="Kr_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_lXe" name="G4_lXe" >
 		<D unit="g/cm3" value="2.953" />
-		<composite n="1" ref="Xe" />
+		<composite n="1" ref="Xe_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_PbWO4" name="G4_PbWO4" >
@@ -2153,12 +2153,12 @@
 	</material>
 	<material formula="G4_Galactic" name="G4_Galactic" >
 		<D unit="g/cm3" value="1e-25" />
-		<composite n="1" ref="alactic" />
+		<composite n="1" ref="H_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_GRAPHITE_POROUS" name="G4_GRAPHITE_POROUS" >
 		<D unit="g/cm3" value="1.7" />
-		<composite n="1" ref="RAPHITE_POROUS" />
+		<composite n="1" ref="C_element" />
 		<auxiliary auxtype="Material-type" auxvalue="HEP"/>
 	</material>
 	<material formula="G4_LUCITE" name="G4_LUCITE" >
