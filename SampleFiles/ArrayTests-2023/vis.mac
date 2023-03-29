@@ -1,0 +1,65 @@
+#######################################################################
+#  MACRO FILE NAME: exN03Vis5.mac                                     #
+#                                                                     #
+#  AUTHOR(S): Guy Barrand                                             #
+#                                                                     #
+#  DATE: June 09, 2000                                                #
+#                                                                     #
+#  CONTENTS: A basic macro for demonstrating Inventor driver          #
+#                                                                     #
+#  USAGE:  % $G4BINDIR/exampleN03  visTutor/exN03Vis6.mac             #
+#                                                                     #
+#  REQUIRED PLATFORMS & SOFTWARES: Unix, Motif, X-window, OpenGL,     #
+#                                  HEPVis                             #
+#                                  Inventor (TGS or SoFree)           #
+#                                                                     #
+#  ENVIRONMENTAL VARIABLES (C-MACROS) FOR INSTALLATION:               #
+#  (See geant4/source/visualization/README for details.)              #
+#                                                                     #
+#    % setenv G4VIS_BUILD_OIX_DRIVER       1                          # 
+#                                                                     #
+#  ENVIRONMENTAL VARIABLES (C-MACROS) FOR COMPILATION:                #
+#  (See geant4/source/visualization/README for details.)              #
+#                                                                     #
+#    % setenv G4VIS_USE_OIX                1                          #
+#                                                                     # 
+#  ADDITIONAL NOTES:                                                  #
+#                                                                     # 
+#######################################################################
+
+# Create "scene-0" 
+/vis/scene/create
+
+# Invoke the OpenInventor driver 
+/vis/sceneHandler/create OGLIQt
+#/vis/sceneHandler/create OGLIX
+/vis/viewer/create
+
+# Add the world volume to the current scene
+/vis/scene/add/volume
+/vis/scene/add/trajectories
+/tracking/storeTrajectory 1
+
+/vis/viewer/reset
+/vis/viewer/set/viewpointVector  0 0 1
+/vis/viewer/set/style surface
+#/vis/viewer/addCutawayPlane 0.005 0 0 m 1 0 0
+/vis/viewer/set/lightsVector  1 0.1 0.5
+/vis/viewer/set/upVector  0 1 0
+/vis/viewer/zoomTo 1.0
+/vis/viewer/panTo 0 0 m
+/vis/viewer/set/edge 1
+/vis/scene/add/axes 0 0 0 40 mm
+/vis/ASCIITree/verbose 4
+
+
+
+/vis/scene/notifyHandlers
+
+/control/verbose 2
+
+/vis/viewer/update
+/vis/scene/endOfEventAction accumulate
+/vis/scene/endOfRunAction refresh
+/vis/drawTree
+

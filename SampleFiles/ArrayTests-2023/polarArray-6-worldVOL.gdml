@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="P-LV_Box1" unit="mm" x="30.0"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-LV_Torus2" unit="mm" x="39.0"/>
+    <rotation name="R-LV_Torus1" unit="deg" y="-90.0"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="R-Part2" unit="deg" z="-45.00000000000001"/>
+    <rotation name="R-Part3" unit="deg" z="-89.99999999999999"/>
+    <rotation name="R-Part4" unit="deg" z="-135.0"/>
+    <rotation name="R-Part5" unit="deg" z="-180.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="100.0" y="100.0" z="100.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+    <torus name="GDMLTorus" rmin="0.0" rmax="2.0" rtor="5.0" startphi="0.0" deltaphi="360.0" aunit="deg" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_Box">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="Box"/>
+      <auxiliary auxtype="Color" auxvalue="#80808000"/>
+    </volume>
+    <volume name="LV_Torus">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="GDMLTorus"/>
+      <auxiliary auxtype="Color" auxvalue="#80808000"/>
+    </volume>
+    <assembly name="Part">
+      <physvol name="PV-LV_Box">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box1"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="PV-LV_Torus">
+        <volumeref ref="LV_Torus"/>
+        <positionref ref="P-LV_Torus2"/>
+        <rotationref ref="R-LV_Torus1"/>
+      </physvol>
+    </assembly>
+    <assembly name="Part001">
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Part-0">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Part-1">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-Part2"/>
+      </physvol>
+      <physvol name="Part-2">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-Part3"/>
+      </physvol>
+      <physvol name="Part-3">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-Part4"/>
+      </physvol>
+      <physvol name="Part-4">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-Part5"/>
+      </physvol>
+    </assembly>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part001">
+        <volumeref ref="Part001"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

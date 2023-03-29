@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <rotation name="R-MultiUnion-Array1" unit="deg" z="15.000000000000046"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="145.92168332809067" y="145.92168332809067" z="130.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+    <multiUnion name="MultiUnion-Array">
+      <multiUnionNode name="MultiUnion-Array_0_0_0">
+        <solid ref="Box"/>
+        <position name="MultiUnion-Array_pos_0_0_0" x="0.0" y="0.0" z="0.0" unit="mm"/>
+        <rotationref ref="R-MultiUnion-Array1"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_0_1_0">
+        <solid ref="Box"/>
+        <position name="MultiUnion-Array_pos_0_1_0" x="0.0" y="50.0" z="0.0" unit="mm"/>
+        <rotationref ref="R-MultiUnion-Array1"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1_0_0">
+        <solid ref="Box"/>
+        <position name="MultiUnion-Array_pos_1_0_0" x="50.0" y="0.0" z="0.0" unit="mm"/>
+        <rotationref ref="R-MultiUnion-Array1"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1_1_0">
+        <solid ref="Box"/>
+        <position name="MultiUnion-Array_pos_1_1_0" x="50.0" y="50.0" z="0.0" unit="mm"/>
+        <rotationref ref="R-MultiUnion-Array1"/>
+      </multiUnionNode>
+    </multiUnion>
+  </solids>
+  <structure>
+    <volume name="Part">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="MultiUnion-Array"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

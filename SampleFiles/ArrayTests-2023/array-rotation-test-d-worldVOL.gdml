@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="P-MultiUnion-Array_01" unit="mm" x="30.0"/>
+    <rotation name="R-MultiUnion-Array_01" unit="deg" z="15.000000000000046"/>
+    <position name="P-MultiUnion-Array_12" unit="mm" x="15.000000000000007" y="25.980762113533157"/>
+    <rotation name="R-MultiUnion-Array_12" unit="deg" z="74.99999999999997"/>
+    <position name="P-MultiUnion-Array_23" unit="mm" x="-14.999999999999993" y="25.980762113533164"/>
+    <rotation name="R-MultiUnion-Array_23" unit="deg" z="135.0"/>
+    <position name="P-MultiUnion-Array_34" unit="mm" x="-30.0" y="3.67394039744206e-15"/>
+    <rotation name="R-MultiUnion-Array_34" unit="deg" z="-165.0"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="145.92168332809067" y="145.92168332809067" z="130.0" lunit="mm"/>
+    <box name="Box" x="20.0" y="10.0" z="10.0" lunit="mm"/>
+    <multiUnion name="MultiUnion-Array">
+      <multiUnionNode name="MultiUnion-Array_0">
+        <solid ref="Box"/>
+        <positionref ref="P-MultiUnion-Array_01"/>
+        <rotationref ref="R-MultiUnion-Array_01"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_1">
+        <solid ref="Box"/>
+        <positionref ref="P-MultiUnion-Array_12"/>
+        <rotationref ref="R-MultiUnion-Array_12"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_2">
+        <solid ref="Box"/>
+        <positionref ref="P-MultiUnion-Array_23"/>
+        <rotationref ref="R-MultiUnion-Array_23"/>
+      </multiUnionNode>
+      <multiUnionNode name="MultiUnion-Array_3">
+        <solid ref="Box"/>
+        <positionref ref="P-MultiUnion-Array_34"/>
+        <rotationref ref="R-MultiUnion-Array_34"/>
+      </multiUnionNode>
+    </multiUnion>
+  </solids>
+  <structure>
+    <volume name="Part">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="MultiUnion-Array"/>
+    </volume>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

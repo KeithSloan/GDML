@@ -1,0 +1,86 @@
+############ physics models set here #################
+#/control/execute physics.mac
+/process/optical/verbose 1
+
+#/process/optical/processActivation Scintillation true
+#/process/optical/processActivation OpAbsorption  true
+/process/optical/scintillation/setStackPhotons true
+/process/optical/cerenkov/setStackPhotons true
+#/process/optical/processActivation OpRayleigh    false
+#/process/optical/processActivation OpMieHG       false
+#/process/optical/processActivation OpWLS         false
+/process/optical/rayleigh/verbose 0
+/process/optical/absorption/verbose 1
+/process/optical/boundary/verbose 1
+/process/optical/scintillation/verbose 1
+
+#/geometry/material/add NaI Na-I 3.67
+# material definitions has to be done before /run/initilalize
+/run/verbose 2
+/run/initialize
+/run/setCut 0.01 um
+#/geometry/textInput/verbose 2
+#
+###############################
+# visuslization
+#
+/control/execute vis.mac
+
+# Adjust trajectory colors
+/vis/modeling/trajectories/create/drawByParticleID myModel
+/vis/modeling/trajectories/myModel/set geantino yellow
+/vis/modeling/trajectories/myModel/set gamma red
+/vis/modeling/trajectories/myModel/set e- cyan
+/vis/modeling/trajectories/myModel/set e+ cyan
+/vis/modeling/trajectories/myModel/set proton green
+/vis/modeling/trajectories/myModel/setRGBA anti_nu_e 1.0 0.3 0.3 1.0
+/vis/modeling/trajectories/myModel/setRGBA nu_e 1.0 0.3 0.3 1.0
+/vis/modeling/trajectories/myModel/set neutron blue
+/vis/modeling/trajectories/myModel/setRGBA opticalphoton 0.541 0.168 0.883 1.0
+#
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add geantino
+/vis/filtering/trajectories/particleFilter-0/add opticalphoton
+/vis/filtering/trajectories/particleFilter-0/add proton
+/vis/filtering/trajectories/particleFilter-0/add e-
+/vis/filtering/trajectories/particleFilter-0/add gamma
+#/vis/filtering/trajectories/particleFilter-0/invert true
+#/vis/filtering/trajectories/particleFilter-0/verbose true
+#/vis/filtering/trajectories/particleFilter-0/active false
+#
+#/event/draw all
+#/event/draw gamma
+
+
+######################################################
+# Gun
+# for gps examples look at
+# ~/geant4/examples/extended/eventgenerator/exgps/macros
+######################################################
+# Particle
+/gps/particle e+
+
+##### Position
+#/gps/pos/type Plane
+#/gps/pos/shape Square
+#/gps/pos/centre 0 -7 3.5 cm
+#/gps/pos/halfx 3.5 cm
+#/gps/pos/halfy 3.5 cm
+#/gps/pos/rot1 1 0 0
+#/gps/pos/rot2 0 0 1
+/gps/position 0 0 0 cm
+
+#
+##### direction for source ########
+# /gps/ang/type beam1d
+# /gps/direction 0 1 0
+/gps/ang/type iso
+
+#
+##### energy ########
+/gps/ene/type Gauss
+/gps/ene/mono 0.511 MeV
+/gps/ene/sigma 0 keV
+#/run/beamOn 1
+#/tracking/verbose 3
+/vis/scene/endOfEventAction accumulate 5000

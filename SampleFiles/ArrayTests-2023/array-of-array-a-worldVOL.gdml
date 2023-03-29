@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-Array1" unit="mm" y="100.0"/>
+    <position name="P-Array2" unit="mm" x="100.0"/>
+    <position name="P-Array3" unit="mm" x="100.0" y="100.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="273.0" y="273.0" z="130.0" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="V-Array">
+      <materialref ref="G4_STAINLESS-STEEL"/>
+      <solidref ref="MultiUnion-Array"/>
+    </volume>
+    <assembly name="experiment">
+      <physvol name="Array-0-0-0">
+        <volumeref ref="Array"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Array-0-1-0">
+        <volumeref ref="Array"/>
+        <positionref ref="P-Array1"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Array-1-0-0">
+        <volumeref ref="Array"/>
+        <positionref ref="P-Array2"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Array-1-1-0">
+        <volumeref ref="Array"/>
+        <positionref ref="P-Array3"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </assembly>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-experiment">
+        <volumeref ref="experiment"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

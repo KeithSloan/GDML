@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-LV_Box1" unit="mm" y="25.0"/>
+    <position name="P-LV_Box2" unit="mm" x="25.0"/>
+    <position name="P-LV_Box3" unit="mm" x="25.0" y="25.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="100.0" y="100.0" z="100.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_Box">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="Box"/>
+      <auxiliary auxtype="Color" auxvalue="#80808000"/>
+    </volume>
+    <assembly name="Part">
+      <physvol name="Part-0-0-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Part-0-1-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box1"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Part-1-0-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box2"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="Part-1-1-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box3"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </assembly>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part">
+        <volumeref ref="Part"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

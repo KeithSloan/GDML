@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <rotation name="R-LV_Box1" unit="deg" z="72.00000000000001"/>
+    <rotation name="R-LV_Box2" unit="deg" z="144.00000000000003"/>
+    <rotation name="R-LV_Box3" unit="deg" z="-144.0"/>
+    <rotation name="R-LV_Box4" unit="deg" z="-72.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="273.0" y="273.0" z="130.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_Box">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="Box"/>
+      <auxiliary auxtype="Color" auxvalue="#80808000"/>
+    </volume>
+    <assembly name="experiment">
+      <physvol name="experiment-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="experiment-1">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-LV_Box1"/>
+      </physvol>
+      <physvol name="experiment-2">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-LV_Box2"/>
+      </physvol>
+      <physvol name="experiment-3">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-LV_Box3"/>
+      </physvol>
+      <physvol name="experiment-4">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="center"/>
+        <rotationref ref="R-LV_Box4"/>
+      </physvol>
+    </assembly>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-experiment">
+        <volumeref ref="experiment"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>

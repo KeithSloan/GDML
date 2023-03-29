@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='ASCII'?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+    <constant name="PI" value="1.*pi"/>
+    <constant name="TWOPI" value="2.*pi"/>
+    <position name="P-LV_Tube1" unit="mm" x="-3.0" y="-4.0"/>
+    <rotation name="identity" x="0" y="0" z="0"/>
+    <position name="P-LV_Box2" unit="mm" x="20.0"/>
+    <position name="P-LV_Box3" unit="mm" x="14.14213562373095" y="14.142135623730951"/>
+    <rotation name="R-LV_Box1" unit="deg" z="-45.00000000000001"/>
+    <position name="P-LV_Box4" unit="mm" x="4.440892098500626e-15" y="20.0"/>
+    <rotation name="R-LV_Box2" unit="deg" z="-89.99999999999999"/>
+    <position name="P-LV_Box5" unit="mm" x="-14.14213562373095" y="14.142135623730955"/>
+    <rotation name="R-LV_Box3" unit="deg" z="-135.0"/>
+    <position name="P-LV_Box6" unit="mm" x="-20.0" y="2.4492935982947065e-15"/>
+    <rotation name="R-LV_Box4" unit="deg" z="-180.0"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+    <position name="P-experiment7" unit="mm" y="100.0"/>
+    <position name="P-experiment8" unit="mm" x="100.0"/>
+    <position name="P-experiment9" unit="mm" x="100.0" y="100.0"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="WorldBox" x="273.0" y="273.0" z="130.0" lunit="mm"/>
+    <box name="Box" x="10.0" y="10.0" z="10.0" lunit="mm"/>
+    <tube name="GDMLTube" rmin="5.0" rmax="7.0" startphi="0.0" deltaphi="90.0" aunit="deg" z="7.0" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_Tube">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="GDMLTube"/>
+      <auxiliary auxtype="Color" auxvalue="#80808000"/>
+    </volume>
+    <volume name="LV_Box">
+      <materialref ref="G4_A-150_TISSUE"/>
+      <solidref ref="Box"/>
+      <physvol name="PV-LV_Tube">
+        <volumeref ref="LV_Tube"/>
+        <positionref ref="P-LV_Tube1"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+    <assembly name="experiment">
+      <physvol name="LV_Box-0">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box2"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="LV_Box-1">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box3"/>
+        <rotationref ref="R-LV_Box1"/>
+      </physvol>
+      <physvol name="LV_Box-2">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box4"/>
+        <rotationref ref="R-LV_Box2"/>
+      </physvol>
+      <physvol name="LV_Box-3">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box5"/>
+        <rotationref ref="R-LV_Box3"/>
+      </physvol>
+      <physvol name="LV_Box-4">
+        <volumeref ref="LV_Box"/>
+        <positionref ref="P-LV_Box6"/>
+        <rotationref ref="R-LV_Box4"/>
+      </physvol>
+    </assembly>
+    <assembly name="Part001">
+      <physvol name="PV-experiment">
+        <volumeref ref="experiment"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="experiment-0-0-0">
+        <volumeref ref="experiment"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="experiment-0-1-0">
+        <volumeref ref="experiment"/>
+        <positionref ref="P-experiment7"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="experiment-1-0-0">
+        <volumeref ref="experiment"/>
+        <positionref ref="P-experiment8"/>
+        <rotationref ref="identity"/>
+      </physvol>
+      <physvol name="experiment-1-1-0">
+        <volumeref ref="experiment"/>
+        <positionref ref="P-experiment9"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </assembly>
+    <volume name="worldVOL">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="PV-Part001">
+        <volumeref ref="Part001"/>
+        <positionref ref="center"/>
+        <rotationref ref="identity"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="worldVOL"/>
+  </setup>
+</gdml>
