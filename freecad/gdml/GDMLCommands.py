@@ -1019,7 +1019,8 @@ class BooleanCutFeature:
                         print("Remove Base Vol")
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                        boolObj.recompute()
+                        FreeCAD.ActiveDocument.recompute()
+                        #boolObj.recompute()
                 else:
                     print("No Parent Volume/Part")
 
@@ -1094,7 +1095,8 @@ class BooleanIntersectionFeature:
                         boolObj.Tool.setEditorMode("Placement", 0)
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                        boolObj.recompute()
+                        FreeCAD.ActiveDocument.recompute()
+                        #boolObj.recompute()
                     else:
                         print("No Parent Volume/Part")
 
@@ -1175,7 +1177,8 @@ class BooleanUnionFeature:
                         boolObj.Tool.setEditorMode("Placement", 0)
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                        boolObj.recompute()
+                        FreeCAD.ActiveDocument.recompute()
+                        #boolObj.recompute()
                     else:
                         print("No Parent Volume")
 
