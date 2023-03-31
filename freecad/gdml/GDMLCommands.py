@@ -996,13 +996,11 @@ class BooleanCutFeature:
                         base = sel[0].Object.OutList[-1]
                         print("base : " + base.Label)
                         print(f"base Placement {base.Placement}")
-                        #base.Placement = sel[0].Object.OutList[-1].Placement
                         toolVol = sel[1].Object
                         print("Tool Vol : " + toolVol.Label)
                         print(f"Tool Vol Placement {toolVol.Placement}")
                         tool = sel[1].Object.OutList[-1]
                         print(f"tool Placement {tool.Placement}")
-                        #tool.Placement = sel[1].Object.OutList[-1].Placement
                         boolVol = parent.newObject("App::Part", "Bool-Cut")
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
@@ -1080,23 +1078,17 @@ class BooleanIntersectionFeature:
                         print("Parent : " + parent.Label)
                         baseVol = sel[0].Object
                         print("Base Vol : " + baseVol.Label)
-                        toolVol = sel[1].Object
-                        print("Tool Vol : " + toolVol.Label)
-                        baseVol = sel[0].Object
+                        print(f"Base Vol Placement {baseVol.Placement}")
                         print(sel[0].Object.OutList)
                         base = sel[0].Object.OutList[-1]
-                        print("Base : " + base.Label)
+                        print("base : " + base.Label)
+                        print(f"base Placement {base.Placement}")
+                        toolVol = sel[1].Object
+                        print("Tool Vol : " + toolVol.Label)
+                        print(f"Tool Vol Placement {toolVol.Placement}")
                         tool = sel[1].Object.OutList[-1]
-                        print("Tool : " + tool.Label)
-                        print("Remove Base")
-                        baseVol.removeObject(base)
-                        print("Adjust Base Links")
-                        base.adjustRelativeLinks(baseVol)
-                        toolVol.removeObject(tool)
-                        tool.adjustRelativeLinks(toolVol)
-                        boolVol = parent.newObject(
-                            "App::Part", "Bool-Intersection"
-                        )
+                        print(f"tool Placement {tool.Placement}")
+                        boolVol = parent.newObject("App::Part","Bool-Intersect")
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
                         boolObj = boolVol.newObject("Part::Common", "Common")
@@ -1104,9 +1096,15 @@ class BooleanIntersectionFeature:
                         boolObj.Base = base
                         boolObj.Tool = tool
                         boolObj.Tool.Placement.Base = (
-                            sel[1].Object.Placement.Base
-                            - sel[0].Object.Placement.Base
-                        )
+                            toolVol.Placement.Base +
+                            tool.Placement.Base -
+                            baseVol.Placement.Base -
+                            base.Placement.Base)
+                        boolObj.Tool.setEditorMode("Placement", 0)
+                        print("Adjust Base Links")
+                        base.adjustRelativeLinks(baseVol)
+                        toolVol.removeObject(tool)
+                        tool.adjustRelativeLinks(toolVol)
                         boolObj.Tool.setEditorMode("Placement", 0)
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
@@ -1152,32 +1150,20 @@ class BooleanUnionFeature:
                 ):
                     print("Boolean Union")
                     if len(sel[0].Object.InList) > 0:
-                        print(sel[0].Object.InList)
                         parent = sel[0].Object.InList[0]
                         print("Parent : " + parent.Label)
                         baseVol = sel[0].Object
                         print("Base Vol : " + baseVol.Label)
+                        print(f"Base Vol Placement {baseVol.Placement}")
+                        print(sel[0].Object.OutList)
+                        base = sel[0].Object.OutList[-1]
+                        print("base : " + base.Label)
+                        print(f"base Placement {base.Placement}")
                         toolVol = sel[1].Object
                         print("Tool Vol : " + toolVol.Label)
-                        baseVol = sel[0].Object
-                        print(f"Base OutList {sel[0].Object.OutList}")
-                        for o in sel[0].Object.OutList:
-                            print(o.Label)
-                        print(f"Tool OutList {sel[1].Object.OutList}")
-                        for o in sel[1].Object.OutList:
-                            print(o.Label)
-                        print(f"True Base {sel[0].Object.OutList[-1].Label}")
-                        base = sel[0].Object.OutList[-1]
-                        print("Base : " + base.Label)
-                        print(f"True Tool {sel[1].Object.OutList[-1].Label}")
+                        print(f"Tool Vol Placement {toolVol.Placement}")
                         tool = sel[1].Object.OutList[-1]
-                        print("Tool : " + tool.Label)
-                        print("Remove Base")
-                        baseVol.removeObject(base)
-                        print("Adjust Base Links")
-                        base.adjustRelativeLinks(baseVol)
-                        toolVol.removeObject(tool)
-                        tool.adjustRelativeLinks(toolVol)
+                        print(f"tool Placement {tool.Placement}")
                         boolVol = parent.newObject("App::Part", "Bool-Union")
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
@@ -1186,10 +1172,15 @@ class BooleanUnionFeature:
                         boolObj.Base = base
                         boolObj.Tool = tool
                         boolObj.Tool.Placement.Base = (
-                            sel[1].Object.Placement.Base
-                            - sel[0].Object.Placement.Base
-                        )
+                            toolVol.Placement.Base +
+                            tool.Placement.Base -
+                            baseVol.Placement.Base -
+                            base.Placement.Base)
                         boolObj.Tool.setEditorMode("Placement", 0)
+                        print("Adjust Base Links")
+                        base.adjustRelativeLinks(baseVol)
+                        toolVol.removeObject(tool)
+                        tool.adjustRelativeLinks(toolVol)
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
                         FreeCAD.ActiveDocument.recompute()
