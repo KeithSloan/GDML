@@ -991,19 +991,18 @@ class BooleanCutFeature:
                         print("Parent : " + parent.Label)
                         baseVol = sel[0].Object
                         print("Base Vol : " + baseVol.Label)
-                        toolVol = sel[1].Object
-                        print("Tool Vol : " + toolVol.Label)
+                        print(f"Base Vol Placement {baseVol.Placement}")
                         print(sel[0].Object.OutList)
                         base = sel[0].Object.OutList[-1]
-                        print("Base : " + base.Label)
+                        print("base : " + base.Label)
+                        print(f"base Placement {base.Placement}")
+                        #base.Placement = sel[0].Object.OutList[-1].Placement
+                        toolVol = sel[1].Object
+                        print("Tool Vol : " + toolVol.Label)
+                        print(f"Tool Vol Placement {toolVol.Placement}")
                         tool = sel[1].Object.OutList[-1]
-                        print("Tool : " + tool.Label)
-                        print("Remove Base")
-                        baseVol.removeObject(base)
-                        print("Adjust Base Links")
-                        base.adjustRelativeLinks(baseVol)
-                        toolVol.removeObject(tool)
-                        tool.adjustRelativeLinks(toolVol)
+                        print(f"tool Placement {tool.Placement}")
+                        #tool.Placement = sel[1].Object.OutList[-1].Placement
                         boolVol = parent.newObject("App::Part", "Bool-Cut")
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
@@ -1011,11 +1010,27 @@ class BooleanCutFeature:
                         boolObj.Placement = sel[0].Object.Placement
                         boolObj.Base = base
                         boolObj.Tool = tool
+                        #boolObj.Tool.Placement.Base = (
+                        #    sel[1].Object.Placement.Base +
+                        #    - sel[0].Object.Placement.Base
+                        #)
                         boolObj.Tool.Placement.Base = (
-                            sel[1].Object.Placement.Base
-                            - sel[0].Object.Placement.Base
-                        )
+                            toolVol.Placement.Base +
+                            tool.Placement.Base -
+                            baseVol.Placement.Base -
+                            base.Placement.Base)
+                        #boolObj.Tool.Placement.Rotation = (
+                        #    baseVol.Placement.Rotation +
+                        #    base.Placement.Rotation -
+                        #    toolVol.Placement.Rotation -
+                        #    tool.Placement.Rotation )
                         boolObj.Tool.setEditorMode("Placement", 0)
+                        print("Tool : " + tool.Label)
+                        print("Remove Base")
+                        baseVol.removeObject(base)
+                        print("Adjust Base Links")
+                        base.adjustRelativeLinks(baseVol)
+                        toolVol.removeObject(tool)
                         print("Remove Base Vol")
                         FreeCAD.ActiveDocument.removeObject(baseVol.Label)
                         FreeCAD.ActiveDocument.removeObject(toolVol.Label)
