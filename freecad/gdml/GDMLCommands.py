@@ -1005,23 +1005,13 @@ class BooleanCutFeature:
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
                         boolObj = boolVol.newObject("Part::Cut", "Cut")
-                        boolObj.Placement = sel[0].Object.Placement
+                        boolObj.Placement = baseVol.Placement
                         boolObj.Base = base
                         boolObj.Tool = tool
-                        #boolObj.Tool.Placement.Base = (
-                        #    sel[1].Object.Placement.Base +
-                        #    - sel[0].Object.Placement.Base
-                        #)
-                        boolObj.Tool.Placement.Base = (
-                            toolVol.Placement.Base +
-                            tool.Placement.Base -
-                            baseVol.Placement.Base -
-                            base.Placement.Base)
-                        #boolObj.Tool.Placement.Rotation = (
-                        #    baseVol.Placement.Rotation +
-                        #    base.Placement.Rotation -
-                        #    toolVol.Placement.Rotation -
-                        #    tool.Placement.Rotation )
+                        # If toolVol Placement is not zero - adjust
+                        tbl = toolVol.Placement.Base
+                        if tbl.Length != 0:
+                           boolObj.Tool.Placement.Base += tbl
                         boolObj.Tool.setEditorMode("Placement", 0)
                         print("Tool : " + tool.Label)
                         print("Remove Base")
@@ -1095,11 +1085,10 @@ class BooleanIntersectionFeature:
                         boolObj.Placement = sel[0].Object.Placement
                         boolObj.Base = base
                         boolObj.Tool = tool
-                        boolObj.Tool.Placement.Base = (
-                            toolVol.Placement.Base +
-                            tool.Placement.Base -
-                            baseVol.Placement.Base -
-                            base.Placement.Base)
+                        # If toolVol Placement is not zero - adjust
+                        tbl = toolVol.Placement.Base
+                        if tbl.Length != 0:
+                           boolObj.Tool.Placement.Base += tbl
                         boolObj.Tool.setEditorMode("Placement", 0)
                         print("Adjust Base Links")
                         base.adjustRelativeLinks(baseVol)
@@ -1171,11 +1160,10 @@ class BooleanUnionFeature:
                         boolObj.Placement = sel[0].Object.Placement
                         boolObj.Base = base
                         boolObj.Tool = tool
-                        boolObj.Tool.Placement.Base = (
-                            toolVol.Placement.Base +
-                            tool.Placement.Base -
-                            baseVol.Placement.Base -
-                            base.Placement.Base)
+                        # If toolVol Placement is not zero - adjust
+                        tbl = toolVol.Placement.Base
+                        if tbl.Length != 0:
+                           boolObj.Tool.Placement.Base += tbl
                         boolObj.Tool.setEditorMode("Placement", 0)
                         print("Adjust Base Links")
                         base.adjustRelativeLinks(baseVol)
