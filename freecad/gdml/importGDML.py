@@ -2345,9 +2345,11 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                 except:
                     print(volRef + " : volref not supported with FreeCAD 0.18")
             else:
+                from .GDMLscanBrep import getPath
                 # Not already defined so create
                 # print('Is new : '+volRef)
                 part = parent.newObject("App::Part", volRef)
+                getPath(part)
                 addSurfList(doc, part)
                 part.Label = "NOT_Expanded_" + part.Name
             part.addProperty(
