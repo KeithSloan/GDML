@@ -1,0 +1,13 @@
+<structure><volume name="SC5G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="composite5G"/>
+    </volume>
+    <volume name="SC5H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="composite5H"/>
+      <physvol name="SC5G_1" copynumber="1">
+        <volumeref ref="SC5G"/>
+        <positionref ref="SC5G_1inSC5Hpos"/>
+      </physvol>
+    </volume>
+    </structure>

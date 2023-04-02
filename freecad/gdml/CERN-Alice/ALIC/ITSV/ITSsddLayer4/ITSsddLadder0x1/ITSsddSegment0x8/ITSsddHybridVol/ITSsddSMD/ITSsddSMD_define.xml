@@ -1,0 +1,4 @@
+<define><position name="ITSsddSMDmiddle_1inITSsddSMDpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="ITSsddSMDend_1inITSsddSMDpos" x="0.069750000000000006" y="0" z="0" unit="cm"/>
+    <position name="ITSsddSMDend_2inITSsddSMDpos" x="-0.069750000000000006" y="0" z="0" unit="cm"/>
+    </define>

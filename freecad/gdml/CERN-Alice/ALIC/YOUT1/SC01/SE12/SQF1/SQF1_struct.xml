@@ -1,0 +1,43 @@
+<structure><volume name="SQ38">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ380x1"/>
+    </volume>
+    <volume name="SQ34to36">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="TGeoXtru0x9"/>
+    </volume>
+    <volume name="SQ33">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ330x1"/>
+    </volume>
+    <volume name="SQ31">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ310x1"/>
+    </volume>
+    <volume name="SQ30">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ300x1"/>
+    </volume>
+    <assembly name="SQF1">
+      <physvol name="SQ30_1" copynumber="1">
+        <volumeref ref="SQ30"/>
+        <positionref ref="SQ30_1inSQF1pos"/>
+      </physvol>
+      <physvol name="SQ31_1" copynumber="1">
+        <volumeref ref="SQ31"/>
+        <positionref ref="SQ31_1inSQF1pos"/>
+      </physvol>
+      <physvol name="SQ33_2" copynumber="2">
+        <volumeref ref="SQ33"/>
+        <positionref ref="SQ33_2inSQF1pos"/>
+      </physvol>
+      <physvol name="SQ34to36_3" copynumber="3">
+        <volumeref ref="SQ34to36"/>
+        <positionref ref="SQ34to36_3inSQF1pos"/>
+      </physvol>
+      <physvol name="SQ38_2" copynumber="2">
+        <volumeref ref="SQ38"/>
+        <positionref ref="SQ38_2inSQF1pos"/>
+      </physvol>
+    </assembly>
+    </structure>

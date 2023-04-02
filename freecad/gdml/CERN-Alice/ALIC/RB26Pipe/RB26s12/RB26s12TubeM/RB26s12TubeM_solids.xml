@@ -1,0 +1,22 @@
+<solids><polycone name="TGeoPcon0x64" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="3" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="3" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="3.0699999999999998" rmax="3.5699999999999998"/>
+      <zplane z="452.30000000000001" rmin="6.1500000000000004" rmax="6.6500000000000004"/>
+      <zplane z="459.45001220703125" rmin="6.1500000000000004" rmax="6.6500000000000004"/>
+    </polycone>
+    <polycone name="TGeoPcon0x63" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="2.9199999999999999" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="2.9199999999999999" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="2.9199999999999999" rmax="3.5699999999999998"/>
+      <zplane z="452.30000000000001" rmin="6" rmax="6.6500000000000004"/>
+      <zplane z="459.45001220703125" rmin="6" rmax="6.6500000000000004"/>
+    </polycone>
+    <polycone name="TGeoPcon0x62" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="0" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="0" rmax="3.5"/>
+      <zplane z="207.21000000000001" rmin="0" rmax="3.5699999999999998"/>
+      <zplane z="452.30000000000001" rmin="0" rmax="6.6500000000000004"/>
+      <zplane z="459.45001220703125" rmin="0" rmax="6.6500000000000004"/>
+    </polycone>
+    </solids>

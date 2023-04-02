@@ -1,0 +1,5 @@
+<structure><volume name="SC6G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="composite6G"/>
+    </volume>
+    </structure>

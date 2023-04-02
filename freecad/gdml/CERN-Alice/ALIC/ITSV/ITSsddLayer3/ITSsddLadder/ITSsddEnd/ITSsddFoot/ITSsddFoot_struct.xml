@@ -1,0 +1,35 @@
+<structure><volume name="vFootLeft">
+      <materialref ref="ITS_G10FR4"/>
+      <solidref ref="footLeft"/>
+    </volume>
+    <volume name="vFootLeftLadFinger">
+      <materialref ref="ITS_G10FR4"/>
+      <solidref ref="footLeftLadFinger"/>
+    </volume>
+    <volume name="vFootMiddle">
+      <materialref ref="ITS_G10FR4"/>
+      <solidref ref="footMiddle"/>
+    </volume>
+    <volume name="vFootRightPart">
+      <materialref ref="ITS_G10FR4"/>
+      <solidref ref="TGeoCompositeShape0x218"/>
+    </volume>
+    <assembly name="ITSsddFoot">
+      <physvol name="vFootRightPart_1" copynumber="1">
+        <volumeref ref="vFootRightPart"/>
+        <positionref ref="vFootRightPart_1inITSsddFootpos"/>
+      </physvol>
+      <physvol name="vFootMiddle_1" copynumber="1">
+        <volumeref ref="vFootMiddle"/>
+        <positionref ref="vFootMiddle_1inITSsddFootpos"/>
+      </physvol>
+      <physvol name="vFootLeftLadFinger_1" copynumber="1">
+        <volumeref ref="vFootLeftLadFinger"/>
+        <positionref ref="vFootLeftLadFinger_1inITSsddFootpos"/>
+      </physvol>
+      <physvol name="vFootLeft_1" copynumber="1">
+        <volumeref ref="vFootLeft"/>
+        <positionref ref="vFootLeft_1inITSsddFootpos"/>
+      </physvol>
+    </assembly>
+    </structure>

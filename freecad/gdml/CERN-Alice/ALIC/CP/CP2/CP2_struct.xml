@@ -1,0 +1,116 @@
+<structure><volume name="FwdaBPSCS">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSCS"/>
+    </volume>
+    <volume name="FwdaBPSCS">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSCS"/>
+    </volume>
+    <volume name="FwdaBPSCS">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSCS"/>
+    </volume>
+    <volume name="FwdaBPSCS">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSCS"/>
+    </volume>
+    <volume name="FwdaBPSFL">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoPcon0x36"/>
+    </volume>
+    <volume name="FwdaBPSP">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSP"/>
+    </volume>
+    <assembly name="FwdaBPS">
+      <physvol name="FwdaBPSP_1" copynumber="1">
+        <volumeref ref="FwdaBPSP"/>
+        <positionref ref="FwdaBPSP_1inFwdaBPSpos"/>
+        <rotationref ref="FwdaBPSP_1inFwdaBPSrot"/>
+      </physvol>
+      <physvol name="FwdaBPSFL_1" copynumber="1">
+        <volumeref ref="FwdaBPSFL"/>
+        <positionref ref="FwdaBPSFL_1inFwdaBPSpos"/>
+      </physvol>
+      <physvol name="FwdaBPSCS_1" copynumber="1">
+        <volumeref ref="FwdaBPSCS"/>
+        <positionref ref="FwdaBPSCS_1inFwdaBPSpos"/>
+        <rotationref ref="FwdaBPSCS_1inFwdaBPSrot"/>
+      </physvol>
+      <physvol name="FwdaBPSCS_2" copynumber="2">
+        <volumeref ref="FwdaBPSCS"/>
+        <positionref ref="FwdaBPSCS_2inFwdaBPSpos"/>
+        <rotationref ref="FwdaBPSCS_2inFwdaBPSrot"/>
+      </physvol>
+      <physvol name="FwdaBPSCS_3" copynumber="3">
+        <volumeref ref="FwdaBPSCS"/>
+        <positionref ref="FwdaBPSCS_3inFwdaBPSpos"/>
+        <rotationref ref="FwdaBPSCS_3inFwdaBPSrot"/>
+      </physvol>
+      <physvol name="FwdaBPSCS_4" copynumber="4">
+        <volumeref ref="FwdaBPSCS"/>
+        <positionref ref="FwdaBPSCS_4inFwdaBPSpos"/>
+        <rotationref ref="FwdaBPSCS_4inFwdaBPSrot"/>
+      </physvol>
+    </assembly>
+    <volume name="FwdaBPPTT">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x6"/>
+    </volume>
+    <volume name="FwdaBPPTPC">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPPTPC"/>
+    </volume>
+    <assembly name="FwdaBPPT">
+      <physvol name="FwdaBPPTPC_1" copynumber="1">
+        <volumeref ref="FwdaBPPTPC"/>
+        <positionref ref="FwdaBPPTPC_1inFwdaBPPTpos"/>
+      </physvol>
+      <physvol name="FwdaBPPTT_1" copynumber="1">
+        <volumeref ref="FwdaBPPTT"/>
+        <positionref ref="FwdaBPPTT_1inFwdaBPPTpos"/>
+      </physvol>
+    </assembly>
+    <volume name="CP2PI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x35"/>
+    </volume>
+    <volume name="CP2FL">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x34"/>
+    </volume>
+    <volume name="CP2VA">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x5"/>
+    </volume>
+    <volume name="CP2MO">
+      <materialref ref="PIPE_AIR"/>
+      <solidref ref="TGeoPcon0x33"/>
+      <physvol name="CP2VA_1" copynumber="1">
+        <volumeref ref="CP2VA"/>
+        <positionref ref="CP2VA_1inCP2MOpos"/>
+      </physvol>
+      <physvol name="CP2FL_1" copynumber="1">
+        <volumeref ref="CP2FL"/>
+        <positionref ref="CP2FL_1inCP2MOpos"/>
+      </physvol>
+      <physvol name="CP2PI_1" copynumber="1">
+        <volumeref ref="CP2PI"/>
+        <positionref ref="CP2PI_1inCP2MOpos"/>
+      </physvol>
+    </volume>
+    <assembly name="CP2">
+      <physvol name="CP2MO_1" copynumber="1">
+        <volumeref ref="CP2MO"/>
+        <positionref ref="CP2MO_1inCP2pos"/>
+      </physvol>
+      <physvol name="FwdaBPPT_1" copynumber="1">
+        <volumeref ref="FwdaBPPT"/>
+        <positionref ref="FwdaBPPT_1inCP2pos"/>
+      </physvol>
+      <physvol name="FwdaBPS_1" copynumber="1">
+        <volumeref ref="FwdaBPS"/>
+        <positionref ref="FwdaBPS_1inCP2pos"/>
+      </physvol>
+    </assembly>
+    </structure>

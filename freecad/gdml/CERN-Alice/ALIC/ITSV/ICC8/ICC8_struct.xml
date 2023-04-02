@@ -1,0 +1,5 @@
+<structure><volume name="ICC8">
+      <materialref ref="ITS_GEN_C_M55J"/>
+      <solidref ref="ICC80x1"/>
+    </volume>
+    </structure>

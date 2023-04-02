@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "DYokeBaseBlock5_materials.xml">
+<!ENTITY solids SYSTEM "DYokeBaseBlock5_solids.xml">
+<!ENTITY struct SYSTEM "DYokeBaseBlock5_struct.xml">
+<!ENTITY setup SYSTEM "DYokeBaseBlock5_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

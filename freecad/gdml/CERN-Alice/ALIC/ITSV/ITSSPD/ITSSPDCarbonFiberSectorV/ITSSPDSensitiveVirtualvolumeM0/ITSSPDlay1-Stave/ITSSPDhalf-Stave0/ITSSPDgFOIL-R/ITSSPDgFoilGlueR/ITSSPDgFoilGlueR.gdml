@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "ITSSPDgFoilGlueR_materials.xml">
+<!ENTITY solids SYSTEM "ITSSPDgFoilGlueR_solids.xml">
+<!ENTITY struct SYSTEM "ITSSPDgFoilGlueR_struct.xml">
+<!ENTITY setup SYSTEM "ITSSPDgFoilGlueR_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

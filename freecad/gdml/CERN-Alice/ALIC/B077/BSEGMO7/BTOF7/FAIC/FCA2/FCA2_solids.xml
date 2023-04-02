@@ -1,0 +1,16 @@
+<solids><box name="FFEA0x1" x="19" y="11.199999809265137" z="0.20000000298023224" lunit="cm"/>
+    <box name="FAL10x1" x="19" y="0.80000001192092896" z="0.40000000596046448" lunit="cm"/>
+    <box name="FREE0x1" x="6" y="0.10000000149011612" z="2.9000000953674316" lunit="cm"/>
+    <box name="FRO10x1" x="19" y="0.40000000596046448" z="2.9000000953674316" lunit="cm"/>
+    <box name="FBAR0x1" x="17.149999618530273" y="1.2000000476837158" z="0.5" lunit="cm"/>
+    <box name="FBA10x1" x="17.149999618530273" y="1.2000000476837158" z="0.20000000298023224" lunit="cm"/>
+    <box name="FBA20x1" x="17.149999618530273" y="0.20000000298023224" z="0.80000007152557373" lunit="cm"/>
+    <tube name="FITU0x1" rmin="0" rmax="0.30000001192092896" z="95.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="FTUB0x1" rmin="0" rmax="0.40000000596046448" z="95.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="FBAS0x1" x="4" y="1.2000000476837158" z="0.5" lunit="cm"/>
+    <box name="FBS10x1" x="4" y="1.2000000476837158" z="0.20000000298023224" lunit="cm"/>
+    <box name="FBS20x1" x="4" y="0.20000000298023224" z="0.80000007152557373" lunit="cm"/>
+    <tube name="FCAB0x1" rmin="0" rmax="0.5" z="29.583333969116211" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="FCAL0x1" rmin="0" rmax="0.5" z="2.5833332538604736" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="FCA20x1" x="95.5" y="11.699999809265137" z="3.2000000476837158" lunit="cm"/>
+    </solids>

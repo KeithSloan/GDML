@@ -1,0 +1,5 @@
+<structure><volume name="FwdaBPSCS">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPSCS"/>
+    </volume>
+    </structure>

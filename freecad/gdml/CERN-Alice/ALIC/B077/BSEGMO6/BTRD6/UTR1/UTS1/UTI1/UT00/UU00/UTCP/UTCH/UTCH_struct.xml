@@ -1,0 +1,5 @@
+<structure><volume name="UTCH">
+      <materialref ref="TRD_Water"/>
+      <solidref ref="UTCH0x1"/>
+    </volume>
+    </structure>

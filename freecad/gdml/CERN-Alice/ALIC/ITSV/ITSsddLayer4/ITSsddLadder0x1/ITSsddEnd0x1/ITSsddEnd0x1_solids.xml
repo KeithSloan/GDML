@@ -1,0 +1,99 @@
+<solids><arb8 name="TGeoArb80x139" v1x="0" v1y="0" v2x="0" v2y="-0.072197900000000009" v3x="-0.17529436602669979" v3y="-0.24473840164407676" v4x="-0.1943396519143013" v4y="-0.22854343065121832" v5x="0" v5y="0" v6x="0" v6y="-0.072197900000000009" v7x="-0.17529436602669979" v7y="-0.24473840164407676" v8x="-0.1943396519143013" v8y="-0.22854343065121832" dz="1.0800000000000003" lunit="cm"/>
+    <arb8 name="TGeoArb80x140" v1x="0" v1y="0" v2x="0.1943396519143013" v2y="-0.22854343065121832" v3x="0.17529436602669979" v3y="-0.24473840164407676" v4x="0" v4y="-0.072197900000000009" v5x="0" v5y="0" v6x="0.1943396519143013" v6y="-0.22854343065121832" v7x="0.17529436602669979" v7y="-0.24473840164407676" v8x="0" v8y="-0.072197900000000009" dz="1.0800000000000003" lunit="cm"/>
+    <arb8 name="TGeoArb80x141" v1x="0" v1y="0" v2x="0" v2y="-0.089042800000000005" v3x="-0.13257583030308262" v3y="-0.34633603511538946" v4x="-0.15526805666831023" v4y="-0.33584495020536848" v5x="0" v5y="0" v6x="0" v6y="-0.089042800000000005" v7x="-0.13257583030308262" v7y="-0.34633603511538946" v8x="-0.15526805666831023" v8y="-0.33584495020536848" dz="1.8949999999999996" lunit="cm"/>
+    <arb8 name="TGeoArb80x142" v1x="0" v1y="0" v2x="0.15526805666831023" v2y="-0.33584495020536848" v3x="0.13257583030308262" v3y="-0.34633603511538946" v4x="0" v4y="-0.089042800000000005" v5x="0" v5y="0" v6x="0.15526805666831023" v6y="-0.33584495020536848" v7x="0.13257583030308262" v7y="-0.34633603511538946" v8x="0" v8y="-0.089042800000000005" dz="1.8949999999999996" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x12" rmin="0" rmax="0.059999999999999998" z="3.7129315172264565" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x29" rmin="0" rmax="0.059999999999999998" z="4.753333333333333" startphi="0" deltaphi="90" aunit="deg" lunit="cm"/>
+    <subtraction name="ITSsddCoolPipeSuppShapeL">
+      <first ref="TGeoCompositeShape0x197"/>
+      <second ref="ITSsddCPSaxe"/>
+      <position name="ITSsddCoolPipeSuppShapeLITSsddCPSaxepos" x="0.020000000000000004" y="0" z="0" unit="cm"/>
+      <rotation name="ITSsddCoolPipeSuppShapeLITSsddCPSaxerot" x="90" y="-0" z="90" unit="deg"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x197">
+      <first ref="TGeoCompositeShape0x198"/>
+      <second ref="ITSsddCPSaxeBox"/>
+      <position name="TGeoCompositeShape0x197ITSsddCPSaxeBoxpos" x="0.020000000000000004" y="0.025000000000000022" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x198">
+      <first ref="TGeoCompositeShape0x199"/>
+      <second ref="ITSsddCPSside1"/>
+      <position name="TGeoCompositeShape0x198ITSsddCPSside1pos" x="0" y="-0.17999999999999999" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x199">
+      <first ref="ITSsddCPSmiddle"/>
+      <second ref="ITSsddCPSside1"/>
+      <firstposition name="TGeoCompositeShape0x199ITSsddCPSmiddlepos" x="0.10500000000000001" y="-0.23249999999999998" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x199ITSsddCPSside1pos" x="0" y="-0.28499999999999998" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddCPSmiddle" x="0.21000000000000002" y="0.065000000000000002" z="0.32000000000000006" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1" v1x="0" v1y="-0.020000000000000004" v2x="0" v2y="0.020000000000000004" v3x="0.56745166004060965" v3y="0.020000000000000004" v4x="0.56745166004060965" v4y="-0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="0" v6y="0.020000000000000004" v7x="0.70000000000000007" v7y="0.020000000000000004" v8x="0.70000000000000007" v8y="-0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1" v1x="0" v1y="-0.020000000000000004" v2x="0" v2y="0.020000000000000004" v3x="0.56745166004060965" v3y="0.020000000000000004" v4x="0.56745166004060965" v4y="-0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="0" v6y="0.020000000000000004" v7x="0.70000000000000007" v7y="0.020000000000000004" v8x="0.70000000000000007" v8y="-0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <box name="ITSsddCPSaxeBox" x="0.040000000000000008" y="0.37" z="0.32000000000000006" lunit="cm"/>
+    <tube name="ITSsddCPSaxe" rmin="0" rmax="0.10000000000000001" z="0.040000000000000008" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="ITSsddCoolPipeSuppShapeR">
+      <first ref="TGeoCompositeShape0x200"/>
+      <second ref="ITSsddCPSaxeR"/>
+      <position name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRpos" x="-0.020000000000000004" y="0" z="0" unit="cm"/>
+      <rotation name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRrot" x="90" y="-0" z="90" unit="deg"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x200">
+      <first ref="TGeoCompositeShape0x201"/>
+      <second ref="ITSsddCPSaxeBoxR"/>
+      <position name="TGeoCompositeShape0x200ITSsddCPSaxeBoxRpos" x="-0.020000000000000004" y="0.025000000000000022" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x201">
+      <first ref="TGeoCompositeShape0x202"/>
+      <second ref="ITSsddCPSside1R"/>
+      <position name="TGeoCompositeShape0x201ITSsddCPSside1Rpos" x="0" y="-0.17999999999999999" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x202">
+      <first ref="ITSsddCPSmiddleR"/>
+      <second ref="ITSsddCPSside1R"/>
+      <firstposition name="TGeoCompositeShape0x202ITSsddCPSmiddleRpos" x="-0.10500000000000001" y="-0.23249999999999998" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x202ITSsddCPSside1Rpos" x="0" y="-0.28499999999999998" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddCPSmiddleR" x="0.21000000000000002" y="0.065000000000000002" z="0.32000000000000006" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <box name="ITSsddCPSaxeBoxR" x="0.040000000000000008" y="0.37" z="0.32000000000000006" lunit="cm"/>
+    <tube name="ITSsddCPSaxeR" rmin="0" rmax="0.10000000000000001" z="0.040000000000000008" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x218">
+      <first ref="ladFootBox1"/>
+      <second ref="TGeoCompositeShape0x219"/>
+      <firstposition name="TGeoCompositeShape0x218ladFootBox1pos" x="1.8499999999999999" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="ladFootBox1" x="2.3000000000000003" y="0.80000000000000004" z="2" lunit="cm"/>
+    <union name="TGeoCompositeShape0x219">
+      <first ref="TGeoCompositeShape0x220"/>
+      <second ref="rubyHole"/>
+      <position name="TGeoCompositeShape0x219rubyHolepos" x="1.4000000000000001" y="-0.32500000000000001" z="0" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x219rubyHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </union>
+    <union name="TGeoCompositeShape0x220">
+      <first ref="TGeoCompositeShape0x221"/>
+      <second ref="rubyScrewHole"/>
+      <position name="TGeoCompositeShape0x220rubyScrewHolepos" x="2.2000000000000002" y="-0.10000000000000001" z="0" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x220rubyScrewHolerot" x="90" y="-0" z="90" unit="deg"/>
+    </union>
+    <union name="TGeoCompositeShape0x221">
+      <first ref="ladFingerPrint"/>
+      <second ref="rubyCageHole"/>
+      <firstposition name="TGeoCompositeShape0x221ladFingerPrintpos" x="2.2999999999999998" y="0.35000000019999999" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x221rubyCageHolepos" x="1.4500000000000002" y="0.075000000000000011" z="0" unit="cm"/>
+    </union>
+    <box name="ladFingerPrint" x="0.60000000000000009" y="0.10000000040000001" z="2.0000000004" lunit="cm"/>
+    <box name="rubyCageHole" x="0.90000000000000002" y="0.65000000040000006" z="0.80000000000000004" lunit="cm"/>
+    <tube name="rubyScrewHole" rmin="0" rmax="0.20000000000000001" z="1.5999999999999999" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="rubyHole" rmin="0" rmax="0.25" z="0.15000000000000002" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="footMiddle" x="2.6999999999999997" y="0.45000000000000001" z="2" lunit="cm"/>
+    <box name="footLeftLadFinger" x="0.60000000000000009" y="0.70000000000000007" z="2" lunit="cm"/>
+    <box name="footLeft" x="0.40000000000000002" y="0.80000000000000004" z="2" lunit="cm"/>
+    <tube name="TGeoTube0x88" rmin="0.092000000000000012" rmax="0.10000000000000001" z="1.0399999999999956" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x89" rmin="0" rmax="0.092000000000000012" z="1.0399999999999956" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="guideHVbox0x1" x="4.25" y="0.70000000000000007" z="1" lunit="cm"/>
+    <tube name="waterRac" rmin="0" rmax="0.10000000000000001" z="1" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="tube1Rac" rmin="0.10000000000000001" rmax="0.25" z="0.30000000000000004" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="tube2Rac" rmin="0.10000000000000001" rmax="0.35000000000000003" z="0.20000000000000001" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="tube3Rac" rmin="0.10000000000000001" rmax="0.30000000000000004" z="0.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

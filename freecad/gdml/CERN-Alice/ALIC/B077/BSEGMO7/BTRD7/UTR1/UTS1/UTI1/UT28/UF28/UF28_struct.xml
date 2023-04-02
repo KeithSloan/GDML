@@ -1,0 +1,61 @@
+<structure><volume name="UV28">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x363"/>
+    </volume>
+    <volume name="UO28">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x362"/>
+    </volume>
+    <volume name="UN28">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x361"/>
+    </volume>
+    <volume name="UM28">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x360"/>
+    </volume>
+    <volume name="UY28">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x359"/>
+    </volume>
+    <volume name="UL28">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x358"/>
+    </volume>
+    <volume name="UG28">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x357"/>
+      <physvol name="UL28_1" copynumber="1">
+        <volumeref ref="UL28"/>
+        <positionref ref="UL28_1inUG28pos"/>
+      </physvol>
+      <physvol name="UY28_1" copynumber="1">
+        <volumeref ref="UY28"/>
+        <positionref ref="UY28_1inUG28pos"/>
+      </physvol>
+      <physvol name="UM28_1" copynumber="1">
+        <volumeref ref="UM28"/>
+        <positionref ref="UM28_1inUG28pos"/>
+      </physvol>
+      <physvol name="UN28_1" copynumber="1">
+        <volumeref ref="UN28"/>
+        <positionref ref="UN28_1inUG28pos"/>
+      </physvol>
+      <physvol name="UO28_1" copynumber="1">
+        <volumeref ref="UO28"/>
+        <positionref ref="UO28_1inUG28pos"/>
+      </physvol>
+      <physvol name="UV28_1" copynumber="1">
+        <volumeref ref="UV28"/>
+        <positionref ref="UV28_1inUG28pos"/>
+      </physvol>
+    </volume>
+    <volume name="UF28">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UF280x1"/>
+      <physvol name="UG28_1" copynumber="1">
+        <volumeref ref="UG28"/>
+        <positionref ref="UG28_1inUF28pos"/>
+      </physvol>
+    </volume>
+    </structure>

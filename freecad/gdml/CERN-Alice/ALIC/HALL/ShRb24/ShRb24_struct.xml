@@ -1,0 +1,35 @@
+<structure><volume name="Rb24Pl">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="Rb24Pl0x1"/>
+    </volume>
+    <volume name="ShRb24Ro">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x19"/>
+    </volume>
+    <volume name="ShRb24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x18"/>
+    </volume>
+    <volume name="ShRb24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x18"/>
+    </volume>
+    <assembly name="ShRb24">
+      <physvol name="ShRb24Sw_1" copynumber="1">
+        <volumeref ref="ShRb24Sw"/>
+        <positionref ref="ShRb24Sw_1inShRb24pos"/>
+      </physvol>
+      <physvol name="ShRb24Sw_2" copynumber="2">
+        <volumeref ref="ShRb24Sw"/>
+        <positionref ref="ShRb24Sw_2inShRb24pos"/>
+      </physvol>
+      <physvol name="ShRb24Ro_1" copynumber="1">
+        <volumeref ref="ShRb24Ro"/>
+        <positionref ref="ShRb24Ro_1inShRb24pos"/>
+      </physvol>
+      <physvol name="Rb24Pl_1" copynumber="1">
+        <volumeref ref="Rb24Pl"/>
+        <positionref ref="Rb24Pl_1inShRb24pos"/>
+      </physvol>
+    </assembly>
+    </structure>

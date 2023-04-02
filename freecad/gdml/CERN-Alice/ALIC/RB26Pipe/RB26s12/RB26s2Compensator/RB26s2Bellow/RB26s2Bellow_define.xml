@@ -1,0 +1,20 @@
+<define><position name="RB26s2LowerPlie_1inRB26s2Bellowpos" x="0" y="0" z="-4.7899999618530273" unit="cm"/>
+    <position name="RB26s2PlieConn1_1inRB26s2Wigglepos" x="0" y="0" z="-0.012500000186264515" unit="cm"/>
+    <position name="RB26s2UpperPlie_1inRB26s2Wigglepos" x="0" y="0" z="0.15759259462356567" unit="cm"/>
+    <position name="RB26s2PlieConn1_2inRB26s2Wigglepos" x="0" y="0" z="0.32768520712852478" unit="cm"/>
+    <position name="RB26s2LowerPlie_10x1inRB26s2Wigglepos" x="0" y="0" z="0.48527780175209045" unit="cm"/>
+    <position name="RB26s2Wiggle_1inRB26s2Bellowpos" x="0" y="0" z="-4.6049999240785837" unit="cm"/>
+    <position name="RB26s2Wiggle_2inRB26s2Bellowpos" x="0" y="0" z="-3.9246295932680368" unit="cm"/>
+    <position name="RB26s2Wiggle_3inRB26s2Bellowpos" x="0" y="0" z="-3.24425926245749" unit="cm"/>
+    <position name="RB26s2Wiggle_4inRB26s2Bellowpos" x="0" y="0" z="-2.563888693228364" unit="cm"/>
+    <position name="RB26s2Wiggle_5inRB26s2Bellowpos" x="0" y="0" z="-1.8835183624178171" unit="cm"/>
+    <position name="RB26s2Wiggle_6inRB26s2Bellowpos" x="0" y="0" z="-1.2031480316072702" unit="cm"/>
+    <position name="RB26s2Wiggle_7inRB26s2Bellowpos" x="0" y="0" z="-0.52277758158743382" unit="cm"/>
+    <position name="RB26s2Wiggle_8inRB26s2Bellowpos" x="0" y="0" z="0.15759280882775784" unit="cm"/>
+    <position name="RB26s2Wiggle_9inRB26s2Bellowpos" x="0" y="0" z="0.83796319924294949" unit="cm"/>
+    <position name="RB26s2Wiggle_10inRB26s2Bellowpos" x="0" y="0" z="1.5183335300534964" unit="cm"/>
+    <position name="RB26s2Wiggle_11inRB26s2Bellowpos" x="0" y="0" z="2.1987038608640432" unit="cm"/>
+    <position name="RB26s2Wiggle_12inRB26s2Bellowpos" x="0" y="0" z="2.8790744300931692" unit="cm"/>
+    <position name="RB26s2Wiggle_13inRB26s2Bellowpos" x="0" y="0" z="3.5594447609037161" unit="cm"/>
+    <position name="RB26s2Wiggle_14inRB26s2Bellowpos" x="0" y="0" z="4.2398153301328421" unit="cm"/>
+    </define>

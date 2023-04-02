@@ -1,0 +1,47 @@
+<materials><material name="TRD_Cu" Z="29">
+      <D unit="g/cm3" value="8.9600000381469727"/>
+      <atom unit="g/mole" value="63.540000915527344"/>
+    </material>
+    <material name="TRD_Araldite">
+      <D unit="g/cm3" value="1.0499999523162842"/>
+      <fraction n="0.76301687955856323" ref="CARBON_elm"/>
+      <fraction n="0.067585498094558716" ref="HYDROGEN_elm"/>
+      <fraction n="0.16939766705036163" ref="OXYGEN_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <material name="TRD_G10">
+      <D unit="g/cm3" value="1.7000000476837158"/>
+      <fraction n="0.10640999674797058" ref="CARBON_elm"/>
+      <fraction n="0.1520099937915802" ref="HYDROGEN_elm"/>
+      <fraction n="0.4944399893283844" ref="OXYGEN_elm"/>
+      <fraction n="0.24714000523090363" ref="SILICON_elm"/>
+    </material>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    <material name="TRD_Air">
+      <D unit="g/cm3" value="0.0012047899654135108"/>
+      <fraction n="0.012826999649405479" ref="ARGON_elm"/>
+      <fraction n="0.00012399999832268804" ref="CARBON_elm"/>
+      <fraction n="0.75526702404022217" ref="NITROGEN_elm"/>
+      <fraction n="0.231781005859375" ref="OXYGEN_elm"/>
+    </material>
+    <element name="ARGON_elm" formula="AR" Z="18">
+      <atom unit="g/mole" value="39.948"/>
+    </element>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740000000001"/>
+    </element>
+    <material name="TRD_Al" Z="13">
+      <D unit="g/cm3" value="2.7000000476837158"/>
+      <atom unit="g/mole" value="26.979999542236328"/>
+    </material>
+    </materials>

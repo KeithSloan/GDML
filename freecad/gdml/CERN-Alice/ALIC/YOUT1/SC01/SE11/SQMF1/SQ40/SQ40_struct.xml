@@ -1,0 +1,133 @@
+<structure><volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ40">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ400x1"/>
+      <physvol name="SQ44_1" copynumber="1">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_1inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_2" copynumber="2">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_2inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_3" copynumber="3">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_3inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_4" copynumber="4">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_4inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_5" copynumber="5">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_5inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_6" copynumber="6">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_6inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_7" copynumber="7">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_7inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_8" copynumber="8">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_8inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_9" copynumber="9">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_9inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_10" copynumber="10">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_10inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_11" copynumber="11">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_11inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_12" copynumber="12">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_12inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_13" copynumber="13">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_13inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_14" copynumber="14">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_14inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_64" copynumber="64">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_64inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_15" copynumber="15">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_15inSQ40pos"/>
+      </physvol>
+    </volume>
+    </structure>

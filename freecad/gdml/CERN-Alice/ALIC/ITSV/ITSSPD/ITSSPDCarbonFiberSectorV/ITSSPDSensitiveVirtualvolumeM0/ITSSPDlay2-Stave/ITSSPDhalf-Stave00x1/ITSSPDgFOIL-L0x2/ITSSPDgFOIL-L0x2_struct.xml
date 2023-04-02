@@ -1,0 +1,129 @@
+<structure><volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDGrease0x4">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDGrease0x5"/>
+    </volume>
+    <volume name="ITSSPDgFoilGlueL0x3">
+      <materialref ref="ITS_EPOXY"/>
+      <solidref ref="ITSSPDSHgFoilGlue20x2"/>
+    </volume>
+    <volume name="ITSSPDgFoilGlueL0x2">
+      <materialref ref="ITS_EPOXY"/>
+      <solidref ref="ITSSPDSHgFoilGlue10x2"/>
+    </volume>
+    <volume name="ITSSPDgFoilAluL0x1">
+      <materialref ref="ITS_AL"/>
+      <solidref ref="ITSSPDSHgFoilAlu0x2"/>
+    </volume>
+    <volume name="ITSSPDgFoilKapL0x1">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDSHgFoilKap0x2"/>
+    </volume>
+    <volume name="ITSSPDgFOIL-L0x2">
+      <materialref ref="ITS_AIR"/>
+      <solidref ref="ITSSPDgFOIL-L0x3"/>
+      <physvol name="ITSSPDgFoilKapL_1" copynumber="1">
+        <volumeref ref="ITSSPDgFoilKapL0x1"/>
+        <positionref ref="ITSSPDgFoilKapL_10x1inITSSPDgFOIL-L0x2pos"/>
+        <rotationref ref="ITSSPDgFoilKapL_10x1inITSSPDgFOIL-L0x2rot"/>
+      </physvol>
+      <physvol name="ITSSPDgFoilAluL_1" copynumber="1">
+        <volumeref ref="ITSSPDgFoilAluL0x1"/>
+        <positionref ref="ITSSPDgFoilAluL_10x1inITSSPDgFOIL-L0x2pos"/>
+        <rotationref ref="ITSSPDgFoilAluL_10x1inITSSPDgFOIL-L0x2rot"/>
+      </physvol>
+      <physvol name="ITSSPDgFoilGlueL_1" copynumber="1">
+        <volumeref ref="ITSSPDgFoilGlueL0x2"/>
+        <positionref ref="ITSSPDgFoilGlueL_10x1inITSSPDgFOIL-L0x2pos"/>
+        <rotationref ref="ITSSPDgFoilGlueL_10x1inITSSPDgFOIL-L0x2rot"/>
+      </physvol>
+      <physvol name="ITSSPDgFoilGlueL_2" copynumber="2">
+        <volumeref ref="ITSSPDgFoilGlueL0x3"/>
+        <positionref ref="ITSSPDgFoilGlueL_20x1inITSSPDgFOIL-L0x2pos"/>
+        <rotationref ref="ITSSPDgFoilGlueL_20x1inITSSPDgFOIL-L0x2rot"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_1" copynumber="1">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_10x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_2" copynumber="2">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_20x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_3" copynumber="3">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_30x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_4" copynumber="4">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_40x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_5" copynumber="5">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_50x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_6" copynumber="6">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_60x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_7" copynumber="7">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_70x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_8" copynumber="8">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_80x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_9" copynumber="9">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_90x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_10" copynumber="10">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_100x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDGrease_11" copynumber="11">
+        <volumeref ref="ITSSPDGrease0x4"/>
+        <positionref ref="ITSSPDGrease_110x2inITSSPDgFOIL-L0x2pos"/>
+      </physvol>
+    </volume>
+    </structure>

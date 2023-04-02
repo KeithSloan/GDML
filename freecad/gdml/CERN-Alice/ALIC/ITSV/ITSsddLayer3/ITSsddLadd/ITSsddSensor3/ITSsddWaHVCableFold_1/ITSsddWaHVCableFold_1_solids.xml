@@ -1,0 +1,3 @@
+<solids><cutTube name="TGeoCtub0x1" rmin="0" rmax="0.032500000000000001" z="6.7080000000000002" startphi="180" deltaphi="180" lowX="-6.1230317691118863e-17" lowY="-6.1230317691118863e-17" lowZ="-1" highX="6.1230317691118863e-17" highY="6.1230317691118863e-17" highZ="1" aunit="deg" lunit="cm"/>
+    <cutTube name="TGeoCtub" rmin="0" rmax="0.033100000000000004" z="6.7080000000000002" startphi="180" deltaphi="180" lowX="-6.1230317691118863e-17" lowY="-6.1230317691118863e-17" lowZ="-1" highX="6.1230317691118863e-17" highY="6.1230317691118863e-17" highZ="1" aunit="deg" lunit="cm"/>
+    </solids>

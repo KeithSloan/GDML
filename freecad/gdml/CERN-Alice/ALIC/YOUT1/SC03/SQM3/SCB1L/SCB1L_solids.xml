@@ -1,0 +1,5 @@
+<solids><polyhedra name="SCB1L0x1" startphi="0" deltaphi="90" numsides="5" aunit="deg" lunit="cm">
+      <zplane z="-0.019999999552965164" rmin="23.100000381469727" rmax="117.59999847412109"/>
+      <zplane z="0.019999999552965164" rmin="23.100000381469727" rmax="117.59999847412109"/>
+    </polyhedra>
+    </solids>

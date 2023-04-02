@@ -1,0 +1,50 @@
+<solids><union name="ITSsddBaseThermalBridgeShape">
+      <first ref="TGeoCompositeShape0x203"/>
+      <second ref="ITSsddBTBmainAxis"/>
+    </union>
+    <subtraction name="TGeoCompositeShape0x203">
+      <first ref="TGeoCompositeShape0x204"/>
+      <second ref="ITSsddBTBhole"/>
+      <position name="TGeoCompositeShape0x203ITSsddBTBholepos" x="-0.69999999999999996" y="-0.1075" z="1.3500000000000001" unit="cm"/>
+    </subtraction>
+    <subtraction name="TGeoCompositeShape0x204">
+      <first ref="TGeoCompositeShape0x205"/>
+      <second ref="ITSsddBTBhole"/>
+      <position name="TGeoCompositeShape0x204ITSsddBTBholepos" x="-0.69999999999999996" y="-0.1075" z="-1.3500000000000001" unit="cm"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x205">
+      <first ref="TGeoCompositeShape0x206"/>
+      <second ref="ITSsddBTBside"/>
+      <position name="TGeoCompositeShape0x205ITSsddBTBsidepos" x="0.1125" y="-0.020999999999999994" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x206">
+      <first ref="TGeoCompositeShape0x207"/>
+      <second ref="ITSsddBTBside"/>
+      <position name="TGeoCompositeShape0x206ITSsddBTBsidepos" x="-0.1125" y="-0.020999999999999994" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x207">
+      <first ref="TGeoCompositeShape0x208"/>
+      <second ref="ITSsddBTBround2"/>
+      <position name="TGeoCompositeShape0x207ITSsddBTBround2pos" x="0.17800000000000002" y="-0.041999999999999989" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x208">
+      <first ref="TGeoCompositeShape0x209"/>
+      <second ref="ITSsddBTBround1"/>
+      <position name="TGeoCompositeShape0x208ITSsddBTBround1pos" x="-0.17800000000000002" y="-0.041999999999999989" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x209">
+      <first ref="ITSsddBTBbase1"/>
+      <second ref="ITSsddBTBbase2"/>
+      <firstposition name="TGeoCompositeShape0x209ITSsddBTBbase1pos" x="-0.78900000000000003" y="-0.1075" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x209ITSsddBTBbase2pos" x="0.28900000000000003" y="-0.1075" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddBTBbase1" x="1.222" y="0.025000000000000001" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBbase2" x="0.222" y="0.025000000000000001" z="5.5" lunit="cm"/>
+    <tube name="ITSsddBTBround1" rmin="0.053000000000000005" rmax="0.078000000000000014" z="5.5" startphi="270" deltaphi="90" aunit="deg" lunit="cm"/>
+    <tube name="ITSsddBTBround2" rmin="0.053000000000000005" rmax="0.078000000000000014" z="5.5" startphi="180" deltaphi="90" aunit="deg" lunit="cm"/>
+    <box name="ITSsddBTBside" x="0.025000000000000001" y="0.041999999999999989" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBside" x="0.025000000000000001" y="0.041999999999999989" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBhole" x="0.60000000000000009" y="0.025000000000000001" z="1.5" lunit="cm"/>
+    <box name="ITSsddBTBhole" x="0.60000000000000009" y="0.025000000000000001" z="1.5" lunit="cm"/>
+    <tube name="ITSsddBTBmainAxis" rmin="0.10000000000000001" rmax="0.125" z="5.5" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    </solids>

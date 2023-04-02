@@ -1,0 +1,5 @@
+<structure><volume name="RB26s3CompProtTube">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x52"/>
+    </volume>
+    </structure>

@@ -1,0 +1,53 @@
+<structure><volume name="UV19">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x246"/>
+    </volume>
+    <volume name="UO19">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x245"/>
+    </volume>
+    <volume name="UN19">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x244"/>
+    </volume>
+    <volume name="UM19">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x243"/>
+    </volume>
+    <volume name="UY19">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x242"/>
+    </volume>
+    <volume name="UL19">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x241"/>
+    </volume>
+    <volume name="UG19">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x240"/>
+      <physvol name="UL19_1" copynumber="1">
+        <volumeref ref="UL19"/>
+        <positionref ref="UL19_1inUG19pos"/>
+      </physvol>
+      <physvol name="UY19_1" copynumber="1">
+        <volumeref ref="UY19"/>
+        <positionref ref="UY19_1inUG19pos"/>
+      </physvol>
+      <physvol name="UM19_1" copynumber="1">
+        <volumeref ref="UM19"/>
+        <positionref ref="UM19_1inUG19pos"/>
+      </physvol>
+      <physvol name="UN19_1" copynumber="1">
+        <volumeref ref="UN19"/>
+        <positionref ref="UN19_1inUG19pos"/>
+      </physvol>
+      <physvol name="UO19_1" copynumber="1">
+        <volumeref ref="UO19"/>
+        <positionref ref="UO19_1inUG19pos"/>
+      </physvol>
+      <physvol name="UV19_1" copynumber="1">
+        <volumeref ref="UV19"/>
+        <positionref ref="UV19_1inUG19pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "FSAW_materials.xml">
+<!ENTITY solids SYSTEM "FSAW_solids.xml">
+<!ENTITY struct SYSTEM "FSAW_struct.xml">
+<!ENTITY setup SYSTEM "FSAW_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

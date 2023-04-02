@@ -1,0 +1,13 @@
+<structure><volume name="voRB24CuTube">
+      <materialref ref="PIPE_COPPER"/>
+      <solidref ref="TGeoTube0x21"/>
+    </volume>
+    <volume name="voRB24CuTubeM">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x20"/>
+      <physvol name="voRB24CuTube_1" copynumber="1">
+        <volumeref ref="voRB24CuTube"/>
+        <positionref ref="voRB24CuTube_1invoRB24CuTubeMpos"/>
+      </physvol>
+    </volume>
+    </structure>

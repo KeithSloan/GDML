@@ -1,0 +1,3 @@
+<solids><trap name="BA620x1" z="1.5" theta="10" phi="0" x1="5" x2="5" x3="5" x4="5" y1="700" y2="700" alpha1="0" alpha2="0" aunit="deg" lunit="cm"/>
+    <trap name="BA590x1" z="2" theta="10" phi="0" x1="6" x2="6" x3="6" x4="6" y1="700" y2="700" alpha1="0" alpha2="0" aunit="deg" lunit="cm"/>
+    </solids>

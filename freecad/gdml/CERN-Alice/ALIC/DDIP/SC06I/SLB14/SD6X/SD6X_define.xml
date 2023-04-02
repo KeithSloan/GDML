@@ -1,0 +1,3 @@
+<define><position name="SD6N_1inSD6Cpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SD6C_1inSD6Xpos" x="0" y="0" z="0.012500000186264515" unit="cm"/>
+    </define>

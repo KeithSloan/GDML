@@ -1,0 +1,21 @@
+<structure><volume name="UH24">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x301"/>
+    </volume>
+    <volume name="UC24">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x300"/>
+      <physvol name="UH24_1" copynumber="1">
+        <volumeref ref="UH24"/>
+        <positionref ref="UH24_1inUC24pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX24">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX240x1"/>
+      <physvol name="UC24_1" copynumber="1">
+        <volumeref ref="UC24"/>
+        <positionref ref="UC24_1inUX24pos"/>
+      </physvol>
+    </volume>
+    </structure>

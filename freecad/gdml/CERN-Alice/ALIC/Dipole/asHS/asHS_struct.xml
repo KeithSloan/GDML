@@ -1,0 +1,35 @@
+<structure><volume name="DHS3">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x16"/>
+    </volume>
+    <volume name="DHS2">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x15"/>
+    </volume>
+    <volume name="DHS2">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x15"/>
+    </volume>
+    <volume name="DHS1">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x14"/>
+    </volume>
+    <assembly name="asHS">
+      <physvol name="DHS1_1" copynumber="1">
+        <volumeref ref="DHS1"/>
+        <positionref ref="DHS1_1inasHSpos"/>
+      </physvol>
+      <physvol name="DHS2_1" copynumber="1">
+        <volumeref ref="DHS2"/>
+        <positionref ref="DHS2_1inasHSpos"/>
+      </physvol>
+      <physvol name="DHS2_2" copynumber="2">
+        <volumeref ref="DHS2"/>
+        <positionref ref="DHS2_2inasHSpos"/>
+      </physvol>
+      <physvol name="DHS3_1" copynumber="1">
+        <volumeref ref="DHS3"/>
+        <positionref ref="DHS3_1inasHSpos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,9 @@
+<materials><material name="MUON_Aluminium_II" Z="13">
+      <D unit="g/cm3" value="2.7000000476837158"/>
+      <atom unit="g/mole" value="26.979999542236328"/>
+    </material>
+    <material name="MUON_Kapton" Z="6">
+      <D unit="g/cm3" value="1.4199999570846558"/>
+      <atom unit="g/mole" value="12.010000228881836"/>
+    </material>
+    </materials>

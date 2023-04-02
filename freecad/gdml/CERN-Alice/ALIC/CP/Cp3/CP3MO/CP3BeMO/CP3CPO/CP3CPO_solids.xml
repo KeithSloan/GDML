@@ -1,0 +1,13 @@
+<solids><intersection name="connectionPlieI">
+      <first ref="TorusCI"/>
+      <second ref="TubeC"/>
+    </intersection>
+    <torus name="TorusCI" rtor="3.0099999904632568" rmin="0.18999999761581421" rmax="0.20999999344348907" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeC" rmin="2.7999999523162842" rmax="3.0099999904632568" z="0.41999998688697815" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="connectionPlieO">
+      <first ref="TorusCO"/>
+      <second ref="TubeC"/>
+    </intersection>
+    <torus name="TorusCO" rtor="3.0099999904632568" rmin="0" rmax="0.20999999344348907" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeC" rmin="2.7999999523162842" rmax="3.0099999904632568" z="0.41999998688697815" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

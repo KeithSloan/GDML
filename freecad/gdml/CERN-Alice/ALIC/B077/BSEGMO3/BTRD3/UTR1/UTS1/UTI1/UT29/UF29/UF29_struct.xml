@@ -1,0 +1,61 @@
+<structure><volume name="UV29">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x376"/>
+    </volume>
+    <volume name="UO29">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x375"/>
+    </volume>
+    <volume name="UN29">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x374"/>
+    </volume>
+    <volume name="UM29">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x373"/>
+    </volume>
+    <volume name="UY29">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x372"/>
+    </volume>
+    <volume name="UL29">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x371"/>
+    </volume>
+    <volume name="UG29">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x370"/>
+      <physvol name="UL29_1" copynumber="1">
+        <volumeref ref="UL29"/>
+        <positionref ref="UL29_1inUG29pos"/>
+      </physvol>
+      <physvol name="UY29_1" copynumber="1">
+        <volumeref ref="UY29"/>
+        <positionref ref="UY29_1inUG29pos"/>
+      </physvol>
+      <physvol name="UM29_1" copynumber="1">
+        <volumeref ref="UM29"/>
+        <positionref ref="UM29_1inUG29pos"/>
+      </physvol>
+      <physvol name="UN29_1" copynumber="1">
+        <volumeref ref="UN29"/>
+        <positionref ref="UN29_1inUG29pos"/>
+      </physvol>
+      <physvol name="UO29_1" copynumber="1">
+        <volumeref ref="UO29"/>
+        <positionref ref="UO29_1inUG29pos"/>
+      </physvol>
+      <physvol name="UV29_1" copynumber="1">
+        <volumeref ref="UV29"/>
+        <positionref ref="UV29_1inUG29pos"/>
+      </physvol>
+    </volume>
+    <volume name="UF29">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UF290x1"/>
+      <physvol name="UG29_1" copynumber="1">
+        <volumeref ref="UG29"/>
+        <positionref ref="UG29_1inUF29pos"/>
+      </physvol>
+    </volume>
+    </structure>

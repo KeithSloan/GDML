@@ -1,0 +1,12 @@
+<materials><material name="TOF_Glass">
+      <D unit="g/cm3" value="2.7000000476837158"/>
+      <fraction n="0.53256505727767944" ref="OXYGEN_elm"/>
+      <fraction n="0.46743491291999817" ref="SILICON_elm"/>
+    </material>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    </materials>

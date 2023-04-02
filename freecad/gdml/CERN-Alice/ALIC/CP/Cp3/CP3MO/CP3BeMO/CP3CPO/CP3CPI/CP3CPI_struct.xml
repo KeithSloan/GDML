@@ -1,0 +1,5 @@
+<structure><volume name="CP3CPI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="connectionPlieI"/>
+    </volume>
+    </structure>

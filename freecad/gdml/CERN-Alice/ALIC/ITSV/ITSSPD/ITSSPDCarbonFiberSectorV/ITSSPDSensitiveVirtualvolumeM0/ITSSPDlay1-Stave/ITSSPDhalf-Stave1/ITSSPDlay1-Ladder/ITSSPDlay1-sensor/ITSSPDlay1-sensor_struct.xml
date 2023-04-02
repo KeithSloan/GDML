@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDlay1-sensor">
+      <materialref ref="ITS_SI"/>
+      <solidref ref="ITSSPDlay1-sensor0x1"/>
+    </volume>
+    </structure>

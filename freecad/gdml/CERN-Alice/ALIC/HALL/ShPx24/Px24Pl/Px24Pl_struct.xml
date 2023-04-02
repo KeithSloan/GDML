@@ -1,0 +1,5 @@
+<structure><volume name="Px24Pl">
+      <materialref ref="HALL_STAINLESS_STEEL3"/>
+      <solidref ref="Px24Pl0x1"/>
+    </volume>
+    </structure>

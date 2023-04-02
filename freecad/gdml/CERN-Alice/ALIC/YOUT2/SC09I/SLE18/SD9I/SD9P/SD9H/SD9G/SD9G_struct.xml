@@ -1,0 +1,5 @@
+<structure><volume name="SD9G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="composite59G"/>
+    </volume>
+    </structure>

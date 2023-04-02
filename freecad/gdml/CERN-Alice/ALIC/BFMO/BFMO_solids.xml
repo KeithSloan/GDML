@@ -1,0 +1,48 @@
+<solids><box name="TGeoBBox0x505" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x49" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x506" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x51" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x507" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x53" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x508" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x55" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x509" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x57" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x510" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x59" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x511" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x61" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x512" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x63" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x513" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x65" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x514" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x67" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x515" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x69" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x516" x="0.60000002384185791" y="8.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x71" x="0.80000001192092896" y="8.5" z="6.5" lunit="cm"/>
+    <box name="UTP30x49" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x51" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x53" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x55" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x57" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x59" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x61" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x63" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x65" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x67" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x69" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <box name="UTP30x71" x="0.60000002384185791" y="8.5" z="5" lunit="cm"/>
+    <trd name="BFTRD0x1" x1="94.280998229980469" x2="121.75299835205078" y1="118" y2="118" z="77.900001525878906" lunit="cm"/>
+    <tube name="BFII0x1" rmin="270.60000610351562" rmax="276.89999389648438" z="6.8000001907348633" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="BFIR0x1" rmin="270" rmax="277.5" z="8" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="BFOO0x1" rmin="410.70001220703125" rmax="416.89999389648438" z="6.8000001907348633" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="BFOR0x1" rmin="410.10000610351562" rmax="417.5" z="8" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="BFLL0x1" x="6.8000001907348633" y="6.8000001907348633" z="100.80000305175781" lunit="cm"/>
+    <box name="BFLB0x1" x="8" y="8" z="102" lunit="cm"/>
+    <box name="BFRR0x1" x="131.27049255371094" y="6.8000001907348633" z="6.8000001907348633" lunit="cm"/>
+    <box name="BFRB0x1" x="132.47048950195312" y="8" z="8" lunit="cm"/>
+    <box name="FTOS0x1" x="29" y="121" z="90" lunit="cm"/>
+    <tube name="BFMO0x1" rmin="270" rmax="417.5" z="118" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

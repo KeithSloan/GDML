@@ -1,0 +1,24 @@
+<materials><material name="MUON_TRIG_GAS">
+      <D unit="g/cm3" value="0.0031463000923395157"/>
+      <fraction n="0.27844101190567017" ref="ARGON_elm"/>
+      <fraction n="0.18449607491493225" ref="CARBON_elm"/>
+      <fraction n="0.49726945161819458" ref="FLUORINE_elm"/>
+      <fraction n="0.021549290046095848" ref="HYDROGEN_elm"/>
+      <fraction n="0.018244212493300438" ref="SULFUR_elm"/>
+    </material>
+    <element name="ARGON_elm" formula="AR" Z="18">
+      <atom unit="g/mole" value="39.948"/>
+    </element>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="FLUORINE_elm" formula="F" Z="9">
+      <atom unit="g/mole" value="18.998403199999998"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="SULFUR_elm" formula="S" Z="16">
+      <atom unit="g/mole" value="32.066000000000003"/>
+    </element>
+    </materials>

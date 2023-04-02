@@ -1,0 +1,5 @@
+<structure><volume name="YSAA1_InnerTube">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoCone0x9"/>
+    </volume>
+    </structure>

@@ -1,0 +1,21 @@
+<structure><volume name="UH18">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x223"/>
+    </volume>
+    <volume name="UC18">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x222"/>
+      <physvol name="UH18_1" copynumber="1">
+        <volumeref ref="UH18"/>
+        <positionref ref="UH18_1inUC18pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX18">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX180x1"/>
+      <physvol name="UC18_1" copynumber="1">
+        <volumeref ref="UC18"/>
+        <positionref ref="UC18_1inUX18pos"/>
+      </physvol>
+    </volume>
+    </structure>

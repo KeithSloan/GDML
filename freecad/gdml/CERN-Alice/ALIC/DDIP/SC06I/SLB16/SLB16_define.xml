@@ -1,0 +1,35 @@
+<define><position name="S06V_53inSLB16pos" x="61.25" y="0" z="0" unit="cm"/>
+    <position name="S06V_63inSLB16pos" x="-61.25" y="0" z="0" unit="cm"/>
+    <position name="S06N_1inS06Cpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S06C_1inS06Xpos" x="0" y="0" z="0.012500000186264515" unit="cm"/>
+    <position name="S06X_93inSLB16pos" x="-40" y="0" z="0.70749998092651367" unit="cm"/>
+    <position name="S06X_94inSLB16pos" x="-40" y="0" z="-0.70749998092651367" unit="cm"/>
+    <position name="S06G_1inS06Hpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S06H_1inS06Ppos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S06E_1inS06Bpos" x="-18.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_2inS06Bpos" x="-18.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_3inS06Bpos" x="-13.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_4inS06Bpos" x="-13.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_5inS06Bpos" x="-8.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_6inS06Bpos" x="-8.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_70x1inS06Bpos" x="-3.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_80x1inS06Bpos" x="-3.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_90x1inS06Bpos" x="1.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_100x1inS06Bpos" x="1.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_110x1inS06Bpos" x="6.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_120x1inS06Bpos" x="6.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_13inS06Bpos" x="11.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_14inS06Bpos" x="11.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06E_15inS06Bpos" x="16.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S06E_16inS06Bpos" x="16.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S06B_1inS06Ppos" x="0" y="25.475000381469727" z="0" unit="cm"/>
+    <position name="S06B_2inS06Ppos" x="0" y="-25.475000381469727" z="0" unit="cm"/>
+    <position name="S06P_1inS06Ipos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S06I_47inSLB16pos" x="-40" y="0" z="0" unit="cm"/>
+    <position name="S06X_95inSLB16pos" x="0" y="0" z="0.70749998092651367" unit="cm"/>
+    <position name="S06X_96inSLB16pos" x="0" y="0" z="-0.70749998092651367" unit="cm"/>
+    <position name="S06I_48inSLB16pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S06X_97inSLB16pos" x="40" y="0" z="0.70749998092651367" unit="cm"/>
+    <position name="S06X_98inSLB16pos" x="40" y="0" z="-0.70749998092651367" unit="cm"/>
+    <position name="S06I_49inSLB16pos" x="40" y="0" z="0" unit="cm"/>
+    </define>

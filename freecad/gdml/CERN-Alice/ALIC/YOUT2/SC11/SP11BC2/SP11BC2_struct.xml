@@ -1,0 +1,11 @@
+<structure><volume name="SPINO10x10">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO10x11"/>
+    </volume>
+    <assembly name="SP11BC2">
+      <physvol name="SPINO1_66" copynumber="66">
+        <volumeref ref="SPINO10x10"/>
+        <positionref ref="SPINO1_66inSP11BC2pos"/>
+      </physvol>
+    </assembly>
+    </structure>

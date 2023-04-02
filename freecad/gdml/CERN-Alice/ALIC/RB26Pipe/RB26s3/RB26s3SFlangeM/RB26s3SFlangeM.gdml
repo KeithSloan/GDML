@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "RB26s3SFlangeM_define.xml">
+<!ENTITY materials SYSTEM "RB26s3SFlangeM_materials.xml">
+<!ENTITY solids SYSTEM "RB26s3SFlangeM_solids.xml">
+<!ENTITY struct SYSTEM "RB26s3SFlangeM_struct.xml">
+<!ENTITY setup SYSTEM "RB26s3SFlangeM_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

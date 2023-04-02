@@ -1,0 +1,28 @@
+<solids><box name="TGeoBBox0x1" x="588.5" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x2" x="604.79998779296875" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x3" x="621.0999755859375" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x4" x="637.39996337890625" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x5" x="653.699951171875" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x6" x="669.99993896484375" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x7" x="686.2999267578125" y="145.44999694824219" z="44.200000762939453" lunit="cm"/>
+    <box name="TGeoBBox0x8" x="145.44999694824219" y="609.0999755859375" z="44.200000762939453" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x1" rmin="211" rmax="271" z="77" startphi="299" deltaphi="122" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg" rmin="206" rmax="276" z="77" startphi="299" deltaphi="122" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x2" rmin="31.5" rmax="108.5" z="70" startphi="270" deltaphi="90" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x3" rmin="31.5" rmax="108.5" z="70" startphi="0" deltaphi="90" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x11" x="60" y="67" z="263.89999389648438" lunit="cm"/>
+    <box name="TGeoBBox0x10" x="70" y="77" z="273.89999389648438" lunit="cm"/>
+    <box name="TGeoBBox0x12" x="2" y="77" z="240" lunit="cm"/>
+    <box name="TGeoBBox0x13" x="70" y="2" z="240" lunit="cm"/>
+    <box name="TGeoBBox0x9" x="74" y="81" z="273.89999389648438" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x4" rmin="281.10000000000002" rmax="349.5" z="2" startphi="340" deltaphi="40" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x5" rmin="276" rmax="279.125" z="83" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x6" rmin="202.875" rmax="206" z="77" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <cone name="TGeoConeSeg" z="83" rmin1="279.12400000000002" rmin2="279.125" rmax1="320" rmax2="281.125" startphi="21" deltaphi="0.39999999999999858" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x7" rmin="276" rmax="325" z="2" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x8" rmin="202.875" rmax="279.125" z="3.125" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x9" rmin="202.875" rmax="276" z="3.125" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x14" x="3" y="25" z="344.10003662109375" lunit="cm"/>
+    <box name="TGeoBBox0x15" x="25" y="3" z="344.10003662109375" lunit="cm"/>
+    <box name="TGeoBBox0x16" x="3.5" y="258.89678955078125" z="25" lunit="cm"/>
+    </solids>

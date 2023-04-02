@@ -1,0 +1,13 @@
+<structure><volume name="SB5N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="SB5N0x1"/>
+    </volume>
+    <volume name="SB5C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="SB5C0x1"/>
+      <physvol name="SB5N_1" copynumber="1">
+        <volumeref ref="SB5N"/>
+        <positionref ref="SB5N_1inSB5Cpos"/>
+      </physvol>
+    </volume>
+    </structure>

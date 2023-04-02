@@ -1,0 +1,5 @@
+<structure><volume name="FTOS">
+      <materialref ref="TOF_AlCusteel"/>
+      <solidref ref="FTOS0x1"/>
+    </volume>
+    </structure>

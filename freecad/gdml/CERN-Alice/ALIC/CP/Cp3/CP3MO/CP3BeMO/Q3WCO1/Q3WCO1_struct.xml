@@ -1,0 +1,5 @@
+<structure><volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    </structure>

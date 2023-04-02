@@ -1,0 +1,5 @@
+<define><position name="DCH1_1inDCMLpos" x="19" y="-13.5" z="-15.5" unit="cm"/>
+    <position name="DCCV_3inDCMLpos" x="19" y="18.5" z="129.5" unit="cm"/>
+    <position name="DCC1_7inDCMLpos" x="19" y="6.5" z="109.5" unit="cm"/>
+    <rotation name="DCC1_7inDCMLrot" x="-180" y="-90" z="0" unit="deg"/>
+    </define>

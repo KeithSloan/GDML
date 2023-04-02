@@ -1,0 +1,5 @@
+<structure><volume name="HHF4">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="HHF40x1"/>
+    </volume>
+    </structure>

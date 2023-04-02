@@ -1,0 +1,21 @@
+<structure><volume name="UH08">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x171"/>
+    </volume>
+    <volume name="UC08">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x170"/>
+      <physvol name="UH08_1" copynumber="1">
+        <volumeref ref="UH08"/>
+        <positionref ref="UH08_1inUC08pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX08">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX080x1"/>
+      <physvol name="UC08_1" copynumber="1">
+        <volumeref ref="UC08"/>
+        <positionref ref="UC08_1inUX08pos"/>
+      </physvol>
+    </volume>
+    </structure>

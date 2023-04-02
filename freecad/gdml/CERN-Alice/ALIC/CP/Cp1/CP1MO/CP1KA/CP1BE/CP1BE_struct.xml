@@ -1,0 +1,21 @@
+<structure><volume name="CP1NEG">
+      <materialref ref="PIPE_NEG_COATING"/>
+      <solidref ref="TGeoTube0x11"/>
+    </volume>
+    <volume name="CP1VAC">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x10"/>
+    </volume>
+    <volume name="CP1BE">
+      <materialref ref="PIPE_BERILLIUM"/>
+      <solidref ref="TGeoTube0x9"/>
+      <physvol name="CP1VAC_1" copynumber="1">
+        <volumeref ref="CP1VAC"/>
+        <positionref ref="CP1VAC_1inCP1BEpos"/>
+      </physvol>
+      <physvol name="CP1NEG_1" copynumber="1">
+        <volumeref ref="CP1NEG"/>
+        <positionref ref="CP1NEG_1inCP1BEpos"/>
+      </physvol>
+    </volume>
+    </structure>

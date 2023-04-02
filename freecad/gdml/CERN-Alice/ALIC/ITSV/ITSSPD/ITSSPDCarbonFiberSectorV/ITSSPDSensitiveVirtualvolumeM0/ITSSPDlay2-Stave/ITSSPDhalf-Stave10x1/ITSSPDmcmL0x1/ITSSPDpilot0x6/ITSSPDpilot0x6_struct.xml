@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDpilot0x6">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDpilot0x7"/>
+    </volume>
+    </structure>

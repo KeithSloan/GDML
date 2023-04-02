@@ -1,0 +1,5 @@
+<structure><volume name="FREE">
+      <materialref ref="TOF_Air"/>
+      <solidref ref="FREE0x1"/>
+    </volume>
+    </structure>

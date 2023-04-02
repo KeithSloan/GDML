@@ -1,0 +1,5 @@
+<define><position name="UJ05_1inUB05pos" x="0" y="0" z="2.4000000953674316" unit="cm"/>
+    <position name="UH05_1inUC05pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UC05_1inUX05pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UX05_1inUB05pos" x="0" y="0" z="-1.5" unit="cm"/>
+    </define>

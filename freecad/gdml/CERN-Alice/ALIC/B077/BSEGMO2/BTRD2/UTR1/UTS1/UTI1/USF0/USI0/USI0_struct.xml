@@ -1,0 +1,5 @@
+<structure><volume name="USI0">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x29"/>
+    </volume>
+    </structure>

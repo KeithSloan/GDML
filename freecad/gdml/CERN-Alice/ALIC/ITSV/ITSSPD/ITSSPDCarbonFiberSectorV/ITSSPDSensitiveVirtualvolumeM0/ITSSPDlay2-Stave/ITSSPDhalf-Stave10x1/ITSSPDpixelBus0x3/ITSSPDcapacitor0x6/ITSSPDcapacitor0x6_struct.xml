@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDcapacitor0x6">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="ITSSPDcapacitor0x7"/>
+    </volume>
+    </structure>

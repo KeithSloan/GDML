@@ -1,0 +1,8 @@
+<solids><intersection name="shSaa1Wring3">
+      <first ref="shSaa1Wring3a"/>
+      <second ref="shSaa1Wring3b"/>
+      <position name="shSaa1Wring3shSaa1Wring3bpos" x="16.199999809265137" y="16.199999809265137" z="0" unit="cm"/>
+    </intersection>
+    <tube name="shSaa1Wring3a" rmin="20.309999465942383" rmax="23.399999618530273" z="7.5" startphi="0" deltaphi="90" aunit="deg" lunit="cm"/>
+    <box name="shSaa1Wring3b" x="23.399999618530273" y="23.399999618530273" z="7.5" lunit="cm"/>
+    </solids>

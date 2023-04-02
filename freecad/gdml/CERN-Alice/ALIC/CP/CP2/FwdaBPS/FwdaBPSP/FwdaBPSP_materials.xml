@@ -1,0 +1,16 @@
+<materials><material name="PIPE_ANTICORODAL">
+      <D unit="g/cm3" value="2.6600000858306885"/>
+      <fraction n="0.92400002479553223" ref="ALUMINIUM_elm"/>
+      <fraction n="0.0060000000521540642" ref="MAGNESIUM_elm"/>
+      <fraction n="0.070000000298023224" ref="SILICON_elm"/>
+    </material>
+    <element name="ALUMINIUM_elm" formula="AL" Z="13">
+      <atom unit="g/mole" value="26.981538"/>
+    </element>
+    <element name="MAGNESIUM_elm" formula="MG" Z="12">
+      <atom unit="g/mole" value="24.305"/>
+    </element>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    </materials>

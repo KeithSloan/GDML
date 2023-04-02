@@ -1,0 +1,5 @@
+<structure><volume name="S12G0x5">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x664"/>
+    </volume>
+    </structure>

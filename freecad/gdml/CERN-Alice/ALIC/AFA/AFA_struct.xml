@@ -1,0 +1,241 @@
+<structure><volume name="AFassAlRing">
+      <materialref ref="ABSO_ALUMINIUM0"/>
+      <solidref ref="TGeoTube"/>
+    </volume>
+    <volume name="AFassCentral">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="shFassCentral"/>
+    </volume>
+    <volume name="AFassLMFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoTrap0x1"/>
+    </volume>
+    <volume name="AFassUMFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoTrap"/>
+    </volume>
+    <volume name="AFassUBFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoBBox"/>
+    </volume>
+    <volume name="AFassUBFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoBBox"/>
+    </volume>
+    <assembly name="AFass">
+      <physvol name="AFassUBFlange_1" copynumber="1">
+        <volumeref ref="AFassUBFlange"/>
+        <positionref ref="AFassUBFlange_1inAFasspos"/>
+      </physvol>
+      <physvol name="AFassUBFlange_2" copynumber="2">
+        <volumeref ref="AFassUBFlange"/>
+        <positionref ref="AFassUBFlange_2inAFasspos"/>
+      </physvol>
+      <physvol name="AFassUMFlange_1" copynumber="1">
+        <volumeref ref="AFassUMFlange"/>
+        <positionref ref="AFassUMFlange_1inAFasspos"/>
+        <rotationref ref="AFassUMFlange_1inAFassrot"/>
+      </physvol>
+      <physvol name="AFassLMFlange_1" copynumber="1">
+        <volumeref ref="AFassLMFlange"/>
+        <positionref ref="AFassLMFlange_1inAFasspos"/>
+        <rotationref ref="AFassLMFlange_1inAFassrot"/>
+      </physvol>
+      <physvol name="AFassCentral_1" copynumber="1">
+        <volumeref ref="AFassCentral"/>
+        <positionref ref="AFassCentral_1inAFasspos"/>
+      </physvol>
+    </assembly>
+    <volume name="AFaEndPlate">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="shFaEndPlate"/>
+    </volume>
+    <volume name="AFaSteelCone31I">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoCone0x7"/>
+    </volume>
+    <volume name="AFaSteelCone31">
+      <materialref ref="ABSO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoCone0x6"/>
+      <physvol name="AFaSteelCone31I_1" copynumber="1">
+        <volumeref ref="AFaSteelCone31I"/>
+        <positionref ref="AFaSteelCone31I_1inAFaSteelCone31pos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaSteelCone25">
+      <materialref ref="ABSO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoCone0x5"/>
+    </volume>
+    <volume name="AFaConcreteCone">
+      <materialref ref="ABSO_CONCRETE2"/>
+      <solidref ref="TGeoCone0x4"/>
+    </volume>
+    <volume name="AFaGraphiteConeO">
+      <materialref ref="ABSO_CARBON0"/>
+      <solidref ref="TGeoCone0x3"/>
+    </volume>
+    <volume name="AFaGraphiteCone">
+      <materialref ref="ABSO_CARBON2"/>
+      <solidref ref="TGeoPcon0x11"/>
+      <physvol name="AFaGraphiteConeO_1" copynumber="1">
+        <volumeref ref="AFaGraphiteConeO"/>
+        <positionref ref="AFaGraphiteConeO_1inAFaGraphiteConepos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaAcc">
+      <materialref ref="ABSO_AIR0"/>
+      <solidref ref="TGeoPcon0x10"/>
+      <physvol name="AFaGraphiteCone_1" copynumber="1">
+        <volumeref ref="AFaGraphiteCone"/>
+        <positionref ref="AFaGraphiteCone_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaConcreteCone_1" copynumber="1">
+        <volumeref ref="AFaConcreteCone"/>
+        <positionref ref="AFaConcreteCone_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaSteelCone25_1" copynumber="1">
+        <volumeref ref="AFaSteelCone25"/>
+        <positionref ref="AFaSteelCone25_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaSteelCone31_1" copynumber="1">
+        <volumeref ref="AFaSteelCone31"/>
+        <positionref ref="AFaSteelCone31_1inAFaAccpos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaCompRing">
+      <materialref ref="ABSO_CARBON0"/>
+      <solidref ref="TGeoPcon0x9"/>
+    </volume>
+    <volume name="AFaMgRing">
+      <materialref ref="ABSO_MAGNESIUM"/>
+      <solidref ref="TGeoPcon0x8"/>
+    </volume>
+    <volume name="AFaFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoPcon0x7"/>
+    </volume>
+    <volume name="AFaCH2Cone">
+      <materialref ref="ABSO_POLYETHYLEN2"/>
+      <solidref ref="TGeoCone0x2"/>
+    </volume>
+    <volume name="AFaPbConeI">
+      <materialref ref="ABSO_LEAD2"/>
+      <solidref ref="TGeoPcon0x6"/>
+    </volume>
+    <volume name="AFaPbCone">
+      <materialref ref="ABSO_LEAD0"/>
+      <solidref ref="TGeoPcon0x5"/>
+      <physvol name="AFaPbConeI_1" copynumber="1">
+        <volumeref ref="AFaPbConeI"/>
+        <positionref ref="AFaPbConeI_1inAFaPbConepos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaSteelEnvelope">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="shFaSteelEnvelope"/>
+    </volume>
+    <volume name="AFaWPlateAI">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoPcon0x4"/>
+    </volume>
+    <volume name="AFaWPlateA">
+      <materialref ref="ABSO_Ni-W-Cu0"/>
+      <solidref ref="TGeoPcon0x3"/>
+      <physvol name="AFaWPlateAI_1" copynumber="1">
+        <volumeref ref="AFaWPlateAI"/>
+        <positionref ref="AFaWPlateAI_1inAFaWPlateApos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaWTube4">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoCone0x1"/>
+    </volume>
+    <volume name="AFaWTube3">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoCone"/>
+    </volume>
+    <volume name="AFaWTube2">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoPcon0x2"/>
+    </volume>
+    <volume name="AFaWTube1">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoPcon0x1"/>
+    </volume>
+    <assembly name="AFaInnerShield">
+      <physvol name="AFaWTube1_1" copynumber="1">
+        <volumeref ref="AFaWTube1"/>
+        <positionref ref="AFaWTube1_1inAFaInnerShieldpos"/>
+      </physvol>
+      <physvol name="AFaWTube2_1" copynumber="1">
+        <volumeref ref="AFaWTube2"/>
+        <positionref ref="AFaWTube2_1inAFaInnerShieldpos"/>
+      </physvol>
+      <physvol name="AFaWTube3_1" copynumber="1">
+        <volumeref ref="AFaWTube3"/>
+        <positionref ref="AFaWTube3_1inAFaInnerShieldpos"/>
+      </physvol>
+      <physvol name="AFaWTube4_1" copynumber="1">
+        <volumeref ref="AFaWTube4"/>
+        <positionref ref="AFaWTube4_1inAFaInnerShieldpos"/>
+      </physvol>
+    </assembly>
+    <volume name="AFaM">
+      <materialref ref="ABSO_AIR0"/>
+      <solidref ref="TGeoPcon"/>
+      <physvol name="AFaInnerShield_1" copynumber="1">
+        <volumeref ref="AFaInnerShield"/>
+        <positionref ref="AFaInnerShield_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaWPlateA_1" copynumber="1">
+        <volumeref ref="AFaWPlateA"/>
+        <positionref ref="AFaWPlateA_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaSteelEnvelope_1" copynumber="1">
+        <volumeref ref="AFaSteelEnvelope"/>
+        <positionref ref="AFaSteelEnvelope_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaPbCone_1" copynumber="1">
+        <volumeref ref="AFaPbCone"/>
+        <positionref ref="AFaPbCone_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaCH2Cone_1" copynumber="1">
+        <volumeref ref="AFaCH2Cone"/>
+        <positionref ref="AFaCH2Cone_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaFlange_1" copynumber="1">
+        <volumeref ref="AFaFlange"/>
+        <positionref ref="AFaFlange_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaMgRing_1" copynumber="1">
+        <volumeref ref="AFaMgRing"/>
+        <positionref ref="AFaMgRing_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaCompRing_1" copynumber="1">
+        <volumeref ref="AFaCompRing"/>
+        <positionref ref="AFaCompRing_1inAFaMpos"/>
+      </physvol>
+      <physvol name="AFaAcc_1" copynumber="1">
+        <volumeref ref="AFaAcc"/>
+        <positionref ref="AFaAcc_1inAFaMpos"/>
+      </physvol>
+    </volume>
+    <assembly name="AFA">
+      <physvol name="AFaM_1" copynumber="1">
+        <volumeref ref="AFaM"/>
+        <positionref ref="AFaM_1inAFApos"/>
+      </physvol>
+      <physvol name="AFaEndPlate_1" copynumber="1">
+        <volumeref ref="AFaEndPlate"/>
+        <positionref ref="AFaEndPlate_1inAFApos"/>
+      </physvol>
+      <physvol name="AFass_1" copynumber="1">
+        <volumeref ref="AFass"/>
+        <positionref ref="AFass_1inAFApos"/>
+      </physvol>
+      <physvol name="AFassAlRing_1" copynumber="1">
+        <volumeref ref="AFassAlRing"/>
+        <positionref ref="AFassAlRing_1inAFApos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,45 @@
+<structure><volume name="UH23">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x288"/>
+    </volume>
+    <volume name="UC23">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x287"/>
+      <physvol name="UH23_1" copynumber="1">
+        <volumeref ref="UH23"/>
+        <positionref ref="UH23_1inUC23pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX23">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX230x1"/>
+      <physvol name="UC23_1" copynumber="1">
+        <volumeref ref="UC23"/>
+        <positionref ref="UC23_1inUX23pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ23">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ230x1"/>
+    </volume>
+    <volume name="UB23">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x286"/>
+      <physvol name="UJ23_1" copynumber="1">
+        <volumeref ref="UJ23"/>
+        <positionref ref="UJ23_1inUB23pos"/>
+      </physvol>
+      <physvol name="UX23_1" copynumber="1">
+        <volumeref ref="UX23"/>
+        <positionref ref="UX23_1inUB23pos"/>
+      </physvol>
+    </volume>
+    <volume name="UA23">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UA230x1"/>
+      <physvol name="UB23_1" copynumber="1">
+        <volumeref ref="UB23"/>
+        <positionref ref="UB23_1inUA23pos"/>
+      </physvol>
+    </volume>
+    </structure>

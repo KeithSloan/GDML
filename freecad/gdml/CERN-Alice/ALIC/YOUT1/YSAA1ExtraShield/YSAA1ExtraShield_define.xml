@@ -1,0 +1,18 @@
+<define><position name="YSAA1_WRING1_1inYSAA1ExtraShieldpos" x="0" y="0" z="-24" unit="cm"/>
+    <position name="YSAA1_WRING2_1inYSAA1ExtraShieldpos" x="0" y="0" z="-14.399999618530273" unit="cm"/>
+    <position name="YSAA1_WRING2_2inYSAA1ExtraShieldpos" x="0" y="0" z="-14.399999618530273" unit="cm"/>
+    <position name="YSAA1_WRING2_3inYSAA1ExtraShieldpos" x="0" y="0" z="-4.5999994277954102" unit="cm"/>
+    <position name="YSAA1_WRING2_4inYSAA1ExtraShieldpos" x="0" y="0" z="-4.5999994277954102" unit="cm"/>
+    <position name="YSAA1_WRING5_1inYSAA1ExtraShieldpos" x="0" y="0" z="5.9604644775390625e-07" unit="cm"/>
+    <position name="YSAA1_WRING2_5inYSAA1ExtraShieldpos" x="0" y="0" z="4.6000003814697266" unit="cm"/>
+    <position name="YSAA1_WRING2_6inYSAA1ExtraShieldpos" x="0" y="0" z="4.6000003814697266" unit="cm"/>
+    <position name="YSAA1_WRING3_1inYSAA1ExtraShieldpos" x="0" y="0" z="14.40000057220459" unit="cm"/>
+    <position name="YSAA1_WRING3_2inYSAA1ExtraShieldpos" x="0" y="0" z="14.40000057220459" unit="cm"/>
+    <position name="YSAA1_WRING4_1inYSAA1ExtraShieldpos" x="0" y="0" z="18.150001525878906" unit="cm"/>
+    <rotation name="YSAA1_WRING2_2inYSAA1ExtraShieldrot" x="0" y="-0" z="180" unit="deg"/>
+    <rotation name="YSAA1_WRING2_3inYSAA1ExtraShieldrot" x="0" y="-0" z="-90" unit="deg"/>
+    <rotation name="YSAA1_WRING2_4inYSAA1ExtraShieldrot" x="0" y="-0" z="90" unit="deg"/>
+    <rotation name="YSAA1_WRING2_6inYSAA1ExtraShieldrot" x="0" y="-0" z="180" unit="deg"/>
+    <rotation name="YSAA1_WRING3_1inYSAA1ExtraShieldrot" x="0" y="-0" z="-90" unit="deg"/>
+    <rotation name="YSAA1_WRING3_2inYSAA1ExtraShieldrot" x="0" y="-0" z="90" unit="deg"/>
+    </define>

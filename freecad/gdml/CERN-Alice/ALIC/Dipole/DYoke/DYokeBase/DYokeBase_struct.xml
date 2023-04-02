@@ -1,0 +1,59 @@
+<structure><volume name="DYokeBaseBlock6">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x7"/>
+    </volume>
+    <volume name="DYokeBaseBlock5">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x6"/>
+    </volume>
+    <volume name="DYokeBaseBlock4">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x5"/>
+    </volume>
+    <volume name="DYokeBaseBlock3">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x4"/>
+    </volume>
+    <volume name="DYokeBaseBlock2">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x3"/>
+    </volume>
+    <volume name="DYokeBaseBlock1">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x2"/>
+    </volume>
+    <volume name="DYokeBaseBlock0">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x1"/>
+    </volume>
+    <assembly name="DYokeBase">
+      <physvol name="DYokeBaseBlock0_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock0"/>
+        <positionref ref="DYokeBaseBlock0_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock1_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock1"/>
+        <positionref ref="DYokeBaseBlock1_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock2_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock2"/>
+        <positionref ref="DYokeBaseBlock2_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock3_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock3"/>
+        <positionref ref="DYokeBaseBlock3_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock4_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock4"/>
+        <positionref ref="DYokeBaseBlock4_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock5_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock5"/>
+        <positionref ref="DYokeBaseBlock5_1inDYokeBasepos"/>
+      </physvol>
+      <physvol name="DYokeBaseBlock6_1" copynumber="1">
+        <volumeref ref="DYokeBaseBlock6"/>
+        <positionref ref="DYokeBaseBlock6_1inDYokeBasepos"/>
+      </physvol>
+    </assembly>
+    </structure>

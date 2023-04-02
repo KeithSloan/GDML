@@ -1,0 +1,47 @@
+<structure><volume name="L3CR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x176"/>
+    </volume>
+    <volume name="L3CR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x176"/>
+    </volume>
+    <volume name="L3YO">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x175"/>
+    </volume>
+    <volume name="L3CM">
+      <materialref ref="MAG_AIR1"/>
+      <solidref ref="TGeoPgon0x1"/>
+      <divisionvol axis="kZAxis" number="168" width="7" offset="0" unit="cm">
+        <volumeref ref="L3CD"/>
+      </divisionvol>
+    </volume>
+    <volume name="L3TS">
+      <materialref ref="MAG_Al0"/>
+      <solidref ref="TGeoPgon"/>
+    </volume>
+    <assembly name="L3BM">
+      <physvol name="L3TS_1" copynumber="1">
+        <volumeref ref="L3TS"/>
+        <positionref ref="L3TS_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CM_1" copynumber="1">
+        <volumeref ref="L3CM"/>
+        <positionref ref="L3CM_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3YO_1" copynumber="1">
+        <volumeref ref="L3YO"/>
+        <positionref ref="L3YO_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CR_1" copynumber="1">
+        <volumeref ref="L3CR"/>
+        <positionref ref="L3CR_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CR_2" copynumber="2">
+        <volumeref ref="L3CR"/>
+        <positionref ref="L3CR_2inL3BMpos"/>
+        <scale name="L3CR_2inL3BMscl" x="1" y="1" z="-1"/>
+      </physvol>
+    </assembly>
+    </structure>

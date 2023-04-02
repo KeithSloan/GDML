@@ -1,0 +1,19 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10x134inS335pos" x="-18.899999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_20x85inS335pos" x="-16.379999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_30x76inS335pos" x="-13.859999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_40x53inS335pos" x="-11.34" y="0" z="0" unit="cm"/>
+    <position name="SCHL_50x41inS335pos" x="-8.8200000000000003" y="0" z="0" unit="cm"/>
+    <position name="SCHL_60x34inS335pos" x="-6.2999999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_70x30inS335pos" x="-3.7800000000000002" y="0" z="0" unit="cm"/>
+    <position name="SCHL_80x30inS335pos" x="-1.26" y="0" z="0" unit="cm"/>
+    <position name="SCHL_90x29inS335pos" x="1.26" y="0" z="0" unit="cm"/>
+    <position name="SCHL_100x29inS335pos" x="3.7800000000000002" y="0" z="0" unit="cm"/>
+    <position name="SCHL_110x23inS335pos" x="6.2999999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_120x23inS335pos" x="8.8200000000000003" y="0" z="0" unit="cm"/>
+    <position name="SCHL_130x23inS335pos" x="11.34" y="0" z="0" unit="cm"/>
+    <position name="SCHL_140x23inS335pos" x="13.859999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_150x19inS335pos" x="16.379999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_160x15inS335pos" x="18.899999999999999" y="0" z="0" unit="cm"/>
+    </define>

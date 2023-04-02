@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDanalog0x6">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDanalog0x7"/>
+    </volume>
+    </structure>

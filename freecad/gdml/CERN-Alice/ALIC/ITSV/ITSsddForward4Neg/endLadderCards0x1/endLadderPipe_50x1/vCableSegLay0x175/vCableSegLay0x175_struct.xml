@@ -1,0 +1,5 @@
+<structure><volume name="vCableSegLay0x175">
+      <materialref ref="ITS_Water"/>
+      <solidref ref="TGeoTubeSeg0x57"/>
+    </volume>
+    </structure>

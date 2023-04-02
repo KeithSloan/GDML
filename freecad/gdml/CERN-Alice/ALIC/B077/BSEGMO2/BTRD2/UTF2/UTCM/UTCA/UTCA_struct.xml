@@ -1,0 +1,13 @@
+<structure><volume name="UTCW">
+      <materialref ref="TRD_Water"/>
+      <solidref ref="UTCW0x1"/>
+    </volume>
+    <volume name="UTCA">
+      <materialref ref="TRD_Fe"/>
+      <solidref ref="UTCA0x1"/>
+      <physvol name="UTCW_1" copynumber="1">
+        <volumeref ref="UTCW"/>
+        <positionref ref="UTCW_1inUTCApos"/>
+      </physvol>
+    </volume>
+    </structure>

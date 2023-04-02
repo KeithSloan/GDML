@@ -1,0 +1,4 @@
+<define><position name="BIV42_1inBI42pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="BIH142_1inBI42pos" x="0" y="0" z="3.7000000000000002" unit="cm"/>
+    <position name="BIH242_1inBI42pos" x="0" y="0" z="-3.7000000000000002" unit="cm"/>
+    </define>

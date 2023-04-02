@@ -1,0 +1,4 @@
+<define><position name="UW25_1inUK25pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UK25_1inUE25pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UE25_1inUD25pos" x="0" y="0" z="0" unit="cm"/>
+    </define>

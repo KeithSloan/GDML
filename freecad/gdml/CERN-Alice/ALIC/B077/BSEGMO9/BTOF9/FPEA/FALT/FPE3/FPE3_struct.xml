@@ -1,0 +1,5 @@
+<structure><volume name="FPE3">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE30x1"/>
+    </volume>
+    </structure>

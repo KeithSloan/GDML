@@ -1,0 +1,5 @@
+<structure><volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    </structure>

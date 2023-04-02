@@ -1,0 +1,5 @@
+<structure><volume name="YFASAA1O">
+      <materialref ref="SHIL_Ni-W-Cu1"/>
+      <solidref ref="TGeoCone0x8"/>
+    </volume>
+    </structure>

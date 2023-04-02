@@ -1,0 +1,5 @@
+<define><position name="ShRb24Sw_1inShRb24pos" x="315" y="-280" z="0" unit="cm"/>
+    <position name="ShRb24Sw_2inShRb24pos" x="-315" y="-280" z="0" unit="cm"/>
+    <position name="ShRb24Ro_1inShRb24pos" x="0" y="220" z="0" unit="cm"/>
+    <position name="Rb24Pl_1inShRb24pos" x="0" y="0" z="480" unit="cm"/>
+    </define>

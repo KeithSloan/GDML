@@ -1,0 +1,16 @@
+<structure><volume name="FSEN">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FSEN0x1"/>
+      <divisionvol axis="kZAxis" number="2" width="3.5" offset="0" unit="cm">
+        <volumeref ref="FSEZ"/>
+      </divisionvol>
+    </volume>
+    <volume name="FPCB">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FPCB0x1"/>
+      <physvol name="FSEN_1" copynumber="1">
+        <volumeref ref="FSEN"/>
+        <positionref ref="FSEN_1inFPCBpos"/>
+      </physvol>
+    </volume>
+    </structure>

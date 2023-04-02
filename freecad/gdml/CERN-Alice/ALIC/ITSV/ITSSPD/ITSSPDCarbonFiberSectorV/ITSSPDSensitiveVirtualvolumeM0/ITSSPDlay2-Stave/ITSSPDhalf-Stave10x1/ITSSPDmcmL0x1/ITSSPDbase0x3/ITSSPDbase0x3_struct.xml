@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDbase0x3">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="TGeoXtru0x16"/>
+    </volume>
+    </structure>

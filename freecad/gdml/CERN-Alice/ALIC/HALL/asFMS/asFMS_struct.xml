@@ -1,0 +1,51 @@
+<structure><volume name="FmsDf2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x28"/>
+    </volume>
+    <volume name="FmsDf1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x27"/>
+    </volume>
+    <volume name="FmsMfTb2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x26"/>
+    </volume>
+    <volume name="FmsMfTb1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x25"/>
+    </volume>
+    <volume name="FmsMfPil">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x24"/>
+    </volume>
+    <volume name="FmsMfPil">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x24"/>
+    </volume>
+    <assembly name="asFMS">
+      <physvol name="FmsMfPil_1" copynumber="1">
+        <volumeref ref="FmsMfPil"/>
+        <positionref ref="FmsMfPil_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfPil_2" copynumber="2">
+        <volumeref ref="FmsMfPil"/>
+        <positionref ref="FmsMfPil_2inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfTb1_1" copynumber="1">
+        <volumeref ref="FmsMfTb1"/>
+        <positionref ref="FmsMfTb1_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfTb2_1" copynumber="1">
+        <volumeref ref="FmsMfTb2"/>
+        <positionref ref="FmsMfTb2_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsDf1_1" copynumber="1">
+        <volumeref ref="FmsDf1"/>
+        <positionref ref="FmsDf1_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsDf2_1" copynumber="1">
+        <volumeref ref="FmsDf2"/>
+        <positionref ref="FmsDf2_1inasFMSpos"/>
+      </physvol>
+    </assembly>
+    </structure>

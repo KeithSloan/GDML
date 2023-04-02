@@ -1,0 +1,6 @@
+<solids><box name="UMC10x1" x="3" y="3" z="0.10000000149011612" lunit="cm"/>
+    <box name="UMC20x1" x="3" y="3" z="0.0024999999441206455" lunit="cm"/>
+    <box name="UMC30x1" x="3" y="3" z="0.029999999329447746" lunit="cm"/>
+    <box name="UMC40x1" x="3" y="3" z="0.039999999105930328" lunit="cm"/>
+    <box name="UMCM0x1" x="3" y="3" z="0.30000001192092896" lunit="cm"/>
+    </solids>

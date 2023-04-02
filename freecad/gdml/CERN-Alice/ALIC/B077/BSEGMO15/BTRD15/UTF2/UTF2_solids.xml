@@ -1,0 +1,48 @@
+<solids><trd name="UTA10x1" x1="89.880996704101562" x2="117.35299682617188" y1="0.20000000298023224" y2="0.20000000298023224" z="75.900001525878906" lunit="cm"/>
+    <box name="UTA20x1" x="121.95299530029297" y="24.5" z="0.20000000298023224" lunit="cm"/>
+    <box name="UTA20x3" x="0.20000000298023224" y="24.5" z="77.900001525878906" lunit="cm"/>
+    <box name="UTA20x5" x="0.20000000298023224" y="24.5" z="77.900001525878906" lunit="cm"/>
+    <box name="UTA30x1" x="80" y="1" z="10" lunit="cm"/>
+    <box name="TGeoBBox0x389" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x25" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x390" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x27" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x391" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x29" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x392" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x31" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x393" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x33" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x394" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x35" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x395" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x37" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x396" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x39" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x397" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x41" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x398" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x43" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x399" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x45" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="TGeoBBox0x400" x="0.60000002384185791" y="24.5" z="6.3000001907348633" lunit="cm"/>
+    <box name="UTC30x47" x="0.80000001192092896" y="24.5" z="6.5" lunit="cm"/>
+    <box name="UTP30x25" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x27" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x29" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x31" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x33" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x35" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x37" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x39" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x41" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x43" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x45" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTP30x47" x="0.60000002384185791" y="24.5" z="5" lunit="cm"/>
+    <box name="UTCW0x1" x="4.4000000953674316" y="4.4000000953674316" z="69.400001525878906" lunit="cm"/>
+    <box name="UTCA0x1" x="5" y="5" z="70" lunit="cm"/>
+    <tube name="UTCL0x1" rmin="0" rmax="1.2000000476837158" z="18" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCO0x1" rmin="0" rmax="1.5" z="18" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="UTCM0x1" x="5" y="23" z="70" lunit="cm"/>
+    <trd name="UTF20x1" x1="94.880996704101562" x2="122.35299682617188" y1="24.5" y2="24.5" z="77.900001525878906" lunit="cm"/>
+    </solids>

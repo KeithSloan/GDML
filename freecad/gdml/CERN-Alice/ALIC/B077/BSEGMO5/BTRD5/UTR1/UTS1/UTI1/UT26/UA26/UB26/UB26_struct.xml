@@ -1,0 +1,37 @@
+<structure><volume name="UH26">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x327"/>
+    </volume>
+    <volume name="UC26">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x326"/>
+      <physvol name="UH26_1" copynumber="1">
+        <volumeref ref="UH26"/>
+        <positionref ref="UH26_1inUC26pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX26">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX260x1"/>
+      <physvol name="UC26_1" copynumber="1">
+        <volumeref ref="UC26"/>
+        <positionref ref="UC26_1inUX26pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ26">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ260x1"/>
+    </volume>
+    <volume name="UB26">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x325"/>
+      <physvol name="UJ26_1" copynumber="1">
+        <volumeref ref="UJ26"/>
+        <positionref ref="UJ26_1inUB26pos"/>
+      </physvol>
+      <physvol name="UX26_1" copynumber="1">
+        <volumeref ref="UX26"/>
+        <positionref ref="UX26_1inUB26pos"/>
+      </physvol>
+    </volume>
+    </structure>

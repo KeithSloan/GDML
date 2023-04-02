@@ -1,0 +1,5 @@
+<structure><volume name="vLittleScrewLVhead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewLVhead"/>
+    </volume>
+    </structure>

@@ -1,0 +1,1200 @@
+<structure><volume name="RB24VMABCCTFlange">
+      <materialref ref="PIPE_COPPER"/>
+      <solidref ref="TGeoPcon0x49"/>
+    </volume>
+    <volume name="RB24VMABCCT">
+      <materialref ref="PIPE_COPPER"/>
+      <solidref ref="TGeoPcon0x48"/>
+    </volume>
+    <assembly name="RB24VMABRFCT">
+      <physvol name="RB24VMABCCT_1" copynumber="1">
+        <volumeref ref="RB24VMABCCT"/>
+        <positionref ref="RB24VMABCCT_1inRB24VMABRFCTpos"/>
+      </physvol>
+      <physvol name="RB24VMABCCTFlange_1" copynumber="1">
+        <volumeref ref="RB24VMABCCTFlange"/>
+        <positionref ref="RB24VMABCCTFlange_1inRB24VMABRFCTpos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24VMABCTT">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x47"/>
+    </volume>
+    <volume name="RB24B1RFlange">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x46"/>
+    </volume>
+    <volume name="RB24B1RFlange">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x46"/>
+    </volume>
+    <volume name="RB24VMABBECT2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x30"/>
+    </volume>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <volume name="RB24B1UpperPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1UpperPlie0x1"/>
+    </volume>
+    <volume name="RB24B1PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x29"/>
+    </volume>
+    <assembly name="RB24B1Wiggle">
+      <physvol name="RB24B1PlieConn1_1" copynumber="1">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1UpperPlie_1" copynumber="1">
+        <volumeref ref="RB24B1UpperPlie"/>
+        <positionref ref="RB24B1UpperPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1PlieConn1_2" copynumber="2">
+        <volumeref ref="RB24B1PlieConn1"/>
+        <positionref ref="RB24B1PlieConn1_2inRB24B1Wigglepos"/>
+      </physvol>
+      <physvol name="RB24B1LowerPlie_1" copynumber="1">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_1inRB24B1Wigglepos"/>
+      </physvol>
+    </assembly>
+    <volume name="RB24B1LowerPlie">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="RB24B1LowerPlie0x1"/>
+    </volume>
+    <volume name="RB24B1BellowUS">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x28"/>
+      <physvol name="RB24B1LowerPlie_2" copynumber="2">
+        <volumeref ref="RB24B1LowerPlie"/>
+        <positionref ref="RB24B1LowerPlie_2inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_1" copynumber="1">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_1inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_2" copynumber="2">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_2inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_3" copynumber="3">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_3inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_4" copynumber="4">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_4inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_5" copynumber="5">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_5inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_6" copynumber="6">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_6inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_7" copynumber="7">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_7inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_8" copynumber="8">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_8inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_9" copynumber="9">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_9inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_10" copynumber="10">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_10inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_11" copynumber="11">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_11inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_12" copynumber="12">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_12inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_13" copynumber="13">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_13inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_14" copynumber="14">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_14inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_15" copynumber="15">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_15inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_16" copynumber="16">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_16inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_17" copynumber="17">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_17inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_18" copynumber="18">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_18inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_19" copynumber="19">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_19inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_20" copynumber="20">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_20inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_21" copynumber="21">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_21inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_22" copynumber="22">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_22inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_23" copynumber="23">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_23inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_24" copynumber="24">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_24inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_25" copynumber="25">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_25inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_26" copynumber="26">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_26inRB24B1BellowUSpos"/>
+      </physvol>
+      <physvol name="RB24B1Wiggle_27" copynumber="27">
+        <volumeref ref="RB24B1Wiggle"/>
+        <positionref ref="RB24B1Wiggle_27inRB24B1BellowUSpos"/>
+      </physvol>
+    </volume>
+    <volume name="RB24VMABBECT1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x27"/>
+    </volume>
+    <volume name="RB24VMABBEBellowM">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x45"/>
+      <physvol name="RB24VMABBECT1_1" copynumber="1">
+        <volumeref ref="RB24VMABBECT1"/>
+        <positionref ref="RB24VMABBECT1_1inRB24VMABBEBellowMpos"/>
+      </physvol>
+      <physvol name="RB24B1BellowUS_2" copynumber="2">
+        <volumeref ref="RB24B1BellowUS"/>
+        <positionref ref="RB24B1BellowUS_2inRB24VMABBEBellowMpos"/>
+      </physvol>
+      <physvol name="RB24VMABBECT2_1" copynumber="1">
+        <volumeref ref="RB24VMABBECT2"/>
+        <positionref ref="RB24VMABBECT2_1inRB24VMABBEBellowMpos"/>
+      </physvol>
+    </volume>
+    <volume name="RB24VMABCRBT12">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTubeSeg0x11"/>
+    </volume>
+    <volume name="shRB24VMABCRBT4">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="shRB24VMABCRBT4c"/>
+    </volume>
+    <volume name="RB24VMABCPirani">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x44"/>
+    </volume>
+    <volume name="RB24VMABCRBF3">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x26"/>
+    </volume>
+    <volume name="shRB24VMABCRBT3">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="shRB24VMABCRBT3c"/>
+    </volume>
+    <volume name="RB24VMABCRBF2B">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x25"/>
+    </volume>
+    <volume name="RB24VMABCRBF2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x24"/>
+    </volume>
+    <volume name="shRB24VMABCRBT2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="shRB24VMABCRBT2c"/>
+    </volume>
+    <volume name="RB24VMABCRBP">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoBBox0x957"/>
+    </volume>
+    <volume name="RB24VMABCRBI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="shRB24VMABCRB"/>
+    </volume>
+    <assembly name="RB24VMABCRB">
+      <physvol name="RB24VMABCRBI_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBI"/>
+        <positionref ref="RB24VMABCRBI_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABCRBP_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBP"/>
+        <positionref ref="RB24VMABCRBP_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="shRB24VMABCRBT2_1" copynumber="1">
+        <volumeref ref="shRB24VMABCRBT2"/>
+        <positionref ref="shRB24VMABCRBT2_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABCRBF2_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBF2"/>
+        <positionref ref="RB24VMABCRBF2_1inRB24VMABCRBpos"/>
+        <rotationref ref="RB24VMABCRBF2_1inRB24VMABCRBrot"/>
+      </physvol>
+      <physvol name="RB24VMABCRBF2B_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBF2B"/>
+        <positionref ref="RB24VMABCRBF2B_1inRB24VMABCRBpos"/>
+        <rotationref ref="RB24VMABCRBF2B_1inRB24VMABCRBrot"/>
+      </physvol>
+      <physvol name="shRB24VMABCRBT3_1" copynumber="1">
+        <volumeref ref="shRB24VMABCRBT3"/>
+        <positionref ref="shRB24VMABCRBT3_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABCRBF3_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBF3"/>
+        <positionref ref="RB24VMABCRBF3_1inRB24VMABCRBpos"/>
+        <rotationref ref="RB24VMABCRBF3_1inRB24VMABCRBrot"/>
+      </physvol>
+      <physvol name="RB24VMABCPirani_1" copynumber="1">
+        <volumeref ref="RB24VMABCPirani"/>
+        <positionref ref="RB24VMABCPirani_1inRB24VMABCRBpos"/>
+        <rotationref ref="RB24VMABCPirani_1inRB24VMABCRBrot"/>
+      </physvol>
+      <physvol name="shRB24VMABCRBT4_1" copynumber="1">
+        <volumeref ref="shRB24VMABCRBT4"/>
+        <positionref ref="shRB24VMABCRBT4_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABCRBT12_1" copynumber="1">
+        <volumeref ref="RB24VMABCRBT12"/>
+        <positionref ref="RB24VMABCRBT12_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABBEBellowM_1" copynumber="1">
+        <volumeref ref="RB24VMABBEBellowM"/>
+        <positionref ref="RB24VMABBEBellowM_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24B1RFlange_3" copynumber="3">
+        <volumeref ref="RB24B1RFlange"/>
+        <positionref ref="RB24B1RFlange_3inRB24VMABCRBpos"/>
+        <rotationref ref="RB24B1RFlange_3inRB24VMABCRBrot"/>
+      </physvol>
+      <physvol name="RB24B1RFlange_4" copynumber="4">
+        <volumeref ref="RB24B1RFlange"/>
+        <positionref ref="RB24B1RFlange_4inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABCTT_1" copynumber="1">
+        <volumeref ref="RB24VMABCTT"/>
+        <positionref ref="RB24VMABCTT_1inRB24VMABCRBpos"/>
+      </physvol>
+      <physvol name="RB24VMABRFCT_1" copynumber="1">
+        <volumeref ref="RB24VMABRFCT"/>
+        <positionref ref="RB24VMABRFCT_1inRB24VMABCRBpos"/>
+      </physvol>
+    </assembly>
+    </structure>

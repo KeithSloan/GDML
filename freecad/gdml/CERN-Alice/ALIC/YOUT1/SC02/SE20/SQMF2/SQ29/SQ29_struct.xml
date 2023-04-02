@@ -1,0 +1,5 @@
+<structure><volume name="SQ29">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ290x1"/>
+    </volume>
+    </structure>

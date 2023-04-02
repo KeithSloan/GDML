@@ -1,0 +1,2 @@
+<solids><tube name="ICU70x1" rmin="64" rmax="74.5" z="1" startphi="12" deltaphi="156" aunit="deg" lunit="cm"/>
+    </solids>

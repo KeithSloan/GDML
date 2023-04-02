@@ -1,0 +1,249 @@
+<structure><volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCCV">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCCV0x1"/>
+    </volume>
+    <volume name="DCCV">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCCV0x1"/>
+    </volume>
+    <volume name="DCH2">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCH20x1"/>
+    </volume>
+    <volume name="DCMU">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCMU0x1"/>
+      <physvol name="DCH2_1" copynumber="1">
+        <volumeref ref="DCH2"/>
+        <positionref ref="DCH2_1inDCMUpos"/>
+      </physvol>
+    </volume>
+    <volume name="DCH2">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCH20x1"/>
+    </volume>
+    <volume name="DCMU">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCMU0x1"/>
+      <physvol name="DCH2_1" copynumber="1">
+        <volumeref ref="DCH2"/>
+        <positionref ref="DCH2_1inDCMUpos"/>
+      </physvol>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCCV">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCCV0x1"/>
+    </volume>
+    <volume name="DCH1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCH10x1"/>
+    </volume>
+    <volume name="DCML">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCML0x1"/>
+      <physvol name="DCH1_1" copynumber="1">
+        <volumeref ref="DCH1"/>
+        <positionref ref="DCH1_1inDCMLpos"/>
+      </physvol>
+      <physvol name="DCCV_3" copynumber="3">
+        <volumeref ref="DCCV"/>
+        <positionref ref="DCCV_3inDCMLpos"/>
+      </physvol>
+      <physvol name="DCC1_7" copynumber="7">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_7inDCMLpos"/>
+        <rotationref ref="DCC1_7inDCMLrot"/>
+      </physvol>
+    </volume>
+    <volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCCV">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCCV0x1"/>
+    </volume>
+    <volume name="DCH1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCH10x1"/>
+    </volume>
+    <volume name="DCML">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCML0x1"/>
+      <physvol name="DCH1_1" copynumber="1">
+        <volumeref ref="DCH1"/>
+        <positionref ref="DCH1_1inDCMLpos"/>
+      </physvol>
+      <physvol name="DCCV_3" copynumber="3">
+        <volumeref ref="DCCV"/>
+        <positionref ref="DCCV_3inDCMLpos"/>
+      </physvol>
+      <physvol name="DCC1_7" copynumber="7">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_7inDCMLpos"/>
+        <rotationref ref="DCC1_7inDCMLrot"/>
+      </physvol>
+    </volume>
+    <volume name="DCBA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCBA0x1"/>
+    </volume>
+    <assembly name="DCM0">
+      <physvol name="DCBA_1" copynumber="1">
+        <volumeref ref="DCBA"/>
+        <positionref ref="DCBA_1inDCM0pos"/>
+      </physvol>
+      <physvol name="DCML_1" copynumber="1">
+        <volumeref ref="DCML"/>
+        <positionref ref="DCML_1inDCM0pos"/>
+      </physvol>
+      <physvol name="DCML_2" copynumber="2">
+        <volumeref ref="DCML"/>
+        <positionref ref="DCML_2inDCM0pos"/>
+        <scale name="DCML_2inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+      <physvol name="DCMU_1" copynumber="1">
+        <volumeref ref="DCMU"/>
+        <positionref ref="DCMU_1inDCM0pos"/>
+      </physvol>
+      <physvol name="DCMU_2" copynumber="2">
+        <volumeref ref="DCMU"/>
+        <positionref ref="DCMU_2inDCM0pos"/>
+        <scale name="DCMU_2inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+      <physvol name="DCCV_1" copynumber="1">
+        <volumeref ref="DCCV"/>
+        <positionref ref="DCCV_1inDCM0pos"/>
+      </physvol>
+      <physvol name="DCCV_2" copynumber="2">
+        <volumeref ref="DCCV"/>
+        <positionref ref="DCCV_2inDCM0pos"/>
+      </physvol>
+      <physvol name="DCC1_1" copynumber="1">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_1inDCM0pos"/>
+        <rotationref ref="DCC1_1inDCM0rot"/>
+      </physvol>
+      <physvol name="DCC1_2" copynumber="2">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_2inDCM0pos"/>
+        <rotationref ref="DCC1_2inDCM0rot"/>
+      </physvol>
+      <physvol name="DCC1_3" copynumber="3">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_3inDCM0pos"/>
+        <rotationref ref="DCC1_3inDCM0rot"/>
+      </physvol>
+      <physvol name="DCC1_4" copynumber="4">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_4inDCM0pos"/>
+        <rotationref ref="DCC1_4inDCM0rot"/>
+      </physvol>
+      <physvol name="DCC1_5" copynumber="5">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_5inDCM0pos"/>
+        <rotationref ref="DCC1_5inDCM0rot"/>
+      </physvol>
+      <physvol name="DCC1_6" copynumber="6">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_6inDCM0pos"/>
+        <rotationref ref="DCC1_6inDCM0rot"/>
+      </physvol>
+      <physvol name="DCLA_1" copynumber="1">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_1inDCM0pos"/>
+      </physvol>
+      <physvol name="DCLA_2" copynumber="2">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_2inDCM0pos"/>
+      </physvol>
+      <physvol name="DCLA_3" copynumber="3">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_3inDCM0pos"/>
+      </physvol>
+      <physvol name="DCLA_4" copynumber="4">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_4inDCM0pos"/>
+      </physvol>
+      <physvol name="DCLA_5" copynumber="5">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_5inDCM0pos"/>
+        <scale name="DCLA_5inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+      <physvol name="DCLA_6" copynumber="6">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_6inDCM0pos"/>
+        <scale name="DCLA_6inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+      <physvol name="DCLA_7" copynumber="7">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_7inDCM0pos"/>
+        <scale name="DCLA_7inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+      <physvol name="DCLA_8" copynumber="8">
+        <volumeref ref="DCLA"/>
+        <positionref ref="DCLA_8inDCM0pos"/>
+        <scale name="DCLA_8inDCM0scl" x="-1" y="1" z="1"/>
+      </physvol>
+    </assembly>
+    </structure>

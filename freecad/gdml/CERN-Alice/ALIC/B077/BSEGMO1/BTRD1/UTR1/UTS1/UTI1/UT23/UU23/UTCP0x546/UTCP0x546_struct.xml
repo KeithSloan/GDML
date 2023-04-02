@@ -1,0 +1,13 @@
+<structure><volume name="UTCH0x546">
+      <materialref ref="TRD_Water"/>
+      <solidref ref="UTCH0x547"/>
+    </volume>
+    <volume name="UTCP0x546">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UTCP0x547"/>
+      <physvol name="UTCH_1" copynumber="1">
+        <volumeref ref="UTCH0x546"/>
+        <positionref ref="UTCH_10x273inUTCP0x546pos"/>
+      </physvol>
+    </volume>
+    </structure>

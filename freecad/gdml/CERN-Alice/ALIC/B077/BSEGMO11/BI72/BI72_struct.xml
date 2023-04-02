@@ -1,0 +1,27 @@
+<structure><volume name="BIH272">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BIH2720x1"/>
+    </volume>
+    <volume name="BIH172">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BIH1720x1"/>
+    </volume>
+    <volume name="BIV72">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BIV720x1"/>
+    </volume>
+    <assembly name="BI72">
+      <physvol name="BIV72_1" copynumber="1">
+        <volumeref ref="BIV72"/>
+        <positionref ref="BIV72_1inBI72pos"/>
+      </physvol>
+      <physvol name="BIH172_1" copynumber="1">
+        <volumeref ref="BIH172"/>
+        <positionref ref="BIH172_1inBI72pos"/>
+      </physvol>
+      <physvol name="BIH272_1" copynumber="1">
+        <volumeref ref="BIH272"/>
+        <positionref ref="BIH272_1inBI72pos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,5 @@
+<define><position name="vCableSegLay_10x9inpascalCC0pos" x="0" y="0" z="-0.012400000000000001" unit="cm"/>
+    <position name="vCableSegLay_2inpascalCC0pos" x="0" y="0" z="-0.0088999999999999999" unit="cm"/>
+    <position name="vCableSegLay_3inpascalCC0pos" x="0" y="0" z="0.0011000000000000003" unit="cm"/>
+    <position name="vCableSegLay_4inpascalCC0pos" x="0" y="0" z="0.0097999999999999997" unit="cm"/>
+    </define>

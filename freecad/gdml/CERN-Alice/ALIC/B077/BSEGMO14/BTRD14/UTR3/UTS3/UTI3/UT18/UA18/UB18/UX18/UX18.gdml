@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "UX18_define.xml">
+<!ENTITY materials SYSTEM "UX18_materials.xml">
+<!ENTITY solids SYSTEM "UX18_solids.xml">
+<!ENTITY struct SYSTEM "UX18_struct.xml">
+<!ENTITY setup SYSTEM "UX18_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

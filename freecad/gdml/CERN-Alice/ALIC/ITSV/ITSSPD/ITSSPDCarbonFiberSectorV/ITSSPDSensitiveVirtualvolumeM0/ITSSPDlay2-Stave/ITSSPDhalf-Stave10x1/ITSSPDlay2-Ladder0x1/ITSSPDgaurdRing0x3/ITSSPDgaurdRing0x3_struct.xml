@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDgaurdRing0x3">
+      <materialref ref="ITS_SI"/>
+      <solidref ref="ITSSPDgaurdRingBorder0x3"/>
+    </volume>
+    </structure>

@@ -1,0 +1,4 @@
+<define><position name="S11G_10x15inSB1A0x15pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SB1A_10x15inSC1A0x30pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SC1A_174inS0R8pos" x="0" y="0" z="0" unit="cm"/>
+    </define>

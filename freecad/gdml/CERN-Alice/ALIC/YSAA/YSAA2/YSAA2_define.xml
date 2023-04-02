@@ -1,0 +1,6 @@
+<define><position name="YSAA2_SteelEnvelope_1inYSAA2pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="YSAA2_PbRing_1inYSAA2pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="YSAA2_PbComp_1inYSAA2pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="YSAA2_InnerTube_1inYSAA2pos" x="0" y="0" z="1.5" unit="cm"/>
+    <position name="YSAA2_SteelRing_1inYSAA2pos" x="0" y="0" z="508.5" unit="cm"/>
+    </define>

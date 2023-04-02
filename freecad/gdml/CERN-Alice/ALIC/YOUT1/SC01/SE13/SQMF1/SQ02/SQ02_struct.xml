@@ -1,0 +1,5 @@
+<structure><volume name="SQ02">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ020x1"/>
+    </volume>
+    </structure>

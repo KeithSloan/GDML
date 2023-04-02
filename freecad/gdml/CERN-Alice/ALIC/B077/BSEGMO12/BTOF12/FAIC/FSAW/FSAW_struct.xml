@@ -1,0 +1,5 @@
+<structure><volume name="FSAW">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FSAW0x1"/>
+    </volume>
+    </structure>

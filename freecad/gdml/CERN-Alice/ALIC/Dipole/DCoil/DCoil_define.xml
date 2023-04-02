@@ -1,0 +1,37 @@
+<define><position name="DC2_1inDC1pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DC1_1inDCoilpos" x="-0" y="0" z="-206.94999694824219" unit="cm"/>
+    <position name="DC1_2inDCoilpos" x="0" y="0" z="-206.94999694824219" unit="cm"/>
+    <position name="DC1_3inDCoilpos" x="-0" y="0" z="206.94999694824219" unit="cm"/>
+    <position name="DC1_4inDCoilpos" x="0" y="0" z="206.94999694824219" unit="cm"/>
+    <position name="DC11_1inDCoilpos" x="-116.839111328125" y="-210.78335571289062" z="-136.94999694824219" unit="cm"/>
+    <position name="DC11_2inDCoilpos" x="-116.839111328125" y="-210.78335571289062" z="136.94999694824219" unit="cm"/>
+    <position name="DC11_3inDCoilpos" x="116.839111328125" y="-210.78335571289062" z="-136.94999694824219" unit="cm"/>
+    <position name="DC11_4inDCoilpos" x="116.839111328125" y="-210.78335571289062" z="136.94999694824219" unit="cm"/>
+    <position name="DC12_1inDCoilpos" x="-116.839111328125" y="210.78335571289062" z="-136.94999694824219" unit="cm"/>
+    <position name="DC12_2inDCoilpos" x="-116.839111328125" y="210.78335571289062" z="136.94999694824219" unit="cm"/>
+    <position name="DC12_3inDCoilpos" x="116.839111328125" y="210.78335571289062" z="-136.94999694824219" unit="cm"/>
+    <position name="DC12_4inDCoilpos" x="116.839111328125" y="210.78335571289062" z="136.94999694824219" unit="cm"/>
+    <position name="DL2_1inDL1pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DL1_1inDL0pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DL3_1inDL0pos" x="-36" y="0" z="0" unit="cm"/>
+    <position name="DL3_2inDL0pos" x="36" y="0" z="0" unit="cm"/>
+    <position name="DL4_1inDL0pos" x="0" y="-39.5" z="0" unit="cm"/>
+    <position name="DL4_2inDL0pos" x="0" y="39.5" z="0" unit="cm"/>
+    <position name="DL0_1inDCoilpos" x="-55.615730285644531" y="-244.72003173828125" z="0" unit="cm"/>
+    <position name="DL0_2inDCoilpos" x="-55.615730285644531" y="244.72003173828125" z="0" unit="cm"/>
+    <position name="DL0_3inDCoilpos" x="55.615730285644531" y="-244.72003173828125" z="0" unit="cm"/>
+    <position name="DL0_4inDCoilpos" x="55.615730285644531" y="244.72003173828125" z="0" unit="cm"/>
+    <rotation name="DC1_2inDCoilrot" x="0" y="-0" z="180" unit="deg"/>
+    <rotation name="DC11_1inDCoilrot" x="90" y="-29.000000000000011" z="-90" unit="deg"/>
+    <rotation name="DC11_2inDCoilrot" x="90" y="-29.000000000000011" z="-90" unit="deg"/>
+    <rotation name="DC11_3inDCoilrot" x="90" y="29.000000000000011" z="90" unit="deg"/>
+    <rotation name="DC11_4inDCoilrot" x="90" y="29.000000000000011" z="90" unit="deg"/>
+    <rotation name="DC12_1inDCoilrot" x="90" y="29.000000000000011" z="90" unit="deg"/>
+    <rotation name="DC12_2inDCoilrot" x="90" y="29.000000000000011" z="90" unit="deg"/>
+    <rotation name="DC12_3inDCoilrot" x="90" y="-29.000000000000011" z="-90" unit="deg"/>
+    <rotation name="DC12_4inDCoilrot" x="90" y="-29.000000000000011" z="-90" unit="deg"/>
+    <rotation name="DL0_1inDCoilrot" x="0" y="-0" z="-61" unit="deg"/>
+    <rotation name="DL0_2inDCoilrot" x="0" y="-0" z="-61" unit="deg"/>
+    <rotation name="DL0_3inDCoilrot" x="0" y="-0" z="-119" unit="deg"/>
+    <rotation name="DL0_4inDCoilrot" x="0" y="-0" z="-119" unit="deg"/>
+    </define>

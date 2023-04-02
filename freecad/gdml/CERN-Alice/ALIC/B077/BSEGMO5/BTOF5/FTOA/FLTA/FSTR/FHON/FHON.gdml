@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "FHON_materials.xml">
+<!ENTITY solids SYSTEM "FHON_solids.xml">
+<!ENTITY struct SYSTEM "FHON_struct.xml">
+<!ENTITY setup SYSTEM "FHON_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

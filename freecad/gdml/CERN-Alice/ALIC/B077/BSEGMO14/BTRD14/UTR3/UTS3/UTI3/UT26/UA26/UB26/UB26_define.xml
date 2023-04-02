@@ -1,0 +1,5 @@
+<define><position name="UJ26_1inUB26pos" x="0" y="0" z="2.4000000953674316" unit="cm"/>
+    <position name="UH26_1inUC26pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UC26_1inUX26pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UX26_1inUB26pos" x="0" y="0" z="-1.5" unit="cm"/>
+    </define>

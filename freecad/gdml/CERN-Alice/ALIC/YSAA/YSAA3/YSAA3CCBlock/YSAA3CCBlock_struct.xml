@@ -1,0 +1,5 @@
+<structure><volume name="YSAA3CCBlock">
+      <materialref ref="SHIL_CONCRETE3"/>
+      <solidref ref="Saa3CCBlock"/>
+    </volume>
+    </structure>

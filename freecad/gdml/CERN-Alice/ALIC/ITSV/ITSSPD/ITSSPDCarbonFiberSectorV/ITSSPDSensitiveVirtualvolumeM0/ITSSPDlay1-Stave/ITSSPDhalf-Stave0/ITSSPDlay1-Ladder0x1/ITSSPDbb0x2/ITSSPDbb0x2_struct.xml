@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    </structure>

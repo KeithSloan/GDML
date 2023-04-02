@@ -1,0 +1,11 @@
+<solids><box name="ITSSPDlay2-sensor0x3" x="1.2800000000000002" y="0.020000000000000004" z="6.96" lunit="cm"/>
+    <subtraction name="ITSSPDgaurdRingBorder0x3">
+      <first ref="ITSSPDouterBox"/>
+      <second ref="ITSSPDinnerBox"/>
+    </subtraction>
+    <box name="ITSSPDouterBox" x="1.3920000000000003" y="0.020000000000000004" z="7.0720000000000001" lunit="cm"/>
+    <box name="ITSSPDinnerBox" x="1.2800000000000002" y="0.040000000000000008" z="6.96" lunit="cm"/>
+    <box name="ITSSPDbb0x7" x="1.2800000000000002" y="0.0012000000000000001" z="0.0042000000000000006" lunit="cm"/>
+    <box name="ITSSPDchip0x7" x="1.595" y="0.014999999999999999" z="1.3600000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x965" x="1.595" y="0.036200000000000003" z="7.0720000000000001" lunit="cm"/>
+    </solids>

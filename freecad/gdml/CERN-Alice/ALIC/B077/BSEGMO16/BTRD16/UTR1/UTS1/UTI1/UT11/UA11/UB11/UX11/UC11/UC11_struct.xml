@@ -1,0 +1,13 @@
+<structure><volume name="UH11">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x210"/>
+    </volume>
+    <volume name="UC11">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x209"/>
+      <physvol name="UH11_1" copynumber="1">
+        <volumeref ref="UH11"/>
+        <positionref ref="UH11_1inUC11pos"/>
+      </physvol>
+    </volume>
+    </structure>

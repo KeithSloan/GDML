@@ -1,0 +1,5 @@
+<define><position name="vFootRightPart_1inITSsddFootpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="vFootMiddle_1inITSsddFootpos" x="-0.65000000000000013" y="0.17500000000000002" z="0" unit="cm"/>
+    <position name="vFootLeftLadFinger_1inITSsddFootpos" x="-2.2999999999999998" y="-0.050000000000000003" z="0" unit="cm"/>
+    <position name="vFootLeft_1inITSsddFootpos" x="-2.7999999999999998" y="0" z="0" unit="cm"/>
+    </define>

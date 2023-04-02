@@ -1,0 +1,7 @@
+<solids><subtraction name="ITSSPDPlate_shape">
+      <first ref="ITSSPD_shape_plateout"/>
+      <second ref="ITSSPD_shape_platein"/>
+    </subtraction>
+    <box name="ITSSPD_shape_plateout" x="0.5" y="20" z="5" lunit="cm"/>
+    <box name="ITSSPD_shape_platein" x="0.27000000000000002" y="20.800000000000001" z="3" lunit="cm"/>
+    </solids>

@@ -1,0 +1,9 @@
+<materials><material name="ITS_SI" Z="14">
+      <D unit="g/cm3" value="2.3299999237060547"/>
+      <atom unit="g/mole" value="28.086000442504883"/>
+    </material>
+    <material name="ITS_SDD_SI_insensitive" Z="14">
+      <D unit="g/cm3" value="2.3299999237060547"/>
+      <atom unit="g/mole" value="28.086000442504883"/>
+    </material>
+    </materials>

@@ -1,0 +1,5 @@
+<define><position name="DHS1_1inasHSpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DHS2_1inasHSpos" x="0" y="14" z="0" unit="cm"/>
+    <position name="DHS2_2inasHSpos" x="0" y="-14" z="0" unit="cm"/>
+    <position name="DHS3_1inasHSpos" x="0" y="-144.94839477539062" z="159.55001831054688" unit="cm"/>
+    </define>

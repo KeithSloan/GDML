@@ -1,0 +1,45 @@
+<structure><volume name="FPE3">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE30x1"/>
+    </volume>
+    <volume name="FPE3">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE30x1"/>
+    </volume>
+    <volume name="FPE2">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE20x1"/>
+    </volume>
+    <volume name="FPE2">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE20x1"/>
+    </volume>
+    <volume name="FPE4">
+      <materialref ref="TOF_Al_honey_for_holes"/>
+      <solidref ref="FPE40x1"/>
+    </volume>
+    <volume name="FALB">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FALB0x1"/>
+      <physvol name="FPE4_0" copynumber="0">
+        <volumeref ref="FPE4"/>
+        <positionref ref="FPE4_0inFALBpos"/>
+      </physvol>
+      <physvol name="FPE2_1" copynumber="1">
+        <volumeref ref="FPE2"/>
+        <positionref ref="FPE2_1inFALBpos"/>
+      </physvol>
+      <physvol name="FPE2_2" copynumber="2">
+        <volumeref ref="FPE2"/>
+        <positionref ref="FPE2_2inFALBpos"/>
+      </physvol>
+      <physvol name="FPE3_1" copynumber="1">
+        <volumeref ref="FPE3"/>
+        <positionref ref="FPE3_1inFALBpos"/>
+      </physvol>
+      <physvol name="FPE3_2" copynumber="2">
+        <volumeref ref="FPE3"/>
+        <positionref ref="FPE3_2inFALBpos"/>
+      </physvol>
+    </volume>
+    </structure>

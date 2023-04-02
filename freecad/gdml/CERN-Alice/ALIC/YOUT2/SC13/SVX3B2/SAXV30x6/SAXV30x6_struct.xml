@@ -1,0 +1,5 @@
+<structure><volume name="SAXV30x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV30x7"/>
+    </volume>
+    </structure>

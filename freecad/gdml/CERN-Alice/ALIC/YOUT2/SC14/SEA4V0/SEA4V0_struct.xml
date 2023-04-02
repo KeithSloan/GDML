@@ -1,0 +1,19 @@
+<structure><volume name="SAI4">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x851"/>
+    </volume>
+    <volume name="SAL4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL40x1"/>
+      <physvol name="SAI4_1" copynumber="1">
+        <volumeref ref="SAI4"/>
+        <positionref ref="SAI4_1inSAL4pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA4V0">
+      <physvol name="SAL4_1" copynumber="1">
+        <volumeref ref="SAL4"/>
+        <positionref ref="SAL4_1inSEA4V0pos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,45 @@
+<structure><volume name="UH10">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x197"/>
+    </volume>
+    <volume name="UC10">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x196"/>
+      <physvol name="UH10_1" copynumber="1">
+        <volumeref ref="UH10"/>
+        <positionref ref="UH10_1inUC10pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX10">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX100x1"/>
+      <physvol name="UC10_1" copynumber="1">
+        <volumeref ref="UC10"/>
+        <positionref ref="UC10_1inUX10pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ10">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ100x1"/>
+    </volume>
+    <volume name="UB10">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x195"/>
+      <physvol name="UJ10_1" copynumber="1">
+        <volumeref ref="UJ10"/>
+        <positionref ref="UJ10_1inUB10pos"/>
+      </physvol>
+      <physvol name="UX10_1" copynumber="1">
+        <volumeref ref="UX10"/>
+        <positionref ref="UX10_1inUB10pos"/>
+      </physvol>
+    </volume>
+    <volume name="UA10">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UA100x1"/>
+      <physvol name="UB10_1" copynumber="1">
+        <volumeref ref="UB10"/>
+        <positionref ref="UB10_1inUA10pos"/>
+      </physvol>
+    </volume>
+    </structure>

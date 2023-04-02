@@ -1,0 +1,5 @@
+<structure><volume name="vCableSegLay0x163">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1107"/>
+    </volume>
+    </structure>

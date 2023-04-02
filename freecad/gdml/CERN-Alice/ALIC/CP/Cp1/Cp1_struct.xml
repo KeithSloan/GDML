@@ -1,0 +1,92 @@
+<structure><volume name="CpSupC">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x13"/>
+    </volume>
+    <volume name="CpSupC">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x13"/>
+    </volume>
+    <volume name="CP1ATV">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x12"/>
+    </volume>
+    <volume name="CP1AT">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x37"/>
+      <physvol name="CP1ATV_1" copynumber="1">
+        <volumeref ref="CP1ATV"/>
+        <positionref ref="CP1ATV_1inCP1ATpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP1ATV">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x12"/>
+    </volume>
+    <volume name="CP1AT">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x37"/>
+      <physvol name="CP1ATV_1" copynumber="1">
+        <volumeref ref="CP1ATV"/>
+        <positionref ref="CP1ATV_1inCP1ATpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP1NEG">
+      <materialref ref="PIPE_NEG_COATING"/>
+      <solidref ref="TGeoTube0x11"/>
+    </volume>
+    <volume name="CP1VAC">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x10"/>
+    </volume>
+    <volume name="CP1BE">
+      <materialref ref="PIPE_BERILLIUM"/>
+      <solidref ref="TGeoTube0x9"/>
+      <physvol name="CP1VAC_1" copynumber="1">
+        <volumeref ref="CP1VAC"/>
+        <positionref ref="CP1VAC_1inCP1BEpos"/>
+      </physvol>
+      <physvol name="CP1NEG_1" copynumber="1">
+        <volumeref ref="CP1NEG"/>
+        <positionref ref="CP1NEG_1inCP1BEpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP1KA">
+      <materialref ref="PIPE_KAPTON"/>
+      <solidref ref="TGeoTube0x8"/>
+      <physvol name="CP1BE_1" copynumber="1">
+        <volumeref ref="CP1BE"/>
+        <positionref ref="CP1BE_1inCP1KApos"/>
+      </physvol>
+    </volume>
+    <volume name="CP1MO">
+      <materialref ref="PIPE_AIR"/>
+      <solidref ref="TGeoTube0x7"/>
+      <physvol name="CP1KA_1" copynumber="1">
+        <volumeref ref="CP1KA"/>
+        <positionref ref="CP1KA_1inCP1MOpos"/>
+      </physvol>
+      <physvol name="CP1AT_1" copynumber="1">
+        <volumeref ref="CP1AT"/>
+        <positionref ref="CP1AT_1inCP1MOpos"/>
+      </physvol>
+      <physvol name="CP1AT_2" copynumber="2">
+        <volumeref ref="CP1AT"/>
+        <positionref ref="CP1AT_2inCP1MOpos"/>
+        <rotationref ref="CP1AT_2inCP1MOrot"/>
+      </physvol>
+    </volume>
+    <assembly name="Cp1">
+      <physvol name="CP1MO_1" copynumber="1">
+        <volumeref ref="CP1MO"/>
+        <positionref ref="CP1MO_1inCp1pos"/>
+      </physvol>
+      <physvol name="CpSupC_1" copynumber="1">
+        <volumeref ref="CpSupC"/>
+        <positionref ref="CpSupC_1inCp1pos"/>
+      </physvol>
+      <physvol name="CpSupC_2" copynumber="2">
+        <volumeref ref="CpSupC"/>
+        <positionref ref="CpSupC_2inCp1pos"/>
+      </physvol>
+    </assembly>
+    </structure>

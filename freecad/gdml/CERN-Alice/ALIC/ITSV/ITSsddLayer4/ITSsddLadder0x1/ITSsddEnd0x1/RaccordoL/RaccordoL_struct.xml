@@ -1,0 +1,35 @@
+<structure><volume name="vtube3Rac">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="tube3Rac"/>
+    </volume>
+    <volume name="vtube2Rac">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="tube2Rac"/>
+    </volume>
+    <volume name="vtube1Rac">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="tube1Rac"/>
+    </volume>
+    <volume name="vwaterRac">
+      <materialref ref="ITS_Water"/>
+      <solidref ref="waterRac"/>
+    </volume>
+    <assembly name="RaccordoL">
+      <physvol name="vwaterRac_1" copynumber="1">
+        <volumeref ref="vwaterRac"/>
+        <positionref ref="vwaterRac_1inRaccordoLpos"/>
+      </physvol>
+      <physvol name="vtube1Rac_1" copynumber="1">
+        <volumeref ref="vtube1Rac"/>
+        <positionref ref="vtube1Rac_1inRaccordoLpos"/>
+      </physvol>
+      <physvol name="vtube2Rac_1" copynumber="1">
+        <volumeref ref="vtube2Rac"/>
+        <positionref ref="vtube2Rac_1inRaccordoLpos"/>
+      </physvol>
+      <physvol name="vtube3Rac_1" copynumber="1">
+        <volumeref ref="vtube3Rac"/>
+        <positionref ref="vtube3Rac_1inRaccordoLpos"/>
+      </physvol>
+    </assembly>
+    </structure>

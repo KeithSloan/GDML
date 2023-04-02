@@ -1,0 +1,163 @@
+<structure><volume name="vLittleScrewLV">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewLV"/>
+    </volume>
+    <volume name="vAlLVcooling3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="lLVcooling3"/>
+      <physvol name="vLittleScrewLV_1" copynumber="1">
+        <volumeref ref="vLittleScrewLV"/>
+        <positionref ref="vLittleScrewLV_1invAlLVcooling3pos"/>
+        <rotationref ref="vLittleScrewLV_1invAlLVcooling3rot"/>
+      </physvol>
+    </volume>
+    <volume name="vAlLVcooling2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="lLVcooling2"/>
+    </volume>
+    <volume name="vAlLVcooling2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="lLVcooling2"/>
+    </volume>
+    <volume name="vAlLVcooling1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="alLVcooling1"/>
+    </volume>
+    <volume name="vAlLVcooling1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="alLVcooling1"/>
+    </volume>
+    <volume name="vLittleScrewLVhead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewLVhead"/>
+    </volume>
+    <volume name="vCableSegLay0x159">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1096"/>
+    </volume>
+    <volume name="chip3">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1095"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x159"/>
+        <positionref ref="vCableSegLay_10x135inchip3pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x158">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1094"/>
+    </volume>
+    <volume name="chip2">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1093"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x158"/>
+        <positionref ref="vCableSegLay_10x134inchip2pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x157">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1092"/>
+    </volume>
+    <volume name="chip1">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1091"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x157"/>
+        <positionref ref="vCableSegLay_10x133inchip1pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x156">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1090"/>
+    </volume>
+    <volume name="chipO">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1089"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x156"/>
+        <positionref ref="vCableSegLay_10x132inchipOpos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x156">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1090"/>
+    </volume>
+    <volume name="chipO">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1089"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x156"/>
+        <positionref ref="vCableSegLay_10x132inchipOpos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x155">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="TGeoBBox0x1088"/>
+    </volume>
+    <volume name="cardLV">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1087"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x155"/>
+        <positionref ref="vCableSegLay_10x131incardLVpos"/>
+      </physvol>
+    </volume>
+    <assembly name="ITSsddLVCardLeft">
+      <physvol name="cardLV_1" copynumber="1">
+        <volumeref ref="cardLV"/>
+        <positionref ref="cardLV_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="cardLV_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="chipO_1" copynumber="1">
+        <volumeref ref="chipO"/>
+        <positionref ref="chipO_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="chipO_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="chipO_2" copynumber="2">
+        <volumeref ref="chipO"/>
+        <positionref ref="chipO_20x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="chipO_20x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="chip1_1" copynumber="1">
+        <volumeref ref="chip1"/>
+        <positionref ref="chip1_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="chip1_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="chip2_1" copynumber="1">
+        <volumeref ref="chip2"/>
+        <positionref ref="chip2_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="chip2_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="chip3_1" copynumber="1">
+        <volumeref ref="chip3"/>
+        <positionref ref="chip3_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="chip3_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="vLittleScrewLVhead_1" copynumber="1">
+        <volumeref ref="vLittleScrewLVhead"/>
+        <positionref ref="vLittleScrewLVhead_10x1inITSsddLVCardLeftpos"/>
+        <rotationref ref="vLittleScrewLVhead_10x1inITSsddLVCardLeftrot"/>
+      </physvol>
+      <physvol name="vAlLVcooling1_1" copynumber="1">
+        <volumeref ref="vAlLVcooling1"/>
+        <positionref ref="vAlLVcooling1_10x1inITSsddLVCardLeftpos"/>
+      </physvol>
+      <physvol name="vAlLVcooling1_2" copynumber="2">
+        <volumeref ref="vAlLVcooling1"/>
+        <positionref ref="vAlLVcooling1_20x1inITSsddLVCardLeftpos"/>
+      </physvol>
+      <physvol name="vAlLVcooling2_1" copynumber="1">
+        <volumeref ref="vAlLVcooling2"/>
+        <positionref ref="vAlLVcooling2_10x1inITSsddLVCardLeftpos"/>
+      </physvol>
+      <physvol name="vAlLVcooling2_2" copynumber="2">
+        <volumeref ref="vAlLVcooling2"/>
+        <positionref ref="vAlLVcooling2_20x1inITSsddLVCardLeftpos"/>
+      </physvol>
+      <physvol name="vAlLVcooling3_1" copynumber="1">
+        <volumeref ref="vAlLVcooling3"/>
+        <positionref ref="vAlLVcooling3_10x1inITSsddLVCardLeftpos"/>
+      </physvol>
+    </assembly>
+    </structure>

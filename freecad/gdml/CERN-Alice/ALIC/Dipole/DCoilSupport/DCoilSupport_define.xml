@@ -1,0 +1,23 @@
+<define><position name="DCS02_1inDCoilSupportpos" x="0" y="0" z="-3" unit="cm"/>
+    <position name="DCS04_1inDCoilSupportpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DCS021_0inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_1inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_2inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_3inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_4inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_5inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_6inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_7inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS021_8inDCoilSupportpos" x="0" y="0.0040000000000000001" z="-3" unit="cm"/>
+    <position name="DCS01_1inDCoilSupportpos" x="0" y="0" z="-46.0625" unit="cm"/>
+    <position name="DCS03_1inDCoilSupportpos" x="0" y="0" z="40.0625" unit="cm"/>
+    <position name="DCS05_1inDCoilSupportpos" x="0" y="0" z="-40.0625" unit="cm"/>
+    <rotation name="DCS021_1inDCoilSupportrot" x="0" y="-0" z="-3.7499999999999916" unit="deg"/>
+    <rotation name="DCS021_2inDCoilSupportrot" x="0" y="-0" z="-7.5000000000000009" unit="deg"/>
+    <rotation name="DCS021_3inDCoilSupportrot" x="0" y="-0" z="-11.249999999999996" unit="deg"/>
+    <rotation name="DCS021_4inDCoilSupportrot" x="0" y="-0" z="-15.000000000000005" unit="deg"/>
+    <rotation name="DCS021_5inDCoilSupportrot" x="0" y="-0" z="-18.75" unit="deg"/>
+    <rotation name="DCS021_6inDCoilSupportrot" x="0" y="-0" z="-22.5" unit="deg"/>
+    <rotation name="DCS021_7inDCoilSupportrot" x="0" y="-0" z="-26.249999999999993" unit="deg"/>
+    <rotation name="DCS021_8inDCoilSupportrot" x="0" y="-0" z="-29.999999999999993" unit="deg"/>
+    </define>

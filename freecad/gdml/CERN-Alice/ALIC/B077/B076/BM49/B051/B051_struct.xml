@@ -1,0 +1,13 @@
+<structure><volume name="B052">
+      <materialref ref="FRAME_AIR"/>
+      <solidref ref="B0520x1"/>
+    </volume>
+    <volume name="B051">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="B0510x1"/>
+      <physvol name="B052_1" copynumber="1">
+        <volumeref ref="B052"/>
+        <positionref ref="B052_1inB051pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,37 @@
+<structure><volume name="UH13">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x430"/>
+    </volume>
+    <volume name="UC13">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x429"/>
+      <physvol name="UH13_1" copynumber="1">
+        <volumeref ref="UH13"/>
+        <positionref ref="UH13_1inUC13pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX13">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX130x1"/>
+      <physvol name="UC13_1" copynumber="1">
+        <volumeref ref="UC13"/>
+        <positionref ref="UC13_1inUX13pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ13">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ130x1"/>
+    </volume>
+    <volume name="UB13">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x428"/>
+      <physvol name="UJ13_1" copynumber="1">
+        <volumeref ref="UJ13"/>
+        <positionref ref="UJ13_1inUB13pos"/>
+      </physvol>
+      <physvol name="UX13_1" copynumber="1">
+        <volumeref ref="UX13"/>
+        <positionref ref="UX13_1inUB13pos"/>
+      </physvol>
+    </volume>
+    </structure>

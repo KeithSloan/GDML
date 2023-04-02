@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "YSAA1_PbCompI_materials.xml">
+<!ENTITY solids SYSTEM "YSAA1_PbCompI_solids.xml">
+<!ENTITY struct SYSTEM "YSAA1_PbCompI_struct.xml">
+<!ENTITY setup SYSTEM "YSAA1_PbCompI_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

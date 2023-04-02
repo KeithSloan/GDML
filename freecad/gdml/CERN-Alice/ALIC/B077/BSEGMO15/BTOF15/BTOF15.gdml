@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "BTOF15_define.xml">
+<!ENTITY materials SYSTEM "BTOF15_materials.xml">
+<!ENTITY solids SYSTEM "BTOF15_solids.xml">
+<!ENTITY struct SYSTEM "BTOF15_struct.xml">
+<!ENTITY setup SYSTEM "BTOF15_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

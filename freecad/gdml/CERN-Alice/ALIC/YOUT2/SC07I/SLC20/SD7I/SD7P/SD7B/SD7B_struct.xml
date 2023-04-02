@@ -1,0 +1,5 @@
+<structure><volume name="SD7B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="composite47B"/>
+    </volume>
+    </structure>

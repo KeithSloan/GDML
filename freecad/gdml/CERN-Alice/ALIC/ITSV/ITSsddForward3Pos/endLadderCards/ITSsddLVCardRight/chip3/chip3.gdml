@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "chip3_define.xml">
+<!ENTITY materials SYSTEM "chip3_materials.xml">
+<!ENTITY solids SYSTEM "chip3_solids.xml">
+<!ENTITY struct SYSTEM "chip3_struct.xml">
+<!ENTITY setup SYSTEM "chip3_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

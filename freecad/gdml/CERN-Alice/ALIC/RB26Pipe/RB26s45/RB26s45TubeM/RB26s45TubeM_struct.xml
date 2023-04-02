@@ -1,0 +1,13 @@
+<structure><volume name="RB26s45Tube">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x85"/>
+    </volume>
+    <volume name="RB26s45TubeM">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x84"/>
+      <physvol name="RB26s45Tube_1" copynumber="1">
+        <volumeref ref="RB26s45Tube"/>
+        <positionref ref="RB26s45Tube_1inRB26s45TubeMpos"/>
+      </physvol>
+    </volume>
+    </structure>

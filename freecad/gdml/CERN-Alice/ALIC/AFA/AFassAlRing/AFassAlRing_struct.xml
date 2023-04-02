@@ -1,0 +1,5 @@
+<structure><volume name="AFassAlRing">
+      <materialref ref="ABSO_ALUMINIUM0"/>
+      <solidref ref="TGeoTube"/>
+    </volume>
+    </structure>

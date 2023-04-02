@@ -1,0 +1,297 @@
+<solids><arb8 name="TGeoArb8" v1x="0" v1y="0" v2x="0" v2y="-0.072197900000000009" v3x="-0.17529436602669979" v3y="-0.24473840164407676" v4x="-0.1943396519143013" v4y="-0.22854343065121832" v5x="0" v5y="0" v6x="0" v6y="-0.072197900000000009" v7x="-0.17529436602669979" v7y="-0.24473840164407676" v8x="-0.1943396519143013" v8y="-0.22854343065121832" dz="3.7200000000000006" lunit="cm"/>
+    <arb8 name="TGeoArb80x1" v1x="0" v1y="0" v2x="0.1943396519143013" v2y="-0.22854343065121832" v3x="0.17529436602669979" v3y="-0.24473840164407676" v4x="0" v4y="-0.072197900000000009" v5x="0" v5y="0" v6x="0.1943396519143013" v6y="-0.22854343065121832" v7x="0.17529436602669979" v7y="-0.24473840164407676" v8x="0" v8y="-0.072197900000000009" dz="3.7200000000000006" lunit="cm"/>
+    <arb8 name="TGeoArb80x2" v1x="0" v1y="0" v2x="0" v2y="-0.089042800000000005" v3x="-0.13257583030308262" v3y="-0.34633603511538946" v4x="-0.15526805666831023" v4y="-0.33584495020536848" v5x="0" v5y="0" v6x="0" v6y="-0.089042800000000005" v7x="-0.13257583030308262" v7y="-0.34633603511538946" v8x="-0.15526805666831023" v8y="-0.33584495020536848" dz="3.7200000000000006" lunit="cm"/>
+    <arb8 name="TGeoArb80x3" v1x="0" v1y="0" v2x="0.15526805666831023" v2y="-0.33584495020536848" v3x="0.13257583030308262" v3y="-0.34633603511538946" v4x="0" v4y="-0.089042800000000005" v5x="0" v5y="0" v6x="0.15526805666831023" v6y="-0.33584495020536848" v7x="0.13257583030308262" v7y="-0.34633603511538946" v8x="0" v8y="-0.089042800000000005" dz="3.7200000000000006" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x12" rmin="0" rmax="0.059999999999999998" z="3.7129315172264565" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x13" rmin="0" rmax="0.059999999999999998" z="4.753333333333333" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x14" rmin="0" rmax="0.059999999999999998" z="4.753333333333333" startphi="0" deltaphi="90" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x15" rmin="0" rmax="0.059999999999999998" z="5.7493580500088237" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <subtraction name="ITSsddPinSupportShape">
+      <first ref="TGeoCompositeShape0x196"/>
+      <second ref="ITSsddPinSuppHole"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x196">
+      <first ref="ITSsddPinSuppCone"/>
+      <second ref="ITSsddPinSuppTong"/>
+      <position name="TGeoCompositeShape0x196ITSsddPinSuppTongpos" x="0" y="0.25" z="-0.075000000000000011" unit="cm"/>
+    </union>
+    <cone name="ITSsddPinSuppCone" z="0.20000000000000001" rmin1="0" rmin2="0" rmax1="0.125" rmax2="0.11101463761129791" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="ITSsddPinSuppTong" x="0.25" y="0.5" z="0.050000000000000003" lunit="cm"/>
+    <tube name="ITSsddPinSuppHole" rmin="0" rmax="0.075000000000000011" z="0.20002" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="ITSsddPin0x5" rmin="0" rmax="0.075000000000000011" z="0.45000000000000001" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="ITSsddCoolPipeSuppShapeL">
+      <first ref="TGeoCompositeShape0x197"/>
+      <second ref="ITSsddCPSaxe"/>
+      <position name="ITSsddCoolPipeSuppShapeLITSsddCPSaxepos" x="0.020000000000000004" y="0" z="0" unit="cm"/>
+      <rotation name="ITSsddCoolPipeSuppShapeLITSsddCPSaxerot" x="90" y="-0" z="90" unit="deg"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x197">
+      <first ref="TGeoCompositeShape0x198"/>
+      <second ref="ITSsddCPSaxeBox"/>
+      <position name="TGeoCompositeShape0x197ITSsddCPSaxeBoxpos" x="0.020000000000000004" y="0.025000000000000022" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x198">
+      <first ref="TGeoCompositeShape0x199"/>
+      <second ref="ITSsddCPSside1"/>
+      <position name="TGeoCompositeShape0x198ITSsddCPSside1pos" x="0" y="-0.17999999999999999" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x199">
+      <first ref="ITSsddCPSmiddle"/>
+      <second ref="ITSsddCPSside1"/>
+      <firstposition name="TGeoCompositeShape0x199ITSsddCPSmiddlepos" x="0.10500000000000001" y="-0.23249999999999998" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x199ITSsddCPSside1pos" x="0" y="-0.28499999999999998" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddCPSmiddle" x="0.21000000000000002" y="0.065000000000000002" z="0.32000000000000006" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1" v1x="0" v1y="-0.020000000000000004" v2x="0" v2y="0.020000000000000004" v3x="0.56745166004060965" v3y="0.020000000000000004" v4x="0.56745166004060965" v4y="-0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="0" v6y="0.020000000000000004" v7x="0.70000000000000007" v7y="0.020000000000000004" v8x="0.70000000000000007" v8y="-0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1" v1x="0" v1y="-0.020000000000000004" v2x="0" v2y="0.020000000000000004" v3x="0.56745166004060965" v3y="0.020000000000000004" v4x="0.56745166004060965" v4y="-0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="0" v6y="0.020000000000000004" v7x="0.70000000000000007" v7y="0.020000000000000004" v8x="0.70000000000000007" v8y="-0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <box name="ITSsddCPSaxeBox" x="0.040000000000000008" y="0.37" z="0.32000000000000006" lunit="cm"/>
+    <tube name="ITSsddCPSaxe" rmin="0" rmax="0.10000000000000001" z="0.040000000000000008" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="ITSsddCoolPipeSuppShapeR">
+      <first ref="TGeoCompositeShape0x200"/>
+      <second ref="ITSsddCPSaxeR"/>
+      <position name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRpos" x="-0.020000000000000004" y="0" z="0" unit="cm"/>
+      <rotation name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRrot" x="90" y="-0" z="90" unit="deg"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x200">
+      <first ref="TGeoCompositeShape0x201"/>
+      <second ref="ITSsddCPSaxeBoxR"/>
+      <position name="TGeoCompositeShape0x200ITSsddCPSaxeBoxRpos" x="-0.020000000000000004" y="0.025000000000000022" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x201">
+      <first ref="TGeoCompositeShape0x202"/>
+      <second ref="ITSsddCPSside1R"/>
+      <position name="TGeoCompositeShape0x201ITSsddCPSside1Rpos" x="0" y="-0.17999999999999999" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x202">
+      <first ref="ITSsddCPSmiddleR"/>
+      <second ref="ITSsddCPSside1R"/>
+      <firstposition name="TGeoCompositeShape0x202ITSsddCPSmiddleRpos" x="-0.10500000000000001" y="-0.23249999999999998" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x202ITSsddCPSside1Rpos" x="0" y="-0.28499999999999998" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddCPSmiddleR" x="0.21000000000000002" y="0.065000000000000002" z="0.32000000000000006" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <box name="ITSsddCPSaxeBoxR" x="0.040000000000000008" y="0.37" z="0.32000000000000006" lunit="cm"/>
+    <tube name="ITSsddCPSaxeR" rmin="0" rmax="0.10000000000000001" z="0.040000000000000008" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x68" rmin="0.092000000000000012" rmax="0.10000000000000001" z="7.4400000000000013" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x69" rmin="0" rmax="0.092000000000000012" z="7.4400000000000013" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="ITSsddBaseThermalBridgeShape">
+      <first ref="TGeoCompositeShape0x203"/>
+      <second ref="ITSsddBTBmainAxis"/>
+    </union>
+    <subtraction name="TGeoCompositeShape0x203">
+      <first ref="TGeoCompositeShape0x204"/>
+      <second ref="ITSsddBTBhole"/>
+      <position name="TGeoCompositeShape0x203ITSsddBTBholepos" x="-0.69999999999999996" y="-0.1075" z="1.3500000000000001" unit="cm"/>
+    </subtraction>
+    <subtraction name="TGeoCompositeShape0x204">
+      <first ref="TGeoCompositeShape0x205"/>
+      <second ref="ITSsddBTBhole"/>
+      <position name="TGeoCompositeShape0x204ITSsddBTBholepos" x="-0.69999999999999996" y="-0.1075" z="-1.3500000000000001" unit="cm"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x205">
+      <first ref="TGeoCompositeShape0x206"/>
+      <second ref="ITSsddBTBside"/>
+      <position name="TGeoCompositeShape0x205ITSsddBTBsidepos" x="0.1125" y="-0.020999999999999994" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x206">
+      <first ref="TGeoCompositeShape0x207"/>
+      <second ref="ITSsddBTBside"/>
+      <position name="TGeoCompositeShape0x206ITSsddBTBsidepos" x="-0.1125" y="-0.020999999999999994" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x207">
+      <first ref="TGeoCompositeShape0x208"/>
+      <second ref="ITSsddBTBround2"/>
+      <position name="TGeoCompositeShape0x207ITSsddBTBround2pos" x="0.17800000000000002" y="-0.041999999999999989" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x208">
+      <first ref="TGeoCompositeShape0x209"/>
+      <second ref="ITSsddBTBround1"/>
+      <position name="TGeoCompositeShape0x208ITSsddBTBround1pos" x="-0.17800000000000002" y="-0.041999999999999989" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x209">
+      <first ref="ITSsddBTBbase1"/>
+      <second ref="ITSsddBTBbase2"/>
+      <firstposition name="TGeoCompositeShape0x209ITSsddBTBbase1pos" x="-0.78900000000000003" y="-0.1075" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x209ITSsddBTBbase2pos" x="0.28900000000000003" y="-0.1075" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddBTBbase1" x="1.222" y="0.025000000000000001" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBbase2" x="0.222" y="0.025000000000000001" z="5.5" lunit="cm"/>
+    <tube name="ITSsddBTBround1" rmin="0.053000000000000005" rmax="0.078000000000000014" z="5.5" startphi="270" deltaphi="90" aunit="deg" lunit="cm"/>
+    <tube name="ITSsddBTBround2" rmin="0.053000000000000005" rmax="0.078000000000000014" z="5.5" startphi="180" deltaphi="90" aunit="deg" lunit="cm"/>
+    <box name="ITSsddBTBside" x="0.025000000000000001" y="0.041999999999999989" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBside" x="0.025000000000000001" y="0.041999999999999989" z="5.5" lunit="cm"/>
+    <box name="ITSsddBTBhole" x="0.60000000000000009" y="0.025000000000000001" z="1.5" lunit="cm"/>
+    <box name="ITSsddBTBhole" x="0.60000000000000009" y="0.025000000000000001" z="1.5" lunit="cm"/>
+    <tube name="ITSsddBTBmainAxis" rmin="0.10000000000000001" rmax="0.125" z="5.5" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x968" x="4.1000000000000005" y="0.025000000000000001" z="6.5" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x210">
+      <first ref="sUpGlueScreenLayer"/>
+      <second ref="TGeoCompositeShape0x211"/>
+      <firstposition name="TGeoCompositeShape0x210sUpGlueScreenLayerpos" x="0" y="-0.016000000000000004" z="0" unit="cm"/>
+    </subtraction>
+    <box name="sUpGlueScreenLayer" x="4.1000000000000005" y="0.0070000000000000001" z="6.5" lunit="cm"/>
+    <union name="TGeoCompositeShape0x211">
+      <first ref="sRoundHole"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x211sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="-3" unit="cm"/>
+      <firstrotation name="TGeoCompositeShape0x211sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+      <position name="TGeoCompositeShape0x211sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x211sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x212">
+      <first ref="sAlScreenLayer"/>
+      <second ref="TGeoCompositeShape0x213"/>
+      <firstposition name="TGeoCompositeShape0x212sAlScreenLayerpos" x="0" y="-0.011000000000000003" z="0" unit="cm"/>
+    </subtraction>
+    <box name="sAlScreenLayer" x="4.1000000000000005" y="0.0030000000000000001" z="6.5" lunit="cm"/>
+    <union name="TGeoCompositeShape0x213">
+      <first ref="sRoundHole"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x213sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="-3" unit="cm"/>
+      <firstrotation name="TGeoCompositeShape0x213sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+      <position name="TGeoCompositeShape0x213sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x213sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x214">
+      <first ref="sUpGlueBar1"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x214sUpGlueBar1pos" x="0" y="-0.0040000000000000027" z="-2.9676" unit="cm"/>
+      <position name="TGeoCompositeShape0x214sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="-3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x214sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <box name="sUpGlueBar1" x="4.1000000000000005" y="0.011000000000000001" z="0.56479999999999997" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x215">
+      <first ref="sAlBar1"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x215sAlBar1pos" x="0" y="0.0029999999999999979" z="-2.9676" unit="cm"/>
+      <position name="TGeoCompositeShape0x215sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="-3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x215sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <box name="sAlBar1" x="4.1000000000000005" y="0.0030000000000000001" z="0.56479999999999997" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x216">
+      <first ref="sUpGlueBar2"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x216sUpGlueBar2pos" x="0" y="-0.0040000000000000027" z="3.0172999999999996" unit="cm"/>
+      <position name="TGeoCompositeShape0x216sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x216sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <box name="sUpGlueBar2" x="4.1000000000000005" y="0.011000000000000001" z="0.46540000000000031" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x217">
+      <first ref="sAlBar2"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x217sAlBar2pos" x="0" y="0.0029999999999999979" z="3.0172999999999996" unit="cm"/>
+      <position name="TGeoCompositeShape0x217sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x217sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <box name="sAlBar2" x="4.1000000000000005" y="0.0030000000000000001" z="0.46540000000000031" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x970" x="0.2848000000000005" y="5.4697999999999993" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x969" x="0.2848000000000005" y="5.4697999999999993" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x972" x="0.20460000000000017" y="5.4697999999999993" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x971" x="0.20460000000000017" y="5.4697999999999993" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x974" x="1.623" y="5.4697999999999993" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x973" x="1.623" y="5.4697999999999993" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x976" x="0.53019999999999989" y="1.0753999999999999" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x975" x="0.53019999999999989" y="1.0753999999999999" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x978" x="0.53019999999999989" y="0.91220000000000001" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x977" x="0.53019999999999989" y="0.91220000000000001" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x980" x="0.53019999999999945" y="1.0753999999999999" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x979" x="0.53019999999999945" y="1.0753999999999999" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x982" x="0.53019999999999945" y="0.91220000000000001" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x981" x="0.53019999999999945" y="0.91220000000000001" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x984" x="0.53019999999999989" y="1.0753999999999999" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x983" x="0.53019999999999989" y="1.0753999999999999" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x986" x="0.53019999999999989" y="0.91220000000000001" z="0.011000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x985" x="0.53019999999999989" y="0.91220000000000001" z="0.014000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x988" x="0.92210000000000003" y="1.0245" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x989" x="0.92210000000000003" y="1.0245" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x990" x="0.92210000000000003" y="1.0245" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x991" x="0.92210000000000003" y="1.0245" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x987" x="0.92210000000000003" y="1.0245" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x993" x="0.92210000000000003" y="0.85099999999999998" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x994" x="0.92210000000000003" y="0.85099999999999998" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x995" x="0.92210000000000003" y="0.85099999999999998" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x996" x="0.92210000000000003" y="0.85099999999999998" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x992" x="0.92210000000000003" y="0.85099999999999998" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x998" x="0.92210000000000003" y="1.0245" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x999" x="0.92210000000000003" y="1.0245" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1000" x="0.92210000000000003" y="1.0245" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1001" x="0.92210000000000003" y="1.0245" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x997" x="0.92210000000000003" y="1.0245" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1003" x="0.92210000000000003" y="0.85099999999999998" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x1004" x="0.92210000000000003" y="0.85099999999999998" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1005" x="0.92210000000000003" y="0.85099999999999998" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1006" x="0.92210000000000003" y="0.85099999999999998" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1002" x="0.92210000000000003" y="0.85099999999999998" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1008" x="0.92210000000000003" y="1.0245" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x1009" x="0.92210000000000003" y="1.0245" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1010" x="0.92210000000000003" y="1.0245" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1011" x="0.92210000000000003" y="1.0245" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1007" x="0.92210000000000003" y="1.0245" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1013" x="0.92210000000000003" y="0.85099999999999998" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x1014" x="0.92210000000000003" y="0.85099999999999998" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1015" x="0.92210000000000003" y="0.85099999999999998" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1016" x="0.92210000000000003" y="0.85099999999999998" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1012" x="0.92210000000000003" y="0.85099999999999998" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1018" x="0.92210000000000003" y="1.0245" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x1019" x="0.92210000000000003" y="1.0245" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1020" x="0.92210000000000003" y="1.0245" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1021" x="0.92210000000000003" y="1.0245" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1017" x="0.92210000000000003" y="1.0245" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1023" x="0.92210000000000003" y="0.85099999999999998" z="0.002" lunit="cm"/>
+    <box name="TGeoBBox0x1024" x="0.92210000000000003" y="0.85099999999999998" z="0.0050000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1025" x="0.92210000000000003" y="0.85099999999999998" z="0.015000000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1026" x="0.92210000000000003" y="0.85099999999999998" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1022" x="0.92210000000000003" y="0.85099999999999998" z="0.026800000000000001" lunit="cm"/>
+    <box name="TGeoBBox0x1028" x="0.66000000000000003" y="0.31025000000000036" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1027" x="0.66000000000000003" y="0.31025000000000036" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1030" x="0.92210000000000003" y="0.26065000000000016" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1029" x="0.92210000000000003" y="0.26065000000000016" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1032" x="0.92210000000000003" y="0.45239999999999991" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1031" x="0.92210000000000003" y="0.45239999999999991" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1034" x="0.66000000000000003" y="0.31025000000000036" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1033" x="0.66000000000000003" y="0.31025000000000036" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1036" x="0.92210000000000003" y="0.26065000000000016" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1035" x="0.92210000000000003" y="0.26065000000000016" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1038" x="0.92210000000000003" y="0.45239999999999991" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1037" x="0.92210000000000003" y="0.45239999999999991" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1040" x="0.66000000000000003" y="0.31025000000000036" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1039" x="0.66000000000000003" y="0.31025000000000036" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1042" x="0.92210000000000003" y="0.26065000000000016" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1041" x="0.92210000000000003" y="0.26065000000000016" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1044" x="0.92210000000000003" y="0.45239999999999991" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1043" x="0.92210000000000003" y="0.45239999999999991" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1046" x="0.66000000000000003" y="0.31025000000000036" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1045" x="0.66000000000000003" y="0.31025000000000036" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1048" x="0.92210000000000003" y="0.26065000000000016" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1047" x="0.92210000000000003" y="0.26065000000000016" z="0.0036000000000000003" lunit="cm"/>
+    <box name="TGeoBBox0x1050" x="0.92210000000000003" y="0.45239999999999991" z="0.0024000000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1049" x="0.92210000000000003" y="0.45239999999999991" z="0.0036000000000000003" lunit="cm"/>
+    <box name="sFLupPolyhamide" x="1.5012000000000001" y="0.011000000000000001" z="5.9878" lunit="cm"/>
+    <arb8 name="TGeoArb80x4" v1x="-0.55915000000000004" v1y="1.5012000000000001" v2x="0.55915000000000004" v2y="1.5012000000000001" v3x="0.55915000000000004" v3y="1.2705000000000002" v4x="-0.55915000000000004" v4y="0" v5x="-0.55915000000000004" v5y="1.5012000000000001" v6x="0.55915000000000004" v6y="1.5012000000000001" v7x="0.55915000000000004" v7y="1.2705000000000002" v8x="-0.55915000000000004" v8y="0" dz="0.0015" lunit="cm"/>
+    <box name="ITSsddSMDmiddleShape" x="0.047" y="0.040000000000000001" z="0.095399999999999999" lunit="cm"/>
+    <box name="ITSsddSMDendShape" x="0.092500000000000013" y="0.040000000000000001" z="0.1132" lunit="cm"/>
+    <box name="ITSsddSMDshape" x="0.23200000000000004" y="0.040000000000000001" z="0.1132" lunit="cm"/>
+    <box name="TGeoBBox0x967" x="4.1000000000000005" y="0.08900000000000001" z="6.5" lunit="cm"/>
+    <arb8 name="TGeoArb80x42" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x41" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0043" lunit="cm"/>
+    <arb8 name="TGeoArb80x44" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x43" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0043" lunit="cm"/>
+    <arb8 name="TGeoArb80x46" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x45" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0043" lunit="cm"/>
+    <arb8 name="TGeoArb80x48" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x47" v1x="-0.91999999999999993" v1y="-3.7199999999999998" v2x="-0.91999999999999993" v2y="3.7199999999999998" v3x="0.91999999999999993" v3y="3.7199999999999998" v4x="0.91999999999999993" v4y="-3.7199999999999998" v5x="-0.91999999999999993" v5y="-3.7199999999999998" v6x="-0.91999999999999993" v6y="3.7199999999999998" v7x="0.91999999999999993" v7y="3.7199999999999998" v8x="0.91999999999999993" v8y="-3.7199999999999998" dz="0.0043" lunit="cm"/>
+    <arb8 name="TGeoArb80x50" v1x="-0.91999999999999993" v1y="-0.23500009154254461" v2x="-0.91999999999999993" v2y="0.23499990856383887" v3x="0.91999999999999993" v3y="0.23499990856383909" v4x="0.91999999999999993" v4y="-0.23500009154254461" v5x="-0.91999999999999993" v5y="-0.23500002345744483" v6x="-0.91999999999999993" v6y="0.23499997664893865" v7x="0.91999999999999993" v7y="0.23499997664893887" v8x="0.91999999999999993" v8y="-0.23500002345744483" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x49" v1x="-0.91999999999999993" v1y="-0.23500009154254461" v2x="-0.91999999999999993" v2y="0.23499990856383887" v3x="0.91999999999999993" v3y="0.23499990856383909" v4x="0.91999999999999993" v4y="-0.23500009154254461" v5x="-0.91999999999999993" v5y="-0.23499990856383898" v6x="-0.91999999999999993" v6y="0.2350000915425445" v7x="0.91999999999999993" v7y="0.23500009154254473" v8x="0.91999999999999993" v8y="-0.23499990856383898" dz="0.0043" lunit="cm"/>
+    <arb8 name="TGeoArb80x52" v1x="-0.91999999999999993" v1y="-0.23500009154254461" v2x="-0.91999999999999993" v2y="0.23499990856383887" v3x="0.91999999999999993" v3y="0.23499990856383909" v4x="0.91999999999999993" v4y="-0.23500009154254461" v5x="-0.91999999999999993" v5y="-0.23500002345744483" v6x="-0.91999999999999993" v6y="0.23499997664893865" v7x="0.91999999999999993" v7y="0.23499997664893887" v8x="0.91999999999999993" v8y="-0.23500002345744483" dz="0.0016000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x51" v1x="-0.91999999999999993" v1y="-0.23500009154254461" v2x="-0.91999999999999993" v2y="0.23499990856383887" v3x="0.91999999999999993" v3y="0.23499990856383909" v4x="0.91999999999999993" v4y="-0.23500009154254461" v5x="-0.91999999999999993" v5y="-0.23499990856383898" v6x="-0.91999999999999993" v6y="0.2350000915425445" v7x="0.91999999999999993" v7y="0.23500009154254473" v8x="0.91999999999999993" v8y="-0.23499990856383898" dz="0.0043" lunit="cm"/>
+    <box name="ITSsddSegBox0x5" x="6.2000000000000002" y="3.2999999999999998" z="7.4400000000000013" lunit="cm"/>
+    </solids>

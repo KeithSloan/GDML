@@ -1,0 +1,13 @@
+<structure><volume name="vCableSegLay0x73">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoArb80x46"/>
+    </volume>
+    <volume name="digitCableLay3A_40x1">
+      <materialref ref="ITS_AL"/>
+      <solidref ref="TGeoArb80x45"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x73"/>
+        <positionref ref="vCableSegLay_10x49indigitCableLay3A_40x1pos"/>
+      </physvol>
+    </volume>
+    </structure>

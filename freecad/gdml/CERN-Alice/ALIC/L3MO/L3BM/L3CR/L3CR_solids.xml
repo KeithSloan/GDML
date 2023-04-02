@@ -1,0 +1,7 @@
+<solids><polyhedra name="TGeoPgon0x176" startphi="22.5" deltaphi="360" numsides="8" aunit="deg" lunit="cm">
+      <zplane z="605" rmin="600" rmax="703.5"/>
+      <zplane z="620" rmin="600" rmax="703.5"/>
+      <zplane z="620" rmin="600" rmax="785.5"/>
+      <zplane z="706" rmin="600" rmax="785.5"/>
+    </polyhedra>
+    </solids>

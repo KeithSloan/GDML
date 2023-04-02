@@ -1,0 +1,47 @@
+<solids><subtraction name="shCarbonSupportSt3">
+      <first ref="shCarbonBoxSt3"/>
+      <second ref="shCarbonHoleSt3"/>
+      <position name="shCarbonSupportSt3shCarbonHoleSt3pos" x="-81" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shCarbonBoxSt3" x="162" y="362" z="0.029999999329447746" lunit="cm"/>
+    <tube name="shCarbonHoleSt3" rmin="0" rmax="29.5" z="0.031999999329447748" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    <box name="S05L0x1" x="141.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x3" x="141.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x5" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x7" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x9" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x11" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x13" x="132.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x15" x="132.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x17" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x19" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x21" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x23" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x25" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x27" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x29" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x31" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x33" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x35" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x37" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x39" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x41" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x43" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x45" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x47" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x49" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x51" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x53" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x55" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x57" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x59" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x61" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x63" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <subtraction name="shNomexSupportSt3">
+      <first ref="shNomexBoxSt3"/>
+      <second ref="shNomexHoleSt3"/>
+      <position name="shNomexSupportSt3shNomexHoleSt3pos" x="-81" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shNomexBoxSt3" x="162" y="362" z="1.7160000018775463" lunit="cm"/>
+    <tube name="shNomexHoleSt3" rmin="0" rmax="29.5" z="1.7180000018775463" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    </solids>

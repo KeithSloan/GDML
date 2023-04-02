@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "voRB24AIpM_define.xml">
+<!ENTITY materials SYSTEM "voRB24AIpM_materials.xml">
+<!ENTITY solids SYSTEM "voRB24AIpM_solids.xml">
+<!ENTITY struct SYSTEM "voRB24AIpM_struct.xml">
+<!ENTITY setup SYSTEM "voRB24AIpM_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

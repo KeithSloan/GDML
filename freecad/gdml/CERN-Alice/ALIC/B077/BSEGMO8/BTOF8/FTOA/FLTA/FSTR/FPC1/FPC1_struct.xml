@@ -1,0 +1,5 @@
+<structure><volume name="FPC1">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FPC10x1"/>
+    </volume>
+    </structure>

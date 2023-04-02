@@ -1,0 +1,64 @@
+<materials><material name="ITS_Freon">
+      <D unit="g/cm3" value="1.5199999809265137"/>
+      <fraction n="0.20184177160263062" ref="CARBON_elm"/>
+      <fraction n="0.79815822839736938" ref="FLUORINE_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="FLUORINE_elm" formula="F" Z="9">
+      <atom unit="g/mole" value="18.998403199999998"/>
+    </element>
+    <material name="ITS_INOX">
+      <D unit="g/cm3" value="8.0299997329711914"/>
+      <fraction n="0.00030000001424923539" ref="CARBON_elm"/>
+      <fraction n="0.17000000178813934" ref="CHROMIUM_elm"/>
+      <fraction n="0.65399998426437378" ref="IRON_elm"/>
+      <fraction n="0.019999999552965164" ref="MANGANESE_elm"/>
+      <fraction n="0.02500000037252903" ref="MOLYBDENUM_elm"/>
+      <fraction n="0.11999999731779099" ref="NICKEL_elm"/>
+      <fraction n="0.00044999999227002263" ref="PHOSPHORUS_elm"/>
+      <fraction n="0.0099999997764825821" ref="SILICON_elm"/>
+      <fraction n="0.00030000001424923539" ref="SULFUR_elm"/>
+    </material>
+    <element name="CHROMIUM_elm" formula="CR" Z="24">
+      <atom unit="g/mole" value="51.996099999999998"/>
+    </element>
+    <element name="IRON_elm" formula="FE" Z="26">
+      <atom unit="g/mole" value="55.844999999999999"/>
+    </element>
+    <element name="MANGANESE_elm" formula="MN" Z="25">
+      <atom unit="g/mole" value="54.938048999999999"/>
+    </element>
+    <element name="MOLYBDENUM_elm" formula="MO" Z="42">
+      <atom unit="g/mole" value="95.939999999999998"/>
+    </element>
+    <element name="NICKEL_elm" formula="NI" Z="28">
+      <atom unit="g/mole" value="58.693399999999997"/>
+    </element>
+    <element name="PHOSPHORUS_elm" formula="P" Z="15">
+      <atom unit="g/mole" value="30.973761"/>
+    </element>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    <element name="SULFUR_elm" formula="S" Z="16">
+      <atom unit="g/mole" value="32.066000000000003"/>
+    </element>
+    <material name="ITS_AIR">
+      <D unit="g/cm3" value="0.0012047899654135108"/>
+      <fraction n="0.012826999649405479" ref="ARGON_elm"/>
+      <fraction n="0.00012399999832268804" ref="CARBON_elm"/>
+      <fraction n="0.75526702404022217" ref="NITROGEN_elm"/>
+      <fraction n="0.231781005859375" ref="OXYGEN_elm"/>
+    </material>
+    <element name="ARGON_elm" formula="AR" Z="18">
+      <atom unit="g/mole" value="39.948"/>
+    </element>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    </materials>

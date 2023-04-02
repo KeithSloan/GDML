@@ -1,0 +1,13 @@
+<structure><volume name="CP3BECI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x17"/>
+    </volume>
+    <volume name="CP3BECO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x16"/>
+      <physvol name="CP3BECI_1" copynumber="1">
+        <volumeref ref="CP3BECI"/>
+        <positionref ref="CP3BECI_1inCP3BECOpos"/>
+      </physvol>
+    </volume>
+    </structure>

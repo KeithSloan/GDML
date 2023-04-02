@@ -1,0 +1,5 @@
+<structure><volume name="YSAA2_SteelRing">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoTube0x2"/>
+    </volume>
+    </structure>

@@ -1,0 +1,39 @@
+<structure><volume name="USC3">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="USC30x1"/>
+    </volume>
+    <volume name="USC3">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="USC30x1"/>
+    </volume>
+    <volume name="USC2">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="USC20x1"/>
+    </volume>
+    <volume name="USC1">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="USC10x1"/>
+    </volume>
+    <volume name="USCB">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="USCB0x1"/>
+      <physvol name="USC1_1" copynumber="1">
+        <volumeref ref="USC1"/>
+        <positionref ref="USC1_1inUSCBpos"/>
+      </physvol>
+      <physvol name="USC2_1" copynumber="1">
+        <volumeref ref="USC2"/>
+        <positionref ref="USC2_1inUSCBpos"/>
+      </physvol>
+      <physvol name="USC3_1" copynumber="1">
+        <volumeref ref="USC3"/>
+        <positionref ref="USC3_1inUSCBpos"/>
+        <rotationref ref="USC3_1inUSCBrot"/>
+      </physvol>
+      <physvol name="USC3_2" copynumber="2">
+        <volumeref ref="USC3"/>
+        <positionref ref="USC3_2inUSCBpos"/>
+        <rotationref ref="USC3_2inUSCBrot"/>
+      </physvol>
+    </volume>
+    </structure>

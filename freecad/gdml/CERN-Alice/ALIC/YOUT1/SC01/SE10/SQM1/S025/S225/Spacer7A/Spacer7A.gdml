@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "Spacer7A_materials.xml">
+<!ENTITY solids SYSTEM "Spacer7A_solids.xml">
+<!ENTITY struct SYSTEM "Spacer7A_struct.xml">
+<!ENTITY setup SYSTEM "Spacer7A_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

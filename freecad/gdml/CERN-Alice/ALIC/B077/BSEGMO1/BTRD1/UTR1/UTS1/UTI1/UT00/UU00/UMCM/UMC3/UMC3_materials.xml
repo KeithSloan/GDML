@@ -1,0 +1,5 @@
+<materials><material name="TRD_Si" Z="14">
+      <D unit="g/cm3" value="2.3299999237060547"/>
+      <atom unit="g/mole" value="28.090000152587891"/>
+    </material>
+    </materials>

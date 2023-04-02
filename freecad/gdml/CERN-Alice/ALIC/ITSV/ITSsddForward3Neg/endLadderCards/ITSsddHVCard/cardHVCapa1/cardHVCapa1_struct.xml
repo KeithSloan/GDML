@@ -1,0 +1,27 @@
+<structure><volume name="vCardHVCapa1End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1End"/>
+    </volume>
+    <volume name="vCardHVCapa1End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1End"/>
+    </volume>
+    <volume name="vCardHVCapa1Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1Middle"/>
+    </volume>
+    <assembly name="cardHVCapa1">
+      <physvol name="vCardHVCapa1Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa1Middle"/>
+        <positionref ref="vCardHVCapa1Middle_1incardHVCapa1pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa1End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa1End"/>
+        <positionref ref="vCardHVCapa1End_1incardHVCapa1pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa1End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa1End"/>
+        <positionref ref="vCardHVCapa1End_2incardHVCapa1pos"/>
+      </physvol>
+    </assembly>
+    </structure>

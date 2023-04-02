@@ -1,0 +1,5 @@
+<materials><material name="TRD_C" Z="6">
+      <D unit="g/cm3" value="2.2650001049041748"/>
+      <atom unit="g/mole" value="12.010000228881836"/>
+    </material>
+    </materials>

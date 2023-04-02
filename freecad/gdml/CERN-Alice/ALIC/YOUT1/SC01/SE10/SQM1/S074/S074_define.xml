@@ -1,0 +1,15 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10x73inS274pos" x="-22.68" y="0" z="0" unit="cm"/>
+    <position name="SCHL_20x46inS274pos" x="-17.639999999999997" y="0" z="0" unit="cm"/>
+    <position name="SCHL_30x41inS274pos" x="-12.6" y="0" z="0" unit="cm"/>
+    <position name="SCHL_40x28inS274pos" x="-7.5599999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_50x23inS274pos" x="-2.52" y="0" z="0" unit="cm"/>
+    <position name="SCHL_60x19inS274pos" x="2.52" y="0" z="0" unit="cm"/>
+    <position name="SCHL_70x17inS274pos" x="7.5599999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_80x17inS274pos" x="12.6" y="0" z="0" unit="cm"/>
+    <position name="SCHL_90x17inS274pos" x="17.639999999999997" y="0" z="0" unit="cm"/>
+    <position name="SCHL_100x17inS274pos" x="22.68" y="0" z="0" unit="cm"/>
+    <position name="S274_1inS074pos" x="0" y="0" z="-0.031" unit="cm"/>
+    <position name="S474_1inS074pos" x="0" y="0" z="1.2515000000000001" unit="cm"/>
+    </define>

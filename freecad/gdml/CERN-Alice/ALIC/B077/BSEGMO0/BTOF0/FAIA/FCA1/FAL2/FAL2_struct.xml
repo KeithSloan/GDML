@@ -1,0 +1,5 @@
+<structure><volume name="FAL2">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FAL20x1"/>
+    </volume>
+    </structure>

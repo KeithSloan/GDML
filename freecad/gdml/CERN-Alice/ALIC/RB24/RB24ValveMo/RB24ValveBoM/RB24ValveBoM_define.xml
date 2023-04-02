@@ -1,0 +1,5 @@
+<define><position name="RB24ValveBoI_1inRB24ValveBopos" x="0" y="0.25" z="0" unit="cm"/>
+    <position name="RB24ValveBoA_1inRB24ValveBopos" x="0" y="1.7000007629394531" z="-2.0499999523162842" unit="cm"/>
+    <position name="RB24ValveBoA_2inRB24ValveBopos" x="0" y="1.7000007629394531" z="2.0499999523162842" unit="cm"/>
+    <position name="RB24ValveBo_1inRB24ValveBoMpos" x="0" y="0" z="0" unit="cm"/>
+    </define>

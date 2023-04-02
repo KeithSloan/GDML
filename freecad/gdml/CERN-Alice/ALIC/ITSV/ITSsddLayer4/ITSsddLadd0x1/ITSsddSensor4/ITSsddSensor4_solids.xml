@@ -1,0 +1,33 @@
+<solids><box name="ITSsddSensorSensBox4" x="7.0170000000000003" y="0.029980000000000003" z="7.5264000000000006" lunit="cm"/>
+    <box name="ITSsddWaferShape" x="7.25" y="0.030000000000000002" z="8.7599999999999998" lunit="cm"/>
+    <box name="ITSsddGlassBox" x="0.5" y="0.015000000000000001" z="0.5" lunit="cm"/>
+    <box name="TGeoBBox0x1064" x="0.81800664158308889" y="6.7080000000000002" z="0.017500000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1063" x="0.81800664158308889" y="6.7080000000000002" z="0.018100000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1066" x="0.81800664158308889" y="6.7080000000000002" z="0.017500000000000002" lunit="cm"/>
+    <box name="TGeoBBox0x1065" x="0.81800664158308889" y="6.7080000000000002" z="0.018100000000000002" lunit="cm"/>
+    <cutTube name="TGeoCtub0x1" rmin="0" rmax="0.032500000000000001" z="6.7080000000000002" startphi="180" deltaphi="180" lowX="-6.1230317691118863e-17" lowY="-6.1230317691118863e-17" lowZ="-1" highX="6.1230317691118863e-17" highY="6.1230317691118863e-17" highZ="1" aunit="deg" lunit="cm"/>
+    <cutTube name="TGeoCtub" rmin="0" rmax="0.033100000000000004" z="6.7080000000000002" startphi="180" deltaphi="180" lowX="-6.1230317691118863e-17" lowY="-6.1230317691118863e-17" lowZ="-1" highX="6.1230317691118863e-17" highY="6.1230317691118863e-17" highZ="1" aunit="deg" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x222">
+      <first ref="headPoly"/>
+      <second ref="cache"/>
+      <firstposition name="TGeoCompositeShape0x222headPolypos" x="0" y="0" z="-0.0050000000000000001" unit="cm"/>
+      <position name="TGeoCompositeShape0x222cachepos" x="0" y="0.96589542253521077" z="-0.0053" unit="cm"/>
+    </subtraction>
+    <tube name="headPoly" rmin="0" rmax="4.0617908450704219" z="0.01" startphi="28.398473175541014" deltaphi="123.20305364891796" aunit="deg" lunit="cm"/>
+    <box name="cache" x="7.1459999999999999" y="1.9317908450704215" z="0.0106" lunit="cm"/>
+    <subtraction name="TGeoCompositeShape0x223">
+      <first ref="headAl"/>
+      <second ref="cache"/>
+      <firstposition name="TGeoCompositeShape0x223headAlpos" x="0" y="0" z="-0.0103" unit="cm"/>
+      <position name="TGeoCompositeShape0x223cachepos" x="0" y="0.96589542253521077" z="-0.0053" unit="cm"/>
+    </subtraction>
+    <tube name="headAl" rmin="0" rmax="4.0617908450704219" z="0.00060000000000000006" startphi="28.398473175541014" deltaphi="123.20305364891796" aunit="deg" lunit="cm"/>
+    <box name="cache" x="7.1459999999999999" y="1.9317908450704215" z="0.0106" lunit="cm"/>
+    <box name="TGeoBBox0x1068" x="0.36000000000000004" y="7.1459999999999999" z="0.01" lunit="cm"/>
+    <box name="TGeoBBox0x1067" x="0.36000000000000004" y="7.1459999999999999" z="0.0106" lunit="cm"/>
+    <box name="TGeoBBox0x1070" x="2.6000000000000001" y="2.7000000000000002" z="0.01" lunit="cm"/>
+    <box name="TGeoBBox0x1069" x="2.6000000000000001" y="2.7000000000000002" z="0.0106" lunit="cm"/>
+    <arb8 name="TGeoArb80x57" v1x="2.1000000000000001" v1y="0" v2x="2.1000000000000001" v2y="1.034" v3x="3.573" v3y="0.41100000000000003" v4x="3.573" v4y="0" v5x="2.1000000000000001" v5y="0" v6x="2.1000000000000001" v6y="1.034" v7x="3.573" v7y="0.41100000000000003" v8x="3.573" v8y="0" dz="0.0050000000000000001" lunit="cm"/>
+    <arb8 name="TGeoArb80x58" v1x="2.1000000000000001" v1y="0" v2x="2.1000000000000001" v2y="1.034" v3x="3.573" v3y="0.41100000000000003" v4x="3.573" v4y="0" v5x="2.1000000000000001" v5y="0" v6x="2.1000000000000001" v6y="1.034" v7x="3.573" v7y="0.41100000000000003" v8x="3.573" v8y="0" dz="0.00030000000000000003" lunit="cm"/>
+    <box name="ITSsddSensorBox" x="7.25" y="0.066200000000000009" z="9.4142132831661769" lunit="cm"/>
+    </solids>

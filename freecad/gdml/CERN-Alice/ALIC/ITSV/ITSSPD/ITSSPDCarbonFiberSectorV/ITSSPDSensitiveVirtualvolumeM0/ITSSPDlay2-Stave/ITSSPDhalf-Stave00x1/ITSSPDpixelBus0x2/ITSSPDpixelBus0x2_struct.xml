@@ -1,0 +1,147 @@
+<structure><volume name="Extender30x4">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="Extender30x5"/>
+    </volume>
+    <volume name="Extender20x4">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="Extender20x5"/>
+    </volume>
+    <volume name="Extender10x4">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="Extender10x5"/>
+    </volume>
+    <volume name="ITSSPDresistor0x4">
+      <materialref ref="ITS_ALUMINUM"/>
+      <solidref ref="ITSSPDresistor0x5"/>
+    </volume>
+    <volume name="ITSSPDresistor0x4">
+      <materialref ref="ITS_ALUMINUM"/>
+      <solidref ref="ITSSPDresistor0x5"/>
+    </volume>
+    <volume name="ITSSPDcapacitor0x4">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="ITSSPDcapacitor0x5"/>
+    </volume>
+    <volume name="ITSSPDcapacitor0x4">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="ITSSPDcapacitor0x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDpt10000x4">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ITSSPDpt10000x5"/>
+    </volume>
+    <volume name="ITSSPDbus0x4">
+      <materialref ref="ITS_SPDBUSALKPTEPOX"/>
+      <solidref ref="ITSSPDbus0x5"/>
+    </volume>
+    <assembly name="ITSSPDpixelBus0x2">
+      <physvol name="ITSSPDbus_1" copynumber="1">
+        <volumeref ref="ITSSPDbus0x4"/>
+        <positionref ref="ITSSPDbus_10x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_1" copynumber="1">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_10x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_2" copynumber="2">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_20x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_3" copynumber="3">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_30x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_4" copynumber="4">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_40x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_5" copynumber="5">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_50x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_6" copynumber="6">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_60x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_7" copynumber="7">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_70x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_8" copynumber="8">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_80x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_9" copynumber="9">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_90x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDpt1000_10" copynumber="10">
+        <volumeref ref="ITSSPDpt10000x4"/>
+        <positionref ref="ITSSPDpt1000_100x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDcapacitor_1" copynumber="1">
+        <volumeref ref="ITSSPDcapacitor0x4"/>
+        <positionref ref="ITSSPDcapacitor_10x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDcapacitor_2" copynumber="2">
+        <volumeref ref="ITSSPDcapacitor0x4"/>
+        <positionref ref="ITSSPDcapacitor_20x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDresistor_1" copynumber="1">
+        <volumeref ref="ITSSPDresistor0x4"/>
+        <positionref ref="ITSSPDresistor_10x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="ITSSPDresistor_2" copynumber="2">
+        <volumeref ref="ITSSPDresistor0x4"/>
+        <positionref ref="ITSSPDresistor_20x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="Extender1_0" copynumber="0">
+        <volumeref ref="Extender10x4"/>
+        <positionref ref="Extender1_00x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="Extender2_0" copynumber="0">
+        <volumeref ref="Extender20x4"/>
+        <positionref ref="Extender2_00x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+      <physvol name="Extender3_0" copynumber="0">
+        <volumeref ref="Extender30x4"/>
+        <positionref ref="Extender3_00x2inITSSPDpixelBus0x2pos"/>
+      </physvol>
+    </assembly>
+    </structure>

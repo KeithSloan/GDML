@@ -1,0 +1,5 @@
+<structure><volume name="FwdaBPPTT">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x6"/>
+    </volume>
+    </structure>

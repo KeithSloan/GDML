@@ -1,0 +1,11 @@
+<solids><tube name="TGeoTube0x38" rmin="2.5" rmax="9" z="1.4500000476837158" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x960" x="14.600000381469727" y="39.099998474121094" z="3.5999999046325684" lunit="cm"/>
+    <tube name="TGeoTube0x39" rmin="0" rmax="2.5" z="0.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x959" x="15.600000381469727" y="39.599998474121094" z="4.5999999046325684" lunit="cm"/>
+    <box name="TGeoBBox0x958" x="15.600000381469727" y="39.599998474121094" z="4.5999999046325684" lunit="cm"/>
+    <box name="TGeoBBox0x961" x="18.899999618530273" y="5" z="7.6999998092651367" lunit="cm"/>
+    <tube name="TGeoTube0x40" rmin="3.8499999046325684" rmax="4.8499999046325684" z="16.600000381469727" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <cone name="TGeoCone0x10" z="2.5" rmin1="0" rmin2="4.5" rmax1="0.5" rmax2="5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <torus name="TGeoTorus" rtor="5" rmin="0" rmax="1.25" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x41" rmin="0" rmax="1.25" z="5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

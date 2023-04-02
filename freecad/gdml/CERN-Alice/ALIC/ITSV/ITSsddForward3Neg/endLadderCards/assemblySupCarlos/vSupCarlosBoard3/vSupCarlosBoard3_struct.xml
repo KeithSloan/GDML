@@ -1,0 +1,23 @@
+<structure><volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vSupCarlosBoard3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoBBox0x1099"/>
+      <physvol name="vLittleScrew_1" copynumber="1">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_1invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_1invSupCarlosBoard3rot"/>
+      </physvol>
+      <physvol name="vLittleScrew_2" copynumber="2">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_2invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_2invSupCarlosBoard3rot"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,5 @@
+<structure><volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    </structure>

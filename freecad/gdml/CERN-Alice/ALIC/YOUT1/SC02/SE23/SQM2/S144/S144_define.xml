@@ -1,0 +1,10 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10x143inS344pos" x="-10.080000000000002" y="0" z="0" unit="cm"/>
+    <position name="SCHL_20x90inS344pos" x="-5.0400000000000009" y="0" z="0" unit="cm"/>
+    <position name="SCHL_30x81inS344pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_40x57inS344pos" x="5.0400000000000009" y="0" z="0" unit="cm"/>
+    <position name="SCHL_50x44inS344pos" x="10.080000000000002" y="0" z="0" unit="cm"/>
+    <position name="S344_1inS144pos" x="0" y="0" z="-0.031" unit="cm"/>
+    <position name="S544_1inS144pos" x="0" y="0" z="1.2515000000000001" unit="cm"/>
+    </define>

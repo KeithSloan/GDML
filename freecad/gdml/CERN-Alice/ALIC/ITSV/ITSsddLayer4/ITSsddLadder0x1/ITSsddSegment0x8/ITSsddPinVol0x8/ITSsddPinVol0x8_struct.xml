@@ -1,0 +1,5 @@
+<structure><volume name="ITSsddPinVol0x8">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="ITSsddPin0x8"/>
+    </volume>
+    </structure>

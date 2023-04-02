@@ -1,0 +1,29 @@
+<structure><volume name="UW04">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x122"/>
+    </volume>
+    <volume name="UK04">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="TGeoBBox0x121"/>
+      <physvol name="UW04_1" copynumber="1">
+        <volumeref ref="UW04"/>
+        <positionref ref="UW04_1inUK04pos"/>
+      </physvol>
+    </volume>
+    <volume name="UE04">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x120"/>
+      <physvol name="UK04_1" copynumber="1">
+        <volumeref ref="UK04"/>
+        <positionref ref="UK04_1inUE04pos"/>
+      </physvol>
+    </volume>
+    <volume name="UD04">
+      <materialref ref="TRD_C"/>
+      <solidref ref="UD040x1"/>
+      <physvol name="UE04_1" copynumber="1">
+        <volumeref ref="UE04"/>
+        <positionref ref="UE04_1inUD04pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,75 @@
+<structure><volume name="YSAA3SteelPlate21">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x532"/>
+    </volume>
+    <volume name="YSAA3SteelPlate2">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoBBox0x531"/>
+      <physvol name="YSAA3SteelPlate21_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate21"/>
+        <positionref ref="YSAA3SteelPlate21_1inYSAA3SteelPlate2pos"/>
+      </physvol>
+    </volume>
+    <volume name="YSAA3SteelPlate21">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x532"/>
+    </volume>
+    <volume name="YSAA3SteelPlate2">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoBBox0x531"/>
+      <physvol name="YSAA3SteelPlate21_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate21"/>
+        <positionref ref="YSAA3SteelPlate21_1inYSAA3SteelPlate2pos"/>
+      </physvol>
+    </volume>
+    <volume name="YSAA3SteelPlate11">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x530"/>
+    </volume>
+    <volume name="YSAA3SteelPlate1">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoBBox0x529"/>
+      <physvol name="YSAA3SteelPlate11_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate11"/>
+        <positionref ref="YSAA3SteelPlate11_1inYSAA3SteelPlate1pos"/>
+      </physvol>
+    </volume>
+    <volume name="YSAA3SteelPlate11">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x530"/>
+    </volume>
+    <volume name="YSAA3SteelPlate1">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoBBox0x529"/>
+      <physvol name="YSAA3SteelPlate11_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate11"/>
+        <positionref ref="YSAA3SteelPlate11_1inYSAA3SteelPlate1pos"/>
+      </physvol>
+    </volume>
+    <volume name="YSAA3CCBlock">
+      <materialref ref="SHIL_CONCRETE3"/>
+      <solidref ref="Saa3CCBlock"/>
+    </volume>
+    <assembly name="YSAA3">
+      <physvol name="YSAA3CCBlock_1" copynumber="1">
+        <volumeref ref="YSAA3CCBlock"/>
+        <positionref ref="YSAA3CCBlock_1inYSAA3pos"/>
+      </physvol>
+      <physvol name="YSAA3SteelPlate1_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate1"/>
+        <positionref ref="YSAA3SteelPlate1_1inYSAA3pos"/>
+      </physvol>
+      <physvol name="YSAA3SteelPlate1_2" copynumber="2">
+        <volumeref ref="YSAA3SteelPlate1"/>
+        <positionref ref="YSAA3SteelPlate1_2inYSAA3pos"/>
+      </physvol>
+      <physvol name="YSAA3SteelPlate2_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate2"/>
+        <positionref ref="YSAA3SteelPlate2_1inYSAA3pos"/>
+      </physvol>
+      <physvol name="YSAA3SteelPlate2_2" copynumber="2">
+        <volumeref ref="YSAA3SteelPlate2"/>
+        <positionref ref="YSAA3SteelPlate2_2inYSAA3pos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,2 @@
+<solids><tube name="tube1Rac" rmin="0.10000000000000001" rmax="0.25" z="0.30000000000000004" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

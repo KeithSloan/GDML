@@ -1,0 +1,13 @@
+<structure><volume name="YSAA3SteelPlate11">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x530"/>
+    </volume>
+    <volume name="YSAA3SteelPlate1">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoBBox0x529"/>
+      <physvol name="YSAA3SteelPlate11_1" copynumber="1">
+        <volumeref ref="YSAA3SteelPlate11"/>
+        <positionref ref="YSAA3SteelPlate11_1inYSAA3SteelPlate1pos"/>
+      </physvol>
+    </volume>
+    </structure>

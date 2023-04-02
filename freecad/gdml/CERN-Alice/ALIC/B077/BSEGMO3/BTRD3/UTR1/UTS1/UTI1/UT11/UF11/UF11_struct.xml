@@ -1,0 +1,61 @@
+<structure><volume name="UV11">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x220"/>
+    </volume>
+    <volume name="UO11">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x219"/>
+    </volume>
+    <volume name="UN11">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x218"/>
+    </volume>
+    <volume name="UM11">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x217"/>
+    </volume>
+    <volume name="UY11">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x216"/>
+    </volume>
+    <volume name="UL11">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x215"/>
+    </volume>
+    <volume name="UG11">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x214"/>
+      <physvol name="UL11_1" copynumber="1">
+        <volumeref ref="UL11"/>
+        <positionref ref="UL11_1inUG11pos"/>
+      </physvol>
+      <physvol name="UY11_1" copynumber="1">
+        <volumeref ref="UY11"/>
+        <positionref ref="UY11_1inUG11pos"/>
+      </physvol>
+      <physvol name="UM11_1" copynumber="1">
+        <volumeref ref="UM11"/>
+        <positionref ref="UM11_1inUG11pos"/>
+      </physvol>
+      <physvol name="UN11_1" copynumber="1">
+        <volumeref ref="UN11"/>
+        <positionref ref="UN11_1inUG11pos"/>
+      </physvol>
+      <physvol name="UO11_1" copynumber="1">
+        <volumeref ref="UO11"/>
+        <positionref ref="UO11_1inUG11pos"/>
+      </physvol>
+      <physvol name="UV11_1" copynumber="1">
+        <volumeref ref="UV11"/>
+        <positionref ref="UV11_1inUG11pos"/>
+      </physvol>
+    </volume>
+    <volume name="UF11">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UF110x1"/>
+      <physvol name="UG11_1" copynumber="1">
+        <volumeref ref="UG11"/>
+        <positionref ref="UG11_1inUF11pos"/>
+      </physvol>
+    </volume>
+    </structure>

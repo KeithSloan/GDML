@@ -1,0 +1,5 @@
+<structure><volume name="SRH2L">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SRH2L0x1"/>
+    </volume>
+    </structure>

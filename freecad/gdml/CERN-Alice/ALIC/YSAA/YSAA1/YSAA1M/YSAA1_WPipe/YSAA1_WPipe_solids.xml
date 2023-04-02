@@ -1,0 +1,12 @@
+<solids><tube name="TGeoTube0x1" rmin="11" rmax="15.949999809265137" z="111.19999694824219" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <polycone name="TGeoPcon0x17" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="11" rmax="12.25"/>
+      <zplane z="0.89999997615814209" rmin="11" rmax="12.25"/>
+      <zplane z="0.89999997615814209" rmin="9.25" rmax="12.25"/>
+      <zplane z="3" rmin="9.25" rmax="12.25"/>
+      <zplane z="3" rmin="9.25" rmax="15.949999809265137"/>
+      <zplane z="114.19999694824219" rmin="11" rmax="15.949999809265137"/>
+      <zplane z="114.19999694824219" rmin="11" rmax="20.780000686645508"/>
+      <zplane z="120.19999694824219" rmin="11" rmax="20.780000686645508"/>
+    </polycone>
+    </solids>

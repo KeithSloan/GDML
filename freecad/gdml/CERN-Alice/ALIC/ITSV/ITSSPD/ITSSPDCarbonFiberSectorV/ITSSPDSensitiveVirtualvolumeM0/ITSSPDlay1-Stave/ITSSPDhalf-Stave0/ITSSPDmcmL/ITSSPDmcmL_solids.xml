@@ -1,0 +1,52 @@
+<solids><xtru name="TGeoXtru0x12" lunit="cm">
+      <twoDimVertex x="-5.2800000000000002" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.3999999999999999" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.0999999999999996" y="-0.35000000000000009"/>
+      <twoDimVertex x="-2.04" y="-0.35000000000000009"/>
+      <twoDimVertex x="-2.4399999999999999" y="-0.75000000000000011"/>
+      <twoDimVertex x="-5.2800000000000002" y="-0.75"/>
+      <section zOrder="0" zPosition="-0.10250000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="-0.067500000000000004" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDanalog0x3" x="0.40000000000000002" y="0.30000000000000004" z="0.059999999999999998" lunit="cm"/>
+    <box name="ITSSPDpilot0x3" x="0.6150000000000001" y="0.40999999999999998" z="0.029999999999999999" lunit="cm"/>
+    <box name="ITSSPDgol0x3" x="0.38500000000000001" y="0.38500000000000001" z="0.029999999999999999" lunit="cm"/>
+    <box name="ITSSPDrx400x3" x="0.55999999999999994" y="0.55999999999999994" z="0.10000000000000001" lunit="cm"/>
+    <box name="ITSSPDoptical0x3" x="1.8" y="0.54500000000000004" z="0.12" lunit="cm"/>
+    <subtraction name="ITSSPDshBORDERL">
+      <first ref="ITSSPDshCAPOUTL"/>
+      <second ref="ITSSPDshCAPINL"/>
+    </subtraction>
+    <xtru name="ITSSPDshCAPOUTL" lunit="cm">
+      <twoDimVertex x="-2.0400000000000005" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.3999999999999999" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.0999999999999996" y="-0.35000000000000009"/>
+      <twoDimVertex x="-2.04" y="-0.35000000000000009"/>
+      <section zOrder="0" zPosition="-0.067500000000000004" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.072500000000000009" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <xtru name="ITSSPDshCAPINL" lunit="cm">
+      <twoDimVertex x="-2.0100000000000007" y="0.71999999999999997"/>
+      <twoDimVertex x="5.25" y="0.71999999999999997"/>
+      <twoDimVertex x="5.25" y="-0.020000000000000046"/>
+      <twoDimVertex x="2.3885194970290473" y="-0.020000000000000046"/>
+      <twoDimVertex x="2.088519497029047" y="-0.32000000000000006"/>
+      <twoDimVertex x="-2.0100000000000007" y="-0.32000000000000006"/>
+      <section zOrder="0" zPosition="-0.077499999999999999" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.082500000000000004" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <xtru name="TGeoXtru0x13" lunit="cm">
+      <twoDimVertex x="-2.0400000000000005" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="0.75"/>
+      <twoDimVertex x="5.2800000000000002" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.3999999999999999" y="-0.050000000000000044"/>
+      <twoDimVertex x="2.0999999999999996" y="-0.35000000000000009"/>
+      <twoDimVertex x="-2.04" y="-0.35000000000000009"/>
+      <section zOrder="0" zPosition="0.072500000000000009" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.10250000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    </solids>

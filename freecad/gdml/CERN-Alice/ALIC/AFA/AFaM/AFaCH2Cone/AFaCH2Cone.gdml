@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "AFaCH2Cone_materials.xml">
+<!ENTITY solids SYSTEM "AFaCH2Cone_solids.xml">
+<!ENTITY struct SYSTEM "AFaCH2Cone_struct.xml">
+<!ENTITY setup SYSTEM "AFaCH2Cone_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

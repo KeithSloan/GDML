@@ -1,0 +1,14 @@
+<structure><volume name="vLittleScrewHV">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHV"/>
+    </volume>
+    <volume name="vCardHVcool3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool3"/>
+      <physvol name="vLittleScrewHV_1" copynumber="1">
+        <volumeref ref="vLittleScrewHV"/>
+        <positionref ref="vLittleScrewHV_1invCardHVcool3pos"/>
+        <rotationref ref="vLittleScrewHV_1invCardHVcool3rot"/>
+      </physvol>
+    </volume>
+    </structure>

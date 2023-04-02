@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "UTCO_define.xml">
+<!ENTITY materials SYSTEM "UTCO_materials.xml">
+<!ENTITY solids SYSTEM "UTCO_solids.xml">
+<!ENTITY struct SYSTEM "UTCO_struct.xml">
+<!ENTITY setup SYSTEM "UTCO_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

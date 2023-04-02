@@ -1,0 +1,4 @@
+<solids><box name="SFRA10x1" x="101" y="0.89999997615814209" z="1.5499999523162842" lunit="cm"/>
+    <box name="SFRR10x1" x="101" y="0.60000002384185791" z="1.5499999523162842" lunit="cm"/>
+    <box name="SFRM10x1" x="101" y="2.5" z="5" lunit="cm"/>
+    </solids>

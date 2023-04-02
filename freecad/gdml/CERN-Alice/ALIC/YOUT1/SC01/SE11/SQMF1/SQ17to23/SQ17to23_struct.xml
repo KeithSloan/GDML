@@ -1,0 +1,5 @@
+<structure><volume name="SQ17to23">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="TGeoXtru0x6"/>
+    </volume>
+    </structure>

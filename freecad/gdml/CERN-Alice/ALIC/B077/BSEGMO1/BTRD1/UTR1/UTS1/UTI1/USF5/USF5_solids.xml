@@ -1,0 +1,6 @@
+<solids><box name="TGeoBBox0x49" x="24.399999618530273" y="1" z="8" lunit="cm"/>
+    <box name="TGeoBBox0x50" x="24.399999618530273" y="1" z="8" lunit="cm"/>
+    <box name="TGeoBBox0x51" x="24.399999618530273" y="1" z="8" lunit="cm"/>
+    <box name="TGeoBBox0x52" x="24.399999618530273" y="1" z="8" lunit="cm"/>
+    <box name="USF50x1" x="113.59999847412109" y="1" z="12" lunit="cm"/>
+    </solids>

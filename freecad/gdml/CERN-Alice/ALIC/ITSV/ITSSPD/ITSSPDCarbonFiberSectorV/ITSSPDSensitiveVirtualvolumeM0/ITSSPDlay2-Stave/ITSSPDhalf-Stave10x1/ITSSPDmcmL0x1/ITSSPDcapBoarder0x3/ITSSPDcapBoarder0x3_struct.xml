@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDcapBoarder0x3">
+      <materialref ref="ITS_AL"/>
+      <solidref ref="ITSSPDshBORDERL0x1"/>
+    </volume>
+    </structure>

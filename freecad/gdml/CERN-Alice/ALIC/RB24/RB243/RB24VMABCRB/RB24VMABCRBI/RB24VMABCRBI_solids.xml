@@ -1,0 +1,16 @@
+<solids><subtraction name="shRB24VMABCRB">
+      <first ref="RB24VMABCRBT1"/>
+      <second ref="TGeoCompositeShape0x17"/>
+    </subtraction>
+    <tube name="RB24VMABCRBT1" rmin="5" rmax="5.1500000953674316" z="11.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x17">
+      <first ref="RB24VMABCRBT2i"/>
+      <second ref="RB24VMABCRBT3i"/>
+      <firstposition name="TGeoCompositeShape0x17RB24VMABCRBT2ipos" x="-7.5250000953674316" y="0" z="1.4500000000000002" unit="cm"/>
+      <firstrotation name="TGeoCompositeShape0x17RB24VMABCRBT2irot" x="-0" y="-90" z="0" unit="deg"/>
+      <position name="TGeoCompositeShape0x17RB24VMABCRBT3ipos" x="0" y="7.0250000953674316" z="1.4500000000000002" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x17RB24VMABCRBT3irot" x="90" y="-0" z="180" unit="deg"/>
+    </union>
+    <tube name="RB24VMABCRBT2i" rmin="0" rmax="3" z="11.949999809265137" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="RB24VMABCRBT3i" rmin="0" rmax="1.75" z="10.949999809265137" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

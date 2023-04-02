@@ -1,0 +1,17 @@
+<solids><subtraction name="TGeoCompositeShape0x210">
+      <first ref="sUpGlueScreenLayer"/>
+      <second ref="TGeoCompositeShape0x211"/>
+      <firstposition name="TGeoCompositeShape0x210sUpGlueScreenLayerpos" x="0" y="-0.016000000000000004" z="0" unit="cm"/>
+    </subtraction>
+    <box name="sUpGlueScreenLayer" x="4.1000000000000005" y="0.0070000000000000001" z="6.5" lunit="cm"/>
+    <union name="TGeoCompositeShape0x211">
+      <first ref="sRoundHole"/>
+      <second ref="sRoundHole"/>
+      <firstposition name="TGeoCompositeShape0x211sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="-3" unit="cm"/>
+      <firstrotation name="TGeoCompositeShape0x211sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+      <position name="TGeoCompositeShape0x211sRoundHolepos" x="-0.30989999999999984" y="-0.0075000000000000023" z="3" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x211sRoundHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="sRoundHole" rmin="0" rmax="0.10500000000000001" z="0.024" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

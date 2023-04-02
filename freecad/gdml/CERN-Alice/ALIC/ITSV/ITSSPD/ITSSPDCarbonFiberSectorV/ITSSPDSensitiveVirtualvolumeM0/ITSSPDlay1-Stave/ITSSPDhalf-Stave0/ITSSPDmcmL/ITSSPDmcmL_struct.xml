@@ -1,0 +1,67 @@
+<structure><volume name="ITSSPDcapTop0x1">
+      <materialref ref="ITS_AL"/>
+      <solidref ref="TGeoXtru0x13"/>
+    </volume>
+    <volume name="ITSSPDcapBoarder0x1">
+      <materialref ref="ITS_AL"/>
+      <solidref ref="ITSSPDshBORDERL"/>
+    </volume>
+    <volume name="ITSSPDoptical0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDoptical0x3"/>
+    </volume>
+    <volume name="ITSSPDrx400x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDrx400x3"/>
+    </volume>
+    <volume name="ITSSPDgol0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDgol0x3"/>
+    </volume>
+    <volume name="ITSSPDpilot0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDpilot0x3"/>
+    </volume>
+    <volume name="ITSSPDanalog0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDanalog0x3"/>
+    </volume>
+    <volume name="ITSSPDbase0x1">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="TGeoXtru0x12"/>
+    </volume>
+    <assembly name="ITSSPDmcmL">
+      <physvol name="ITSSPDbase_1" copynumber="1">
+        <volumeref ref="ITSSPDbase0x1"/>
+        <positionref ref="ITSSPDbase_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDanalog_1" copynumber="1">
+        <volumeref ref="ITSSPDanalog0x2"/>
+        <positionref ref="ITSSPDanalog_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDpilot_1" copynumber="1">
+        <volumeref ref="ITSSPDpilot0x2"/>
+        <positionref ref="ITSSPDpilot_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDgol_1" copynumber="1">
+        <volumeref ref="ITSSPDgol0x2"/>
+        <positionref ref="ITSSPDgol_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDrx40_1" copynumber="1">
+        <volumeref ref="ITSSPDrx400x2"/>
+        <positionref ref="ITSSPDrx40_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDoptical_1" copynumber="1">
+        <volumeref ref="ITSSPDoptical0x2"/>
+        <positionref ref="ITSSPDoptical_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDcapBoarder_1" copynumber="1">
+        <volumeref ref="ITSSPDcapBoarder0x1"/>
+        <positionref ref="ITSSPDcapBoarder_10x1inITSSPDmcmLpos"/>
+      </physvol>
+      <physvol name="ITSSPDcapTop_1" copynumber="1">
+        <volumeref ref="ITSSPDcapTop0x1"/>
+        <positionref ref="ITSSPDcapTop_10x1inITSSPDmcmLpos"/>
+      </physvol>
+    </assembly>
+    </structure>

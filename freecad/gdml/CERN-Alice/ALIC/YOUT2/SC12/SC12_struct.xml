@@ -1,0 +1,5199 @@
+<structure><volume name="SAXV20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x35"/>
+    </volume>
+    <assembly name="SVX2F3">
+      <physvol name="SAXV2_300" copynumber="300">
+        <volumeref ref="SAXV20x34"/>
+        <positionref ref="SAXV2_300inSVX2F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x33"/>
+    </volume>
+    <assembly name="SVX2F2">
+      <physvol name="SAXV2_299" copynumber="299">
+        <volumeref ref="SAXV20x32"/>
+        <positionref ref="SAXV2_299inSVX2F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x31"/>
+    </volume>
+    <assembly name="SVX2F1">
+      <physvol name="SAXV2_298" copynumber="298">
+        <volumeref ref="SAXV20x30"/>
+        <positionref ref="SAXV2_298inSVX2F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x29"/>
+    </volume>
+    <assembly name="SVX2F0">
+      <physvol name="SAXV2_297" copynumber="297">
+        <volumeref ref="SAXV20x28"/>
+        <positionref ref="SAXV2_297inSVX2F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x35"/>
+    </volume>
+    <assembly name="SHX2F3">
+      <physvol name="SAXH2_296" copynumber="296">
+        <volumeref ref="SAXH20x34"/>
+        <positionref ref="SAXH2_296inSHX2F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x33"/>
+    </volume>
+    <assembly name="SHX2F2">
+      <physvol name="SAXH2_295" copynumber="295">
+        <volumeref ref="SAXH20x32"/>
+        <positionref ref="SAXH2_295inSHX2F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x31"/>
+    </volume>
+    <assembly name="SHX2F1">
+      <physvol name="SAXH2_294" copynumber="294">
+        <volumeref ref="SAXH20x30"/>
+        <positionref ref="SAXH2_294inSHX2F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x29"/>
+    </volume>
+    <assembly name="SHX2F0">
+      <physvol name="SAXH2_293" copynumber="293">
+        <volumeref ref="SAXH20x28"/>
+        <positionref ref="SAXH2_293inSHX2F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x35"/>
+    </volume>
+    <assembly name="SH42F3">
+      <physvol name="SA4H2_292" copynumber="292">
+        <volumeref ref="SA4H20x34"/>
+        <positionref ref="SA4H2_292inSH42F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x33"/>
+    </volume>
+    <assembly name="SH42F2">
+      <physvol name="SA4H2_291" copynumber="291">
+        <volumeref ref="SA4H20x32"/>
+        <positionref ref="SA4H2_291inSH42F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x31"/>
+    </volume>
+    <assembly name="SH42F1">
+      <physvol name="SA4H2_290" copynumber="290">
+        <volumeref ref="SA4H20x30"/>
+        <positionref ref="SA4H2_290inSH42F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x29"/>
+    </volume>
+    <assembly name="SH42F0">
+      <physvol name="SA4H2_289" copynumber="289">
+        <volumeref ref="SA4H20x28"/>
+        <positionref ref="SA4H2_289inSH42F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x35"/>
+    </volume>
+    <assembly name="SV42F3">
+      <physvol name="SA4V2_288" copynumber="288">
+        <volumeref ref="SA4V20x34"/>
+        <positionref ref="SA4V2_288inSV42F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x33"/>
+    </volume>
+    <assembly name="SV42F2">
+      <physvol name="SA4V2_287" copynumber="287">
+        <volumeref ref="SA4V20x32"/>
+        <positionref ref="SA4V2_287inSV42F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x31"/>
+    </volume>
+    <assembly name="SV42F1">
+      <physvol name="SA4V2_286" copynumber="286">
+        <volumeref ref="SA4V20x30"/>
+        <positionref ref="SA4V2_286inSV42F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x29"/>
+    </volume>
+    <assembly name="SV42F0">
+      <physvol name="SA4V2_285" copynumber="285">
+        <volumeref ref="SA4V20x28"/>
+        <positionref ref="SA4V2_285inSV42F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x70">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x71"/>
+    </volume>
+    <assembly name="SP22F3">
+      <physvol name="SPINO2_284" copynumber="284">
+        <volumeref ref="SPINO20x70"/>
+        <positionref ref="SPINO2_284inSP22F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x68">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x69"/>
+    </volume>
+    <assembly name="SP22F2">
+      <physvol name="SPINO2_283" copynumber="283">
+        <volumeref ref="SPINO20x68"/>
+        <positionref ref="SPINO2_283inSP22F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x66">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x67"/>
+    </volume>
+    <assembly name="SP22F1">
+      <physvol name="SPINO2_282" copynumber="282">
+        <volumeref ref="SPINO20x66"/>
+        <positionref ref="SPINO2_282inSP22F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x64">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x65"/>
+    </volume>
+    <assembly name="SP22F0">
+      <physvol name="SPINO2_281" copynumber="281">
+        <volumeref ref="SPINO20x64"/>
+        <positionref ref="SPINO2_281inSP22F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x35"/>
+    </volume>
+    <assembly name="SH32F3">
+      <physvol name="SA3H2_280" copynumber="280">
+        <volumeref ref="SA3H20x34"/>
+        <positionref ref="SA3H2_280inSH32F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x33"/>
+    </volume>
+    <assembly name="SH32F2">
+      <physvol name="SA3H2_279" copynumber="279">
+        <volumeref ref="SA3H20x32"/>
+        <positionref ref="SA3H2_279inSH32F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x31"/>
+    </volume>
+    <assembly name="SH32F1">
+      <physvol name="SA3H2_278" copynumber="278">
+        <volumeref ref="SA3H20x30"/>
+        <positionref ref="SA3H2_278inSH32F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x29"/>
+    </volume>
+    <assembly name="SH32F0">
+      <physvol name="SA3H2_277" copynumber="277">
+        <volumeref ref="SA3H20x28"/>
+        <positionref ref="SA3H2_277inSH32F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x35"/>
+    </volume>
+    <assembly name="SV32F3">
+      <physvol name="SA3V2_276" copynumber="276">
+        <volumeref ref="SA3V20x34"/>
+        <positionref ref="SA3V2_276inSV32F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x33"/>
+    </volume>
+    <assembly name="SV32F2">
+      <physvol name="SA3V2_275" copynumber="275">
+        <volumeref ref="SA3V20x32"/>
+        <positionref ref="SA3V2_275inSV32F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x31"/>
+    </volume>
+    <assembly name="SV32F1">
+      <physvol name="SA3V2_274" copynumber="274">
+        <volumeref ref="SA3V20x30"/>
+        <positionref ref="SA3V2_274inSV32F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x29"/>
+    </volume>
+    <assembly name="SV32F0">
+      <physvol name="SA3V2_273" copynumber="273">
+        <volumeref ref="SA3V20x28"/>
+        <positionref ref="SA3V2_273inSV32F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x35"/>
+    </volume>
+    <assembly name="SH22F3">
+      <physvol name="SA2H2_272" copynumber="272">
+        <volumeref ref="SA2H20x34"/>
+        <positionref ref="SA2H2_272inSH22F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x33"/>
+    </volume>
+    <assembly name="SH22F2">
+      <physvol name="SA2H2_271" copynumber="271">
+        <volumeref ref="SA2H20x32"/>
+        <positionref ref="SA2H2_271inSH22F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x31"/>
+    </volume>
+    <assembly name="SH22F1">
+      <physvol name="SA2H2_270" copynumber="270">
+        <volumeref ref="SA2H20x30"/>
+        <positionref ref="SA2H2_270inSH22F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x29"/>
+    </volume>
+    <assembly name="SH22F0">
+      <physvol name="SA2H2_269" copynumber="269">
+        <volumeref ref="SA2H20x28"/>
+        <positionref ref="SA2H2_269inSH22F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x35"/>
+    </volume>
+    <assembly name="SV22F3">
+      <physvol name="SA2V2_268" copynumber="268">
+        <volumeref ref="SA2V20x34"/>
+        <positionref ref="SA2V2_268inSV22F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x33"/>
+    </volume>
+    <assembly name="SV22F2">
+      <physvol name="SA2V2_267" copynumber="267">
+        <volumeref ref="SA2V20x32"/>
+        <positionref ref="SA2V2_267inSV22F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x31"/>
+    </volume>
+    <assembly name="SV22F1">
+      <physvol name="SA2V2_266" copynumber="266">
+        <volumeref ref="SA2V20x30"/>
+        <positionref ref="SA2V2_266inSV22F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x29"/>
+    </volume>
+    <assembly name="SV22F0">
+      <physvol name="SA2V2_265" copynumber="265">
+        <volumeref ref="SA2V20x28"/>
+        <positionref ref="SA2V2_265inSV22F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x62">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x63"/>
+    </volume>
+    <assembly name="SP12F3">
+      <physvol name="SPINO2_264" copynumber="264">
+        <volumeref ref="SPINO20x62"/>
+        <positionref ref="SPINO2_264inSP12F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x60">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x61"/>
+    </volume>
+    <assembly name="SP12F2">
+      <physvol name="SPINO2_263" copynumber="263">
+        <volumeref ref="SPINO20x60"/>
+        <positionref ref="SPINO2_263inSP12F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x58">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x59"/>
+    </volume>
+    <assembly name="SP12F1">
+      <physvol name="SPINO2_262" copynumber="262">
+        <volumeref ref="SPINO20x58"/>
+        <positionref ref="SPINO2_262inSP12F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x56">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x57"/>
+    </volume>
+    <assembly name="SP12F0">
+      <physvol name="SPINO2_261" copynumber="261">
+        <volumeref ref="SPINO20x56"/>
+        <positionref ref="SPINO2_261inSP12F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x35"/>
+    </volume>
+    <assembly name="SH12F3">
+      <physvol name="SA1H2_260" copynumber="260">
+        <volumeref ref="SA1H20x34"/>
+        <positionref ref="SA1H2_260inSH12F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x33"/>
+    </volume>
+    <assembly name="SH12F2">
+      <physvol name="SA1H2_259" copynumber="259">
+        <volumeref ref="SA1H20x32"/>
+        <positionref ref="SA1H2_259inSH12F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x31"/>
+    </volume>
+    <assembly name="SH12F1">
+      <physvol name="SA1H2_258" copynumber="258">
+        <volumeref ref="SA1H20x30"/>
+        <positionref ref="SA1H2_258inSH12F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x29"/>
+    </volume>
+    <assembly name="SH12F0">
+      <physvol name="SA1H2_257" copynumber="257">
+        <volumeref ref="SA1H20x28"/>
+        <positionref ref="SA1H2_257inSH12F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x35"/>
+    </volume>
+    <assembly name="SV12F3">
+      <physvol name="SA1V2_256" copynumber="256">
+        <volumeref ref="SA1V20x34"/>
+        <positionref ref="SA1V2_256inSV12F3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x33"/>
+    </volume>
+    <assembly name="SV12F2">
+      <physvol name="SA1V2_255" copynumber="255">
+        <volumeref ref="SA1V20x32"/>
+        <positionref ref="SA1V2_255inSV12F2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x31"/>
+    </volume>
+    <assembly name="SV12F1">
+      <physvol name="SA1V2_254" copynumber="254">
+        <volumeref ref="SA1V20x30"/>
+        <positionref ref="SA1V2_254inSV12F1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x29"/>
+    </volume>
+    <assembly name="SV12F0">
+      <physvol name="SA1V2_253" copynumber="253">
+        <volumeref ref="SA1V20x28"/>
+        <positionref ref="SA1V2_253inSV12F0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x53">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x744"/>
+    </volume>
+    <volume name="SALH20x106">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x107"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x53"/>
+        <positionref ref="SAIH2_10x53inSALH20x106pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF11">
+      <physvol name="SALH2_252" copynumber="252">
+        <volumeref ref="SALH20x106"/>
+        <positionref ref="SALH2_252inSA2HF11pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x52">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x743"/>
+    </volume>
+    <volume name="SALH20x104">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x105"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x52"/>
+        <positionref ref="SAIH2_10x52inSALH20x104pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF8">
+      <physvol name="SALH2_249" copynumber="249">
+        <volumeref ref="SALH20x104"/>
+        <positionref ref="SALH2_249inSA2HF8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x51">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x742"/>
+    </volume>
+    <volume name="SALH20x102">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x103"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x51"/>
+        <positionref ref="SAIH2_10x51inSALH20x102pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF5">
+      <physvol name="SALH2_246" copynumber="246">
+        <volumeref ref="SALH20x102"/>
+        <positionref ref="SALH2_246inSA2HF5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x50">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x741"/>
+    </volume>
+    <volume name="SALH20x100">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x101"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x50"/>
+        <positionref ref="SAIH2_10x50inSALH20x100pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF2">
+      <physvol name="SALH2_243" copynumber="243">
+        <volumeref ref="SALH20x100"/>
+        <positionref ref="SALH2_243inSA2HF2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x49">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x740"/>
+    </volume>
+    <volume name="SALH20x98">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x99"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x49"/>
+        <positionref ref="SAIH2_10x49inSALH20x98pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF10">
+      <physvol name="SALH2_251" copynumber="251">
+        <volumeref ref="SALH20x98"/>
+        <positionref ref="SALH2_251inSA2HF10pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x48">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x739"/>
+    </volume>
+    <volume name="SALH20x96">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x97"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x48"/>
+        <positionref ref="SAIH2_10x48inSALH20x96pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF7">
+      <physvol name="SALH2_248" copynumber="248">
+        <volumeref ref="SALH20x96"/>
+        <positionref ref="SALH2_248inSA2HF7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x47">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x738"/>
+    </volume>
+    <volume name="SALH20x94">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x95"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x47"/>
+        <positionref ref="SAIH2_10x47inSALH20x94pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF4">
+      <physvol name="SALH2_245" copynumber="245">
+        <volumeref ref="SALH20x94"/>
+        <positionref ref="SALH2_245inSA2HF4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x46">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x737"/>
+    </volume>
+    <volume name="SALH20x92">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x93"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x46"/>
+        <positionref ref="SAIH2_10x46inSALH20x92pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF1">
+      <physvol name="SALH2_242" copynumber="242">
+        <volumeref ref="SALH20x92"/>
+        <positionref ref="SALH2_242inSA2HF1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x45">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x736"/>
+    </volume>
+    <volume name="SALH20x90">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x91"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x45"/>
+        <positionref ref="SAIH2_10x45inSALH20x90pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF9">
+      <physvol name="SALH2_250" copynumber="250">
+        <volumeref ref="SALH20x90"/>
+        <positionref ref="SALH2_250inSA2HF9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x44">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x735"/>
+    </volume>
+    <volume name="SALH20x88">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x89"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x44"/>
+        <positionref ref="SAIH2_10x44inSALH20x88pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF6">
+      <physvol name="SALH2_247" copynumber="247">
+        <volumeref ref="SALH20x88"/>
+        <positionref ref="SALH2_247inSA2HF6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x43">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x734"/>
+    </volume>
+    <volume name="SALH20x86">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x87"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x43"/>
+        <positionref ref="SAIH2_10x43inSALH20x86pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF3">
+      <physvol name="SALH2_244" copynumber="244">
+        <volumeref ref="SALH20x86"/>
+        <positionref ref="SALH2_244inSA2HF3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x42">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x733"/>
+    </volume>
+    <volume name="SALH20x84">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x85"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x42"/>
+        <positionref ref="SAIH2_10x42inSALH20x84pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HF0">
+      <physvol name="SALH2_241" copynumber="241">
+        <volumeref ref="SALH20x84"/>
+        <positionref ref="SALH2_241inSA2HF0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x21">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x732"/>
+    </volume>
+    <volume name="SB2A0x21">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x731"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x21"/>
+        <positionref ref="S12G_10x21inSB2A0x21pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x42">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x43"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x21"/>
+        <positionref ref="SB2A_10x21inSC2A0x42pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L9">
+      <physvol name="SC2A_240" copynumber="240">
+        <volumeref ref="SC2A0x42"/>
+        <positionref ref="SC2A_240inS1L9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x20">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x730"/>
+    </volume>
+    <volume name="SB2A0x20">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x729"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x20"/>
+        <positionref ref="S12G_10x20inSB2A0x20pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x40">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x41"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x20"/>
+        <positionref ref="SB2A_10x20inSC2A0x40pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L1">
+      <physvol name="SC2A_239" copynumber="239">
+        <volumeref ref="SC2A0x40"/>
+        <positionref ref="SC2A_239inS1L1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x19">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x728"/>
+    </volume>
+    <volume name="SB2A0x19">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x727"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x19"/>
+        <positionref ref="S12G_10x19inSB2A0x19pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x38">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x39"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x19"/>
+        <positionref ref="SB2A_10x19inSC2A0x38pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R9">
+      <physvol name="SC2A_238" copynumber="238">
+        <volumeref ref="SC2A0x38"/>
+        <positionref ref="SC2A_238inS1R9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x18">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x726"/>
+    </volume>
+    <volume name="SB2A0x18">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x725"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x18"/>
+        <positionref ref="S12G_10x18inSB2A0x18pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x36">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x37"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x18"/>
+        <positionref ref="SB2A_10x18inSC2A0x36pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R1">
+      <physvol name="SC2A_237" copynumber="237">
+        <volumeref ref="SC2A0x36"/>
+        <positionref ref="SC2A_237inS1R1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x27"/>
+    </volume>
+    <assembly name="SVX2E3">
+      <physvol name="SAXV2_236" copynumber="236">
+        <volumeref ref="SAXV20x26"/>
+        <positionref ref="SAXV2_236inSVX2E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x25"/>
+    </volume>
+    <assembly name="SVX2E2">
+      <physvol name="SAXV2_235" copynumber="235">
+        <volumeref ref="SAXV20x24"/>
+        <positionref ref="SAXV2_235inSVX2E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x23"/>
+    </volume>
+    <assembly name="SVX2E1">
+      <physvol name="SAXV2_234" copynumber="234">
+        <volumeref ref="SAXV20x22"/>
+        <positionref ref="SAXV2_234inSVX2E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x21"/>
+    </volume>
+    <assembly name="SVX2E0">
+      <physvol name="SAXV2_233" copynumber="233">
+        <volumeref ref="SAXV20x20"/>
+        <positionref ref="SAXV2_233inSVX2E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x27"/>
+    </volume>
+    <assembly name="SHX2E3">
+      <physvol name="SAXH2_232" copynumber="232">
+        <volumeref ref="SAXH20x26"/>
+        <positionref ref="SAXH2_232inSHX2E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x25"/>
+    </volume>
+    <assembly name="SHX2E2">
+      <physvol name="SAXH2_231" copynumber="231">
+        <volumeref ref="SAXH20x24"/>
+        <positionref ref="SAXH2_231inSHX2E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x23"/>
+    </volume>
+    <assembly name="SHX2E1">
+      <physvol name="SAXH2_230" copynumber="230">
+        <volumeref ref="SAXH20x22"/>
+        <positionref ref="SAXH2_230inSHX2E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x21"/>
+    </volume>
+    <assembly name="SHX2E0">
+      <physvol name="SAXH2_229" copynumber="229">
+        <volumeref ref="SAXH20x20"/>
+        <positionref ref="SAXH2_229inSHX2E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x27"/>
+    </volume>
+    <assembly name="SH42E3">
+      <physvol name="SA4H2_228" copynumber="228">
+        <volumeref ref="SA4H20x26"/>
+        <positionref ref="SA4H2_228inSH42E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x25"/>
+    </volume>
+    <assembly name="SH42E2">
+      <physvol name="SA4H2_227" copynumber="227">
+        <volumeref ref="SA4H20x24"/>
+        <positionref ref="SA4H2_227inSH42E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x23"/>
+    </volume>
+    <assembly name="SH42E1">
+      <physvol name="SA4H2_226" copynumber="226">
+        <volumeref ref="SA4H20x22"/>
+        <positionref ref="SA4H2_226inSH42E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x21"/>
+    </volume>
+    <assembly name="SH42E0">
+      <physvol name="SA4H2_225" copynumber="225">
+        <volumeref ref="SA4H20x20"/>
+        <positionref ref="SA4H2_225inSH42E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x27"/>
+    </volume>
+    <assembly name="SV42E3">
+      <physvol name="SA4V2_224" copynumber="224">
+        <volumeref ref="SA4V20x26"/>
+        <positionref ref="SA4V2_224inSV42E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x25"/>
+    </volume>
+    <assembly name="SV42E2">
+      <physvol name="SA4V2_223" copynumber="223">
+        <volumeref ref="SA4V20x24"/>
+        <positionref ref="SA4V2_223inSV42E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x23"/>
+    </volume>
+    <assembly name="SV42E1">
+      <physvol name="SA4V2_222" copynumber="222">
+        <volumeref ref="SA4V20x22"/>
+        <positionref ref="SA4V2_222inSV42E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x21"/>
+    </volume>
+    <assembly name="SV42E0">
+      <physvol name="SA4V2_221" copynumber="221">
+        <volumeref ref="SA4V20x20"/>
+        <positionref ref="SA4V2_221inSV42E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x54">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x55"/>
+    </volume>
+    <assembly name="SP22E3">
+      <physvol name="SPINO2_220" copynumber="220">
+        <volumeref ref="SPINO20x54"/>
+        <positionref ref="SPINO2_220inSP22E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x52">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x53"/>
+    </volume>
+    <assembly name="SP22E2">
+      <physvol name="SPINO2_219" copynumber="219">
+        <volumeref ref="SPINO20x52"/>
+        <positionref ref="SPINO2_219inSP22E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x50">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x51"/>
+    </volume>
+    <assembly name="SP22E1">
+      <physvol name="SPINO2_218" copynumber="218">
+        <volumeref ref="SPINO20x50"/>
+        <positionref ref="SPINO2_218inSP22E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x48">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x49"/>
+    </volume>
+    <assembly name="SP22E0">
+      <physvol name="SPINO2_217" copynumber="217">
+        <volumeref ref="SPINO20x48"/>
+        <positionref ref="SPINO2_217inSP22E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x27"/>
+    </volume>
+    <assembly name="SH32E3">
+      <physvol name="SA3H2_216" copynumber="216">
+        <volumeref ref="SA3H20x26"/>
+        <positionref ref="SA3H2_216inSH32E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x25"/>
+    </volume>
+    <assembly name="SH32E2">
+      <physvol name="SA3H2_215" copynumber="215">
+        <volumeref ref="SA3H20x24"/>
+        <positionref ref="SA3H2_215inSH32E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x23"/>
+    </volume>
+    <assembly name="SH32E1">
+      <physvol name="SA3H2_214" copynumber="214">
+        <volumeref ref="SA3H20x22"/>
+        <positionref ref="SA3H2_214inSH32E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x21"/>
+    </volume>
+    <assembly name="SH32E0">
+      <physvol name="SA3H2_213" copynumber="213">
+        <volumeref ref="SA3H20x20"/>
+        <positionref ref="SA3H2_213inSH32E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x27"/>
+    </volume>
+    <assembly name="SV32E3">
+      <physvol name="SA3V2_212" copynumber="212">
+        <volumeref ref="SA3V20x26"/>
+        <positionref ref="SA3V2_212inSV32E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x25"/>
+    </volume>
+    <assembly name="SV32E2">
+      <physvol name="SA3V2_211" copynumber="211">
+        <volumeref ref="SA3V20x24"/>
+        <positionref ref="SA3V2_211inSV32E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x23"/>
+    </volume>
+    <assembly name="SV32E1">
+      <physvol name="SA3V2_210" copynumber="210">
+        <volumeref ref="SA3V20x22"/>
+        <positionref ref="SA3V2_210inSV32E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x21"/>
+    </volume>
+    <assembly name="SV32E0">
+      <physvol name="SA3V2_209" copynumber="209">
+        <volumeref ref="SA3V20x20"/>
+        <positionref ref="SA3V2_209inSV32E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x27"/>
+    </volume>
+    <assembly name="SH22E3">
+      <physvol name="SA2H2_208" copynumber="208">
+        <volumeref ref="SA2H20x26"/>
+        <positionref ref="SA2H2_208inSH22E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x25"/>
+    </volume>
+    <assembly name="SH22E2">
+      <physvol name="SA2H2_207" copynumber="207">
+        <volumeref ref="SA2H20x24"/>
+        <positionref ref="SA2H2_207inSH22E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x23"/>
+    </volume>
+    <assembly name="SH22E1">
+      <physvol name="SA2H2_206" copynumber="206">
+        <volumeref ref="SA2H20x22"/>
+        <positionref ref="SA2H2_206inSH22E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x21"/>
+    </volume>
+    <assembly name="SH22E0">
+      <physvol name="SA2H2_205" copynumber="205">
+        <volumeref ref="SA2H20x20"/>
+        <positionref ref="SA2H2_205inSH22E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x27"/>
+    </volume>
+    <assembly name="SV22E3">
+      <physvol name="SA2V2_204" copynumber="204">
+        <volumeref ref="SA2V20x26"/>
+        <positionref ref="SA2V2_204inSV22E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x25"/>
+    </volume>
+    <assembly name="SV22E2">
+      <physvol name="SA2V2_203" copynumber="203">
+        <volumeref ref="SA2V20x24"/>
+        <positionref ref="SA2V2_203inSV22E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x23"/>
+    </volume>
+    <assembly name="SV22E1">
+      <physvol name="SA2V2_202" copynumber="202">
+        <volumeref ref="SA2V20x22"/>
+        <positionref ref="SA2V2_202inSV22E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x21"/>
+    </volume>
+    <assembly name="SV22E0">
+      <physvol name="SA2V2_201" copynumber="201">
+        <volumeref ref="SA2V20x20"/>
+        <positionref ref="SA2V2_201inSV22E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x46">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x47"/>
+    </volume>
+    <assembly name="SP12E3">
+      <physvol name="SPINO2_200" copynumber="200">
+        <volumeref ref="SPINO20x46"/>
+        <positionref ref="SPINO2_200inSP12E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x45"/>
+    </volume>
+    <assembly name="SP12E2">
+      <physvol name="SPINO2_199" copynumber="199">
+        <volumeref ref="SPINO20x44"/>
+        <positionref ref="SPINO2_199inSP12E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x42">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x43"/>
+    </volume>
+    <assembly name="SP12E1">
+      <physvol name="SPINO2_198" copynumber="198">
+        <volumeref ref="SPINO20x42"/>
+        <positionref ref="SPINO2_198inSP12E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x40">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x41"/>
+    </volume>
+    <assembly name="SP12E0">
+      <physvol name="SPINO2_197" copynumber="197">
+        <volumeref ref="SPINO20x40"/>
+        <positionref ref="SPINO2_197inSP12E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x27"/>
+    </volume>
+    <assembly name="SH12E3">
+      <physvol name="SA1H2_196" copynumber="196">
+        <volumeref ref="SA1H20x26"/>
+        <positionref ref="SA1H2_196inSH12E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x25"/>
+    </volume>
+    <assembly name="SH12E2">
+      <physvol name="SA1H2_195" copynumber="195">
+        <volumeref ref="SA1H20x24"/>
+        <positionref ref="SA1H2_195inSH12E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x23"/>
+    </volume>
+    <assembly name="SH12E1">
+      <physvol name="SA1H2_194" copynumber="194">
+        <volumeref ref="SA1H20x22"/>
+        <positionref ref="SA1H2_194inSH12E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x21"/>
+    </volume>
+    <assembly name="SH12E0">
+      <physvol name="SA1H2_193" copynumber="193">
+        <volumeref ref="SA1H20x20"/>
+        <positionref ref="SA1H2_193inSH12E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x27"/>
+    </volume>
+    <assembly name="SV12E3">
+      <physvol name="SA1V2_192" copynumber="192">
+        <volumeref ref="SA1V20x26"/>
+        <positionref ref="SA1V2_192inSV12E3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x25"/>
+    </volume>
+    <assembly name="SV12E2">
+      <physvol name="SA1V2_191" copynumber="191">
+        <volumeref ref="SA1V20x24"/>
+        <positionref ref="SA1V2_191inSV12E2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x23"/>
+    </volume>
+    <assembly name="SV12E1">
+      <physvol name="SA1V2_190" copynumber="190">
+        <volumeref ref="SA1V20x22"/>
+        <positionref ref="SA1V2_190inSV12E1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x21"/>
+    </volume>
+    <assembly name="SV12E0">
+      <physvol name="SA1V2_189" copynumber="189">
+        <volumeref ref="SA1V20x20"/>
+        <positionref ref="SA1V2_189inSV12E0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x41">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x724"/>
+    </volume>
+    <volume name="SALH20x82">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x83"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x41"/>
+        <positionref ref="SAIH2_10x41inSALH20x82pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE11">
+      <physvol name="SALH2_188" copynumber="188">
+        <volumeref ref="SALH20x82"/>
+        <positionref ref="SALH2_188inSA2HE11pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x40">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x723"/>
+    </volume>
+    <volume name="SALH20x80">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x81"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x40"/>
+        <positionref ref="SAIH2_10x40inSALH20x80pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE8">
+      <physvol name="SALH2_185" copynumber="185">
+        <volumeref ref="SALH20x80"/>
+        <positionref ref="SALH2_185inSA2HE8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x39">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x722"/>
+    </volume>
+    <volume name="SALH20x78">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x79"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x39"/>
+        <positionref ref="SAIH2_10x39inSALH20x78pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE5">
+      <physvol name="SALH2_182" copynumber="182">
+        <volumeref ref="SALH20x78"/>
+        <positionref ref="SALH2_182inSA2HE5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x38">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x721"/>
+    </volume>
+    <volume name="SALH20x76">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x77"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x38"/>
+        <positionref ref="SAIH2_10x38inSALH20x76pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE2">
+      <physvol name="SALH2_179" copynumber="179">
+        <volumeref ref="SALH20x76"/>
+        <positionref ref="SALH2_179inSA2HE2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x37">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x720"/>
+    </volume>
+    <volume name="SALH20x74">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x75"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x37"/>
+        <positionref ref="SAIH2_10x37inSALH20x74pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE10">
+      <physvol name="SALH2_187" copynumber="187">
+        <volumeref ref="SALH20x74"/>
+        <positionref ref="SALH2_187inSA2HE10pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x36">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x719"/>
+    </volume>
+    <volume name="SALH20x72">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x73"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x36"/>
+        <positionref ref="SAIH2_10x36inSALH20x72pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE7">
+      <physvol name="SALH2_184" copynumber="184">
+        <volumeref ref="SALH20x72"/>
+        <positionref ref="SALH2_184inSA2HE7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x35">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x718"/>
+    </volume>
+    <volume name="SALH20x70">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x71"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x35"/>
+        <positionref ref="SAIH2_10x35inSALH20x70pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE4">
+      <physvol name="SALH2_181" copynumber="181">
+        <volumeref ref="SALH20x70"/>
+        <positionref ref="SALH2_181inSA2HE4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x34">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x717"/>
+    </volume>
+    <volume name="SALH20x68">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x69"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x34"/>
+        <positionref ref="SAIH2_10x34inSALH20x68pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE1">
+      <physvol name="SALH2_178" copynumber="178">
+        <volumeref ref="SALH20x68"/>
+        <positionref ref="SALH2_178inSA2HE1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x33">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x716"/>
+    </volume>
+    <volume name="SALH20x66">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x67"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x33"/>
+        <positionref ref="SAIH2_10x33inSALH20x66pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE9">
+      <physvol name="SALH2_186" copynumber="186">
+        <volumeref ref="SALH20x66"/>
+        <positionref ref="SALH2_186inSA2HE9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x32">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x715"/>
+    </volume>
+    <volume name="SALH20x64">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x65"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x32"/>
+        <positionref ref="SAIH2_10x32inSALH20x64pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE6">
+      <physvol name="SALH2_183" copynumber="183">
+        <volumeref ref="SALH20x64"/>
+        <positionref ref="SALH2_183inSA2HE6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x31">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x714"/>
+    </volume>
+    <volume name="SALH20x62">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x63"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x31"/>
+        <positionref ref="SAIH2_10x31inSALH20x62pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE3">
+      <physvol name="SALH2_180" copynumber="180">
+        <volumeref ref="SALH20x62"/>
+        <positionref ref="SALH2_180inSA2HE3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x30">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x713"/>
+    </volume>
+    <volume name="SALH20x60">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x61"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x30"/>
+        <positionref ref="SAIH2_10x30inSALH20x60pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HE0">
+      <physvol name="SALH2_177" copynumber="177">
+        <volumeref ref="SALH20x60"/>
+        <positionref ref="SALH2_177inSA2HE0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x17">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x712"/>
+    </volume>
+    <volume name="SB2A0x17">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x711"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x17"/>
+        <positionref ref="S12G_10x17inSB2A0x17pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x35"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x17"/>
+        <positionref ref="SB2A_10x17inSC2A0x34pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L8">
+      <physvol name="SC2A_176" copynumber="176">
+        <volumeref ref="SC2A0x34"/>
+        <positionref ref="SC2A_176inS1L8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x16">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x710"/>
+    </volume>
+    <volume name="SB2A0x16">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x709"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x16"/>
+        <positionref ref="S12G_10x16inSB2A0x16pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x33"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x16"/>
+        <positionref ref="SB2A_10x16inSC2A0x32pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L2">
+      <physvol name="SC2A_175" copynumber="175">
+        <volumeref ref="SC2A0x32"/>
+        <positionref ref="SC2A_175inS1L2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x15">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x708"/>
+    </volume>
+    <volume name="SB2A0x15">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x707"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x15"/>
+        <positionref ref="S12G_10x15inSB2A0x15pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x31"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x15"/>
+        <positionref ref="SB2A_10x15inSC2A0x30pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R8">
+      <physvol name="SC2A_174" copynumber="174">
+        <volumeref ref="SC2A0x30"/>
+        <positionref ref="SC2A_174inS1R8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x14">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x706"/>
+    </volume>
+    <volume name="SB2A0x14">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x705"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x14"/>
+        <positionref ref="S12G_10x14inSB2A0x14pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x29"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x14"/>
+        <positionref ref="SB2A_10x14inSC2A0x28pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R2">
+      <physvol name="SC2A_173" copynumber="173">
+        <volumeref ref="SC2A0x28"/>
+        <positionref ref="SC2A_173inS1R2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x19"/>
+    </volume>
+    <assembly name="SVX2D3">
+      <physvol name="SAXV2_172" copynumber="172">
+        <volumeref ref="SAXV20x18"/>
+        <positionref ref="SAXV2_172inSVX2D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x17"/>
+    </volume>
+    <assembly name="SVX2D2">
+      <physvol name="SAXV2_171" copynumber="171">
+        <volumeref ref="SAXV20x16"/>
+        <positionref ref="SAXV2_171inSVX2D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x15"/>
+    </volume>
+    <assembly name="SVX2D1">
+      <physvol name="SAXV2_170" copynumber="170">
+        <volumeref ref="SAXV20x14"/>
+        <positionref ref="SAXV2_170inSVX2D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x13"/>
+    </volume>
+    <assembly name="SVX2D0">
+      <physvol name="SAXV2_169" copynumber="169">
+        <volumeref ref="SAXV20x12"/>
+        <positionref ref="SAXV2_169inSVX2D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x19"/>
+    </volume>
+    <assembly name="SHX2D3">
+      <physvol name="SAXH2_168" copynumber="168">
+        <volumeref ref="SAXH20x18"/>
+        <positionref ref="SAXH2_168inSHX2D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x17"/>
+    </volume>
+    <assembly name="SHX2D2">
+      <physvol name="SAXH2_167" copynumber="167">
+        <volumeref ref="SAXH20x16"/>
+        <positionref ref="SAXH2_167inSHX2D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x15"/>
+    </volume>
+    <assembly name="SHX2D1">
+      <physvol name="SAXH2_166" copynumber="166">
+        <volumeref ref="SAXH20x14"/>
+        <positionref ref="SAXH2_166inSHX2D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x13"/>
+    </volume>
+    <assembly name="SHX2D0">
+      <physvol name="SAXH2_165" copynumber="165">
+        <volumeref ref="SAXH20x12"/>
+        <positionref ref="SAXH2_165inSHX2D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x19"/>
+    </volume>
+    <assembly name="SH42D3">
+      <physvol name="SA4H2_164" copynumber="164">
+        <volumeref ref="SA4H20x18"/>
+        <positionref ref="SA4H2_164inSH42D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x17"/>
+    </volume>
+    <assembly name="SH42D2">
+      <physvol name="SA4H2_163" copynumber="163">
+        <volumeref ref="SA4H20x16"/>
+        <positionref ref="SA4H2_163inSH42D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x15"/>
+    </volume>
+    <assembly name="SH42D1">
+      <physvol name="SA4H2_162" copynumber="162">
+        <volumeref ref="SA4H20x14"/>
+        <positionref ref="SA4H2_162inSH42D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x13"/>
+    </volume>
+    <assembly name="SH42D0">
+      <physvol name="SA4H2_161" copynumber="161">
+        <volumeref ref="SA4H20x12"/>
+        <positionref ref="SA4H2_161inSH42D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x19"/>
+    </volume>
+    <assembly name="SV42D3">
+      <physvol name="SA4V2_160" copynumber="160">
+        <volumeref ref="SA4V20x18"/>
+        <positionref ref="SA4V2_160inSV42D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x17"/>
+    </volume>
+    <assembly name="SV42D2">
+      <physvol name="SA4V2_159" copynumber="159">
+        <volumeref ref="SA4V20x16"/>
+        <positionref ref="SA4V2_159inSV42D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x15"/>
+    </volume>
+    <assembly name="SV42D1">
+      <physvol name="SA4V2_158" copynumber="158">
+        <volumeref ref="SA4V20x14"/>
+        <positionref ref="SA4V2_158inSV42D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x13"/>
+    </volume>
+    <assembly name="SV42D0">
+      <physvol name="SA4V2_157" copynumber="157">
+        <volumeref ref="SA4V20x12"/>
+        <positionref ref="SA4V2_157inSV42D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x38">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x39"/>
+    </volume>
+    <assembly name="SP22D3">
+      <physvol name="SPINO2_156" copynumber="156">
+        <volumeref ref="SPINO20x38"/>
+        <positionref ref="SPINO2_156inSP22D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x36">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x37"/>
+    </volume>
+    <assembly name="SP22D2">
+      <physvol name="SPINO2_155" copynumber="155">
+        <volumeref ref="SPINO20x36"/>
+        <positionref ref="SPINO2_155inSP22D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x34">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x35"/>
+    </volume>
+    <assembly name="SP22D1">
+      <physvol name="SPINO2_154" copynumber="154">
+        <volumeref ref="SPINO20x34"/>
+        <positionref ref="SPINO2_154inSP22D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x32">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x33"/>
+    </volume>
+    <assembly name="SP22D0">
+      <physvol name="SPINO2_153" copynumber="153">
+        <volumeref ref="SPINO20x32"/>
+        <positionref ref="SPINO2_153inSP22D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x19"/>
+    </volume>
+    <assembly name="SH32D3">
+      <physvol name="SA3H2_152" copynumber="152">
+        <volumeref ref="SA3H20x18"/>
+        <positionref ref="SA3H2_152inSH32D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x17"/>
+    </volume>
+    <assembly name="SH32D2">
+      <physvol name="SA3H2_151" copynumber="151">
+        <volumeref ref="SA3H20x16"/>
+        <positionref ref="SA3H2_151inSH32D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x15"/>
+    </volume>
+    <assembly name="SH32D1">
+      <physvol name="SA3H2_150" copynumber="150">
+        <volumeref ref="SA3H20x14"/>
+        <positionref ref="SA3H2_150inSH32D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x13"/>
+    </volume>
+    <assembly name="SH32D0">
+      <physvol name="SA3H2_149" copynumber="149">
+        <volumeref ref="SA3H20x12"/>
+        <positionref ref="SA3H2_149inSH32D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x19"/>
+    </volume>
+    <assembly name="SV32D3">
+      <physvol name="SA3V2_148" copynumber="148">
+        <volumeref ref="SA3V20x18"/>
+        <positionref ref="SA3V2_148inSV32D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x17"/>
+    </volume>
+    <assembly name="SV32D2">
+      <physvol name="SA3V2_147" copynumber="147">
+        <volumeref ref="SA3V20x16"/>
+        <positionref ref="SA3V2_147inSV32D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x15"/>
+    </volume>
+    <assembly name="SV32D1">
+      <physvol name="SA3V2_146" copynumber="146">
+        <volumeref ref="SA3V20x14"/>
+        <positionref ref="SA3V2_146inSV32D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x13"/>
+    </volume>
+    <assembly name="SV32D0">
+      <physvol name="SA3V2_145" copynumber="145">
+        <volumeref ref="SA3V20x12"/>
+        <positionref ref="SA3V2_145inSV32D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x19"/>
+    </volume>
+    <assembly name="SH22D3">
+      <physvol name="SA2H2_144" copynumber="144">
+        <volumeref ref="SA2H20x18"/>
+        <positionref ref="SA2H2_144inSH22D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x17"/>
+    </volume>
+    <assembly name="SH22D2">
+      <physvol name="SA2H2_143" copynumber="143">
+        <volumeref ref="SA2H20x16"/>
+        <positionref ref="SA2H2_143inSH22D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x15"/>
+    </volume>
+    <assembly name="SH22D1">
+      <physvol name="SA2H2_142" copynumber="142">
+        <volumeref ref="SA2H20x14"/>
+        <positionref ref="SA2H2_142inSH22D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x13"/>
+    </volume>
+    <assembly name="SH22D0">
+      <physvol name="SA2H2_141" copynumber="141">
+        <volumeref ref="SA2H20x12"/>
+        <positionref ref="SA2H2_141inSH22D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x19"/>
+    </volume>
+    <assembly name="SV22D3">
+      <physvol name="SA2V2_140" copynumber="140">
+        <volumeref ref="SA2V20x18"/>
+        <positionref ref="SA2V2_140inSV22D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x17"/>
+    </volume>
+    <assembly name="SV22D2">
+      <physvol name="SA2V2_139" copynumber="139">
+        <volumeref ref="SA2V20x16"/>
+        <positionref ref="SA2V2_139inSV22D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x15"/>
+    </volume>
+    <assembly name="SV22D1">
+      <physvol name="SA2V2_138" copynumber="138">
+        <volumeref ref="SA2V20x14"/>
+        <positionref ref="SA2V2_138inSV22D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x13"/>
+    </volume>
+    <assembly name="SV22D0">
+      <physvol name="SA2V2_137" copynumber="137">
+        <volumeref ref="SA2V20x12"/>
+        <positionref ref="SA2V2_137inSV22D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x30">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x31"/>
+    </volume>
+    <assembly name="SP12D3">
+      <physvol name="SPINO2_136" copynumber="136">
+        <volumeref ref="SPINO20x30"/>
+        <positionref ref="SPINO2_136inSP12D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x28">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x29"/>
+    </volume>
+    <assembly name="SP12D2">
+      <physvol name="SPINO2_135" copynumber="135">
+        <volumeref ref="SPINO20x28"/>
+        <positionref ref="SPINO2_135inSP12D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x26">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x27"/>
+    </volume>
+    <assembly name="SP12D1">
+      <physvol name="SPINO2_134" copynumber="134">
+        <volumeref ref="SPINO20x26"/>
+        <positionref ref="SPINO2_134inSP12D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x24">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x25"/>
+    </volume>
+    <assembly name="SP12D0">
+      <physvol name="SPINO2_133" copynumber="133">
+        <volumeref ref="SPINO20x24"/>
+        <positionref ref="SPINO2_133inSP12D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x19"/>
+    </volume>
+    <assembly name="SH12D3">
+      <physvol name="SA1H2_132" copynumber="132">
+        <volumeref ref="SA1H20x18"/>
+        <positionref ref="SA1H2_132inSH12D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x17"/>
+    </volume>
+    <assembly name="SH12D2">
+      <physvol name="SA1H2_131" copynumber="131">
+        <volumeref ref="SA1H20x16"/>
+        <positionref ref="SA1H2_131inSH12D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x15"/>
+    </volume>
+    <assembly name="SH12D1">
+      <physvol name="SA1H2_130" copynumber="130">
+        <volumeref ref="SA1H20x14"/>
+        <positionref ref="SA1H2_130inSH12D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x13"/>
+    </volume>
+    <assembly name="SH12D0">
+      <physvol name="SA1H2_129" copynumber="129">
+        <volumeref ref="SA1H20x12"/>
+        <positionref ref="SA1H2_129inSH12D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x19"/>
+    </volume>
+    <assembly name="SV12D3">
+      <physvol name="SA1V2_128" copynumber="128">
+        <volumeref ref="SA1V20x18"/>
+        <positionref ref="SA1V2_128inSV12D3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x17"/>
+    </volume>
+    <assembly name="SV12D2">
+      <physvol name="SA1V2_127" copynumber="127">
+        <volumeref ref="SA1V20x16"/>
+        <positionref ref="SA1V2_127inSV12D2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x15"/>
+    </volume>
+    <assembly name="SV12D1">
+      <physvol name="SA1V2_126" copynumber="126">
+        <volumeref ref="SA1V20x14"/>
+        <positionref ref="SA1V2_126inSV12D1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x13"/>
+    </volume>
+    <assembly name="SV12D0">
+      <physvol name="SA1V2_125" copynumber="125">
+        <volumeref ref="SA1V20x12"/>
+        <positionref ref="SA1V2_125inSV12D0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x29">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x704"/>
+    </volume>
+    <volume name="SALH20x58">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x59"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x29"/>
+        <positionref ref="SAIH2_10x29inSALH20x58pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD11">
+      <physvol name="SALH2_124" copynumber="124">
+        <volumeref ref="SALH20x58"/>
+        <positionref ref="SALH2_124inSA2HD11pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x28">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x703"/>
+    </volume>
+    <volume name="SALH20x56">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x57"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x28"/>
+        <positionref ref="SAIH2_10x28inSALH20x56pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD8">
+      <physvol name="SALH2_121" copynumber="121">
+        <volumeref ref="SALH20x56"/>
+        <positionref ref="SALH2_121inSA2HD8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x27">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x702"/>
+    </volume>
+    <volume name="SALH20x54">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x55"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x27"/>
+        <positionref ref="SAIH2_10x27inSALH20x54pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD5">
+      <physvol name="SALH2_118" copynumber="118">
+        <volumeref ref="SALH20x54"/>
+        <positionref ref="SALH2_118inSA2HD5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x26">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x701"/>
+    </volume>
+    <volume name="SALH20x52">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x53"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x26"/>
+        <positionref ref="SAIH2_10x26inSALH20x52pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD2">
+      <physvol name="SALH2_115" copynumber="115">
+        <volumeref ref="SALH20x52"/>
+        <positionref ref="SALH2_115inSA2HD2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x25">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x700"/>
+    </volume>
+    <volume name="SALH20x50">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x51"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x25"/>
+        <positionref ref="SAIH2_10x25inSALH20x50pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD10">
+      <physvol name="SALH2_123" copynumber="123">
+        <volumeref ref="SALH20x50"/>
+        <positionref ref="SALH2_123inSA2HD10pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x24">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x699"/>
+    </volume>
+    <volume name="SALH20x48">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x49"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x24"/>
+        <positionref ref="SAIH2_10x24inSALH20x48pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD7">
+      <physvol name="SALH2_120" copynumber="120">
+        <volumeref ref="SALH20x48"/>
+        <positionref ref="SALH2_120inSA2HD7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x23">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x698"/>
+    </volume>
+    <volume name="SALH20x46">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x47"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x23"/>
+        <positionref ref="SAIH2_10x23inSALH20x46pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD4">
+      <physvol name="SALH2_117" copynumber="117">
+        <volumeref ref="SALH20x46"/>
+        <positionref ref="SALH2_117inSA2HD4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x22">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x697"/>
+    </volume>
+    <volume name="SALH20x44">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x45"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x22"/>
+        <positionref ref="SAIH2_10x22inSALH20x44pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD1">
+      <physvol name="SALH2_114" copynumber="114">
+        <volumeref ref="SALH20x44"/>
+        <positionref ref="SALH2_114inSA2HD1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x21">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x696"/>
+    </volume>
+    <volume name="SALH20x42">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x43"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x21"/>
+        <positionref ref="SAIH2_10x21inSALH20x42pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD9">
+      <physvol name="SALH2_122" copynumber="122">
+        <volumeref ref="SALH20x42"/>
+        <positionref ref="SALH2_122inSA2HD9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x20">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x695"/>
+    </volume>
+    <volume name="SALH20x40">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x41"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x20"/>
+        <positionref ref="SAIH2_10x20inSALH20x40pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD6">
+      <physvol name="SALH2_119" copynumber="119">
+        <volumeref ref="SALH20x40"/>
+        <positionref ref="SALH2_119inSA2HD6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x19">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x694"/>
+    </volume>
+    <volume name="SALH20x38">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x39"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x19"/>
+        <positionref ref="SAIH2_10x19inSALH20x38pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD3">
+      <physvol name="SALH2_116" copynumber="116">
+        <volumeref ref="SALH20x38"/>
+        <positionref ref="SALH2_116inSA2HD3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x18">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x693"/>
+    </volume>
+    <volume name="SALH20x36">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x37"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x18"/>
+        <positionref ref="SAIH2_10x18inSALH20x36pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HD0">
+      <physvol name="SALH2_113" copynumber="113">
+        <volumeref ref="SALH20x36"/>
+        <positionref ref="SALH2_113inSA2HD0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x13">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x692"/>
+    </volume>
+    <volume name="SB2A0x13">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x691"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x13"/>
+        <positionref ref="S12G_10x13inSB2A0x13pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x27"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x13"/>
+        <positionref ref="SB2A_10x13inSC2A0x26pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L7">
+      <physvol name="SC2A_112" copynumber="112">
+        <volumeref ref="SC2A0x26"/>
+        <positionref ref="SC2A_112inS1L7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x12">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x690"/>
+    </volume>
+    <volume name="SB2A0x12">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x689"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x12"/>
+        <positionref ref="S12G_10x12inSB2A0x12pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x25"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x12"/>
+        <positionref ref="SB2A_10x12inSC2A0x24pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L3">
+      <physvol name="SC2A_111" copynumber="111">
+        <volumeref ref="SC2A0x24"/>
+        <positionref ref="SC2A_111inS1L3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x11">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x688"/>
+    </volume>
+    <volume name="SB2A0x11">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x687"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x11"/>
+        <positionref ref="S12G_10x11inSB2A0x11pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x23"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x11"/>
+        <positionref ref="SB2A_10x11inSC2A0x22pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R7">
+      <physvol name="SC2A_110" copynumber="110">
+        <volumeref ref="SC2A0x22"/>
+        <positionref ref="SC2A_110inS1R7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x10">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x686"/>
+    </volume>
+    <volume name="SB2A0x10">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x685"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x10"/>
+        <positionref ref="S12G_10x10inSB2A0x10pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x21"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x10"/>
+        <positionref ref="SB2A_10x10inSC2A0x20pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R3">
+      <physvol name="SC2A_109" copynumber="109">
+        <volumeref ref="SC2A0x20"/>
+        <positionref ref="SC2A_109inS1R3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x11"/>
+    </volume>
+    <assembly name="SVX2B3">
+      <physvol name="SAXV2_108" copynumber="108">
+        <volumeref ref="SAXV20x10"/>
+        <positionref ref="SAXV2_108inSVX2B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x9"/>
+    </volume>
+    <assembly name="SVX2B1">
+      <physvol name="SAXV2_107" copynumber="107">
+        <volumeref ref="SAXV20x8"/>
+        <positionref ref="SAXV2_107inSVX2B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x11"/>
+    </volume>
+    <assembly name="SHX2B3">
+      <physvol name="SAXH2_106" copynumber="106">
+        <volumeref ref="SAXH20x10"/>
+        <positionref ref="SAXH2_106inSHX2B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x9"/>
+    </volume>
+    <assembly name="SHX2B1">
+      <physvol name="SAXH2_105" copynumber="105">
+        <volumeref ref="SAXH20x8"/>
+        <positionref ref="SAXH2_105inSHX2B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x11"/>
+    </volume>
+    <assembly name="SH42B3">
+      <physvol name="SA4H2_104" copynumber="104">
+        <volumeref ref="SA4H20x10"/>
+        <positionref ref="SA4H2_104inSH42B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x9"/>
+    </volume>
+    <assembly name="SH42B1">
+      <physvol name="SA4H2_103" copynumber="103">
+        <volumeref ref="SA4H20x8"/>
+        <positionref ref="SA4H2_103inSH42B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x11"/>
+    </volume>
+    <assembly name="SV42B3">
+      <physvol name="SA4V2_102" copynumber="102">
+        <volumeref ref="SA4V20x10"/>
+        <positionref ref="SA4V2_102inSV42B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x9"/>
+    </volume>
+    <assembly name="SV42B1">
+      <physvol name="SA4V2_101" copynumber="101">
+        <volumeref ref="SA4V20x8"/>
+        <positionref ref="SA4V2_101inSV42B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x22">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x23"/>
+    </volume>
+    <assembly name="SP22BC3">
+      <physvol name="SPINO2_100" copynumber="100">
+        <volumeref ref="SPINO20x22"/>
+        <positionref ref="SPINO2_100inSP22BC3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x20">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x21"/>
+    </volume>
+    <assembly name="SP22BC1">
+      <physvol name="SPINO2_99" copynumber="99">
+        <volumeref ref="SPINO20x20"/>
+        <positionref ref="SPINO2_99inSP22BC1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x11"/>
+    </volume>
+    <assembly name="SH32B3">
+      <physvol name="SA3H2_98" copynumber="98">
+        <volumeref ref="SA3H20x10"/>
+        <positionref ref="SA3H2_98inSH32B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x9"/>
+    </volume>
+    <assembly name="SH32B1">
+      <physvol name="SA3H2_97" copynumber="97">
+        <volumeref ref="SA3H20x8"/>
+        <positionref ref="SA3H2_97inSH32B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x11"/>
+    </volume>
+    <assembly name="SV32B3">
+      <physvol name="SA3V2_96" copynumber="96">
+        <volumeref ref="SA3V20x10"/>
+        <positionref ref="SA3V2_96inSV32B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x9"/>
+    </volume>
+    <assembly name="SV32B1">
+      <physvol name="SA3V2_95" copynumber="95">
+        <volumeref ref="SA3V20x8"/>
+        <positionref ref="SA3V2_95inSV32B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x11"/>
+    </volume>
+    <assembly name="SH22B3">
+      <physvol name="SA2H2_94" copynumber="94">
+        <volumeref ref="SA2H20x10"/>
+        <positionref ref="SA2H2_94inSH22B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x9"/>
+    </volume>
+    <assembly name="SH22B1">
+      <physvol name="SA2H2_93" copynumber="93">
+        <volumeref ref="SA2H20x8"/>
+        <positionref ref="SA2H2_93inSH22B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x11"/>
+    </volume>
+    <assembly name="SV22B3">
+      <physvol name="SA2V2_92" copynumber="92">
+        <volumeref ref="SA2V20x10"/>
+        <positionref ref="SA2V2_92inSV22B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x9"/>
+    </volume>
+    <assembly name="SV22B1">
+      <physvol name="SA2V2_91" copynumber="91">
+        <volumeref ref="SA2V20x8"/>
+        <positionref ref="SA2V2_91inSV22B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x18">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x19"/>
+    </volume>
+    <assembly name="SP12BC3">
+      <physvol name="SPINO2_90" copynumber="90">
+        <volumeref ref="SPINO20x18"/>
+        <positionref ref="SPINO2_90inSP12BC3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x16">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x17"/>
+    </volume>
+    <assembly name="SP12BC1">
+      <physvol name="SPINO2_89" copynumber="89">
+        <volumeref ref="SPINO20x16"/>
+        <positionref ref="SPINO2_89inSP12BC1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x11"/>
+    </volume>
+    <assembly name="SH12B3">
+      <physvol name="SA1H2_88" copynumber="88">
+        <volumeref ref="SA1H20x10"/>
+        <positionref ref="SA1H2_88inSH12B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x9"/>
+    </volume>
+    <assembly name="SH12B1">
+      <physvol name="SA1H2_87" copynumber="87">
+        <volumeref ref="SA1H20x8"/>
+        <positionref ref="SA1H2_87inSH12B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x11"/>
+    </volume>
+    <assembly name="SV12B3">
+      <physvol name="SA1V2_86" copynumber="86">
+        <volumeref ref="SA1V20x10"/>
+        <positionref ref="SA1V2_86inSV12B3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x9"/>
+    </volume>
+    <assembly name="SV12B1">
+      <physvol name="SA1V2_85" copynumber="85">
+        <volumeref ref="SA1V20x8"/>
+        <positionref ref="SA1V2_85inSV12B1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x7"/>
+    </volume>
+    <assembly name="SVX2B2">
+      <physvol name="SAXV2_84" copynumber="84">
+        <volumeref ref="SAXV20x6"/>
+        <positionref ref="SAXV2_84inSVX2B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x5"/>
+    </volume>
+    <assembly name="SVX2B0">
+      <physvol name="SAXV2_83" copynumber="83">
+        <volumeref ref="SAXV20x4"/>
+        <positionref ref="SAXV2_83inSVX2B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x7"/>
+    </volume>
+    <assembly name="SHX2B2">
+      <physvol name="SAXH2_82" copynumber="82">
+        <volumeref ref="SAXH20x6"/>
+        <positionref ref="SAXH2_82inSHX2B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x5"/>
+    </volume>
+    <assembly name="SHX2B0">
+      <physvol name="SAXH2_81" copynumber="81">
+        <volumeref ref="SAXH20x4"/>
+        <positionref ref="SAXH2_81inSHX2B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x7"/>
+    </volume>
+    <assembly name="SH42B2">
+      <physvol name="SA4H2_80" copynumber="80">
+        <volumeref ref="SA4H20x6"/>
+        <positionref ref="SA4H2_80inSH42B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x5"/>
+    </volume>
+    <assembly name="SH42B0">
+      <physvol name="SA4H2_79" copynumber="79">
+        <volumeref ref="SA4H20x4"/>
+        <positionref ref="SA4H2_79inSH42B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x7"/>
+    </volume>
+    <assembly name="SV42B2">
+      <physvol name="SA4V2_78" copynumber="78">
+        <volumeref ref="SA4V20x6"/>
+        <positionref ref="SA4V2_78inSV42B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x5"/>
+    </volume>
+    <assembly name="SV42B0">
+      <physvol name="SA4V2_77" copynumber="77">
+        <volumeref ref="SA4V20x4"/>
+        <positionref ref="SA4V2_77inSV42B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x14">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x15"/>
+    </volume>
+    <assembly name="SP22BC2">
+      <physvol name="SPINO2_76" copynumber="76">
+        <volumeref ref="SPINO20x14"/>
+        <positionref ref="SPINO2_76inSP22BC2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x12">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x13"/>
+    </volume>
+    <assembly name="SP22BC0">
+      <physvol name="SPINO2_75" copynumber="75">
+        <volumeref ref="SPINO20x12"/>
+        <positionref ref="SPINO2_75inSP22BC0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x7"/>
+    </volume>
+    <assembly name="SH32B2">
+      <physvol name="SA3H2_74" copynumber="74">
+        <volumeref ref="SA3H20x6"/>
+        <positionref ref="SA3H2_74inSH32B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x5"/>
+    </volume>
+    <assembly name="SH32B0">
+      <physvol name="SA3H2_73" copynumber="73">
+        <volumeref ref="SA3H20x4"/>
+        <positionref ref="SA3H2_73inSH32B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x7"/>
+    </volume>
+    <assembly name="SV32B2">
+      <physvol name="SA3V2_72" copynumber="72">
+        <volumeref ref="SA3V20x6"/>
+        <positionref ref="SA3V2_72inSV32B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x5"/>
+    </volume>
+    <assembly name="SV32B0">
+      <physvol name="SA3V2_71" copynumber="71">
+        <volumeref ref="SA3V20x4"/>
+        <positionref ref="SA3V2_71inSV32B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x7"/>
+    </volume>
+    <assembly name="SH22B2">
+      <physvol name="SA2H2_70" copynumber="70">
+        <volumeref ref="SA2H20x6"/>
+        <positionref ref="SA2H2_70inSH22B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x5"/>
+    </volume>
+    <assembly name="SH22B0">
+      <physvol name="SA2H2_69" copynumber="69">
+        <volumeref ref="SA2H20x4"/>
+        <positionref ref="SA2H2_69inSH22B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x7"/>
+    </volume>
+    <assembly name="SV22B2">
+      <physvol name="SA2V2_68" copynumber="68">
+        <volumeref ref="SA2V20x6"/>
+        <positionref ref="SA2V2_68inSV22B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x5"/>
+    </volume>
+    <assembly name="SV22B0">
+      <physvol name="SA2V2_67" copynumber="67">
+        <volumeref ref="SA2V20x4"/>
+        <positionref ref="SA2V2_67inSV22B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x10">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x11"/>
+    </volume>
+    <assembly name="SP12BC2">
+      <physvol name="SPINO2_66" copynumber="66">
+        <volumeref ref="SPINO20x10"/>
+        <positionref ref="SPINO2_66inSP12BC2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x8">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x9"/>
+    </volume>
+    <assembly name="SP12BC0">
+      <physvol name="SPINO2_65" copynumber="65">
+        <volumeref ref="SPINO20x8"/>
+        <positionref ref="SPINO2_65inSP12BC0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x7"/>
+    </volume>
+    <assembly name="SH12B2">
+      <physvol name="SA1H2_64" copynumber="64">
+        <volumeref ref="SA1H20x6"/>
+        <positionref ref="SA1H2_64inSH12B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x5"/>
+    </volume>
+    <assembly name="SH12B0">
+      <physvol name="SA1H2_63" copynumber="63">
+        <volumeref ref="SA1H20x4"/>
+        <positionref ref="SA1H2_63inSH12B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x7"/>
+    </volume>
+    <assembly name="SV12B2">
+      <physvol name="SA1V2_62" copynumber="62">
+        <volumeref ref="SA1V20x6"/>
+        <positionref ref="SA1V2_62inSV12B2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x5"/>
+    </volume>
+    <assembly name="SV12B0">
+      <physvol name="SA1V2_61" copynumber="61">
+        <volumeref ref="SA1V20x4"/>
+        <positionref ref="SA1V2_61inSV12B0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x17">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x684"/>
+    </volume>
+    <volume name="SALH20x34">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x35"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x17"/>
+        <positionref ref="SAIH2_10x17inSALH20x34pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB11">
+      <physvol name="SALH2_60" copynumber="60">
+        <volumeref ref="SALH20x34"/>
+        <positionref ref="SALH2_60inSA2HB11pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x16">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x683"/>
+    </volume>
+    <volume name="SALH20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x33"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x16"/>
+        <positionref ref="SAIH2_10x16inSALH20x32pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB8">
+      <physvol name="SALH2_57" copynumber="57">
+        <volumeref ref="SALH20x32"/>
+        <positionref ref="SALH2_57inSA2HB8pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x15">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x682"/>
+    </volume>
+    <volume name="SALH20x30">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x31"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x15"/>
+        <positionref ref="SAIH2_10x15inSALH20x30pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB5">
+      <physvol name="SALH2_54" copynumber="54">
+        <volumeref ref="SALH20x30"/>
+        <positionref ref="SALH2_54inSA2HB5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x14">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x681"/>
+    </volume>
+    <volume name="SALH20x28">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x29"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x14"/>
+        <positionref ref="SAIH2_10x14inSALH20x28pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB2">
+      <physvol name="SALH2_51" copynumber="51">
+        <volumeref ref="SALH20x28"/>
+        <positionref ref="SALH2_51inSA2HB2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x13">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x680"/>
+    </volume>
+    <volume name="SALH20x26">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x27"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x13"/>
+        <positionref ref="SAIH2_10x13inSALH20x26pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB10">
+      <physvol name="SALH2_59" copynumber="59">
+        <volumeref ref="SALH20x26"/>
+        <positionref ref="SALH2_59inSA2HB10pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x12">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x679"/>
+    </volume>
+    <volume name="SALH20x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x25"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x12"/>
+        <positionref ref="SAIH2_10x12inSALH20x24pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB7">
+      <physvol name="SALH2_56" copynumber="56">
+        <volumeref ref="SALH20x24"/>
+        <positionref ref="SALH2_56inSA2HB7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x11">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x678"/>
+    </volume>
+    <volume name="SALH20x22">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x23"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x11"/>
+        <positionref ref="SAIH2_10x11inSALH20x22pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB4">
+      <physvol name="SALH2_53" copynumber="53">
+        <volumeref ref="SALH20x22"/>
+        <positionref ref="SALH2_53inSA2HB4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x10">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x677"/>
+    </volume>
+    <volume name="SALH20x20">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x21"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x10"/>
+        <positionref ref="SAIH2_10x10inSALH20x20pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB1">
+      <physvol name="SALH2_50" copynumber="50">
+        <volumeref ref="SALH20x20"/>
+        <positionref ref="SALH2_50inSA2HB1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x9">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x676"/>
+    </volume>
+    <volume name="SALH20x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x19"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x9"/>
+        <positionref ref="SAIH2_10x9inSALH20x18pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB9">
+      <physvol name="SALH2_58" copynumber="58">
+        <volumeref ref="SALH20x18"/>
+        <positionref ref="SALH2_58inSA2HB9pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x8">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x675"/>
+    </volume>
+    <volume name="SALH20x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x17"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x8"/>
+        <positionref ref="SAIH2_10x8inSALH20x16pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB6">
+      <physvol name="SALH2_55" copynumber="55">
+        <volumeref ref="SALH20x16"/>
+        <positionref ref="SALH2_55inSA2HB6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x7">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x674"/>
+    </volume>
+    <volume name="SALH20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x15"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x7"/>
+        <positionref ref="SAIH2_10x7inSALH20x14pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB3">
+      <physvol name="SALH2_52" copynumber="52">
+        <volumeref ref="SALH20x14"/>
+        <positionref ref="SALH2_52inSA2HB3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x6">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x673"/>
+    </volume>
+    <volume name="SALH20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x13"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x6"/>
+        <positionref ref="SAIH2_10x6inSALH20x12pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HB0">
+      <physvol name="SALH2_49" copynumber="49">
+        <volumeref ref="SALH20x12"/>
+        <positionref ref="SALH2_49inSA2HB0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x9">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x672"/>
+    </volume>
+    <volume name="SB2A0x9">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x671"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x9"/>
+        <positionref ref="S12G_10x9inSB2A0x9pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x18">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x19"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x9"/>
+        <positionref ref="SB2A_10x9inSC2A0x18pos"/>
+      </physvol>
+    </volume>
+    <volume name="S12G0x8">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x670"/>
+    </volume>
+    <volume name="SB2A0x8">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x669"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x8"/>
+        <positionref ref="S12G_10x8inSB2A0x8pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x16">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x17"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x8"/>
+        <positionref ref="SB2A_10x8inSC2A0x16pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L6">
+      <physvol name="SC2A_44" copynumber="44">
+        <volumeref ref="SC2A0x16"/>
+        <positionref ref="SC2A_44inS1L6pos"/>
+      </physvol>
+      <physvol name="SC2A_48" copynumber="48">
+        <volumeref ref="SC2A0x18"/>
+        <positionref ref="SC2A_48inS1L6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x7">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x668"/>
+    </volume>
+    <volume name="SB2A0x7">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x667"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x7"/>
+        <positionref ref="S12G_10x7inSB2A0x7pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x15"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x7"/>
+        <positionref ref="SB2A_10x7inSC2A0x14pos"/>
+      </physvol>
+    </volume>
+    <volume name="S12G0x6">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x666"/>
+    </volume>
+    <volume name="SB2A0x6">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x665"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x6"/>
+        <positionref ref="S12G_10x6inSB2A0x6pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x13"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x6"/>
+        <positionref ref="SB2A_10x6inSC2A0x12pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L4">
+      <physvol name="SC2A_43" copynumber="43">
+        <volumeref ref="SC2A0x12"/>
+        <positionref ref="SC2A_43inS1L4pos"/>
+      </physvol>
+      <physvol name="SC2A_47" copynumber="47">
+        <volumeref ref="SC2A0x14"/>
+        <positionref ref="SC2A_47inS1L4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x5">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x664"/>
+    </volume>
+    <volume name="SB2A0x5">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x663"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x5"/>
+        <positionref ref="S12G_10x5inSB2A0x5pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x11"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x5"/>
+        <positionref ref="SB2A_10x5inSC2A0x10pos"/>
+      </physvol>
+    </volume>
+    <volume name="S12G0x4">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x662"/>
+    </volume>
+    <volume name="SB2A0x4">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x661"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x4"/>
+        <positionref ref="S12G_10x4inSB2A0x4pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x9"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x4"/>
+        <positionref ref="SB2A_10x4inSC2A0x8pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R6">
+      <physvol name="SC2A_42" copynumber="42">
+        <volumeref ref="SC2A0x8"/>
+        <positionref ref="SC2A_42inS1R6pos"/>
+      </physvol>
+      <physvol name="SC2A_46" copynumber="46">
+        <volumeref ref="SC2A0x10"/>
+        <positionref ref="SC2A_46inS1R6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x3">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x660"/>
+    </volume>
+    <volume name="SB2A0x3">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x659"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x3"/>
+        <positionref ref="S12G_10x3inSB2A0x3pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x7"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x3"/>
+        <positionref ref="SB2A_10x3inSC2A0x6pos"/>
+      </physvol>
+    </volume>
+    <volume name="S12G0x2">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x658"/>
+    </volume>
+    <volume name="SB2A0x2">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x657"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x2"/>
+        <positionref ref="S12G_10x2inSB2A0x2pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x5"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x2"/>
+        <positionref ref="SB2A_10x2inSC2A0x4pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R4">
+      <physvol name="SC2A_41" copynumber="41">
+        <volumeref ref="SC2A0x4"/>
+        <positionref ref="SC2A_41inS1R4pos"/>
+      </physvol>
+      <physvol name="SC2A_45" copynumber="45">
+        <volumeref ref="SC2A0x6"/>
+        <positionref ref="SC2A_45inS1R4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x3"/>
+    </volume>
+    <assembly name="SVX2A1">
+      <physvol name="SAXV2_40" copynumber="40">
+        <volumeref ref="SAXV20x2"/>
+        <positionref ref="SAXV2_40inSVX2A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXV2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXV20x1"/>
+    </volume>
+    <assembly name="SVX2A0">
+      <physvol name="SAXV2_39" copynumber="39">
+        <volumeref ref="SAXV2"/>
+        <positionref ref="SAXV2_39inSVX2A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x3"/>
+    </volume>
+    <assembly name="SHX2A1">
+      <physvol name="SAXH2_38" copynumber="38">
+        <volumeref ref="SAXH20x2"/>
+        <positionref ref="SAXH2_38inSHX2A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAXH2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAXH20x1"/>
+    </volume>
+    <assembly name="SHX2A0">
+      <physvol name="SAXH2_37" copynumber="37">
+        <volumeref ref="SAXH2"/>
+        <positionref ref="SAXH2_37inSHX2A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x3"/>
+    </volume>
+    <assembly name="SH42A1">
+      <physvol name="SA4H2_36" copynumber="36">
+        <volumeref ref="SA4H20x2"/>
+        <positionref ref="SA4H2_36inSH42A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4H2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H20x1"/>
+    </volume>
+    <assembly name="SH42A0">
+      <physvol name="SA4H2_35" copynumber="35">
+        <volumeref ref="SA4H2"/>
+        <positionref ref="SA4H2_35inSH42A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x3"/>
+    </volume>
+    <assembly name="SV42A1">
+      <physvol name="SA4V2_34" copynumber="34">
+        <volumeref ref="SA4V20x2"/>
+        <positionref ref="SA4V2_34inSV42A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA4V2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4V20x1"/>
+    </volume>
+    <assembly name="SV42A0">
+      <physvol name="SA4V2_33" copynumber="33">
+        <volumeref ref="SA4V2"/>
+        <positionref ref="SA4V2_33inSV42A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x6">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x7"/>
+    </volume>
+    <assembly name="SP22A1">
+      <physvol name="SPINO2_32" copynumber="32">
+        <volumeref ref="SPINO20x6"/>
+        <positionref ref="SPINO2_32inSP22A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x4">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x5"/>
+    </volume>
+    <assembly name="SP22A0">
+      <physvol name="SPINO2_31" copynumber="31">
+        <volumeref ref="SPINO20x4"/>
+        <positionref ref="SPINO2_31inSP22A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x3"/>
+    </volume>
+    <assembly name="SH32A1">
+      <physvol name="SA3H2_30" copynumber="30">
+        <volumeref ref="SA3H20x2"/>
+        <positionref ref="SA3H2_30inSH32A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3H2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x1"/>
+    </volume>
+    <assembly name="SH32A0">
+      <physvol name="SA3H2_29" copynumber="29">
+        <volumeref ref="SA3H2"/>
+        <positionref ref="SA3H2_29inSH32A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x3"/>
+    </volume>
+    <assembly name="SV32A1">
+      <physvol name="SA3V2_28" copynumber="28">
+        <volumeref ref="SA3V20x2"/>
+        <positionref ref="SA3V2_28inSV32A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA3V2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3V20x1"/>
+    </volume>
+    <assembly name="SV32A0">
+      <physvol name="SA3V2_27" copynumber="27">
+        <volumeref ref="SA3V2"/>
+        <positionref ref="SA3V2_27inSV32A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x3"/>
+    </volume>
+    <assembly name="SH22A1">
+      <physvol name="SA2H2_26" copynumber="26">
+        <volumeref ref="SA2H20x2"/>
+        <positionref ref="SA2H2_26inSH22A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2H2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2H20x1"/>
+    </volume>
+    <assembly name="SH22A0">
+      <physvol name="SA2H2_25" copynumber="25">
+        <volumeref ref="SA2H2"/>
+        <positionref ref="SA2H2_25inSH22A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x3"/>
+    </volume>
+    <assembly name="SV22A1">
+      <physvol name="SA2V2_24" copynumber="24">
+        <volumeref ref="SA2V20x2"/>
+        <positionref ref="SA2V2_24inSV22A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA2V2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA2V20x1"/>
+    </volume>
+    <assembly name="SV22A0">
+      <physvol name="SA2V2_23" copynumber="23">
+        <volumeref ref="SA2V2"/>
+        <positionref ref="SA2V2_23inSV22A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO20x2">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x3"/>
+    </volume>
+    <assembly name="SP12A1">
+      <physvol name="SPINO2_22" copynumber="22">
+        <volumeref ref="SPINO20x2"/>
+        <positionref ref="SPINO2_22inSP12A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SPINO2">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SPINO20x1"/>
+    </volume>
+    <assembly name="SP12A0">
+      <physvol name="SPINO2_21" copynumber="21">
+        <volumeref ref="SPINO2"/>
+        <positionref ref="SPINO2_21inSP12A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x3"/>
+    </volume>
+    <assembly name="SH12A1">
+      <physvol name="SA1H2_20" copynumber="20">
+        <volumeref ref="SA1H20x2"/>
+        <positionref ref="SA1H2_20inSH12A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1H2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1H20x1"/>
+    </volume>
+    <assembly name="SH12A0">
+      <physvol name="SA1H2_19" copynumber="19">
+        <volumeref ref="SA1H2"/>
+        <positionref ref="SA1H2_19inSH12A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x3"/>
+    </volume>
+    <assembly name="SV12A1">
+      <physvol name="SA1V2_18" copynumber="18">
+        <volumeref ref="SA1V20x2"/>
+        <positionref ref="SA1V2_18inSV12A1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SA1V2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA1V20x1"/>
+    </volume>
+    <assembly name="SV12A0">
+      <physvol name="SA1V2_17" copynumber="17">
+        <volumeref ref="SA1V2"/>
+        <positionref ref="SA1V2_17inSV12A0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x5">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x656"/>
+    </volume>
+    <volume name="SALH20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x11"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x5"/>
+        <positionref ref="SAIH2_10x5inSALH20x10pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA5">
+      <physvol name="SALH2_16" copynumber="16">
+        <volumeref ref="SALH20x10"/>
+        <positionref ref="SALH2_16inSA2HA5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x4">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x655"/>
+    </volume>
+    <volume name="SALH20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x9"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x4"/>
+        <positionref ref="SAIH2_10x4inSALH20x8pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA2">
+      <physvol name="SALH2_13" copynumber="13">
+        <volumeref ref="SALH20x8"/>
+        <positionref ref="SALH2_13inSA2HA2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x3">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x654"/>
+    </volume>
+    <volume name="SALH20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x7"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x3"/>
+        <positionref ref="SAIH2_10x3inSALH20x6pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA4">
+      <physvol name="SALH2_15" copynumber="15">
+        <volumeref ref="SALH20x6"/>
+        <positionref ref="SALH2_15inSA2HA4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x2">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x653"/>
+    </volume>
+    <volume name="SALH20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x5"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x2"/>
+        <positionref ref="SAIH2_10x2inSALH20x4pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA1">
+      <physvol name="SALH2_12" copynumber="12">
+        <volumeref ref="SALH20x4"/>
+        <positionref ref="SALH2_12inSA2HA1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH20x1">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x652"/>
+    </volume>
+    <volume name="SALH20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x3"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH20x1"/>
+        <positionref ref="SAIH2_10x1inSALH20x2pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA3">
+      <physvol name="SALH2_14" copynumber="14">
+        <volumeref ref="SALH20x2"/>
+        <positionref ref="SALH2_14inSA2HA3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAIH2">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x651"/>
+    </volume>
+    <volume name="SALH2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH20x1"/>
+      <physvol name="SAIH2_1" copynumber="1">
+        <volumeref ref="SAIH2"/>
+        <positionref ref="SAIH2_1inSALH2pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA2HA0">
+      <physvol name="SALH2_11" copynumber="11">
+        <volumeref ref="SALH2"/>
+        <positionref ref="SALH2_11inSA2HA0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G0x1">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x650"/>
+    </volume>
+    <volume name="SB2A0x1">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x649"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G0x1"/>
+        <positionref ref="S12G_10x1inSB2A0x1pos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A0x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x3"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A0x1"/>
+        <positionref ref="SB2A_10x1inSC2A0x2pos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1L5">
+      <physvol name="SC2A_10" copynumber="10">
+        <volumeref ref="SC2A0x2"/>
+        <positionref ref="SC2A_10inS1L5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="S12G">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x648"/>
+    </volume>
+    <volume name="SB2A">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x647"/>
+      <physvol name="S12G_1" copynumber="1">
+        <volumeref ref="S12G"/>
+        <positionref ref="S12G_1inSB2Apos"/>
+      </physvol>
+    </volume>
+    <volume name="SC2A">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SC2A0x1"/>
+      <physvol name="SB2A_1" copynumber="1">
+        <volumeref ref="SB2A"/>
+        <positionref ref="SB2A_1inSC2Apos"/>
+      </physvol>
+    </volume>
+    <assembly name="S1R5">
+      <physvol name="SC2A_9" copynumber="9">
+        <volumeref ref="SC2A"/>
+        <positionref ref="SC2A_9inS1R5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x7">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x646"/>
+    </volume>
+    <volume name="SAL20x14">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x15"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x7"/>
+        <positionref ref="SAI2_10x7inSAL20x14pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V7">
+      <physvol name="SAL2_8" copynumber="8">
+        <volumeref ref="SAL20x14"/>
+        <positionref ref="SAL2_8inSEA2V7pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x6">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x645"/>
+    </volume>
+    <volume name="SAL20x12">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x13"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x6"/>
+        <positionref ref="SAI2_10x6inSAL20x12pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V6">
+      <physvol name="SAL2_7" copynumber="7">
+        <volumeref ref="SAL20x12"/>
+        <positionref ref="SAL2_7inSEA2V6pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x5">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x644"/>
+    </volume>
+    <volume name="SAL20x10">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x11"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x5"/>
+        <positionref ref="SAI2_10x5inSAL20x10pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V5">
+      <physvol name="SAL2_6" copynumber="6">
+        <volumeref ref="SAL20x10"/>
+        <positionref ref="SAL2_6inSEA2V5pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x4">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x643"/>
+    </volume>
+    <volume name="SAL20x8">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x9"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x4"/>
+        <positionref ref="SAI2_10x4inSAL20x8pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V4">
+      <physvol name="SAL2_5" copynumber="5">
+        <volumeref ref="SAL20x8"/>
+        <positionref ref="SAL2_5inSEA2V4pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x3">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x642"/>
+    </volume>
+    <volume name="SAL20x6">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x7"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x3"/>
+        <positionref ref="SAI2_10x3inSAL20x6pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V3">
+      <physvol name="SAL2_4" copynumber="4">
+        <volumeref ref="SAL20x6"/>
+        <positionref ref="SAL2_4inSEA2V3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x2">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x641"/>
+    </volume>
+    <volume name="SAL20x4">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x5"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x2"/>
+        <positionref ref="SAI2_10x2inSAL20x4pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V2">
+      <physvol name="SAL2_3" copynumber="3">
+        <volumeref ref="SAL20x4"/>
+        <positionref ref="SAL2_3inSEA2V2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI20x1">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x640"/>
+    </volume>
+    <volume name="SAL20x2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x3"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI20x1"/>
+        <positionref ref="SAI2_10x1inSAL20x2pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V1">
+      <physvol name="SAL2_2" copynumber="2">
+        <volumeref ref="SAL20x2"/>
+        <positionref ref="SAL2_2inSEA2V1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SAI2">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x639"/>
+    </volume>
+    <volume name="SAL2">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SAL20x1"/>
+      <physvol name="SAI2_1" copynumber="1">
+        <volumeref ref="SAI2"/>
+        <positionref ref="SAI2_1inSAL2pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SEA2V0">
+      <physvol name="SAL2_1" copynumber="1">
+        <volumeref ref="SAL2"/>
+        <positionref ref="SAL2_1inSEA2V0pos"/>
+      </physvol>
+    </assembly>
+    <volume name="SC12">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SC120x1"/>
+      <physvol name="SEA2V0_1" copynumber="1">
+        <volumeref ref="SEA2V0"/>
+        <positionref ref="SEA2V0_1inSC12pos"/>
+        <rotationref ref="SEA2V0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V1_1" copynumber="1">
+        <volumeref ref="SEA2V1"/>
+        <positionref ref="SEA2V1_1inSC12pos"/>
+        <rotationref ref="SEA2V1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V2_1" copynumber="1">
+        <volumeref ref="SEA2V2"/>
+        <positionref ref="SEA2V2_1inSC12pos"/>
+        <rotationref ref="SEA2V2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V3_1" copynumber="1">
+        <volumeref ref="SEA2V3"/>
+        <positionref ref="SEA2V3_1inSC12pos"/>
+        <rotationref ref="SEA2V3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V4_1" copynumber="1">
+        <volumeref ref="SEA2V4"/>
+        <positionref ref="SEA2V4_1inSC12pos"/>
+        <rotationref ref="SEA2V4_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V5_1" copynumber="1">
+        <volumeref ref="SEA2V5"/>
+        <positionref ref="SEA2V5_1inSC12pos"/>
+        <rotationref ref="SEA2V5_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V6_1" copynumber="1">
+        <volumeref ref="SEA2V6"/>
+        <positionref ref="SEA2V6_1inSC12pos"/>
+        <rotationref ref="SEA2V6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SEA2V7_1" copynumber="1">
+        <volumeref ref="SEA2V7"/>
+        <positionref ref="SEA2V7_1inSC12pos"/>
+        <rotationref ref="SEA2V7_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1R5_1" copynumber="1">
+        <volumeref ref="S1R5"/>
+        <positionref ref="S1R5_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1L5_1" copynumber="1">
+        <volumeref ref="S1L5"/>
+        <positionref ref="S1L5_1inSC12pos"/>
+        <rotationref ref="S1L5_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HA0_1" copynumber="1">
+        <volumeref ref="SA2HA0"/>
+        <positionref ref="SA2HA0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HA3_1" copynumber="1">
+        <volumeref ref="SA2HA3"/>
+        <positionref ref="SA2HA3_1inSC12pos"/>
+        <rotationref ref="SA2HA3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HA1_1" copynumber="1">
+        <volumeref ref="SA2HA1"/>
+        <positionref ref="SA2HA1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HA4_1" copynumber="1">
+        <volumeref ref="SA2HA4"/>
+        <positionref ref="SA2HA4_1inSC12pos"/>
+        <rotationref ref="SA2HA4_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HA2_1" copynumber="1">
+        <volumeref ref="SA2HA2"/>
+        <positionref ref="SA2HA2_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HA5_1" copynumber="1">
+        <volumeref ref="SA2HA5"/>
+        <positionref ref="SA2HA5_1inSC12pos"/>
+        <rotationref ref="SA2HA5_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12A0_1" copynumber="1">
+        <volumeref ref="SV12A0"/>
+        <positionref ref="SV12A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12A1_1" copynumber="1">
+        <volumeref ref="SV12A1"/>
+        <positionref ref="SV12A1_1inSC12pos"/>
+        <rotationref ref="SV12A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12A0_1" copynumber="1">
+        <volumeref ref="SH12A0"/>
+        <positionref ref="SH12A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12A1_1" copynumber="1">
+        <volumeref ref="SH12A1"/>
+        <positionref ref="SH12A1_1inSC12pos"/>
+        <rotationref ref="SH12A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12A0_1" copynumber="1">
+        <volumeref ref="SP12A0"/>
+        <positionref ref="SP12A0_1inSC12pos"/>
+        <rotationref ref="SP12A0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12A1_1" copynumber="1">
+        <volumeref ref="SP12A1"/>
+        <positionref ref="SP12A1_1inSC12pos"/>
+        <rotationref ref="SP12A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22A0_1" copynumber="1">
+        <volumeref ref="SV22A0"/>
+        <positionref ref="SV22A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22A1_1" copynumber="1">
+        <volumeref ref="SV22A1"/>
+        <positionref ref="SV22A1_1inSC12pos"/>
+        <rotationref ref="SV22A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22A0_1" copynumber="1">
+        <volumeref ref="SH22A0"/>
+        <positionref ref="SH22A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22A1_1" copynumber="1">
+        <volumeref ref="SH22A1"/>
+        <positionref ref="SH22A1_1inSC12pos"/>
+        <rotationref ref="SH22A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32A0_1" copynumber="1">
+        <volumeref ref="SV32A0"/>
+        <positionref ref="SV32A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32A1_1" copynumber="1">
+        <volumeref ref="SV32A1"/>
+        <positionref ref="SV32A1_1inSC12pos"/>
+        <rotationref ref="SV32A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32A0_1" copynumber="1">
+        <volumeref ref="SH32A0"/>
+        <positionref ref="SH32A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32A1_1" copynumber="1">
+        <volumeref ref="SH32A1"/>
+        <positionref ref="SH32A1_1inSC12pos"/>
+        <rotationref ref="SH32A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22A0_1" copynumber="1">
+        <volumeref ref="SP22A0"/>
+        <positionref ref="SP22A0_1inSC12pos"/>
+        <rotationref ref="SP22A0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22A1_1" copynumber="1">
+        <volumeref ref="SP22A1"/>
+        <positionref ref="SP22A1_1inSC12pos"/>
+        <rotationref ref="SP22A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42A0_1" copynumber="1">
+        <volumeref ref="SV42A0"/>
+        <positionref ref="SV42A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42A1_1" copynumber="1">
+        <volumeref ref="SV42A1"/>
+        <positionref ref="SV42A1_1inSC12pos"/>
+        <rotationref ref="SV42A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42A0_1" copynumber="1">
+        <volumeref ref="SH42A0"/>
+        <positionref ref="SH42A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42A1_1" copynumber="1">
+        <volumeref ref="SH42A1"/>
+        <positionref ref="SH42A1_1inSC12pos"/>
+        <rotationref ref="SH42A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2A0_1" copynumber="1">
+        <volumeref ref="SHX2A0"/>
+        <positionref ref="SHX2A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2A1_1" copynumber="1">
+        <volumeref ref="SHX2A1"/>
+        <positionref ref="SHX2A1_1inSC12pos"/>
+        <rotationref ref="SHX2A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2A0_1" copynumber="1">
+        <volumeref ref="SVX2A0"/>
+        <positionref ref="SVX2A0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2A1_1" copynumber="1">
+        <volumeref ref="SVX2A1"/>
+        <positionref ref="SVX2A1_1inSC12pos"/>
+        <rotationref ref="SVX2A1_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1R4_1" copynumber="1">
+        <volumeref ref="S1R4"/>
+        <positionref ref="S1R4_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1R6_1" copynumber="1">
+        <volumeref ref="S1R6"/>
+        <positionref ref="S1R6_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1L4_1" copynumber="1">
+        <volumeref ref="S1L4"/>
+        <positionref ref="S1L4_1inSC12pos"/>
+        <rotationref ref="S1L4_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1L6_1" copynumber="1">
+        <volumeref ref="S1L6"/>
+        <positionref ref="S1L6_1inSC12pos"/>
+        <rotationref ref="S1L6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB0_1" copynumber="1">
+        <volumeref ref="SA2HB0"/>
+        <positionref ref="SA2HB0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB3_1" copynumber="1">
+        <volumeref ref="SA2HB3"/>
+        <positionref ref="SA2HB3_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB6_1" copynumber="1">
+        <volumeref ref="SA2HB6"/>
+        <positionref ref="SA2HB6_1inSC12pos"/>
+        <rotationref ref="SA2HB6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB9_1" copynumber="1">
+        <volumeref ref="SA2HB9"/>
+        <positionref ref="SA2HB9_1inSC12pos"/>
+        <rotationref ref="SA2HB9_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB1_1" copynumber="1">
+        <volumeref ref="SA2HB1"/>
+        <positionref ref="SA2HB1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB4_1" copynumber="1">
+        <volumeref ref="SA2HB4"/>
+        <positionref ref="SA2HB4_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB7_1" copynumber="1">
+        <volumeref ref="SA2HB7"/>
+        <positionref ref="SA2HB7_1inSC12pos"/>
+        <rotationref ref="SA2HB7_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB10_1" copynumber="1">
+        <volumeref ref="SA2HB10"/>
+        <positionref ref="SA2HB10_1inSC12pos"/>
+        <rotationref ref="SA2HB10_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB2_1" copynumber="1">
+        <volumeref ref="SA2HB2"/>
+        <positionref ref="SA2HB2_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB5_1" copynumber="1">
+        <volumeref ref="SA2HB5"/>
+        <positionref ref="SA2HB5_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HB8_1" copynumber="1">
+        <volumeref ref="SA2HB8"/>
+        <positionref ref="SA2HB8_1inSC12pos"/>
+        <rotationref ref="SA2HB8_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HB11_1" copynumber="1">
+        <volumeref ref="SA2HB11"/>
+        <positionref ref="SA2HB11_1inSC12pos"/>
+        <rotationref ref="SA2HB11_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12B0_1" copynumber="1">
+        <volumeref ref="SV12B0"/>
+        <positionref ref="SV12B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12B2_1" copynumber="1">
+        <volumeref ref="SV12B2"/>
+        <positionref ref="SV12B2_1inSC12pos"/>
+        <rotationref ref="SV12B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12B0_1" copynumber="1">
+        <volumeref ref="SH12B0"/>
+        <positionref ref="SH12B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12B2_1" copynumber="1">
+        <volumeref ref="SH12B2"/>
+        <positionref ref="SH12B2_1inSC12pos"/>
+        <rotationref ref="SH12B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12BC0_1" copynumber="1">
+        <volumeref ref="SP12BC0"/>
+        <positionref ref="SP12BC0_1inSC12pos"/>
+        <rotationref ref="SP12BC0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12BC2_1" copynumber="1">
+        <volumeref ref="SP12BC2"/>
+        <positionref ref="SP12BC2_1inSC12pos"/>
+        <rotationref ref="SP12BC2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22B0_1" copynumber="1">
+        <volumeref ref="SV22B0"/>
+        <positionref ref="SV22B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22B2_1" copynumber="1">
+        <volumeref ref="SV22B2"/>
+        <positionref ref="SV22B2_1inSC12pos"/>
+        <rotationref ref="SV22B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22B0_1" copynumber="1">
+        <volumeref ref="SH22B0"/>
+        <positionref ref="SH22B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22B2_1" copynumber="1">
+        <volumeref ref="SH22B2"/>
+        <positionref ref="SH22B2_1inSC12pos"/>
+        <rotationref ref="SH22B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32B0_1" copynumber="1">
+        <volumeref ref="SV32B0"/>
+        <positionref ref="SV32B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32B2_1" copynumber="1">
+        <volumeref ref="SV32B2"/>
+        <positionref ref="SV32B2_1inSC12pos"/>
+        <rotationref ref="SV32B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32B0_1" copynumber="1">
+        <volumeref ref="SH32B0"/>
+        <positionref ref="SH32B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32B2_1" copynumber="1">
+        <volumeref ref="SH32B2"/>
+        <positionref ref="SH32B2_1inSC12pos"/>
+        <rotationref ref="SH32B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22BC0_1" copynumber="1">
+        <volumeref ref="SP22BC0"/>
+        <positionref ref="SP22BC0_1inSC12pos"/>
+        <rotationref ref="SP22BC0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22BC2_1" copynumber="1">
+        <volumeref ref="SP22BC2"/>
+        <positionref ref="SP22BC2_1inSC12pos"/>
+        <rotationref ref="SP22BC2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42B0_1" copynumber="1">
+        <volumeref ref="SV42B0"/>
+        <positionref ref="SV42B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42B2_1" copynumber="1">
+        <volumeref ref="SV42B2"/>
+        <positionref ref="SV42B2_1inSC12pos"/>
+        <rotationref ref="SV42B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42B0_1" copynumber="1">
+        <volumeref ref="SH42B0"/>
+        <positionref ref="SH42B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42B2_1" copynumber="1">
+        <volumeref ref="SH42B2"/>
+        <positionref ref="SH42B2_1inSC12pos"/>
+        <rotationref ref="SH42B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2B0_1" copynumber="1">
+        <volumeref ref="SHX2B0"/>
+        <positionref ref="SHX2B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2B2_1" copynumber="1">
+        <volumeref ref="SHX2B2"/>
+        <positionref ref="SHX2B2_1inSC12pos"/>
+        <rotationref ref="SHX2B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2B0_1" copynumber="1">
+        <volumeref ref="SVX2B0"/>
+        <positionref ref="SVX2B0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2B2_1" copynumber="1">
+        <volumeref ref="SVX2B2"/>
+        <positionref ref="SVX2B2_1inSC12pos"/>
+        <rotationref ref="SVX2B2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12B1_1" copynumber="1">
+        <volumeref ref="SV12B1"/>
+        <positionref ref="SV12B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12B3_1" copynumber="1">
+        <volumeref ref="SV12B3"/>
+        <positionref ref="SV12B3_1inSC12pos"/>
+        <rotationref ref="SV12B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12B1_1" copynumber="1">
+        <volumeref ref="SH12B1"/>
+        <positionref ref="SH12B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12B3_1" copynumber="1">
+        <volumeref ref="SH12B3"/>
+        <positionref ref="SH12B3_1inSC12pos"/>
+        <rotationref ref="SH12B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12BC1_1" copynumber="1">
+        <volumeref ref="SP12BC1"/>
+        <positionref ref="SP12BC1_1inSC12pos"/>
+        <rotationref ref="SP12BC1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12BC3_1" copynumber="1">
+        <volumeref ref="SP12BC3"/>
+        <positionref ref="SP12BC3_1inSC12pos"/>
+        <rotationref ref="SP12BC3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22B1_1" copynumber="1">
+        <volumeref ref="SV22B1"/>
+        <positionref ref="SV22B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22B3_1" copynumber="1">
+        <volumeref ref="SV22B3"/>
+        <positionref ref="SV22B3_1inSC12pos"/>
+        <rotationref ref="SV22B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22B1_1" copynumber="1">
+        <volumeref ref="SH22B1"/>
+        <positionref ref="SH22B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22B3_1" copynumber="1">
+        <volumeref ref="SH22B3"/>
+        <positionref ref="SH22B3_1inSC12pos"/>
+        <rotationref ref="SH22B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32B1_1" copynumber="1">
+        <volumeref ref="SV32B1"/>
+        <positionref ref="SV32B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32B3_1" copynumber="1">
+        <volumeref ref="SV32B3"/>
+        <positionref ref="SV32B3_1inSC12pos"/>
+        <rotationref ref="SV32B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32B1_1" copynumber="1">
+        <volumeref ref="SH32B1"/>
+        <positionref ref="SH32B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32B3_1" copynumber="1">
+        <volumeref ref="SH32B3"/>
+        <positionref ref="SH32B3_1inSC12pos"/>
+        <rotationref ref="SH32B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22BC1_1" copynumber="1">
+        <volumeref ref="SP22BC1"/>
+        <positionref ref="SP22BC1_1inSC12pos"/>
+        <rotationref ref="SP22BC1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22BC3_1" copynumber="1">
+        <volumeref ref="SP22BC3"/>
+        <positionref ref="SP22BC3_1inSC12pos"/>
+        <rotationref ref="SP22BC3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42B1_1" copynumber="1">
+        <volumeref ref="SV42B1"/>
+        <positionref ref="SV42B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42B3_1" copynumber="1">
+        <volumeref ref="SV42B3"/>
+        <positionref ref="SV42B3_1inSC12pos"/>
+        <rotationref ref="SV42B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42B1_1" copynumber="1">
+        <volumeref ref="SH42B1"/>
+        <positionref ref="SH42B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42B3_1" copynumber="1">
+        <volumeref ref="SH42B3"/>
+        <positionref ref="SH42B3_1inSC12pos"/>
+        <rotationref ref="SH42B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2B1_1" copynumber="1">
+        <volumeref ref="SHX2B1"/>
+        <positionref ref="SHX2B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2B3_1" copynumber="1">
+        <volumeref ref="SHX2B3"/>
+        <positionref ref="SHX2B3_1inSC12pos"/>
+        <rotationref ref="SHX2B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2B1_1" copynumber="1">
+        <volumeref ref="SVX2B1"/>
+        <positionref ref="SVX2B1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2B3_1" copynumber="1">
+        <volumeref ref="SVX2B3"/>
+        <positionref ref="SVX2B3_1inSC12pos"/>
+        <rotationref ref="SVX2B3_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1R3_1" copynumber="1">
+        <volumeref ref="S1R3"/>
+        <positionref ref="S1R3_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1R7_1" copynumber="1">
+        <volumeref ref="S1R7"/>
+        <positionref ref="S1R7_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1L3_1" copynumber="1">
+        <volumeref ref="S1L3"/>
+        <positionref ref="S1L3_1inSC12pos"/>
+        <rotationref ref="S1L3_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1L7_1" copynumber="1">
+        <volumeref ref="S1L7"/>
+        <positionref ref="S1L7_1inSC12pos"/>
+        <rotationref ref="S1L7_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD0_1" copynumber="1">
+        <volumeref ref="SA2HD0"/>
+        <positionref ref="SA2HD0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD3_1" copynumber="1">
+        <volumeref ref="SA2HD3"/>
+        <positionref ref="SA2HD3_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD6_1" copynumber="1">
+        <volumeref ref="SA2HD6"/>
+        <positionref ref="SA2HD6_1inSC12pos"/>
+        <rotationref ref="SA2HD6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD9_1" copynumber="1">
+        <volumeref ref="SA2HD9"/>
+        <positionref ref="SA2HD9_1inSC12pos"/>
+        <rotationref ref="SA2HD9_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD1_1" copynumber="1">
+        <volumeref ref="SA2HD1"/>
+        <positionref ref="SA2HD1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD4_1" copynumber="1">
+        <volumeref ref="SA2HD4"/>
+        <positionref ref="SA2HD4_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD7_1" copynumber="1">
+        <volumeref ref="SA2HD7"/>
+        <positionref ref="SA2HD7_1inSC12pos"/>
+        <rotationref ref="SA2HD7_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD10_1" copynumber="1">
+        <volumeref ref="SA2HD10"/>
+        <positionref ref="SA2HD10_1inSC12pos"/>
+        <rotationref ref="SA2HD10_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD2_1" copynumber="1">
+        <volumeref ref="SA2HD2"/>
+        <positionref ref="SA2HD2_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD5_1" copynumber="1">
+        <volumeref ref="SA2HD5"/>
+        <positionref ref="SA2HD5_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HD8_1" copynumber="1">
+        <volumeref ref="SA2HD8"/>
+        <positionref ref="SA2HD8_1inSC12pos"/>
+        <rotationref ref="SA2HD8_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HD11_1" copynumber="1">
+        <volumeref ref="SA2HD11"/>
+        <positionref ref="SA2HD11_1inSC12pos"/>
+        <rotationref ref="SA2HD11_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12D0_1" copynumber="1">
+        <volumeref ref="SV12D0"/>
+        <positionref ref="SV12D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12D1_1" copynumber="1">
+        <volumeref ref="SV12D1"/>
+        <positionref ref="SV12D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12D2_1" copynumber="1">
+        <volumeref ref="SV12D2"/>
+        <positionref ref="SV12D2_1inSC12pos"/>
+        <rotationref ref="SV12D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12D3_1" copynumber="1">
+        <volumeref ref="SV12D3"/>
+        <positionref ref="SV12D3_1inSC12pos"/>
+        <rotationref ref="SV12D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12D0_1" copynumber="1">
+        <volumeref ref="SH12D0"/>
+        <positionref ref="SH12D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12D1_1" copynumber="1">
+        <volumeref ref="SH12D1"/>
+        <positionref ref="SH12D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12D2_1" copynumber="1">
+        <volumeref ref="SH12D2"/>
+        <positionref ref="SH12D2_1inSC12pos"/>
+        <rotationref ref="SH12D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12D3_1" copynumber="1">
+        <volumeref ref="SH12D3"/>
+        <positionref ref="SH12D3_1inSC12pos"/>
+        <rotationref ref="SH12D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12D0_1" copynumber="1">
+        <volumeref ref="SP12D0"/>
+        <positionref ref="SP12D0_1inSC12pos"/>
+        <rotationref ref="SP12D0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12D1_1" copynumber="1">
+        <volumeref ref="SP12D1"/>
+        <positionref ref="SP12D1_1inSC12pos"/>
+        <rotationref ref="SP12D1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12D2_1" copynumber="1">
+        <volumeref ref="SP12D2"/>
+        <positionref ref="SP12D2_1inSC12pos"/>
+        <rotationref ref="SP12D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12D3_1" copynumber="1">
+        <volumeref ref="SP12D3"/>
+        <positionref ref="SP12D3_1inSC12pos"/>
+        <rotationref ref="SP12D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22D0_1" copynumber="1">
+        <volumeref ref="SV22D0"/>
+        <positionref ref="SV22D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22D1_1" copynumber="1">
+        <volumeref ref="SV22D1"/>
+        <positionref ref="SV22D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22D2_1" copynumber="1">
+        <volumeref ref="SV22D2"/>
+        <positionref ref="SV22D2_1inSC12pos"/>
+        <rotationref ref="SV22D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22D3_1" copynumber="1">
+        <volumeref ref="SV22D3"/>
+        <positionref ref="SV22D3_1inSC12pos"/>
+        <rotationref ref="SV22D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22D0_1" copynumber="1">
+        <volumeref ref="SH22D0"/>
+        <positionref ref="SH22D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22D1_1" copynumber="1">
+        <volumeref ref="SH22D1"/>
+        <positionref ref="SH22D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22D2_1" copynumber="1">
+        <volumeref ref="SH22D2"/>
+        <positionref ref="SH22D2_1inSC12pos"/>
+        <rotationref ref="SH22D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22D3_1" copynumber="1">
+        <volumeref ref="SH22D3"/>
+        <positionref ref="SH22D3_1inSC12pos"/>
+        <rotationref ref="SH22D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32D0_1" copynumber="1">
+        <volumeref ref="SV32D0"/>
+        <positionref ref="SV32D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32D1_1" copynumber="1">
+        <volumeref ref="SV32D1"/>
+        <positionref ref="SV32D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32D2_1" copynumber="1">
+        <volumeref ref="SV32D2"/>
+        <positionref ref="SV32D2_1inSC12pos"/>
+        <rotationref ref="SV32D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32D3_1" copynumber="1">
+        <volumeref ref="SV32D3"/>
+        <positionref ref="SV32D3_1inSC12pos"/>
+        <rotationref ref="SV32D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32D0_1" copynumber="1">
+        <volumeref ref="SH32D0"/>
+        <positionref ref="SH32D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32D1_1" copynumber="1">
+        <volumeref ref="SH32D1"/>
+        <positionref ref="SH32D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32D2_1" copynumber="1">
+        <volumeref ref="SH32D2"/>
+        <positionref ref="SH32D2_1inSC12pos"/>
+        <rotationref ref="SH32D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32D3_1" copynumber="1">
+        <volumeref ref="SH32D3"/>
+        <positionref ref="SH32D3_1inSC12pos"/>
+        <rotationref ref="SH32D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22D0_1" copynumber="1">
+        <volumeref ref="SP22D0"/>
+        <positionref ref="SP22D0_1inSC12pos"/>
+        <rotationref ref="SP22D0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22D1_1" copynumber="1">
+        <volumeref ref="SP22D1"/>
+        <positionref ref="SP22D1_1inSC12pos"/>
+        <rotationref ref="SP22D1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22D2_1" copynumber="1">
+        <volumeref ref="SP22D2"/>
+        <positionref ref="SP22D2_1inSC12pos"/>
+        <rotationref ref="SP22D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22D3_1" copynumber="1">
+        <volumeref ref="SP22D3"/>
+        <positionref ref="SP22D3_1inSC12pos"/>
+        <rotationref ref="SP22D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42D0_1" copynumber="1">
+        <volumeref ref="SV42D0"/>
+        <positionref ref="SV42D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42D1_1" copynumber="1">
+        <volumeref ref="SV42D1"/>
+        <positionref ref="SV42D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42D2_1" copynumber="1">
+        <volumeref ref="SV42D2"/>
+        <positionref ref="SV42D2_1inSC12pos"/>
+        <rotationref ref="SV42D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42D3_1" copynumber="1">
+        <volumeref ref="SV42D3"/>
+        <positionref ref="SV42D3_1inSC12pos"/>
+        <rotationref ref="SV42D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42D0_1" copynumber="1">
+        <volumeref ref="SH42D0"/>
+        <positionref ref="SH42D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42D1_1" copynumber="1">
+        <volumeref ref="SH42D1"/>
+        <positionref ref="SH42D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42D2_1" copynumber="1">
+        <volumeref ref="SH42D2"/>
+        <positionref ref="SH42D2_1inSC12pos"/>
+        <rotationref ref="SH42D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42D3_1" copynumber="1">
+        <volumeref ref="SH42D3"/>
+        <positionref ref="SH42D3_1inSC12pos"/>
+        <rotationref ref="SH42D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2D0_1" copynumber="1">
+        <volumeref ref="SHX2D0"/>
+        <positionref ref="SHX2D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2D1_1" copynumber="1">
+        <volumeref ref="SHX2D1"/>
+        <positionref ref="SHX2D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2D2_1" copynumber="1">
+        <volumeref ref="SHX2D2"/>
+        <positionref ref="SHX2D2_1inSC12pos"/>
+        <rotationref ref="SHX2D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2D3_1" copynumber="1">
+        <volumeref ref="SHX2D3"/>
+        <positionref ref="SHX2D3_1inSC12pos"/>
+        <rotationref ref="SHX2D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2D0_1" copynumber="1">
+        <volumeref ref="SVX2D0"/>
+        <positionref ref="SVX2D0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2D1_1" copynumber="1">
+        <volumeref ref="SVX2D1"/>
+        <positionref ref="SVX2D1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2D2_1" copynumber="1">
+        <volumeref ref="SVX2D2"/>
+        <positionref ref="SVX2D2_1inSC12pos"/>
+        <rotationref ref="SVX2D2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2D3_1" copynumber="1">
+        <volumeref ref="SVX2D3"/>
+        <positionref ref="SVX2D3_1inSC12pos"/>
+        <rotationref ref="SVX2D3_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1R2_1" copynumber="1">
+        <volumeref ref="S1R2"/>
+        <positionref ref="S1R2_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1R8_1" copynumber="1">
+        <volumeref ref="S1R8"/>
+        <positionref ref="S1R8_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1L2_1" copynumber="1">
+        <volumeref ref="S1L2"/>
+        <positionref ref="S1L2_1inSC12pos"/>
+        <rotationref ref="S1L2_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1L8_1" copynumber="1">
+        <volumeref ref="S1L8"/>
+        <positionref ref="S1L8_1inSC12pos"/>
+        <rotationref ref="S1L8_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE0_1" copynumber="1">
+        <volumeref ref="SA2HE0"/>
+        <positionref ref="SA2HE0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE3_1" copynumber="1">
+        <volumeref ref="SA2HE3"/>
+        <positionref ref="SA2HE3_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE6_1" copynumber="1">
+        <volumeref ref="SA2HE6"/>
+        <positionref ref="SA2HE6_1inSC12pos"/>
+        <rotationref ref="SA2HE6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE9_1" copynumber="1">
+        <volumeref ref="SA2HE9"/>
+        <positionref ref="SA2HE9_1inSC12pos"/>
+        <rotationref ref="SA2HE9_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE1_1" copynumber="1">
+        <volumeref ref="SA2HE1"/>
+        <positionref ref="SA2HE1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE4_1" copynumber="1">
+        <volumeref ref="SA2HE4"/>
+        <positionref ref="SA2HE4_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE7_1" copynumber="1">
+        <volumeref ref="SA2HE7"/>
+        <positionref ref="SA2HE7_1inSC12pos"/>
+        <rotationref ref="SA2HE7_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE10_1" copynumber="1">
+        <volumeref ref="SA2HE10"/>
+        <positionref ref="SA2HE10_1inSC12pos"/>
+        <rotationref ref="SA2HE10_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE2_1" copynumber="1">
+        <volumeref ref="SA2HE2"/>
+        <positionref ref="SA2HE2_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE5_1" copynumber="1">
+        <volumeref ref="SA2HE5"/>
+        <positionref ref="SA2HE5_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HE8_1" copynumber="1">
+        <volumeref ref="SA2HE8"/>
+        <positionref ref="SA2HE8_1inSC12pos"/>
+        <rotationref ref="SA2HE8_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HE11_1" copynumber="1">
+        <volumeref ref="SA2HE11"/>
+        <positionref ref="SA2HE11_1inSC12pos"/>
+        <rotationref ref="SA2HE11_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12E0_1" copynumber="1">
+        <volumeref ref="SV12E0"/>
+        <positionref ref="SV12E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12E1_1" copynumber="1">
+        <volumeref ref="SV12E1"/>
+        <positionref ref="SV12E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12E2_1" copynumber="1">
+        <volumeref ref="SV12E2"/>
+        <positionref ref="SV12E2_1inSC12pos"/>
+        <rotationref ref="SV12E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12E3_1" copynumber="1">
+        <volumeref ref="SV12E3"/>
+        <positionref ref="SV12E3_1inSC12pos"/>
+        <rotationref ref="SV12E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12E0_1" copynumber="1">
+        <volumeref ref="SH12E0"/>
+        <positionref ref="SH12E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12E1_1" copynumber="1">
+        <volumeref ref="SH12E1"/>
+        <positionref ref="SH12E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12E2_1" copynumber="1">
+        <volumeref ref="SH12E2"/>
+        <positionref ref="SH12E2_1inSC12pos"/>
+        <rotationref ref="SH12E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12E3_1" copynumber="1">
+        <volumeref ref="SH12E3"/>
+        <positionref ref="SH12E3_1inSC12pos"/>
+        <rotationref ref="SH12E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12E0_1" copynumber="1">
+        <volumeref ref="SP12E0"/>
+        <positionref ref="SP12E0_1inSC12pos"/>
+        <rotationref ref="SP12E0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12E1_1" copynumber="1">
+        <volumeref ref="SP12E1"/>
+        <positionref ref="SP12E1_1inSC12pos"/>
+        <rotationref ref="SP12E1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12E2_1" copynumber="1">
+        <volumeref ref="SP12E2"/>
+        <positionref ref="SP12E2_1inSC12pos"/>
+        <rotationref ref="SP12E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12E3_1" copynumber="1">
+        <volumeref ref="SP12E3"/>
+        <positionref ref="SP12E3_1inSC12pos"/>
+        <rotationref ref="SP12E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22E0_1" copynumber="1">
+        <volumeref ref="SV22E0"/>
+        <positionref ref="SV22E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22E1_1" copynumber="1">
+        <volumeref ref="SV22E1"/>
+        <positionref ref="SV22E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22E2_1" copynumber="1">
+        <volumeref ref="SV22E2"/>
+        <positionref ref="SV22E2_1inSC12pos"/>
+        <rotationref ref="SV22E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22E3_1" copynumber="1">
+        <volumeref ref="SV22E3"/>
+        <positionref ref="SV22E3_1inSC12pos"/>
+        <rotationref ref="SV22E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22E0_1" copynumber="1">
+        <volumeref ref="SH22E0"/>
+        <positionref ref="SH22E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22E1_1" copynumber="1">
+        <volumeref ref="SH22E1"/>
+        <positionref ref="SH22E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22E2_1" copynumber="1">
+        <volumeref ref="SH22E2"/>
+        <positionref ref="SH22E2_1inSC12pos"/>
+        <rotationref ref="SH22E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22E3_1" copynumber="1">
+        <volumeref ref="SH22E3"/>
+        <positionref ref="SH22E3_1inSC12pos"/>
+        <rotationref ref="SH22E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32E0_1" copynumber="1">
+        <volumeref ref="SV32E0"/>
+        <positionref ref="SV32E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32E1_1" copynumber="1">
+        <volumeref ref="SV32E1"/>
+        <positionref ref="SV32E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32E2_1" copynumber="1">
+        <volumeref ref="SV32E2"/>
+        <positionref ref="SV32E2_1inSC12pos"/>
+        <rotationref ref="SV32E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32E3_1" copynumber="1">
+        <volumeref ref="SV32E3"/>
+        <positionref ref="SV32E3_1inSC12pos"/>
+        <rotationref ref="SV32E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32E0_1" copynumber="1">
+        <volumeref ref="SH32E0"/>
+        <positionref ref="SH32E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32E1_1" copynumber="1">
+        <volumeref ref="SH32E1"/>
+        <positionref ref="SH32E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32E2_1" copynumber="1">
+        <volumeref ref="SH32E2"/>
+        <positionref ref="SH32E2_1inSC12pos"/>
+        <rotationref ref="SH32E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32E3_1" copynumber="1">
+        <volumeref ref="SH32E3"/>
+        <positionref ref="SH32E3_1inSC12pos"/>
+        <rotationref ref="SH32E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22E0_1" copynumber="1">
+        <volumeref ref="SP22E0"/>
+        <positionref ref="SP22E0_1inSC12pos"/>
+        <rotationref ref="SP22E0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22E1_1" copynumber="1">
+        <volumeref ref="SP22E1"/>
+        <positionref ref="SP22E1_1inSC12pos"/>
+        <rotationref ref="SP22E1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22E2_1" copynumber="1">
+        <volumeref ref="SP22E2"/>
+        <positionref ref="SP22E2_1inSC12pos"/>
+        <rotationref ref="SP22E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22E3_1" copynumber="1">
+        <volumeref ref="SP22E3"/>
+        <positionref ref="SP22E3_1inSC12pos"/>
+        <rotationref ref="SP22E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42E0_1" copynumber="1">
+        <volumeref ref="SV42E0"/>
+        <positionref ref="SV42E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42E1_1" copynumber="1">
+        <volumeref ref="SV42E1"/>
+        <positionref ref="SV42E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42E2_1" copynumber="1">
+        <volumeref ref="SV42E2"/>
+        <positionref ref="SV42E2_1inSC12pos"/>
+        <rotationref ref="SV42E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42E3_1" copynumber="1">
+        <volumeref ref="SV42E3"/>
+        <positionref ref="SV42E3_1inSC12pos"/>
+        <rotationref ref="SV42E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42E0_1" copynumber="1">
+        <volumeref ref="SH42E0"/>
+        <positionref ref="SH42E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42E1_1" copynumber="1">
+        <volumeref ref="SH42E1"/>
+        <positionref ref="SH42E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42E2_1" copynumber="1">
+        <volumeref ref="SH42E2"/>
+        <positionref ref="SH42E2_1inSC12pos"/>
+        <rotationref ref="SH42E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42E3_1" copynumber="1">
+        <volumeref ref="SH42E3"/>
+        <positionref ref="SH42E3_1inSC12pos"/>
+        <rotationref ref="SH42E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2E0_1" copynumber="1">
+        <volumeref ref="SHX2E0"/>
+        <positionref ref="SHX2E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2E1_1" copynumber="1">
+        <volumeref ref="SHX2E1"/>
+        <positionref ref="SHX2E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2E2_1" copynumber="1">
+        <volumeref ref="SHX2E2"/>
+        <positionref ref="SHX2E2_1inSC12pos"/>
+        <rotationref ref="SHX2E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2E3_1" copynumber="1">
+        <volumeref ref="SHX2E3"/>
+        <positionref ref="SHX2E3_1inSC12pos"/>
+        <rotationref ref="SHX2E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2E0_1" copynumber="1">
+        <volumeref ref="SVX2E0"/>
+        <positionref ref="SVX2E0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2E1_1" copynumber="1">
+        <volumeref ref="SVX2E1"/>
+        <positionref ref="SVX2E1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2E2_1" copynumber="1">
+        <volumeref ref="SVX2E2"/>
+        <positionref ref="SVX2E2_1inSC12pos"/>
+        <rotationref ref="SVX2E2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2E3_1" copynumber="1">
+        <volumeref ref="SVX2E3"/>
+        <positionref ref="SVX2E3_1inSC12pos"/>
+        <rotationref ref="SVX2E3_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1R1_1" copynumber="1">
+        <volumeref ref="S1R1"/>
+        <positionref ref="S1R1_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1R9_1" copynumber="1">
+        <volumeref ref="S1R9"/>
+        <positionref ref="S1R9_1inSC12pos"/>
+      </physvol>
+      <physvol name="S1L1_1" copynumber="1">
+        <volumeref ref="S1L1"/>
+        <positionref ref="S1L1_1inSC12pos"/>
+        <rotationref ref="S1L1_1inSC12rot"/>
+      </physvol>
+      <physvol name="S1L9_1" copynumber="1">
+        <volumeref ref="S1L9"/>
+        <positionref ref="S1L9_1inSC12pos"/>
+        <rotationref ref="S1L9_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF0_1" copynumber="1">
+        <volumeref ref="SA2HF0"/>
+        <positionref ref="SA2HF0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF3_1" copynumber="1">
+        <volumeref ref="SA2HF3"/>
+        <positionref ref="SA2HF3_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF6_1" copynumber="1">
+        <volumeref ref="SA2HF6"/>
+        <positionref ref="SA2HF6_1inSC12pos"/>
+        <rotationref ref="SA2HF6_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF9_1" copynumber="1">
+        <volumeref ref="SA2HF9"/>
+        <positionref ref="SA2HF9_1inSC12pos"/>
+        <rotationref ref="SA2HF9_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF1_1" copynumber="1">
+        <volumeref ref="SA2HF1"/>
+        <positionref ref="SA2HF1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF4_1" copynumber="1">
+        <volumeref ref="SA2HF4"/>
+        <positionref ref="SA2HF4_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF7_1" copynumber="1">
+        <volumeref ref="SA2HF7"/>
+        <positionref ref="SA2HF7_1inSC12pos"/>
+        <rotationref ref="SA2HF7_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF10_1" copynumber="1">
+        <volumeref ref="SA2HF10"/>
+        <positionref ref="SA2HF10_1inSC12pos"/>
+        <rotationref ref="SA2HF10_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF2_1" copynumber="1">
+        <volumeref ref="SA2HF2"/>
+        <positionref ref="SA2HF2_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF5_1" copynumber="1">
+        <volumeref ref="SA2HF5"/>
+        <positionref ref="SA2HF5_1inSC12pos"/>
+      </physvol>
+      <physvol name="SA2HF8_1" copynumber="1">
+        <volumeref ref="SA2HF8"/>
+        <positionref ref="SA2HF8_1inSC12pos"/>
+        <rotationref ref="SA2HF8_1inSC12rot"/>
+      </physvol>
+      <physvol name="SA2HF11_1" copynumber="1">
+        <volumeref ref="SA2HF11"/>
+        <positionref ref="SA2HF11_1inSC12pos"/>
+        <rotationref ref="SA2HF11_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12F0_1" copynumber="1">
+        <volumeref ref="SV12F0"/>
+        <positionref ref="SV12F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12F1_1" copynumber="1">
+        <volumeref ref="SV12F1"/>
+        <positionref ref="SV12F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV12F2_1" copynumber="1">
+        <volumeref ref="SV12F2"/>
+        <positionref ref="SV12F2_1inSC12pos"/>
+        <rotationref ref="SV12F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV12F3_1" copynumber="1">
+        <volumeref ref="SV12F3"/>
+        <positionref ref="SV12F3_1inSC12pos"/>
+        <rotationref ref="SV12F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12F0_1" copynumber="1">
+        <volumeref ref="SH12F0"/>
+        <positionref ref="SH12F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12F1_1" copynumber="1">
+        <volumeref ref="SH12F1"/>
+        <positionref ref="SH12F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH12F2_1" copynumber="1">
+        <volumeref ref="SH12F2"/>
+        <positionref ref="SH12F2_1inSC12pos"/>
+        <rotationref ref="SH12F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH12F3_1" copynumber="1">
+        <volumeref ref="SH12F3"/>
+        <positionref ref="SH12F3_1inSC12pos"/>
+        <rotationref ref="SH12F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12F0_1" copynumber="1">
+        <volumeref ref="SP12F0"/>
+        <positionref ref="SP12F0_1inSC12pos"/>
+        <rotationref ref="SP12F0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12F1_1" copynumber="1">
+        <volumeref ref="SP12F1"/>
+        <positionref ref="SP12F1_1inSC12pos"/>
+        <rotationref ref="SP12F1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12F2_1" copynumber="1">
+        <volumeref ref="SP12F2"/>
+        <positionref ref="SP12F2_1inSC12pos"/>
+        <rotationref ref="SP12F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP12F3_1" copynumber="1">
+        <volumeref ref="SP12F3"/>
+        <positionref ref="SP12F3_1inSC12pos"/>
+        <rotationref ref="SP12F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22F0_1" copynumber="1">
+        <volumeref ref="SV22F0"/>
+        <positionref ref="SV22F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22F1_1" copynumber="1">
+        <volumeref ref="SV22F1"/>
+        <positionref ref="SV22F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV22F2_1" copynumber="1">
+        <volumeref ref="SV22F2"/>
+        <positionref ref="SV22F2_1inSC12pos"/>
+        <rotationref ref="SV22F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV22F3_1" copynumber="1">
+        <volumeref ref="SV22F3"/>
+        <positionref ref="SV22F3_1inSC12pos"/>
+        <rotationref ref="SV22F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22F0_1" copynumber="1">
+        <volumeref ref="SH22F0"/>
+        <positionref ref="SH22F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22F1_1" copynumber="1">
+        <volumeref ref="SH22F1"/>
+        <positionref ref="SH22F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH22F2_1" copynumber="1">
+        <volumeref ref="SH22F2"/>
+        <positionref ref="SH22F2_1inSC12pos"/>
+        <rotationref ref="SH22F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH22F3_1" copynumber="1">
+        <volumeref ref="SH22F3"/>
+        <positionref ref="SH22F3_1inSC12pos"/>
+        <rotationref ref="SH22F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32F0_1" copynumber="1">
+        <volumeref ref="SV32F0"/>
+        <positionref ref="SV32F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32F1_1" copynumber="1">
+        <volumeref ref="SV32F1"/>
+        <positionref ref="SV32F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV32F2_1" copynumber="1">
+        <volumeref ref="SV32F2"/>
+        <positionref ref="SV32F2_1inSC12pos"/>
+        <rotationref ref="SV32F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV32F3_1" copynumber="1">
+        <volumeref ref="SV32F3"/>
+        <positionref ref="SV32F3_1inSC12pos"/>
+        <rotationref ref="SV32F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32F0_1" copynumber="1">
+        <volumeref ref="SH32F0"/>
+        <positionref ref="SH32F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32F1_1" copynumber="1">
+        <volumeref ref="SH32F1"/>
+        <positionref ref="SH32F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH32F2_1" copynumber="1">
+        <volumeref ref="SH32F2"/>
+        <positionref ref="SH32F2_1inSC12pos"/>
+        <rotationref ref="SH32F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH32F3_1" copynumber="1">
+        <volumeref ref="SH32F3"/>
+        <positionref ref="SH32F3_1inSC12pos"/>
+        <rotationref ref="SH32F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22F0_1" copynumber="1">
+        <volumeref ref="SP22F0"/>
+        <positionref ref="SP22F0_1inSC12pos"/>
+        <rotationref ref="SP22F0_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22F1_1" copynumber="1">
+        <volumeref ref="SP22F1"/>
+        <positionref ref="SP22F1_1inSC12pos"/>
+        <rotationref ref="SP22F1_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22F2_1" copynumber="1">
+        <volumeref ref="SP22F2"/>
+        <positionref ref="SP22F2_1inSC12pos"/>
+        <rotationref ref="SP22F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SP22F3_1" copynumber="1">
+        <volumeref ref="SP22F3"/>
+        <positionref ref="SP22F3_1inSC12pos"/>
+        <rotationref ref="SP22F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42F0_1" copynumber="1">
+        <volumeref ref="SV42F0"/>
+        <positionref ref="SV42F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42F1_1" copynumber="1">
+        <volumeref ref="SV42F1"/>
+        <positionref ref="SV42F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SV42F2_1" copynumber="1">
+        <volumeref ref="SV42F2"/>
+        <positionref ref="SV42F2_1inSC12pos"/>
+        <rotationref ref="SV42F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SV42F3_1" copynumber="1">
+        <volumeref ref="SV42F3"/>
+        <positionref ref="SV42F3_1inSC12pos"/>
+        <rotationref ref="SV42F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42F0_1" copynumber="1">
+        <volumeref ref="SH42F0"/>
+        <positionref ref="SH42F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42F1_1" copynumber="1">
+        <volumeref ref="SH42F1"/>
+        <positionref ref="SH42F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SH42F2_1" copynumber="1">
+        <volumeref ref="SH42F2"/>
+        <positionref ref="SH42F2_1inSC12pos"/>
+        <rotationref ref="SH42F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SH42F3_1" copynumber="1">
+        <volumeref ref="SH42F3"/>
+        <positionref ref="SH42F3_1inSC12pos"/>
+        <rotationref ref="SH42F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2F0_1" copynumber="1">
+        <volumeref ref="SHX2F0"/>
+        <positionref ref="SHX2F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2F1_1" copynumber="1">
+        <volumeref ref="SHX2F1"/>
+        <positionref ref="SHX2F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SHX2F2_1" copynumber="1">
+        <volumeref ref="SHX2F2"/>
+        <positionref ref="SHX2F2_1inSC12pos"/>
+        <rotationref ref="SHX2F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SHX2F3_1" copynumber="1">
+        <volumeref ref="SHX2F3"/>
+        <positionref ref="SHX2F3_1inSC12pos"/>
+        <rotationref ref="SHX2F3_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2F0_1" copynumber="1">
+        <volumeref ref="SVX2F0"/>
+        <positionref ref="SVX2F0_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2F1_1" copynumber="1">
+        <volumeref ref="SVX2F1"/>
+        <positionref ref="SVX2F1_1inSC12pos"/>
+      </physvol>
+      <physvol name="SVX2F2_1" copynumber="1">
+        <volumeref ref="SVX2F2"/>
+        <positionref ref="SVX2F2_1inSC12pos"/>
+        <rotationref ref="SVX2F2_1inSC12rot"/>
+      </physvol>
+      <physvol name="SVX2F3_1" copynumber="1">
+        <volumeref ref="SVX2F3"/>
+        <positionref ref="SVX2F3_1inSC12pos"/>
+        <rotationref ref="SVX2F3_1inSC12rot"/>
+      </physvol>
+    </volume>
+    </structure>

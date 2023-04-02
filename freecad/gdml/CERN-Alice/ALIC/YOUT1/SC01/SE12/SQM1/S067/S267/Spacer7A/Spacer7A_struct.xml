@@ -1,0 +1,5 @@
+<structure><volume name="Spacer7A">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="Spacer7A0x1"/>
+    </volume>
+    </structure>

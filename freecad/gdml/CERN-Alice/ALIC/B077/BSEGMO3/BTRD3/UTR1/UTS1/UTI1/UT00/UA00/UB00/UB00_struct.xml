@@ -1,0 +1,37 @@
+<structure><volume name="UH00">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x67"/>
+    </volume>
+    <volume name="UC00">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x66"/>
+      <physvol name="UH00_1" copynumber="1">
+        <volumeref ref="UH00"/>
+        <positionref ref="UH00_1inUC00pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX00">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX000x1"/>
+      <physvol name="UC00_1" copynumber="1">
+        <volumeref ref="UC00"/>
+        <positionref ref="UC00_1inUX00pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ00">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ000x1"/>
+    </volume>
+    <volume name="UB00">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x65"/>
+      <physvol name="UJ00_1" copynumber="1">
+        <volumeref ref="UJ00"/>
+        <positionref ref="UJ00_1inUB00pos"/>
+      </physvol>
+      <physvol name="UX00_1" copynumber="1">
+        <volumeref ref="UX00"/>
+        <positionref ref="UX00_1inUB00pos"/>
+      </physvol>
+    </volume>
+    </structure>

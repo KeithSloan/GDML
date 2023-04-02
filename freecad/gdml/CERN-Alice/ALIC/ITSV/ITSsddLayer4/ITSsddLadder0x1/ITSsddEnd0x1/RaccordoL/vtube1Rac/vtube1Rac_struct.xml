@@ -1,0 +1,5 @@
+<structure><volume name="vtube1Rac">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="tube1Rac"/>
+    </volume>
+    </structure>

@@ -1,0 +1,13 @@
+<structure><volume name="UTE6">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="UTE60x1"/>
+    </volume>
+    <volume name="UTE5">
+      <materialref ref="TRD_Fe"/>
+      <solidref ref="UTE50x1"/>
+      <physvol name="UTE6_1" copynumber="1">
+        <volumeref ref="UTE6"/>
+        <positionref ref="UTE6_1inUTE5pos"/>
+      </physvol>
+    </volume>
+    </structure>

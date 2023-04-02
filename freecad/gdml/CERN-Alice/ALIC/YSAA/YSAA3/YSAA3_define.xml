@@ -1,0 +1,8 @@
+<define><position name="YSAA3CCBlock_1inYSAA3pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="YSAA3SteelPlate11_1inYSAA3SteelPlate1pos" x="0" y="0" z="-45" unit="cm"/>
+    <position name="YSAA3SteelPlate1_1inYSAA3pos" x="0" y="80" z="0" unit="cm"/>
+    <position name="YSAA3SteelPlate1_2inYSAA3pos" x="0" y="-80" z="0" unit="cm"/>
+    <position name="YSAA3SteelPlate21_1inYSAA3SteelPlate2pos" x="0" y="0" z="-45" unit="cm"/>
+    <position name="YSAA3SteelPlate2_1inYSAA3pos" x="80" y="0" z="0" unit="cm"/>
+    <position name="YSAA3SteelPlate2_2inYSAA3pos" x="-80" y="0" z="0" unit="cm"/>
+    </define>

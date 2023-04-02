@@ -1,0 +1,13 @@
+<structure><volume name="RB24IpSTS">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x35"/>
+    </volume>
+    <volume name="RB24IpSTT">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x34"/>
+      <physvol name="RB24IpSTS_1" copynumber="1">
+        <volumeref ref="RB24IpSTS"/>
+        <positionref ref="RB24IpSTS_1inRB24IpSTTpos"/>
+      </physvol>
+    </volume>
+    </structure>

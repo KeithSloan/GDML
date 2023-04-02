@@ -1,0 +1,19 @@
+<solids><polyhedra name="TGeoPgon" startphi="22.5" deltaphi="360" numsides="8" aunit="deg" lunit="cm">
+      <zplane z="-588" rmin="566" rmax="571"/>
+      <zplane z="588" rmin="566" rmax="571"/>
+    </polyhedra>
+    <polyhedra name="TGeoPgon0x1" startphi="22.5" deltaphi="360" numsides="8" aunit="deg" lunit="cm">
+      <zplane z="-588" rmin="589.59999990463257" rmax="685.40000009536743"/>
+      <zplane z="588" rmin="589.59999990463257" rmax="685.40000009536743"/>
+    </polyhedra>
+    <polyhedra name="TGeoPgon0x175" startphi="22.5" deltaphi="360" numsides="8" aunit="deg" lunit="cm">
+      <zplane z="-620" rmin="703.5" rmax="790.5"/>
+      <zplane z="620" rmin="703.5" rmax="790.5"/>
+    </polyhedra>
+    <polyhedra name="TGeoPgon0x176" startphi="22.5" deltaphi="360" numsides="8" aunit="deg" lunit="cm">
+      <zplane z="605" rmin="600" rmax="703.5"/>
+      <zplane z="620" rmin="600" rmax="703.5"/>
+      <zplane z="620" rmin="600" rmax="785.5"/>
+      <zplane z="706" rmin="600" rmax="785.5"/>
+    </polyhedra>
+    </solids>

@@ -1,0 +1,21 @@
+<solids><xtru name="TGeoXtru0x7" lunit="cm">
+      <twoDimVertex x="-28.784000396728516" y="1.9980000257492065"/>
+      <twoDimVertex x="-21.588000297546387" y="3.7680000066757202"/>
+      <twoDimVertex x="-14.392000198364258" y="5.0080000162124634"/>
+      <twoDimVertex x="-7.1960000991821289" y="5.7480000257492065"/>
+      <twoDimVertex x="0" y="5.9940000772476196"/>
+      <twoDimVertex x="7.1960000991821289" y="5.7480000257492065"/>
+      <twoDimVertex x="14.392000198364258" y="5.0080000162124634"/>
+      <twoDimVertex x="21.588000297546387" y="3.7680000066757202"/>
+      <twoDimVertex x="28.784000396728516" y="1.9980000257492065"/>
+      <twoDimVertex x="21.588000297546387" y="1.9980000257492065"/>
+      <twoDimVertex x="14.392000198364258" y="1.9980000257492065"/>
+      <twoDimVertex x="7.1960000991821289" y="1.9980000257492065"/>
+      <twoDimVertex x="0" y="1.9980000257492065"/>
+      <twoDimVertex x="-7.1960000991821289" y="1.9980000257492065"/>
+      <twoDimVertex x="-14.392000198364258" y="1.9980000257492065"/>
+      <twoDimVertex x="-21.588000297546387" y="1.9980000257492065"/>
+      <section zOrder="0" zPosition="-0.05000000074505806" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.05000000074505806" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    </solids>

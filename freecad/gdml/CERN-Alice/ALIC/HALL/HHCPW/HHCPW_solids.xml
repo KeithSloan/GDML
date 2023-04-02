@@ -1,0 +1,15 @@
+<solids><subtraction name="HHCPW0x1">
+      <first ref="shHHCPW1"/>
+      <second ref="TGeoCompositeShape0x8"/>
+      <firstrotation name="HHCPW0x1shHHCPW1rot" x="-90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <tube name="shHHCPW1" rmin="1140" rmax="1240" z="1206" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x8">
+      <first ref="shHHCPW2"/>
+      <second ref="shHHCPW3"/>
+      <firstposition name="TGeoCompositeShape0x8shHHCPW2pos" x="0" y="0" z="-1780" unit="cm"/>
+      <position name="TGeoCompositeShape0x8shHHCPW3pos" x="0" y="103" z="1190" unit="cm"/>
+    </union>
+    <box name="shHHCPW2" x="2480" y="1246" z="2480" lunit="cm"/>
+    <tube name="shHHCPW3" rmin="0" rmax="60" z="120" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

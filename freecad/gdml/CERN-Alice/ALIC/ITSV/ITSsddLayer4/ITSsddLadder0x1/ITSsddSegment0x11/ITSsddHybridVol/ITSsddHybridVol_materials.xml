@@ -1,0 +1,81 @@
+<materials><material name="ITS_SDDKAPTON_POLYCH2">
+      <D unit="g/cm3" value="1.4199999570846558"/>
+      <fraction n="0.69112998247146606" ref="CARBON_elm"/>
+      <fraction n="0.026362000033259392" ref="HYDROGEN_elm"/>
+      <fraction n="0.073270000517368317" ref="NITROGEN_elm"/>
+      <fraction n="0.20923499763011932" ref="OXYGEN_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <material name="ITS_AL" Z="13">
+      <D unit="g/cm3" value="2.6988999843597412"/>
+      <atom unit="g/mole" value="26.982000350952148"/>
+    </material>
+    <material name="ITS_COPPER" Z="29">
+      <D unit="g/cm3" value="8.9600000381469727"/>
+      <atom unit="g/mole" value="63.546001434326172"/>
+    </material>
+    <material name="ITS_SDD_SI_CHIP">
+      <D unit="g/cm3" value="2.3643600940704346"/>
+      <fraction n="0.03973064199090004" ref="CARBON_elm"/>
+      <fraction n="0.0043677710928022861" ref="HYDROGEN_elm"/>
+      <fraction n="0.0013967979466542602" ref="NITROGEN_elm"/>
+      <fraction n="0.011696339584887028" ref="OXYGEN_elm"/>
+      <fraction n="0.84466499090194702" ref="SILICON_elm"/>
+      <fraction n="0.098143450915813446" ref="SILVER_elm"/>
+    </material>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    <element name="SILVER_elm" formula="AG" Z="47">
+      <atom unit="g/mole" value="107.8682"/>
+    </element>
+    <material name="ITS_SDD_X7R_capacitors">
+      <D unit="g/cm3" value="7.1456699371337891"/>
+      <fraction n="0.25163942575454712" ref="BARIUM_elm"/>
+      <fraction n="0.0094712711870670319" ref="COPPER_elm"/>
+      <fraction n="0.20817680656909943" ref="LEAD_elm"/>
+      <fraction n="0.03824475035071373" ref="NICKEL_elm"/>
+      <fraction n="0.085975818336009979" ref="OXYGEN_elm"/>
+      <fraction n="0.32173648476600647" ref="TIN_elm"/>
+      <fraction n="0.08475504070520401" ref="TITANIUM_elm"/>
+    </material>
+    <element name="BARIUM_elm" formula="BA" Z="56">
+      <atom unit="g/mole" value="137.327"/>
+    </element>
+    <element name="COPPER_elm" formula="CU" Z="29">
+      <atom unit="g/mole" value="63.545999999999999"/>
+    </element>
+    <element name="LEAD_elm" formula="PB" Z="82">
+      <atom unit="g/mole" value="207.19999999999999"/>
+    </element>
+    <element name="NICKEL_elm" formula="NI" Z="28">
+      <atom unit="g/mole" value="58.693399999999997"/>
+    </element>
+    <element name="TIN_elm" formula="SN" Z="50">
+      <atom unit="g/mole" value="118.70999999999999"/>
+    </element>
+    <element name="TITANIUM_elm" formula="TI" Z="22">
+      <atom unit="g/mole" value="47.866999999999997"/>
+    </element>
+    <material name="ITS_SDD_AIR">
+      <D unit="g/cm3" value="0.0012047899654135108"/>
+      <fraction n="0.012826999649405479" ref="ARGON_elm"/>
+      <fraction n="0.00012399999832268804" ref="CARBON_elm"/>
+      <fraction n="0.75526702404022217" ref="NITROGEN_elm"/>
+      <fraction n="0.231781005859375" ref="OXYGEN_elm"/>
+    </material>
+    <element name="ARGON_elm" formula="AR" Z="18">
+      <atom unit="g/mole" value="39.948"/>
+    </element>
+    </materials>

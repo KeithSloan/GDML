@@ -1,0 +1,5 @@
+<structure><volume name="YSAA1_WPipeI">
+      <materialref ref="SHIL_Ni-W-Cu3"/>
+      <solidref ref="TGeoTube0x1"/>
+    </volume>
+    </structure>

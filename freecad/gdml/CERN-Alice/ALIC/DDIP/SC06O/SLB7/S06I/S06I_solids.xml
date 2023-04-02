@@ -1,0 +1,7 @@
+<solids><box name="S06G0x1" x="40" y="40" z="0.5" lunit="cm"/>
+    <box name="S06H0x1" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="S06E0x1" x="2.5" y="7.0500001907348633" z="0.0043999999761581421" lunit="cm"/>
+    <box name="S06B0x1" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="S06P0x1" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="S06I0x1" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    </solids>

@@ -1,0 +1,5 @@
+<structure><volume name="UMC3">
+      <materialref ref="TRD_Si"/>
+      <solidref ref="UMC30x1"/>
+    </volume>
+    </structure>

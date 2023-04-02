@@ -1,0 +1,17 @@
+<define><position name="SQ44_1inSQ40pos" x="-32.430000686645506" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_2inSQ40pos" x="-27.430000686645506" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_3inSQ40pos" x="-22.430002593994139" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_4inSQ40pos" x="-17.430002593994139" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_5inSQ40pos" x="-12.430002593994141" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_6inSQ40pos" x="-7.430002593994141" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_7inSQ40pos" x="-2.4300025939941405" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_8inSQ40pos" x="2.5699974060058595" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_9inSQ40pos" x="7.569997406005859" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_10inSQ40pos" x="12.569997406005859" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_11inSQ40pos" x="17.569997406005861" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_12inSQ40pos" x="22.569997406005861" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_13inSQ40pos" x="27.569997406005861" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_14inSQ40pos" x="32.569997406005861" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_64inSQ40pos" x="-37.200001144409178" y="-0.45500003695487978" z="0" unit="cm"/>
+    <position name="SQ44_15inSQ40pos" x="37.399999237060548" y="-0.45500003695487978" z="0" unit="cm"/>
+    </define>

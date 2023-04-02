@@ -1,0 +1,3 @@
+<define><position name="SFRR6_1inSFRM6pos" x="0" y="0.5" z="1.7250000238418579" unit="cm"/>
+    <position name="SFRR6_2inSFRM6pos" x="0" y="0.5" z="-1.7250000238418579" unit="cm"/>
+    </define>

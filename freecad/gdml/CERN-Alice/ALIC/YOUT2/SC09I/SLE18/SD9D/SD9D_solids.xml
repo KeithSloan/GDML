@@ -1,0 +1,14 @@
+<solids><intersection name="composite5D9D">
+      <first ref="TGeoCompositeShape0x14"/>
+      <second ref="box5DCut"/>
+      <position name="composite5D9Dbox5DCutpos" x="20" y="38.200000762939453" z="0" unit="cm"/>
+    </intersection>
+    <union name="TGeoCompositeShape0x14">
+      <first ref="rounded5SlatD9D"/>
+      <second ref="box5Vframe"/>
+      <position name="TGeoCompositeShape0x14box5Vframepos" x="0" y="48.825000762939453" z="0" unit="cm"/>
+    </union>
+    <tube name="rounded5SlatD9D" rmin="37.5" rmax="39.5" z="1" startphi="24.292333602905273" deltaphi="67.617876052856445" aunit="deg" lunit="cm"/>
+    <box name="box5Vframe" x="2.5" y="22.650001525878906" z="0.5" lunit="cm"/>
+    <box name="box5DCut" x="42.5" y="43.900001525878906" z="0.502" lunit="cm"/>
+    </solids>

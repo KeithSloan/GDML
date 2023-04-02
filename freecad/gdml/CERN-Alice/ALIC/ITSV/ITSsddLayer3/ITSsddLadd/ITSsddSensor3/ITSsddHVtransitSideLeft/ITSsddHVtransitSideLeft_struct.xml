@@ -1,0 +1,5 @@
+<structure><volume name="ITSsddHVtransitSideLeft">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoArb80x57"/>
+    </volume>
+    </structure>

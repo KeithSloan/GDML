@@ -1,0 +1,5 @@
+<structure><volume name="CpSupC">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x13"/>
+    </volume>
+    </structure>

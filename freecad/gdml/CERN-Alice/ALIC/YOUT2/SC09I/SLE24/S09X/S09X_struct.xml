@@ -1,0 +1,21 @@
+<structure><volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    </structure>

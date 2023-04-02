@@ -1,0 +1,3 @@
+<define><position name="DC10_1inDContactorpos" x="-5" y="0" z="-32.325000000000003" unit="cm"/>
+    <position name="DC10_2inDContactorpos" x="-5" y="0" z="32.325000000000003" unit="cm"/>
+    </define>

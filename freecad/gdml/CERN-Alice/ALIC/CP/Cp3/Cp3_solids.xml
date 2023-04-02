@@ -1,0 +1,90 @@
+<solids><polycone name="TGeoPcon0x40" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-2.75" rmin="2.9000000953674316" rmax="3.0499999523162842"/>
+      <zplane z="-1.9500000476837158" rmin="2.9000000953674316" rmax="3.0499999523162842"/>
+      <zplane z="-1.9500000476837158" rmin="2.9200000762939453" rmax="3"/>
+      <zplane z="2.75" rmin="2.9200000762939453" rmax="3"/>
+    </polycone>
+    <polycone name="TGeoPcon0x39" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-2.75" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="-1.9500000476837158" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="-1.9500000476837158" rmin="0" rmax="3"/>
+      <zplane z="2.75" rmin="0" rmax="3"/>
+    </polycone>
+    <tube name="TGeoTube0x14" rmin="3.0099999904632568" rmax="3.4831428527832031" z="0.019999999552965164" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="upperPlieI">
+      <first ref="TorusUI"/>
+      <second ref="TubeU"/>
+    </intersection>
+    <torus name="TorusUI" rtor="3.4831428527832031" rmin="0.096857145428657532" rmax="0.11685714870691299" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeU" rmin="3.4831428527832031" rmax="3.5999999046325684" z="0.23371429741382599" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="upperPlieO">
+      <first ref="TorusUO"/>
+      <second ref="TubeU"/>
+    </intersection>
+    <torus name="TorusUO" rtor="3.4831428527832031" rmin="0" rmax="0.11685714870691299" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeU" rmin="3.4831428527832031" rmax="3.5999999046325684" z="0.23371429741382599" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x15" rmin="2.9168570041656494" rmax="3.4831428527832031" z="0.019999999552965164" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="lowerPlieI">
+      <first ref="TorusLI"/>
+      <second ref="TubeL"/>
+    </intersection>
+    <torus name="TorusLI" rtor="2.9168570041656494" rmin="0.096857145428657532" rmax="0.11685714870691299" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeL" rmin="2.7999999523162842" rmax="2.9168570041656494" z="0.23371429741382599" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="lowerPlieO">
+      <first ref="TorusLO"/>
+      <second ref="TubeL"/>
+    </intersection>
+    <torus name="TorusLO" rtor="2.9168570041656494" rmin="0" rmax="0.11685714870691299" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeL" rmin="2.7999999523162842" rmax="2.9168570041656494" z="0.23371429741382599" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="connectionPlieI">
+      <first ref="TorusCI"/>
+      <second ref="TubeC"/>
+    </intersection>
+    <torus name="TorusCI" rtor="3.0099999904632568" rmin="0.18999999761581421" rmax="0.20999999344348907" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeC" rmin="2.7999999523162842" rmax="3.0099999904632568" z="0.41999998688697815" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="connectionPlieO">
+      <first ref="TorusCO"/>
+      <second ref="TubeC"/>
+    </intersection>
+    <torus name="TorusCO" rtor="3.0099999904632568" rmin="0" rmax="0.20999999344348907" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeC" rmin="2.7999999523162842" rmax="3.0099999904632568" z="0.41999998688697815" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x17" rmin="2.9200000762939453" rmax="3" z="2.3499999046325684" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x16" rmin="0" rmax="3" z="2.3499999046325684" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <polycone name="TGeoPcon0x41" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-6.5" rmin="0" rmax="3"/>
+      <zplane z="-4.1500000953674316" rmin="0" rmax="3"/>
+      <zplane z="-4.1500000953674316" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="4.1500000953674316" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="4.1500000953674316" rmin="0" rmax="3"/>
+      <zplane z="6.5" rmin="0" rmax="3"/>
+    </polycone>
+    <tube name="TGeoTube0x19" rmin="2.9200000762939453" rmax="3" z="4" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x18" rmin="0" rmax="3" z="4" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <polycone name="TGeoPcon0x43" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-2.5" rmin="2.9200000762939453" rmax="3"/>
+      <zplane z="1.0999999046325684" rmin="2.9200000762939453" rmax="3"/>
+      <zplane z="1.0999999046325684" rmin="2.9200000762939453" rmax="4.3000001907348633"/>
+      <zplane z="2.5" rmin="2.9200000762939453" rmax="4.3000001907348633"/>
+    </polycone>
+    <polycone name="TGeoPcon0x42" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-2.5" rmin="0" rmax="3"/>
+      <zplane z="1.0999999046325684" rmin="0" rmax="3"/>
+      <zplane z="1.0999999046325684" rmin="0" rmax="4.3000001907348633"/>
+      <zplane z="2.5" rmin="0" rmax="4.3000001907348633"/>
+    </polycone>
+    <polycone name="TGeoPcon0x38" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-20.25" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="-12.399999618530273" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="-12.399999618530273" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="-4.0999994277954102" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="-4.0999994277954102" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="4.6000003814697266" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="4.6000003814697266" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="12.90000057220459" rmin="0" rmax="3.5999999046325684"/>
+      <zplane z="12.90000057220459" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="18.850000381469727" rmin="0" rmax="3.0499999523162842"/>
+      <zplane z="18.850000381469727" rmin="0" rmax="4.3000001907348633"/>
+      <zplane z="20.25" rmin="0" rmax="4.3000001907348633"/>
+    </polycone>
+    <tube name="TGeoTube0x13" rmin="3.0510000000000002" rmax="4" z="0.69999999999999996" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

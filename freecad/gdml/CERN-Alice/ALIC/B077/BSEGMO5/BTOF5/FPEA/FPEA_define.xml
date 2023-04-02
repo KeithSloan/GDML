@@ -1,0 +1,20 @@
+<define><position name="FPE1_0inFALTpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FPE2_10x1inFALTpos" x="0" y="0" z="126.75" unit="cm"/>
+    <position name="FPE2_20x1inFALTpos" x="0" y="0" z="-126.75" unit="cm"/>
+    <position name="FPE3_10x1inFALTpos" x="0" y="0" z="284.29998779296875" unit="cm"/>
+    <position name="FPE3_20x1inFALTpos" x="0" y="0" z="-284.29998779296875" unit="cm"/>
+    <position name="FALT_0inFPEApos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FIF1_0inFPEApos" x="0" y="0.82999998331069946" z="0" unit="cm"/>
+    <position name="FIF2_10x1inFPEApos" x="0" y="0.82999998331069946" z="126.75" unit="cm"/>
+    <position name="FIF2_20x1inFPEApos" x="0" y="0.82999998331069946" z="-126.75" unit="cm"/>
+    <position name="FIF3_10x1inFPEApos" x="0" y="0.82999998331069946" z="284.29998779296875" unit="cm"/>
+    <position name="FIF3_20x1inFPEApos" x="0" y="0.82999998331069946" z="-284.29998779296875" unit="cm"/>
+    <position name="FCC1_0inFFC1pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FFC1_0inFPEApos" x="0" y="-0.875" z="0" unit="cm"/>
+    <position name="FCC2_0inFFC2pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FFC2_10x1inFPEApos" x="0" y="-0.875" z="126.75" unit="cm"/>
+    <position name="FFC2_20x1inFPEApos" x="0" y="-0.875" z="-126.75" unit="cm"/>
+    <position name="FCC3_0inFFC3pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FFC3_10x1inFPEApos" x="0" y="-0.875" z="284.29998779296875" unit="cm"/>
+    <position name="FFC3_20x1inFPEApos" x="0" y="-0.875" z="-284.29998779296875" unit="cm"/>
+    </define>

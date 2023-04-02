@@ -1,0 +1,35 @@
+<define><position name="S06K_1inS06Spos" x="0" y="0" z="-0.76499999966472387" unit="cm"/>
+    <position name="S06K_2inS06Spos" x="0" y="0" z="0.76499999966472387" unit="cm"/>
+    <position name="S06L_0inS06Spos" x="10.375" y="36.450000762939453" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_1inS06Spos" x="10.375" y="-36.450000762939453" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_2inS06Spos" x="80.625" y="36.450000762939453" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_3inS06Spos" x="80.625" y="-36.450000762939453" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_100inS06Spos" x="0" y="74" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_101inS06Spos" x="0" y="-74" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_102inS06Spos" x="14.75" y="1.2999992370605469" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_103inS06Spos" x="14.75" y="-1.2999992370605469" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_104inS06Spos" x="21.25" y="74" z="-0.8190000057220459" unit="cm"/>
+    <position name="S06L_105inS06Spos" x="21.25" y="-74" z="-0.8190000057220459" unit="cm"/>
+    <position name="S06L_106inS06Spos" x="21.25" y="1.2999992370605469" z="-0.8190000057220459" unit="cm"/>
+    <position name="S06L_107inS06Spos" x="21.25" y="-1.2999992370605469" z="-0.8190000057220459" unit="cm"/>
+    <position name="S06L_108inS06Spos" x="80.625" y="74" z="-0.84500002861022949" unit="cm"/>
+    <position name="S06L_109inS06Spos" x="80.625" y="-74" z="-0.84500002861022949" unit="cm"/>
+    <position name="S06L_110inS06Spos" x="80.625" y="1.2999992370605469" z="-0.84500002861022949" unit="cm"/>
+    <position name="S06L_111inS06Spos" x="80.625" y="-1.2999992370605469" z="-0.84500002861022949" unit="cm"/>
+    <position name="S06L_200inS06Spos" x="0" y="109.70000076293945" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_201inS06Spos" x="0" y="-109.70000076293945" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_202inS06Spos" x="0" y="39.049999237060547" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_203inS06Spos" x="0" y="-39.049999237060547" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_204inS06Spos" x="80.625" y="109.70000076293945" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_205inS06Spos" x="80.625" y="-109.70000076293945" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_206inS06Spos" x="80.625" y="39.049999237060547" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_207inS06Spos" x="80.625" y="-39.049999237060547" z="0.8190000057220459" unit="cm"/>
+    <position name="S06L_300inS06Spos" x="60.625" y="143.10000228881836" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_301inS06Spos" x="60.625" y="-143.10000228881836" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_302inS06Spos" x="60.625" y="76.600002288818359" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_303inS06Spos" x="60.625" y="-76.600002288818359" z="-0.7929999828338623" unit="cm"/>
+    <position name="S06L_400inS06Spos" x="40.625" y="176.79999923706055" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_401inS06Spos" x="40.625" y="-176.79999923706055" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_402inS06Spos" x="40.625" y="112.29999923706055" z="0.7929999828338623" unit="cm"/>
+    <position name="S06L_403inS06Spos" x="40.625" y="-112.29999923706055" z="0.7929999828338623" unit="cm"/>
+    </define>

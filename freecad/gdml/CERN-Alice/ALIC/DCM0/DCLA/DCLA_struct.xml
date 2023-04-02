@@ -1,0 +1,5 @@
+<structure><volume name="DCLA">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCLA0x1"/>
+    </volume>
+    </structure>

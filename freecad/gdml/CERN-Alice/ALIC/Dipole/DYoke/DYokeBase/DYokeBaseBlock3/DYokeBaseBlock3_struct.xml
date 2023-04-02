@@ -1,0 +1,5 @@
+<structure><volume name="DYokeBaseBlock3">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x4"/>
+    </volume>
+    </structure>

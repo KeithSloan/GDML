@@ -1,0 +1,20 @@
+<materials><material name="TRD_Cu" Z="29">
+      <D unit="g/cm3" value="8.9600000381469727"/>
+      <atom unit="g/mole" value="63.540000915527344"/>
+    </material>
+    <material name="TRD_XeCO2">
+      <D unit="g/cm3" value="0.0049454998224973679"/>
+      <fraction n="0.015242274850606918" ref="CARBON_elm"/>
+      <fraction n="0.040608331561088562" ref="OXYGEN_elm"/>
+      <fraction n="0.9441494345664978" ref="XENON_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <element name="XENON_elm" formula="XE" Z="54">
+      <atom unit="g/mole" value="131.28999999999999"/>
+    </element>
+    </materials>

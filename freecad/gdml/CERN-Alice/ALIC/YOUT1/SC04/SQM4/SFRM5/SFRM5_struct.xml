@@ -1,0 +1,37 @@
+<structure><volume name="SFRR5">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SFRR50x1"/>
+    </volume>
+    <volume name="SFRR5">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SFRR50x1"/>
+    </volume>
+    <volume name="SFRA5">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SFRA50x1"/>
+    </volume>
+    <volume name="SFRA5">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SFRA50x1"/>
+    </volume>
+    <volume name="SFRM5">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SFRM50x1"/>
+      <physvol name="SFRA5_1" copynumber="1">
+        <volumeref ref="SFRA5"/>
+        <positionref ref="SFRA5_1inSFRM5pos"/>
+      </physvol>
+      <physvol name="SFRA5_2" copynumber="2">
+        <volumeref ref="SFRA5"/>
+        <positionref ref="SFRA5_2inSFRM5pos"/>
+      </physvol>
+      <physvol name="SFRR5_1" copynumber="1">
+        <volumeref ref="SFRR5"/>
+        <positionref ref="SFRR5_1inSFRM5pos"/>
+      </physvol>
+      <physvol name="SFRR5_2" copynumber="2">
+        <volumeref ref="SFRR5"/>
+        <positionref ref="SFRR5_2inSFRM5pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,45 @@
+<structure><volume name="S503">
+      <materialref ref="MUON_FR4"/>
+      <solidref ref="S5030x1"/>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="S303">
+      <materialref ref="MUON_FOAM"/>
+      <solidref ref="S3030x1"/>
+      <physvol name="SCHL_1" copynumber="1">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_10x102inS303pos"/>
+      </physvol>
+    </volume>
+    <volume name="S103">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="S1030x1"/>
+      <physvol name="S303_1" copynumber="1">
+        <volumeref ref="S303"/>
+        <positionref ref="S303_1inS103pos"/>
+      </physvol>
+      <physvol name="S503_1" copynumber="1">
+        <volumeref ref="S503"/>
+        <positionref ref="S503_1inS103pos"/>
+      </physvol>
+    </volume>
+    </structure>

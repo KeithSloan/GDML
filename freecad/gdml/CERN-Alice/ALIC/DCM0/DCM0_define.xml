@@ -1,0 +1,33 @@
+<define><position name="DCBA_1inDCM0pos" x="0" y="-46" z="15" unit="cm"/>
+    <position name="DCH1_1inDCMLpos" x="19" y="-13.5" z="-15.5" unit="cm"/>
+    <position name="DCCV_3inDCMLpos" x="19" y="18.5" z="129.5" unit="cm"/>
+    <position name="DCC1_7inDCMLpos" x="19" y="6.5" z="109.5" unit="cm"/>
+    <position name="DCML_1inDCM0pos" x="-31" y="-0.5" z="15.5" unit="cm"/>
+    <position name="DCML_2inDCM0pos" x="31" y="-0.5" z="15.5" unit="cm"/>
+    <position name="DCH2_1inDCMUpos" x="2" y="4.5" z="0" unit="cm"/>
+    <position name="DCMU_1inDCM0pos" x="-14" y="45.5" z="0" unit="cm"/>
+    <position name="DCMU_2inDCM0pos" x="14" y="45.5" z="0" unit="cm"/>
+    <position name="DCCV_1inDCM0pos" x="12" y="18" z="-145" unit="cm"/>
+    <position name="DCCV_2inDCM0pos" x="-12" y="18" z="-145" unit="cm"/>
+    <position name="DCC1_1inDCM0pos" x="-12" y="30" z="125" unit="cm"/>
+    <position name="DCC1_2inDCM0pos" x="12" y="30" z="125" unit="cm"/>
+    <position name="DCC1_3inDCM0pos" x="12" y="30" z="-125" unit="cm"/>
+    <position name="DCC1_4inDCM0pos" x="-12" y="30" z="-125" unit="cm"/>
+    <position name="DCC1_5inDCM0pos" x="12" y="6" z="-125" unit="cm"/>
+    <position name="DCC1_6inDCM0pos" x="-12" y="6" z="-125" unit="cm"/>
+    <position name="DCLA_1inDCM0pos" x="22" y="30" z="-119" unit="cm"/>
+    <position name="DCLA_2inDCM0pos" x="22" y="30" z="-44" unit="cm"/>
+    <position name="DCLA_3inDCM0pos" x="22" y="30" z="46" unit="cm"/>
+    <position name="DCLA_4inDCM0pos" x="22" y="30" z="119" unit="cm"/>
+    <position name="DCLA_5inDCM0pos" x="-22" y="30" z="-119" unit="cm"/>
+    <position name="DCLA_6inDCM0pos" x="-22" y="30" z="-44" unit="cm"/>
+    <position name="DCLA_7inDCM0pos" x="-22" y="30" z="46" unit="cm"/>
+    <position name="DCLA_8inDCM0pos" x="-22" y="30" z="119" unit="cm"/>
+    <rotation name="DCC1_7inDCMLrot" x="-180" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_1inDCM0rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_2inDCM0rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_3inDCM0rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_4inDCM0rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_5inDCM0rot" x="-180" y="-90" z="0" unit="deg"/>
+    <rotation name="DCC1_6inDCM0rot" x="-180" y="-90" z="0" unit="deg"/>
+    </define>

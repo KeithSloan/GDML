@@ -1,0 +1,8 @@
+<solids><subtraction name="shCarbonSupportSt3">
+      <first ref="shCarbonBoxSt3"/>
+      <second ref="shCarbonHoleSt3"/>
+      <position name="shCarbonSupportSt3shCarbonHoleSt3pos" x="-81" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shCarbonBoxSt3" x="162" y="362" z="0.029999999329447746" lunit="cm"/>
+    <tube name="shCarbonHoleSt3" rmin="0" rmax="29.5" z="0.031999999329447748" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    </solids>

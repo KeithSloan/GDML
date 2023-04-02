@@ -1,0 +1,14 @@
+<solids><intersection name="compositeD6D">
+      <first ref="TGeoCompositeShape0x4"/>
+      <second ref="boxDCut"/>
+      <position name="compositeD6DboxDCutpos" x="20" y="37.799999237060547" z="0" unit="cm"/>
+    </intersection>
+    <union name="TGeoCompositeShape0x4">
+      <first ref="centerSlatD6D"/>
+      <second ref="boxVframe"/>
+      <position name="TGeoCompositeShape0x4boxVframepos" x="0" y="44.625" z="0" unit="cm"/>
+    </union>
+    <tube name="centerSlatD6D" rmin="29.5" rmax="31.5" z="1" startphi="30.210250854492188" deltaphi="62.21826171875" aunit="deg" lunit="cm"/>
+    <box name="boxVframe" x="2.5" y="30.25" z="0.5" lunit="cm"/>
+    <box name="boxDCut" x="42.5" y="43.900001525878906" z="0.502" lunit="cm"/>
+    </solids>

@@ -1,0 +1,220 @@
+<structure><volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT1_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT1_AM0x1"/>
+    </volume>
+    <volume name="BTSHT4_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT4_AM0x1"/>
+    </volume>
+    <volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT4_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT4_AM0x1"/>
+    </volume>
+    <volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT4_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT4_AM0x1"/>
+    </volume>
+    <volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT4_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT4_AM0x1"/>
+    </volume>
+    <volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT4_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT4_AM0x1"/>
+    </volume>
+    <volume name="BTSHT3_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT3_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT2_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT2_AM0x1"/>
+    </volume>
+    <volume name="BTSHT1_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHT1_AM0x1"/>
+    </volume>
+    <volume name="BTSHA_AM">
+      <materialref ref="FRAME_ALU"/>
+      <solidref ref="BTSHA_AM0x1"/>
+    </volume>
+    <volume name="BTSH_AM">
+      <materialref ref="FRAME_AIR"/>
+      <solidref ref="BTSH_AM0x1"/>
+      <physvol name="BTSHA_AM_1" copynumber="1">
+        <volumeref ref="BTSHA_AM"/>
+        <positionref ref="BTSHA_AM_1inBTSH_AMpos"/>
+      </physvol>
+      <physvol name="BTSHT1_AM_1" copynumber="1">
+        <volumeref ref="BTSHT1_AM"/>
+        <positionref ref="BTSHT1_AM_1inBTSH_AMpos"/>
+        <rotationref ref="BTSHT1_AM_1inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_1" copynumber="1">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_1inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_1inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_2" copynumber="2">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_2inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_2inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_1" copynumber="1">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_1inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_1inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT4_AM_1" copynumber="1">
+        <volumeref ref="BTSHT4_AM"/>
+        <positionref ref="BTSHT4_AM_1inBTSH_AMpos"/>
+        <rotationref ref="BTSHT4_AM_1inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_3" copynumber="3">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_3inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_3inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_4" copynumber="4">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_4inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_4inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_2" copynumber="2">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_2inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_2inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT4_AM_2" copynumber="2">
+        <volumeref ref="BTSHT4_AM"/>
+        <positionref ref="BTSHT4_AM_2inBTSH_AMpos"/>
+        <rotationref ref="BTSHT4_AM_2inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_5" copynumber="5">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_5inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_5inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_6" copynumber="6">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_6inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_6inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_3" copynumber="3">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_3inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_3inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT4_AM_3" copynumber="3">
+        <volumeref ref="BTSHT4_AM"/>
+        <positionref ref="BTSHT4_AM_3inBTSH_AMpos"/>
+        <rotationref ref="BTSHT4_AM_3inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_7" copynumber="7">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_7inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_7inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_8" copynumber="8">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_8inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_8inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_4" copynumber="4">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_4inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_4inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT4_AM_4" copynumber="4">
+        <volumeref ref="BTSHT4_AM"/>
+        <positionref ref="BTSHT4_AM_4inBTSH_AMpos"/>
+        <rotationref ref="BTSHT4_AM_4inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_9" copynumber="9">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_9inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_9inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT2_AM_10" copynumber="10">
+        <volumeref ref="BTSHT2_AM"/>
+        <positionref ref="BTSHT2_AM_10inBTSH_AMpos"/>
+        <rotationref ref="BTSHT2_AM_10inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_5" copynumber="5">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_5inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_5inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT4_AM_5" copynumber="5">
+        <volumeref ref="BTSHT4_AM"/>
+        <positionref ref="BTSHT4_AM_5inBTSH_AMpos"/>
+        <rotationref ref="BTSHT4_AM_5inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT1_AM_2" copynumber="2">
+        <volumeref ref="BTSHT1_AM"/>
+        <positionref ref="BTSHT1_AM_2inBTSH_AMpos"/>
+        <rotationref ref="BTSHT1_AM_2inBTSH_AMrot"/>
+      </physvol>
+      <physvol name="BTSHT3_AM_6" copynumber="6">
+        <volumeref ref="BTSHT3_AM"/>
+        <positionref ref="BTSHT3_AM_6inBTSH_AMpos"/>
+        <rotationref ref="BTSHT3_AM_6inBTSH_AMrot"/>
+      </physvol>
+    </volume>
+    </structure>

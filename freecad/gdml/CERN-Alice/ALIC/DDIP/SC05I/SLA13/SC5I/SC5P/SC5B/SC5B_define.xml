@@ -1,0 +1,7 @@
+<define><position name="S05E_7inSC5Bpos" x="-3.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_8inSC5Bpos" x="-3.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_9inSC5Bpos" x="1.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_10inSC5Bpos" x="1.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_11inSC5Bpos" x="6.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_12inSC5Bpos" x="6.25" y="0" z="0.24780000001192093" unit="cm"/>
+    </define>

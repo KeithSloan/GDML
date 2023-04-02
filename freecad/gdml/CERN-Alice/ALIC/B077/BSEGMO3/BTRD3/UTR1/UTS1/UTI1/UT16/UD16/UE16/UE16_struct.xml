@@ -1,0 +1,21 @@
+<structure><volume name="UW16">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x472"/>
+    </volume>
+    <volume name="UK16">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="TGeoBBox0x471"/>
+      <physvol name="UW16_1" copynumber="1">
+        <volumeref ref="UW16"/>
+        <positionref ref="UW16_1inUK16pos"/>
+      </physvol>
+    </volume>
+    <volume name="UE16">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x470"/>
+      <physvol name="UK16_1" copynumber="1">
+        <volumeref ref="UK16"/>
+        <positionref ref="UK16_1inUE16pos"/>
+      </physvol>
+    </volume>
+    </structure>

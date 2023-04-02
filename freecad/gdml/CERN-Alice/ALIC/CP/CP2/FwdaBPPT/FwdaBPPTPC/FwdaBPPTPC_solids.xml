@@ -1,0 +1,18 @@
+<solids><subtraction name="shFwdaBPPTPC">
+      <first ref="FwdaBPPTX"/>
+      <second ref="FwdaBPPTY"/>
+    </subtraction>
+    <xtru name="FwdaBPPTX" lunit="cm">
+      <twoDimVertex x="12.5" y="7"/>
+      <twoDimVertex x="7.5" y="12"/>
+      <twoDimVertex x="-7.5" y="12"/>
+      <twoDimVertex x="-12.5" y="7"/>
+      <twoDimVertex x="-12.5" y="-7"/>
+      <twoDimVertex x="-7.5" y="-12"/>
+      <twoDimVertex x="7.5" y="-12"/>
+      <twoDimVertex x="12.5" y="-7"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="3" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="FwdaBPPTY" rmin="0" rmax="8.5" z="6.4000000000000004" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

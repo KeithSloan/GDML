@@ -1,0 +1,13 @@
+<structure><volume name="CP3MFI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x43"/>
+    </volume>
+    <volume name="CP3MFO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x42"/>
+      <physvol name="CP3MFI_1" copynumber="1">
+        <volumeref ref="CP3MFI"/>
+        <positionref ref="CP3MFI_1inCP3MFOpos"/>
+      </physvol>
+    </volume>
+    </structure>

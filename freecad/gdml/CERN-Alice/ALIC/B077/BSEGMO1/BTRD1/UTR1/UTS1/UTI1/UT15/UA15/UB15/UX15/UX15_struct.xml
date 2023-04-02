@@ -1,0 +1,21 @@
+<structure><volume name="UH15">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x456"/>
+    </volume>
+    <volume name="UC15">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x455"/>
+      <physvol name="UH15_1" copynumber="1">
+        <volumeref ref="UH15"/>
+        <positionref ref="UH15_1inUC15pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX15">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX150x1"/>
+      <physvol name="UC15_1" copynumber="1">
+        <volumeref ref="UC15"/>
+        <positionref ref="UC15_1inUX15pos"/>
+      </physvol>
+    </volume>
+    </structure>

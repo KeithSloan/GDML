@@ -1,0 +1,5 @@
+<structure><volume name="SA1C">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="layerS3"/>
+    </volume>
+    </structure>

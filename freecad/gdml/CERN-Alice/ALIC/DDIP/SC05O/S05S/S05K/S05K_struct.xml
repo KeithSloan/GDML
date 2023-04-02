@@ -1,0 +1,5 @@
+<structure><volume name="S05K">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="shCarbonSupportSt3"/>
+    </volume>
+    </structure>

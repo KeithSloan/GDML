@@ -1,0 +1,3 @@
+<solids><tube name="BFII0x1" rmin="270.60000610351562" rmax="276.89999389648438" z="6.8000001907348633" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="BFIR0x1" rmin="270" rmax="277.5" z="8" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

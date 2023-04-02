@@ -1,0 +1,5 @@
+<structure><volume name="Rb24Pl">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="Rb24Pl0x1"/>
+    </volume>
+    </structure>

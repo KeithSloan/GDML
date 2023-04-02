@@ -1,0 +1,18 @@
+<define><position name="S05G_10x1inSB5Hpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SB5H_1inSB5Ppos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S05E_30x1inSB5Bpos" x="-13.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_40x1inSB5Bpos" x="-13.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_50x1inSB5Bpos" x="-8.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_60x1inSB5Bpos" x="-8.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_70x2inSB5Bpos" x="-3.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_80x2inSB5Bpos" x="-3.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_90x2inSB5Bpos" x="1.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_100x2inSB5Bpos" x="1.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_110x2inSB5Bpos" x="6.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_120x2inSB5Bpos" x="6.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S05E_130x1inSB5Bpos" x="11.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S05E_140x1inSB5Bpos" x="11.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="SB5B_1inSB5Ppos" x="0" y="25.475000381469727" z="0" unit="cm"/>
+    <position name="SB5B_2inSB5Ppos" x="0" y="-25.475000381469727" z="0" unit="cm"/>
+    <position name="SB5P_1inSB5Ipos" x="0" y="0" z="0" unit="cm"/>
+    </define>

@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDoptical0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDoptical0x3"/>
+    </volume>
+    </structure>

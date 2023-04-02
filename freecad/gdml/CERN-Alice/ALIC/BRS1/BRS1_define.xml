@@ -1,0 +1,4 @@
+<define><position name="BRS2_1inBRS1pos" x="0" y="-23.75" z="0" unit="cm"/>
+    <position name="BRS2_2inBRS1pos" x="0" y="23.75" z="0" unit="cm"/>
+    <position name="BRS3_1inBRS1pos" x="0" y="0" z="0" unit="cm"/>
+    </define>

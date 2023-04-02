@@ -1,0 +1,5 @@
+<structure><volume name="UTP30x16">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="UTP30x17"/>
+    </volume>
+    </structure>

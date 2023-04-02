@@ -1,0 +1,5 @@
+<structure><volume name="FWZB">
+      <materialref ref="TOF_fibre_glass"/>
+      <solidref ref="FWZB0x1"/>
+    </volume>
+    </structure>

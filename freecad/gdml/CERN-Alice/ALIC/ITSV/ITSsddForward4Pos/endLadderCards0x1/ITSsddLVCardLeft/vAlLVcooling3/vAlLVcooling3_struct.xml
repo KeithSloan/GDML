@@ -1,0 +1,14 @@
+<structure><volume name="vLittleScrewLV">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewLV"/>
+    </volume>
+    <volume name="vAlLVcooling3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="lLVcooling3"/>
+      <physvol name="vLittleScrewLV_1" copynumber="1">
+        <volumeref ref="vLittleScrewLV"/>
+        <positionref ref="vLittleScrewLV_1invAlLVcooling3pos"/>
+        <rotationref ref="vLittleScrewLV_1invAlLVcooling3rot"/>
+      </physvol>
+    </volume>
+    </structure>

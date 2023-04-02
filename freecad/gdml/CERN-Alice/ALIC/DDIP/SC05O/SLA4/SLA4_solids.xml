@@ -1,0 +1,82 @@
+<solids><box name="S05V0x1" x="2.5" y="41.950000762939453" z="0.5" lunit="cm"/>
+    <intersection name="compositeC5D">
+      <first ref="centerSlatC5D"/>
+      <second ref="boxCCut"/>
+      <position name="compositeC5DboxCCutpos" x="26.592623998806239" y="0" z="0" unit="cm"/>
+    </intersection>
+    <tube name="centerSlatC5D" rmin="29.5" rmax="31.5" z="1" startphi="311.92090606689453" deltaphi="96.158187866210938" aunit="deg" lunit="cm"/>
+    <box name="boxCCut" x="9.8147520023875181" y="43.900001525878906" z="1.002" lunit="cm"/>
+    <subtraction name="composite5N">
+      <first ref="centerSlatC5N"/>
+      <second ref="tubeCut"/>
+      <position name="composite5NtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5N" x="19.25" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5C">
+      <first ref="centerSlatC5C"/>
+      <second ref="tubeCut"/>
+      <position name="composite5CtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5C" x="19.25" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5X">
+      <first ref="centerSlatC5X"/>
+      <second ref="tubeCut"/>
+      <position name="composite5XtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5X" x="19.25" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5G">
+      <first ref="centerSlatC5G"/>
+      <second ref="tubeCut"/>
+      <position name="composite5GtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5G" x="19.25" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5H">
+      <first ref="centerSlatC5H"/>
+      <second ref="tubeCut"/>
+      <position name="composite5HtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5H" x="19.25" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S05E0x1" x="2.5" y="7.0500001907348633" z="0.0043999999761581421" lunit="cm"/>
+    <subtraction name="composite5B">
+      <first ref="centerSlatC5B"/>
+      <second ref="tubeCut"/>
+      <position name="composite5BtubeCutpos" x="-31.625" y="25.475000381469727" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5B" x="19.25" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5P">
+      <first ref="centerSlatC5P"/>
+      <second ref="tubeCut"/>
+      <position name="composite5PtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5P" x="19.25" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5I">
+      <first ref="centerSlatC5I"/>
+      <second ref="tubeCut"/>
+      <position name="composite5ItubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5I" x="19.25" y="58" z="0.55000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S05N0x1" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <box name="S05C0x1" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <box name="S05X0x1" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <box name="S05G0x1" x="40" y="40" z="0.5" lunit="cm"/>
+    <box name="S05H0x1" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="S05B0x1" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="S05P0x1" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="S05I0x1" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    <box name="SB5N0x1" x="35" y="40" z="0.80000001192092896" lunit="cm"/>
+    <box name="SB5C0x1" x="35" y="40" z="0.84000003337860107" lunit="cm"/>
+    <box name="SB5X0x1" x="35" y="40" z="0.86500000953674316" lunit="cm"/>
+    <box name="S05G0x3" x="35" y="40" z="0.5" lunit="cm"/>
+    <box name="SB5H0x1" x="35" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="SB5B0x1" x="35" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="SB5P0x1" x="35" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="SB5I0x1" x="35" y="58" z="0.55000001192092896" lunit="cm"/>
+    </solids>

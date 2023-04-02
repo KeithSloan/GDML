@@ -1,0 +1,5 @@
+<structure><volume name="SBGC">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SBGC0x1"/>
+    </volume>
+    </structure>

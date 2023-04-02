@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDExtender">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoXtru0x18"/>
+    </volume>
+    </structure>

@@ -1,0 +1,5 @@
+<structure><volume name="UO00">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x76"/>
+    </volume>
+    </structure>

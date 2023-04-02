@@ -1,0 +1,15 @@
+<solids><intersection name="RB26s3LowerPlie0x1">
+      <first ref="RB26s3TorusL"/>
+      <second ref="RB26s3TubeL"/>
+    </intersection>
+    <torus name="RB26s3TorusL" rtor="15.418399810791016" rmin="0.30840000510215759" rmax="0.36840000748634338" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="RB26s3TubeL" rmin="15.050000190734863" rmax="15.418399810791016" z="0.73680001497268677" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x51" rmin="15.418399810791016" rmax="16.631599426269531" z="0.059999998658895493" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <intersection name="RB26s3UpperPlie0x1">
+      <first ref="RB26s3TorusU"/>
+      <second ref="RB26s3TubeU"/>
+    </intersection>
+    <torus name="RB26s3TorusU" rtor="16.631599426269531" rmin="0.30840000510215759" rmax="0.36840000748634338" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="RB26s3TubeU" rmin="16.631599426269531" rmax="17" z="0.73680001497268677" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTube0x50" rmin="15.050000190734863" rmax="17" z="17.700000762939453" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

@@ -1,0 +1,11 @@
+<structure><volume name="SA4H1">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA4H10x1"/>
+    </volume>
+    <assembly name="SH41A0">
+      <physvol name="SA4H1_35" copynumber="35">
+        <volumeref ref="SA4H1"/>
+        <positionref ref="SA4H1_35inSH41A0pos"/>
+      </physvol>
+    </assembly>
+    </structure>

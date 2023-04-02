@@ -1,0 +1,8 @@
+<define><position name="B050_1inB049pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="B049_1inBM49pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="B052_1inB051pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="B051_1inBM49pos" x="31.615581512451172" y="0" z="-34.779640197753906" unit="cm"/>
+    <position name="B051_2inBM49pos" x="-31.615581512451172" y="0" z="34.779640197753906" unit="cm"/>
+    <rotation name="B051_1inBM49rot" x="0" y="-47.728361311137903" z="0" unit="deg"/>
+    <rotation name="B051_2inBM49rot" x="180" y="47.728360948383603" z="180" unit="deg"/>
+    </define>

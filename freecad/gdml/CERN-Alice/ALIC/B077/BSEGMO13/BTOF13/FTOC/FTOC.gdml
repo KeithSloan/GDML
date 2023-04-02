@@ -1,0 +1,10 @@
+
+<!DOCTYPE gdml [
+<!ENTITY define SYSTEM "FTOC_define.xml">
+<!ENTITY materials SYSTEM "FTOC_materials.xml">
+<!ENTITY solids SYSTEM "FTOC_solids.xml">
+<!ENTITY struct SYSTEM "FTOC_struct.xml">
+<!ENTITY setup SYSTEM "FTOC_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&define;&materials;&solids;&struct;&setup;</gdml>

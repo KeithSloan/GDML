@@ -1,0 +1,4 @@
+<define><position name="vCardHVCapa1Middle_1incardHVCapa1pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="vCardHVCapa1End_1incardHVCapa1pos" x="0" y="0.2525" z="0" unit="cm"/>
+    <position name="vCardHVCapa1End_2incardHVCapa1pos" x="0" y="-0.2525" z="0" unit="cm"/>
+    </define>

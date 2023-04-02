@@ -1,0 +1,5 @@
+<structure><volume name="vLowUpGlueBar1">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoCompositeShape0x214"/>
+    </volume>
+    </structure>

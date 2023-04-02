@@ -1,0 +1,53 @@
+<structure><volume name="AFaSteelCone31I">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoCone0x7"/>
+    </volume>
+    <volume name="AFaSteelCone31">
+      <materialref ref="ABSO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoCone0x6"/>
+      <physvol name="AFaSteelCone31I_1" copynumber="1">
+        <volumeref ref="AFaSteelCone31I"/>
+        <positionref ref="AFaSteelCone31I_1inAFaSteelCone31pos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaSteelCone25">
+      <materialref ref="ABSO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoCone0x5"/>
+    </volume>
+    <volume name="AFaConcreteCone">
+      <materialref ref="ABSO_CONCRETE2"/>
+      <solidref ref="TGeoCone0x4"/>
+    </volume>
+    <volume name="AFaGraphiteConeO">
+      <materialref ref="ABSO_CARBON0"/>
+      <solidref ref="TGeoCone0x3"/>
+    </volume>
+    <volume name="AFaGraphiteCone">
+      <materialref ref="ABSO_CARBON2"/>
+      <solidref ref="TGeoPcon0x11"/>
+      <physvol name="AFaGraphiteConeO_1" copynumber="1">
+        <volumeref ref="AFaGraphiteConeO"/>
+        <positionref ref="AFaGraphiteConeO_1inAFaGraphiteConepos"/>
+      </physvol>
+    </volume>
+    <volume name="AFaAcc">
+      <materialref ref="ABSO_AIR0"/>
+      <solidref ref="TGeoPcon0x10"/>
+      <physvol name="AFaGraphiteCone_1" copynumber="1">
+        <volumeref ref="AFaGraphiteCone"/>
+        <positionref ref="AFaGraphiteCone_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaConcreteCone_1" copynumber="1">
+        <volumeref ref="AFaConcreteCone"/>
+        <positionref ref="AFaConcreteCone_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaSteelCone25_1" copynumber="1">
+        <volumeref ref="AFaSteelCone25"/>
+        <positionref ref="AFaSteelCone25_1inAFaAccpos"/>
+      </physvol>
+      <physvol name="AFaSteelCone31_1" copynumber="1">
+        <volumeref ref="AFaSteelCone31"/>
+        <positionref ref="AFaSteelCone31_1inAFaAccpos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,21 @@
+<structure><volume name="UH22">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x275"/>
+    </volume>
+    <volume name="UC22">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x274"/>
+      <physvol name="UH22_1" copynumber="1">
+        <volumeref ref="UH22"/>
+        <positionref ref="UH22_1inUC22pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX22">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX220x1"/>
+      <physvol name="UC22_1" copynumber="1">
+        <volumeref ref="UC22"/>
+        <positionref ref="UC22_1inUX22pos"/>
+      </physvol>
+    </volume>
+    </structure>

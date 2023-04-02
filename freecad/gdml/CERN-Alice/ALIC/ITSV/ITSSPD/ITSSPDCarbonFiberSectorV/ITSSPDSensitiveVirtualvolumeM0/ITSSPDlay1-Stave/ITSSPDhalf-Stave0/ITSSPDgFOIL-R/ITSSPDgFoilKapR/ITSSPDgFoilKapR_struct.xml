@@ -1,0 +1,5 @@
+<structure><volume name="ITSSPDgFoilKapR">
+      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
+      <solidref ref="ITSSPDSHgFoilKap0x1"/>
+    </volume>
+    </structure>

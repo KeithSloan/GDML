@@ -1,0 +1,5 @@
+<structure><volume name="CP1ATV">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x12"/>
+    </volume>
+    </structure>

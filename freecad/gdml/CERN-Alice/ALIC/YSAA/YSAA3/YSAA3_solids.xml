@@ -1,0 +1,16 @@
+<solids><subtraction name="Saa3CCBlock">
+      <first ref="Saa3CCBlockO"/>
+      <second ref="Saa3InnerRegion"/>
+    </subtraction>
+    <box name="Saa3CCBlockO" x="80" y="80" z="100" lunit="cm"/>
+    <polycone name="Saa3InnerRegion" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-60" rmin="0" rmax="27.100000000000001"/>
+      <zplane z="-23" rmin="0" rmax="27.100000000000001"/>
+      <zplane z="29.100000000000001" rmin="0" rmax="12.300000000000001"/>
+      <zplane z="60" rmin="0" rmax="12.300000000000001"/>
+    </polycone>
+    <box name="TGeoBBox0x530" x="240" y="80" z="10" lunit="cm"/>
+    <box name="TGeoBBox0x529" x="240" y="80" z="100" lunit="cm"/>
+    <box name="TGeoBBox0x532" x="80" y="80" z="10" lunit="cm"/>
+    <box name="TGeoBBox0x531" x="80" y="80" z="100" lunit="cm"/>
+    </solids>

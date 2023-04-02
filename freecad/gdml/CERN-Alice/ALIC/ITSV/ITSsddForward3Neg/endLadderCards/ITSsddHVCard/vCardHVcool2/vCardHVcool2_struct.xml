@@ -1,0 +1,5 @@
+<structure><volume name="vCardHVcool2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool2"/>
+    </volume>
+    </structure>

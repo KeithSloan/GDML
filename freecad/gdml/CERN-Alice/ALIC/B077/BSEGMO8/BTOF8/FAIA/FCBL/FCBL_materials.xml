@@ -1,0 +1,12 @@
+<materials><material name="TOF_cablestubes">
+      <D unit="g/cm3" value="0.68000000715255737"/>
+      <fraction n="0.40700000524520874" ref="ALUMINIUM_elm"/>
+      <fraction n="0.59299999475479126" ref="COPPER_elm"/>
+    </material>
+    <element name="ALUMINIUM_elm" formula="AL" Z="13">
+      <atom unit="g/mole" value="26.981538"/>
+    </element>
+    <element name="COPPER_elm" formula="CU" Z="29">
+      <atom unit="g/mole" value="63.545999999999999"/>
+    </element>
+    </materials>

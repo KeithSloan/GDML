@@ -1,0 +1,5 @@
+<structure><volume name="ShRb24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x18"/>
+    </volume>
+    </structure>

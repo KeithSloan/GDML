@@ -1,0 +1,13 @@
+<structure><volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    </structure>

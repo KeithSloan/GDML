@@ -1,0 +1,5 @@
+<structure><volume name="AFaPbConeI">
+      <materialref ref="ABSO_LEAD2"/>
+      <solidref ref="TGeoPcon0x6"/>
+    </volume>
+    </structure>

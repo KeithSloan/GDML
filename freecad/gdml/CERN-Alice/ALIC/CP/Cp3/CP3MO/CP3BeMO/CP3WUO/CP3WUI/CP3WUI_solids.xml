@@ -1,0 +1,7 @@
+<solids><intersection name="upperPlieI">
+      <first ref="TorusUI"/>
+      <second ref="TubeU"/>
+    </intersection>
+    <torus name="TorusUI" rtor="3.4831428527832031" rmin="0.096857145428657532" rmax="0.11685714870691299" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="TubeU" rmin="3.4831428527832031" rmax="3.5999999046325684" z="0.23371429741382599" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

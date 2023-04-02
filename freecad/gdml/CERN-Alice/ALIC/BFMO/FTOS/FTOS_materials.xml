@@ -1,0 +1,24 @@
+<materials><material name="TOF_AlCusteel">
+      <D unit="g/cm3" value="0.76999998092651367"/>
+      <fraction n="0.69999998807907104" ref="ALUMINIUM_elm"/>
+      <fraction n="0.017999999225139618" ref="CHROMIUM_elm"/>
+      <fraction n="0.20000000298023224" ref="COPPER_elm"/>
+      <fraction n="0.070000000298023224" ref="IRON_elm"/>
+      <fraction n="0.012000000104308128" ref="NICKEL_elm"/>
+    </material>
+    <element name="ALUMINIUM_elm" formula="AL" Z="13">
+      <atom unit="g/mole" value="26.981538"/>
+    </element>
+    <element name="CHROMIUM_elm" formula="CR" Z="24">
+      <atom unit="g/mole" value="51.996099999999998"/>
+    </element>
+    <element name="COPPER_elm" formula="CU" Z="29">
+      <atom unit="g/mole" value="63.545999999999999"/>
+    </element>
+    <element name="IRON_elm" formula="FE" Z="26">
+      <atom unit="g/mole" value="55.844999999999999"/>
+    </element>
+    <element name="NICKEL_elm" formula="NI" Z="28">
+      <atom unit="g/mole" value="58.693399999999997"/>
+    </element>
+    </materials>

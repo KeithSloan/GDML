@@ -1,0 +1,53 @@
+<structure><volume name="UV27">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x350"/>
+    </volume>
+    <volume name="UO27">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x349"/>
+    </volume>
+    <volume name="UN27">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x348"/>
+    </volume>
+    <volume name="UM27">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x347"/>
+    </volume>
+    <volume name="UY27">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x346"/>
+    </volume>
+    <volume name="UL27">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x345"/>
+    </volume>
+    <volume name="UG27">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x344"/>
+      <physvol name="UL27_1" copynumber="1">
+        <volumeref ref="UL27"/>
+        <positionref ref="UL27_1inUG27pos"/>
+      </physvol>
+      <physvol name="UY27_1" copynumber="1">
+        <volumeref ref="UY27"/>
+        <positionref ref="UY27_1inUG27pos"/>
+      </physvol>
+      <physvol name="UM27_1" copynumber="1">
+        <volumeref ref="UM27"/>
+        <positionref ref="UM27_1inUG27pos"/>
+      </physvol>
+      <physvol name="UN27_1" copynumber="1">
+        <volumeref ref="UN27"/>
+        <positionref ref="UN27_1inUG27pos"/>
+      </physvol>
+      <physvol name="UO27_1" copynumber="1">
+        <volumeref ref="UO27"/>
+        <positionref ref="UO27_1inUG27pos"/>
+      </physvol>
+      <physvol name="UV27_1" copynumber="1">
+        <volumeref ref="UV27"/>
+        <positionref ref="UV27_1inUG27pos"/>
+      </physvol>
+    </volume>
+    </structure>

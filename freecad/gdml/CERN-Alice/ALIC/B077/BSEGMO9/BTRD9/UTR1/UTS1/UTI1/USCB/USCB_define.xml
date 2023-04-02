@@ -1,0 +1,7 @@
+<define><position name="USC1_1inUSCBpos" x="0" y="0" z="-21.975000381469727" unit="cm"/>
+    <position name="USC2_1inUSCBpos" x="0" y="0" z="17.625" unit="cm"/>
+    <position name="USC3_1inUSCBpos" x="-30.5" y="0" z="-2" unit="cm"/>
+    <position name="USC3_2inUSCBpos" x="30.5" y="0" z="-2" unit="cm"/>
+    <rotation name="USC3_1inUSCBrot" x="90" y="-0" z="80.000000000000014" unit="deg"/>
+    <rotation name="USC3_2inUSCBrot" x="90" y="-0" z="-100" unit="deg"/>
+    </define>

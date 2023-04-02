@@ -1,0 +1,20 @@
+<define><position name="CP2VA_1inCP2MOpos" x="0" y="0" z="0.5" unit="cm"/>
+    <position name="CP2FL_1inCP2MOpos" x="0" y="0" z="-17.260000228881836" unit="cm"/>
+    <position name="CP2PI_1inCP2MOpos" x="0" y="0" z="0.54000002145767212" unit="cm"/>
+    <position name="CP2MO_1inCP2pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FwdaBPPTPC_1inFwdaBPPTpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FwdaBPPTT_1inFwdaBPPTpos" x="0" y="0" z="20.5" unit="cm"/>
+    <position name="FwdaBPPT_1inCP2pos" x="0" y="0" z="-4.4499999999999993" unit="cm"/>
+    <position name="FwdaBPSP_1inFwdaBPSpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FwdaBPSFL_1inFwdaBPSpos" x="0" y="0" z="4" unit="cm"/>
+    <position name="FwdaBPSCS_1inFwdaBPSpos" x="-13.258252143859863" y="13.258252143859863" z="2" unit="cm"/>
+    <position name="FwdaBPSCS_2inFwdaBPSpos" x="-13.258252143859863" y="-13.258252143859863" z="2" unit="cm"/>
+    <position name="FwdaBPSCS_3inFwdaBPSpos" x="13.258252143859863" y="-13.258252143859863" z="2" unit="cm"/>
+    <position name="FwdaBPSCS_4inFwdaBPSpos" x="13.258252143859863" y="13.258252143859863" z="2" unit="cm"/>
+    <position name="FwdaBPS_1inCP2pos" x="0" y="0" z="-13.15" unit="cm"/>
+    <rotation name="FwdaBPSP_1inFwdaBPSrot" x="0" y="-0" z="-44.999999999999993" unit="deg"/>
+    <rotation name="FwdaBPSCS_1inFwdaBPSrot" x="0" y="-0" z="-44.999999999999993" unit="deg"/>
+    <rotation name="FwdaBPSCS_2inFwdaBPSrot" x="0" y="-0" z="-135" unit="deg"/>
+    <rotation name="FwdaBPSCS_3inFwdaBPSrot" x="0" y="-0" z="135.00000000000003" unit="deg"/>
+    <rotation name="FwdaBPSCS_4inFwdaBPSrot" x="0" y="-0" z="45.000000000000014" unit="deg"/>
+    </define>

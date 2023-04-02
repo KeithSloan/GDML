@@ -1,0 +1,75 @@
+<solids><box name="UJ100x1" x="106.87999725341797" y="141" z="3" lunit="cm"/>
+    <box name="TGeoBBox0x197" x="106.37999725341797" y="140.5" z="0.32330000400543213" lunit="cm"/>
+    <box name="TGeoBBox0x196" x="106.37999725341797" y="140.5" z="4.8000001907348633" lunit="cm"/>
+    <box name="UX100x1" x="106.87999725341797" y="141" z="4.8000001907348633" lunit="cm"/>
+    <box name="TGeoBBox0x195" x="107.29999542236328" y="143" z="7.8000001907348633" lunit="cm"/>
+    <box name="UA100x1" x="108.09999847412109" y="143" z="7.8000001907348633" lunit="cm"/>
+    <box name="UZ100x1" x="0.89999997615814209" y="143" z="1.1100000143051147" lunit="cm"/>
+    <box name="TGeoBBox0x200" x="108.09999847412109" y="141.19999694824219" z="0.00019999999494757503" lunit="cm"/>
+    <box name="TGeoBBox0x199" x="108.09999847412109" y="141.19999694824219" z="0.69999998807907104" lunit="cm"/>
+    <box name="TGeoBBox0x198" x="108.09999847412109" y="141.19999694824219" z="0.69999998807907104" lunit="cm"/>
+    <box name="UD100x1" x="109.90000152587891" y="143" z="0.69999998807907104" lunit="cm"/>
+    <box name="TGeoBBox0x202" x="106.90000152587891" y="140" z="0.0071999998763203621" lunit="cm"/>
+    <box name="TGeoBBox0x203" x="106.90000152587891" y="140" z="0.05000000074505806" lunit="cm"/>
+    <box name="TGeoBBox0x204" x="106.90000152587891" y="140" z="0.091899998486042023" lunit="cm"/>
+    <box name="TGeoBBox0x205" x="106.90000152587891" y="140" z="0.063199996948242188" lunit="cm"/>
+    <box name="TGeoBBox0x206" x="106.90000152587891" y="140" z="0.0057999999262392521" lunit="cm"/>
+    <box name="TGeoBBox0x207" x="106.90000152587891" y="140" z="0.00279999990016222" lunit="cm"/>
+    <box name="TGeoBBox0x201" x="106.90000152587891" y="140" z="2.3159999847412109" lunit="cm"/>
+    <box name="UF100x1" x="109.90000152587891" y="143" z="2.3159999847412109" lunit="cm"/>
+    <tube name="UTCH0x321" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x321" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x323" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x323" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x325" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x325" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x327" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x327" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x329" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x329" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x331" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x331" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x333" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x333" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x335" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x335" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x337" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x337" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x339" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x339" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x341" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x341" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x343" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x343" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x345" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x345" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x347" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x347" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x349" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x349" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCH0x351" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTCP0x351" rmin="0" rmax="0.15000000596046448" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x321" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x323" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x325" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x327" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x329" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x331" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x333" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x335" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x337" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x339" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x341" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x343" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x345" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x347" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x349" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="UTPL0x351" rmin="0" rmax="0.10000000149011612" z="108.09999847412109" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="UMC10x1" x="3" y="3" z="0.10000000149011612" lunit="cm"/>
+    <box name="UMC20x1" x="3" y="3" z="0.0024999999441206455" lunit="cm"/>
+    <box name="UMC30x1" x="3" y="3" z="0.029999999329447746" lunit="cm"/>
+    <box name="UMC40x1" x="3" y="3" z="0.039999999105930328" lunit="cm"/>
+    <box name="UMCM0x1" x="3" y="3" z="0.30000001192092896" lunit="cm"/>
+    <box name="UU100x1" x="108.09999847412109" y="143" z="1.0420000553131104" lunit="cm"/>
+    <box name="UT100x1" x="109.90000152587891" y="143" z="11.857999801635742" lunit="cm"/>
+    </solids>

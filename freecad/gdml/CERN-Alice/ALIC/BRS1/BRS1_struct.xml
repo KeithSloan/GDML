@@ -1,0 +1,29 @@
+<structure><volume name="BRS3">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BRS30x1"/>
+    </volume>
+    <volume name="BRS2">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BRS20x1"/>
+    </volume>
+    <volume name="BRS2">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BRS20x1"/>
+    </volume>
+    <volume name="BRS1">
+      <materialref ref="FRAME_AIR"/>
+      <solidref ref="BRS10x1"/>
+      <physvol name="BRS2_1" copynumber="1">
+        <volumeref ref="BRS2"/>
+        <positionref ref="BRS2_1inBRS1pos"/>
+      </physvol>
+      <physvol name="BRS2_2" copynumber="2">
+        <volumeref ref="BRS2"/>
+        <positionref ref="BRS2_2inBRS1pos"/>
+      </physvol>
+      <physvol name="BRS3_1" copynumber="1">
+        <volumeref ref="BRS3"/>
+        <positionref ref="BRS3_1inBRS1pos"/>
+      </physvol>
+    </volume>
+    </structure>

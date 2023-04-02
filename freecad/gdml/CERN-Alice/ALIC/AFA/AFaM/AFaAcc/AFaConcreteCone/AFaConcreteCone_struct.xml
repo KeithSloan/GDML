@@ -1,0 +1,5 @@
+<structure><volume name="AFaConcreteCone">
+      <materialref ref="ABSO_CONCRETE2"/>
+      <solidref ref="TGeoCone0x4"/>
+    </volume>
+    </structure>

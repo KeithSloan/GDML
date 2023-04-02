@@ -1,0 +1,5 @@
+<structure><volume name="UW12">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x420"/>
+    </volume>
+    </structure>

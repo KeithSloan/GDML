@@ -1,0 +1,3 @@
+<solids><box name="FCC10x1" x="124.5" y="0.0099999997764825821" z="111" lunit="cm"/>
+    <box name="FFC10x1" x="124.5" y="0.25" z="111" lunit="cm"/>
+    </solids>

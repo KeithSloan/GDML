@@ -1,0 +1,20 @@
+<define><position name="ITSSPDgFoilKapR_10x1inITSSPDgFOIL-R0x2pos" x="-0.0027499999999999998" y="0" z="-0.03549999999999924" unit="cm"/>
+    <position name="ITSSPDgFoilAluR_10x1inITSSPDgFOIL-R0x2pos" x="-0.00024999999999999979" y="0" z="-0.03549999999999924" unit="cm"/>
+    <position name="ITSSPDgFoilGlueR_10x1inITSSPDgFOIL-R0x2pos" x="-0.0051250000000000002" y="0" z="-0.03549999999999924" unit="cm"/>
+    <position name="ITSSPDgFoilGlueR_20x1inITSSPDgFOIL-R0x2pos" x="0.0028750000000000004" y="0" z="-0.03549999999999924" unit="cm"/>
+    <position name="ITSSPDGrease_10x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="11.418500000000002" unit="cm"/>
+    <position name="ITSSPDGrease_20x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="10.018500000000001" unit="cm"/>
+    <position name="ITSSPDGrease_30x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="8.6185000000000009" unit="cm"/>
+    <position name="ITSSPDGrease_40x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="7.2185000000000006" unit="cm"/>
+    <position name="ITSSPDGrease_50x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="5.8185000000000002" unit="cm"/>
+    <position name="ITSSPDGrease_60x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="4.2765000000000004" unit="cm"/>
+    <position name="ITSSPDGrease_70x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="2.8765000000000001" unit="cm"/>
+    <position name="ITSSPDGrease_80x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="1.4764999999999999" unit="cm"/>
+    <position name="ITSSPDGrease_90x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="0.07649999999999979" unit="cm"/>
+    <position name="ITSSPDGrease_100x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="-1.3235000000000003" unit="cm"/>
+    <position name="ITSSPDGrease_110x3inITSSPDgFOIL-R0x2pos" x="0" y="-0.017500000000000071" z="-3.5235000000000003" unit="cm"/>
+    <rotation name="ITSSPDgFoilKapR_10x1inITSSPDgFOIL-R0x2rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="ITSSPDgFoilAluR_10x1inITSSPDgFOIL-R0x2rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="ITSSPDgFoilGlueR_10x1inITSSPDgFOIL-R0x2rot" x="-0" y="-90" z="0" unit="deg"/>
+    <rotation name="ITSSPDgFoilGlueR_20x1inITSSPDgFOIL-R0x2rot" x="-0" y="-90" z="0" unit="deg"/>
+    </define>

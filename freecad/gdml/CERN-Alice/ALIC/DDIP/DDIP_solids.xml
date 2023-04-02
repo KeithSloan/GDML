@@ -1,0 +1,420 @@
+<solids><intersection name="shHanger1">
+      <first ref="shHanger12"/>
+      <second ref="shHanger11"/>
+      <position name="shHanger1shHanger11pos" x="0" y="250" z="0" unit="cm"/>
+    </intersection>
+    <cone name="shHanger12" z="26" rmin1="27.898202896118164" rmin2="28.806142807006836" rmax1="126.53333282470703" rmax2="130.65132141113281" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="shHanger11" x="2.5" y="500" z="25" lunit="cm"/>
+    <intersection name="shHanger2">
+      <first ref="shHanger22"/>
+      <second ref="shHanger21"/>
+      <position name="shHanger2shHanger21pos" x="0" y="250" z="0" unit="cm"/>
+    </intersection>
+    <cone name="shHanger22" z="26" rmin1="39.533031463623047" rmin2="40.440971374511719" rmax1="186.78755187988281" rmax2="191.41885375976562" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="shHanger21" x="3.5" y="500" z="25" lunit="cm"/>
+    <box name="S05V0x1" x="2.5" y="41.950000762939453" z="0.5" lunit="cm"/>
+    <intersection name="compositeC5D">
+      <first ref="centerSlatC5D"/>
+      <second ref="boxCCut"/>
+      <position name="compositeC5DboxCCutpos" x="26.592623998806239" y="0" z="0" unit="cm"/>
+    </intersection>
+    <tube name="centerSlatC5D" rmin="29.5" rmax="31.5" z="1" startphi="311.92090606689453" deltaphi="96.158187866210938" aunit="deg" lunit="cm"/>
+    <box name="boxCCut" x="9.8147520023875181" y="43.900001525878906" z="1.002" lunit="cm"/>
+    <subtraction name="composite5N">
+      <first ref="centerSlatC5N"/>
+      <second ref="tubeCut"/>
+      <position name="composite5NtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5N" x="19.25" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5C">
+      <first ref="centerSlatC5C"/>
+      <second ref="tubeCut"/>
+      <position name="composite5CtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5C" x="19.25" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5X">
+      <first ref="centerSlatC5X"/>
+      <second ref="tubeCut"/>
+      <position name="composite5XtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5X" x="19.25" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5G">
+      <first ref="centerSlatC5G"/>
+      <second ref="tubeCut"/>
+      <position name="composite5GtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5G" x="19.25" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5H">
+      <first ref="centerSlatC5H"/>
+      <second ref="tubeCut"/>
+      <position name="composite5HtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5H" x="19.25" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S05E0x1" x="2.5" y="7.0500001907348633" z="0.0043999999761581421" lunit="cm"/>
+    <subtraction name="composite5B">
+      <first ref="centerSlatC5B"/>
+      <second ref="tubeCut"/>
+      <position name="composite5BtubeCutpos" x="-31.625" y="25.475000381469727" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5B" x="19.25" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5P">
+      <first ref="centerSlatC5P"/>
+      <second ref="tubeCut"/>
+      <position name="composite5PtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5P" x="19.25" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5I">
+      <first ref="centerSlatC5I"/>
+      <second ref="tubeCut"/>
+      <position name="composite5ItubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5I" x="19.25" y="58" z="0.55000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S05N0x1" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <box name="S05C0x1" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <box name="S05X0x1" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <box name="S05G0x1" x="40" y="40" z="0.5" lunit="cm"/>
+    <box name="S05H0x1" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="S05B0x1" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="S05P0x1" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="S05I0x1" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    <box name="SB5N0x1" x="35" y="40" z="0.80000001192092896" lunit="cm"/>
+    <box name="SB5C0x1" x="35" y="40" z="0.84000003337860107" lunit="cm"/>
+    <box name="SB5X0x1" x="35" y="40" z="0.86500000953674316" lunit="cm"/>
+    <box name="S05G0x3" x="35" y="40" z="0.5" lunit="cm"/>
+    <box name="SB5H0x1" x="35" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="SB5B0x1" x="35" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="SB5P0x1" x="35" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="SB5I0x1" x="35" y="58" z="0.55000001192092896" lunit="cm"/>
+    <intersection name="compositeD5D">
+      <first ref="TGeoCompositeShape0x3"/>
+      <second ref="boxDCut"/>
+      <position name="compositeD5DboxDCutpos" x="20" y="37.799999237060547" z="0" unit="cm"/>
+    </intersection>
+    <union name="TGeoCompositeShape0x3">
+      <first ref="centerSlatD5D"/>
+      <second ref="boxVframe"/>
+      <position name="TGeoCompositeShape0x3boxVframepos" x="0" y="44.625" z="0" unit="cm"/>
+    </union>
+    <tube name="centerSlatD5D" rmin="29.5" rmax="31.5" z="1" startphi="30.210250854492188" deltaphi="62.21826171875" aunit="deg" lunit="cm"/>
+    <box name="boxVframe" x="2.5" y="30.25" z="0.5" lunit="cm"/>
+    <box name="boxDCut" x="42.5" y="43.900001525878906" z="0.502" lunit="cm"/>
+    <subtraction name="composite5N0x1">
+      <first ref="centerSlatD5N"/>
+      <second ref="tubeCut"/>
+      <position name="composite5N0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5N" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5C0x1">
+      <first ref="centerSlatD5C"/>
+      <second ref="tubeCut"/>
+      <position name="composite5C0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5C" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5X0x1">
+      <first ref="centerSlatD5X"/>
+      <second ref="tubeCut"/>
+      <position name="composite5X0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5X" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5G0x1">
+      <first ref="centerSlatD5G"/>
+      <second ref="tubeCut"/>
+      <position name="composite5G0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5G" x="40" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5H0x1">
+      <first ref="centerSlatD5H"/>
+      <second ref="tubeCut"/>
+      <position name="composite5H0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5H" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5B0x1">
+      <first ref="centerSlatD5B"/>
+      <second ref="tubeCut"/>
+      <position name="composite5B0x1tubeCutpos" x="-21.25" y="-12.32499885559082" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5B" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5P0x1">
+      <first ref="centerSlatD5P"/>
+      <second ref="tubeCut"/>
+      <position name="composite5P0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5P" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5I0x1">
+      <first ref="centerSlatD5I"/>
+      <second ref="tubeCut"/>
+      <position name="composite5I0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD5I" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="shCarbonSupportSt3">
+      <first ref="shCarbonBoxSt3"/>
+      <second ref="shCarbonHoleSt3"/>
+      <position name="shCarbonSupportSt3shCarbonHoleSt3pos" x="-81" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shCarbonBoxSt3" x="162" y="362" z="0.029999999329447746" lunit="cm"/>
+    <tube name="shCarbonHoleSt3" rmin="0" rmax="29.5" z="0.031999999329447748" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    <box name="S05L0x1" x="141.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x3" x="141.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x5" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x7" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x9" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x11" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x13" x="132.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x15" x="132.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x17" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x19" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x21" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x23" x="119.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x25" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x27" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x29" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x31" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x33" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x35" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x37" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x39" x="162" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x41" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x43" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x45" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x47" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x49" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x51" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x53" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x55" x="40.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x57" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x59" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x61" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S05L0x63" x="80.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <subtraction name="shNomexSupportSt3">
+      <first ref="shNomexBoxSt3"/>
+      <second ref="shNomexHoleSt3"/>
+      <position name="shNomexSupportSt3shNomexHoleSt3pos" x="-81" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shNomexBoxSt3" x="162" y="362" z="1.7160000018775463" lunit="cm"/>
+    <tube name="shNomexHoleSt3" rmin="0" rmax="29.5" z="1.7180000018775463" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    <box name="S06V0x1" x="2.5" y="41.950000762939453" z="0.5" lunit="cm"/>
+    <intersection name="compositeC6D">
+      <first ref="centerSlatC6D"/>
+      <second ref="boxCCut"/>
+      <position name="compositeC6DboxCCutpos" x="26.592623998806239" y="0" z="0" unit="cm"/>
+    </intersection>
+    <tube name="centerSlatC6D" rmin="29.5" rmax="31.5" z="1" startphi="311.92090606689453" deltaphi="96.158187866210938" aunit="deg" lunit="cm"/>
+    <box name="boxCCut" x="9.8147520023875181" y="43.900001525878906" z="1.002" lunit="cm"/>
+    <subtraction name="composite6N">
+      <first ref="centerSlatC6N"/>
+      <second ref="tubeCut"/>
+      <position name="composite6NtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6N" x="19.25" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6C">
+      <first ref="centerSlatC6C"/>
+      <second ref="tubeCut"/>
+      <position name="composite6CtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6C" x="19.25" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6X">
+      <first ref="centerSlatC6X"/>
+      <second ref="tubeCut"/>
+      <position name="composite6XtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6X" x="19.25" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6G">
+      <first ref="centerSlatC6G"/>
+      <second ref="tubeCut"/>
+      <position name="composite6GtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6G" x="19.25" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6H">
+      <first ref="centerSlatC6H"/>
+      <second ref="tubeCut"/>
+      <position name="composite6HtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6H" x="19.25" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S06E0x1" x="2.5" y="7.0500001907348633" z="0.0043999999761581421" lunit="cm"/>
+    <subtraction name="composite6B">
+      <first ref="centerSlatC6B"/>
+      <second ref="tubeCut"/>
+      <position name="composite6BtubeCutpos" x="-31.625" y="25.475000381469727" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6B" x="19.25" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6P">
+      <first ref="centerSlatC6P"/>
+      <second ref="tubeCut"/>
+      <position name="composite6PtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6P" x="19.25" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6I">
+      <first ref="centerSlatC6I"/>
+      <second ref="tubeCut"/>
+      <position name="composite6ItubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC6I" x="19.25" y="58" z="0.55000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S06N0x1" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <box name="S06C0x1" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <box name="S06X0x1" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <box name="S06G0x1" x="40" y="40" z="0.5" lunit="cm"/>
+    <box name="S06H0x1" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <box name="S06B0x1" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <box name="S06P0x1" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <box name="S06I0x1" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    <intersection name="compositeD6D">
+      <first ref="TGeoCompositeShape0x4"/>
+      <second ref="boxDCut"/>
+      <position name="compositeD6DboxDCutpos" x="20" y="37.799999237060547" z="0" unit="cm"/>
+    </intersection>
+    <union name="TGeoCompositeShape0x4">
+      <first ref="centerSlatD6D"/>
+      <second ref="boxVframe"/>
+      <position name="TGeoCompositeShape0x4boxVframepos" x="0" y="44.625" z="0" unit="cm"/>
+    </union>
+    <tube name="centerSlatD6D" rmin="29.5" rmax="31.5" z="1" startphi="30.210250854492188" deltaphi="62.21826171875" aunit="deg" lunit="cm"/>
+    <box name="boxVframe" x="2.5" y="30.25" z="0.5" lunit="cm"/>
+    <box name="boxDCut" x="42.5" y="43.900001525878906" z="0.502" lunit="cm"/>
+    <subtraction name="composite6N0x1">
+      <first ref="centerSlatD6N"/>
+      <second ref="tubeCut"/>
+      <position name="composite6N0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6N" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6C0x1">
+      <first ref="centerSlatD6C"/>
+      <second ref="tubeCut"/>
+      <position name="composite6C0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6C" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6X0x1">
+      <first ref="centerSlatD6X"/>
+      <second ref="tubeCut"/>
+      <position name="composite6X0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6X" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6G0x1">
+      <first ref="centerSlatD6G"/>
+      <second ref="tubeCut"/>
+      <position name="composite6G0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6G" x="40" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6H0x1">
+      <first ref="centerSlatD6H"/>
+      <second ref="tubeCut"/>
+      <position name="composite6H0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6H" x="40" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6B0x1">
+      <first ref="centerSlatD6B"/>
+      <second ref="tubeCut"/>
+      <position name="composite6B0x1tubeCutpos" x="-21.25" y="-12.32499885559082" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6B" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6P0x1">
+      <first ref="centerSlatD6P"/>
+      <second ref="tubeCut"/>
+      <position name="composite6P0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6P" x="40" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite6I0x1">
+      <first ref="centerSlatD6I"/>
+      <second ref="tubeCut"/>
+      <position name="composite6I0x1tubeCutpos" x="-21.25" y="-37.799999237060547" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatD6I" x="40" y="58" z="0.55000001192092896" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="shCarbonSupportSt3Ch6">
+      <first ref="shCarbonBoxSt3Ch6"/>
+      <second ref="shCarbonHoleSt3"/>
+      <position name="shCarbonSupportSt3Ch6shCarbonHoleSt3pos" x="-83.5" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shCarbonBoxSt3Ch6" x="167" y="362" z="0.029999999329447746" lunit="cm"/>
+    <tube name="shCarbonHoleSt3" rmin="0" rmax="29.5" z="0.031999999329447748" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    <box name="S06L0x1" x="146.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x3" x="146.25" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x5" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x7" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x9" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x11" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x13" x="137.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x15" x="137.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x17" x="124.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x19" x="124.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x21" x="124.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x23" x="124.5" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x25" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x27" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x29" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x31" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x33" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x35" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x37" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x39" x="167" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x41" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x43" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x45" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x47" x="5.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x49" x="45.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x51" x="45.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x53" x="45.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x55" x="45.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x57" x="85.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x59" x="85.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x61" x="85.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <box name="S06L0x63" x="85.75" y="2.5999999046325684" z="0.026000000536441803" lunit="cm"/>
+    <subtraction name="shNomexSupportSt3Ch6">
+      <first ref="shNomexBoxSt3Ch6"/>
+      <second ref="shNomexHoleSt3"/>
+      <position name="shNomexSupportSt3Ch6shNomexHoleSt3pos" x="-83.5" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="shNomexBoxSt3Ch6" x="167" y="362" z="1.7160000018775463" lunit="cm"/>
+    <tube name="shNomexHoleSt3" rmin="0" rmax="29.5" z="1.7180000018775463" startphi="270" deltaphi="180" aunit="deg" lunit="cm"/>
+    <union name="shDDIP">
+      <first ref="shDDIP1"/>
+      <second ref="TGeoCompositeShape0x2"/>
+    </union>
+    <polycone name="shDDIP1" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="741" rmin="26.076290130615234" rmax="117.36286926269531"/>
+      <zplane z="825" rmin="30" rmax="130.66716003417969"/>
+      <zplane z="995" rmin="30" rmax="157.59251403808594"/>
+      <zplane z="1052" rmin="30" rmax="167.74575805664062"/>
+      <zplane z="1052" rmin="35.799999237060547" rmax="167.74575805664062"/>
+      <zplane z="1244" rmin="42.504787445068359" rmax="201.9461669921875"/>
+      <zplane z="1249" rmin="42.679389953613281" rmax="201.9461669921875"/>
+    </polycone>
+    <subtraction name="TGeoCompositeShape0x2">
+      <first ref="shDDIP2"/>
+      <second ref="shDDIP3"/>
+      <firstposition name="TGeoCompositeShape0x2shDDIP2pos" x="0" y="0" z="983" unit="cm"/>
+      <position name="TGeoCompositeShape0x2shDDIP3pos" x="0" y="0" z="983" unit="cm"/>
+    </subtraction>
+    <box name="shDDIP2" x="328" y="364" z="72" lunit="cm"/>
+    <tube name="shDDIP3" rmin="0" rmax="30" z="80" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

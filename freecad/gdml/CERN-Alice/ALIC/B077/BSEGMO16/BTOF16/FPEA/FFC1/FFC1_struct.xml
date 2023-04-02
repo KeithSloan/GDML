@@ -1,0 +1,13 @@
+<structure><volume name="FCC1">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC10x1"/>
+    </volume>
+    <volume name="FFC1">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC10x1"/>
+      <physvol name="FCC1_0" copynumber="0">
+        <volumeref ref="FCC1"/>
+        <positionref ref="FCC1_0inFFC1pos"/>
+      </physvol>
+    </volume>
+    </structure>

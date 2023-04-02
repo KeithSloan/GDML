@@ -1,0 +1,2 @@
+<solids><tube name="ITSsddPin0x10" rmin="0" rmax="0.075000000000000011" z="0.45000000000000001" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

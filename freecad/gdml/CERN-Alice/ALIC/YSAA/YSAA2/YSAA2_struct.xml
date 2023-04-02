@@ -1,0 +1,45 @@
+<structure><volume name="YSAA2_SteelRing">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoTube0x2"/>
+    </volume>
+    <volume name="YSAA2_InnerTube">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="TGeoPcon0x29"/>
+    </volume>
+    <volume name="YSAA2_PbComp">
+      <materialref ref="SHIL_LEAD3"/>
+      <solidref ref="TGeoPcon0x28"/>
+    </volume>
+    <volume name="YSAA2_PbRing">
+      <materialref ref="SHIL_LEAD1"/>
+      <solidref ref="TGeoPcon0x27"/>
+    </volume>
+    <volume name="YSAA2_SteelEnvelope">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoPcon0x26"/>
+    </volume>
+    <volume name="YSAA2">
+      <materialref ref="SHIL_AIR1"/>
+      <solidref ref="TGeoPcon0x25"/>
+      <physvol name="YSAA2_SteelEnvelope_1" copynumber="1">
+        <volumeref ref="YSAA2_SteelEnvelope"/>
+        <positionref ref="YSAA2_SteelEnvelope_1inYSAA2pos"/>
+      </physvol>
+      <physvol name="YSAA2_PbRing_1" copynumber="1">
+        <volumeref ref="YSAA2_PbRing"/>
+        <positionref ref="YSAA2_PbRing_1inYSAA2pos"/>
+      </physvol>
+      <physvol name="YSAA2_PbComp_1" copynumber="1">
+        <volumeref ref="YSAA2_PbComp"/>
+        <positionref ref="YSAA2_PbComp_1inYSAA2pos"/>
+      </physvol>
+      <physvol name="YSAA2_InnerTube_1" copynumber="1">
+        <volumeref ref="YSAA2_InnerTube"/>
+        <positionref ref="YSAA2_InnerTube_1inYSAA2pos"/>
+      </physvol>
+      <physvol name="YSAA2_SteelRing_1" copynumber="1">
+        <volumeref ref="YSAA2_SteelRing"/>
+        <positionref ref="YSAA2_SteelRing_1inYSAA2pos"/>
+      </physvol>
+    </volume>
+    </structure>

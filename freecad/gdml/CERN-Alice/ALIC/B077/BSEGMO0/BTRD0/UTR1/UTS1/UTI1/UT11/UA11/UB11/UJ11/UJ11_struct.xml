@@ -1,0 +1,5 @@
+<structure><volume name="UJ11">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ110x1"/>
+    </volume>
+    </structure>

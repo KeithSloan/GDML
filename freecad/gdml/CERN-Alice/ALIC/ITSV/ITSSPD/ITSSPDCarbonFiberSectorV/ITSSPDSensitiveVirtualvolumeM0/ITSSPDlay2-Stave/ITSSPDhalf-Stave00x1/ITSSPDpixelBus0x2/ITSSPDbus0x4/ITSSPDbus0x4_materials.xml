@@ -1,0 +1,24 @@
+<materials><material name="ITS_SPDBUSALKPTEPOX">
+      <D unit="g/cm3" value="2.1285049915313721"/>
+      <fraction n="0.57059097290039062" ref="ALUMINIUM_elm"/>
+      <fraction n="0.31805300712585449" ref="CARBON_elm"/>
+      <fraction n="0.023522999137639999" ref="HYDROGEN_elm"/>
+      <fraction n="0.0097759999334812164" ref="NITROGEN_elm"/>
+      <fraction n="0.078056998550891876" ref="OXYGEN_elm"/>
+    </material>
+    <element name="ALUMINIUM_elm" formula="AL" Z="13">
+      <atom unit="g/mole" value="26.981538"/>
+    </element>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    </materials>

@@ -1,0 +1,5 @@
+<structure><volume name="DC10">
+      <materialref ref="DIPO_ALUMINIUM2"/>
+      <solidref ref="TGeoTubeSeg0x4"/>
+    </volume>
+    </structure>

@@ -1,0 +1,24 @@
+<materials><material name="MUON_Nomex">
+      <D unit="g/cm3" value="0.024000000208616257"/>
+      <fraction n="0.69106030464172363" ref="CARBON_elm"/>
+      <fraction n="0.026416279375553131" ref="HYDROGEN_elm"/>
+      <fraction n="0.073285557329654694" ref="NITROGEN_elm"/>
+      <fraction n="0.20923785865306854" ref="OXYGEN_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <material name="MUON_Carbon" Z="6">
+      <D unit="g/cm3" value="2.2650001049041748"/>
+      <atom unit="g/mole" value="12.010000228881836"/>
+    </material>
+    </materials>

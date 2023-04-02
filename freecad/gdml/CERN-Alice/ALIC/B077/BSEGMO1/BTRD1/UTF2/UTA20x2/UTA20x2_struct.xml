@@ -1,0 +1,5 @@
+<structure><volume name="UTA20x2">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UTA20x3"/>
+    </volume>
+    </structure>

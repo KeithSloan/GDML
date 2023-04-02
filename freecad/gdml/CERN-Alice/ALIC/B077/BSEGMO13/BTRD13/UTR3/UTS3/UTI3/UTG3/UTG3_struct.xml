@@ -1,0 +1,13 @@
+<structure><volume name="UTG4">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UTG40x1"/>
+    </volume>
+    <volume name="UTG3">
+      <materialref ref="TRD_Fe"/>
+      <solidref ref="UTG30x1"/>
+      <physvol name="UTG4_1" copynumber="1">
+        <volumeref ref="UTG4"/>
+        <positionref ref="UTG4_1inUTG3pos"/>
+      </physvol>
+    </volume>
+    </structure>

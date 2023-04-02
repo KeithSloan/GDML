@@ -1,0 +1,5 @@
+<structure><volume name="UTCH0x264">
+      <materialref ref="TRD_Water"/>
+      <solidref ref="UTCH0x265"/>
+    </volume>
+    </structure>

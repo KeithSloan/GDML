@@ -1,0 +1,469 @@
+<structure><volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="SKPT">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SKPT0x1"/>
+    </volume>
+    <volume name="SNPB">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SNPB0x1"/>
+    </volume>
+    <volume name="SCHL">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="SCHL0x1"/>
+      <physvol name="SNPB_1" copynumber="1">
+        <volumeref ref="SNPB"/>
+        <positionref ref="SNPB_1inSCHLpos"/>
+      </physvol>
+      <physvol name="SKPT_1" copynumber="1">
+        <volumeref ref="SKPT"/>
+        <positionref ref="SKPT_1inSCHLpos"/>
+      </physvol>
+    </volume>
+    <volume name="Spacer7A">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="Spacer7A0x1"/>
+    </volume>
+    <volume name="Spacer6">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="Spacer60x1"/>
+    </volume>
+    <volume name="Spacer5A">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="Spacer5A0x1"/>
+    </volume>
+    <volume name="Spacer5A">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="Spacer5A0x1"/>
+    </volume>
+    <volume name="S309">
+      <materialref ref="MUON_FOAM"/>
+      <solidref ref="S3090x1"/>
+      <physvol name="Spacer5A_1" copynumber="1">
+        <volumeref ref="Spacer5A"/>
+        <positionref ref="Spacer5A_10x2inS309pos"/>
+      </physvol>
+      <physvol name="Spacer5A_2" copynumber="2">
+        <volumeref ref="Spacer5A"/>
+        <positionref ref="Spacer5A_20x2inS309pos"/>
+      </physvol>
+      <physvol name="Spacer6_1" copynumber="1">
+        <volumeref ref="Spacer6"/>
+        <positionref ref="Spacer6_10x2inS309pos"/>
+      </physvol>
+      <physvol name="Spacer7A_1" copynumber="1">
+        <volumeref ref="Spacer7A"/>
+        <positionref ref="Spacer7A_10x2inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_1" copynumber="1">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_10x108inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_2" copynumber="2">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_20x67inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_3" copynumber="3">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_30x60inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_4" copynumber="4">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_40x42inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_5" copynumber="5">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_50x32inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_6" copynumber="6">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_60x27inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_7" copynumber="7">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_70x25inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_8" copynumber="8">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_80x25inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_9" copynumber="9">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_90x24inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_10" copynumber="10">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_100x24inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_11" copynumber="11">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_110x20inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_12" copynumber="12">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_120x20inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_13" copynumber="13">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_130x20inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_14" copynumber="14">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_140x20inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_15" copynumber="15">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_150x18inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_16" copynumber="16">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_160x14inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_17" copynumber="17">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_170x13inS309pos"/>
+      </physvol>
+      <physvol name="SCHL_18" copynumber="18">
+        <volumeref ref="SCHL"/>
+        <positionref ref="SCHL_180x11inS309pos"/>
+      </physvol>
+    </volume>
+    </structure>

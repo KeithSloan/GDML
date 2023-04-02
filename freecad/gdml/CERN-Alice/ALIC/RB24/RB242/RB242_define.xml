@@ -1,0 +1,4 @@
+<define><position name="voRB242CuTube_1inRB242pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="voRB24CuTubeF_3inRB242pos" x="0" y="0" z="-164.07000732421875" unit="cm"/>
+    <position name="voRB24CuTubeF_4inRB242pos" x="0" y="0" z="164.07000732421875" unit="cm"/>
+    </define>

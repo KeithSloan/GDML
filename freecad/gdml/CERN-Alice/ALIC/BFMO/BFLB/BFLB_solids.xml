@@ -1,0 +1,3 @@
+<solids><box name="BFLL0x1" x="6.8000001907348633" y="6.8000001907348633" z="100.80000305175781" lunit="cm"/>
+    <box name="BFLB0x1" x="8" y="8" z="102" lunit="cm"/>
+    </solids>

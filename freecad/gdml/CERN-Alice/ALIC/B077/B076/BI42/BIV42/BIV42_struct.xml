@@ -1,0 +1,5 @@
+<structure><volume name="BIV42">
+      <materialref ref="FRAME_STAINLESS_STEEL"/>
+      <solidref ref="BIV420x1"/>
+    </volume>
+    </structure>

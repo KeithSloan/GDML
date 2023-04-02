@@ -1,0 +1,16 @@
+<solids><subtraction name="layerS1">
+      <first ref="xtruS1"/>
+      <second ref="cutTube"/>
+    </subtraction>
+    <xtru name="xtruS1" lunit="cm">
+      <twoDimVertex x="0" y="11.670000000000002"/>
+      <twoDimVertex x="0" y="89"/>
+      <twoDimVertex x="48.770000000000003" y="89"/>
+      <twoDimVertex x="89" y="48.770000000000003"/>
+      <twoDimVertex x="89" y="0"/>
+      <twoDimVertex x="11.670000000000002" y="0"/>
+      <section zOrder="0" zPosition="-0.20999999999999999" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.20999999999999999" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <tube name="cutTube" rmin="0" rmax="18.300000000000001" z="0.43479999999999996" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

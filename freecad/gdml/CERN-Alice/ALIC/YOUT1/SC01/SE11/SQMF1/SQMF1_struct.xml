@@ -1,0 +1,1377 @@
+<structure><volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ45">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ450x1"/>
+    </volume>
+    <volume name="SQ43">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ430x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ42">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ420x1"/>
+      <physvol name="SQ44_59" copynumber="59">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_59inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_60" copynumber="60">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_60inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_61" copynumber="61">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_61inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_62" copynumber="62">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_62inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_63" copynumber="63">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_63inSQ42pos"/>
+      </physvol>
+    </volume>
+    <volume name="SQ41">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ410x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ40">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ400x1"/>
+      <physvol name="SQ44_1" copynumber="1">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_1inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_2" copynumber="2">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_2inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_3" copynumber="3">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_3inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_4" copynumber="4">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_4inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_5" copynumber="5">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_5inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_6" copynumber="6">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_6inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_7" copynumber="7">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_7inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_8" copynumber="8">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_8inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_9" copynumber="9">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_9inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_10" copynumber="10">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_10inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_11" copynumber="11">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_11inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_12" copynumber="12">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_12inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_13" copynumber="13">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_13inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_14" copynumber="14">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_14inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_64" copynumber="64">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_64inSQ40pos"/>
+      </physvol>
+      <physvol name="SQ44_15" copynumber="15">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_15inSQ40pos"/>
+      </physvol>
+    </volume>
+    <volume name="SQ39">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ390x1"/>
+    </volume>
+    <volume name="SQ37">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ370x1"/>
+    </volume>
+    <volume name="SQ37">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ370x1"/>
+    </volume>
+    <volume name="SQ34to37">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="TGeoXtru0x8"/>
+    </volume>
+    <volume name="SQ32">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ320x1"/>
+    </volume>
+    <volume name="SQ29">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ290x1"/>
+    </volume>
+    <volume name="SQ29">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ290x1"/>
+    </volume>
+    <volume name="SQ28">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ280x1"/>
+    </volume>
+    <volume name="SQ28">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ280x1"/>
+    </volume>
+    <volume name="SQ27">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ270x1"/>
+    </volume>
+    <volume name="SQ27">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ270x1"/>
+    </volume>
+    <volume name="SQ26">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ260x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ25">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ250x1"/>
+      <physvol name="SQ44_16" copynumber="16">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_16inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_17" copynumber="17">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_17inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_18" copynumber="18">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_18inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_19" copynumber="19">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_19inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_20" copynumber="20">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_20inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_21" copynumber="21">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_21inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_22" copynumber="22">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_22inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_23" copynumber="23">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_23inSQ25pos"/>
+      </physvol>
+      <physvol name="SQ44_24" copynumber="24">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_24inSQ25pos"/>
+      </physvol>
+    </volume>
+    <volume name="SQ18to24">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="TGeoXtru0x7"/>
+    </volume>
+    <volume name="SQ17to23">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="TGeoXtru0x6"/>
+    </volume>
+    <volume name="SQ16">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ160x1"/>
+    </volume>
+    <volume name="SQ16">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ160x1"/>
+    </volume>
+    <volume name="SQ15">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ150x1"/>
+    </volume>
+    <volume name="SQ15">
+      <materialref ref="MUON_Aluminium_II"/>
+      <solidref ref="SQ150x1"/>
+    </volume>
+    <volume name="SQ14">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ140x1"/>
+    </volume>
+    <volume name="SQ14">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ140x1"/>
+    </volume>
+    <volume name="SQ13">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ130x1"/>
+    </volume>
+    <volume name="SQ13">
+      <materialref ref="MUON_Copper"/>
+      <solidref ref="SQ130x1"/>
+    </volume>
+    <volume name="SQ12">
+      <materialref ref="MUON_FR4"/>
+      <solidref ref="SQ120x1"/>
+    </volume>
+    <volume name="SQ11">
+      <materialref ref="MUON_FR4"/>
+      <solidref ref="SQ110x1"/>
+    </volume>
+    <volume name="SQ10">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ100x1"/>
+    </volume>
+    <volume name="SQ09">
+      <materialref ref="MUON_FR4"/>
+      <solidref ref="SQ090x1"/>
+    </volume>
+    <volume name="SQ08">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ080x1"/>
+    </volume>
+    <volume name="SQ05toSQ07">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="TGeoXtru0x5"/>
+    </volume>
+    <volume name="SQ04toSQ06">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="TGeoXtru0x4"/>
+    </volume>
+    <volume name="SQ03">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ030x1"/>
+    </volume>
+    <volume name="SQ02">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ020x1"/>
+    </volume>
+    <volume name="SQ01">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ010x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ00">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ000x1"/>
+      <physvol name="SQ44_44" copynumber="44">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_44inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_45" copynumber="45">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_45inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_46" copynumber="46">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_46inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_47" copynumber="47">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_47inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_48" copynumber="48">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_48inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_49" copynumber="49">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_49inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_50" copynumber="50">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_50inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_51" copynumber="51">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_51inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_52" copynumber="52">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_52inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_53" copynumber="53">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_53inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_54" copynumber="54">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_54inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_55" copynumber="55">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_55inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_56" copynumber="56">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_56inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_57" copynumber="57">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_57inSQ00pos"/>
+      </physvol>
+      <physvol name="SQ44_58" copynumber="58">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_58inSQ00pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SQMF1">
+      <physvol name="SQ00_1" copynumber="1">
+        <volumeref ref="SQ00"/>
+        <positionref ref="SQ00_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ01_1" copynumber="1">
+        <volumeref ref="SQ01"/>
+        <positionref ref="SQ01_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ02_1" copynumber="1">
+        <volumeref ref="SQ02"/>
+        <positionref ref="SQ02_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ03_1" copynumber="1">
+        <volumeref ref="SQ03"/>
+        <positionref ref="SQ03_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ04toSQ06_1" copynumber="1">
+        <volumeref ref="SQ04toSQ06"/>
+        <positionref ref="SQ04toSQ06_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ05toSQ07_1" copynumber="1">
+        <volumeref ref="SQ05toSQ07"/>
+        <positionref ref="SQ05toSQ07_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ08_1" copynumber="1">
+        <volumeref ref="SQ08"/>
+        <positionref ref="SQ08_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ09_1" copynumber="1">
+        <volumeref ref="SQ09"/>
+        <positionref ref="SQ09_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ10_1" copynumber="1">
+        <volumeref ref="SQ10"/>
+        <positionref ref="SQ10_1inSQMF1pos"/>
+        <rotationref ref="SQ10_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ11_1" copynumber="1">
+        <volumeref ref="SQ11"/>
+        <positionref ref="SQ11_1inSQMF1pos"/>
+        <rotationref ref="SQ11_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ12_1" copynumber="1">
+        <volumeref ref="SQ12"/>
+        <positionref ref="SQ12_1inSQMF1pos"/>
+        <rotationref ref="SQ12_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ13_1" copynumber="1">
+        <volumeref ref="SQ13"/>
+        <positionref ref="SQ13_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ13_2" copynumber="2">
+        <volumeref ref="SQ13"/>
+        <positionref ref="SQ13_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ14_1" copynumber="1">
+        <volumeref ref="SQ14"/>
+        <positionref ref="SQ14_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ14_2" copynumber="2">
+        <volumeref ref="SQ14"/>
+        <positionref ref="SQ14_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ15_1" copynumber="1">
+        <volumeref ref="SQ15"/>
+        <positionref ref="SQ15_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ15_2" copynumber="2">
+        <volumeref ref="SQ15"/>
+        <positionref ref="SQ15_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ16_1" copynumber="1">
+        <volumeref ref="SQ16"/>
+        <positionref ref="SQ16_1inSQMF1pos"/>
+        <rotationref ref="SQ16_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ16_2" copynumber="2">
+        <volumeref ref="SQ16"/>
+        <positionref ref="SQ16_2inSQMF1pos"/>
+        <rotationref ref="SQ16_2inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ17to23_1" copynumber="1">
+        <volumeref ref="SQ17to23"/>
+        <positionref ref="SQ17to23_1inSQMF1pos"/>
+        <rotationref ref="SQ17to23_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ18to24_1" copynumber="1">
+        <volumeref ref="SQ18to24"/>
+        <positionref ref="SQ18to24_1inSQMF1pos"/>
+        <rotationref ref="SQ18to24_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ25_1" copynumber="1">
+        <volumeref ref="SQ25"/>
+        <positionref ref="SQ25_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ26_1" copynumber="1">
+        <volumeref ref="SQ26"/>
+        <positionref ref="SQ26_1inSQMF1pos"/>
+        <rotationref ref="SQ26_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ27_1" copynumber="1">
+        <volumeref ref="SQ27"/>
+        <positionref ref="SQ27_1inSQMF1pos"/>
+        <rotationref ref="SQ27_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ27_2" copynumber="2">
+        <volumeref ref="SQ27"/>
+        <positionref ref="SQ27_2inSQMF1pos"/>
+        <rotationref ref="SQ27_2inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ28_1" copynumber="1">
+        <volumeref ref="SQ28"/>
+        <positionref ref="SQ28_1inSQMF1pos"/>
+        <rotationref ref="SQ28_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ28_2" copynumber="2">
+        <volumeref ref="SQ28"/>
+        <positionref ref="SQ28_2inSQMF1pos"/>
+        <rotationref ref="SQ28_2inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ29_1" copynumber="1">
+        <volumeref ref="SQ29"/>
+        <positionref ref="SQ29_1inSQMF1pos"/>
+        <rotationref ref="SQ29_1inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ29_2" copynumber="2">
+        <volumeref ref="SQ29"/>
+        <positionref ref="SQ29_2inSQMF1pos"/>
+        <rotationref ref="SQ29_2inSQMF1rot"/>
+      </physvol>
+      <physvol name="SQ32_1" copynumber="1">
+        <volumeref ref="SQ32"/>
+        <positionref ref="SQ32_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ34to37_2" copynumber="2">
+        <volumeref ref="SQ34to37"/>
+        <positionref ref="SQ34to37_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ37_1" copynumber="1">
+        <volumeref ref="SQ37"/>
+        <positionref ref="SQ37_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ37_3" copynumber="3">
+        <volumeref ref="SQ37"/>
+        <positionref ref="SQ37_3inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ39_1" copynumber="1">
+        <volumeref ref="SQ39"/>
+        <positionref ref="SQ39_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ40_1" copynumber="1">
+        <volumeref ref="SQ40"/>
+        <positionref ref="SQ40_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ41_1" copynumber="1">
+        <volumeref ref="SQ41"/>
+        <positionref ref="SQ41_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ42_1" copynumber="1">
+        <volumeref ref="SQ42"/>
+        <positionref ref="SQ42_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_1" copynumber="1">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_1" copynumber="1">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_1inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_2" copynumber="2">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_2" copynumber="2">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_2inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_3" copynumber="3">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_3inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_3" copynumber="3">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_3inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_4" copynumber="4">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_4inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_4" copynumber="4">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_4inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_5" copynumber="5">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_5inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_5" copynumber="5">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_5inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_6" copynumber="6">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_6inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_6" copynumber="6">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_6inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_7" copynumber="7">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_7inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_7" copynumber="7">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_7inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_8" copynumber="8">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_8inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_8" copynumber="8">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_8inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_9" copynumber="9">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_9inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_9" copynumber="9">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_9inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_10" copynumber="10">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_10inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_10" copynumber="10">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_10inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_11" copynumber="11">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_11inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_11" copynumber="11">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_11inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_12" copynumber="12">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_12inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_12" copynumber="12">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_12inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_13" copynumber="13">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_13inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_13" copynumber="13">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_13inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_14" copynumber="14">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_14inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_14" copynumber="14">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_14inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_64" copynumber="64">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_64inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_64" copynumber="64">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_64inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_44" copynumber="44">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_44inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_44" copynumber="44">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_44inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_45" copynumber="45">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_45inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_45" copynumber="45">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_45inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_46" copynumber="46">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_46inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_46" copynumber="46">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_46inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_47" copynumber="47">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_47inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_47" copynumber="47">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_47inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_48" copynumber="48">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_48inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_48" copynumber="48">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_48inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_49" copynumber="49">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_49inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_49" copynumber="49">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_49inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_50" copynumber="50">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_50inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_50" copynumber="50">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_50inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_51" copynumber="51">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_51inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_51" copynumber="51">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_51inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_52" copynumber="52">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_52inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_52" copynumber="52">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_52inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_53" copynumber="53">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_53inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_53" copynumber="53">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_53inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_54" copynumber="54">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_54inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_54" copynumber="54">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_54inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_55" copynumber="55">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_55inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_55" copynumber="55">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_55inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_56" copynumber="56">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_56inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_56" copynumber="56">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_56inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_57" copynumber="57">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_57inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_57" copynumber="57">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_57inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_58" copynumber="58">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_58inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_58" copynumber="58">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_58inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_16" copynumber="16">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_16inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_16" copynumber="16">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_16inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_17" copynumber="17">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_17inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_17" copynumber="17">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_17inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_18" copynumber="18">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_18inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_18" copynumber="18">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_18inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_19" copynumber="19">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_19inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_19" copynumber="19">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_19inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_20" copynumber="20">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_20inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_20" copynumber="20">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_20inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_21" copynumber="21">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_21inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_21" copynumber="21">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_21inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_22" copynumber="22">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_22inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_22" copynumber="22">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_22inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_23" copynumber="23">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_23inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_23" copynumber="23">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_23inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_24" copynumber="24">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_24inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_24" copynumber="24">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_24inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_59" copynumber="59">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_59inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_59" copynumber="59">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_59inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_60" copynumber="60">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_60inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_60" copynumber="60">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_60inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_61" copynumber="61">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_61inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_61" copynumber="61">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_61inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_62" copynumber="62">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_62inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_62" copynumber="62">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_62inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ43_63" copynumber="63">
+        <volumeref ref="SQ43"/>
+        <positionref ref="SQ43_63inSQMF1pos"/>
+      </physvol>
+      <physvol name="SQ45_63" copynumber="63">
+        <volumeref ref="SQ45"/>
+        <positionref ref="SQ45_63inSQMF1pos"/>
+      </physvol>
+    </assembly>
+    </structure>

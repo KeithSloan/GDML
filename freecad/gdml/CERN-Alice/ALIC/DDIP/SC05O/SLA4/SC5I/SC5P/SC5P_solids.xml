@@ -1,0 +1,30 @@
+<solids><subtraction name="composite5G">
+      <first ref="centerSlatC5G"/>
+      <second ref="tubeCut"/>
+      <position name="composite5GtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5G" x="19.25" y="40" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5H">
+      <first ref="centerSlatC5H"/>
+      <second ref="tubeCut"/>
+      <position name="composite5HtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5H" x="19.25" y="43.900001525878906" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="S05E0x1" x="2.5" y="7.0500001907348633" z="0.0043999999761581421" lunit="cm"/>
+    <subtraction name="composite5B">
+      <first ref="centerSlatC5B"/>
+      <second ref="tubeCut"/>
+      <position name="composite5BtubeCutpos" x="-31.625" y="25.475000381469727" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5B" x="19.25" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite5P">
+      <first ref="centerSlatC5P"/>
+      <second ref="tubeCut"/>
+      <position name="composite5PtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="centerSlatC5P" x="19.25" y="58" z="0.50600004196166992" lunit="cm"/>
+    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

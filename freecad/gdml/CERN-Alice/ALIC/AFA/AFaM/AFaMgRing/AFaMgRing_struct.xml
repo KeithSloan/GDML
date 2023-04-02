@@ -1,0 +1,5 @@
+<structure><volume name="AFaMgRing">
+      <materialref ref="ABSO_MAGNESIUM"/>
+      <solidref ref="TGeoPcon0x8"/>
+    </volume>
+    </structure>

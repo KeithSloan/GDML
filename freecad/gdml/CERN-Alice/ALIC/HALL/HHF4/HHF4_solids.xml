@@ -1,0 +1,9 @@
+<solids><union name="HHF40x1">
+      <first ref="shHHF41"/>
+      <second ref="shHHF42"/>
+      <position name="HHF40x1shHHF42pos" x="0" y="0" z="1025" unit="cm"/>
+      <rotation name="HHF40x1shHHF42rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <box name="shHHF41" x="2340" y="190" z="850" lunit="cm"/>
+    <tube name="shHHF42" rmin="0" rmax="1240" z="190" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

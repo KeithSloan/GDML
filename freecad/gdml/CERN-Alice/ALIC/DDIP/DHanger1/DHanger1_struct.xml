@@ -1,0 +1,5 @@
+<structure><volume name="DHanger1">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="shHanger1"/>
+    </volume>
+    </structure>

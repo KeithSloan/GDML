@@ -1,0 +1,1341 @@
+<structure><volume name="ITSSPDchip0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDchip0x3"/>
+    </volume>
+    <volume name="ITSSPDchip0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDchip0x3"/>
+    </volume>
+    <volume name="ITSSPDchip0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDchip0x3"/>
+    </volume>
+    <volume name="ITSSPDchip0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDchip0x3"/>
+    </volume>
+    <volume name="ITSSPDchip0x2">
+      <materialref ref="ITS_SPD_SI_CHIP"/>
+      <solidref ref="ITSSPDchip0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDbb0x2">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="ITSSPDbb0x3"/>
+    </volume>
+    <volume name="ITSSPDgaurdRing0x1">
+      <materialref ref="ITS_SI"/>
+      <solidref ref="ITSSPDgaurdRingBorder0x1"/>
+    </volume>
+    <volume name="ITSSPDlay1-sensor0x2">
+      <materialref ref="ITS_SI"/>
+      <solidref ref="ITSSPDlay1-sensor0x3"/>
+    </volume>
+    <volume name="ITSSPDlay1-Ladder0x1">
+      <materialref ref="ITS_AIR"/>
+      <solidref ref="TGeoBBox0x963"/>
+      <physvol name="ITSSPDlay1-sensor_1" copynumber="1">
+        <volumeref ref="ITSSPDlay1-sensor0x2"/>
+        <positionref ref="ITSSPDlay1-sensor_10x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDgaurdRing_1" copynumber="1">
+        <volumeref ref="ITSSPDgaurdRing0x1"/>
+        <positionref ref="ITSSPDgaurdRing_10x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_1" copynumber="1">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_10x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_2" copynumber="2">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_20x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_3" copynumber="3">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_30x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_4" copynumber="4">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_40x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_5" copynumber="5">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_50x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_6" copynumber="6">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_60x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_7" copynumber="7">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_70x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_8" copynumber="8">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_80x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_9" copynumber="9">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_90x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_10" copynumber="10">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_100x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_11" copynumber="11">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_110x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_12" copynumber="12">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_120x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_13" copynumber="13">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_130x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_14" copynumber="14">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_140x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_15" copynumber="15">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_150x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_16" copynumber="16">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_160x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_17" copynumber="17">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_170x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_18" copynumber="18">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_180x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_19" copynumber="19">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_190x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_20" copynumber="20">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_200x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_21" copynumber="21">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_210x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_22" copynumber="22">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_220x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_23" copynumber="23">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_230x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_24" copynumber="24">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_240x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_25" copynumber="25">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_250x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_26" copynumber="26">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_260x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_27" copynumber="27">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_270x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_28" copynumber="28">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_280x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_29" copynumber="29">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_290x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_30" copynumber="30">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_300x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_31" copynumber="31">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_310x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_32" copynumber="32">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_320x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_33" copynumber="33">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_330x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_34" copynumber="34">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_340x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_35" copynumber="35">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_350x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_36" copynumber="36">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_360x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_37" copynumber="37">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_370x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_38" copynumber="38">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_380x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_39" copynumber="39">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_390x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_40" copynumber="40">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_400x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_41" copynumber="41">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_410x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_42" copynumber="42">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_420x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_43" copynumber="43">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_430x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_44" copynumber="44">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_440x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_45" copynumber="45">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_450x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_46" copynumber="46">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_460x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_47" copynumber="47">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_470x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_48" copynumber="48">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_480x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_49" copynumber="49">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_490x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_50" copynumber="50">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_500x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_51" copynumber="51">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_510x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_52" copynumber="52">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_520x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_53" copynumber="53">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_530x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_54" copynumber="54">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_540x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_55" copynumber="55">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_550x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_56" copynumber="56">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_560x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_57" copynumber="57">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_570x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_58" copynumber="58">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_580x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_59" copynumber="59">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_590x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_60" copynumber="60">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_600x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_61" copynumber="61">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_610x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_62" copynumber="62">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_620x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_63" copynumber="63">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_630x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_64" copynumber="64">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_640x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_65" copynumber="65">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_650x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_66" copynumber="66">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_660x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_67" copynumber="67">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_670x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_68" copynumber="68">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_680x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_69" copynumber="69">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_690x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_70" copynumber="70">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_700x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_71" copynumber="71">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_710x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_72" copynumber="72">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_720x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_73" copynumber="73">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_730x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_74" copynumber="74">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_740x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_75" copynumber="75">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_750x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_76" copynumber="76">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_760x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_77" copynumber="77">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_770x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_78" copynumber="78">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_780x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_79" copynumber="79">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_790x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_80" copynumber="80">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_800x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_81" copynumber="81">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_810x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_82" copynumber="82">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_820x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_83" copynumber="83">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_830x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_84" copynumber="84">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_840x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_85" copynumber="85">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_850x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_86" copynumber="86">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_860x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_87" copynumber="87">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_870x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_88" copynumber="88">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_880x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_89" copynumber="89">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_890x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_90" copynumber="90">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_900x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_91" copynumber="91">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_910x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_92" copynumber="92">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_920x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_93" copynumber="93">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_930x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_94" copynumber="94">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_940x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_95" copynumber="95">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_950x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_96" copynumber="96">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_960x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_97" copynumber="97">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_970x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_98" copynumber="98">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_980x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_99" copynumber="99">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_990x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_100" copynumber="100">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1000x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_101" copynumber="101">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1010x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_102" copynumber="102">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1020x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_103" copynumber="103">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1030x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_104" copynumber="104">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1040x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_105" copynumber="105">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1050x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_106" copynumber="106">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1060x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_107" copynumber="107">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1070x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_108" copynumber="108">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1080x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_109" copynumber="109">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1090x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_110" copynumber="110">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1100x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_111" copynumber="111">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1110x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_112" copynumber="112">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1120x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_113" copynumber="113">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1130x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_114" copynumber="114">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1140x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_115" copynumber="115">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1150x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_116" copynumber="116">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1160x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_117" copynumber="117">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1170x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_118" copynumber="118">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1180x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_119" copynumber="119">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1190x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_120" copynumber="120">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1200x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_121" copynumber="121">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1210x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_122" copynumber="122">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1220x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_123" copynumber="123">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1230x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_124" copynumber="124">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1240x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_125" copynumber="125">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1250x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_126" copynumber="126">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1260x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_127" copynumber="127">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1270x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_128" copynumber="128">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1280x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_129" copynumber="129">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1290x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_130" copynumber="130">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1300x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_131" copynumber="131">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1310x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_132" copynumber="132">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1320x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_133" copynumber="133">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1330x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_134" copynumber="134">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1340x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_135" copynumber="135">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1350x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_136" copynumber="136">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1360x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_137" copynumber="137">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1370x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_138" copynumber="138">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1380x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_139" copynumber="139">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1390x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_140" copynumber="140">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1400x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_141" copynumber="141">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1410x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_142" copynumber="142">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1420x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_143" copynumber="143">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1430x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_144" copynumber="144">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1440x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_145" copynumber="145">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1450x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_146" copynumber="146">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1460x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_147" copynumber="147">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1470x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_148" copynumber="148">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1480x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_149" copynumber="149">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1490x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_150" copynumber="150">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1500x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_151" copynumber="151">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1510x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_152" copynumber="152">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1520x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_153" copynumber="153">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1530x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_154" copynumber="154">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1540x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_155" copynumber="155">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1550x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_156" copynumber="156">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1560x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_157" copynumber="157">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1570x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_158" copynumber="158">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1580x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_159" copynumber="159">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1590x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDbb_160" copynumber="160">
+        <volumeref ref="ITSSPDbb0x2"/>
+        <positionref ref="ITSSPDbb_1600x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDchip_3" copynumber="3">
+        <volumeref ref="ITSSPDchip0x2"/>
+        <positionref ref="ITSSPDchip_30x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDchip_4" copynumber="4">
+        <volumeref ref="ITSSPDchip0x2"/>
+        <positionref ref="ITSSPDchip_40x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDchip_5" copynumber="5">
+        <volumeref ref="ITSSPDchip0x2"/>
+        <positionref ref="ITSSPDchip_50x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDchip_6" copynumber="6">
+        <volumeref ref="ITSSPDchip0x2"/>
+        <positionref ref="ITSSPDchip_60x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+      <physvol name="ITSSPDchip_7" copynumber="7">
+        <volumeref ref="ITSSPDchip0x2"/>
+        <positionref ref="ITSSPDchip_70x1inITSSPDlay1-Ladder0x1pos"/>
+      </physvol>
+    </volume>
+    </structure>

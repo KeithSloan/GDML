@@ -1,0 +1,21 @@
+<structure><volume name="UH29">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x366"/>
+    </volume>
+    <volume name="UC29">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x365"/>
+      <physvol name="UH29_1" copynumber="1">
+        <volumeref ref="UH29"/>
+        <positionref ref="UH29_1inUC29pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX29">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX290x1"/>
+      <physvol name="UC29_1" copynumber="1">
+        <volumeref ref="UC29"/>
+        <positionref ref="UC29_1inUX29pos"/>
+      </physvol>
+    </volume>
+    </structure>

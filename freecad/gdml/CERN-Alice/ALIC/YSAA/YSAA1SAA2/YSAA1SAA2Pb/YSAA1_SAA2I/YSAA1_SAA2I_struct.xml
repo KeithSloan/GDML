@@ -1,0 +1,5 @@
+<structure><volume name="YSAA1_SAA2I">
+      <materialref ref="SHIL_LEAD3"/>
+      <solidref ref="TGeoPcon0x24"/>
+    </volume>
+    </structure>

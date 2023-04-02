@@ -1,0 +1,18 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_1inS201pos" x="-17.640000000000001" y="0" z="0" unit="cm"/>
+    <position name="SCHL_2inS201pos" x="-15.119999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_3inS201pos" x="-12.599999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_4inS201pos" x="-10.079999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_5inS201pos" x="-7.5599999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_6inS201pos" x="-5.0399999999999991" y="0" z="0" unit="cm"/>
+    <position name="SCHL_7inS201pos" x="-2.5199999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_8inS201pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_9inS201pos" x="2.5199999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10inS201pos" x="5.0399999999999991" y="0" z="0" unit="cm"/>
+    <position name="SCHL_11inS201pos" x="7.5599999999999996" y="0" z="0" unit="cm"/>
+    <position name="SCHL_12inS201pos" x="10.079999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_13inS201pos" x="12.599999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_14inS201pos" x="15.119999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_15inS201pos" x="17.640000000000001" y="0" z="0" unit="cm"/>
+    </define>

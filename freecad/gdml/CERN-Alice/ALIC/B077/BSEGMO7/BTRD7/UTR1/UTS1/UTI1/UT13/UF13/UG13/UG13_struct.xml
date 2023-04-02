@@ -1,0 +1,53 @@
+<structure><volume name="UV13">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x440"/>
+    </volume>
+    <volume name="UO13">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x439"/>
+    </volume>
+    <volume name="UN13">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x438"/>
+    </volume>
+    <volume name="UM13">
+      <materialref ref="TRD_G10"/>
+      <solidref ref="TGeoBBox0x437"/>
+    </volume>
+    <volume name="UY13">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x436"/>
+    </volume>
+    <volume name="UL13">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x435"/>
+    </volume>
+    <volume name="UG13">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x434"/>
+      <physvol name="UL13_1" copynumber="1">
+        <volumeref ref="UL13"/>
+        <positionref ref="UL13_1inUG13pos"/>
+      </physvol>
+      <physvol name="UY13_1" copynumber="1">
+        <volumeref ref="UY13"/>
+        <positionref ref="UY13_1inUG13pos"/>
+      </physvol>
+      <physvol name="UM13_1" copynumber="1">
+        <volumeref ref="UM13"/>
+        <positionref ref="UM13_1inUG13pos"/>
+      </physvol>
+      <physvol name="UN13_1" copynumber="1">
+        <volumeref ref="UN13"/>
+        <positionref ref="UN13_1inUG13pos"/>
+      </physvol>
+      <physvol name="UO13_1" copynumber="1">
+        <volumeref ref="UO13"/>
+        <positionref ref="UO13_1inUG13pos"/>
+      </physvol>
+      <physvol name="UV13_1" copynumber="1">
+        <volumeref ref="UV13"/>
+        <positionref ref="UV13_1inUG13pos"/>
+      </physvol>
+    </volume>
+    </structure>

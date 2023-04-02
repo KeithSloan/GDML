@@ -1,0 +1,21 @@
+<structure><volume name="vCableSegLay0x170">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoArb80x145"/>
+    </volume>
+    <volume name="vCableSegLay0x169">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="TGeoArb80x144"/>
+    </volume>
+    <volume name="SDDcableEndLadder">
+      <materialref ref="ITS_SDD_SI_insensitive"/>
+      <solidref ref="TGeoArb80x143"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x169"/>
+        <positionref ref="vCableSegLay_10x145inSDDcableEndLadderpos"/>
+      </physvol>
+      <physvol name="vCableSegLay_2" copynumber="2">
+        <volumeref ref="vCableSegLay0x170"/>
+        <positionref ref="vCableSegLay_20x8inSDDcableEndLadderpos"/>
+      </physvol>
+    </volume>
+    </structure>

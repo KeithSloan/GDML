@@ -1,0 +1,5 @@
+<structure><volume name="UZ16">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UZ160x1"/>
+    </volume>
+    </structure>

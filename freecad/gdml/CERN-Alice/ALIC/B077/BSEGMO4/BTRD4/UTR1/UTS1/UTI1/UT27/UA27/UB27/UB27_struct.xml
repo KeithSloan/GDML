@@ -1,0 +1,37 @@
+<structure><volume name="UH27">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x340"/>
+    </volume>
+    <volume name="UC27">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x339"/>
+      <physvol name="UH27_1" copynumber="1">
+        <volumeref ref="UH27"/>
+        <positionref ref="UH27_1inUC27pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX27">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX270x1"/>
+      <physvol name="UC27_1" copynumber="1">
+        <volumeref ref="UC27"/>
+        <positionref ref="UC27_1inUX27pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ27">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ270x1"/>
+    </volume>
+    <volume name="UB27">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x338"/>
+      <physvol name="UJ27_1" copynumber="1">
+        <volumeref ref="UJ27"/>
+        <positionref ref="UJ27_1inUB27pos"/>
+      </physvol>
+      <physvol name="UX27_1" copynumber="1">
+        <volumeref ref="UX27"/>
+        <positionref ref="UX27_1inUB27pos"/>
+      </physvol>
+    </volume>
+    </structure>

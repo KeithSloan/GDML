@@ -1,0 +1,13 @@
+<structure><volume name="CP3ATS">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x40"/>
+    </volume>
+    <volume name="CP3ATV">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x39"/>
+      <physvol name="CP3ATS_1" copynumber="1">
+        <volumeref ref="CP3ATS"/>
+        <positionref ref="CP3ATS_1inCP3ATVpos"/>
+      </physvol>
+    </volume>
+    </structure>

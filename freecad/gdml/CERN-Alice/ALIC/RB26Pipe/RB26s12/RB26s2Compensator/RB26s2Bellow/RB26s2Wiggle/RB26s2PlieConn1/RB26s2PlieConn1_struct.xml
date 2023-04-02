@@ -1,0 +1,5 @@
+<structure><volume name="RB26s2PlieConn1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x45"/>
+    </volume>
+    </structure>

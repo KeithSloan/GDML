@@ -1,0 +1,5 @@
+<structure><volume name="YSAA2_SteelEnvelope">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoPcon0x26"/>
+    </volume>
+    </structure>

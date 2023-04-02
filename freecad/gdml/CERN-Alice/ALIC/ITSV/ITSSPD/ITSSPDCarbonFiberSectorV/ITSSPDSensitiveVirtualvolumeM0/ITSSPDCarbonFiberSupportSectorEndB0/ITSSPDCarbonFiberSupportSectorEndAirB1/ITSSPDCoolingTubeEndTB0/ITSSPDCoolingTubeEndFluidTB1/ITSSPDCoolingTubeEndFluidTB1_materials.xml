@@ -1,0 +1,12 @@
+<materials><material name="ITS_Freon">
+      <D unit="g/cm3" value="1.5199999809265137"/>
+      <fraction n="0.20184177160263062" ref="CARBON_elm"/>
+      <fraction n="0.79815822839736938" ref="FLUORINE_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="FLUORINE_elm" formula="F" Z="9">
+      <atom unit="g/mole" value="18.998403199999998"/>
+    </element>
+    </materials>

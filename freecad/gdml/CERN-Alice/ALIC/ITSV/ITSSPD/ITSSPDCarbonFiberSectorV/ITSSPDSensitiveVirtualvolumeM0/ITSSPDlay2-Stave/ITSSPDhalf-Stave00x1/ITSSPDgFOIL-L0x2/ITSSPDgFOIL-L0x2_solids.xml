@@ -1,0 +1,355 @@
+<solids><subtraction name="ITSSPDSHgFoilKap0x2">
+      <first ref="ITSSPDSHgFoilKapFull"/>
+      <second ref="TGeoCompositeShape0x106"/>
+    </subtraction>
+    <box name="ITSSPDSHgFoilKapFull" x="24.318000000000001" y="1.595" z="0.0040000000000000001" lunit="cm"/>
+    <union name="TGeoCompositeShape0x106">
+      <first ref="TGeoCompositeShape0x107"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x106ITSSPDKapGfoilHolepos" x="3.4880000000000013" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x107">
+      <first ref="TGeoCompositeShape0x108"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x107ITSSPDKapGfoilHolepos" x="1.2880000000000014" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x108">
+      <first ref="TGeoCompositeShape0x109"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x108ITSSPDKapGfoilHolepos" x="-0.11199999999999877" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x109">
+      <first ref="TGeoCompositeShape0x110"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x109ITSSPDKapGfoilHolepos" x="-1.5119999999999989" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x110">
+      <first ref="TGeoCompositeShape0x111"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x110ITSSPDKapGfoilHolepos" x="-2.911999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x111">
+      <first ref="TGeoCompositeShape0x112"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x111ITSSPDKapGfoilHolepos" x="-4.3119999999999994" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x112">
+      <first ref="TGeoCompositeShape0x113"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x112ITSSPDKapGfoilHolepos" x="-5.8539999999999992" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x113">
+      <first ref="TGeoCompositeShape0x114"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x113ITSSPDKapGfoilHolepos" x="-7.2539999999999996" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x114">
+      <first ref="TGeoCompositeShape0x115"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x114ITSSPDKapGfoilHolepos" x="-8.6539999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x115">
+      <first ref="TGeoCompositeShape0x116"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x115ITSSPDKapGfoilHolepos" x="-10.054" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x116">
+      <first ref="ITSSPDSHgFoilKapXtru"/>
+      <second ref="ITSSPDKapGfoilHole"/>
+      <position name="TGeoCompositeShape0x116ITSSPDKapGfoilHolepos" x="-11.454000000000001" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <xtru name="ITSSPDSHgFoilKapXtru" lunit="cm">
+      <twoDimVertex x="1.9120000000000008" y="-0.79749999999999999"/>
+      <twoDimVertex x="2.160000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="4.838000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="5.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="-1.2974999999999999"/>
+      <twoDimVertex x="1.9120000000000008" y="-1.2974999999999999"/>
+      <section zOrder="0" zPosition="-0.0040000000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.0040000000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <box name="ITSSPDKapGfoilHole" x="1" y="0.75" z="0.0080000000000000002" lunit="cm"/>
+    <subtraction name="ITSSPDSHgFoilAlu0x2">
+      <first ref="ITSSPDSHgFoilAluFull"/>
+      <second ref="TGeoCompositeShape0x117"/>
+    </subtraction>
+    <box name="ITSSPDSHgFoilAluFull" x="24.278000000000002" y="1.5549999999999999" z="0.001" lunit="cm"/>
+    <union name="TGeoCompositeShape0x117">
+      <first ref="TGeoCompositeShape0x118"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x117ITSSPDAluGfoilHolepos" x="3.4880000000000013" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x118">
+      <first ref="TGeoCompositeShape0x119"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x118ITSSPDAluGfoilHolepos" x="1.2880000000000014" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x119">
+      <first ref="TGeoCompositeShape0x120"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x119ITSSPDAluGfoilHolepos" x="-0.11199999999999877" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x120">
+      <first ref="TGeoCompositeShape0x121"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x120ITSSPDAluGfoilHolepos" x="-1.5119999999999989" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x121">
+      <first ref="TGeoCompositeShape0x122"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x121ITSSPDAluGfoilHolepos" x="-2.911999999999999" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x122">
+      <first ref="TGeoCompositeShape0x123"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x122ITSSPDAluGfoilHolepos" x="-4.3119999999999994" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x123">
+      <first ref="TGeoCompositeShape0x124"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x123ITSSPDAluGfoilHolepos" x="-5.8539999999999992" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x124">
+      <first ref="TGeoCompositeShape0x125"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x124ITSSPDAluGfoilHolepos" x="-7.2539999999999996" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x125">
+      <first ref="TGeoCompositeShape0x126"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x125ITSSPDAluGfoilHolepos" x="-8.6539999999999999" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x126">
+      <first ref="TGeoCompositeShape0x127"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x126ITSSPDAluGfoilHolepos" x="-10.054" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x127">
+      <first ref="ITSSPDSHgFoilAluXtru"/>
+      <second ref="ITSSPDAluGfoilHole"/>
+      <position name="TGeoCompositeShape0x127ITSSPDAluGfoilHolepos" x="-11.454000000000001" y="-0.017500000000000127" z="0" unit="cm"/>
+    </union>
+    <xtru name="ITSSPDSHgFoilAluXtru" lunit="cm">
+      <twoDimVertex x="1.9120000000000008" y="-0.77749999999999997"/>
+      <twoDimVertex x="2.160000000000001" y="-0.6825"/>
+      <twoDimVertex x="4.838000000000001" y="-0.6825"/>
+      <twoDimVertex x="5.2380000000000013" y="-0.28250000000000008"/>
+      <twoDimVertex x="6.2180000000000017" y="-0.28250000000000008"/>
+      <twoDimVertex x="6.2180000000000017" y="0.37749999999999989"/>
+      <twoDimVertex x="8.6980000000000022" y="0.37749999999999989"/>
+      <twoDimVertex x="8.6980000000000022" y="-0.28250000000000008"/>
+      <twoDimVertex x="9.6580000000000013" y="-0.28250000000000008"/>
+      <twoDimVertex x="9.6580000000000013" y="0.37749999999999989"/>
+      <twoDimVertex x="12.639000000000001" y="0.37749999999999989"/>
+      <twoDimVertex x="12.639000000000001" y="-1.2774999999999999"/>
+      <twoDimVertex x="1.9120000000000008" y="-1.2774999999999999"/>
+      <section zOrder="0" zPosition="-0.001" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.001" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <box name="ITSSPDAluGfoilHole" x="1.04" y="0.79000000000000004" z="0.002" lunit="cm"/>
+    <subtraction name="ITSSPDSHgFoilGlue10x2">
+      <first ref="ITSSPDSHgFoilGlue1Full"/>
+      <second ref="TGeoCompositeShape0x128"/>
+    </subtraction>
+    <box name="ITSSPDSHgFoilGlue1Full" x="24.318000000000001" y="1.595" z="0.00075000000000000067" lunit="cm"/>
+    <union name="TGeoCompositeShape0x128">
+      <first ref="TGeoCompositeShape0x129"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x128ITSSPDGlue1GfoilHolepos" x="3.4880000000000013" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x129">
+      <first ref="TGeoCompositeShape0x130"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x129ITSSPDGlue1GfoilHolepos" x="1.2880000000000014" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x130">
+      <first ref="TGeoCompositeShape0x131"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x130ITSSPDGlue1GfoilHolepos" x="-0.11199999999999877" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x131">
+      <first ref="TGeoCompositeShape0x132"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x131ITSSPDGlue1GfoilHolepos" x="-1.5119999999999989" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x132">
+      <first ref="TGeoCompositeShape0x133"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x132ITSSPDGlue1GfoilHolepos" x="-2.911999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x133">
+      <first ref="TGeoCompositeShape0x134"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x133ITSSPDGlue1GfoilHolepos" x="-4.3119999999999994" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x134">
+      <first ref="TGeoCompositeShape0x135"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x134ITSSPDGlue1GfoilHolepos" x="-5.8539999999999992" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x135">
+      <first ref="TGeoCompositeShape0x136"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x135ITSSPDGlue1GfoilHolepos" x="-7.2539999999999996" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x136">
+      <first ref="TGeoCompositeShape0x137"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x136ITSSPDGlue1GfoilHolepos" x="-8.6539999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x137">
+      <first ref="TGeoCompositeShape0x138"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x137ITSSPDGlue1GfoilHolepos" x="-10.054" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x138">
+      <first ref="ITSSPDSHgFoilGlue1Xtru"/>
+      <second ref="ITSSPDGlue1GfoilHole"/>
+      <position name="TGeoCompositeShape0x138ITSSPDGlue1GfoilHolepos" x="-11.454000000000001" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <xtru name="ITSSPDSHgFoilGlue1Xtru" lunit="cm">
+      <twoDimVertex x="1.9120000000000008" y="-0.79749999999999999"/>
+      <twoDimVertex x="2.160000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="4.838000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="5.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="-1.2974999999999999"/>
+      <twoDimVertex x="1.9120000000000008" y="-1.2974999999999999"/>
+      <section zOrder="0" zPosition="-0.00075000000000000067" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.00075000000000000067" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <box name="ITSSPDGlue1GfoilHole" x="1" y="0.75" z="0.0015000000000000013" lunit="cm"/>
+    <subtraction name="ITSSPDSHgFoilGlue20x2">
+      <first ref="ITSSPDSHgFoilGlue2Full"/>
+      <second ref="TGeoCompositeShape0x139"/>
+    </subtraction>
+    <box name="ITSSPDSHgFoilGlue2Full" x="24.318000000000001" y="1.595" z="0.0052500000000000003" lunit="cm"/>
+    <union name="TGeoCompositeShape0x139">
+      <first ref="TGeoCompositeShape0x140"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x139ITSSPDGlue2GfoilHolepos" x="3.4880000000000013" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x140">
+      <first ref="TGeoCompositeShape0x141"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x140ITSSPDGlue2GfoilHolepos" x="1.2880000000000014" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x141">
+      <first ref="TGeoCompositeShape0x142"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x141ITSSPDGlue2GfoilHolepos" x="-0.11199999999999877" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x142">
+      <first ref="TGeoCompositeShape0x143"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x142ITSSPDGlue2GfoilHolepos" x="-1.5119999999999989" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x143">
+      <first ref="TGeoCompositeShape0x144"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x143ITSSPDGlue2GfoilHolepos" x="-2.911999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x144">
+      <first ref="TGeoCompositeShape0x145"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x144ITSSPDGlue2GfoilHolepos" x="-4.3119999999999994" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x145">
+      <first ref="TGeoCompositeShape0x146"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x145ITSSPDGlue2GfoilHolepos" x="-5.8539999999999992" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x146">
+      <first ref="TGeoCompositeShape0x147"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x146ITSSPDGlue2GfoilHolepos" x="-7.2539999999999996" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x147">
+      <first ref="TGeoCompositeShape0x148"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x147ITSSPDGlue2GfoilHolepos" x="-8.6539999999999999" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x148">
+      <first ref="TGeoCompositeShape0x149"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x148ITSSPDGlue2GfoilHolepos" x="-10.054" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x149">
+      <first ref="ITSSPDSHgFoilGlue2Xtru"/>
+      <second ref="ITSSPDGlue2GfoilHole"/>
+      <position name="TGeoCompositeShape0x149ITSSPDGlue2GfoilHolepos" x="-11.454000000000001" y="-0.017500000000000071" z="0" unit="cm"/>
+    </union>
+    <xtru name="ITSSPDSHgFoilGlue2Xtru" lunit="cm">
+      <twoDimVertex x="1.9120000000000008" y="-0.79749999999999999"/>
+      <twoDimVertex x="2.160000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="4.838000000000001" y="-0.70250000000000001"/>
+      <twoDimVertex x="5.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="-0.3025000000000001"/>
+      <twoDimVertex x="6.2380000000000013" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="8.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="-0.3025000000000001"/>
+      <twoDimVertex x="9.6780000000000008" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="0.35749999999999993"/>
+      <twoDimVertex x="12.659000000000001" y="-1.2974999999999999"/>
+      <twoDimVertex x="1.9120000000000008" y="-1.2974999999999999"/>
+      <section zOrder="0" zPosition="-0.0052500000000000003" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.0052500000000000003" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGlue2GfoilHole" x="1" y="0.75" z="0.010500000000000001" lunit="cm"/>
+    <box name="ITSSPDGrease0x5" x="0.011000000000000001" y="0.75" z="1" lunit="cm"/>
+    <box name="ITSSPDgFOIL-L0x3" x="0.011000000000000001" y="1.595" z="24.389000000000003" lunit="cm"/>
+    </solids>

@@ -1,0 +1,21 @@
+<structure><volume name="UW27">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x343"/>
+    </volume>
+    <volume name="UK27">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="TGeoBBox0x342"/>
+      <physvol name="UW27_1" copynumber="1">
+        <volumeref ref="UW27"/>
+        <positionref ref="UW27_1inUK27pos"/>
+      </physvol>
+    </volume>
+    <volume name="UE27">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x341"/>
+      <physvol name="UK27_1" copynumber="1">
+        <volumeref ref="UK27"/>
+        <positionref ref="UK27_1inUE27pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,45 @@
+<structure><volume name="UH21">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x262"/>
+    </volume>
+    <volume name="UC21">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x261"/>
+      <physvol name="UH21_1" copynumber="1">
+        <volumeref ref="UH21"/>
+        <positionref ref="UH21_1inUC21pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX21">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX210x1"/>
+      <physvol name="UC21_1" copynumber="1">
+        <volumeref ref="UC21"/>
+        <positionref ref="UC21_1inUX21pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ21">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ210x1"/>
+    </volume>
+    <volume name="UB21">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x260"/>
+      <physvol name="UJ21_1" copynumber="1">
+        <volumeref ref="UJ21"/>
+        <positionref ref="UJ21_1inUB21pos"/>
+      </physvol>
+      <physvol name="UX21_1" copynumber="1">
+        <volumeref ref="UX21"/>
+        <positionref ref="UX21_1inUB21pos"/>
+      </physvol>
+    </volume>
+    <volume name="UA21">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UA210x1"/>
+      <physvol name="UB21_1" copynumber="1">
+        <volumeref ref="UB21"/>
+        <positionref ref="UB21_1inUA21pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,5 @@
+<structure><volume name="Extender10x4">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="Extender10x5"/>
+    </volume>
+    </structure>

@@ -1,0 +1,14 @@
+<define><position name="ShPx24Pl_1inShPx24pos" x="55" y="-200" z="0" unit="cm"/>
+    <position name="ShPx24Pi_1inShPx24pos" x="-260" y="-480" z="582.5" unit="cm"/>
+    <position name="ShPx24Pi_2inShPx24pos" x="370" y="-480" z="582.5" unit="cm"/>
+    <position name="ShPx24Pi_3inShPx24pos" x="-260" y="-480" z="-462.5" unit="cm"/>
+    <position name="ShPx24Pi_4inShPx24pos" x="370" y="-480" z="-462.5" unit="cm"/>
+    <position name="ShPx24Pi_5inShPx24pos" x="-260" y="-480" z="-142.5" unit="cm"/>
+    <position name="ShPx24Pi_6inShPx24pos" x="370" y="-480" z="-142.5" unit="cm"/>
+    <position name="ShPx24Pi_7inShPx24pos" x="-260" y="-480" z="177.5" unit="cm"/>
+    <position name="ShPx24Pi_8inShPx24pos" x="370" y="-480" z="177.5" unit="cm"/>
+    <position name="ShPx24Sw_1inShPx24pos" x="-180" y="0" z="0" unit="cm"/>
+    <position name="ShPx24Sw_2inShPx24pos" x="290" y="0" z="0" unit="cm"/>
+    <position name="ShPx24Ro_1inShPx24pos" x="55" y="220" z="0" unit="cm"/>
+    <position name="Px24Pl_1inShPx24pos" x="55" y="0" z="-562.5" unit="cm"/>
+    </define>

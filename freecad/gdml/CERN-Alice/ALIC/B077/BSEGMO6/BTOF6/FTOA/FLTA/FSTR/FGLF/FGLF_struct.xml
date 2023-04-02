@@ -1,0 +1,5 @@
+<structure><volume name="FGLF">
+      <materialref ref="TOF_Glass"/>
+      <solidref ref="FGLF0x1"/>
+    </volume>
+    </structure>

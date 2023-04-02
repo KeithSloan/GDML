@@ -1,0 +1,19 @@
+<structure><volume name="FwdaBPPTT">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="TGeoTube0x6"/>
+    </volume>
+    <volume name="FwdaBPPTPC">
+      <materialref ref="PIPE_ANTICORODAL"/>
+      <solidref ref="shFwdaBPPTPC"/>
+    </volume>
+    <assembly name="FwdaBPPT">
+      <physvol name="FwdaBPPTPC_1" copynumber="1">
+        <volumeref ref="FwdaBPPTPC"/>
+        <positionref ref="FwdaBPPTPC_1inFwdaBPPTpos"/>
+      </physvol>
+      <physvol name="FwdaBPPTT_1" copynumber="1">
+        <volumeref ref="FwdaBPPTT"/>
+        <positionref ref="FwdaBPPTT_1inFwdaBPPTpos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "ITSsddBottomBeam1Vol_materials.xml">
+<!ENTITY solids SYSTEM "ITSsddBottomBeam1Vol_solids.xml">
+<!ENTITY struct SYSTEM "ITSsddBottomBeam1Vol_struct.xml">
+<!ENTITY setup SYSTEM "ITSsddBottomBeam1Vol_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

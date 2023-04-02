@@ -1,0 +1,20 @@
+<materials><material name="TOF_fibre_glass">
+      <D unit="g/cm3" value="2.0499999523162842"/>
+      <fraction n="0.51502001285552979" ref="CARBON_elm"/>
+      <fraction n="0.061870001256465912" ref="HYDROGEN_elm"/>
+      <fraction n="0.29405000805854797" ref="OXYGEN_elm"/>
+      <fraction n="0.12906000018119812" ref="SILICON_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.9994"/>
+    </element>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.0855"/>
+    </element>
+    </materials>

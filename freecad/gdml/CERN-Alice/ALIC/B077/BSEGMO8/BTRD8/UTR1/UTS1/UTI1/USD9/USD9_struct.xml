@@ -1,0 +1,5 @@
+<structure><volume name="USD9">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="USD90x1"/>
+    </volume>
+    </structure>

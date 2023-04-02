@@ -1,0 +1,9 @@
+<materials><material name="MUON_Kapton" Z="6">
+      <D unit="g/cm3" value="1.4199999570846558"/>
+      <atom unit="g/mole" value="12.010000228881836"/>
+    </material>
+    <material name="MUON_FrameEpoxy" Z="6">
+      <D unit="g/cm3" value="1.8500000238418579"/>
+      <atom unit="g/mole" value="12.239999771118164"/>
+    </material>
+    </materials>

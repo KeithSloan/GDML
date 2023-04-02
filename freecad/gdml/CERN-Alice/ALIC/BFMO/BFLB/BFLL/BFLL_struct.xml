@@ -1,0 +1,5 @@
+<structure><volume name="BFLL">
+      <materialref ref="FRAME_AIR"/>
+      <solidref ref="BFLL0x1"/>
+    </volume>
+    </structure>

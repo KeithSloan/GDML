@@ -1,0 +1,5 @@
+<define><position name="RB26s5PlieConn1_1inRB26s5Wigglepos" x="0" y="0" z="-0.012500000186264515" unit="cm"/>
+    <position name="RB26s5UpperPlie_1inRB26s5Wigglepos" x="0" y="0" z="0.15448275208473206" unit="cm"/>
+    <position name="RB26s5PlieConn1_2inRB26s5Wigglepos" x="0" y="0" z="0.32146552205085754" unit="cm"/>
+    <position name="RB26s5LowerPlie_10x1inRB26s5Wigglepos" x="0" y="0" z="0.4759482741355896" unit="cm"/>
+    </define>

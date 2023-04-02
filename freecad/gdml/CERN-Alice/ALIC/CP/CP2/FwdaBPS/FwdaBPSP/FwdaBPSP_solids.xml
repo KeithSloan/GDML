@@ -1,0 +1,25 @@
+<solids><subtraction name="shFwdaBPSP">
+      <first ref="FwdaBPSPX"/>
+      <second ref="FwdaBPSPY"/>
+    </subtraction>
+    <xtru name="FwdaBPSPX" lunit="cm">
+      <twoDimVertex x="10" y="6"/>
+      <twoDimVertex x="6" y="10"/>
+      <twoDimVertex x="-6" y="10"/>
+      <twoDimVertex x="-10" y="6"/>
+      <twoDimVertex x="-10" y="-6"/>
+      <twoDimVertex x="-6" y="-10"/>
+      <twoDimVertex x="6" y="-10"/>
+      <twoDimVertex x="10" y="-6"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="4" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <polycone name="FwdaBPSPY" startphi="0" deltaphi="360" aunit="deg" lunit="cm">
+      <zplane z="-1" rmin="0" rmax="5.5"/>
+      <zplane z="3.5" rmin="0" rmax="5.5"/>
+      <zplane z="3.5" rmin="0" rmax="5"/>
+      <zplane z="3.8599999999999999" rmin="0" rmax="5"/>
+      <zplane z="3.8599999999999999" rmin="0" rmax="5.5"/>
+      <zplane z="5" rmin="0" rmax="5.5"/>
+    </polycone>
+    </solids>

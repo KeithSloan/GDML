@@ -1,0 +1,5 @@
+<structure><volume name="AFaWTube4">
+      <materialref ref="ABSO_Ni-W-Cu2"/>
+      <solidref ref="TGeoCone0x1"/>
+    </volume>
+    </structure>

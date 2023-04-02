@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "ITSsddSensitivL3_materials.xml">
+<!ENTITY solids SYSTEM "ITSsddSensitivL3_solids.xml">
+<!ENTITY struct SYSTEM "ITSsddSensitivL3_struct.xml">
+<!ENTITY setup SYSTEM "ITSsddSensitivL3_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

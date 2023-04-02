@@ -1,0 +1,5 @@
+<structure><volume name="shRB24VMABCRBT4">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="shRB24VMABCRBT4c"/>
+    </volume>
+    </structure>

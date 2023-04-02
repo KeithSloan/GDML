@@ -1,0 +1,5 @@
+<structure><volume name="SD5D">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="compositeD5D"/>
+    </volume>
+    </structure>

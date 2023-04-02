@@ -1,0 +1,13 @@
+<structure><volume name="vCableSegLay0x175">
+      <materialref ref="ITS_Water"/>
+      <solidref ref="TGeoTubeSeg0x57"/>
+    </volume>
+    <volume name="endLadderPipe_50x1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoTubeSeg0x56"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x175"/>
+        <positionref ref="vCableSegLay_10x150inendLadderPipe_50x1pos"/>
+      </physvol>
+    </volume>
+    </structure>

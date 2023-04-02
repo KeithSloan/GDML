@@ -1,0 +1,5 @@
+<structure><volume name="FBAR">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FBAR0x1"/>
+    </volume>
+    </structure>

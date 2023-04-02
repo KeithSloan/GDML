@@ -1,0 +1,121 @@
+<structure><volume name="L3PlugSPL">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x3"/>
+    </volume>
+    <volume name="L3PlugSPL">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x3"/>
+    </volume>
+    <volume name="L3PlugSPR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x2"/>
+    </volume>
+    <volume name="L3PlugSPR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x2"/>
+    </volume>
+    <volume name="L3DoorL">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x1"/>
+    </volume>
+    <volume name="L3DoorL">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru0x1"/>
+    </volume>
+    <volume name="L3DoorR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru"/>
+    </volume>
+    <volume name="L3DoorR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoXtru"/>
+    </volume>
+    <volume name="L3CR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x176"/>
+    </volume>
+    <volume name="L3CR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x176"/>
+    </volume>
+    <volume name="L3YO">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x175"/>
+    </volume>
+    <volume name="L3CM">
+      <materialref ref="MAG_AIR1"/>
+      <solidref ref="TGeoPgon0x1"/>
+      <divisionvol axis="kZAxis" number="168" width="7" offset="0" unit="cm">
+        <volumeref ref="L3CD"/>
+      </divisionvol>
+    </volume>
+    <volume name="L3TS">
+      <materialref ref="MAG_Al0"/>
+      <solidref ref="TGeoPgon"/>
+    </volume>
+    <assembly name="L3BM">
+      <physvol name="L3TS_1" copynumber="1">
+        <volumeref ref="L3TS"/>
+        <positionref ref="L3TS_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CM_1" copynumber="1">
+        <volumeref ref="L3CM"/>
+        <positionref ref="L3CM_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3YO_1" copynumber="1">
+        <volumeref ref="L3YO"/>
+        <positionref ref="L3YO_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CR_1" copynumber="1">
+        <volumeref ref="L3CR"/>
+        <positionref ref="L3CR_1inL3BMpos"/>
+      </physvol>
+      <physvol name="L3CR_2" copynumber="2">
+        <volumeref ref="L3CR"/>
+        <positionref ref="L3CR_2inL3BMpos"/>
+        <scale name="L3CR_2inL3BMscl" x="1" y="1" z="-1"/>
+      </physvol>
+    </assembly>
+    <assembly name="L3MO">
+      <physvol name="L3BM_1" copynumber="1">
+        <volumeref ref="L3BM"/>
+        <positionref ref="L3BM_1inL3MOpos"/>
+      </physvol>
+      <physvol name="L3DoorR_1" copynumber="1">
+        <volumeref ref="L3DoorR"/>
+        <positionref ref="L3DoorR_1inL3MOpos"/>
+      </physvol>
+      <physvol name="L3DoorR_2" copynumber="2">
+        <volumeref ref="L3DoorR"/>
+        <positionref ref="L3DoorR_2inL3MOpos"/>
+        <scale name="L3DoorR_2inL3MOscl" x="1" y="1" z="-1"/>
+      </physvol>
+      <physvol name="L3DoorL_1" copynumber="1">
+        <volumeref ref="L3DoorL"/>
+        <positionref ref="L3DoorL_1inL3MOpos"/>
+      </physvol>
+      <physvol name="L3DoorL_2" copynumber="2">
+        <volumeref ref="L3DoorL"/>
+        <positionref ref="L3DoorL_2inL3MOpos"/>
+        <scale name="L3DoorL_2inL3MOscl" x="1" y="1" z="-1"/>
+      </physvol>
+      <physvol name="L3PlugSPR_1" copynumber="1">
+        <volumeref ref="L3PlugSPR"/>
+        <positionref ref="L3PlugSPR_1inL3MOpos"/>
+      </physvol>
+      <physvol name="L3PlugSPR_2" copynumber="2">
+        <volumeref ref="L3PlugSPR"/>
+        <positionref ref="L3PlugSPR_2inL3MOpos"/>
+        <scale name="L3PlugSPR_2inL3MOscl" x="1" y="1" z="-1"/>
+      </physvol>
+      <physvol name="L3PlugSPL_1" copynumber="1">
+        <volumeref ref="L3PlugSPL"/>
+        <positionref ref="L3PlugSPL_1inL3MOpos"/>
+      </physvol>
+      <physvol name="L3PlugSPL_2" copynumber="2">
+        <volumeref ref="L3PlugSPL"/>
+        <positionref ref="L3PlugSPL_2inL3MOpos"/>
+        <scale name="L3PlugSPL_2inL3MOscl" x="1" y="1" z="-1"/>
+      </physvol>
+    </assembly>
+    </structure>

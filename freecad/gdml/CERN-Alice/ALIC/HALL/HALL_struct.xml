@@ -1,0 +1,355 @@
+<structure><volume name="FmsDf2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x28"/>
+    </volume>
+    <volume name="FmsDf1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x27"/>
+    </volume>
+    <volume name="FmsMfTb2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x26"/>
+    </volume>
+    <volume name="FmsMfTb1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x25"/>
+    </volume>
+    <volume name="FmsMfPil">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x24"/>
+    </volume>
+    <volume name="FmsMfPil">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x24"/>
+    </volume>
+    <assembly name="asFMS">
+      <physvol name="FmsMfPil_1" copynumber="1">
+        <volumeref ref="FmsMfPil"/>
+        <positionref ref="FmsMfPil_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfPil_2" copynumber="2">
+        <volumeref ref="FmsMfPil"/>
+        <positionref ref="FmsMfPil_2inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfTb1_1" copynumber="1">
+        <volumeref ref="FmsMfTb1"/>
+        <positionref ref="FmsMfTb1_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsMfTb2_1" copynumber="1">
+        <volumeref ref="FmsMfTb2"/>
+        <positionref ref="FmsMfTb2_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsDf1_1" copynumber="1">
+        <volumeref ref="FmsDf1"/>
+        <positionref ref="FmsDf1_1inasFMSpos"/>
+      </physvol>
+      <physvol name="FmsDf2_1" copynumber="1">
+        <volumeref ref="FmsDf2"/>
+        <positionref ref="FmsDf2_1inasFMSpos"/>
+      </physvol>
+    </assembly>
+    <volume name="Px24Pl">
+      <materialref ref="HALL_STAINLESS_STEEL3"/>
+      <solidref ref="Px24Pl0x1"/>
+    </volume>
+    <volume name="ShPx24Ro">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x23"/>
+    </volume>
+    <volume name="ShPx24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x22"/>
+    </volume>
+    <volume name="ShPx24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x22"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pi">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x21"/>
+    </volume>
+    <volume name="ShPx24Pl">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x20"/>
+    </volume>
+    <assembly name="ShPx24">
+      <physvol name="ShPx24Pl_1" copynumber="1">
+        <volumeref ref="ShPx24Pl"/>
+        <positionref ref="ShPx24Pl_1inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_1" copynumber="1">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_1inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_2" copynumber="2">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_2inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_3" copynumber="3">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_3inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_4" copynumber="4">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_4inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_5" copynumber="5">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_5inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_6" copynumber="6">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_6inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_7" copynumber="7">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_7inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Pi_8" copynumber="8">
+        <volumeref ref="ShPx24Pi"/>
+        <positionref ref="ShPx24Pi_8inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Sw_1" copynumber="1">
+        <volumeref ref="ShPx24Sw"/>
+        <positionref ref="ShPx24Sw_1inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Sw_2" copynumber="2">
+        <volumeref ref="ShPx24Sw"/>
+        <positionref ref="ShPx24Sw_2inShPx24pos"/>
+      </physvol>
+      <physvol name="ShPx24Ro_1" copynumber="1">
+        <volumeref ref="ShPx24Ro"/>
+        <positionref ref="ShPx24Ro_1inShPx24pos"/>
+      </physvol>
+      <physvol name="Px24Pl_1" copynumber="1">
+        <volumeref ref="Px24Pl"/>
+        <positionref ref="Px24Pl_1inShPx24pos"/>
+      </physvol>
+    </assembly>
+    <volume name="Rb24Pl">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="Rb24Pl0x1"/>
+    </volume>
+    <volume name="ShRb24Ro">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x19"/>
+    </volume>
+    <volume name="ShRb24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x18"/>
+    </volume>
+    <volume name="ShRb24Sw">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x18"/>
+    </volume>
+    <assembly name="ShRb24">
+      <physvol name="ShRb24Sw_1" copynumber="1">
+        <volumeref ref="ShRb24Sw"/>
+        <positionref ref="ShRb24Sw_1inShRb24pos"/>
+      </physvol>
+      <physvol name="ShRb24Sw_2" copynumber="2">
+        <volumeref ref="ShRb24Sw"/>
+        <positionref ref="ShRb24Sw_2inShRb24pos"/>
+      </physvol>
+      <physvol name="ShRb24Ro_1" copynumber="1">
+        <volumeref ref="ShRb24Ro"/>
+        <positionref ref="ShRb24Ro_1inShRb24pos"/>
+      </physvol>
+      <physvol name="Rb24Pl_1" copynumber="1">
+        <volumeref ref="Rb24Pl"/>
+        <positionref ref="Rb24Pl_1inShRb24pos"/>
+      </physvol>
+    </assembly>
+    <volume name="HHCPW">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="HHCPW0x1"/>
+    </volume>
+    <volume name="HHC1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="HHC10x1"/>
+    </volume>
+    <volume name="HHF2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrd10x1"/>
+    </volume>
+    <volume name="HHW3">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x5"/>
+    </volume>
+    <volume name="HHW3">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x5"/>
+    </volume>
+    <volume name="HHW2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x4"/>
+    </volume>
+    <volume name="HHW2">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x4"/>
+    </volume>
+    <volume name="HBW1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x17"/>
+    </volume>
+    <volume name="HBW1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoBBox0x17"/>
+    </volume>
+    <volume name="HHW11">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x3"/>
+    </volume>
+    <volume name="HHW11">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x3"/>
+    </volume>
+    <volume name="HHW12">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x2"/>
+    </volume>
+    <volume name="HHW12">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrap0x2"/>
+    </volume>
+    <volume name="HHF4">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="HHF40x1"/>
+    </volume>
+    <volume name="HHF1">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="shHHF1"/>
+    </volume>
+    <volume name="HUWAT">
+      <materialref ref="HALL_AIR2"/>
+      <solidref ref="HUWAT0x1"/>
+    </volume>
+    <volume name="HUWA">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTubeSeg0x10"/>
+    </volume>
+    <volume name="HUFL">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTrd1"/>
+    </volume>
+    <assembly name="HALL">
+      <physvol name="HUFL_1" copynumber="1">
+        <volumeref ref="HUFL"/>
+        <positionref ref="HUFL_1inHALLpos"/>
+        <rotationref ref="HUFL_1inHALLrot"/>
+      </physvol>
+      <physvol name="HUWA_1" copynumber="1">
+        <volumeref ref="HUWA"/>
+        <positionref ref="HUWA_1inHALLpos"/>
+      </physvol>
+      <physvol name="HUWAT_1" copynumber="1">
+        <volumeref ref="HUWAT"/>
+        <positionref ref="HUWAT_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHF1_2" copynumber="2">
+        <volumeref ref="HHF1"/>
+        <positionref ref="HHF1_2inHALLpos"/>
+      </physvol>
+      <physvol name="HHF4_1" copynumber="1">
+        <volumeref ref="HHF4"/>
+        <positionref ref="HHF4_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHW12_1" copynumber="1">
+        <volumeref ref="HHW12"/>
+        <positionref ref="HHW12_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHW12_2" copynumber="2">
+        <volumeref ref="HHW12"/>
+        <positionref ref="HHW12_2inHALLpos"/>
+        <rotationref ref="HHW12_2inHALLrot"/>
+      </physvol>
+      <physvol name="HHW11_1" copynumber="1">
+        <volumeref ref="HHW11"/>
+        <positionref ref="HHW11_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHW11_2" copynumber="2">
+        <volumeref ref="HHW11"/>
+        <positionref ref="HHW11_2inHALLpos"/>
+        <rotationref ref="HHW11_2inHALLrot"/>
+      </physvol>
+      <physvol name="HBW1_1" copynumber="1">
+        <volumeref ref="HBW1"/>
+        <positionref ref="HBW1_1inHALLpos"/>
+      </physvol>
+      <physvol name="HBW1_2" copynumber="2">
+        <volumeref ref="HBW1"/>
+        <positionref ref="HBW1_2inHALLpos"/>
+      </physvol>
+      <physvol name="HHW2_1" copynumber="1">
+        <volumeref ref="HHW2"/>
+        <positionref ref="HHW2_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHW2_2" copynumber="2">
+        <volumeref ref="HHW2"/>
+        <positionref ref="HHW2_2inHALLpos"/>
+        <rotationref ref="HHW2_2inHALLrot"/>
+      </physvol>
+      <physvol name="HHW3_1" copynumber="1">
+        <volumeref ref="HHW3"/>
+        <positionref ref="HHW3_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHW3_2" copynumber="2">
+        <volumeref ref="HHW3"/>
+        <positionref ref="HHW3_2inHALLpos"/>
+        <rotationref ref="HHW3_2inHALLrot"/>
+      </physvol>
+      <physvol name="HHF2_1" copynumber="1">
+        <volumeref ref="HHF2"/>
+        <positionref ref="HHF2_1inHALLpos"/>
+        <rotationref ref="HHF2_1inHALLrot"/>
+      </physvol>
+      <physvol name="HHC1_1" copynumber="1">
+        <volumeref ref="HHC1"/>
+        <positionref ref="HHC1_1inHALLpos"/>
+      </physvol>
+      <physvol name="HHCPW_1" copynumber="1">
+        <volumeref ref="HHCPW"/>
+        <positionref ref="HHCPW_1inHALLpos"/>
+      </physvol>
+      <physvol name="ShRb24_1" copynumber="1">
+        <volumeref ref="ShRb24"/>
+        <positionref ref="ShRb24_1inHALLpos"/>
+      </physvol>
+      <physvol name="ShPx24_1" copynumber="1">
+        <volumeref ref="ShPx24"/>
+        <positionref ref="ShPx24_1inHALLpos"/>
+      </physvol>
+      <physvol name="asFMS_1" copynumber="1">
+        <volumeref ref="asFMS"/>
+        <positionref ref="asFMS_1inHALLpos"/>
+      </physvol>
+    </assembly>
+    </structure>

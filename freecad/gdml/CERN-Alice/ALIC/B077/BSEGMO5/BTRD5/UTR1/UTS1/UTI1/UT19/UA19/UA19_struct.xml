@@ -1,0 +1,45 @@
+<structure><volume name="UH19">
+      <materialref ref="TRD_Plexiglas"/>
+      <solidref ref="TGeoBBox0x236"/>
+    </volume>
+    <volume name="UC19">
+      <materialref ref="TRD_Air"/>
+      <solidref ref="TGeoBBox0x235"/>
+      <physvol name="UH19_1" copynumber="1">
+        <volumeref ref="UH19"/>
+        <positionref ref="UH19_1inUC19pos"/>
+      </physvol>
+    </volume>
+    <volume name="UX19">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="UX190x1"/>
+      <physvol name="UC19_1" copynumber="1">
+        <volumeref ref="UC19"/>
+        <positionref ref="UC19_1inUX19pos"/>
+      </physvol>
+    </volume>
+    <volume name="UJ19">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="UJ190x1"/>
+    </volume>
+    <volume name="UB19">
+      <materialref ref="TRD_C"/>
+      <solidref ref="TGeoBBox0x234"/>
+      <physvol name="UJ19_1" copynumber="1">
+        <volumeref ref="UJ19"/>
+        <positionref ref="UJ19_1inUB19pos"/>
+      </physvol>
+      <physvol name="UX19_1" copynumber="1">
+        <volumeref ref="UX19"/>
+        <positionref ref="UX19_1inUB19pos"/>
+      </physvol>
+    </volume>
+    <volume name="UA19">
+      <materialref ref="TRD_Al"/>
+      <solidref ref="UA190x1"/>
+      <physvol name="UB19_1" copynumber="1">
+        <volumeref ref="UB19"/>
+        <positionref ref="UB19_1inUA19pos"/>
+      </physvol>
+    </volume>
+    </structure>

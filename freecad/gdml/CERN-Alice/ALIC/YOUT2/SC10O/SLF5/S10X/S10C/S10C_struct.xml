@@ -1,0 +1,13 @@
+<structure><volume name="S10N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S10N0x1"/>
+    </volume>
+    <volume name="S10C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S10C0x1"/>
+      <physvol name="S10N_1" copynumber="1">
+        <volumeref ref="S10N"/>
+        <positionref ref="S10N_1inS10Cpos"/>
+      </physvol>
+    </volume>
+    </structure>

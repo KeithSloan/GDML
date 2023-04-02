@@ -1,0 +1,22 @@
+<define><position name="SD0G_1inSD0Hpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SD0H_1inSD0Ppos" x="0" y="0" z="0" unit="cm"/>
+    <position name="S10E_1inS10Bpos" x="-18.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_2inS10Bpos" x="-18.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_3inS10Bpos" x="-13.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_4inS10Bpos" x="-13.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_5inS10Bpos" x="-8.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_6inS10Bpos" x="-8.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_7inS10Bpos" x="-3.75" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_8inS10Bpos" x="-3.75" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_9inS10Bpos" x="1.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_10inS10Bpos" x="1.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_11inS10Bpos" x="6.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_12inS10Bpos" x="6.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_13inS10Bpos" x="11.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_14inS10Bpos" x="11.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10E_15inS10Bpos" x="16.25" y="0" z="-0.24780000001192093" unit="cm"/>
+    <position name="S10E_16inS10Bpos" x="16.25" y="0" z="0.24780000001192093" unit="cm"/>
+    <position name="S10B_10x1inSD0Ppos" x="0" y="25.475000381469727" z="0" unit="cm"/>
+    <position name="SD0B_1inSD0Ppos" x="0" y="-25.475000381469727" z="0" unit="cm"/>
+    <position name="SD0P_1inSD0Ipos" x="0" y="0" z="0" unit="cm"/>
+    </define>

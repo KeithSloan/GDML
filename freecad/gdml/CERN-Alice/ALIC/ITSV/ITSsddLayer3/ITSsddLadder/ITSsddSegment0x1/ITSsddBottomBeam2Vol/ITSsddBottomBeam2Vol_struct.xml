@@ -1,0 +1,5 @@
+<structure><volume name="ITSsddBottomBeam2Vol">
+      <materialref ref="ITS_SDD_C_AL_M55J"/>
+      <solidref ref="TGeoTubeSeg0x14"/>
+    </volume>
+    </structure>

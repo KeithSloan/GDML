@@ -1,0 +1,5 @@
+<structure><volume name="YMuonFilterH">
+      <materialref ref="SHIL_STAINLESS_STEEL3"/>
+      <solidref ref="MuonFilterH"/>
+    </volume>
+    </structure>

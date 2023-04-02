@@ -1,0 +1,32 @@
+<solids><subtraction name="TGeoCompositeShape0x218">
+      <first ref="ladFootBox1"/>
+      <second ref="TGeoCompositeShape0x219"/>
+      <firstposition name="TGeoCompositeShape0x218ladFootBox1pos" x="1.8499999999999999" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="ladFootBox1" x="2.3000000000000003" y="0.80000000000000004" z="2" lunit="cm"/>
+    <union name="TGeoCompositeShape0x219">
+      <first ref="TGeoCompositeShape0x220"/>
+      <second ref="rubyHole"/>
+      <position name="TGeoCompositeShape0x219rubyHolepos" x="1.4000000000000001" y="-0.32500000000000001" z="0" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x219rubyHolerot" x="90" y="-0" z="0" unit="deg"/>
+    </union>
+    <union name="TGeoCompositeShape0x220">
+      <first ref="TGeoCompositeShape0x221"/>
+      <second ref="rubyScrewHole"/>
+      <position name="TGeoCompositeShape0x220rubyScrewHolepos" x="2.2000000000000002" y="-0.10000000000000001" z="0" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x220rubyScrewHolerot" x="90" y="-0" z="90" unit="deg"/>
+    </union>
+    <union name="TGeoCompositeShape0x221">
+      <first ref="ladFingerPrint"/>
+      <second ref="rubyCageHole"/>
+      <firstposition name="TGeoCompositeShape0x221ladFingerPrintpos" x="2.2999999999999998" y="0.35000000019999999" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x221rubyCageHolepos" x="1.4500000000000002" y="0.075000000000000011" z="0" unit="cm"/>
+    </union>
+    <box name="ladFingerPrint" x="0.60000000000000009" y="0.10000000040000001" z="2.0000000004" lunit="cm"/>
+    <box name="rubyCageHole" x="0.90000000000000002" y="0.65000000040000006" z="0.80000000000000004" lunit="cm"/>
+    <tube name="rubyScrewHole" rmin="0" rmax="0.20000000000000001" z="1.5999999999999999" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="rubyHole" rmin="0" rmax="0.25" z="0.15000000000000002" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="footMiddle" x="2.6999999999999997" y="0.45000000000000001" z="2" lunit="cm"/>
+    <box name="footLeftLadFinger" x="0.60000000000000009" y="0.70000000000000007" z="2" lunit="cm"/>
+    <box name="footLeft" x="0.40000000000000002" y="0.80000000000000004" z="2" lunit="cm"/>
+    </solids>

@@ -1,0 +1,9 @@
+<materials><material name="TOF_Al_honeycomb" Z="13">
+      <D unit="g/cm3" value="0.48000001907348633"/>
+      <atom unit="g/mole" value="26.981538772583008"/>
+    </material>
+    <material name="TOF_Al_" Z="13">
+      <D unit="g/cm3" value="2.7000000476837158"/>
+      <atom unit="g/mole" value="26.981538772583008"/>
+    </material>
+    </materials>

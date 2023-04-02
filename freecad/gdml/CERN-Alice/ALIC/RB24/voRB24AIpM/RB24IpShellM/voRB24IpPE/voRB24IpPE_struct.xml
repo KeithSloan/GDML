@@ -1,0 +1,5 @@
+<structure><volume name="voRB24IpPE">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x37"/>
+    </volume>
+    </structure>

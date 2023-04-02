@@ -1,0 +1,8 @@
+<define><position name="UL11_1inUG11pos" x="0" y="0" z="-0.99949997663497925" unit="cm"/>
+    <position name="UY11_1inUG11pos" x="0" y="0" z="-0.5" unit="cm"/>
+    <position name="UM11_1inUG11pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="UN11_1inUG11pos" x="0" y="0" z="1" unit="cm"/>
+    <position name="UO11_1inUG11pos" x="0" y="0" z="1.0399999618530273" unit="cm"/>
+    <position name="UV11_1inUG11pos" x="0" y="0" z="1.0499999523162842" unit="cm"/>
+    <position name="UG11_1inUF11pos" x="0" y="0" z="0" unit="cm"/>
+    </define>

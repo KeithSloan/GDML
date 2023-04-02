@@ -1,0 +1,2 @@
+<solids><tube name="littleScrew" rmin="0" rmax="0.069999999999999993" z="0.30000000000000004" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

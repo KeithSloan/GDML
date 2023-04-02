@@ -1,0 +1,134 @@
+<structure><volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="SC5B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="composite5B"/>
+      <physvol name="S05E_7" copynumber="7">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_7inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_8" copynumber="8">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_8inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_9" copynumber="9">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_9inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_10" copynumber="10">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_10inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_11" copynumber="11">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_11inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_12" copynumber="12">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_12inSC5Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="SC5B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="composite5B"/>
+      <physvol name="S05E_7" copynumber="7">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_7inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_8" copynumber="8">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_8inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_9" copynumber="9">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_9inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_10" copynumber="10">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_10inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_11" copynumber="11">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_11inSC5Bpos"/>
+      </physvol>
+      <physvol name="S05E_12" copynumber="12">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_12inSC5Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="SC5G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="composite5G"/>
+    </volume>
+    <volume name="SC5H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="composite5H"/>
+      <physvol name="SC5G_1" copynumber="1">
+        <volumeref ref="SC5G"/>
+        <positionref ref="SC5G_1inSC5Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="SC5P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="composite5P"/>
+      <physvol name="SC5H_1" copynumber="1">
+        <volumeref ref="SC5H"/>
+        <positionref ref="SC5H_1inSC5Ppos"/>
+      </physvol>
+      <physvol name="SC5B_1" copynumber="1">
+        <volumeref ref="SC5B"/>
+        <positionref ref="SC5B_1inSC5Ppos"/>
+        <rotationref ref="SC5B_1inSC5Prot"/>
+      </physvol>
+      <physvol name="SC5B_2" copynumber="2">
+        <volumeref ref="SC5B"/>
+        <positionref ref="SC5B_2inSC5Ppos"/>
+      </physvol>
+    </volume>
+    </structure>

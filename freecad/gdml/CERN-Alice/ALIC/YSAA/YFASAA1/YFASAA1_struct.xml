@@ -1,0 +1,13 @@
+<structure><volume name="YFASAA1O">
+      <materialref ref="SHIL_Ni-W-Cu1"/>
+      <solidref ref="TGeoCone0x8"/>
+    </volume>
+    <volume name="YFASAA1">
+      <materialref ref="SHIL_Ni-W-Cu3"/>
+      <solidref ref="TGeoPcon0x14"/>
+      <physvol name="YFASAA1O_1" copynumber="1">
+        <volumeref ref="YFASAA1O"/>
+        <positionref ref="YFASAA1O_1inYFASAA1pos"/>
+      </physvol>
+    </volume>
+    </structure>

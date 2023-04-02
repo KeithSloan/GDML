@@ -1,0 +1,37 @@
+<structure><volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="S05E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S05E0x1"/>
+    </volume>
+    <volume name="SD5B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="composite5B0x1"/>
+      <physvol name="S05E_13" copynumber="13">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_130x2inSD5Bpos"/>
+      </physvol>
+      <physvol name="S05E_14" copynumber="14">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_140x2inSD5Bpos"/>
+      </physvol>
+      <physvol name="S05E_15" copynumber="15">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_150x1inSD5Bpos"/>
+      </physvol>
+      <physvol name="S05E_16" copynumber="16">
+        <volumeref ref="S05E"/>
+        <positionref ref="S05E_160x1inSD5Bpos"/>
+      </physvol>
+    </volume>
+    </structure>

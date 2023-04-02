@@ -1,0 +1,5 @@
+<structure><volume name="FCBL">
+      <materialref ref="TOF_cablestubes"/>
+      <solidref ref="FCBL0x1"/>
+    </volume>
+    </structure>

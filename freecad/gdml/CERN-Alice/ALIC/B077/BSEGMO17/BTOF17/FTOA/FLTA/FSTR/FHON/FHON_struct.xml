@@ -1,0 +1,5 @@
+<structure><volume name="FHON">
+      <materialref ref="TOF_Nomex"/>
+      <solidref ref="FHON0x1"/>
+    </volume>
+    </structure>

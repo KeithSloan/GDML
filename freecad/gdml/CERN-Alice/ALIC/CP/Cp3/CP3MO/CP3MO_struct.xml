@@ -1,0 +1,1893 @@
+<structure><volume name="CP3MFI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x43"/>
+    </volume>
+    <volume name="CP3MFO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x42"/>
+      <physvol name="CP3MFI_1" copynumber="1">
+        <volumeref ref="CP3MFI"/>
+        <positionref ref="CP3MFI_1inCP3MFOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3BCI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x19"/>
+    </volume>
+    <volume name="CP3BCO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x18"/>
+      <physvol name="CP3BCI_1" copynumber="1">
+        <volumeref ref="CP3BCI"/>
+        <positionref ref="CP3BCI_1inCP3BCOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3BECI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x17"/>
+    </volume>
+    <volume name="CP3BECO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x16"/>
+      <physvol name="CP3BECI_1" copynumber="1">
+        <volumeref ref="CP3BECI"/>
+        <positionref ref="CP3BECI_1inCP3BECOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3BECI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x17"/>
+    </volume>
+    <volume name="CP3BECO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x16"/>
+      <physvol name="CP3BECI_1" copynumber="1">
+        <volumeref ref="CP3BECI"/>
+        <positionref ref="CP3BECI_1inCP3BECOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3CPI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="connectionPlieI"/>
+    </volume>
+    <volume name="CP3CPO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="connectionPlieO"/>
+      <physvol name="CP3CPI_1" copynumber="1">
+        <volumeref ref="CP3CPI"/>
+        <positionref ref="CP3CPI_1inCP3CPOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3CPI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="connectionPlieI"/>
+    </volume>
+    <volume name="CP3CPO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="connectionPlieO"/>
+      <physvol name="CP3CPI_1" copynumber="1">
+        <volumeref ref="CP3CPI"/>
+        <positionref ref="CP3CPI_1inCP3CPOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x14"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x14"/>
+    </volume>
+    <volume name="CP3BeMO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x41"/>
+      <physvol name="Q3WCO2_1" copynumber="1">
+        <volumeref ref="Q3WCO2"/>
+        <positionref ref="Q3WCO2_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_1" copynumber="1">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_19" copynumber="19">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_19inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_1" copynumber="1">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_2" copynumber="2">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_2" copynumber="2">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_20" copynumber="20">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_20inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_2" copynumber="2">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_3" copynumber="3">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_3" copynumber="3">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_21" copynumber="21">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_21inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_3" copynumber="3">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_4" copynumber="4">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_4" copynumber="4">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_22" copynumber="22">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_22inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_4" copynumber="4">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_5" copynumber="5">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_5" copynumber="5">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_23" copynumber="23">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_23inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_5" copynumber="5">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_6" copynumber="6">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_6" copynumber="6">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_24" copynumber="24">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_24inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_6" copynumber="6">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_7" copynumber="7">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_7" copynumber="7">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_25" copynumber="25">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_25inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_7" copynumber="7">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_8" copynumber="8">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_8" copynumber="8">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_26" copynumber="26">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_26inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_8" copynumber="8">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_9" copynumber="9">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_9" copynumber="9">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_27" copynumber="27">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_27inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_9" copynumber="9">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_10" copynumber="10">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_10" copynumber="10">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_28" copynumber="28">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_28inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_10" copynumber="10">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_11" copynumber="11">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_11" copynumber="11">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_29" copynumber="29">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_29inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_11" copynumber="11">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_12" copynumber="12">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_12" copynumber="12">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_30" copynumber="30">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_30inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_12" copynumber="12">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_13" copynumber="13">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_13" copynumber="13">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_31" copynumber="31">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_31inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_13" copynumber="13">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_14" copynumber="14">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_14" copynumber="14">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_32" copynumber="32">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_32inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_14" copynumber="14">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_15" copynumber="15">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_15" copynumber="15">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_33" copynumber="33">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_33inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_15" copynumber="15">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_16" copynumber="16">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_16" copynumber="16">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_34" copynumber="34">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_34inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_16" copynumber="16">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_17" copynumber="17">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_17" copynumber="17">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_35" copynumber="35">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_35inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_17" copynumber="17">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_18" copynumber="18">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_18inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_18" copynumber="18">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_18inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO2_36" copynumber="36">
+        <volumeref ref="Q3WCO2"/>
+        <positionref ref="Q3WCO2_36inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3CPO_1" copynumber="1">
+        <volumeref ref="CP3CPO"/>
+        <positionref ref="CP3CPO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3CPO_2" copynumber="2">
+        <volumeref ref="CP3CPO"/>
+        <positionref ref="CP3CPO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3BECO_1" copynumber="1">
+        <volumeref ref="CP3BECO"/>
+        <positionref ref="CP3BECO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3BECO_2" copynumber="2">
+        <volumeref ref="CP3BECO"/>
+        <positionref ref="CP3BECO_2inCP3BeMOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3BECI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x17"/>
+    </volume>
+    <volume name="CP3BECO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x16"/>
+      <physvol name="CP3BECI_1" copynumber="1">
+        <volumeref ref="CP3BECI"/>
+        <positionref ref="CP3BECI_1inCP3BECOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3BECI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x17"/>
+    </volume>
+    <volume name="CP3BECO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoTube0x16"/>
+      <physvol name="CP3BECI_1" copynumber="1">
+        <volumeref ref="CP3BECI"/>
+        <positionref ref="CP3BECI_1inCP3BECOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3CPI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="connectionPlieI"/>
+    </volume>
+    <volume name="CP3CPO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="connectionPlieO"/>
+      <physvol name="CP3CPI_1" copynumber="1">
+        <volumeref ref="CP3CPI"/>
+        <positionref ref="CP3CPI_1inCP3CPOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3CPI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="connectionPlieI"/>
+    </volume>
+    <volume name="CP3CPO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="connectionPlieO"/>
+      <physvol name="CP3CPI_1" copynumber="1">
+        <volumeref ref="CP3CPI"/>
+        <positionref ref="CP3CPI_1inCP3CPOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x14"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WLI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="lowerPlieI"/>
+    </volume>
+    <volume name="CP3WLO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="lowerPlieO"/>
+      <physvol name="CP3WLI_1" copynumber="1">
+        <volumeref ref="CP3WLI"/>
+        <positionref ref="CP3WLI_1inCP3WLOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO1">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x15"/>
+    </volume>
+    <volume name="CP3WUI">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="upperPlieI"/>
+    </volume>
+    <volume name="CP3WUO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="upperPlieO"/>
+      <physvol name="CP3WUI_1" copynumber="1">
+        <volumeref ref="CP3WUI"/>
+        <positionref ref="CP3WUI_1inCP3WUOpos"/>
+      </physvol>
+    </volume>
+    <volume name="Q3WCO2">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x14"/>
+    </volume>
+    <volume name="CP3BeMO">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x41"/>
+      <physvol name="Q3WCO2_1" copynumber="1">
+        <volumeref ref="Q3WCO2"/>
+        <positionref ref="Q3WCO2_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_1" copynumber="1">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_19" copynumber="19">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_19inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_1" copynumber="1">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_2" copynumber="2">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_2" copynumber="2">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_20" copynumber="20">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_20inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_2" copynumber="2">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_3" copynumber="3">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_3" copynumber="3">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_21" copynumber="21">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_21inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_3" copynumber="3">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_3inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_4" copynumber="4">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_4" copynumber="4">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_22" copynumber="22">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_22inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_4" copynumber="4">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_4inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_5" copynumber="5">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_5" copynumber="5">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_23" copynumber="23">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_23inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_5" copynumber="5">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_5inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_6" copynumber="6">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_6" copynumber="6">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_24" copynumber="24">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_24inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_6" copynumber="6">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_6inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_7" copynumber="7">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_7" copynumber="7">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_25" copynumber="25">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_25inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_7" copynumber="7">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_7inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_8" copynumber="8">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_8" copynumber="8">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_26" copynumber="26">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_26inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_8" copynumber="8">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_8inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_9" copynumber="9">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_9" copynumber="9">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_27" copynumber="27">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_27inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_9" copynumber="9">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_9inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_10" copynumber="10">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_10" copynumber="10">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_28" copynumber="28">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_28inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_10" copynumber="10">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_10inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_11" copynumber="11">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_11" copynumber="11">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_29" copynumber="29">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_29inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_11" copynumber="11">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_11inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_12" copynumber="12">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_12" copynumber="12">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_30" copynumber="30">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_30inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_12" copynumber="12">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_12inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_13" copynumber="13">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_13" copynumber="13">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_31" copynumber="31">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_31inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_13" copynumber="13">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_13inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_14" copynumber="14">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_14" copynumber="14">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_32" copynumber="32">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_32inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_14" copynumber="14">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_14inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_15" copynumber="15">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_15" copynumber="15">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_33" copynumber="33">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_33inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_15" copynumber="15">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_15inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_16" copynumber="16">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_16" copynumber="16">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_34" copynumber="34">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_34inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_16" copynumber="16">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_16inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_17" copynumber="17">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_17" copynumber="17">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_35" copynumber="35">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_35inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WLO_17" copynumber="17">
+        <volumeref ref="CP3WLO"/>
+        <positionref ref="CP3WLO_17inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO1_18" copynumber="18">
+        <volumeref ref="Q3WCO1"/>
+        <positionref ref="Q3WCO1_18inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3WUO_18" copynumber="18">
+        <volumeref ref="CP3WUO"/>
+        <positionref ref="CP3WUO_18inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="Q3WCO2_36" copynumber="36">
+        <volumeref ref="Q3WCO2"/>
+        <positionref ref="Q3WCO2_36inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3CPO_1" copynumber="1">
+        <volumeref ref="CP3CPO"/>
+        <positionref ref="CP3CPO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3CPO_2" copynumber="2">
+        <volumeref ref="CP3CPO"/>
+        <positionref ref="CP3CPO_2inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3BECO_1" copynumber="1">
+        <volumeref ref="CP3BECO"/>
+        <positionref ref="CP3BECO_1inCP3BeMOpos"/>
+      </physvol>
+      <physvol name="CP3BECO_2" copynumber="2">
+        <volumeref ref="CP3BECO"/>
+        <positionref ref="CP3BECO_2inCP3BeMOpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3ATS">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x40"/>
+    </volume>
+    <volume name="CP3ATV">
+      <materialref ref="PIPE_VACUUM"/>
+      <solidref ref="TGeoPcon0x39"/>
+      <physvol name="CP3ATS_1" copynumber="1">
+        <volumeref ref="CP3ATS"/>
+        <positionref ref="CP3ATS_1inCP3ATVpos"/>
+      </physvol>
+    </volume>
+    <volume name="CP3MO">
+      <materialref ref="PIPE_AIR"/>
+      <solidref ref="TGeoPcon0x38"/>
+      <physvol name="CP3ATV_1" copynumber="1">
+        <volumeref ref="CP3ATV"/>
+        <positionref ref="CP3ATV_1inCP3MOpos"/>
+      </physvol>
+      <physvol name="CP3BeMO_1" copynumber="1">
+        <volumeref ref="CP3BeMO"/>
+        <positionref ref="CP3BeMO_1inCP3MOpos"/>
+      </physvol>
+      <physvol name="CP3BeMO_2" copynumber="2">
+        <volumeref ref="CP3BeMO"/>
+        <positionref ref="CP3BeMO_2inCP3MOpos"/>
+      </physvol>
+      <physvol name="CP3BCO_1" copynumber="1">
+        <volumeref ref="CP3BCO"/>
+        <positionref ref="CP3BCO_1inCP3MOpos"/>
+      </physvol>
+      <physvol name="CP3MFO_1" copynumber="1">
+        <volumeref ref="CP3MFO"/>
+        <positionref ref="CP3MFO_1inCP3MOpos"/>
+      </physvol>
+    </volume>
+    </structure>

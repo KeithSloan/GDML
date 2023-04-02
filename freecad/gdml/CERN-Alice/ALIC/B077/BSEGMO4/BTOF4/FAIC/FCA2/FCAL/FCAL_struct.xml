@@ -1,0 +1,5 @@
+<structure><volume name="FCAL">
+      <materialref ref="TOF_cable"/>
+      <solidref ref="FCAL0x1"/>
+    </volume>
+    </structure>

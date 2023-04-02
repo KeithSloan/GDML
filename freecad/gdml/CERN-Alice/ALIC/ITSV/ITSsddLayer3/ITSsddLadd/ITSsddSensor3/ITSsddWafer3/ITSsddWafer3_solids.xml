@@ -1,0 +1,3 @@
+<solids><box name="ITSsddSensorSensBox3" x="7.0170000000000003" y="0.029980000000000003" z="7.5264000000000006" lunit="cm"/>
+    <box name="ITSsddWaferShape" x="7.25" y="0.030000000000000002" z="8.7599999999999998" lunit="cm"/>
+    </solids>

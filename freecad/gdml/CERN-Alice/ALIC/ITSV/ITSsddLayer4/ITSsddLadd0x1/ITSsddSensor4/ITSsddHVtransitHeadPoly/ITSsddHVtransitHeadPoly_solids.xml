@@ -1,0 +1,9 @@
+<solids><subtraction name="TGeoCompositeShape0x222">
+      <first ref="headPoly"/>
+      <second ref="cache"/>
+      <firstposition name="TGeoCompositeShape0x222headPolypos" x="0" y="0" z="-0.0050000000000000001" unit="cm"/>
+      <position name="TGeoCompositeShape0x222cachepos" x="0" y="0.96589542253521077" z="-0.0053" unit="cm"/>
+    </subtraction>
+    <tube name="headPoly" rmin="0" rmax="4.0617908450704219" z="0.01" startphi="28.398473175541014" deltaphi="123.20305364891796" aunit="deg" lunit="cm"/>
+    <box name="cache" x="7.1459999999999999" y="1.9317908450704215" z="0.0106" lunit="cm"/>
+    </solids>

@@ -1,0 +1,21 @@
+<structure><volume name="SD7N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="composite47N"/>
+    </volume>
+    <volume name="SD7C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="composite47C"/>
+      <physvol name="SD7N_1" copynumber="1">
+        <volumeref ref="SD7N"/>
+        <positionref ref="SD7N_1inSD7Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="SD7X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="composite47X"/>
+      <physvol name="SD7C_1" copynumber="1">
+        <volumeref ref="SD7C"/>
+        <positionref ref="SD7C_1inSD7Xpos"/>
+      </physvol>
+    </volume>
+    </structure>

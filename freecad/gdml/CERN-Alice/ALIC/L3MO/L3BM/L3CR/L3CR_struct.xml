@@ -1,0 +1,5 @@
+<structure><volume name="L3CR">
+      <materialref ref="MAG_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoPgon0x176"/>
+    </volume>
+    </structure>

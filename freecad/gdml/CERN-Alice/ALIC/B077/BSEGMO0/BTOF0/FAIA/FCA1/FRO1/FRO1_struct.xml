@@ -1,0 +1,13 @@
+<structure><volume name="FREE">
+      <materialref ref="TOF_Air"/>
+      <solidref ref="FREE0x1"/>
+    </volume>
+    <volume name="FRO1">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FRO10x1"/>
+      <physvol name="FREE_1" copynumber="1">
+        <volumeref ref="FREE"/>
+        <positionref ref="FREE_1inFRO1pos"/>
+      </physvol>
+    </volume>
+    </structure>

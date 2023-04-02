@@ -1,0 +1,95 @@
+<solids><trd name="TGeoTrd1" x1="2807.8568115234375" x2="339.4112548828125" y1="13040" y2="13040" z="1018.1818237304688" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x10" rmin="220" rmax="1820" z="13040" startphi="320.48080172729493" deltaphi="259.03839654541019" aunit="deg" lunit="cm"/>
+    <subtraction name="HUWAT0x1">
+      <first ref="TGeoCompositeShape0x5"/>
+      <second ref="shHUWAT3"/>
+      <position name="HUWAT0x1shHUWAT3pos" x="0" y="-250" z="0" unit="cm"/>
+    </subtraction>
+    <subtraction name="TGeoCompositeShape0x5">
+      <first ref="shHUWAT1"/>
+      <second ref="shHUWAT2"/>
+      <position name="TGeoCompositeShape0x5shHUWAT2pos" x="-70" y="-30" z="0" unit="cm"/>
+    </subtraction>
+    <tube name="shHUWAT1" rmin="0" rmax="220" z="13040" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="shHUWAT2" x="140" y="220" z="13080" lunit="cm"/>
+    <box name="shHUWAT3" x="540" y="220" z="13080" lunit="cm"/>
+    <box name="shHHF1" x="2340" y="190" z="1049.9960000000001" lunit="cm"/>
+    <union name="HHF40x1">
+      <first ref="shHHF41"/>
+      <second ref="shHHF42"/>
+      <position name="HHF40x1shHHF42pos" x="0" y="0" z="1025" unit="cm"/>
+      <rotation name="HHF40x1shHHF42rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <box name="shHHF41" x="2340" y="190" z="850" lunit="cm"/>
+    <tube name="shHHF42" rmin="0" rmax="1240" z="190" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <trap name="TGeoTrap0x2" z="850" theta="0" phi="0" x1="414.60000610351562" x2="100" x3="414.60000610351562" x4="100" y1="1083.780029296875" y2="1083.780029296875" alpha1="8.2582521438598633" alpha2="8.2582521438598633" aunit="deg" lunit="cm"/>
+    <trap name="TGeoTrap0x3" z="1049.9960000000001" theta="0" phi="0" x1="414.60000610351562" x2="100" x3="414.60000610351562" x4="100" y1="1083.780029296875" y2="1083.780029296875" alpha1="8.2582521438598633" alpha2="8.2582521438598633" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x17" x="100" y="122.219970703125" z="3599.9000000000001" lunit="cm"/>
+    <trap name="TGeoTrap0x4" z="1699.9960000000001" theta="0" phi="0" x1="322.64712524414062" x2="100" x3="322.64712524414062" x4="100" y1="766.48492431640625" y2="766.48492431640625" alpha1="8.2638025283813477" alpha2="8.2638025283813477" aunit="deg" lunit="cm"/>
+    <trap name="TGeoTrap0x5" z="1700" theta="0" phi="0" x1="829.938232421875" x2="322.64712524414062" x3="829.938232421875" x4="322.64712524414062" y1="507.29107666015625" y2="507.29107666015625" alpha1="26.565052032470703" alpha2="26.565052032470703" aunit="deg" lunit="cm"/>
+    <trd name="TGeoTrd10x1" x1="679.12353515625" x2="831.12353515625" y1="1700" y2="1700" z="76" lunit="cm"/>
+    <subtraction name="HHC10x1">
+      <first ref="TGeoCompositeShape0x6"/>
+      <second ref="TGeoCompositeShape0x7"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x6">
+      <first ref="shHHC11"/>
+      <second ref="shHHC12"/>
+      <position name="TGeoCompositeShape0x6shHHC12pos" x="0" y="1000" z="2400" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x6shHHC12rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="shHHC11" rmin="1070" rmax="1170" z="3600" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="shHHC12" rmin="1140" rmax="1240" z="2000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x7">
+      <first ref="shHHC14"/>
+      <second ref="shHHC13"/>
+      <position name="TGeoCompositeShape0x7shHHC13pos" x="0" y="1000" z="2400" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x7shHHC13rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="shHHC14" rmin="0" rmax="1070" z="3800" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="shHHC13" rmin="0" rmax="1139" z="2000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="HHCPW0x1">
+      <first ref="shHHCPW1"/>
+      <second ref="TGeoCompositeShape0x8"/>
+      <firstrotation name="HHCPW0x1shHHCPW1rot" x="-90" y="-0" z="0" unit="deg"/>
+    </subtraction>
+    <tube name="shHHCPW1" rmin="1140" rmax="1240" z="1206" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x8">
+      <first ref="shHHCPW2"/>
+      <second ref="shHHCPW3"/>
+      <firstposition name="TGeoCompositeShape0x8shHHCPW2pos" x="0" y="0" z="-1780" unit="cm"/>
+      <position name="TGeoCompositeShape0x8shHHCPW3pos" x="0" y="103" z="1190" unit="cm"/>
+    </union>
+    <box name="shHHCPW2" x="2480" y="1246" z="2480" lunit="cm"/>
+    <tube name="shHHCPW3" rmin="0" rmax="60" z="120" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <box name="TGeoBBox0x18" x="160" y="840" z="1040" lunit="cm"/>
+    <box name="TGeoBBox0x19" x="790" y="160" z="1040" lunit="cm"/>
+    <subtraction name="Rb24Pl0x1">
+      <first ref="ShRb24Pl1"/>
+      <second ref="TGeoCompositeShape0x9"/>
+    </subtraction>
+    <box name="ShRb24Pl1" x="470" y="280" z="80" lunit="cm"/>
+    <union name="TGeoCompositeShape0x9">
+      <first ref="ShRb24Pl2"/>
+      <second ref="ShRb24Pl3"/>
+      <position name="TGeoCompositeShape0x9ShRb24Pl3pos" x="145" y="80" z="0" unit="cm"/>
+    </union>
+    <box name="ShRb24Pl2" x="30" y="40" z="120" lunit="cm"/>
+    <box name="ShRb24Pl3" x="40" y="120" z="120" lunit="cm"/>
+    <box name="TGeoBBox0x20" x="1613.5" y="120" z="1205" lunit="cm"/>
+    <box name="TGeoBBox0x21" x="160" y="440" z="40" lunit="cm"/>
+    <box name="TGeoBBox0x22" x="160" y="280" z="1205" lunit="cm"/>
+    <box name="TGeoBBox0x23" x="630" y="160" z="1205" lunit="cm"/>
+    <subtraction name="Px24Pl0x1">
+      <first ref="ShPx24Pl1"/>
+      <second ref="ShPx24Pl2"/>
+      <position name="Px24Pl0x1ShPx24Pl2pos" x="-55" y="0" z="0" unit="cm"/>
+    </subtraction>
+    <box name="ShPx24Pl1" x="310" y="280" z="80" lunit="cm"/>
+    <box name="ShPx24Pl2" x="30" y="40" z="120" lunit="cm"/>
+    <box name="TGeoBBox0x24" x="100" y="263.54000854492188" z="330" lunit="cm"/>
+    <box name="TGeoBBox0x25" x="660" y="91.319999694824219" z="120" lunit="cm"/>
+    <box name="TGeoBBox0x26" x="660" y="41.139999389648438" z="120" lunit="cm"/>
+    <box name="TGeoBBox0x27" x="740" y="257.33999633789062" z="448" lunit="cm"/>
+    <box name="TGeoBBox0x28" x="740" y="373.54000000000002" z="112" lunit="cm"/>
+    </solids>

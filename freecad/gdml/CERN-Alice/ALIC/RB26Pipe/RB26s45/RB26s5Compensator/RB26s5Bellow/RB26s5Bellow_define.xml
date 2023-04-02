@@ -1,0 +1,21 @@
+<define><position name="RB26s5LowerPlie_1inRB26s5Bellowpos" x="0" y="0" z="-5.0399999618530273" unit="cm"/>
+    <position name="RB26s5PlieConn1_1inRB26s5Wigglepos" x="0" y="0" z="-0.012500000186264515" unit="cm"/>
+    <position name="RB26s5UpperPlie_1inRB26s5Wigglepos" x="0" y="0" z="0.15448275208473206" unit="cm"/>
+    <position name="RB26s5PlieConn1_2inRB26s5Wigglepos" x="0" y="0" z="0.32146552205085754" unit="cm"/>
+    <position name="RB26s5LowerPlie_10x1inRB26s5Wigglepos" x="0" y="0" z="0.4759482741355896" unit="cm"/>
+    <position name="RB26s5Wiggle_1inRB26s5Bellowpos" x="0" y="0" z="-4.8549999240785837" unit="cm"/>
+    <position name="RB26s5Wiggle_2inRB26s5Bellowpos" x="0" y="0" z="-4.1870688442140818" unit="cm"/>
+    <position name="RB26s5Wiggle_3inRB26s5Bellowpos" x="0" y="0" z="-3.5191377643495798" unit="cm"/>
+    <position name="RB26s5Wiggle_4inRB26s5Bellowpos" x="0" y="0" z="-2.851206922903657" unit="cm"/>
+    <position name="RB26s5Wiggle_5inRB26s5Bellowpos" x="0" y="0" z="-2.183275843039155" unit="cm"/>
+    <position name="RB26s5Wiggle_6inRB26s5Bellowpos" x="0" y="0" z="-1.5153447631746531" unit="cm"/>
+    <position name="RB26s5Wiggle_7inRB26s5Bellowpos" x="0" y="0" z="-0.84741380251944065" unit="cm"/>
+    <position name="RB26s5Wiggle_8inRB26s5Bellowpos" x="0" y="0" z="-0.17948278225958347" unit="cm"/>
+    <position name="RB26s5Wiggle_9inRB26s5Bellowpos" x="0" y="0" z="0.4884482380002737" unit="cm"/>
+    <position name="RB26s5Wiggle_10inRB26s5Bellowpos" x="0" y="0" z="1.1563793178647757" unit="cm"/>
+    <position name="RB26s5Wiggle_11inRB26s5Bellowpos" x="0" y="0" z="1.8243102785199881" unit="cm"/>
+    <position name="RB26s5Wiggle_12inRB26s5Bellowpos" x="0" y="0" z="2.4922412391752005" unit="cm"/>
+    <position name="RB26s5Wiggle_13inRB26s5Bellowpos" x="0" y="0" z="3.1601723190397024" unit="cm"/>
+    <position name="RB26s5Wiggle_14inRB26s5Bellowpos" x="0" y="0" z="3.8281033989042044" unit="cm"/>
+    <position name="RB26s5Wiggle_15inRB26s5Bellowpos" x="0" y="0" z="4.4960342403501272" unit="cm"/>
+    </define>

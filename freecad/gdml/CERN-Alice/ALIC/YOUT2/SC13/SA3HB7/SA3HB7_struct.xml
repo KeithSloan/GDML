@@ -1,0 +1,19 @@
+<structure><volume name="SAIH30x12">
+      <materialref ref="MUON_AIR"/>
+      <solidref ref="TGeoBBox0x785"/>
+    </volume>
+    <volume name="SALH30x24">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SALH30x25"/>
+      <physvol name="SAIH3_1" copynumber="1">
+        <volumeref ref="SAIH30x12"/>
+        <positionref ref="SAIH3_10x12inSALH30x24pos"/>
+      </physvol>
+    </volume>
+    <assembly name="SA3HB7">
+      <physvol name="SALH3_56" copynumber="56">
+        <volumeref ref="SALH30x24"/>
+        <positionref ref="SALH3_56inSA3HB7pos"/>
+      </physvol>
+    </assembly>
+    </structure>

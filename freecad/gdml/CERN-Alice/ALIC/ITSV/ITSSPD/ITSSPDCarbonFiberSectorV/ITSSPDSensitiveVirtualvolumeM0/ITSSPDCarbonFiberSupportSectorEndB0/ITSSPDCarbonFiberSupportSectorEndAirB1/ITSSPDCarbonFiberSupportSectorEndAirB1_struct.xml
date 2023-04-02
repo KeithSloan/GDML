@@ -1,0 +1,101 @@
+<structure><volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndFluidTB1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_coolant_TB0"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeEndTB0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_End_TB0"/>
+      <physvol name="ITSSPDCoolingTubeEndFluidTB1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndFluidTB1"/>
+        <positionref ref="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos"/>
+      </physvol>
+    </volume>
+    <volume name="ITSSPDCarbonFiberSupportSectorEndAirB1">
+      <materialref ref="ITS_AIR"/>
+      <solidref ref="ITS_SPD_Carbon_fiber_support_Sector_Air_End_B1"/>
+      <physvol name="ITSSPDCoolingTubeEndTB0_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_1inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+      <physvol name="ITSSPDCoolingTubeEndTB0_2" copynumber="2">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_2inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+      <physvol name="ITSSPDCoolingTubeEndTB0_3" copynumber="3">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_3inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+      <physvol name="ITSSPDCoolingTubeEndTB0_4" copynumber="4">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_4inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+      <physvol name="ITSSPDCoolingTubeEndTB0_5" copynumber="5">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_5inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+      <physvol name="ITSSPDCoolingTubeEndTB0_6" copynumber="6">
+        <volumeref ref="ITSSPDCoolingTubeEndTB0"/>
+        <positionref ref="ITSSPDCoolingTubeEndTB0_6inITSSPDCarbonFiberSupportSectorEndAirB1pos"/>
+      </physvol>
+    </volume>
+    </structure>

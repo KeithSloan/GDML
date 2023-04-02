@@ -1,0 +1,5 @@
+<structure><volume name="vCardHVCapa2Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa2Middle"/>
+    </volume>
+    </structure>

@@ -1,0 +1,16 @@
+<define><position name="YFA_WRING2_1inYCREpos" x="0" y="0" z="3.75" unit="cm"/>
+    <position name="YFA_WRING2_2inYCREpos" x="0" y="0" z="3.75" unit="cm"/>
+    <position name="YFA_WRING3_1inYCREpos" x="0" y="0" z="13.170000076293945" unit="cm"/>
+    <position name="YFA_WRING3_2inYCREpos" x="0" y="0" z="13.170000076293945" unit="cm"/>
+    <position name="YFA_WRING5_1inYCREpos" x="0" y="0" z="18" unit="cm"/>
+    <position name="YFA_WRING3_3inYCREpos" x="0" y="0" z="22.829999923706055" unit="cm"/>
+    <position name="YFA_WRING3_4inYCREpos" x="0" y="0" z="22.829999923706055" unit="cm"/>
+    <position name="YFA_WRING2_3inYCREpos" x="0" y="0" z="32.25" unit="cm"/>
+    <position name="YFA_WRING2_4inYCREpos" x="0" y="0" z="32.25" unit="cm"/>
+    <rotation name="YFA_WRING2_1inYCRErot" x="0" y="-0" z="180" unit="deg"/>
+    <rotation name="YFA_WRING3_1inYCRErot" x="0" y="-0" z="-90" unit="deg"/>
+    <rotation name="YFA_WRING3_2inYCRErot" x="0" y="-0" z="90" unit="deg"/>
+    <rotation name="YFA_WRING3_3inYCRErot" x="0" y="-0" z="180" unit="deg"/>
+    <rotation name="YFA_WRING2_3inYCRErot" x="0" y="-0" z="-90" unit="deg"/>
+    <rotation name="YFA_WRING2_4inYCRErot" x="0" y="-0" z="90" unit="deg"/>
+    </define>

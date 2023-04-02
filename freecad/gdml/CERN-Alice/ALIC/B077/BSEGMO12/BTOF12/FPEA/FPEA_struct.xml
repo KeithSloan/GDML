@@ -1,0 +1,173 @@
+<structure><volume name="FCC3">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC30x1"/>
+    </volume>
+    <volume name="FFC3">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC30x1"/>
+      <physvol name="FCC3_0" copynumber="0">
+        <volumeref ref="FCC3"/>
+        <positionref ref="FCC3_0inFFC3pos"/>
+      </physvol>
+    </volume>
+    <volume name="FCC3">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC30x1"/>
+    </volume>
+    <volume name="FFC3">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC30x1"/>
+      <physvol name="FCC3_0" copynumber="0">
+        <volumeref ref="FCC3"/>
+        <positionref ref="FCC3_0inFFC3pos"/>
+      </physvol>
+    </volume>
+    <volume name="FCC2">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC20x1"/>
+    </volume>
+    <volume name="FFC2">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC20x1"/>
+      <physvol name="FCC2_0" copynumber="0">
+        <volumeref ref="FCC2"/>
+        <positionref ref="FCC2_0inFFC2pos"/>
+      </physvol>
+    </volume>
+    <volume name="FCC2">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC20x1"/>
+    </volume>
+    <volume name="FFC2">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC20x1"/>
+      <physvol name="FCC2_0" copynumber="0">
+        <volumeref ref="FCC2"/>
+        <positionref ref="FCC2_0inFFC2pos"/>
+      </physvol>
+    </volume>
+    <volume name="FCC1">
+      <materialref ref="TOF_Cu_"/>
+      <solidref ref="FCC10x1"/>
+    </volume>
+    <volume name="FFC1">
+      <materialref ref="TOF_plastic"/>
+      <solidref ref="FFC10x1"/>
+      <physvol name="FCC1_0" copynumber="0">
+        <volumeref ref="FCC1"/>
+        <positionref ref="FCC1_0inFFC1pos"/>
+      </physvol>
+    </volume>
+    <volume name="FIF3">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FIF30x1"/>
+    </volume>
+    <volume name="FIF3">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FIF30x1"/>
+    </volume>
+    <volume name="FIF2">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FIF20x1"/>
+    </volume>
+    <volume name="FIF2">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FIF20x1"/>
+    </volume>
+    <volume name="FIF1">
+      <materialref ref="TOF_G10"/>
+      <solidref ref="FIF10x1"/>
+    </volume>
+    <volume name="FPE3">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE30x1"/>
+    </volume>
+    <volume name="FPE3">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE30x1"/>
+    </volume>
+    <volume name="FPE2">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE20x1"/>
+    </volume>
+    <volume name="FPE2">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE20x1"/>
+    </volume>
+    <volume name="FPE1">
+      <materialref ref="TOF_Al_honeycomb"/>
+      <solidref ref="FPE10x1"/>
+    </volume>
+    <volume name="FALT">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FALT0x1"/>
+      <physvol name="FPE1_0" copynumber="0">
+        <volumeref ref="FPE1"/>
+        <positionref ref="FPE1_0inFALTpos"/>
+      </physvol>
+      <physvol name="FPE2_1" copynumber="1">
+        <volumeref ref="FPE2"/>
+        <positionref ref="FPE2_10x1inFALTpos"/>
+      </physvol>
+      <physvol name="FPE2_2" copynumber="2">
+        <volumeref ref="FPE2"/>
+        <positionref ref="FPE2_20x1inFALTpos"/>
+      </physvol>
+      <physvol name="FPE3_1" copynumber="1">
+        <volumeref ref="FPE3"/>
+        <positionref ref="FPE3_10x1inFALTpos"/>
+      </physvol>
+      <physvol name="FPE3_2" copynumber="2">
+        <volumeref ref="FPE3"/>
+        <positionref ref="FPE3_20x1inFALTpos"/>
+      </physvol>
+    </volume>
+    <volume name="FPEA">
+      <materialref ref="TOF_Air"/>
+      <solidref ref="FPEA0x1"/>
+      <physvol name="FALT_0" copynumber="0">
+        <volumeref ref="FALT"/>
+        <positionref ref="FALT_0inFPEApos"/>
+      </physvol>
+      <physvol name="FIF1_0" copynumber="0">
+        <volumeref ref="FIF1"/>
+        <positionref ref="FIF1_0inFPEApos"/>
+      </physvol>
+      <physvol name="FIF2_1" copynumber="1">
+        <volumeref ref="FIF2"/>
+        <positionref ref="FIF2_10x1inFPEApos"/>
+      </physvol>
+      <physvol name="FIF2_2" copynumber="2">
+        <volumeref ref="FIF2"/>
+        <positionref ref="FIF2_20x1inFPEApos"/>
+      </physvol>
+      <physvol name="FIF3_1" copynumber="1">
+        <volumeref ref="FIF3"/>
+        <positionref ref="FIF3_10x1inFPEApos"/>
+      </physvol>
+      <physvol name="FIF3_2" copynumber="2">
+        <volumeref ref="FIF3"/>
+        <positionref ref="FIF3_20x1inFPEApos"/>
+      </physvol>
+      <physvol name="FFC1_0" copynumber="0">
+        <volumeref ref="FFC1"/>
+        <positionref ref="FFC1_0inFPEApos"/>
+      </physvol>
+      <physvol name="FFC2_1" copynumber="1">
+        <volumeref ref="FFC2"/>
+        <positionref ref="FFC2_10x1inFPEApos"/>
+      </physvol>
+      <physvol name="FFC2_2" copynumber="2">
+        <volumeref ref="FFC2"/>
+        <positionref ref="FFC2_20x1inFPEApos"/>
+      </physvol>
+      <physvol name="FFC3_1" copynumber="1">
+        <volumeref ref="FFC3"/>
+        <positionref ref="FFC3_10x1inFPEApos"/>
+      </physvol>
+      <physvol name="FFC3_2" copynumber="2">
+        <volumeref ref="FFC3"/>
+        <positionref ref="FFC3_20x1inFPEApos"/>
+      </physvol>
+    </volume>
+    </structure>

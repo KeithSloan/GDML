@@ -1,0 +1,13 @@
+<structure><volume name="UW05">
+      <materialref ref="TRD_Cu"/>
+      <solidref ref="TGeoBBox0x135"/>
+    </volume>
+    <volume name="UK05">
+      <materialref ref="TRD_XeCO2"/>
+      <solidref ref="TGeoBBox0x134"/>
+      <physvol name="UW05_1" copynumber="1">
+        <volumeref ref="UW05"/>
+        <positionref ref="UW05_1inUK05pos"/>
+      </physvol>
+    </volume>
+    </structure>

@@ -1,0 +1,5 @@
+<structure><volume name="RB24VMABCTT">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoPcon0x47"/>
+    </volume>
+    </structure>

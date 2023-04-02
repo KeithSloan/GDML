@@ -1,0 +1,13 @@
+<structure><volume name="SD0G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="composite510G"/>
+    </volume>
+    <volume name="SD0H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="composite510H"/>
+      <physvol name="SD0G_1" copynumber="1">
+        <volumeref ref="SD0G"/>
+        <positionref ref="SD0G_1inSD0Hpos"/>
+      </physvol>
+    </volume>
+    </structure>

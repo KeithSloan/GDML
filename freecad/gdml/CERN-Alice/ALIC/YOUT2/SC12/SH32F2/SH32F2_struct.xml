@@ -1,0 +1,11 @@
+<structure><volume name="SA3H20x32">
+      <materialref ref="MUON_ALUMINIUM0"/>
+      <solidref ref="SA3H20x33"/>
+    </volume>
+    <assembly name="SH32F2">
+      <physvol name="SA3H2_279" copynumber="279">
+        <volumeref ref="SA3H20x32"/>
+        <positionref ref="SA3H2_279inSH32F2pos"/>
+      </physvol>
+    </assembly>
+    </structure>

@@ -1,0 +1,481 @@
+<structure><volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrewHV">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHV"/>
+    </volume>
+    <volume name="vCardHVcool3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool3"/>
+      <physvol name="vLittleScrewHV_1" copynumber="1">
+        <volumeref ref="vLittleScrewHV"/>
+        <positionref ref="vLittleScrewHV_1invCardHVcool3pos"/>
+        <rotationref ref="vLittleScrewHV_1invCardHVcool3rot"/>
+      </physvol>
+    </volume>
+    <volume name="vLittleScrewHV">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHV"/>
+    </volume>
+    <volume name="vCardHVcool3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool3"/>
+      <physvol name="vLittleScrewHV_1" copynumber="1">
+        <volumeref ref="vLittleScrewHV"/>
+        <positionref ref="vLittleScrewHV_1invCardHVcool3pos"/>
+        <rotationref ref="vLittleScrewHV_1invCardHVcool3rot"/>
+      </physvol>
+    </volume>
+    <volume name="vCardHVcool2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool2"/>
+    </volume>
+    <volume name="vCardHVcool2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool2"/>
+    </volume>
+    <volume name="vCardHVcool1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool1"/>
+    </volume>
+    <volume name="vCardHVcool1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="cardHVcool1"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="ITSsddConnexLVHVplast">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="connexLVHVplastic"/>
+    </volume>
+    <volume name="ITSsddConnexLVHVmetal">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="connexLVHVmetal"/>
+    </volume>
+    <assembly name="ITSsddConnexLVHV">
+      <physvol name="ITSsddConnexLVHVmetal_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVmetal"/>
+        <positionref ref="ITSsddConnexLVHVmetal_1inITSsddConnexLVHVpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHVplast_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHVplast"/>
+        <positionref ref="ITSsddConnexLVHVplast_1inITSsddConnexLVHVpos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3Middle"/>
+    </volume>
+    <assembly name="cardHVCapa3">
+      <physvol name="vCardHVCapa3Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3Middle"/>
+        <positionref ref="vCardHVCapa3Middle_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_2incardHVCapa3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3Middle"/>
+    </volume>
+    <assembly name="cardHVCapa3">
+      <physvol name="vCardHVCapa3Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3Middle"/>
+        <positionref ref="vCardHVCapa3Middle_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_2incardHVCapa3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3Middle"/>
+    </volume>
+    <assembly name="cardHVCapa3">
+      <physvol name="vCardHVCapa3Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3Middle"/>
+        <positionref ref="vCardHVCapa3Middle_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_2incardHVCapa3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3Middle"/>
+    </volume>
+    <assembly name="cardHVCapa3">
+      <physvol name="vCardHVCapa3Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3Middle"/>
+        <positionref ref="vCardHVCapa3Middle_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_2incardHVCapa3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3End"/>
+    </volume>
+    <volume name="vCardHVCapa3Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa3Middle"/>
+    </volume>
+    <assembly name="cardHVCapa3">
+      <physvol name="vCardHVCapa3Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3Middle"/>
+        <positionref ref="vCardHVCapa3Middle_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_1incardHVCapa3pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa3End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa3End"/>
+        <positionref ref="vCardHVCapa3End_2incardHVCapa3pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa2End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa2End"/>
+    </volume>
+    <volume name="vCardHVCapa2End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa2End"/>
+    </volume>
+    <volume name="vCardHVCapa2Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa2Middle"/>
+    </volume>
+    <assembly name="cardHVCapa2">
+      <physvol name="vCardHVCapa2Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa2Middle"/>
+        <positionref ref="vCardHVCapa2Middle_1incardHVCapa2pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa2End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa2End"/>
+        <positionref ref="vCardHVCapa2End_1incardHVCapa2pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa2End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa2End"/>
+        <positionref ref="vCardHVCapa2End_2incardHVCapa2pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCardHVCapa1End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1End"/>
+    </volume>
+    <volume name="vCardHVCapa1End">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1End"/>
+    </volume>
+    <volume name="vCardHVCapa1Middle">
+      <materialref ref="ITS_SDD_X7R_capacitors"/>
+      <solidref ref="cardHVCapa1Middle"/>
+    </volume>
+    <assembly name="cardHVCapa1">
+      <physvol name="vCardHVCapa1Middle_1" copynumber="1">
+        <volumeref ref="vCardHVCapa1Middle"/>
+        <positionref ref="vCardHVCapa1Middle_1incardHVCapa1pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa1End_1" copynumber="1">
+        <volumeref ref="vCardHVCapa1End"/>
+        <positionref ref="vCardHVCapa1End_1incardHVCapa1pos"/>
+      </physvol>
+      <physvol name="vCardHVCapa1End_2" copynumber="2">
+        <volumeref ref="vCardHVCapa1End"/>
+        <positionref ref="vCardHVCapa1End_2incardHVCapa1pos"/>
+      </physvol>
+    </assembly>
+    <volume name="vCeramCard">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ceramCard"/>
+    </volume>
+    <assembly name="ITSsddHVCard">
+      <physvol name="vCeramCard_1" copynumber="1">
+        <volumeref ref="vCeramCard"/>
+        <positionref ref="vCeramCard_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa1_1" copynumber="1">
+        <volumeref ref="cardHVCapa1"/>
+        <positionref ref="cardHVCapa1_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa2_1" copynumber="1">
+        <volumeref ref="cardHVCapa2"/>
+        <positionref ref="cardHVCapa2_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa3_1" copynumber="1">
+        <volumeref ref="cardHVCapa3"/>
+        <positionref ref="cardHVCapa3_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa3_2" copynumber="2">
+        <volumeref ref="cardHVCapa3"/>
+        <positionref ref="cardHVCapa3_2inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa3_3" copynumber="3">
+        <volumeref ref="cardHVCapa3"/>
+        <positionref ref="cardHVCapa3_3inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa3_4" copynumber="4">
+        <volumeref ref="cardHVCapa3"/>
+        <positionref ref="cardHVCapa3_4inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="cardHVCapa3_5" copynumber="5">
+        <volumeref ref="cardHVCapa3"/>
+        <positionref ref="cardHVCapa3_5inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_1" copynumber="1">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_2" copynumber="2">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_2inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_3" copynumber="3">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_3inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_4" copynumber="4">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_4inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_5" copynumber="5">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_5inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_6" copynumber="6">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_6inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_7" copynumber="7">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_7inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="ITSsddConnexLVHV_8" copynumber="8">
+        <volumeref ref="ITSsddConnexLVHV"/>
+        <positionref ref="ITSsddConnexLVHV_8inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool1_1" copynumber="1">
+        <volumeref ref="vCardHVcool1"/>
+        <positionref ref="vCardHVcool1_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool1_2" copynumber="2">
+        <volumeref ref="vCardHVcool1"/>
+        <positionref ref="vCardHVcool1_2inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool2_1" copynumber="1">
+        <volumeref ref="vCardHVcool2"/>
+        <positionref ref="vCardHVcool2_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool2_2" copynumber="2">
+        <volumeref ref="vCardHVcool2"/>
+        <positionref ref="vCardHVcool2_2inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool3_1" copynumber="1">
+        <volumeref ref="vCardHVcool3"/>
+        <positionref ref="vCardHVcool3_1inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vCardHVcool3_2" copynumber="2">
+        <volumeref ref="vCardHVcool3"/>
+        <positionref ref="vCardHVcool3_2inITSsddHVCardpos"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_1" copynumber="1">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_1inITSsddHVCardpos"/>
+        <rotationref ref="vLittleScrewHead_1inITSsddHVCardrot"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_2" copynumber="2">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_2inITSsddHVCardpos"/>
+        <rotationref ref="vLittleScrewHead_2inITSsddHVCardrot"/>
+      </physvol>
+    </assembly>
+    </structure>

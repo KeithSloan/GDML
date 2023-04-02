@@ -1,0 +1,20 @@
+<materials><material name="TOF_cable">
+      <D unit="g/cm3" value="1.2230000495910645"/>
+      <fraction n="0.32440000772476196" ref="ALUMINIUM_elm"/>
+      <fraction n="0.37462443113327026" ref="CARBON_elm"/>
+      <fraction n="0.23810000717639923" ref="COPPER_elm"/>
+      <fraction n="0.062875531613826752" ref="HYDROGEN_elm"/>
+    </material>
+    <element name="ALUMINIUM_elm" formula="AL" Z="13">
+      <atom unit="g/mole" value="26.981538"/>
+    </element>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="COPPER_elm" formula="CU" Z="29">
+      <atom unit="g/mole" value="63.545999999999999"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    </materials>

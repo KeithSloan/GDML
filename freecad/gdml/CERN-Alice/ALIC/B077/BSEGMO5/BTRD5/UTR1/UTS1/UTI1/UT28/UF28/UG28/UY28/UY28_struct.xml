@@ -1,0 +1,5 @@
+<structure><volume name="UY28">
+      <materialref ref="TRD_Araldite"/>
+      <solidref ref="TGeoBBox0x359"/>
+    </volume>
+    </structure>

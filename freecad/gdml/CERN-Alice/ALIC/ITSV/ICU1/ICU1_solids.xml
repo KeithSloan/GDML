@@ -1,0 +1,2 @@
+<solids><cone name="ICU10x1" z="184.19999694824219" rmin1="46.200000762939453" rmin2="62.299999237060547" rmax1="47.200000762939453" rmax2="63.299999237060547" startphi="12" deltaphi="156" aunit="deg" lunit="cm"/>
+    </solids>

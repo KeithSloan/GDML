@@ -1,0 +1,5 @@
+<structure><volume name="YSAA3SteelPlate21">
+      <materialref ref="SHIL_STAINLESS_STEEL1"/>
+      <solidref ref="TGeoBBox0x532"/>
+    </volume>
+    </structure>

@@ -1,0 +1,6 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10x135inS336pos" x="-5.0400000000000009" y="0" z="0" unit="cm"/>
+    <position name="SCHL_20x86inS336pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_30x77inS336pos" x="5.0400000000000009" y="0" z="0" unit="cm"/>
+    </define>

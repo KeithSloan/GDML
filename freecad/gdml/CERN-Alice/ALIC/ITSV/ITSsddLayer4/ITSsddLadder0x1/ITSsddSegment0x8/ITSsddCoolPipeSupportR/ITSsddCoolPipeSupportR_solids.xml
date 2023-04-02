@@ -1,0 +1,28 @@
+<solids><subtraction name="ITSsddCoolPipeSuppShapeR">
+      <first ref="TGeoCompositeShape0x200"/>
+      <second ref="ITSsddCPSaxeR"/>
+      <position name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRpos" x="-0.020000000000000004" y="0" z="0" unit="cm"/>
+      <rotation name="ITSsddCoolPipeSuppShapeRITSsddCPSaxeRrot" x="90" y="-0" z="90" unit="deg"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x200">
+      <first ref="TGeoCompositeShape0x201"/>
+      <second ref="ITSsddCPSaxeBoxR"/>
+      <position name="TGeoCompositeShape0x200ITSsddCPSaxeBoxRpos" x="-0.020000000000000004" y="0.025000000000000022" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x201">
+      <first ref="TGeoCompositeShape0x202"/>
+      <second ref="ITSsddCPSside1R"/>
+      <position name="TGeoCompositeShape0x201ITSsddCPSside1Rpos" x="0" y="-0.17999999999999999" z="0" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x202">
+      <first ref="ITSsddCPSmiddleR"/>
+      <second ref="ITSsddCPSside1R"/>
+      <firstposition name="TGeoCompositeShape0x202ITSsddCPSmiddleRpos" x="-0.10500000000000001" y="-0.23249999999999998" z="0" unit="cm"/>
+      <position name="TGeoCompositeShape0x202ITSsddCPSside1Rpos" x="0" y="-0.28499999999999998" z="0" unit="cm"/>
+    </union>
+    <box name="ITSsddCPSmiddleR" x="0.21000000000000002" y="0.065000000000000002" z="0.32000000000000006" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <arb8 name="ITSsddCPSside1R" v1x="0" v1y="-0.020000000000000004" v2x="-0.56745166004060965" v2y="-0.020000000000000004" v3x="-0.56745166004060965" v3y="0.020000000000000004" v4x="0" v4y="0.020000000000000004" v5x="0" v5y="-0.020000000000000004" v6x="-0.70000000000000007" v6y="-0.020000000000000004" v7x="-0.70000000000000007" v7y="0.020000000000000004" v8x="0" v8y="0.020000000000000004" dz="0.16000000000000003" lunit="cm"/>
+    <box name="ITSsddCPSaxeBoxR" x="0.040000000000000008" y="0.37" z="0.32000000000000006" lunit="cm"/>
+    <tube name="ITSsddCPSaxeR" rmin="0" rmax="0.10000000000000001" z="0.040000000000000008" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

@@ -1,0 +1,13 @@
+<structure><volume name="S14G0x20">
+      <materialref ref="MUON_TRIG_GAS"/>
+      <solidref ref="TGeoBBox0x942"/>
+    </volume>
+    <volume name="SB4A0x20">
+      <materialref ref="MUON_Bakelite"/>
+      <solidref ref="TGeoBBox0x941"/>
+      <physvol name="S14G_1" copynumber="1">
+        <volumeref ref="S14G0x20"/>
+        <positionref ref="S14G_10x20inSB4A0x20pos"/>
+      </physvol>
+    </volume>
+    </structure>

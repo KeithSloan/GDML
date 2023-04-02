@@ -1,0 +1,10 @@
+<define><position name="ITSSPDCoolingTubeEndFluidTB1_1inITSSPDCoolingTubeEndTB0pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_1inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="-0.74066580845780561" y="-1.877351802163318" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_2inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="0.49738156284657586" y="-1.4262469862553613" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_3inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="1.5910619710666909" y="1.3725770636614505" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_4inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="0.47751412645984026" y="1.518685851704288" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_5inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="-0.64525884980672543" y="1.4889069180304761" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCoolingTubeEndTB0_6inITSSPDCarbonFiberSupportSectorEndAirB1pos" x="-1.7495587670151367" y="1.2837504228826502" z="26.469999999999999" unit="cm"/>
+    <position name="ITSSPDCarbonFiberSupportSectorEndAirB1_1inITSSPDCarbonFiberSupportSectorEndB0pos" x="0" y="0" z="0" unit="cm"/>
+    <position name="ITSSPDCarbonFiberSupportSectorEndAirB2_1inITSSPDCarbonFiberSupportSectorEndB0pos" x="0" y="0" z="0" unit="cm"/>
+    </define>

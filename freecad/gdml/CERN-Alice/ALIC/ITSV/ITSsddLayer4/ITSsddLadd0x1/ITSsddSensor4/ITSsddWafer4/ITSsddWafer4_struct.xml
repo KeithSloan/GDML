@@ -1,0 +1,13 @@
+<structure><volume name="ITSsddSensitivL4">
+      <materialref ref="ITS_SI"/>
+      <solidref ref="ITSsddSensorSensBox4"/>
+    </volume>
+    <volume name="ITSsddWafer4">
+      <materialref ref="ITS_SDD_SI_insensitive"/>
+      <solidref ref="ITSsddWaferShape"/>
+      <physvol name="ITSsddSensitivL4_1" copynumber="1">
+        <volumeref ref="ITSsddSensitivL4"/>
+        <positionref ref="ITSsddSensitivL4_1inITSsddWafer4pos"/>
+      </physvol>
+    </volume>
+    </structure>

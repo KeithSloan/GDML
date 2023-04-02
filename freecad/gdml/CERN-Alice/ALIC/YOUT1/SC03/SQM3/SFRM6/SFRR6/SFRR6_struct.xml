@@ -1,0 +1,5 @@
+<structure><volume name="SFRR6">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SFRR60x1"/>
+    </volume>
+    </structure>

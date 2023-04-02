@@ -1,0 +1,4 @@
+<solids><box name="BRS20x1" x="50" y="7.5" z="1200" lunit="cm"/>
+    <box name="BRS30x1" x="6" y="40" z="1200" lunit="cm"/>
+    <box name="BRS10x1" x="50" y="55" z="1200" lunit="cm"/>
+    </solids>

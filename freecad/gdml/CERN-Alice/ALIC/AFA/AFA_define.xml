@@ -1,0 +1,33 @@
+<define><position name="AFaWTube1_1inAFaInnerShieldpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaWTube2_1inAFaInnerShieldpos" x="0" y="0" z="99.200004577636719" unit="cm"/>
+    <position name="AFaWTube3_1inAFaInnerShieldpos" x="0" y="0" z="255.20001220703125" unit="cm"/>
+    <position name="AFaWTube4_1inAFaInnerShieldpos" x="0" y="0" z="283.20001220703125" unit="cm"/>
+    <position name="AFaInnerShield_1inAFaMpos" x="0" y="0" z="110.30000305175781" unit="cm"/>
+    <position name="AFaWPlateAI_1inAFaWPlateApos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaWPlateA_1inAFaMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaSteelEnvelope_1inAFaMpos" x="0" y="0" z="11" unit="cm"/>
+    <position name="AFaPbConeI_1inAFaPbConepos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaPbCone_1inAFaMpos" x="0" y="0" z="15" unit="cm"/>
+    <position name="AFaCH2Cone_1inAFaMpos" x="0" y="0" z="310.29998779296875" unit="cm"/>
+    <position name="AFaFlange_1inAFaMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaMgRing_1inAFaMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaCompRing_1inAFaMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaGraphiteConeO_1inAFaGraphiteConepos" x="0" y="0" z="25" unit="cm"/>
+    <position name="AFaGraphiteCone_1inAFaAccpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaConcreteCone_1inAFaAccpos" x="0" y="0" z="288" unit="cm"/>
+    <position name="AFaSteelCone25_1inAFaAccpos" x="0" y="0" z="363.5" unit="cm"/>
+    <position name="AFaSteelCone31I_1inAFaSteelCone31pos" x="0" y="0" z="13" unit="cm"/>
+    <position name="AFaSteelCone31_1inAFaAccpos" x="0" y="0" z="391.5" unit="cm"/>
+    <position name="AFaAcc_1inAFaMpos" x="0" y="0" z="2" unit="cm"/>
+    <position name="AFaM_1inAFApos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFaEndPlate_1inAFApos" x="0" y="0" z="412" unit="cm"/>
+    <position name="AFassUBFlange_1inAFasspos" x="40" y="370" z="244.5" unit="cm"/>
+    <position name="AFassUBFlange_2inAFasspos" x="-40" y="370" z="244.5" unit="cm"/>
+    <position name="AFassUMFlange_1inAFasspos" x="0" y="370" z="182" unit="cm"/>
+    <position name="AFassLMFlange_1inAFasspos" x="0" y="-301" z="173.75" unit="cm"/>
+    <position name="AFassCentral_1inAFasspos" x="0" y="0" z="0" unit="cm"/>
+    <position name="AFass_1inAFApos" x="0" y="0" z="388.44999999999999" unit="cm"/>
+    <position name="AFassAlRing_1inAFApos" x="0" y="0" z="378.44" unit="cm"/>
+    <rotation name="AFassUMFlange_1inAFassrot" x="90" y="-0" z="90" unit="deg"/>
+    <rotation name="AFassLMFlange_1inAFassrot" x="-90" y="-0" z="90" unit="deg"/>
+    </define>

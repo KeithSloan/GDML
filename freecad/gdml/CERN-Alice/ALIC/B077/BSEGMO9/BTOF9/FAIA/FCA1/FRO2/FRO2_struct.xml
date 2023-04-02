@@ -1,0 +1,5 @@
+<structure><volume name="FRO2">
+      <materialref ref="TOF_Al_"/>
+      <solidref ref="FRO20x1"/>
+    </volume>
+    </structure>

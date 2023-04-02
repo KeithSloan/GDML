@@ -1,0 +1,21 @@
+<solids><subtraction name="HHC10x1">
+      <first ref="TGeoCompositeShape0x6"/>
+      <second ref="TGeoCompositeShape0x7"/>
+    </subtraction>
+    <union name="TGeoCompositeShape0x6">
+      <first ref="shHHC11"/>
+      <second ref="shHHC12"/>
+      <position name="TGeoCompositeShape0x6shHHC12pos" x="0" y="1000" z="2400" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x6shHHC12rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="shHHC11" rmin="1070" rmax="1170" z="3600" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="shHHC12" rmin="1140" rmax="1240" z="2000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x7">
+      <first ref="shHHC14"/>
+      <second ref="shHHC13"/>
+      <position name="TGeoCompositeShape0x7shHHC13pos" x="0" y="1000" z="2400" unit="cm"/>
+      <rotation name="TGeoCompositeShape0x7shHHC13rot" x="-90" y="-0" z="0" unit="deg"/>
+    </union>
+    <tube name="shHHC14" rmin="0" rmax="1070" z="3800" startphi="0" deltaphi="180" aunit="deg" lunit="cm"/>
+    <tube name="shHHC13" rmin="0" rmax="1139" z="2000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

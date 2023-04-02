@@ -1,0 +1,5 @@
+<structure><volume name="S07L0x40">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S07L0x41"/>
+    </volume>
+    </structure>

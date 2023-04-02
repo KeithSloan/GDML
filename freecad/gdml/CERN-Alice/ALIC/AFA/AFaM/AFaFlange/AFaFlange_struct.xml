@@ -1,0 +1,5 @@
+<structure><volume name="AFaFlange">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="TGeoPcon0x7"/>
+    </volume>
+    </structure>

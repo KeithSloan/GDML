@@ -1,0 +1,5 @@
+<structure><volume name="HUWA">
+      <materialref ref="HALL_CONCRETE2"/>
+      <solidref ref="TGeoTubeSeg0x10"/>
+    </volume>
+    </structure>

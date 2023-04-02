@@ -1,0 +1,5 @@
+<structure><volume name="ITSsddGlass">
+      <materialref ref="ITS_SDD_SI_insensitive"/>
+      <solidref ref="ITSsddGlassBox"/>
+    </volume>
+    </structure>

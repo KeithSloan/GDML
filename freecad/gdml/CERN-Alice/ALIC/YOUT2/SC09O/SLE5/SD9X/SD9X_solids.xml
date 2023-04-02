@@ -1,0 +1,22 @@
+<solids><subtraction name="composite59N">
+      <first ref="rounded5SlatD9N"/>
+      <second ref="tube5Cut"/>
+      <position name="composite59Ntube5Cutpos" x="-21.25" y="-38.200000762939453" z="0" unit="cm"/>
+    </subtraction>
+    <box name="rounded5SlatD9N" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
+    <tube name="tube5Cut" rmin="0" rmax="39.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite59C">
+      <first ref="rounded5SlatD9C"/>
+      <second ref="tube5Cut"/>
+      <position name="composite59Ctube5Cutpos" x="-21.25" y="-38.200000762939453" z="0" unit="cm"/>
+    </subtraction>
+    <box name="rounded5SlatD9C" x="40" y="40" z="0.84000003337860107" lunit="cm"/>
+    <tube name="tube5Cut" rmin="0" rmax="39.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <subtraction name="composite59X">
+      <first ref="rounded5SlatD9X"/>
+      <second ref="tube5Cut"/>
+      <position name="composite59Xtube5Cutpos" x="-21.25" y="-38.200000762939453" z="0" unit="cm"/>
+    </subtraction>
+    <box name="rounded5SlatD9X" x="40" y="40" z="0.86500000953674316" lunit="cm"/>
+    <tube name="tube5Cut" rmin="0" rmax="39.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

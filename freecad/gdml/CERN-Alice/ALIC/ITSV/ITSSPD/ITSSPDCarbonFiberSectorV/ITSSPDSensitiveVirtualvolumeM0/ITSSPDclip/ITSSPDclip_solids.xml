@@ -1,0 +1,31 @@
+<solids><subtraction name="ITSSPDSHClipHoles">
+      <first ref="ITSSPDshclip"/>
+      <second ref="TGeoCompositeShape0x194"/>
+    </subtraction>
+    <xtru name="ITSSPDshclip" lunit="cm">
+      <twoDimVertex x="0" y="0"/>
+      <twoDimVertex x="0.27449673790581602" y="0.099984756202039504"/>
+      <twoDimVertex x="0.71999999999999997" y="-0.12701049366773387"/>
+      <twoDimVertex x="1.26" y="-0.12701049366773387"/>
+      <twoDimVertex x="1.26" y="-0.10901049366773387"/>
+      <twoDimVertex x="0.7242020165494063" y="-0.10901049366773387"/>
+      <twoDimVertex x="0.27449673790581602" y="0.11798475620203951"/>
+      <twoDimVertex x="0" y="0.017999999999999999"/>
+      <section zOrder="0" zPosition="-2.6000000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="2.6000000000000001" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <union name="TGeoCompositeShape0x194">
+      <first ref="TGeoCompositeShape0x195"/>
+      <second ref="ITSSPDSHClipHole"/>
+      <position name="TGeoCompositeShape0x194ITSSPDSHClipHolepos" x="0.71999999999999997" y="0" z="-1.4000000000000001" unit="cm"/>
+    </union>
+    <union name="TGeoCompositeShape0x195">
+      <first ref="ITSSPDSHClipHole"/>
+      <second ref="ITSSPDSHClipHole"/>
+      <firstposition name="TGeoCompositeShape0x195ITSSPDSHClipHolepos" x="0.71999999999999997" y="0" z="1.4000000000000001" unit="cm"/>
+      <position name="TGeoCompositeShape0x195ITSSPDSHClipHolepos" x="0.71999999999999997" y="0" z="0" unit="cm"/>
+    </union>
+    <box name="ITSSPDSHClipHole" x="0.5" y="0.5" z="0.5" lunit="cm"/>
+    <box name="ITSSPDSHClipHole" x="0.5" y="0.5" z="0.5" lunit="cm"/>
+    <box name="ITSSPDSHClipHole" x="0.5" y="0.5" z="0.5" lunit="cm"/>
+    </solids>

@@ -1,0 +1,27 @@
+<structure><volume name="voRB24CuTubeF">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x23"/>
+    </volume>
+    <volume name="voRB24CuTubeF">
+      <materialref ref="PIPE_STAINLESS_STEEL"/>
+      <solidref ref="TGeoTube0x23"/>
+    </volume>
+    <volume name="voRB242CuTube">
+      <materialref ref="PIPE_COPPER"/>
+      <solidref ref="TGeoTube0x42"/>
+    </volume>
+    <assembly name="RB242">
+      <physvol name="voRB242CuTube_1" copynumber="1">
+        <volumeref ref="voRB242CuTube"/>
+        <positionref ref="voRB242CuTube_1inRB242pos"/>
+      </physvol>
+      <physvol name="voRB24CuTubeF_3" copynumber="3">
+        <volumeref ref="voRB24CuTubeF"/>
+        <positionref ref="voRB24CuTubeF_3inRB242pos"/>
+      </physvol>
+      <physvol name="voRB24CuTubeF_4" copynumber="4">
+        <volumeref ref="voRB24CuTubeF"/>
+        <positionref ref="voRB24CuTubeF_4inRB242pos"/>
+      </physvol>
+    </assembly>
+    </structure>

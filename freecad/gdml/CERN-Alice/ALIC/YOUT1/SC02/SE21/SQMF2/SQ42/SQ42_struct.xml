@@ -1,0 +1,45 @@
+<structure><volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ44">
+      <materialref ref="MUON_Kapton"/>
+      <solidref ref="SQ440x1"/>
+    </volume>
+    <volume name="SQ42">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SQ420x1"/>
+      <physvol name="SQ44_59" copynumber="59">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_59inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_60" copynumber="60">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_60inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_61" copynumber="61">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_61inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_62" copynumber="62">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_62inSQ42pos"/>
+      </physvol>
+      <physvol name="SQ44_63" copynumber="63">
+        <volumeref ref="SQ44"/>
+        <positionref ref="SQ44_63inSQ42pos"/>
+      </physvol>
+    </volume>
+    </structure>

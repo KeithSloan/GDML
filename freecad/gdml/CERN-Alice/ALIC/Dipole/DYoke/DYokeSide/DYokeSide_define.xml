@@ -1,0 +1,8 @@
+<define><position name="DSideBlock_0inDYokeSidepos" x="-24.449995994567871" y="0" z="-132.60000228881836" unit="cm"/>
+    <position name="DSideBlock_1inDYokeSidepos" x="-16.299997329711914" y="0" z="-88.400001525878906" unit="cm"/>
+    <position name="DSideBlock_2inDYokeSidepos" x="-8.149998664855957" y="0" z="-44.200000762939453" unit="cm"/>
+    <position name="DSideBlock_3inDYokeSidepos" x="0" y="0" z="0" unit="cm"/>
+    <position name="DSideBlock_4inDYokeSidepos" x="8.149998664855957" y="0" z="44.200000762939453" unit="cm"/>
+    <position name="DSideBlock_5inDYokeSidepos" x="16.299997329711914" y="0" z="88.400001525878906" unit="cm"/>
+    <position name="DSideBlock_6inDYokeSidepos" x="24.449995994567871" y="0" z="132.60000228881836" unit="cm"/>
+    </define>

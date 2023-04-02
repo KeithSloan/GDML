@@ -1,0 +1,7 @@
+<solids><intersection name="RB24B1UpperPlie0x1">
+      <first ref="RB24B1TorusU"/>
+      <second ref="RB24B1TubeU"/>
+    </intersection>
+    <torus name="RB24B1TorusU" rtor="5.5909257382154465" rmin="0.094074071384966373" rmax="0.10907407104969025" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="RB24B1TubeU" rmin="5.5909257382154465" rmax="5.6999998092651367" z="0.21814814209938049" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

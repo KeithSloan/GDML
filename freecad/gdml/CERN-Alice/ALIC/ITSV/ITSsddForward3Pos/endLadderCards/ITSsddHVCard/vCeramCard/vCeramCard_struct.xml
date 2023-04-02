@@ -1,0 +1,5 @@
+<structure><volume name="vCeramCard">
+      <materialref ref="ITS_CERAMICS"/>
+      <solidref ref="ceramCard"/>
+    </volume>
+    </structure>

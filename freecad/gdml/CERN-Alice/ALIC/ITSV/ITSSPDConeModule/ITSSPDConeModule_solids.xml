@@ -1,0 +1,24 @@
+<solids><xtru name="TGeoXtru0x18" lunit="cm">
+      <twoDimVertex x="7.5" y="0.55000000000000004"/>
+      <twoDimVertex x="11.519499999999999" y="0.55000000000000004"/>
+      <twoDimVertex x="12.4695" y="1.5"/>
+      <twoDimVertex x="46.469499999999996" y="1.5"/>
+      <twoDimVertex x="47.469499999999996" y="2.5"/>
+      <twoDimVertex x="52.169499999999999" y="2.5"/>
+      <twoDimVertex x="52.169499999999999" y="-2.5"/>
+      <twoDimVertex x="47.469499999999996" y="-2.5"/>
+      <twoDimVertex x="46.469499999999996" y="-1.5"/>
+      <twoDimVertex x="12.4695" y="-1.5"/>
+      <twoDimVertex x="11.519499999999999" y="-0.55000000000000004"/>
+      <twoDimVertex x="7.5" y="-0.55000000000000004"/>
+      <section zOrder="0" zPosition="0" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="0.15000000000000002" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    <box name="ITSSPDextenderMCM0x1" x="0.12" y="44.669499999999999" z="1.1000000000000001" lunit="cm"/>
+    <subtraction name="ITSSPDPlate_shape">
+      <first ref="ITSSPD_shape_plateout"/>
+      <second ref="ITSSPD_shape_platein"/>
+    </subtraction>
+    <box name="ITSSPD_shape_plateout" x="0.5" y="20" z="5" lunit="cm"/>
+    <box name="ITSSPD_shape_platein" x="0.27000000000000002" y="20.800000000000001" z="3" lunit="cm"/>
+    </solids>

@@ -1,0 +1,16 @@
+<materials><material name="PIPE_NEG_COATING">
+      <D unit="g/cm3" value="5.5999999046325684"/>
+      <fraction n="0.25188106298446655" ref="TITANIUM_elm"/>
+      <fraction n="0.26803472638130188" ref="VANADIUM_elm"/>
+      <fraction n="0.48008418083190918" ref="ZIRCONIUM_elm"/>
+    </material>
+    <element name="TITANIUM_elm" formula="TI" Z="22">
+      <atom unit="g/mole" value="47.866999999999997"/>
+    </element>
+    <element name="VANADIUM_elm" formula="V" Z="23">
+      <atom unit="g/mole" value="50.941499999999998"/>
+    </element>
+    <element name="ZIRCONIUM_elm" formula="ZR" Z="40">
+      <atom unit="g/mole" value="91.224000000000004"/>
+    </element>
+    </materials>

@@ -1,0 +1,3 @@
+<solids><box name="ISR40x1" x="6" y="20" z="10" lunit="cm"/>
+    <box name="ISR20x1" x="10" y="24" z="10" lunit="cm"/>
+    </solids>

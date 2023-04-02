@@ -1,0 +1,30 @@
+<structure><volume name="DCC1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCC10x1"/>
+    </volume>
+    <volume name="DCCV">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCCV0x1"/>
+    </volume>
+    <volume name="DCH1">
+      <materialref ref="DIPO_COPPER2"/>
+      <solidref ref="DCH10x1"/>
+    </volume>
+    <volume name="DCML">
+      <materialref ref="DIPO_IRON2"/>
+      <solidref ref="DCML0x1"/>
+      <physvol name="DCH1_1" copynumber="1">
+        <volumeref ref="DCH1"/>
+        <positionref ref="DCH1_1inDCMLpos"/>
+      </physvol>
+      <physvol name="DCCV_3" copynumber="3">
+        <volumeref ref="DCCV"/>
+        <positionref ref="DCCV_3inDCMLpos"/>
+      </physvol>
+      <physvol name="DCC1_7" copynumber="7">
+        <volumeref ref="DCC1"/>
+        <positionref ref="DCC1_7inDCMLpos"/>
+        <rotationref ref="DCC1_7inDCMLrot"/>
+      </physvol>
+    </volume>
+    </structure>

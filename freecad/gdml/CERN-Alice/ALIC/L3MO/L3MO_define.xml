@@ -1,0 +1,15 @@
+<define><position name="L3TS_1inL3BMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3CM_1inL3BMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3YO_1inL3BMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3CR_1inL3BMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3CR_2inL3BMpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3BM_1inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3DoorR_1inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3DoorR_2inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3DoorL_1inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3DoorL_2inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3PlugSPR_1inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3PlugSPR_2inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3PlugSPL_1inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="L3PlugSPL_2inL3MOpos" x="0" y="0" z="0" unit="cm"/>
+    </define>

@@ -1,0 +1,2 @@
+<solids><tube name="ITSSPDCoolingTubeCone0x1" rmin="0.5" rmax="0.60000000000000009" z="44.669499999999999" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

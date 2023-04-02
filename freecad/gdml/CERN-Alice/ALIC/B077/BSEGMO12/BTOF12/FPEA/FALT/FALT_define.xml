@@ -1,0 +1,6 @@
+<define><position name="FPE1_0inFALTpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="FPE2_10x1inFALTpos" x="0" y="0" z="126.75" unit="cm"/>
+    <position name="FPE2_20x1inFALTpos" x="0" y="0" z="-126.75" unit="cm"/>
+    <position name="FPE3_10x1inFALTpos" x="0" y="0" z="284.29998779296875" unit="cm"/>
+    <position name="FPE3_20x1inFALTpos" x="0" y="0" z="-284.29998779296875" unit="cm"/>
+    </define>

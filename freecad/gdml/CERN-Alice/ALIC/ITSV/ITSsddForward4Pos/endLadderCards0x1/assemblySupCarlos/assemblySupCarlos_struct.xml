@@ -1,0 +1,279 @@
+<structure><volume name="vCableSegLay0x168">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1117"/>
+    </volume>
+    <volume name="carlosCardQZ1">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1116"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x168"/>
+        <positionref ref="vCableSegLay_10x144incarlosCardQZ1pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x167">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1115"/>
+    </volume>
+    <volume name="carlosCardU36">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1114"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x167"/>
+        <positionref ref="vCableSegLay_10x143incarlosCardU36pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x166">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1113"/>
+    </volume>
+    <volume name="carlosCardU35">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1112"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x166"/>
+        <positionref ref="vCableSegLay_10x142incarlosCardU35pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x165">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1111"/>
+    </volume>
+    <volume name="carlosCardU17">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1110"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x165"/>
+        <positionref ref="vCableSegLay_10x141incarlosCardU17pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x164">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1109"/>
+    </volume>
+    <volume name="carlosCardU3">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1108"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x164"/>
+        <positionref ref="vCableSegLay_10x140incarlosCardU3pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x164">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1109"/>
+    </volume>
+    <volume name="carlosCardU3">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1108"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x164"/>
+        <positionref ref="vCableSegLay_10x140incarlosCardU3pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x163">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1107"/>
+    </volume>
+    <volume name="carlosCardU2">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1106"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x163"/>
+        <positionref ref="vCableSegLay_10x139incarlosCardU2pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x162">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1105"/>
+    </volume>
+    <volume name="carlosCardU1">
+      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
+      <solidref ref="TGeoBBox0x1104"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x162"/>
+        <positionref ref="vCableSegLay_10x138incarlosCardU1pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x161">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="TGeoBBox0x1103"/>
+    </volume>
+    <volume name="cardCarlos2">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1102"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x161"/>
+        <positionref ref="vCableSegLay_10x137incardCarlos2pos"/>
+      </physvol>
+    </volume>
+    <volume name="vCableSegLay0x160">
+      <materialref ref="ITS_COPPER"/>
+      <solidref ref="TGeoBBox0x1101"/>
+    </volume>
+    <volume name="cardCarlos1">
+      <materialref ref="ITS_SDD_SI_CHIP"/>
+      <solidref ref="TGeoBBox0x1100"/>
+      <physvol name="vCableSegLay_1" copynumber="1">
+        <volumeref ref="vCableSegLay0x160"/>
+        <positionref ref="vCableSegLay_10x136incardCarlos1pos"/>
+      </physvol>
+    </volume>
+    <volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrewHead">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrewHead"/>
+    </volume>
+    <volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vSupCarlosBoard3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoBBox0x1099"/>
+      <physvol name="vLittleScrew_1" copynumber="1">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_1invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_1invSupCarlosBoard3rot"/>
+      </physvol>
+      <physvol name="vLittleScrew_2" copynumber="2">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_2invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_2invSupCarlosBoard3rot"/>
+      </physvol>
+    </volume>
+    <volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vLittleScrew">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="littleScrew"/>
+    </volume>
+    <volume name="vSupCarlosBoard3">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoBBox0x1099"/>
+      <physvol name="vLittleScrew_1" copynumber="1">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_1invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_1invSupCarlosBoard3rot"/>
+      </physvol>
+      <physvol name="vLittleScrew_2" copynumber="2">
+        <volumeref ref="vLittleScrew"/>
+        <positionref ref="vLittleScrew_2invSupCarlosBoard3pos"/>
+        <rotationref ref="vLittleScrew_2invSupCarlosBoard3rot"/>
+      </physvol>
+    </volume>
+    <volume name="vSupCarlosBoard2">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoBBox0x1098"/>
+    </volume>
+    <volume name="vSupCarlosBoard1">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="TGeoBBox0x1097"/>
+    </volume>
+    <assembly name="assemblySupCarlos">
+      <physvol name="vSupCarlosBoard1_0" copynumber="0">
+        <volumeref ref="vSupCarlosBoard1"/>
+        <positionref ref="vSupCarlosBoard1_0inassemblySupCarlospos"/>
+      </physvol>
+      <physvol name="vSupCarlosBoard2_0" copynumber="0">
+        <volumeref ref="vSupCarlosBoard2"/>
+        <positionref ref="vSupCarlosBoard2_0inassemblySupCarlospos"/>
+      </physvol>
+      <physvol name="vSupCarlosBoard3_0" copynumber="0">
+        <volumeref ref="vSupCarlosBoard3"/>
+        <positionref ref="vSupCarlosBoard3_0inassemblySupCarlospos"/>
+        <rotationref ref="vSupCarlosBoard3_0inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="vSupCarlosBoard3_1" copynumber="1">
+        <volumeref ref="vSupCarlosBoard3"/>
+        <positionref ref="vSupCarlosBoard3_1inassemblySupCarlospos"/>
+        <rotationref ref="vSupCarlosBoard3_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_1" copynumber="1">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_10x1inassemblySupCarlospos"/>
+        <rotationref ref="vLittleScrewHead_10x1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_2" copynumber="2">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_20x1inassemblySupCarlospos"/>
+        <rotationref ref="vLittleScrewHead_20x1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_3" copynumber="3">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_3inassemblySupCarlospos"/>
+        <rotationref ref="vLittleScrewHead_3inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="vLittleScrewHead_4" copynumber="4">
+        <volumeref ref="vLittleScrewHead"/>
+        <positionref ref="vLittleScrewHead_4inassemblySupCarlospos"/>
+        <rotationref ref="vLittleScrewHead_4inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="cardCarlos1_1" copynumber="1">
+        <volumeref ref="cardCarlos1"/>
+        <positionref ref="cardCarlos1_1inassemblySupCarlospos"/>
+        <rotationref ref="cardCarlos1_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="cardCarlos2_1" copynumber="1">
+        <volumeref ref="cardCarlos2"/>
+        <positionref ref="cardCarlos2_1inassemblySupCarlospos"/>
+        <rotationref ref="cardCarlos2_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU1_1" copynumber="1">
+        <volumeref ref="carlosCardU1"/>
+        <positionref ref="carlosCardU1_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU1_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU2_1" copynumber="1">
+        <volumeref ref="carlosCardU2"/>
+        <positionref ref="carlosCardU2_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU2_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU3_1" copynumber="1">
+        <volumeref ref="carlosCardU3"/>
+        <positionref ref="carlosCardU3_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU3_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU3_2" copynumber="2">
+        <volumeref ref="carlosCardU3"/>
+        <positionref ref="carlosCardU3_2inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU3_2inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU17_1" copynumber="1">
+        <volumeref ref="carlosCardU17"/>
+        <positionref ref="carlosCardU17_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU17_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU35_1" copynumber="1">
+        <volumeref ref="carlosCardU35"/>
+        <positionref ref="carlosCardU35_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU35_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardU36_1" copynumber="1">
+        <volumeref ref="carlosCardU36"/>
+        <positionref ref="carlosCardU36_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardU36_1inassemblySupCarlosrot"/>
+      </physvol>
+      <physvol name="carlosCardQZ1_1" copynumber="1">
+        <volumeref ref="carlosCardQZ1"/>
+        <positionref ref="carlosCardQZ1_1inassemblySupCarlospos"/>
+        <rotationref ref="carlosCardQZ1_1inassemblySupCarlosrot"/>
+      </physvol>
+    </assembly>
+    </structure>

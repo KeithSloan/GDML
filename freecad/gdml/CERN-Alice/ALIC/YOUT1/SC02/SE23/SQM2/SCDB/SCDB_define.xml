@@ -1,0 +1,4 @@
+<define><position name="SBGC_1inSBGPpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SBGP_1inSCDBpos" x="0" y="0" z="-0.0077999999999999996" unit="cm"/>
+    <position name="SDGH_1inSCDBpos" x="0" y="0" z="0.15310000000000001" unit="cm"/>
+    </define>

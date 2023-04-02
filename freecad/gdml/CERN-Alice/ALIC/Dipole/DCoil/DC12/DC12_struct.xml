@@ -1,0 +1,5 @@
+<structure><volume name="DC12">
+      <materialref ref="DIPO_Al0"/>
+      <solidref ref="TGeoTubeSeg0x3"/>
+    </volume>
+    </structure>

@@ -1,0 +1,17 @@
+<solids><xtru name="TGeoXtru" lunit="cm">
+      <twoDimVertex x="2" y="600"/>
+      <twoDimVertex x="248.52813720703125" y="600"/>
+      <twoDimVertex x="600" y="248.52813720703125"/>
+      <twoDimVertex x="600" y="-248.52813720703125"/>
+      <twoDimVertex x="248.52813720703125" y="-600"/>
+      <twoDimVertex x="2" y="-600"/>
+      <twoDimVertex x="2" y="-153.5"/>
+      <twoDimVertex x="76.008186340332031" y="-153.5"/>
+      <twoDimVertex x="183.5" y="-46.008186340332031"/>
+      <twoDimVertex x="183.5" y="106.00818634033203"/>
+      <twoDimVertex x="76.008186340332031" y="213.5"/>
+      <twoDimVertex x="2" y="213.5"/>
+      <section zOrder="0" zPosition="615.5" xOffset="0" yOffset="0" scalingFactor="1"/>
+      <section zOrder="1" zPosition="714.5999755859375" xOffset="0" yOffset="0" scalingFactor="1"/>
+    </xtru>
+    </solids>

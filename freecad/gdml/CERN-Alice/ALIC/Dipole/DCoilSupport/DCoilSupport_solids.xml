@@ -1,0 +1,7 @@
+<solids><tube name="TGeoTubeSeg0x5" rmin="276" rmax="279.125" z="83" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x6" rmin="202.875" rmax="206" z="77" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <cone name="TGeoConeSeg" z="83" rmin1="279.12400000000002" rmin2="279.125" rmax1="320" rmax2="281.125" startphi="21" deltaphi="0.39999999999999858" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x7" rmin="276" rmax="325" z="2" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x8" rmin="202.875" rmax="279.125" z="3.125" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    <tube name="TGeoTubeSeg0x9" rmin="202.875" rmax="276" z="3.125" startphi="21" deltaphi="30" aunit="deg" lunit="cm"/>
+    </solids>

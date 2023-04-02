@@ -1,0 +1,9 @@
+<solids><polyhedra name="SFRR30x1" startphi="0" deltaphi="90" numsides="5" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="117.59999847412109" rmax="120.59999847412109"/>
+      <zplane z="1.5499999523162842" rmin="117.59999847412109" rmax="120.59999847412109"/>
+    </polyhedra>
+    <polyhedra name="SFRM30x1" startphi="0" deltaphi="90" numsides="5" aunit="deg" lunit="cm">
+      <zplane z="0" rmin="117.59999847412109" rmax="121.59999847412109"/>
+      <zplane z="5" rmin="117.59999847412109" rmax="121.59999847412109"/>
+    </polyhedra>
+    </solids>

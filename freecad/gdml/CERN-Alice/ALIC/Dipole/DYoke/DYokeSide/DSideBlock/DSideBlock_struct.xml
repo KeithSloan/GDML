@@ -1,0 +1,5 @@
+<structure><volume name="DSideBlock">
+      <materialref ref="DIPO_STAINLESS_STEEL2"/>
+      <solidref ref="TGeoBBox0x8"/>
+    </volume>
+    </structure>

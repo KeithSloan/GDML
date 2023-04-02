@@ -1,0 +1,8 @@
+<solids><box name="TGeoBBox0x111" x="102.5" y="133" z="0.0071999998763203621" lunit="cm"/>
+    <box name="TGeoBBox0x112" x="102.5" y="133" z="0.05000000074505806" lunit="cm"/>
+    <box name="TGeoBBox0x113" x="102.5" y="133" z="0.091899998486042023" lunit="cm"/>
+    <box name="TGeoBBox0x114" x="102.5" y="133" z="0.063199996948242188" lunit="cm"/>
+    <box name="TGeoBBox0x115" x="102.5" y="133" z="0.0057999999262392521" lunit="cm"/>
+    <box name="TGeoBBox0x116" x="102.5" y="133" z="0.00279999990016222" lunit="cm"/>
+    <box name="TGeoBBox0x110" x="102.5" y="133" z="2.3159999847412109" lunit="cm"/>
+    </solids>

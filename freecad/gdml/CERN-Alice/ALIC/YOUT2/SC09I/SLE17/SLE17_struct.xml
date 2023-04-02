@@ -1,0 +1,2131 @@
+<structure><volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09E">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09E0x1"/>
+    </volume>
+    <volume name="S09B">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="S09B0x1"/>
+      <physvol name="S09E_1" copynumber="1">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_1inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_2" copynumber="2">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_2inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_3" copynumber="3">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_3inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_4" copynumber="4">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_4inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_5" copynumber="5">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_5inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_6" copynumber="6">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_6inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_7" copynumber="7">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_7inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_8" copynumber="8">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_8inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_9" copynumber="9">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_9inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_10" copynumber="10">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_10inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_11" copynumber="11">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_11inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_12" copynumber="12">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_12inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_13" copynumber="13">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_13inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_14" copynumber="14">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_14inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_15" copynumber="15">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_15inS09Bpos"/>
+      </physvol>
+      <physvol name="S09E_16" copynumber="16">
+        <volumeref ref="S09E"/>
+        <positionref ref="S09E_16inS09Bpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09G">
+      <materialref ref="MUON_ArCO2_80"/>
+      <solidref ref="S09G0x1"/>
+    </volume>
+    <volume name="S09H">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09H0x1"/>
+      <physvol name="S09G_1" copynumber="1">
+        <volumeref ref="S09G"/>
+        <positionref ref="S09G_1inS09Hpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09P">
+      <materialref ref="MUON_COPPER"/>
+      <solidref ref="S09P0x1"/>
+      <physvol name="S09H_1" copynumber="1">
+        <volumeref ref="S09H"/>
+        <positionref ref="S09H_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_1" copynumber="1">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_1inS09Ppos"/>
+      </physvol>
+      <physvol name="S09B_2" copynumber="2">
+        <volumeref ref="S09B"/>
+        <positionref ref="S09B_2inS09Ppos"/>
+      </physvol>
+    </volume>
+    <volume name="S09I">
+      <materialref ref="MUON_G10"/>
+      <solidref ref="S09I0x1"/>
+      <physvol name="S09P_1" copynumber="1">
+        <volumeref ref="S09P"/>
+        <positionref ref="S09P_1inS09Ipos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09N">
+      <materialref ref="MUON_Nomex"/>
+      <solidref ref="S09N0x1"/>
+    </volume>
+    <volume name="S09C">
+      <materialref ref="MUON_Carbon"/>
+      <solidref ref="S09C0x1"/>
+      <physvol name="S09N_1" copynumber="1">
+        <volumeref ref="S09N"/>
+        <positionref ref="S09N_1inS09Cpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09X">
+      <materialref ref="MUON_Nomex_bulk"/>
+      <solidref ref="S09X0x1"/>
+      <physvol name="S09C_1" copynumber="1">
+        <volumeref ref="S09C"/>
+        <positionref ref="S09C_1inS09Xpos"/>
+      </physvol>
+    </volume>
+    <volume name="S09V">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09V0x1"/>
+    </volume>
+    <volume name="S09V">
+      <materialref ref="MUON_Noryl"/>
+      <solidref ref="S09V0x1"/>
+    </volume>
+    <assembly name="SLE17">
+      <physvol name="S09V_34" copynumber="34">
+        <volumeref ref="S09V"/>
+        <positionref ref="S09V_34inSLE17pos"/>
+      </physvol>
+      <physvol name="S09V_44" copynumber="44">
+        <volumeref ref="S09V"/>
+        <positionref ref="S09V_44inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_105" copynumber="105">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_105inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_106" copynumber="106">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_106inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_53" copynumber="53">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_53inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_107" copynumber="107">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_107inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_108" copynumber="108">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_108inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_54" copynumber="54">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_54inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_109" copynumber="109">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_109inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_110" copynumber="110">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_110inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_55" copynumber="55">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_55inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_111" copynumber="111">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_111inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_112" copynumber="112">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_112inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_56" copynumber="56">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_56inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_113" copynumber="113">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_113inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_114" copynumber="114">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_114inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_57" copynumber="57">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_57inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_115" copynumber="115">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_115inSLE17pos"/>
+      </physvol>
+      <physvol name="S09X_116" copynumber="116">
+        <volumeref ref="S09X"/>
+        <positionref ref="S09X_116inSLE17pos"/>
+      </physvol>
+      <physvol name="S09I_58" copynumber="58">
+        <volumeref ref="S09I"/>
+        <positionref ref="S09I_58inSLE17pos"/>
+      </physvol>
+    </assembly>
+    </structure>

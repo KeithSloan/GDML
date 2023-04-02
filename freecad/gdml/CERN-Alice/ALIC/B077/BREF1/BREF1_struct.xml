@@ -1,0 +1,5 @@
+<structure><volume name="BREF1">
+      <materialref ref="FRAME_AIR"/>
+      <solidref ref="shBREF1"/>
+    </volume>
+    </structure>

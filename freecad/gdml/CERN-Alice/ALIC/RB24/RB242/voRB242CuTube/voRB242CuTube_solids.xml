@@ -1,0 +1,2 @@
+<solids><tube name="TGeoTube0x42" rmin="4" rmax="4.1999998092651367" z="330" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

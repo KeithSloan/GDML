@@ -1,0 +1,13 @@
+<structure><volume name="ITSSPDCoolingTubeFluidTA1">
+      <materialref ref="ITS_Freon"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_coolant_TA1"/>
+    </volume>
+    <volume name="ITSSPDCoolingTubeTA0">
+      <materialref ref="ITS_INOX"/>
+      <solidref ref="ITS_SPD_Cooling_Tube_TA0"/>
+      <physvol name="ITSSPDCoolingTubeFluidTA1_1" copynumber="1">
+        <volumeref ref="ITSSPDCoolingTubeFluidTA1"/>
+        <positionref ref="ITSSPDCoolingTubeFluidTA1_1inITSSPDCoolingTubeTA0pos"/>
+      </physvol>
+    </volume>
+    </structure>

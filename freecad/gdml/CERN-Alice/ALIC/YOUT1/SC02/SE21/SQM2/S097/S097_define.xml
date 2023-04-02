@@ -1,0 +1,25 @@
+<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
+    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
+    <position name="SCHL_10x96inS297pos" x="-23.939999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_20x60inS297pos" x="-21.419999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_30x54inS297pos" x="-18.899999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_40x37inS297pos" x="-16.379999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_50x29inS297pos" x="-13.860000000000001" y="0" z="0" unit="cm"/>
+    <position name="SCHL_60x24inS297pos" x="-11.34" y="0" z="0" unit="cm"/>
+    <position name="SCHL_70x22inS297pos" x="-8.8199999999999985" y="0" z="0" unit="cm"/>
+    <position name="SCHL_80x22inS297pos" x="-6.2999999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_90x21inS297pos" x="-3.7799999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_100x21inS297pos" x="-1.26" y="0" z="0" unit="cm"/>
+    <position name="SCHL_110x17inS297pos" x="1.26" y="0" z="0" unit="cm"/>
+    <position name="SCHL_120x17inS297pos" x="3.7799999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_130x17inS297pos" x="6.2999999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_140x17inS297pos" x="8.8199999999999985" y="0" z="0" unit="cm"/>
+    <position name="SCHL_150x15inS297pos" x="11.34" y="0" z="0" unit="cm"/>
+    <position name="SCHL_160x11inS297pos" x="13.860000000000001" y="0" z="0" unit="cm"/>
+    <position name="SCHL_170x10inS297pos" x="16.379999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_180x8inS297pos" x="18.899999999999999" y="0" z="0" unit="cm"/>
+    <position name="SCHL_190x3inS297pos" x="21.419999999999998" y="0" z="0" unit="cm"/>
+    <position name="SCHL_200x3inS297pos" x="23.939999999999998" y="0" z="0" unit="cm"/>
+    <position name="S297_1inS097pos" x="0" y="0" z="-0.031" unit="cm"/>
+    <position name="S497_1inS097pos" x="0" y="0" z="1.2515000000000001" unit="cm"/>
+    </define>

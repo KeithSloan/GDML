@@ -1,0 +1,9 @@
+
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "UZ06_materials.xml">
+<!ENTITY solids SYSTEM "UZ06_solids.xml">
+<!ENTITY struct SYSTEM "UZ06_struct.xml">
+<!ENTITY setup SYSTEM "UZ06_setup.xml">
+]>
+
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

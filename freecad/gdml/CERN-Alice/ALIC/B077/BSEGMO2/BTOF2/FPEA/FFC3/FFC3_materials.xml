@@ -1,0 +1,16 @@
+<materials><material name="TOF_Cu_" Z="29">
+      <D unit="g/cm3" value="8.9600000381469727"/>
+      <atom unit="g/mole" value="63.546001434326172"/>
+    </material>
+    <material name="TOF_plastic">
+      <D unit="g/cm3" value="0.93000000715255737"/>
+      <fraction n="0.85628443956375122" ref="CARBON_elm"/>
+      <fraction n="0.143715500831604" ref="HYDROGEN_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.0107"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.0079400000000001"/>
+    </element>
+    </materials>

@@ -1,0 +1,5 @@
+<structure><volume name="AFaEndPlate">
+      <materialref ref="ABSO_STAINLESS_STEEL0"/>
+      <solidref ref="shFaEndPlate"/>
+    </volume>
+    </structure>

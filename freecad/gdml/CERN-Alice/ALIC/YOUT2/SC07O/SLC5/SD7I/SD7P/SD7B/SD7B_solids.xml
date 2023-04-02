@@ -1,0 +1,8 @@
+<solids><subtraction name="composite47B">
+      <first ref="rounded4SlatD7B"/>
+      <second ref="tube4Cut"/>
+      <position name="composite47Btube4Cutpos" x="-21.25" y="-12.725000381469727" z="0" unit="cm"/>
+    </subtraction>
+    <box name="rounded4SlatD7B" x="40" y="7.0500001907348633" z="0.5" lunit="cm"/>
+    <tube name="tube4Cut" rmin="0" rmax="39.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    </solids>

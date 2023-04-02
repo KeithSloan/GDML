@@ -1,0 +1,21 @@
+<structure><volume name="SFRR7">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SFRR70x1"/>
+    </volume>
+    <volume name="SFRR7">
+      <materialref ref="MUON_Rohacell"/>
+      <solidref ref="SFRR70x1"/>
+    </volume>
+    <volume name="SFRM7">
+      <materialref ref="MUON_FrameEpoxy"/>
+      <solidref ref="SFRM70x1"/>
+      <physvol name="SFRR7_1" copynumber="1">
+        <volumeref ref="SFRR7"/>
+        <positionref ref="SFRR7_1inSFRM7pos"/>
+      </physvol>
+      <physvol name="SFRR7_2" copynumber="2">
+        <volumeref ref="SFRR7"/>
+        <positionref ref="SFRR7_2inSFRM7pos"/>
+      </physvol>
+    </volume>
+    </structure>
