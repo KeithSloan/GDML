@@ -23,8 +23,8 @@
 # **************************************************************************
 import os
 
-def getBrepPath(path, parent, volRef):
-    print(f"==== Get Brep Path : {path} {parent.Label} {volRef}")
+def getStepPath(path, parent, volRef):
+    print(f"==== Get Step Path : {path} {parent.Label} {volRef}")
     print(f"Parents {parent.Parents}")
     for t in parent.Parents:
         print(f"==== tuple {t}")
@@ -34,7 +34,7 @@ def getBrepPath(path, parent, volRef):
         for s in str(t[1]).split('.'):
             path = os.path.join(path,s)
     path = os.path.join(path, volRef)
-    path = os.path.join(path, volRef+".brep")
+    path = os.path.join(path, volRef+".step")
     print(f"== Path ==> {path}")
     return path
 

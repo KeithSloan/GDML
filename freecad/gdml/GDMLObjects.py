@@ -5145,17 +5145,20 @@ class GDMLbordersurface(GDMLcommon):
         obj.Proxy = self
         self.Object = obj
 
-class GDMLbrepPart(GDMLsolid):  # GDMLsolid ?
-    import os
+class GDMLPartStep(GDMLsolid):  # GDMLsolid ?
 
     def __init__(self, obj, path):
         super().__init__(obj)
+        import os
         obj.addProperty(
             "App::PropertyString", "path", "GDMLbrepPart", "directory path"
         ).path = path
         obj.Proxy = self
         self.Object = obj
-        self.Shape.read(os.path.join(fp.path,'brep'))
+        loadShape = Part.Shape()
+        loadShape.read(path)
+        self.Object.Shape = loadShape
+
 
     # def execute(self, fp): in GDMLsolid
 
@@ -5171,8 +5174,6 @@ class GDMLbrepPart(GDMLsolid):  # GDMLsolid ?
 
     def createGeometry(self, fp):
         print('createGeometry')
-        #import os
-        #fp.Shape.read(os.path.join(fp.path,'brep'))
 
 
 class ViewProviderExtension(GDMLcommon):
