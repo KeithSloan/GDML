@@ -1,3 +1,0 @@
-<solids><torus name="TGeoTorus0x4" rtor="0.5" rmin="0" rmax="0.13999999999999999" startphi="315" deltaphi="90" aunit="deg" lunit="cm"/>
-    <torus name="TGeoTorus0x3" rtor="0.5" rmin="0" rmax="0.15000000000000002" startphi="315" deltaphi="90" aunit="deg" lunit="cm"/>
-    </solids>

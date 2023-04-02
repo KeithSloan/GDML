@@ -1,5 +1,0 @@
-<structure><volume name="BTSHA_AM">
-      <materialref ref="FRAME_ALU"/>
-      <solidref ref="BTSHA_AM0x1"/>
-    </volume>
-    </structure>

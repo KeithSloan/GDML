@@ -1,8 +1,0 @@
-<solids><subtraction name="Px24Pl0x1">
-      <first ref="ShPx24Pl1"/>
-      <second ref="ShPx24Pl2"/>
-      <position name="Px24Pl0x1ShPx24Pl2pos" x="-55" y="0" z="0" unit="cm"/>
-    </subtraction>
-    <box name="ShPx24Pl1" x="310" y="280" z="80" lunit="cm"/>
-    <box name="ShPx24Pl2" x="30" y="40" z="120" lunit="cm"/>
-    </solids>

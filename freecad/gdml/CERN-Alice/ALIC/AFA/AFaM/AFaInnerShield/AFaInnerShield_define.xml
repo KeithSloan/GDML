@@ -1,5 +1,0 @@
-<define><position name="AFaWTube1_1inAFaInnerShieldpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="AFaWTube2_1inAFaInnerShieldpos" x="0" y="0" z="99.200004577636719" unit="cm"/>
-    <position name="AFaWTube3_1inAFaInnerShieldpos" x="0" y="0" z="255.20001220703125" unit="cm"/>
-    <position name="AFaWTube4_1inAFaInnerShieldpos" x="0" y="0" z="283.20001220703125" unit="cm"/>
-    </define>

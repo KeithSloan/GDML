@@ -1,7 +1,0 @@
-<define><position name="S06E_7inSC6Bpos" x="-3.75" y="0" z="-0.24780000001192093" unit="cm"/>
-    <position name="S06E_8inSC6Bpos" x="-3.75" y="0" z="0.24780000001192093" unit="cm"/>
-    <position name="S06E_9inSC6Bpos" x="1.25" y="0" z="-0.24780000001192093" unit="cm"/>
-    <position name="S06E_10inSC6Bpos" x="1.25" y="0" z="0.24780000001192093" unit="cm"/>
-    <position name="S06E_11inSC6Bpos" x="6.25" y="0" z="-0.24780000001192093" unit="cm"/>
-    <position name="S06E_12inSC6Bpos" x="6.25" y="0" z="0.24780000001192093" unit="cm"/>
-    </define>

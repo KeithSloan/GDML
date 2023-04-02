@@ -1,7 +1,0 @@
-<solids><intersection name="RB26s2UpperPlie0x1">
-      <first ref="RB26s2TorusU"/>
-      <second ref="RB26s2TubeU"/>
-    </intersection>
-    <torus name="RB26s2TorusU" rtor="7.0074076652526855" rmin="0.15759259462356567" rmax="0.18259260058403015" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="RB26s2TubeU" rmin="7.0074076652526855" rmax="7.190000057220459" z="0.3651852011680603" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

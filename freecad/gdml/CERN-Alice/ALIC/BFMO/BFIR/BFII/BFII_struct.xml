@@ -1,5 +1,0 @@
-<structure><volume name="BFII">
-      <materialref ref="FRAME_AIR"/>
-      <solidref ref="BFII0x1"/>
-    </volume>
-    </structure>

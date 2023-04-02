@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDGrease0x2">
-      <materialref ref="ITS_SPD_KAPTONPOLYCH2"/>
-      <solidref ref="ITSSPDGrease0x3"/>
-    </volume>
-    </structure>

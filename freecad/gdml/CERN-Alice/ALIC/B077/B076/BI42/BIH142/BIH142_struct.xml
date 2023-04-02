@@ -1,5 +1,0 @@
-<structure><volume name="BIH142">
-      <materialref ref="FRAME_STAINLESS_STEEL"/>
-      <solidref ref="BIH1420x1"/>
-    </volume>
-    </structure>

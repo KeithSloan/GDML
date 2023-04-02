@@ -1,5 +1,0 @@
-<structure><volume name="SMB2L">
-      <materialref ref="MUON_FR4"/>
-      <solidref ref="SMB2L0x1"/>
-    </volume>
-    </structure>

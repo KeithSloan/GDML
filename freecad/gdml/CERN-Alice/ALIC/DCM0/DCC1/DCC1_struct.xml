@@ -1,5 +1,0 @@
-<structure><volume name="DCC1">
-      <materialref ref="DIPO_COPPER2"/>
-      <solidref ref="DCC10x1"/>
-    </volume>
-    </structure>

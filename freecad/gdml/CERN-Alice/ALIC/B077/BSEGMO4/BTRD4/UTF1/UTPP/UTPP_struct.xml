@@ -1,5 +1,0 @@
-<structure><volume name="UTPP">
-      <materialref ref="TRD_Al"/>
-      <solidref ref="UTPP0x1"/>
-    </volume>
-    </structure>

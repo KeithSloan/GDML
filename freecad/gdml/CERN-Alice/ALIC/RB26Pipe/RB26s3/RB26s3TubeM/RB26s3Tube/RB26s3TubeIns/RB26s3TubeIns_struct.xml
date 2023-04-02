@@ -1,5 +1,0 @@
-<structure><volume name="RB26s3TubeIns">
-      <materialref ref="PIPE_INSULATION0"/>
-      <solidref ref="TGeoPcon0x74"/>
-    </volume>
-    </structure>

@@ -1,6 +1,0 @@
-<solids><box name="TGeoBBox0x11" x="60" y="67" z="263.89999389648438" lunit="cm"/>
-    <box name="TGeoBBox0x10" x="70" y="77" z="273.89999389648438" lunit="cm"/>
-    <box name="TGeoBBox0x12" x="2" y="77" z="240" lunit="cm"/>
-    <box name="TGeoBBox0x13" x="70" y="2" z="240" lunit="cm"/>
-    <box name="TGeoBBox0x9" x="74" y="81" z="273.89999389648438" lunit="cm"/>
-    </solids>

@@ -1,5 +1,0 @@
-<structure><volume name="FCAB">
-      <materialref ref="TOF_cable"/>
-      <solidref ref="FCAB0x1"/>
-    </volume>
-    </structure>

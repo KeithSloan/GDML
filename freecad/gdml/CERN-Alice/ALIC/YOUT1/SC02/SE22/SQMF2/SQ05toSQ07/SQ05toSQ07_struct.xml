@@ -1,5 +1,0 @@
-<structure><volume name="SQ05toSQ07">
-      <materialref ref="MUON_Kapton"/>
-      <solidref ref="TGeoXtru0x5"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="HUFL">
-      <materialref ref="HALL_CONCRETE2"/>
-      <solidref ref="TGeoTrd1"/>
-    </volume>
-    </structure>

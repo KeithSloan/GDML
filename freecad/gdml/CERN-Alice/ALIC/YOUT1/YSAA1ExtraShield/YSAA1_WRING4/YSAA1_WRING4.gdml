@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "YSAA1_WRING4_materials.xml">
-<!ENTITY solids SYSTEM "YSAA1_WRING4_solids.xml">
-<!ENTITY struct SYSTEM "YSAA1_WRING4_struct.xml">
-<!ENTITY setup SYSTEM "YSAA1_WRING4_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

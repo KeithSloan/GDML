@@ -1,8 +1,0 @@
-<solids><subtraction name="composite6G">
-      <first ref="centerSlatC6G"/>
-      <second ref="tubeCut"/>
-      <position name="composite6GtubeCutpos" x="-31.625" y="0" z="0" unit="cm"/>
-    </subtraction>
-    <box name="centerSlatC6G" x="19.25" y="40" z="0.5" lunit="cm"/>
-    <tube name="tubeCut" rmin="0" rmax="31.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

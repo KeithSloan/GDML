@@ -1,5 +1,0 @@
-<structure><volume name="YSAA1_WRING1">
-      <materialref ref="SHIL_Ni-W-Cu1"/>
-      <solidref ref="TGeoPcon0x31"/>
-    </volume>
-    </structure>

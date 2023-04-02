@@ -1,5 +1,0 @@
-<structure><volume name="SD7D">
-      <materialref ref="MUON_Noryl"/>
-      <solidref ref="composite4D7D"/>
-    </volume>
-    </structure>

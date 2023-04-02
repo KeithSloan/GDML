@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddConnexLVHVplast">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="connexLVHVplastic"/>
-    </volume>
-    </structure>

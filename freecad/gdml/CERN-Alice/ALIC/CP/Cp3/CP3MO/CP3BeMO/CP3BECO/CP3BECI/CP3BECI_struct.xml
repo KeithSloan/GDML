@@ -1,5 +1,0 @@
-<structure><volume name="CP3BECI">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoTube0x17"/>
-    </volume>
-    </structure>

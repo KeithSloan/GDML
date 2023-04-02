@@ -1,5 +1,0 @@
-<structure><volume name="IHK2">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="IHK20x1"/>
-    </volume>
-    </structure>

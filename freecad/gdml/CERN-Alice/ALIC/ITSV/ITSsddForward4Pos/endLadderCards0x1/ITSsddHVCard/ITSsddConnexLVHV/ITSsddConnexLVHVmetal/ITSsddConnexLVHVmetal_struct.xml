@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddConnexLVHVmetal">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="connexLVHVmetal"/>
-    </volume>
-    </structure>

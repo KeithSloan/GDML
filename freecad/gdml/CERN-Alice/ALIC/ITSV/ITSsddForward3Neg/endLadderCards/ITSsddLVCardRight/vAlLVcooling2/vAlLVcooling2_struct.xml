@@ -1,5 +1,0 @@
-<structure><volume name="vAlLVcooling2">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="lLVcooling2"/>
-    </volume>
-    </structure>

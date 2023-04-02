@@ -1,5 +1,0 @@
-<structure><volume name="SAIH10x13">
-      <materialref ref="MUON_AIR"/>
-      <solidref ref="TGeoBBox0x574"/>
-    </volume>
-    </structure>

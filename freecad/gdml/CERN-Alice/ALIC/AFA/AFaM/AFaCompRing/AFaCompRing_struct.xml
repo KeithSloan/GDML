@@ -1,5 +1,0 @@
-<structure><volume name="AFaCompRing">
-      <materialref ref="ABSO_CARBON0"/>
-      <solidref ref="TGeoPcon0x9"/>
-    </volume>
-    </structure>

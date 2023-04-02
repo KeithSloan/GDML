@@ -1,5 +1,0 @@
-<define><position name="ITSSPDExtender_0inITSSPDConeModulepos" x="0" y="0" z="0" unit="cm"/>
-    <position name="ITSSPDextenderMCM_0inITSSPDConeModulepos" x="0.21000000000000002" y="29.83475" z="0" unit="cm"/>
-    <position name="ITSSPDPlate_0inITSSPDConeModulepos" x="0.13500000000000001" y="28.569499999999998" z="0" unit="cm"/>
-    <rotation name="ITSSPDExtender_0inITSSPDConeModulerot" x="-90" y="-90" z="0" unit="deg"/>
-    </define>

@@ -1,5 +1,0 @@
-<structure><volume name="AFaSteelEnvelope">
-      <materialref ref="ABSO_STAINLESS_STEEL0"/>
-      <solidref ref="shFaSteelEnvelope"/>
-    </volume>
-    </structure>

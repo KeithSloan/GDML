@@ -1,3 +1,0 @@
-<solids><tube name="SQ440x1" rmin="0" rmax="0.19499999284744263" z="1.5900000333786011" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="SQ420x1" rmin="15.699999809265137" rmax="17.549999237060547" z="1.5900000333786011" startphi="0" deltaphi="90" aunit="deg" lunit="cm"/>
-    </solids>

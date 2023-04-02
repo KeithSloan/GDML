@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddVolEndLadPipeArm10x1">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="ITSsddEndLadPipeArm10x1"/>
-    </volume>
-    </structure>

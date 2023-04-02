@@ -1,7 +1,0 @@
-<define><position name="FmsMfPil_1inasFMSpos" x="-280" y="-574.22998046875" z="-1450.8599853515625" unit="cm"/>
-    <position name="FmsMfPil_2inasFMSpos" x="280" y="-574.22998046875" z="-1450.8599853515625" unit="cm"/>
-    <position name="FmsMfTb1_1inasFMSpos" x="0" y="-396.79995727539062" z="-1525.8599853515625" unit="cm"/>
-    <position name="FmsMfTb2_1inasFMSpos" x="0" y="-330.5699462890625" z="-1525.8599853515625" unit="cm"/>
-    <position name="FmsDf1_1inasFMSpos" x="0" y="-577.33001708984375" z="-1061.8599853515625" unit="cm"/>
-    <position name="FmsDf2_1inasFMSpos" x="0" y="-632.33001708984375" z="-781.8599853515625" unit="cm"/>
-    </define>

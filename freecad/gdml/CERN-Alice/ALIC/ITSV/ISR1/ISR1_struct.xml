@@ -1,5 +1,0 @@
-<structure><volume name="ISR1">
-      <materialref ref="ITS_inoxalum"/>
-      <solidref ref="ISR10x1"/>
-    </volume>
-    </structure>

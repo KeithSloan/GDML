@@ -1,5 +1,0 @@
-<structure><volume name="FPE4">
-      <materialref ref="TOF_Al_honey_for_holes"/>
-      <solidref ref="FPE40x1"/>
-    </volume>
-    </structure>

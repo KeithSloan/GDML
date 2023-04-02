@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDextenderMCM">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="ITSSPDextenderMCM0x1"/>
-    </volume>
-    </structure>

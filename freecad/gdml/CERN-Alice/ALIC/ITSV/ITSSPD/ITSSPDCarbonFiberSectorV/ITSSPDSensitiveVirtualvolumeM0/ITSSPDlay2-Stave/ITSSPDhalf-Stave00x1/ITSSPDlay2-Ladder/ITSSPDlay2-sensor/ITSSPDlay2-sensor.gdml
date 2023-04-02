@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "ITSSPDlay2-sensor_materials.xml">
-<!ENTITY solids SYSTEM "ITSSPDlay2-sensor_solids.xml">
-<!ENTITY struct SYSTEM "ITSSPDlay2-sensor_struct.xml">
-<!ENTITY setup SYSTEM "ITSSPDlay2-sensor_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

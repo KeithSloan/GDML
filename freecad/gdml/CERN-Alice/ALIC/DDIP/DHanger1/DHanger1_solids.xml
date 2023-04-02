@@ -1,8 +1,0 @@
-<solids><intersection name="shHanger1">
-      <first ref="shHanger12"/>
-      <second ref="shHanger11"/>
-      <position name="shHanger1shHanger11pos" x="0" y="250" z="0" unit="cm"/>
-    </intersection>
-    <cone name="shHanger12" z="26" rmin1="27.898202896118164" rmin2="28.806142807006836" rmax1="126.53333282470703" rmax2="130.65132141113281" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <box name="shHanger11" x="2.5" y="500" z="25" lunit="cm"/>
-    </solids>

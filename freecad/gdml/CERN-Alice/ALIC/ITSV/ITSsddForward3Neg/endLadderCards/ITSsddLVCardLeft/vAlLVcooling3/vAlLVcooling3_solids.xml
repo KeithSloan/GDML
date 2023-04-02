@@ -1,3 +1,0 @@
-<solids><tube name="littleScrewLV" rmin="0" rmax="0.069999999999999993" z="0.31000000000000005" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <box name="lLVcooling3" x="0.47500000000000003" y="0.31000000000000005" z="1.05" lunit="cm"/>
-    </solids>

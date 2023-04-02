@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddSMDmiddle">
-      <materialref ref="ITS_SDD_X7R_capacitors"/>
-      <solidref ref="ITSsddSMDmiddleShape"/>
-    </volume>
-    </structure>

@@ -1,4 +1,0 @@
-<define><position name="CP1VAC_1inCP1BEpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1NEG_1inCP1BEpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1BE_1inCP1KApos" x="0" y="0" z="0" unit="cm"/>
-    </define>

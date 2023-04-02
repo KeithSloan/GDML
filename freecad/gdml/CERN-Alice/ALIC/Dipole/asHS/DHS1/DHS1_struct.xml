@@ -1,5 +1,0 @@
-<structure><volume name="DHS1">
-      <materialref ref="DIPO_STAINLESS_STEEL2"/>
-      <solidref ref="TGeoBBox0x14"/>
-    </volume>
-    </structure>

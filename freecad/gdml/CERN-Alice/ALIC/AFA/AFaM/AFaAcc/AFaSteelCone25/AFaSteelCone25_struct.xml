@@ -1,5 +1,0 @@
-<structure><volume name="AFaSteelCone25">
-      <materialref ref="ABSO_STAINLESS_STEEL2"/>
-      <solidref ref="TGeoCone0x5"/>
-    </volume>
-    </structure>

@@ -1,3 +1,0 @@
-<solids><eltube name="ITS_SPD_Cooling_Tube_coolant_TA1" dx="0.030000000000000002" dy="0.18080000000000002" dz="25" lunit="cm"/>
-    <eltube name="ITS_SPD_Cooling_Tube_TA0" dx="0.034000000000000002" dy="0.18480000000000002" dz="25" lunit="cm"/>
-    </solids>

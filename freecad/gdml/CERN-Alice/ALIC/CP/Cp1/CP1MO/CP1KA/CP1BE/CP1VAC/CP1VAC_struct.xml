@@ -1,5 +1,0 @@
-<structure><volume name="CP1VAC">
-      <materialref ref="PIPE_VACUUM"/>
-      <solidref ref="TGeoTube0x10"/>
-    </volume>
-    </structure>

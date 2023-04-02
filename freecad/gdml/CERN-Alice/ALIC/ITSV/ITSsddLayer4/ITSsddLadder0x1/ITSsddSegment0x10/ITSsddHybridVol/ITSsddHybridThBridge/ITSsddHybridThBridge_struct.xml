@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddHybridThBridge">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="TGeoBBox0x968"/>
-    </volume>
-    </structure>

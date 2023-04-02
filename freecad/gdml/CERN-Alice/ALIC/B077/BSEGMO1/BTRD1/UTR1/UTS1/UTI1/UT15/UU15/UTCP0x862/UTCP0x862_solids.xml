@@ -1,3 +1,0 @@
-<solids><tube name="UTCH0x863" rmin="0" rmax="0.10000000149011612" z="103.69999694824219" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="UTCP0x863" rmin="0" rmax="0.15000000596046448" z="103.69999694824219" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

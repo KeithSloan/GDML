@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "DHanger1_materials.xml">
-<!ENTITY solids SYSTEM "DHanger1_solids.xml">
-<!ENTITY struct SYSTEM "DHanger1_struct.xml">
-<!ENTITY setup SYSTEM "DHanger1_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

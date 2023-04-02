@@ -1,5 +1,0 @@
-<structure><volume name="vCableSegLay0x144">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="TGeoTubeSeg0x41"/>
-    </volume>
-    </structure>

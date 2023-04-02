@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddCoolingLiquid0x9">
-      <materialref ref="ITS_Water"/>
-      <solidref ref="TGeoTube0x79"/>
-    </volume>
-    </structure>

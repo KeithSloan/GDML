@@ -1,5 +1,0 @@
-<structure><volume name="HHW3">
-      <materialref ref="HALL_CONCRETE2"/>
-      <solidref ref="TGeoTrap0x5"/>
-    </volume>
-    </structure>

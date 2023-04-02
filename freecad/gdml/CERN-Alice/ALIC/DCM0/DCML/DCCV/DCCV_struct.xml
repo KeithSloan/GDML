@@ -1,5 +1,0 @@
-<structure><volume name="DCCV">
-      <materialref ref="DIPO_COPPER2"/>
-      <solidref ref="DCCV0x1"/>
-    </volume>
-    </structure>

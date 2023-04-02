@@ -1,5 +1,0 @@
-<define><position name="UMC1_1inUMCMpos" x="0" y="0" z="-0.10000000894069672" unit="cm"/>
-    <position name="UMC2_1inUMCMpos" x="0" y="0" z="-0.048750009387731552" unit="cm"/>
-    <position name="UMC3_1inUMCMpos" x="0" y="0" z="-0.032500009983778" unit="cm"/>
-    <position name="UMC4_1inUMCMpos" x="0" y="0" z="0.0024999892339110374" unit="cm"/>
-    </define>

@@ -1,5 +1,0 @@
-<structure><volume name="DL3">
-      <materialref ref="DIPO_ALUMINIUM2"/>
-      <solidref ref="TGeoBBox0x12"/>
-    </volume>
-    </structure>

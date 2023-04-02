@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDclip">
-      <materialref ref="ITS_SPD_C_M55J"/>
-      <solidref ref="ITSSPDSHClipHoles"/>
-    </volume>
-    </structure>

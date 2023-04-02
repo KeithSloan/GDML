@@ -1,5 +1,0 @@
-<structure><volume name="UTE2">
-      <materialref ref="TRD_Air"/>
-      <solidref ref="UTE20x1"/>
-    </volume>
-    </structure>

@@ -1,8 +1,0 @@
-<solids><trap name="USD10x1" z="1.2000000476837158" theta="0" phi="0" x1="50.599998474121094" x2="5" x3="50.599998474121094" x4="5" y1="27" y2="27" alpha1="3.5" alpha2="3.5" aunit="deg" lunit="cm"/>
-    <trap name="USD20x1" z="1.2000000476837158" theta="0" phi="0" x1="5" x2="62.099998474121094" x3="5" x4="62.099998474121094" y1="33" y2="33" alpha1="3.5" alpha2="3.5" aunit="deg" lunit="cm"/>
-    <box name="USD30x1" x="22.5" y="1.2000000476837158" z="70.5" lunit="cm"/>
-    <trap name="USD40x1" z="1.2000000476837158" theta="0" phi="0" x1="5" x2="65" x3="5" x4="65" y1="25.5" y2="25.5" alpha1="-1" alpha2="-1" aunit="deg" lunit="cm"/>
-    <trap name="USD50x1" z="1.2000000476837158" theta="0" phi="0" x1="63.5" x2="5" x3="63.5" x4="5" y1="23.5" y2="23.5" alpha1="16" alpha2="16" aunit="deg" lunit="cm"/>
-    <trap name="USD60x1" z="1.2000000476837158" theta="0" phi="0" x1="4.5" x2="16.5" x3="4.5" x4="16.5" y1="70.5" y2="70.5" alpha1="-5" alpha2="-5" aunit="deg" lunit="cm"/>
-    <trd name="USDB0x1" x1="87.599998474121094" x2="114" y1="1.2000000476837158" y2="1.2000000476837158" z="71.300003051757812" lunit="cm"/>
-    </solids>

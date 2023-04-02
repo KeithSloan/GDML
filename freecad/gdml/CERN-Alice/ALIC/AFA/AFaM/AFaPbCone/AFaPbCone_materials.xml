@@ -1,9 +1,0 @@
-<materials><material name="ABSO_LEAD2" Z="82">
-      <D unit="g/cm3" value="11.350000381469727"/>
-      <atom unit="g/mole" value="207.19000244140625"/>
-    </material>
-    <material name="ABSO_LEAD0" Z="82">
-      <D unit="g/cm3" value="11.350000381469727"/>
-      <atom unit="g/mole" value="207.19000244140625"/>
-    </material>
-    </materials>

@@ -1,5 +1,0 @@
-<structure><volume name="FIF3">
-      <materialref ref="TOF_G10"/>
-      <solidref ref="FIF30x1"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="B463IA">
-      <materialref ref="FRAME_AIR"/>
-      <solidref ref="B463IA0x1"/>
-    </volume>
-    </structure>

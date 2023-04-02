@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDcapTop0x1">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoXtru0x13"/>
-    </volume>
-    </structure>

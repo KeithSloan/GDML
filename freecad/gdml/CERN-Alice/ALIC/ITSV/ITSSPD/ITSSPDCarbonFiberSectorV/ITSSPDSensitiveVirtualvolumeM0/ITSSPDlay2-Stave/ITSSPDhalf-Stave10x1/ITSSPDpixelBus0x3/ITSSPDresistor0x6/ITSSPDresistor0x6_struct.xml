@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDresistor0x6">
-      <materialref ref="ITS_ALUMINUM"/>
-      <solidref ref="ITSSPDresistor0x7"/>
-    </volume>
-    </structure>

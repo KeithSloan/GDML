@@ -1,7 +1,0 @@
-<define><position name="DL2_1inDL1pos" x="0" y="0" z="0" unit="cm"/>
-    <position name="DL1_1inDL0pos" x="0" y="0" z="0" unit="cm"/>
-    <position name="DL3_1inDL0pos" x="-36" y="0" z="0" unit="cm"/>
-    <position name="DL3_2inDL0pos" x="36" y="0" z="0" unit="cm"/>
-    <position name="DL4_1inDL0pos" x="0" y="-39.5" z="0" unit="cm"/>
-    <position name="DL4_2inDL0pos" x="0" y="39.5" z="0" unit="cm"/>
-    </define>

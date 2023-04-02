@@ -1,7 +1,0 @@
-<solids><box name="BTSHA_AM0x1" x="95.674057006835938" y="119.5" z="0.05000000074505806" lunit="cm"/>
-    <tube name="BTSHT1_AM0x1" rmin="0.40000000596046448" rmax="0.5" z="103.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="BTSHT2_AM0x1" rmin="0.40000000596046448" rmax="0.5" z="95.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="BTSHT3_AM0x1" rmin="0.40000000596046448" rmax="0.5" z="7.9000000953674316" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="BTSHT4_AM0x1" rmin="0.40000000596046448" rmax="0.5" z="23.899999618530273" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <box name="BTSH_AM0x1" x="95.674057006835938" y="119.5" z="1.0499999523162842" lunit="cm"/>
-    </solids>

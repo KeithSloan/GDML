@@ -1,5 +1,0 @@
-<structure><volume name="S09N">
-      <materialref ref="MUON_Nomex"/>
-      <solidref ref="S09N0x1"/>
-    </volume>
-    </structure>

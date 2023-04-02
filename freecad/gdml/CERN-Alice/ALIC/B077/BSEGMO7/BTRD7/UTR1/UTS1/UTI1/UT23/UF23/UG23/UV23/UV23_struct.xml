@@ -1,5 +1,0 @@
-<structure><volume name="UV23">
-      <materialref ref="TRD_Cu"/>
-      <solidref ref="TGeoBBox0x298"/>
-    </volume>
-    </structure>

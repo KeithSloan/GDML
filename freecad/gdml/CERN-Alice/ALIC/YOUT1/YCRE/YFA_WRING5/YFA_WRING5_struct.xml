@@ -1,5 +1,0 @@
-<structure><volume name="YFA_WRING5">
-      <materialref ref="SHIL_Ni-W-Cu1"/>
-      <solidref ref="TGeoTube0x4"/>
-    </volume>
-    </structure>

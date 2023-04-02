@@ -1,5 +1,0 @@
-<define><position name="vLittleScrew_1invSupCarlosBoard3pos" x="0" y="0" z="0.34500000000000008" unit="cm"/>
-    <position name="vLittleScrew_2invSupCarlosBoard3pos" x="0" y="0" z="-0.34500000000000008" unit="cm"/>
-    <rotation name="vLittleScrew_1invSupCarlosBoard3rot" x="-90" y="-0" z="-0" unit="deg"/>
-    <rotation name="vLittleScrew_2invSupCarlosBoard3rot" x="-90" y="-0" z="-0" unit="deg"/>
-    </define>

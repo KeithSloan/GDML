@@ -1,5 +1,0 @@
-<structure><volume name="ISR6">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="ISR60x1"/>
-    </volume>
-    </structure>

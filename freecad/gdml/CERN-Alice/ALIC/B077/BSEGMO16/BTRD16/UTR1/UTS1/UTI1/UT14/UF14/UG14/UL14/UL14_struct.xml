@@ -1,5 +1,0 @@
-<structure><volume name="UL14">
-      <materialref ref="TRD_Cu"/>
-      <solidref ref="TGeoBBox0x448"/>
-    </volume>
-    </structure>

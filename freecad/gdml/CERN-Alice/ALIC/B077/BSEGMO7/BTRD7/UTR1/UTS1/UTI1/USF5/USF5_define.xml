@@ -1,5 +1,0 @@
-<define><position name="USI5_1inUSF5pos" x="13.199999809265137" y="0" z="0" unit="cm"/>
-    <position name="USI5_2inUSF5pos" x="-13.199999809265137" y="0" z="0" unit="cm"/>
-    <position name="USI5_3inUSF5pos" x="39.599998474121094" y="0" z="0" unit="cm"/>
-    <position name="USI5_4inUSF5pos" x="-39.599998474121094" y="0" z="0" unit="cm"/>
-    </define>

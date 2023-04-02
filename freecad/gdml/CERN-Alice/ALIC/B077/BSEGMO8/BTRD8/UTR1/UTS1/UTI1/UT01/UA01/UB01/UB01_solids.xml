@@ -1,6 +1,0 @@
-<solids><box name="UJ010x1" x="93.580001831054688" y="120" z="3" lunit="cm"/>
-    <box name="TGeoBBox0x80" x="93.080001831054688" y="119.5" z="0.32330000400543213" lunit="cm"/>
-    <box name="TGeoBBox0x79" x="93.080001831054688" y="119.5" z="4.8000001907348633" lunit="cm"/>
-    <box name="UX010x1" x="93.580001831054688" y="120" z="4.8000001907348633" lunit="cm"/>
-    <box name="TGeoBBox0x78" x="94" y="122" z="7.8000001907348633" lunit="cm"/>
-    </solids>

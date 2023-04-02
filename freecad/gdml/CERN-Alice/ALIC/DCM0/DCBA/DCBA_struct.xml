@@ -1,5 +1,0 @@
-<structure><volume name="DCBA">
-      <materialref ref="DIPO_IRON2"/>
-      <solidref ref="DCBA0x1"/>
-    </volume>
-    </structure>

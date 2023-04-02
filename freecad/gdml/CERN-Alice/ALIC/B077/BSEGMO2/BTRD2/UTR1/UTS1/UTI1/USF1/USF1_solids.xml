@@ -1,6 +1,0 @@
-<solids><box name="TGeoBBox0x33" x="19.950000762939453" y="1" z="6" lunit="cm"/>
-    <box name="TGeoBBox0x34" x="19.950000762939453" y="1" z="6" lunit="cm"/>
-    <box name="TGeoBBox0x35" x="19.950000762939453" y="1" z="6" lunit="cm"/>
-    <box name="TGeoBBox0x36" x="19.950000762939453" y="1" z="6" lunit="cm"/>
-    <box name="USF10x1" x="95.800003051757812" y="1" z="12" lunit="cm"/>
-    </solids>

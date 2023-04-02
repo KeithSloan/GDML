@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDCoolingTubeCone">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="ITSSPDCoolingTubeCone0x1"/>
-    </volume>
-    </structure>

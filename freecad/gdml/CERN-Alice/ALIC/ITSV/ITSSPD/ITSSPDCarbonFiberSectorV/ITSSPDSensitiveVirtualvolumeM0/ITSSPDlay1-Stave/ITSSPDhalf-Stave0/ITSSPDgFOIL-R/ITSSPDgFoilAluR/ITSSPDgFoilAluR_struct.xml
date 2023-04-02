@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDgFoilAluR">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="ITSSPDSHgFoilAlu0x1"/>
-    </volume>
-    </structure>

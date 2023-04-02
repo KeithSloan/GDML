@@ -1,5 +1,0 @@
-<structure><volume name="UTC20x10">
-      <materialref ref="TRD_Water"/>
-      <solidref ref="TGeoBBox0x63"/>
-    </volume>
-    </structure>

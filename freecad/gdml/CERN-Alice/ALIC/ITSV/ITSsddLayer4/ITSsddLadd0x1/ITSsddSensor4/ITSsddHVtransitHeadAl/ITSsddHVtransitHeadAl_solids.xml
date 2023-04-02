@@ -1,9 +1,0 @@
-<solids><subtraction name="TGeoCompositeShape0x223">
-      <first ref="headAl"/>
-      <second ref="cache"/>
-      <firstposition name="TGeoCompositeShape0x223headAlpos" x="0" y="0" z="-0.0103" unit="cm"/>
-      <position name="TGeoCompositeShape0x223cachepos" x="0" y="0.96589542253521077" z="-0.0053" unit="cm"/>
-    </subtraction>
-    <tube name="headAl" rmin="0" rmax="4.0617908450704219" z="0.00060000000000000006" startphi="28.398473175541014" deltaphi="123.20305364891796" aunit="deg" lunit="cm"/>
-    <box name="cache" x="7.1459999999999999" y="1.9317908450704215" z="0.0106" lunit="cm"/>
-    </solids>

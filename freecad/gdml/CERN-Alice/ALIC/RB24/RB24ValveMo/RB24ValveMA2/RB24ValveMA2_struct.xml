@@ -1,5 +1,0 @@
-<structure><volume name="RB24ValveMA2">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoTorus"/>
-    </volume>
-    </structure>

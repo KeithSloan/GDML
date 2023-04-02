@@ -1,5 +1,0 @@
-<structure><volume name="Spacer6">
-      <materialref ref="MUON_FrameEpoxy"/>
-      <solidref ref="Spacer60x1"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="AFassUBFlange">
-      <materialref ref="ABSO_STAINLESS_STEEL0"/>
-      <solidref ref="TGeoBBox"/>
-    </volume>
-    </structure>

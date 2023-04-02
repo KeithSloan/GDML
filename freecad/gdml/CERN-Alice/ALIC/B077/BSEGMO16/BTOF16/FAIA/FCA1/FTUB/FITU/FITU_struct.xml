@@ -1,5 +1,0 @@
-<structure><volume name="FITU">
-      <materialref ref="TOF_Water"/>
-      <solidref ref="FITU0x1"/>
-    </volume>
-    </structure>

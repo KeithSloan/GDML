@@ -1,5 +1,0 @@
-<structure><volume name="DL2">
-      <materialref ref="DIPO_Al2"/>
-      <solidref ref="TGeoBBox0x11"/>
-    </volume>
-    </structure>

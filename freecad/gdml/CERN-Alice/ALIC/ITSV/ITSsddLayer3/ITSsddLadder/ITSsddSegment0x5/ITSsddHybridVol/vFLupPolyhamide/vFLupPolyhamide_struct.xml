@@ -1,5 +1,0 @@
-<structure><volume name="vFLupPolyhamide">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="sFLupPolyhamide"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="UTGI">
-      <materialref ref="TRD_XeCO2"/>
-      <solidref ref="UTGI0x1"/>
-    </volume>
-    </structure>

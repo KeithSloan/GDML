@@ -1,5 +1,0 @@
-<structure><volume name="CP1NEG">
-      <materialref ref="PIPE_NEG_COATING"/>
-      <solidref ref="TGeoTube0x11"/>
-    </volume>
-    </structure>

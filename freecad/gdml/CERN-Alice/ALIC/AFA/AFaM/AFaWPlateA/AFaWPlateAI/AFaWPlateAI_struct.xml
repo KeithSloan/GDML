@@ -1,5 +1,0 @@
-<structure><volume name="AFaWPlateAI">
-      <materialref ref="ABSO_Ni-W-Cu2"/>
-      <solidref ref="TGeoPcon0x4"/>
-    </volume>
-    </structure>

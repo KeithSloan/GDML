@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDCarbonFiberSupportSectorMountBlockB3">
-      <materialref ref="ITS_SPD_C_M55J"/>
-      <solidref ref="TGeoBBox0x966"/>
-    </volume>
-    </structure>

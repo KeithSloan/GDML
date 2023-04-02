@@ -1,9 +1,0 @@
-<solids><subtraction name="shRB24VMABCRBT3c">
-      <first ref="RB24VMABCRBT3"/>
-      <second ref="RB24VMABCRBT1o"/>
-      <firstposition name="shRB24VMABCRBT3cRB24VMABCRBT3pos" x="0" y="7.0250000953674316" z="1.4500000000000002" unit="cm"/>
-      <firstrotation name="shRB24VMABCRBT3cRB24VMABCRBT3rot" x="90" y="-0" z="180" unit="deg"/>
-    </subtraction>
-    <tube name="RB24VMABCRBT3" rmin="1.75" rmax="1.8999999761581421" z="6.9499998092651367" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="RB24VMABCRBT1o" rmin="0" rmax="5.1500000953674316" z="11.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

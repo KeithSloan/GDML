@@ -1,8 +1,0 @@
-<structure><volume name="BBMO">
-      <materialref ref="FRAME_AIR"/>
-      <solidref ref="BBMO0x1"/>
-      <divisionvol axis="kPhi" number="18" width="20" offset="-360" unit="deg">
-        <volumeref ref="BBCE"/>
-      </divisionvol>
-    </volume>
-    </structure>

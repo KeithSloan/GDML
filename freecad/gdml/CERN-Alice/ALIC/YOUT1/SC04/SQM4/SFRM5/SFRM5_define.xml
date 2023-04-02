@@ -1,5 +1,0 @@
-<define><position name="SFRA5_1inSFRM5pos" x="-0.90000003576278687" y="0" z="1.7250000238418579" unit="cm"/>
-    <position name="SFRA5_2inSFRM5pos" x="-0.90000003576278687" y="0" z="-1.7250000238418579" unit="cm"/>
-    <position name="SFRR5_1inSFRM5pos" x="0.95000004768371582" y="0" z="1.7250000238418579" unit="cm"/>
-    <position name="SFRR5_2inSFRM5pos" x="0.95000004768371582" y="0" z="-1.7250000238418579" unit="cm"/>
-    </define>

@@ -1,5 +1,0 @@
-<structure><volume name="SD6N">
-      <materialref ref="MUON_Nomex"/>
-      <solidref ref="composite6N0x1"/>
-    </volume>
-    </structure>

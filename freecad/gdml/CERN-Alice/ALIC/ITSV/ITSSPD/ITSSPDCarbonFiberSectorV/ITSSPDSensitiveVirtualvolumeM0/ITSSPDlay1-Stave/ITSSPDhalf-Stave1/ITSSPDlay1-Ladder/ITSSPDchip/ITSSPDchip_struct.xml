@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDchip">
-      <materialref ref="ITS_SPD_SI_CHIP"/>
-      <solidref ref="ITSSPDchip0x1"/>
-    </volume>
-    </structure>

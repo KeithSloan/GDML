@@ -1,5 +1,0 @@
-<structure><volume name="RB24ValveAT">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoTube0x40"/>
-    </volume>
-    </structure>

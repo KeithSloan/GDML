@@ -1,9 +1,0 @@
-<define><position name="ITSSPDbase_10x1inITSSPDmcmLpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="ITSSPDanalog_10x1inITSSPDmcmLpos" x="-1.3826999999999998" y="0.21250000000000013" z="-0.037500000000000012" unit="cm"/>
-    <position name="ITSSPDpilot_10x1inITSSPDmcmLpos" x="0.20630000000000059" y="0.1695000000000001" z="-0.052500000000000012" unit="cm"/>
-    <position name="ITSSPDgol_10x1inITSSPDmcmLpos" x="1.4693000000000005" y="0.24250000000000005" z="-0.052500000000000012" unit="cm"/>
-    <position name="ITSSPDrx40_10x1inITSSPDmcmLpos" x="2.3343000000000007" y="0.32250000000000001" z="-0.017500000000000009" unit="cm"/>
-    <position name="ITSSPDoptical_10x1inITSSPDmcmLpos" x="3.7743000000000011" y="0.34750000000000014" z="-0.0075000000000000136" unit="cm"/>
-    <position name="ITSSPDcapBoarder_10x1inITSSPDmcmLpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="ITSSPDcapTop_10x1inITSSPDmcmLpos" x="0" y="0" z="0" unit="cm"/>
-    </define>

@@ -1,5 +1,0 @@
-<structure><volume name="YSAA2_PbRing">
-      <materialref ref="SHIL_LEAD1"/>
-      <solidref ref="TGeoPcon0x27"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="FLO1">
-      <materialref ref="TOF_Al_"/>
-      <solidref ref="FLO10x1"/>
-    </volume>
-    </structure>

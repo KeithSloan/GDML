@@ -1,5 +1,0 @@
-<structure><volume name="USC4">
-      <materialref ref="TRD_Al"/>
-      <solidref ref="USC40x1"/>
-    </volume>
-    </structure>

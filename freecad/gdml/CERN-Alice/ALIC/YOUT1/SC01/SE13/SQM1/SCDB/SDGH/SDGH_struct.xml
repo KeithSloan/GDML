@@ -1,5 +1,0 @@
-<structure><volume name="SDGH">
-      <materialref ref="MUON_Copper"/>
-      <solidref ref="SDGH0x1"/>
-    </volume>
-    </structure>

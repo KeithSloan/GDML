@@ -1,5 +1,0 @@
-<structure><volume name="UH21">
-      <materialref ref="TRD_Plexiglas"/>
-      <solidref ref="TGeoBBox0x262"/>
-    </volume>
-    </structure>

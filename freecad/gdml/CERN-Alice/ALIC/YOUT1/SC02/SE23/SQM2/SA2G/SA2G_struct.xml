@@ -1,5 +1,0 @@
-<structure><volume name="SA2G">
-      <materialref ref="MUON_ArCO2_80"/>
-      <solidref ref="layerS2"/>
-    </volume>
-    </structure>

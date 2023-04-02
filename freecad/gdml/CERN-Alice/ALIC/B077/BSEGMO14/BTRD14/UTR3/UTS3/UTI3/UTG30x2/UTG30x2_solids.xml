@@ -1,3 +1,0 @@
-<solids><tube name="UTG40x3" rmin="0" rmax="0.60000002384185791" z="85.400001525878906" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="UTG30x3" rmin="0" rmax="0.75" z="85.400001525878906" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddBaseThermalBridge">
-      <materialref ref="ITS_SDD_C_AL_M55J"/>
-      <solidref ref="ITSsddBaseThermalBridgeShape"/>
-    </volume>
-    </structure>

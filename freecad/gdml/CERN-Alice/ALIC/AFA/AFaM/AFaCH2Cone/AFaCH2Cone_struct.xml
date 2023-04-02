@@ -1,5 +1,0 @@
-<structure><volume name="AFaCH2Cone">
-      <materialref ref="ABSO_POLYETHYLEN2"/>
-      <solidref ref="TGeoCone0x2"/>
-    </volume>
-    </structure>

@@ -1,6 +1,0 @@
-<define><position name="UJ10_1inUB10pos" x="0" y="0" z="2.4000000953674316" unit="cm"/>
-    <position name="UH10_1inUC10pos" x="0" y="0" z="0" unit="cm"/>
-    <position name="UC10_1inUX10pos" x="0" y="0" z="0" unit="cm"/>
-    <position name="UX10_1inUB10pos" x="0" y="0" z="-1.5" unit="cm"/>
-    <position name="UB10_1inUA10pos" x="0" y="0" z="0" unit="cm"/>
-    </define>

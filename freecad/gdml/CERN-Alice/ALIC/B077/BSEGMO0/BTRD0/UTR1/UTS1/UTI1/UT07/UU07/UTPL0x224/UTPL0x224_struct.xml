@@ -1,5 +1,0 @@
-<structure><volume name="UTPL0x224">
-      <materialref ref="TRD_Cu"/>
-      <solidref ref="UTPL0x225"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="RB26s5LowerPlie">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="RB26s5LowerPlie0x1"/>
-    </volume>
-    </structure>

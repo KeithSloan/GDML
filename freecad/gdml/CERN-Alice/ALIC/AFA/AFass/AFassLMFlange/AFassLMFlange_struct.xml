@@ -1,5 +1,0 @@
-<structure><volume name="AFassLMFlange">
-      <materialref ref="ABSO_STAINLESS_STEEL0"/>
-      <solidref ref="TGeoTrap0x1"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddCoolingPipe0x13">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="TGeoTube0x86"/>
-    </volume>
-    </structure>

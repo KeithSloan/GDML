@@ -1,5 +1,0 @@
-<structure><volume name="FTLN">
-      <materialref ref="TOF_Al_"/>
-      <solidref ref="FTLN0x1"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="FmsDf2">
-      <materialref ref="HALL_CONCRETE2"/>
-      <solidref ref="TGeoBBox0x28"/>
-    </volume>
-    </structure>

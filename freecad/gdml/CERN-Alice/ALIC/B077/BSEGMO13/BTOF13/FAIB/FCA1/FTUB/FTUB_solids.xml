@@ -1,3 +1,0 @@
-<solids><tube name="FITU0x1" rmin="0" rmax="0.30000001192092896" z="95.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="FTUB0x1" rmin="0" rmax="0.40000000596046448" z="95.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

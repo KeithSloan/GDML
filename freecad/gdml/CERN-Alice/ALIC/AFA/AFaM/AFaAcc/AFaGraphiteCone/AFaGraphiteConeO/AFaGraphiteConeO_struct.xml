@@ -1,5 +1,0 @@
-<structure><volume name="AFaGraphiteConeO">
-      <materialref ref="ABSO_CARBON0"/>
-      <solidref ref="TGeoCone0x3"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="SEB2L">
-      <materialref ref="MUON_COPPER"/>
-      <solidref ref="SEB2L0x1"/>
-    </volume>
-    </structure>

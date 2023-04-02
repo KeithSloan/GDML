@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDpt10000x6">
-      <materialref ref="ITS_CERAMICS"/>
-      <solidref ref="ITSSPDpt10000x7"/>
-    </volume>
-    </structure>

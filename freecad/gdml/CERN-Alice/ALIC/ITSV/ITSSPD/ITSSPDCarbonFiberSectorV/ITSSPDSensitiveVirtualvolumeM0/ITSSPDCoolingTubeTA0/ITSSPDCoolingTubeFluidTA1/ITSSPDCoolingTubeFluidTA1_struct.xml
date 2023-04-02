@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDCoolingTubeFluidTA1">
-      <materialref ref="ITS_Freon"/>
-      <solidref ref="ITS_SPD_Cooling_Tube_coolant_TA1"/>
-    </volume>
-    </structure>

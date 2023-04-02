@@ -1,5 +1,0 @@
-<structure><volume name="RB26s5CompRightTube">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoPcon0x88"/>
-    </volume>
-    </structure>

@@ -1,3 +1,0 @@
-<solids><tube name="ITS_SPD_Cooling_Tube_End_coolant_TB0" rmin="0" rmax="0.126" z="2.9400000000000013" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="ITS_SPD_Cooling_Tube_End_TB0" rmin="0" rmax="0.13" z="2.9400000000000013" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

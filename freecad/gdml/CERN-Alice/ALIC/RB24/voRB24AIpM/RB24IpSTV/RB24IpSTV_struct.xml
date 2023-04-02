@@ -1,5 +1,0 @@
-<structure><volume name="RB24IpSTV">
-      <materialref ref="PIPE_VACUUM"/>
-      <solidref ref="TGeoTube0x36"/>
-    </volume>
-    </structure>

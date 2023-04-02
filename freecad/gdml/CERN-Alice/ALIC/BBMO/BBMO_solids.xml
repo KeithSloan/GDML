@@ -1,5 +1,0 @@
-<solids><polyhedra name="BBMO0x1" startphi="0" deltaphi="360" numsides="18" aunit="deg" lunit="cm">
-      <zplane z="-111.5" rmin="278" rmax="410.5"/>
-      <zplane z="111.5" rmin="278" rmax="410.5"/>
-    </polyhedra>
-    </solids>

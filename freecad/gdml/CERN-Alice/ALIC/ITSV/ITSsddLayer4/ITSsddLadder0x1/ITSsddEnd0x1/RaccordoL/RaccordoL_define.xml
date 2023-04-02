@@ -1,5 +1,0 @@
-<define><position name="vwaterRac_1inRaccordoLpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="vtube1Rac_1inRaccordoLpos" x="0" y="0" z="-0.34999999999999998" unit="cm"/>
-    <position name="vtube2Rac_1inRaccordoLpos" x="0" y="0" z="-0.09999999999999995" unit="cm"/>
-    <position name="vtube3Rac_1inRaccordoLpos" x="0" y="0" z="0.25000000000000006" unit="cm"/>
-    </define>

@@ -1,7 +1,0 @@
-<solids><subtraction name="ITSSPDgaurdRingBorder">
-      <first ref="ITSSPDouterBox"/>
-      <second ref="ITSSPDinnerBox"/>
-    </subtraction>
-    <box name="ITSSPDouterBox" x="1.3920000000000003" y="0.020000000000000004" z="7.0720000000000001" lunit="cm"/>
-    <box name="ITSSPDinnerBox" x="1.2800000000000002" y="0.040000000000000008" z="6.96" lunit="cm"/>
-    </solids>

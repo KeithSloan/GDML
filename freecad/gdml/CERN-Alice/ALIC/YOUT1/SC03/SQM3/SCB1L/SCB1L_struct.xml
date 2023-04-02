@@ -1,5 +1,0 @@
-<structure><volume name="SCB1L">
-      <materialref ref="MUON_FR4"/>
-      <solidref ref="SCB1L0x1"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="vCableSegLay0x155">
-      <materialref ref="ITS_COPPER"/>
-      <solidref ref="TGeoBBox0x1088"/>
-    </volume>
-    </structure>

@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "ITSSPDgaurdRing_materials.xml">
-<!ENTITY solids SYSTEM "ITSSPDgaurdRing_solids.xml">
-<!ENTITY struct SYSTEM "ITSSPDgaurdRing_struct.xml">
-<!ENTITY setup SYSTEM "ITSSPDgaurdRing_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

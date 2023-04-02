@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddHVtransitHeadAl">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoCompositeShape0x223"/>
-    </volume>
-    </structure>

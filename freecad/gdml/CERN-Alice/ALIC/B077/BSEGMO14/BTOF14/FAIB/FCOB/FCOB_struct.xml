@@ -1,5 +1,0 @@
-<structure><volume name="FCOB">
-      <materialref ref="TOF_Al_"/>
-      <solidref ref="FCOB0x1"/>
-    </volume>
-    </structure>

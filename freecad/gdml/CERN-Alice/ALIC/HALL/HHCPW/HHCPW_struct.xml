@@ -1,5 +1,0 @@
-<structure><volume name="HHCPW">
-      <materialref ref="HALL_CONCRETE2"/>
-      <solidref ref="HHCPW0x1"/>
-    </volume>
-    </structure>

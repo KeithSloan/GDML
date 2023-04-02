@@ -1,5 +1,0 @@
-<structure><volume name="ICU7">
-      <materialref ref="ITS_COPPER"/>
-      <solidref ref="ICU70x1"/>
-    </volume>
-    </structure>

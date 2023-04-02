@@ -1,8 +1,0 @@
-<define><position name="SNPB_1inSCHLpos" x="0" y="0" z="-1.24695" unit="cm"/>
-    <position name="SKPT_1inSCHLpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="SCHL_10x80inS281pos" x="-20.16" y="0" z="0" unit="cm"/>
-    <position name="SCHL_20x52inS281pos" x="-10.08" y="0" z="0" unit="cm"/>
-    <position name="SCHL_30x46inS281pos" x="0" y="0" z="0" unit="cm"/>
-    <position name="SCHL_40x32inS281pos" x="10.08" y="0" z="0" unit="cm"/>
-    <position name="SCHL_50x25inS281pos" x="20.16" y="0" z="0" unit="cm"/>
-    </define>

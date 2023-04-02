@@ -1,5 +1,0 @@
-<structure><volume name="L3PlugSPL">
-      <materialref ref="MAG_STAINLESS_STEEL2"/>
-      <solidref ref="TGeoXtru0x3"/>
-    </volume>
-    </structure>

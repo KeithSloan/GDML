@@ -1,5 +1,0 @@
-<structure><volume name="SPINO40x56">
-      <materialref ref="MUON_Kapton"/>
-      <solidref ref="SPINO40x57"/>
-    </volume>
-    </structure>

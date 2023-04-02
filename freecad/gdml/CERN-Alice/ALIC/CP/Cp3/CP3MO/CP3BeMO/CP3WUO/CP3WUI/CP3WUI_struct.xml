@@ -1,5 +1,0 @@
-<structure><volume name="CP3WUI">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="upperPlieI"/>
-    </volume>
-    </structure>

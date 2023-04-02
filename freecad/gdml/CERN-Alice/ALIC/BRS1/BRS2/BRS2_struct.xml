@@ -1,5 +1,0 @@
-<structure><volume name="BRS2">
-      <materialref ref="FRAME_STAINLESS_STEEL"/>
-      <solidref ref="BRS20x1"/>
-    </volume>
-    </structure>

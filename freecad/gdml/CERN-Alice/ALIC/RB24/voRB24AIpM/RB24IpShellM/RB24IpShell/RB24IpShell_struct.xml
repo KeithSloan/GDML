@@ -1,5 +1,0 @@
-<structure><volume name="RB24IpShell">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoPcon0x56"/>
-    </volume>
-    </structure>

@@ -1,6 +1,0 @@
-<define><position name="SQ30_2inSQN1pos" x="87.800003051757812" y="2.5999999046325684" z="1.25" unit="cm"/>
-    <position name="SQ31_2inSQN1pos" x="89.349998474121094" y="2.5999999046325684" z="-0.0625" unit="cm"/>
-    <position name="SQ33_1inSQN1pos" x="92.162498474121094" y="2.5999999046325684" z="0.77499997615814209" unit="cm"/>
-    <position name="SQ34to36_1inSQN1pos" x="96.283111572265625" y="20.620000839233398" z="-0.12499997019767761" unit="cm"/>
-    <position name="SQ38_1inSQN1pos" x="95.930000305175781" y="7.5999999046325684" z="-1.0125000476837158" unit="cm"/>
-    </define>

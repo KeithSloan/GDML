@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDgFoilGlueR">
-      <materialref ref="ITS_EPOXY"/>
-      <solidref ref="ITSSPDSHgFoilGlue10x1"/>
-    </volume>
-    </structure>

@@ -1,8 +1,0 @@
-<solids><subtraction name="composite510N">
-      <first ref="rounded5SlatD0N"/>
-      <second ref="tube5Cut"/>
-      <position name="composite510Ntube5Cutpos" x="-21.25" y="-38.200000762939453" z="0" unit="cm"/>
-    </subtraction>
-    <box name="rounded5SlatD0N" x="40" y="40" z="0.80000001192092896" lunit="cm"/>
-    <tube name="tube5Cut" rmin="0" rmax="39.5" z="2.2819999713897703" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

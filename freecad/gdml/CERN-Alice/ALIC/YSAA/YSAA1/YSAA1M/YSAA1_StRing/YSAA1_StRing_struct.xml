@@ -1,5 +1,0 @@
-<structure><volume name="YSAA1_StRing">
-      <materialref ref="SHIL_STAINLESS_STEEL1"/>
-      <solidref ref="TGeoPcon0x21"/>
-    </volume>
-    </structure>

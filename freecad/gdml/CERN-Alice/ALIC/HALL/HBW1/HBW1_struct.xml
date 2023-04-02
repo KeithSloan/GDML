@@ -1,5 +1,0 @@
-<structure><volume name="HBW1">
-      <materialref ref="HALL_CONCRETE2"/>
-      <solidref ref="TGeoBBox0x17"/>
-    </volume>
-    </structure>

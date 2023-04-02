@@ -1,5 +1,0 @@
-<structure><volume name="FRGL">
-      <materialref ref="TOF_Glass"/>
-      <solidref ref="FRGL0x1"/>
-    </volume>
-    </structure>

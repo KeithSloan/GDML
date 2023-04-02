@@ -1,5 +1,0 @@
-<structure><volume name="vScreenUpGlue">
-      <materialref ref="ITS_SDDKAPTON_POLYCH2"/>
-      <solidref ref="TGeoCompositeShape0x210"/>
-    </volume>
-    </structure>

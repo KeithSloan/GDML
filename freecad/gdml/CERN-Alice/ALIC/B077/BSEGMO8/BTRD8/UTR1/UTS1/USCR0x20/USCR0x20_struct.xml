@@ -1,5 +1,0 @@
-<structure><volume name="USCR0x20">
-      <materialref ref="TRD_C"/>
-      <solidref ref="USCR0x21"/>
-    </volume>
-    </structure>

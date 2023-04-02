@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDbus0x4">
-      <materialref ref="ITS_SPDBUSALKPTEPOX"/>
-      <solidref ref="ITSSPDbus0x5"/>
-    </volume>
-    </structure>

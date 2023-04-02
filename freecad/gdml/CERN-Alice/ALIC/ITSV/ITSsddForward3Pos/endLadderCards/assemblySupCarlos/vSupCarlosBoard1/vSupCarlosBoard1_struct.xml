@@ -1,5 +1,0 @@
-<structure><volume name="vSupCarlosBoard1">
-      <materialref ref="ITS_INOX"/>
-      <solidref ref="TGeoBBox0x1097"/>
-    </volume>
-    </structure>

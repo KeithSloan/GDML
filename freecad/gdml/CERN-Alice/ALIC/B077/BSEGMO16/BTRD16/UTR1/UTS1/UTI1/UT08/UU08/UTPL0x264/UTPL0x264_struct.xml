@@ -1,5 +1,0 @@
-<structure><volume name="UTPL0x264">
-      <materialref ref="TRD_Cu"/>
-      <solidref ref="UTPL0x265"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="RB24B1RCTFlange">
-      <materialref ref="PIPE_COPPER"/>
-      <solidref ref="TGeoPcon0x51"/>
-    </volume>
-    </structure>

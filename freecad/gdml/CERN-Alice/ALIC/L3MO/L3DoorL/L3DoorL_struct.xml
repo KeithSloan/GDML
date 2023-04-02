@@ -1,5 +1,0 @@
-<structure><volume name="L3DoorL">
-      <materialref ref="MAG_STAINLESS_STEEL2"/>
-      <solidref ref="TGeoXtru0x1"/>
-    </volume>
-    </structure>

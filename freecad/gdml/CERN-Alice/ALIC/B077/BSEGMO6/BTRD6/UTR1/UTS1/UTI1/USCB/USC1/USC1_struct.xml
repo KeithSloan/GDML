@@ -1,5 +1,0 @@
-<structure><volume name="USC1">
-      <materialref ref="TRD_Air"/>
-      <solidref ref="USC10x1"/>
-    </volume>
-    </structure>

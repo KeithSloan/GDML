@@ -1,5 +1,0 @@
-<structure><volume name="vFootLeftLadFinger">
-      <materialref ref="ITS_G10FR4"/>
-      <solidref ref="footLeftLadFinger"/>
-    </volume>
-    </structure>

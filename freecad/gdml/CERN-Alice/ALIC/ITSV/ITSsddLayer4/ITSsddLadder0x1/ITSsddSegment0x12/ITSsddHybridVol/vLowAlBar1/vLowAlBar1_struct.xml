@@ -1,5 +1,0 @@
-<structure><volume name="vLowAlBar1">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoCompositeShape0x215"/>
-    </volume>
-    </structure>

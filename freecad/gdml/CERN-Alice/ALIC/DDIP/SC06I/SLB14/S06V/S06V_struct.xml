@@ -1,5 +1,0 @@
-<structure><volume name="S06V">
-      <materialref ref="MUON_Noryl"/>
-      <solidref ref="S06V0x1"/>
-    </volume>
-    </structure>

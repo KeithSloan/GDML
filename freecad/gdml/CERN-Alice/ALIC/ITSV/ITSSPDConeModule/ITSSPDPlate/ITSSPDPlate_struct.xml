@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDPlate">
-      <materialref ref="ITS_SPD_C_M55J"/>
-      <solidref ref="ITSSPDPlate_shape"/>
-    </volume>
-    </structure>

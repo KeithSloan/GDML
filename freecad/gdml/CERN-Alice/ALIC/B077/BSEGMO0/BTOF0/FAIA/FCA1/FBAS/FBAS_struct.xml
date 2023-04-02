@@ -1,5 +1,0 @@
-<structure><volume name="FBAS">
-      <materialref ref="TOF_Al_"/>
-      <solidref ref="FBAS0x1"/>
-    </volume>
-    </structure>

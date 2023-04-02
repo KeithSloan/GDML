@@ -1,5 +1,0 @@
-<structure><volume name="vScreenAl">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoCompositeShape0x212"/>
-    </volume>
-    </structure>

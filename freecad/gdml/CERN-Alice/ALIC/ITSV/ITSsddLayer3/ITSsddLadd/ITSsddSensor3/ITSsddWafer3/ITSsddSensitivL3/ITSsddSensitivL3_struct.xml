@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddSensitivL3">
-      <materialref ref="ITS_SI"/>
-      <solidref ref="ITSsddSensorSensBox3"/>
-    </volume>
-    </structure>

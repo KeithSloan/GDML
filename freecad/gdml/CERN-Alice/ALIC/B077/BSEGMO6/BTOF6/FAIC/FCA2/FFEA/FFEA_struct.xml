@@ -1,5 +1,0 @@
-<structure><volume name="FFEA">
-      <materialref ref="TOF_G10"/>
-      <solidref ref="FFEA0x1"/>
-    </volume>
-    </structure>

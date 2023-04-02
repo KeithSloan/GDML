@@ -1,5 +1,0 @@
-<structure><volume name="SFRA1">
-      <materialref ref="MUON_AIR"/>
-      <solidref ref="SFRA10x1"/>
-    </volume>
-    </structure>

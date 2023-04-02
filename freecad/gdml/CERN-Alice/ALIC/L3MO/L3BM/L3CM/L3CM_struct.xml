@@ -1,8 +1,0 @@
-<structure><volume name="L3CM">
-      <materialref ref="MAG_AIR1"/>
-      <solidref ref="TGeoPgon0x1"/>
-      <divisionvol axis="kZAxis" number="168" width="7" offset="0" unit="cm">
-        <volumeref ref="L3CD"/>
-      </divisionvol>
-    </volume>
-    </structure>

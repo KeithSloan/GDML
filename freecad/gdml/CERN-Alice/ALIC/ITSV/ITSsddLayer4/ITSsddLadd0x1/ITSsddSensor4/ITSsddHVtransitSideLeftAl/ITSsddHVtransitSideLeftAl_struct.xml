@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddHVtransitSideLeftAl">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoArb80x58"/>
-    </volume>
-    </structure>

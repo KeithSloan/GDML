@@ -1,5 +1,0 @@
-<solids><box name="TGeoBBox0x960" x="14.600000381469727" y="39.099998474121094" z="3.5999999046325684" lunit="cm"/>
-    <tube name="TGeoTube0x39" rmin="0" rmax="2.5" z="0.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <box name="TGeoBBox0x959" x="15.600000381469727" y="39.599998474121094" z="4.5999999046325684" lunit="cm"/>
-    <box name="TGeoBBox0x958" x="15.600000381469727" y="39.599998474121094" z="4.5999999046325684" lunit="cm"/>
-    </solids>

@@ -1,7 +1,0 @@
-<define><position name="AFaGraphiteConeO_1inAFaGraphiteConepos" x="0" y="0" z="25" unit="cm"/>
-    <position name="AFaGraphiteCone_1inAFaAccpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="AFaConcreteCone_1inAFaAccpos" x="0" y="0" z="288" unit="cm"/>
-    <position name="AFaSteelCone25_1inAFaAccpos" x="0" y="0" z="363.5" unit="cm"/>
-    <position name="AFaSteelCone31I_1inAFaSteelCone31pos" x="0" y="0" z="13" unit="cm"/>
-    <position name="AFaSteelCone31_1inAFaAccpos" x="0" y="0" z="391.5" unit="cm"/>
-    </define>

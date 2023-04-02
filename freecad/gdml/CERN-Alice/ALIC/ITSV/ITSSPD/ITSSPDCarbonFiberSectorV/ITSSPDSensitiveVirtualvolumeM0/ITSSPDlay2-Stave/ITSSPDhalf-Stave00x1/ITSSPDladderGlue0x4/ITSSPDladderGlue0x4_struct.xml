@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDladderGlue0x4">
-      <materialref ref="ITS_EPOXY"/>
-      <solidref ref="ITSSPDladderGlue0x5"/>
-    </volume>
-    </structure>

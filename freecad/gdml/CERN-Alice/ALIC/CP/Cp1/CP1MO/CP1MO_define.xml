@@ -1,9 +1,0 @@
-<define><position name="CP1VAC_1inCP1BEpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1NEG_1inCP1BEpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1BE_1inCP1KApos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1KA_1inCP1MOpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1ATV_1inCP1ATpos" x="0" y="0" z="0" unit="cm"/>
-    <position name="CP1AT_1inCP1MOpos" x="0" y="0" z="-200" unit="cm"/>
-    <position name="CP1AT_2inCP1MOpos" x="0" y="0" z="200" unit="cm"/>
-    <rotation name="CP1AT_2inCP1MOrot" x="180" y="-0" z="180" unit="deg"/>
-    </define>

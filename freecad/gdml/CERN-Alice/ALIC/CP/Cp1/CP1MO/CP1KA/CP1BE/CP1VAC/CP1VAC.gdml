@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "CP1VAC_materials.xml">
-<!ENTITY solids SYSTEM "CP1VAC_solids.xml">
-<!ENTITY struct SYSTEM "CP1VAC_struct.xml">
-<!ENTITY setup SYSTEM "CP1VAC_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

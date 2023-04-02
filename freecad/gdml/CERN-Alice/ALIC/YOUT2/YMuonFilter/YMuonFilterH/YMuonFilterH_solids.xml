@@ -1,9 +1,0 @@
-<solids><subtraction name="MuonFilterH">
-      <first ref="FilterOH"/>
-      <second ref="FilterIH"/>
-      <position name="MuonFilterHFilterIHpos" x="0" y="-0.83152811667681259" z="0" unit="cm"/>
-      <rotation name="MuonFilterHFilterIHrot" x="0.79400002956390392" y="-0" z="0" unit="deg"/>
-    </subtraction>
-    <box name="FilterOH" x="550" y="620" z="100" lunit="cm"/>
-    <tube name="FilterIH" rmin="0" rmax="50" z="110" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddCFladdSideCornerV2">
-      <materialref ref="ITS_SDD_C_AL_M55J"/>
-      <solidref ref="TGeoArb80x56"/>
-    </volume>
-    </structure>

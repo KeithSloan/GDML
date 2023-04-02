@@ -1,5 +1,0 @@
-<structure><volume name="S08G">
-      <materialref ref="MUON_ArCO2_80"/>
-      <solidref ref="S08G0x1"/>
-    </volume>
-    </structure>

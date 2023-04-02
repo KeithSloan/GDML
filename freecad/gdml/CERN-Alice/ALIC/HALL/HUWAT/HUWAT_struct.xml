@@ -1,5 +1,0 @@
-<structure><volume name="HUWAT">
-      <materialref ref="HALL_AIR2"/>
-      <solidref ref="HUWAT0x1"/>
-    </volume>
-    </structure>

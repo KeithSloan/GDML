@@ -1,5 +1,0 @@
-<structure><volume name="S507">
-      <materialref ref="MUON_FR4"/>
-      <solidref ref="S5070x1"/>
-    </volume>
-    </structure>

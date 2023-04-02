@@ -1,5 +1,0 @@
-<structure><volume name="UM11">
-      <materialref ref="TRD_G10"/>
-      <solidref ref="TGeoBBox0x217"/>
-    </volume>
-    </structure>

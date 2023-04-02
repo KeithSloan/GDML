@@ -1,5 +1,0 @@
-<structure><volume name="S08V">
-      <materialref ref="MUON_Noryl"/>
-      <solidref ref="S08V0x1"/>
-    </volume>
-    </structure>

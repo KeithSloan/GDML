@@ -1,5 +1,0 @@
-<structure><volume name="FCOP">
-      <materialref ref="TOF_plastic"/>
-      <solidref ref="FCOP0x1"/>
-    </volume>
-    </structure>

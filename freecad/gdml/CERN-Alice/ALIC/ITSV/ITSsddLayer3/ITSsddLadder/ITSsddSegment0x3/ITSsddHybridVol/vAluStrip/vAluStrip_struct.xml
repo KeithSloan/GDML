@@ -1,5 +1,0 @@
-<structure><volume name="vAluStrip">
-      <materialref ref="ITS_AL"/>
-      <solidref ref="TGeoArb80x4"/>
-    </volume>
-    </structure>

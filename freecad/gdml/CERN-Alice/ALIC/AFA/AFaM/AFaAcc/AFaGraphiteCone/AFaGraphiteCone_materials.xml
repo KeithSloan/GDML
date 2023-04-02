@@ -1,9 +1,0 @@
-<materials><material name="ABSO_CARBON0" Z="6">
-      <D unit="g/cm3" value="1.75"/>
-      <atom unit="g/mole" value="12.010000228881836"/>
-    </material>
-    <material name="ABSO_CARBON2" Z="6">
-      <D unit="g/cm3" value="1.75"/>
-      <atom unit="g/mole" value="12.010000228881836"/>
-    </material>
-    </materials>

@@ -1,5 +1,0 @@
-<structure><volume name="RB24VMABBECT2">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoTube0x30"/>
-    </volume>
-    </structure>

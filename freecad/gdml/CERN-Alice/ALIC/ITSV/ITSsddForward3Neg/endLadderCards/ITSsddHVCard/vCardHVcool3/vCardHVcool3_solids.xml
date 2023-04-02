@@ -1,3 +1,0 @@
-<solids><tube name="littleScrewHV" rmin="0" rmax="0.069999999999999993" z="0.35000000000000003" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <box name="cardHVcool3" x="0.45000000000000001" y="0.35000000000000003" z="0.72000000000000008" lunit="cm"/>
-    </solids>

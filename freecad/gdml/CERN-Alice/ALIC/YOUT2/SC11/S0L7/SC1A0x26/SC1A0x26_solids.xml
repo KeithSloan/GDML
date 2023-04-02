@@ -1,4 +1,0 @@
-<solids><box name="TGeoBBox0x586" x="255" y="68" z="0.20000000298023224" lunit="cm"/>
-    <box name="TGeoBBox0x585" x="255" y="68" z="0.60000002384185791" lunit="cm"/>
-    <box name="SC1A0x27" x="255" y="68" z="0.80000000000000004" lunit="cm"/>
-    </solids>

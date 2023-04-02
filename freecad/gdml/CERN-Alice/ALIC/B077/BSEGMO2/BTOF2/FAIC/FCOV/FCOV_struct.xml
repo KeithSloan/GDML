@@ -1,5 +1,0 @@
-<structure><volume name="FCOV">
-      <materialref ref="TOF_Al_"/>
-      <solidref ref="FCOV0x1"/>
-    </volume>
-    </structure>

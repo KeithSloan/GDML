@@ -1,5 +1,0 @@
-<structure><volume name="ITSSPDCarbonFiberSupportSectorEndAirB2">
-      <materialref ref="ITS_AIR"/>
-      <solidref ref="ITS_SPD_Hole_in_Carbon_fiber_support_End_plate"/>
-    </volume>
-    </structure>

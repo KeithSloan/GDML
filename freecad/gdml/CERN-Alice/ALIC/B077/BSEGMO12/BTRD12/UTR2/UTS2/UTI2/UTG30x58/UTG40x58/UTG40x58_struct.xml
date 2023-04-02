@@ -1,5 +1,0 @@
-<structure><volume name="UTG40x58">
-      <materialref ref="TRD_XeCO2"/>
-      <solidref ref="UTG40x59"/>
-    </volume>
-    </structure>

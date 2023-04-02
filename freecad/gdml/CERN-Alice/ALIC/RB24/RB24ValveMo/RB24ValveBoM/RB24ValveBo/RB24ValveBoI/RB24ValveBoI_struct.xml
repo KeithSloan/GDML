@@ -1,5 +1,0 @@
-<structure><volume name="RB24ValveBoI">
-      <materialref ref="PIPE_VACUUM"/>
-      <solidref ref="TGeoBBox0x960"/>
-    </volume>
-    </structure>

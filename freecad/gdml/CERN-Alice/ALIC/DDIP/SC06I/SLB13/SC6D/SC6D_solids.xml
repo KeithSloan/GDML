@@ -1,8 +1,0 @@
-<solids><intersection name="compositeC6D">
-      <first ref="centerSlatC6D"/>
-      <second ref="boxCCut"/>
-      <position name="compositeC6DboxCCutpos" x="26.592623998806239" y="0" z="0" unit="cm"/>
-    </intersection>
-    <tube name="centerSlatC6D" rmin="29.5" rmax="31.5" z="1" startphi="311.92090606689453" deltaphi="96.158187866210938" aunit="deg" lunit="cm"/>
-    <box name="boxCCut" x="9.8147520023875181" y="43.900001525878906" z="1.002" lunit="cm"/>
-    </solids>

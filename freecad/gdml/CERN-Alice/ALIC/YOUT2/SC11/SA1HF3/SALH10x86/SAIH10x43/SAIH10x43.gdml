@@ -1,9 +1,0 @@
-
-<!DOCTYPE gdml [
-<!ENTITY materials SYSTEM "SAIH10x43_materials.xml">
-<!ENTITY solids SYSTEM "SAIH10x43_solids.xml">
-<!ENTITY struct SYSTEM "SAIH10x43_struct.xml">
-<!ENTITY setup SYSTEM "SAIH10x43_setup.xml">
-]>
-
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNameSpaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">&materials;&solids;&struct;&setup;</gdml>

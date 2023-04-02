@@ -1,5 +1,0 @@
-<structure><volume name="voRB243CuTube">
-      <materialref ref="PIPE_COPPER"/>
-      <solidref ref="TGeoTube0x43"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="RB24IpRF">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoPcon0x54"/>
-    </volume>
-    </structure>

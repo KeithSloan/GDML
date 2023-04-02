@@ -1,5 +1,0 @@
-<structure><volume name="ITSsddPinSupport">
-      <materialref ref="ITS_SDD_C_AL_M55J"/>
-      <solidref ref="ITSsddPinSupportShape"/>
-    </volume>
-    </structure>

@@ -1,5 +1,0 @@
-<structure><volume name="SQ32">
-      <materialref ref="MUON_Kapton"/>
-      <solidref ref="SQ320x1"/>
-    </volume>
-    </structure>

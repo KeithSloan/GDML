@@ -1,5 +1,0 @@
-<structure><volume name="FCC3">
-      <materialref ref="TOF_Cu_"/>
-      <solidref ref="FCC30x1"/>
-    </volume>
-    </structure>

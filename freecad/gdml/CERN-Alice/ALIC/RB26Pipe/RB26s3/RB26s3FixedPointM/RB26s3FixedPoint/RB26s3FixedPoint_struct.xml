@@ -1,5 +1,0 @@
-<structure><volume name="RB26s3FixedPoint">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoPcon0x71"/>
-    </volume>
-    </structure>

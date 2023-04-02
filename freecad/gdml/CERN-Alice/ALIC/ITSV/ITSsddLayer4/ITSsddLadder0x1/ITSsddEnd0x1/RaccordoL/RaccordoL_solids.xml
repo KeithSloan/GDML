@@ -1,5 +1,0 @@
-<solids><tube name="waterRac" rmin="0" rmax="0.10000000000000001" z="1" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="tube1Rac" rmin="0.10000000000000001" rmax="0.25" z="0.30000000000000004" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="tube2Rac" rmin="0.10000000000000001" rmax="0.35000000000000003" z="0.20000000000000001" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    <tube name="tube3Rac" rmin="0.10000000000000001" rmax="0.30000000000000004" z="0.5" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

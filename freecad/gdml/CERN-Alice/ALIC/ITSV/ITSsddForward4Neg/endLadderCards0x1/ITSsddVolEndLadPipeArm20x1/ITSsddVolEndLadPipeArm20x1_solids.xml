@@ -1,8 +1,0 @@
-<solids><subtraction name="ITSsddEndLadPipeArm20x1">
-      <first ref="endLadPipeArmBox"/>
-      <second ref="endLadPipeArmTube"/>
-      <firstposition name="ITSsddEndLadPipeArm20x1endLadPipeArmBoxpos" x="0.012500000000000001" y="0.10300000000000001" z="0" unit="cm"/>
-    </subtraction>
-    <box name="endLadPipeArmBox" x="0.47500000000000003" y="0.68000000000000005" z="11.200000000000001" lunit="cm"/>
-    <tube name="endLadPipeArmTube" rmin="0" rmax="0.15000000000000002" z="11.200000000000001" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
-    </solids>

@@ -1,5 +1,0 @@
-<structure><volume name="DCH2">
-      <materialref ref="DIPO_COPPER2"/>
-      <solidref ref="DCH20x1"/>
-    </volume>
-    </structure>

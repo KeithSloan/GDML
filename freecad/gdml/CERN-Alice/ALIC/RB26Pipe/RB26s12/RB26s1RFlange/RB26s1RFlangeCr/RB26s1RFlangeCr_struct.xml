@@ -1,5 +1,0 @@
-<structure><volume name="RB26s1RFlangeCr">
-      <materialref ref="PIPE_STAINLESS_STEEL"/>
-      <solidref ref="TGeoPcon0x60"/>
-    </volume>
-    </structure>

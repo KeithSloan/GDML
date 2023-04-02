@@ -1,5 +1,0 @@
-<structure><volume name="USD1">
-      <materialref ref="TRD_Air"/>
-      <solidref ref="USD10x1"/>
-    </volume>
-    </structure>
