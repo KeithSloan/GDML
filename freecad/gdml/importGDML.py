@@ -2348,13 +2348,21 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
             else:
                 print(f"pathName {pathName}")
 
-                from .GDMLscanBrep import getPath
+                from .GDMLscanBrep import getBrepPath
+                from .GDMLObjects import GDMLbrepPart, ViewProvider
                 # Not already defined so create
                 # print('Is new : '+volRef)
-                part = parent.newObject("App::Part", volRef)
-                getPath(pathName, part)
+                path = getBrepPath(pathName, parent, volRef)
+                print(f"Path exists {os.path.exists(path)}")
+                if os.path.isfile(path):
+                    part = newPartFeature(parent, "GDMLbrepPart_" + volRef)
+                    GDMLbrepPart(part, path)
+                    if FreeCAD.GuiUp:
+                        ViewProvider(part.ViewObject)
+                else :        
+                    part = parent.newObject("App::Part", volRef)
+                    part.Label = "NOT_Expanded_" + part.Name
                 addSurfList(doc, part)
-                part.Label = "NOT_Expanded_" + part.Name
             part.addProperty(
                 "App::PropertyString", "VolRef", "GDML", "volref name"
             ).VolRef = volRef

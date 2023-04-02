@@ -23,6 +23,22 @@
 # **************************************************************************
 import os
 
+def getBrepPath(path, parent, volRef):
+    print(f"==== Get Brep Path : {path} {parent.Label} {volRef}")
+    print(f"Parents {parent.Parents}")
+    for t in parent.Parents:
+        print(f"==== tuple {t}")
+        #path = os.path.join(path, t[0].Label)
+        #print(f"== Path ==> {path}")
+        #print(f"==== Parent {t[0]} Label {t[0].Label}")
+        for s in str(t[1]).split('.'):
+            path = os.path.join(path,s)
+    path = os.path.join(path, volRef)
+    path = os.path.join(path, volRef+".brep")
+    print(f"== Path ==> {path}")
+    return path
+
+
 def getPath(path, obj):
     print(f"==== Get Path : {path} {obj.Label}")
     #pList = []
