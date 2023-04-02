@@ -2200,6 +2200,7 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
     from .GDMLObjects import checkMaterial
 
+    #print(f"pathName {pathName}")
     colour = None
     for aux in vol.findall("auxiliary"):  # could be more than one auxiliary
         if aux is not None:
@@ -2345,11 +2346,13 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                 except:
                     print(volRef + " : volref not supported with FreeCAD 0.18")
             else:
+                print(f"pathName {pathName}")
+
                 from .GDMLscanBrep import getPath
                 # Not already defined so create
                 # print('Is new : '+volRef)
                 part = parent.newObject("App::Part", volRef)
-                getPath(part)
+                getPath(pathName, part)
                 addSurfList(doc, part)
                 part.Label = "NOT_Expanded_" + part.Name
             part.addProperty(
@@ -3005,6 +3008,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
 
     global pathName
     pathName = os.path.dirname(os.path.normpath(filename))
+    print(f"pathName {pathName}")
     FilesEntity = False
 
     global setup, define, materials, solids, structure, extension, groupMaterials

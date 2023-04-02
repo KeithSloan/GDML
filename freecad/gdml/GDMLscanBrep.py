@@ -23,14 +23,15 @@
 # **************************************************************************
 import os
 
-def getPath(obj):
-    print(f"==== Get Path : {obj.Label}")
+def getPath(path, obj):
+    print(f"==== Get Path : {path} {obj.Label}")
     #pList = []
-    print(f"Parent {obj.Parents}")
+    #print(f"Parent {obj.Parents}")
     for t in obj.Parents:
         print(f"==== tuple {t}")
-        path = t[0].Label
-        print(f"==== Parent {t[0]} Label {t[0].Label}")
+        path = os.path.join(path, t[0].Label)
+        #print(f"== Path ==> {path}")
+        #print(f"==== Parent {t[0]} Label {t[0].Label}")
         for s in str(t[1]).split('.'):
             path = os.path.join(path,s)
         #pList.append(t[1])
