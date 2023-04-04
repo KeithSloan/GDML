@@ -35,6 +35,7 @@ This Script includes the GUI Commands of the GDML module
 import FreeCAD, FreeCADGui
 import Part
 from PySide import QtGui, QtCore
+from enum import Enum
 
 
 if FreeCAD.GuiUp:
@@ -970,10 +971,20 @@ class SetScaleFeature:
         }
 
 
-class BooleanCutFeature:
+class BooleanOperation(Enum):
+    Cut = "Cut"
+    Intersection = "Common"
+    Union = "Fuse"
 
+
+class BooleanFeature:
+
+    ''' Base class for all boolean features '''
     # def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def __init__(self, operation):
+        self.op = operation.value
 
     def Activated(self):
 
@@ -986,7 +997,7 @@ class BooleanCutFeature:
                     sel[0].Object.TypeId == "App::Part"
                     and sel[1].Object.TypeId == "App::Part"
                 ):
-                    print("Boolean Cut")
+                    print(f"Boolean {self.op}")
                     if len(sel[0].Object.InList) > 0:
                         parent = sel[0].Object.InList[0]
                         print("Parent : " + parent.Label)
@@ -1004,10 +1015,12 @@ class BooleanCutFeature:
                         tool = sel[1].Object.OutList[-1]
                         tool.Placement = toolVol.Placement * tool.Placement
                         print(f"tool Placement {tool.Placement}")
-                        boolVol = parent.newObject("App::Part", "Bool-Cut")
+                        volName = "Bool-" + self.op
+                        boolVol = parent.newObject("App::Part", volName)
                         boolVol.addObject(base)
                         boolVol.addObject(tool)
-                        boolObj = boolVol.newObject("Part::Cut", "Cut")
+                        boolObj = boolVol.newObject("Part::" + self.op,
+                                                    self.op)
                         boolObj.Base = base
                         boolObj.Tool = tool
                         boolObj.Tool.setEditorMode("Placement", 0)
@@ -1032,164 +1045,39 @@ class BooleanCutFeature:
             return True
 
     def GetResources(self):
+        pixFile = {"Cut": "GDML_Cut",
+                   "Common": "GDML_Intersection",
+                   "Fuse": "GDML_Union"}
+        gdmlOpName = {"Cut": "GDML Cut",
+                      "Common": "GDML Intersection",
+                      "Fuse": "GDML Union"}
         return {
-            "Pixmap": "GDML_Cut",
+            "Pixmap": pixFile[self.op],
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Cut"
+                "gdmlBooleanFeature", gdmlOpName[self.op]
             ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Cut"
-            ),
+                "gdmlBooleanFeature", gdmlOpName[self.op]
+            )
         }
 
 
-class BooleanIntersectionFeature:
+class BooleanCutFeature(BooleanFeature):
+    def __init__(self):
+        super().__init__(BooleanOperation.Cut)
+
+
+class BooleanIntersectionFeature(BooleanFeature):
+    def __init__(self):
+        super().__init__(BooleanOperation.Intersection)
+
+
+class BooleanUnionFeature(BooleanFeature):
 
     # def IsActive(self):
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
-
-    def Activated(self):
-        import Part
-
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 2:
-            print(sel)
-            selObj = "Gui::SelectionObject"
-            if sel[0].TypeId == selObj and sel[1].TypeId == selObj:
-                if (
-                    sel[0].Object.TypeId == "App::Part"
-                    and sel[1].Object.TypeId == "App::Part"
-                ):
-                    print("Boolean Intersection")
-                    if len(sel[0].Object.InList) > 0:
-                        parent = sel[0].Object.InList[0]
-                        print("Parent : " + parent.Label)
-                        baseVol = sel[0].Object
-                        print("Base Vol : " + baseVol.Label)
-                        print(f"Base Vol Placement {baseVol.Placement}")
-                        print(sel[0].Object.OutList)
-                        base = sel[0].Object.OutList[-1]
-                        base.Placement = baseVol.Placement * base.Placement
-                        print("base : " + base.Label)
-                        print(f"base Placement {base.Placement}")
-                        toolVol = sel[1].Object
-                        print("Tool Vol : " + toolVol.Label)
-                        print(f"Tool Vol Placement {toolVol.Placement}")
-                        tool = sel[1].Object.OutList[-1]
-                        tool.Placement = toolVol.Placement * tool.Placement
-                        print(f"tool Placement {tool.Placement}")
-                        boolVol = parent.newObject("App::Part", "Bool-Intersect")
-                        boolVol.addObject(base)
-                        boolVol.addObject(tool)
-                        boolObj = boolVol.newObject("Part::Common", "Common")
-                        boolObj.Base = base
-                        boolObj.Tool = tool
-                        boolObj.Tool.setEditorMode("Placement", 0)
-                        print("Tool : " + tool.Label)
-                        print("Remove Base")
-                        baseVol.removeObject(base)
-                        print("Adjust Base Links")
-                        base.adjustRelativeLinks(baseVol)
-                        toolVol.removeObject(tool)
-                        print("Remove Base Vol")
-                        FreeCAD.ActiveDocument.removeObject(baseVol.Label)
-                        FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                        FreeCAD.ActiveDocument.recompute()
-                        # boolObj.recompute()
-                    else:
-                        print("No Parent Volume/Part")
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is None:
-            return False
-        else:
-            return True
-
-    def GetResources(self):
-        return {
-            "Pixmap": "GDML_Intersection",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Intersection"
-            ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Intersection"
-            ),
-        }
-
-
-class BooleanUnionFeature:
-
-    # def IsActive(self):
-    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
-
-    def Activated(self):
-        import Part
-
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 2:
-            print(sel)
-            selObj = "Gui::SelectionObject"
-            if sel[0].TypeId == selObj and sel[1].TypeId == selObj:
-                if (
-                    sel[0].Object.TypeId == "App::Part"
-                    and sel[1].Object.TypeId == "App::Part"
-                ):
-                    print("Boolean Union")
-                    if len(sel[0].Object.InList) > 0:
-                        parent = sel[0].Object.InList[0]
-                        print("Parent : " + parent.Label)
-                        baseVol = sel[0].Object
-                        print("Base Vol : " + baseVol.Label)
-                        print(f"Base Vol Placement {baseVol.Placement}")
-                        print(sel[0].Object.OutList)
-                        base = sel[0].Object.OutList[-1]
-                        base.Placement = baseVol.Placement * base.Placement
-                        print("base : " + base.Label)
-                        print(f"base Placement {base.Placement}")
-                        toolVol = sel[1].Object
-                        print("Tool Vol : " + toolVol.Label)
-                        print(f"Tool Vol Placement {toolVol.Placement}")
-                        tool = sel[1].Object.OutList[-1]
-                        tool.Placement = toolVol.Placement * tool.Placement
-                        print(f"tool Placement {tool.Placement}")
-                        boolVol = parent.newObject("App::Part", "Bool-Union")
-                        boolVol.addObject(base)
-                        boolVol.addObject(tool)
-                        boolObj = boolVol.newObject("Part::Fuse", "Union")
-                        boolObj.Placement = sel[0].Object.Placement
-                        boolObj.Base = base
-                        boolObj.Tool = tool
-                        boolObj.Tool.setEditorMode("Placement", 0)
-                        print("Tool : " + tool.Label)
-                        print("Remove Base")
-                        baseVol.removeObject(base)
-                        print("Adjust Base Links")
-                        base.adjustRelativeLinks(baseVol)
-                        toolVol.removeObject(tool)
-                        print("Remove Base Vol")
-                        FreeCAD.ActiveDocument.removeObject(baseVol.Label)
-                        FreeCAD.ActiveDocument.removeObject(toolVol.Label)
-                        FreeCAD.ActiveDocument.recompute()
-                        # boolObj.recompute()
-                    else:
-                        print("No Parent Volume")
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is None:
-            return False
-        else:
-            return True
-
-    def GetResources(self):
-        return {
-            "Pixmap": "GDML_Union",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Union"
-            ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "gdmlBooleanFeature", "GDML Union"
-            ),
-        }
+    def __init__(self):
+        super().__init__(BooleanOperation.Union)
 
 
 class BoxFeature:
