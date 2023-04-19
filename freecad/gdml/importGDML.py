@@ -169,7 +169,7 @@ def getSolidName(solid, name=None):
     # need to add tag unless already part of name (previous export)
     if name is None:
         name = solid.attrib.get("name")
-    print(f"name {name} tag {solid.tag}")    
+    #print(f"name {name} tag {solid.tag}")    
     if solid.tag not in ['subtraction', 'union', 'intersection']:
         if name[:4] != 'GDML':
             return 'GDML'+solid.tag.capitalize()+'_'+name
