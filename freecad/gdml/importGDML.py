@@ -165,6 +165,17 @@ def getName(ptr):
     return ptr.attrib.get("name")
 
 
+def getSolidName(solid, name=None):
+    # need to add tag unless already part of name (previous export)
+    if name is None:
+        name = solid.attrib.get("name")
+    print(f"name {name} tag {solid.tag}")    
+    if solid.tag not in ['subtraction', 'union', 'intersection']:
+        if name[:4] != 'GDML':
+            return 'GDML'+solid.tag.capitalize()+'_'+name
+    return name    
+
+
 def getText(ptr, var, default):
     # print("Get Texti : "+str(ptr.attrib.get(var))+" : "+str(var))
     if var in ptr.attrib:
@@ -278,9 +289,9 @@ def createBox(
     # the part name will have one more GDMLBox added
     # No - need to remove leading GDMLBox on export
 
-    if solidName is None:
-        solidName = getName(solid)
-    mycube = newPartFeature(part, "GDMLBox_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mycube = newPartFeature(part, getSolidName(solid, solidName))
     x = GDMLShared.getVal(solid, "x")
     y = GDMLShared.getVal(solid, "y")
     z = GDMLShared.getVal(solid, "z")
@@ -317,9 +328,9 @@ def createCone(
     deltaphi = GDMLShared.getVal(solid, "deltaphi")
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    if solidName is None:
-        solidName = getName(solid)
-    mycone = newPartFeature(part, "GDMLCone_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mycone = newPartFeature(part, getSolidName(solid, solidName))
     GDMLCone(
         mycone,
         rmin1,
@@ -346,7 +357,7 @@ def createCone(
     return mycone
 
 
-def createElcone(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createElcone(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLElCone, ViewProvider
 
     GDMLShared.trace("CreateElCone : ")
@@ -355,7 +366,9 @@ def createElcone(part, solid, material, colour, px, py, pz, rot, displayMode):
     zmax = GDMLShared.getVal(solid, "zmax")
     zcut = GDMLShared.getVal(solid, "zcut")
     lunit = getText(solid, "lunit", "mm")
-    myelcone = newPartFeature(part, "GDMLElCone_" + getName(solid))
+    #if solidName is None:
+    #    solidName = getName(solid)
+    myelcone = newPartFeature(part, getSolidName(solid,  solidName))
     GDMLElCone(myelcone, dx, dy, zmax, zcut, lunit, material, colour)
     GDMLShared.trace("CreateElCone : ")
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
@@ -383,9 +396,9 @@ def createEllipsoid(
     zcut1 = GDMLShared.getVal(solid, "zcut1")
     zcut2 = GDMLShared.getVal(solid, "zcut2")
     lunit = getText(solid, "lunit", "mm")
-    if solidName is None:
-        solidName = getName(solid)
-    myelli = newPartFeature(part, "GDMLEllipsoid_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    myelli = newPartFeature(part, getSolidName(solid, solidName))
     # cuts 0 for now
     GDMLEllipsoid(myelli, ax, by, cz, zcut1, zcut2, lunit, material, colour)
     GDMLShared.trace("CreateEllipsoid : ")
@@ -400,7 +413,7 @@ def createEllipsoid(
     return myelli
 
 
-def createEltube(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createEltube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLElTube, ViewProvider
 
     GDMLShared.trace("CreateElTube : ")
@@ -409,7 +422,9 @@ def createEltube(part, solid, material, colour, px, py, pz, rot, displayMode):
     dy = GDMLShared.getVal(solid, "dy")
     dz = GDMLShared.getVal(solid, "dz")
     lunit = getText(solid, "lunit", "mm")
-    myeltube = newPartFeature(part, "GDMLElTube_" + getName(solid))
+    #if solidName is None:
+    #    solidName = getName(solid)
+    myeltube = newPartFeature(part, getSolidName(solid, solidName))
     GDMLElTube(myeltube, dx, dy, dz, lunit, material, colour)
     GDMLShared.trace("CreateElTube : ")
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
@@ -424,7 +439,7 @@ def createEltube(part, solid, material, colour, px, py, pz, rot, displayMode):
 
 
 def createGenericPolycone(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     from .GDMLObjects import (
         GDMLGenericPolycone,
@@ -439,7 +454,9 @@ def createGenericPolycone(
     deltaphi = GDMLShared.getVal(solid, "deltaphi")
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    mypolycone = newPartFeature(part, "GDMLGenericPolycone_" + getName(solid))
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mypolycone = newPartFeature(part, getSolidName(solid, solidName))
     mypolycone.addExtension("App::GroupExtensionPython")
     GDMLGenericPolycone(
         mypolycone, startphi, deltaphi, aunit, lunit, material, colour
@@ -472,7 +489,7 @@ def createGenericPolycone(
 
 
 def createGenericPolyhedra(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     from .GDMLObjects import (
         GDMLGenericPolyhedra,
@@ -488,9 +505,7 @@ def createGenericPolyhedra(
     numsides = int(GDMLShared.getVal(solid, "numsides"))
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    mypolyhedra = newPartFeature(
-        part, "GDMLGenericPolyhedra_" + getName(solid)
-    )
+    mypolyhedra = newPartFeature(part, getSolidName(solid, solidName))
     mypolyhedra.addExtension("App::GroupExtensionPython")
     GDMLGenericPolyhedra(
         mypolyhedra,
@@ -538,9 +553,9 @@ def createOrb(
     GDMLShared.trace(solid.attrib)
     r = GDMLShared.getVal(solid, "r")
     lunit = getText(solid, "lunit", "mm")
-    if solidName is None:
-        solidName = getName(solid)
-    myorb = newPartFeature(part, "GDMLOrb_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    myorb = newPartFeature(part, getSolidName(solid, solidName))
     GDMLOrb(myorb, r, lunit, material, colour)
     GDMLShared.trace("CreateOrb : ")
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
@@ -569,9 +584,9 @@ def createPara(
     alpha = GDMLShared.getVal(solid, "alpha")
     theta = GDMLShared.getVal(solid, "theta")
     phi = GDMLShared.getVal(solid, "phi")
-    if solidName is None:
-        solidName = getName(solid)
-    mypara = newPartFeature(part, "GDMLPara_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mypara = newPartFeature(part, getSolidName(solid, solidName))
     GDMLPara(
         mypara, x, y, z, alpha, theta, phi, aunit, lunit, material, colour
     )
@@ -601,9 +616,9 @@ def createHype(
     z = GDMLShared.getVal(solid, "z")
     inst = GDMLShared.getVal(solid, "inst")
     outst = GDMLShared.getVal(solid, "outst")
-    if solidName is None:
-        solidName = getName(solid)
-    myhype = newPartFeature(part, "GDMLHype_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    myhype = newPartFeature(part, getSolidName(solid, solidName))
     GDMLHype(
         myhype, rmin, rmax, z, inst, outst, aunit, lunit, material, colour
     )
@@ -620,7 +635,7 @@ def createHype(
 
 
 def createParaboloid(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName= None
 ):
     from .GDMLObjects import GDMLParaboloid, ViewProvider
 
@@ -630,7 +645,7 @@ def createParaboloid(
     rlo = GDMLShared.getVal(solid, "rlo")
     rhi = GDMLShared.getVal(solid, "rhi")
     dz = GDMLShared.getVal(solid, "dz")
-    myparaboloid = newPartFeature(part, "GDMLParaboloid_" + getName(solid))
+    myparaboloid = newPartFeature(part, getSolidName(solid, solidName))
     GDMLParaboloid(myparaboloid, rlo, rhi, dz, lunit, material, colour)
     GDMLShared.trace("CreateParaboloid : ")
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
@@ -645,7 +660,7 @@ def createParaboloid(
 
 
 def createPolycone(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     from .GDMLObjects import (
         GDMLPolycone,
@@ -660,7 +675,7 @@ def createPolycone(
     deltaphi = GDMLShared.getVal(solid, "deltaphi")
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    mypolycone = newPartFeature(part, "GDMLPolycone_" + getName(solid))
+    mypolycone = newPartFeature(part, getSolidName(solid, solidName))
     mypolycone.addExtension("App::GroupExtensionPython")
     GDMLPolycone(
         mypolycone, startphi, deltaphi, aunit, lunit, material, colour
@@ -695,7 +710,7 @@ def createPolycone(
 
 
 def createPolyhedra(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     from .GDMLObjects import (
         GDMLPolyhedra,
@@ -711,7 +726,7 @@ def createPolyhedra(
     numsides = int(GDMLShared.getVal(solid, "numsides"))
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    mypolyhedra = newPartFeature(part, "GDMLPolyhedra_" + getName(solid))
+    mypolyhedra = newPartFeature(part, getSolidName(solid, solidName))
     mypolyhedra.addExtension("App::GroupExtensionPython")
     GDMLPolyhedra(
         mypolyhedra,
@@ -796,9 +811,9 @@ def createSphere(
     lunit = getText(solid, "lunit", "mm")
     starttheta = GDMLShared.getVal(solid, "starttheta")
     deltatheta = GDMLShared.getVal(solid, "deltatheta")
-    if solidName is None:
-        solidName = getName(solid)
-    mysphere = newPartFeature(part, "GDMLSphere_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mysphere = newPartFeature(part, getSolidName(solid, solidName))
     GDMLSphere(
         mysphere,
         rmin,
@@ -823,7 +838,7 @@ def createSphere(
     return mysphere
 
 
-def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTetra, ViewProvider
 
     # GDMLShared.setTrace(True)
@@ -834,7 +849,7 @@ def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode):
     v3 = GDMLShared.getDefinedVector(solid, "vertex3")
     v4 = GDMLShared.getDefinedVector(solid, "vertex4")
     lunit = getText(solid, "lunit", "mm")
-    mytetra = newPartFeature(part, "GDMLTetra_" + getName(solid))
+    mytetra = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTetra(mytetra, v1, v2, v3, v4, lunit, material, colour)
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -864,7 +879,7 @@ def createTorus(
     lunit = getText(solid, "lunit", "mm")
     if solidName is None:
         solidName = getName(solid)
-    mytorus = newPartFeature(part, "GDMLTorus_" + solidName)
+    mytorus = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTorus(
         mytorus,
         rmin,
@@ -888,7 +903,7 @@ def createTorus(
     return mytorus
 
 
-def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTrap, ViewProvider
 
     GDMLShared.trace("CreateTrap : ")
@@ -906,7 +921,7 @@ def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode):
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
     # print z
-    mytrap = newPartFeature(part, "GDMLTrap_" + getName(solid))
+    mytrap = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTrap(
         mytrap,
         z,
@@ -949,9 +964,9 @@ def createTrd(
     y2 = GDMLShared.getVal(solid, "y2")
     lunit = getText(solid, "lunit", "mm")
     # print z
-    if solidName is None:
-        solidName = getName(solid)
-    mytrd = newPartFeature(part, "GDMLTrd_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mytrd = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTrd(mytrd, z, x1, x2, y1, y2, lunit, material, colour)
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -965,7 +980,7 @@ def createTrd(
 
 
 def createTwistedbox(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMod, solidName = None
 ):
     # parent, sold
     from .GDMLObjects import GDMLTwistedbox, ViewProvider
@@ -978,7 +993,7 @@ def createTwistedbox(
     # modifs lambda (otherwise each time we open the gdml file,
     # the part name will have one more GDMLBox added
     # No - need to remove leading GDMLBox on export
-    mypart = newPartFeature(part, "GDMLTwistedbox_" + getName(solid))
+    mypart = newPartFeature(part, getSolidName(solid, solidName))
     x = GDMLShared.getVal(solid, "x")
     y = GDMLShared.getVal(solid, "y")
     z = GDMLShared.getVal(solid, "z")
@@ -1003,7 +1018,7 @@ def createTwistedbox(
 
 
 def createTwistedtrap(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMod, solidName=None
 ):
     from .GDMLObjects import GDMLTwistedtrap, ViewProvider
 
@@ -1023,7 +1038,7 @@ def createTwistedtrap(
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
     # print z
-    mytrap = newPartFeature(part, "GDMLTwistedtrap_" + getName(solid))
+    mytrap = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTwistedtrap(
         mytrap,
         PhiTwist,
@@ -1054,7 +1069,7 @@ def createTwistedtrap(
 
 
 def createTwistedtrd(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     from .GDMLObjects import GDMLTwistedtrd, ViewProvider
 
@@ -1069,7 +1084,7 @@ def createTwistedtrd(
     angle = GDMLShared.getVal(solid, "PhiTwist")
     aunit = getText(solid, "aunit", "rad")
     # print z
-    mytrd = newPartFeature(part, "GDMLTwistedtrd_" + getName(solid))
+    mytrd = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTwistedtrd(
         mytrd, angle, z, x1, x2, y1, y2, aunit, lunit, material, colour
     )
@@ -1085,7 +1100,7 @@ def createTwistedtrd(
 
 
 def createTwistedtubs(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     from .GDMLObjects import GDMLTwistedtubs, ViewProvider
 
@@ -1098,7 +1113,7 @@ def createTwistedtubs(
     twistedangle = GDMLShared.getVal(solid, "twistedangle")
     phi = GDMLShared.getVal(solid, "phi")
     aunit = getText(solid, "aunit", "rad")
-    mypart = newPartFeature(part, "GDMLTwistedtubs_" + getName(solid))
+    mypart = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTwistedtubs(
         mypart,
         endinnerrad,
@@ -1122,7 +1137,7 @@ def createTwistedtubs(
     return mypart
 
 
-def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import (
         GDMLXtru,
         GDML2dVertex,
@@ -1134,7 +1149,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode):
     GDMLShared.trace("CreateXtru : ")
     # print(solid)
     # print(getName(solid))
-    myXtru = newPartFeature(part, "GDMLXtru_" + getName(solid))
+    myXtru = newPartFeature(part, getSolidName(solid, solidName))
     # myXtru.addExtension("App::GroupExtensionPython")
     lunit = getText(solid, "lunit", "mm")
     GDMLXtru(myXtru, lunit, material, colour)
@@ -1177,7 +1192,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode):
     return myXtru
 
 
-def createTube(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTube, ViewProvider
 
     GDMLShared.trace("CreateTube : ")
@@ -1192,7 +1207,7 @@ def createTube(part, solid, material, colour, px, py, pz, rot, displayMode):
     GDMLShared.trace(rmin)
     GDMLShared.trace(rmax)
     GDMLShared.trace(z)
-    mytube = newPartFeature(part, "GDMLTube_" + getName(solid))
+    mytube = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTube(
         mytube,
         rmin,
@@ -1217,7 +1232,7 @@ def createTube(part, solid, material, colour, px, py, pz, rot, displayMode):
     return mytube
 
 
-def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode):
+def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLcutTube, ViewProvider
 
     GDMLShared.trace("CreateCutTube : ")
@@ -1245,7 +1260,7 @@ def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode):
     GDMLShared.trace(highX)
     GDMLShared.trace(highY)
     GDMLShared.trace(highZ)
-    mycuttube = newPartFeature(part, "GDMLcutTube_" + getName(solid))
+    mycuttube = newPartFeature(part, getSolidName(solid, solidName))
     GDMLcutTube(
         mycuttube,
         rmin,
@@ -1295,7 +1310,7 @@ def createParameterisedTube(
     GDMLShared.trace(z)
     if solidName is None:
         solidName = getName(solid)
-    mytube = newPartFeature(part, "GDMLTube_" + solidName)
+    mytube = newPartFeature(part, getSolidName(solid, solidName))
     GDMLTube(
         mytube,
         rmin,
@@ -1336,9 +1351,9 @@ def createParameterisedPolycone(
     deltaphi = GDMLShared.getVal(solid, "openPhi")
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    if solidName is None:
-        solidName = getName(solid)
-    mypolycone = newPartFeature(part, "GDMLPolycone_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mypolycone = newPartFeature(part, getSolidName(solid, solidName))
     mypolycone.addExtension("App::GroupExtensionPython")
     numRZ = GDMLShared.getVal(solid, "numRZ")
     # TODO: should add numRZ to GDMLParameterisedPolycone, when we get to it
@@ -1391,9 +1406,9 @@ def createParameterisedPolyhedra(
     numsides = int(GDMLShared.getVal(solid, "numSide"))
     aunit = getText(solid, "aunit", "rad")
     lunit = getText(solid, "lunit", "mm")
-    if solidName is None:
-        solidName = getName(solid)
-    mypolyhedra = newPartFeature(part, "GDMLPolyhedra_" + solidName)
+    #if solidName is None:
+    #    solidName = getName(solid)
+    mypolyhedra = newPartFeature(part, getSolidName(solid, solidName))
     mypolyhedra.addExtension("App::GroupExtensionPython")
     numRZ = GDMLShared.getVal(solid, "numRZ")
     # TODO: should add numRZ to GDMLParameterisedPolyhedra, when we get to it
@@ -1501,7 +1516,7 @@ class TessSampleDialog(QtGui.QDialog, importTess_ui.Ui_Dialog):
 
 
 def createTessellated(
-    part, solid, material, colour, px, py, pz, rot, displayMode
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     global maxTessellationFaces
     from .GDMLObjects import (
@@ -1692,8 +1707,9 @@ def parseBoolean(
         x, y, z = GDMLShared.getPosition(solid)
         # rot = GDMLShared.getRotFromRefs(solid)
         rotBool = GDMLShared.getRotation(solid)
-        mybool = part.newObject(objType, solid.tag + ":" + getName(solid))
-        # mybool = part.newObject('Part::Fuse', solid.tag+':'+getName(solid))
+        #mybool = part.newObject(objType, solid.tag + ":" + getName(solid))
+        #print(f"Solid Name {solid} {getSolidName(solid, None)}")
+        mybool = part.newObject(objType, getSolidName(solid, None))
         GDMLShared.trace("Create Base Object")
         mybool.Base = createSolid(
             part, base, material, colour, 0, 0, 0, None, displayMode
