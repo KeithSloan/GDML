@@ -3398,6 +3398,7 @@ class SphereExporter(SolidExporter):
 class BooleanExporter(SolidExporter):
     def __init__(self, obj):
         super().__init__(obj)
+        self._placement = self.obj.Placement * self.obj.Base.Placement
 
     def isBoolean(self, obj):
         id = obj.TypeId
@@ -3414,6 +3415,15 @@ class BooleanExporter(SolidExporter):
         else:
             print(f"Boolean type {obj.TypeId} not handled yet")
             return None
+
+    def position(self):
+        return self._placement.Base
+
+    def rotation(self):
+        return self._placement.Rotation
+
+    def placement(self):
+        return FreeCAD.Placement(self.position(), self.rotation())
 
     def export(self):
         """
@@ -3485,16 +3495,18 @@ class BooleanExporter(SolidExporter):
             ET.SubElement(boolXML, "first", {"ref": ref1[obj1].name()})
             ET.SubElement(boolXML, "second", {"ref": ref2[obj1].name()})
             # process position & rotation
-            pos = ref2[obj1].position()
+            # Note that only the second item in the boolean (the Tool in FC parlance)
+            # gets a position and a rotation. But these are relative to the
+            # first. So convole placemenet of second with inverse placement of first
+            placementFirst = ref1[obj1].placement()
+            placementSecond = invPlacement(placementFirst) * ref2[obj1].placement()
+            rot = placementSecond.Rotation
+            pos = placementSecond.Base  # must also rotate position
             exportPosition(ref2[obj1].name(), boolXML, pos)
             # For booleans, gdml want actual rotation, not reverse
             # processRotation export negative of rotation angle(s)
             # This is ugly way of NOT reversing angle:
-
-            rot = FreeCAD.Rotation()
-            rot.Axis = ref2[obj1].rotation().Axis
-            angle = ref2[obj1].rotation().Angle
-            rot.Angle = -angle
+            rot.Angle = -rot.Angle
             exportRotation(ref2[obj1].name(), boolXML, rot)
         self._exportScaled()
 
