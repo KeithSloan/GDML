@@ -1972,6 +1972,7 @@ def parsePhysVol(
     # physvol is xml entity
     # GDMLShared.setTrace(True)
     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
+    #print(f"ParsePhyVol : level : {phylvl}")
     # Test if any physvol file imports
     filePtr = physVol.find("file")
     if filePtr is not None:
@@ -1979,6 +1980,7 @@ def parsePhysVol(
         processPhysVolFile(doc, parent, fname)
     volRef = GDMLShared.getRef(physVol, "volumeref")
     GDMLShared.trace("Volume Ref : " + str(volRef))
+    print(f"Parse physvol : {volRef}")
     if volRef is not None:
         copyNum = physVol.get("copynumber")
         GDMLShared.trace("Copynumber : " + str(copyNum))
@@ -2218,6 +2220,8 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
 
     #print(f"pathName {pathName}")
     colour = None
+    name = vol.get("name")
+    print(f"Process Volume : {name}")
     for aux in vol.findall("auxiliary"):  # could be more than one auxiliary
         if aux is not None:
             # print('auxiliary')
@@ -2283,46 +2287,51 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
         colour = getColour(coloref)
     solidref = GDMLShared.getRef(vol, "solidref")
     print(f"solidref : {solidref}")
-    name = vol.get("name")
+    global root
     if solidref is not None:
-        solid = solids.find("*[@name='%s']" % solidref)
-        if solid is not None:
-            GDMLShared.trace(solid.tag)
-            # Material is the materialref value
-            # need to add default
-            material = GDMLShared.getRef(vol, "materialref")
-            if material is not None:
-                if checkMaterial(material) is True:
-                    createSolid(
-                        parent,
-                        solid,
-                        material,
-                        colour,
-                        0,
-                        0,
-                        0,
-                        None,
-                        displayMode,
-                    )
-                else:
-                    print(
-                        "ERROR - Material : "
-                        + material
-                        + " Not defined for solid : "
-                        + str(solid)
-                        + " Volume : "
-                        + name
-                    )
-                    return None
-            else:
-                print(
-                    "ERROR - Materialref Not defined for solid : "
-                    + str(solid)
-                    + " Volume : "
-                    + name
-                )
-                return None
-        else:
+        solidFound = False
+        for solids in root.findall("solids"):
+            #print(f"solids {solids}")
+            if solids is not None:
+                solid = solids.find("*[@name='%s']" % solidref)
+                if solid is not None:
+                    solidFound = True
+                    GDMLShared.trace(solid.tag)
+                    # Material is the materialref value
+                    # need to add default
+                    material = GDMLShared.getRef(vol, "materialref")
+                    if material is not None:
+                        if checkMaterial(material) is True:
+                            createSolid(
+                                parent,
+                                solid,
+                                material,
+                                colour,
+                                0,
+                                0,
+                                0,
+                                None,
+                                displayMode,
+                            )
+                        else:
+                            print(
+                                "ERROR - Material : "
+                                + material
+                                + " Not defined for solid : "
+                                + str(solid)
+                                + " Volume : "
+                                + name
+                            )
+                            return None
+                    else:
+                        print(
+                            "ERROR - Materialref Not defined for solid : "
+                            + str(solid)
+                            + " Volume : "
+                            + name
+                        )
+                        return None
+        if solidFound == False:
             print("ERROR - Solid  : " + solidref + " Not defined")
             return None
     else:
@@ -2331,10 +2340,12 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     # Volume may or maynot contain physvol's
     displayMode = 1
     part = None
+    print(f"Process PhysVols")
     for pv in vol.findall("physvol"):
         # Need to clean up use of phylvl flag
         # create solids at pos & rot in physvols
         # if phylvl < 1 :
+        print(f"pv {pv}")
         if phylvl < 0:
             # if phylvl >= 0 :
             #   phylvl += 1
@@ -3035,7 +3046,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
     print(f"pathName {pathName}")
     FilesEntity = False
 
-    global setup, define, materials, solids, structure, extension, groupMaterials
+    global root, setup, define, materials, solids, structure, extension, groupMaterials
 
     # reset parameters for tessellation dialog:
     TessSampleDialog.maxFaces = 2000

@@ -361,6 +361,10 @@ def processPlacement(base, rot):
                 trace("identity")
                 return FreeCAD.Placement(base, FreeCAD.Rotation(0, 0, 0, 1))
 
+            if rot.attrib["name"] == "center":
+                trace("center")
+                return FreeCAD.Placement(base, FreeCAD.Rotation(0, 0, 0, 1))
+
         radianFlg = True
         if "unit" in rot.attrib:
             # print(rot.attrib['unit'][:3])
@@ -472,14 +476,21 @@ def getElementPosition(xmlElem):
 def getDefinedPosition(name):
     # get Position from define section
     # pos = define.find("position[@name='%s']" % name )
-    pos = positions[name]
-    if pos is not None:
-        # print('Position : '+str(pos))
-        trace(pos)
-        # return(getPositionFromAttrib(pos))
-        return getPositionFromDict(pos)
-    else:
+    if name == "identity":
+        print("Identity Position")
         return 0, 0, 0
+    elif name == "center":
+        print("Center Position")
+        return 0, 0, 0
+    else:     
+        pos = positions[name]
+        if pos is not None:
+            # print('Position : '+str(pos))
+            trace(pos)
+            # return(getPositionFromAttrib(pos))
+            return getPositionFromDict(pos)
+        else:
+            return 0, 0, 0
 
 
 def getPosition(xmlEntity):
