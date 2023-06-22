@@ -1977,7 +1977,7 @@ def parsePhysVol(
     filePtr = physVol.find("file")
     if filePtr is not None:
         fname = filePtr.get("name")
-        processPhysVolFile(doc, parent, fname)
+        processPhysVolFile(doc, volDict, parent, fname)
     volRef = GDMLShared.getRef(physVol, "volumeref")
     GDMLShared.trace("Volume Ref : " + str(volRef))
     print(f"Parse physvol : {volRef}")
