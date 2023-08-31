@@ -594,8 +594,9 @@ class GDMLSetMaterial(QtGui.QDialog):
         # print(len(self.matList))
         self.completer = QtGui.QCompleter(self.matList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        self.materialComboBox.setCompleter(self.completer)
         self.materialComboBox.setEditable(True)
+        self.materialComboBox.setCompleter(self.completer)
+        #self.materialComboBox.setEditable(True)
         self.materialComboBox.currentTextChanged.connect(self.materialChanged)
         self.lineedit = QtGui.QLineEdit()
         self.lineedit.setCompleter(self.completer)
@@ -661,9 +662,11 @@ class GDMLSetMaterial(QtGui.QDialog):
             if hasattr(obj, "material"):
                 #  May have an invalid enumeration from previous versions
                 try:
+                    obj.material = self.matList
                     obj.material = mat
 
                 except ValueError:
+                    print(f"Value Error {mat}")
                     pass
 
             else:
