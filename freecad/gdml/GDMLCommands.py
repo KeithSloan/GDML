@@ -1506,6 +1506,44 @@ class TubeFeature:
         }
 
 
+class CutTubeFeature:
+    # def IsActive(self):
+    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        from .GDMLObjects import GDMLcutTube, ViewProvider
+
+        objPart, material = getSelectedPM()
+        obj = insertPartVol(objPart, "LV-CutTube", "GDMLCutTube")
+        # print("GDMLTube Object - added")
+        # obj, rmin, rmax, z, startphi, deltaphi, aunit, 
+        # lowX, lowY, lowZ, highX, highY, highZ lunits, material
+        GDMLcutTube(obj, 12.0, 20.0, 30.0, 0, 4.713, "rad",
+                    0, -0.7, -0.71, 0.7, 0, 0.71,  "mm", material)
+        # print("GDMLCutTube initiated")
+        ViewProvider(obj.ViewObject)
+        # print("GDMLCutTube ViewProvided - added")
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is None:
+            return False
+        else:
+            return True
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDMLCutTubeFeature",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "GDMLCutTubeFeature", "Cut Tube Object"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "GDMLCutTubeFeature", "Cut Tube Object"
+            ),
+        }
+
+
 class PolyHedraFeature:
     def Activated(self):
 
@@ -3282,6 +3320,7 @@ FreeCADGui.addCommand("SphereCommand", SphereFeature())
 FreeCADGui.addCommand("TorusCommand", TorusFeature())
 FreeCADGui.addCommand("TrapCommand", TrapFeature())
 FreeCADGui.addCommand("TubeCommand", TubeFeature())
+FreeCADGui.addCommand("CutTubeCommand", CutTubeFeature())
 FreeCADGui.addCommand("PolyHedraCommand", PolyHedraFeature())
 FreeCADGui.addCommand("AddCompound", CompoundFeature())
 FreeCADGui.addCommand("TessellateCommand", TessellateFeature())
