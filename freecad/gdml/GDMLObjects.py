@@ -3808,7 +3808,7 @@ class GDMLcutTube(GDMLsolid):
         mul = GDMLShared.getMult(fp)
         rmin = mul * fp.rmin
         rmax = mul * fp.rmax
-        z = mul * fp.z
+        z = 2 * mul * fp.z
         depth = 2 * max(rmax, z)
         botDir = FreeCAD.Vector(fp.lowX, fp.lowY, fp.lowZ)
         topDir = FreeCAD.Vector(fp.highX, fp.highY, fp.highZ)
@@ -3823,8 +3823,11 @@ class GDMLcutTube(GDMLsolid):
         botPlane = Part.makePlane(
             depth, depth, FreeCAD.Vector(rmax, rmax, 0.0), botDir
         )
+        #cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, depth)
         cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, depth)
         base = FreeCAD.Vector(0, 0, -z / 2)
+        #fp.Shape = translate(tube, base)
+        #fp.Shape = translate(cutTube1, base)
         fp.Shape = translate(cutTube2, base)
         if hasattr(fp, "scale"):
             super().scale(fp)
