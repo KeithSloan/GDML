@@ -3792,8 +3792,10 @@ class GDMLcutTube(GDMLsolid):
         # so = plane.extrude(plane.normalAt(1,1)*1e10)
         # so = plane.extrude(plane.normalAt(1,1)*100)
         so = plane.extrude(plane.normalAt(1, 1) * depth)
+        print('Plane extruded')
         # print('Plane extruded')
         # print(plane.normalAt(1,1))
+        print(f" Normal {plane.normalAt(1,1)}")
         # return so
         # print('Extrude made - Now Cut')
         cut = shape.cut(so)
@@ -3809,25 +3811,30 @@ class GDMLcutTube(GDMLsolid):
         rmin = mul * fp.rmin
         rmax = mul * fp.rmax
         z = 2 * mul * fp.z
-        depth = 2 * max(rmax, z)
+        halfDepth = max(rmax, z)
+        depth = 2 * halfDepth
         botDir = FreeCAD.Vector(fp.lowX, fp.lowY, fp.lowZ)
         topDir = FreeCAD.Vector(fp.highX, fp.highY, fp.highZ)
 
-        tube1 = Part.makeCylinder(rmax, z, pntC, dirC, angle)
-        tube2 = Part.makeCylinder(rmin, z, pntC, dirC, angle)
+        tube1 = Part.makeCylinder(rmax, 2*z, pntC, dirC, angle)
+        tube2 = Part.makeCylinder(rmin, 2*z, pntC, dirC, angle)
         tube = tube1.cut(tube2)
         topPlane = Part.makePlane(
-            depth, depth, FreeCAD.Vector(-rmax, -rmax, z), topDir
+            depth, depth, FreeCAD.Vector(-halfDepth, -halfDepth, 2*z), topDir
         )
+        #Part.show(tube)
+        #Part.show(topPlane)
         cutTube1 = self.cutShapeWithPlane(tube, topPlane, depth)
+        #Part.show(cutTube1)
         botPlane = Part.makePlane(
-            depth, depth, FreeCAD.Vector(rmax, rmax, 0.0), botDir
+            depth, depth, FreeCAD.Vector(halfDepth, halfDepth, -z/2), botDir
         )
-        #cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, depth)
+        #Part.show(botPlane)
         cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, depth)
+        #Part.show(cutTube2)
         base = FreeCAD.Vector(0, 0, -z / 2)
-        #fp.Shape = translate(tube, base)
-        #fp.Shape = translate(cutTube1, base)
+        #base = FreeCAD.Vector(0, 0, -z)
+        #fp.Shape = Part.makeBox(5,5,5)
         fp.Shape = translate(cutTube2, base)
         if hasattr(fp, "scale"):
             super().scale(fp)
@@ -3847,12 +3854,12 @@ class GDMLcutTube(GDMLsolid):
             FreeCAD.Vector(-20, -20, 60),
             FreeCAD.Vector(0.7, 0, 0.71),
         )
-        cutTube1 = self.cutShapeWithPlane(tube, topPlane)
+        cutTube1 = self.cutShapeWithPlane(tube, topPlane, 120)
         botPlane = Part.makePlane(
             100, 100, FreeCAD.Vector(20, 20, 0), FreeCAD.Vector(0, -0.7, -0.71)
         )
         Part.show(botPlane)
-        cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane)
+        cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, 120)
         print("Return result")
         fp.Shape = cutTube2
 
