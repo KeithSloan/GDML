@@ -3803,6 +3803,7 @@ class GDMLcutTube(GDMLsolid):
         return cut
 
     def createGeometry(self, fp):
+        # Munther improved version Sep 23
         currPlacement = fp.Placement
         angle = getAngleDeg(fp.aunit, fp.deltaphi)
         pntC = FreeCAD.Vector(0, 0, 0)
@@ -3810,32 +3811,65 @@ class GDMLcutTube(GDMLsolid):
         mul = GDMLShared.getMult(fp)
         rmin = mul * fp.rmin
         rmax = mul * fp.rmax
-        z = 2 * mul * fp.z
-        halfDepth = max(rmax, z)
-        depth = 2 * halfDepth
+        z = mul * fp.z
+        depth = 2 * max(rmax, z)
         botDir = FreeCAD.Vector(fp.lowX, fp.lowY, fp.lowZ)
+        botDir.normalize()
         topDir = FreeCAD.Vector(fp.highX, fp.highY, fp.highZ)
+        topDir.normalize()
 
-        tube1 = Part.makeCylinder(rmax, 2*z, pntC, dirC, angle)
-        tube2 = Part.makeCylinder(rmin, 2*z, pntC, dirC, angle)
-        tube = tube1.cut(tube2)
+        k = FreeCAD.Vector(0, 0, 1)  # vector along z -axis
+        u = k - (k.dot(topDir))*topDir  # component of k vector along plane
+        u.normalize()  # unit vector along major axis
+
+        v = k.cross(u)  # unit vector along minor axis
+        v.normalize()
+        # print(f'u={u}, v={v}')
+
+        costhet = k.dot(topDir)
+        thet_top = math.acos(costhet)
+
+        corner_top = u*rmax/costhet + v*rmax + z/2*k
+        a = rmax/costhet  # semi-major axis
+        b = rmax          # semi-minor axis
+
+        # print(f'corner_top = {corner_top}, topDir = {topDir}')
         topPlane = Part.makePlane(
-            depth, depth, FreeCAD.Vector(-halfDepth, -halfDepth, 2*z), topDir
+            2*a, 2*b, corner_top, topDir, -u
         )
-        #Part.show(tube)
-        #Part.show(topPlane)
-        cutTube1 = self.cutShapeWithPlane(tube, topPlane, depth)
-        #Part.show(cutTube1)
+        # Part.show(topPlane)
+
+        k = -FreeCAD.Vector(0, 0, 1)  # vector along -z -axis
+        u = k - (k.dot(botDir))*botDir  # componentof k vector along plane
+        u.normalize()  # unit vector along major axis
+
+        v = k.cross(u)  # unit vector along minor axis
+        v.normalize()
+        # print(f'u={u}, v={v}')
+
+        costhet = k.dot(botDir)
+        thet_bot = math.acos(costhet)
+
+        corner_bot = u*rmax/costhet + v*rmax + z/2*k  # remember this k points down
+        a = rmax/costhet  # semi-major axis
+        b = rmax          # semi-minor axis
+        # print(f'corner_bot = {corner_bot}, botDir = {botDir}')
+
         botPlane = Part.makePlane(
-            depth, depth, FreeCAD.Vector(halfDepth, halfDepth, -z/2), botDir
+            2*a, 2*b, corner_bot, botDir, -u
         )
-        #Part.show(botPlane)
+        # Part.show(botPlane)
+
+        tube_height = z + rmax*math.tan(thet_top) + rmax*math.tan(thet_bot)
+
+        tube1 = Part.makeCylinder(rmax, tube_height, pntC, dirC, angle)
+        tube2 = Part.makeCylinder(rmin, tube_height, pntC, dirC, angle)
+        tube = tube1.cut(tube2)
+        tube.translate(FreeCAD.Vector(0, 0, -z/2 - rmax*math.tan(thet_bot)))
+
+        cutTube1 = self.cutShapeWithPlane(tube, topPlane, depth)
         cutTube2 = self.cutShapeWithPlane(cutTube1, botPlane, depth)
-        #Part.show(cutTube2)
-        base = FreeCAD.Vector(0, 0, -z / 2)
-        #base = FreeCAD.Vector(0, 0, -z)
-        #fp.Shape = Part.makeBox(5,5,5)
-        fp.Shape = translate(cutTube2, base)
+        fp.Shape = cutTube2
         if hasattr(fp, "scale"):
             super().scale(fp)
         fp.Placement = currPlacement
