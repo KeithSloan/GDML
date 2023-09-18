@@ -2057,9 +2057,22 @@ def getColour(colRef):
 
 # ParseVolume name - structure is global
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(doc, volDict, parent, name, phylvl, displayMode):
+def parseVolume(doc, volDict, parent, name, phylvl, brepStepFlag, displayMode):
     GDMLShared.trace("ParseVolume : " + name)
-    expandVolume(doc, volDict, parent, name, phylvl, displayMode)
+    if brepStepFlag == True:
+        from .GDMLscanStep import getStepPath
+        from .GDMLObjects import GDMLPartStep, ViewProvider
+        path = getStepPath(pathName, parent, name)
+        print(f"Path exists {os.path.exists(path)}")
+        if os.path.isfile(path):
+            part = newPartFeature(parent, "GDMLPartStep_" + volRef)
+            GDMLPartStep(part, path)
+            volDict[name] = part
+            if FreeCAD.GuiUp:
+                ViewProvider(part.ViewObject)
+        else:
+            #brepStepFlag = False
+            expandVolume(doc, volDict, parent, name, phylvl, displayMode)
 
 
 def processParamvol(vol, parent, paramvol):
@@ -2373,26 +2386,29 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                 except:
                     print(volRef + " : volref not supported with FreeCAD 0.18")
             else:
-                print(f"pathName {pathName}")
+                # print(f"pathName {pathName}")
 
-                from .GDMLscanStep import getStepPath
-                from .GDMLObjects import GDMLPartStep, ViewProvider
-                # Not already defined so create
-                # print('Is new : '+volRef)
-                path = getStepPath(pathName, parent, volRef)
-                print(f"Path exists {os.path.exists(path)}")
-                if os.path.isfile(path):
-                    part = newPartFeature(parent, "GDMLPartStep_" + volRef)
-                    GDMLPartStep(part, path)
-                    if FreeCAD.GuiUp:
-                        ViewProvider(part.ViewObject)
-                else :        
-                    part = parent.newObject("App::Part", volRef)
-                    part.Label = "NOT_Expanded_" + part.Name
+                # from .GDMLscanStep import getStepPath
+                # from .GDMLObjects import GDMLPartStep, ViewProvider
+                ##  Not already defined so create
+                ##  print('Is new : '+volRef)
+                # path = getStepPath(pathName, parent, volRef)
+                # print(f"Path exists {os.path.exists(path)}")
+                # if os.path.isfile(path):
+                #     part = newPartFeature(parent, "GDMLPartStep_" + volRef)
+                #    GDMLPartStep(part, path)
+                #    if FreeCAD.GuiUp:
+                #        ViewProvider(part.ViewObject)
+                # else :        
+                #    part = parent.newObject("App::Part", volRef)
+                #    part.Label = "NOT_Expanded_" + part.Name
+                # addSurfList(doc, part)
+                part = parent.newObject("App::Part", volRef)
+                part.Label = "NOT_Expanded_" + part.Name
                 addSurfList(doc, part)
-            part.addProperty(
-                "App::PropertyString", "VolRef", "GDML", "volref name"
-            ).VolRef = volRef
+                part.addProperty(
+                    "App::PropertyString", "VolRef", "GDML", "volref name"
+                ).VolRef = volRef
             if cpyNum is not None:
                 part.addProperty(
                     "App::PropertyInteger", "CopyNumber", "GDML", "copynumber"
@@ -3027,6 +3043,12 @@ def processGDML(doc, flag, filename, prompt, initFlg):
                 print("Scan Vol")
                 phylvl = 0
 
+
+            brepStepFlag = False
+            if dialog.retStatus == 3:
+                print("Expand Brep Step")
+                brepStepFlag = True
+
             params = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/GDML"
             )
@@ -3090,7 +3112,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
             part = doc.addObject("App::Part", world)
     if hasattr(part, "Material"):
         part.setEditorMode("Material", 2)
-    parseVolume(doc, volDict, part, world, phylvl, 3)
+    parseVolume(doc, volDict, part, world, phylvl, brepStepFlag, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg is False:

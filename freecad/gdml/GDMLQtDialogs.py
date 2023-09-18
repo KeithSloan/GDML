@@ -11,6 +11,8 @@ class importPrompt(QtGui.QDialog):
     def initUI(self):
         importButton = QtGui.QPushButton('Import')
         importButton.clicked.connect(self.onImport)
+        brepStepButton = QtGui.QPushButton('Brep/Step')
+        brepStepButton.clicked.connect(self.onBrepStep)
         scanButton = QtGui.QPushButton('Scan Vol')
         scanButton .clicked.connect(self.onScan)
         #
@@ -18,6 +20,7 @@ class importPrompt(QtGui.QDialog):
         buttonBox.setFixedWidth(400)
         # buttonBox = Qt.QDialogButtonBox(QtCore.Qt.Vertical)
         buttonBox.addButton(importButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(brepStepButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(scanButton, QtGui.QDialogButtonBox.ActionRole)
         #
         mainLayout = QtGui.QVBoxLayout()
@@ -30,12 +33,19 @@ class importPrompt(QtGui.QDialog):
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.retStatus = 0
 
+
     def onImport(self):
         self.retStatus = 1
         self.close()
 
+
     def onScan(self):
         self.retStatus = 2
+        self.close()
+
+
+    def onBrepStep(self):
+        self.retStatus = 3
         self.close()
 
 
