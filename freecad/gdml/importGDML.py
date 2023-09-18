@@ -48,6 +48,7 @@ def joinDir(path):
 from math import *
 from . import GDMLShared
 
+from .PhysVolDict import physVolDict
 ##########################
 # Globals Dictionaries    #
 ##########################
@@ -1991,14 +1992,16 @@ def parsePhysVol(
         if namedObj is None:
             part = parent.newObject("App::Part", volRef)
             # print(f'Physvol : {PVName} : Vol:Part {part.Name}')
-            volDict[PVName] = part
+            #volDict[PVName] = part
+            volDict.addEntry(PVName, part)
             addSurfList(doc, part)
             expandVolume(doc, volDict, part, volRef, phylvl, displayMode)
 
         else:  # Object exists create a Linked Object
             GDMLShared.trace("====> Create Link to : " + volRef)
             part = parent.newObject("App::Link", volRef)
-            volDict[PVName] = part
+            #volDict[PVName] = part
+            volDict.addEntry(PVName, part)
             part.LinkedObject = namedObj
             if part.Name is not volRef:
                 ln = len(volRef)
@@ -2813,7 +2816,8 @@ def processSurfaces(doc, volDict, structure):
                 if pv is not None:
                     pvRef = pv.get("ref")
                     # print(f"{i} : {pvRef}")
-                    volRef = volDict[pvRef]
+                    #volRef = volDict[pvRef]
+                    volRef = volDict.lookUp(pvRef)
                     print(f"Vol : {volRef.Label}")
                     if volRef is not None:
                         volLst.append(volRef)
@@ -3018,7 +3022,8 @@ def processGDML(doc, flag, filename, prompt, initFlg):
     from . import preProcessLoops
 
     # Process GDML
-    volDict = {}
+    #volDict = {}
+    volDict = physVolDict()
 
     import time
     from . import GDMLShared
