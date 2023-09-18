@@ -17,7 +17,7 @@ class physVolDict:
     def lookUp(self, pvName):
         return self.volDict[pvName]
 
-    def reBuid(self):
+    def reBuild(self):
         # Rebuild volDict from current document
         print("Rebuild volDict from current document")
 
