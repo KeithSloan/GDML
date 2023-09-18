@@ -2070,9 +2070,9 @@ def parseVolume(doc, volDict, parent, name, phylvl, brepStepFlag, displayMode):
             volDict[name] = part
             if FreeCAD.GuiUp:
                 ViewProvider(part.ViewObject)
-        else:
-            #brepStepFlag = False
-            expandVolume(doc, volDict, parent, name, phylvl, displayMode)
+            return
+
+    expandVolume(doc, volDict, parent, name, phylvl, displayMode)
 
 
 def processParamvol(vol, parent, paramvol):
