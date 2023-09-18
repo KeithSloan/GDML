@@ -6,7 +6,7 @@
 #   Used by Border surfaces, expand Command
 #
 
-class phyVolDict ():
+class physVolDict:
 
     def __init__(self):
         self.volDict = {}
@@ -14,7 +14,7 @@ class phyVolDict ():
     def addEntry(self, pvName, vol):
         self.volDict[pvName] = vol
 
-    def lookUp(self, pvName}:
+    def lookUp(self, pvName):
         return self.volDict[pvName]
 
     def reBuid(self):
@@ -22,5 +22,5 @@ class phyVolDict ():
         print("Rebuild volDict from current document")
 
     def printDict(self):
-        print(f'PhysVolDict {self.volDict}")
+        print(f"PhysVolDict {self.volDict}")
 

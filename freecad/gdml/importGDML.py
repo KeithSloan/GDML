@@ -48,7 +48,7 @@ def joinDir(path):
 from math import *
 from . import GDMLShared
 
-from . import PhysVolDict
+from .PhysVolDict import physVolDict
 ##########################
 # Globals Dictionaries    #
 ##########################
@@ -3007,7 +3007,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
 
     # Process GDML
     #volDict = {}
-    volDict = phyVolDict()
+    volDict = physVolDict()
 
     import time
     from . import GDMLShared
