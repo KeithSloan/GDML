@@ -3049,11 +3049,11 @@ class CycleFeature:
             ),
         }
 
-
 def expandFunction(obj, eNum):
     from .importGDML import expandVolume
 
     print("Expand Function")
+    volDict = {}
     # Get original volume name i.e. loose _ or _nnn
     name = obj.Label[13:]
     if hasattr(obj, "VolRef"):
@@ -3061,7 +3061,7 @@ def expandFunction(obj, eNum):
     else:
         volRef = name
     if obj.TypeId != "App::Link":
-        expandVolume(obj, volRef, eNum, 3)
+        expandVolume(FreeCAD.ActiveDocument, volDict, obj, volRef, eNum, 3)
         obj.Label = name
 
 
