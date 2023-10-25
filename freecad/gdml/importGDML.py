@@ -82,7 +82,7 @@ if open.__module__ == "__builtin__":
 #        return QtGui.QApplication.translate(context, text, None)
 
 
-def open(filename):
+def open(filename, processType=1):
     "called when freecad opens a file."
     global doc
     print("Open : " + filename)
@@ -94,7 +94,10 @@ def open(filename):
         # profiler = cProfile.Profile()
         # profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, True, filename, True, False)
+        prompt = True
+        if processType == 2:
+            prompt = False
+        processGDML(doc, True, filename, prompt, processType, False)
         # profiler.disable()
         # stats = pstats.Stats(profiler).sort_stats('cumtime')
         # stats.print_stats()
@@ -126,7 +129,7 @@ def insert(filename, docname):
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith(".gdml"):
         # False flag indicates import
-        processGDML(doc, False, filename, True, False)
+        processGDML(doc, False, filename, True, 1, False)
 
     elif filename.lower().endswith(".xml"):
         processXML(doc, filename)
@@ -3022,7 +3025,7 @@ def findWorldVol():
     return None
 
 
-def processGDML(doc, flag, filename, prompt, initFlg):
+def processGDML(doc, flag, filename, prompt, processType, initFlg):
     # flag == True open, flag == False import
     from FreeCAD import Base
     from . import preProcessLoops
@@ -3051,6 +3054,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
             #   phylvl = -1
 
             print(f"retStatus {dialog.retStatus}")
+            processType = dialog.retStatus
             if dialog.retStatus == 4:
                 print("Scan Vol")
                 phylvl = 0
@@ -3122,7 +3126,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
             part = doc.addObject("App::Part", world)
     if hasattr(part, "Material"):
         part.setEditorMode("Material", 2)
-    parseVolume(doc, volDict, part, world, phylvl, dialog.retStatus, 3)
+    parseVolume(doc, volDict, part, world, phylvl, processType, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg is False:
