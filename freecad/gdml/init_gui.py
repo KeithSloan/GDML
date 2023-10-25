@@ -51,7 +51,7 @@ def joinDir(path):
 def processDefault(doc):
     from .importGDML import processGDML
 
-    processGDML(doc, joinDir("Mod/GDML/Resources/Default.gdml"), False, True)
+    processGDML(doc, joinDir("Mod/GDML/Resources/Default.gdml"), False, 1, True)
 
 
 class GDML_Workbench(FreeCADGui.Workbench):

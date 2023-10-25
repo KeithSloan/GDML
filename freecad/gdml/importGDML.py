@@ -48,6 +48,7 @@ def joinDir(path):
 from math import *
 from . import GDMLShared
 
+from .PhysVolDict import physVolDict
 ##########################
 # Globals Dictionaries    #
 ##########################
@@ -81,7 +82,7 @@ if open.__module__ == "__builtin__":
 #        return QtGui.QApplication.translate(context, text, None)
 
 
-def open(filename):
+def open(filename, processType=1):
     "called when freecad opens a file."
     global doc
     print("Open : " + filename)
@@ -93,7 +94,10 @@ def open(filename):
         # profiler = cProfile.Profile()
         # profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        processGDML(doc, True, filename, True, False)
+        prompt = True
+        if processType == 2:
+            prompt = False
+        processGDML(doc, True, filename, prompt, processType, False)
         # profiler.disable()
         # stats = pstats.Stats(profiler).sort_stats('cumtime')
         # stats.print_stats()
@@ -125,7 +129,7 @@ def insert(filename, docname):
         doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith(".gdml"):
         # False flag indicates import
-        processGDML(doc, False, filename, True, False)
+        processGDML(doc, False, filename, True, 1, False)
 
     elif filename.lower().endswith(".xml"):
         processXML(doc, filename)
@@ -177,7 +181,7 @@ def getSolidName(solid, name=None):
 
 
 def getText(ptr, var, default):
-    # print("Get Texti : "+str(ptr.attrib.get(var))+" : "+str(var))
+    # print("Get Text : "+str(ptr.attrib.get(var))+" : "+str(var))
     if var in ptr.attrib:
         return ptr.attrib.get(var)
     else:
@@ -1965,22 +1969,23 @@ def addSurfList(doc, part):
 
 
 def parsePhysVol(
-    doc, volDict, volAsmFlg, parent, physVol, phylvl, displayMode
+    importFlag, doc, volDict, volAsmFlg, parent, physVol, phylvl, displayMode
 ):
     # if volAsmFlag == True : Volume
     # if volAsmFlag == False : Assembly
     # physvol is xml entity
     # GDMLShared.setTrace(True)
+    print(f"Parse physvol : importFlag {importFlag}")
     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
     #print(f"ParsePhyVol : level : {phylvl}")
     # Test if any physvol file imports
     filePtr = physVol.find("file")
     if filePtr is not None:
         fname = filePtr.get("name")
-        processPhysVolFile(doc, volDict, parent, fname)
+        processPhysVolFile(importFlag, doc, volDict, parent, fname)
     volRef = GDMLShared.getRef(physVol, "volumeref")
     GDMLShared.trace("Volume Ref : " + str(volRef))
-    print(f"Parse physvol : {volRef}")
+    print(f"Parse physvol : {volRef} importFlag {importFlag}")
     if volRef is not None:
         copyNum = physVol.get("copynumber")
         GDMLShared.trace("Copynumber : " + str(copyNum))
@@ -1991,14 +1996,16 @@ def parsePhysVol(
         if namedObj is None:
             part = parent.newObject("App::Part", volRef)
             # print(f'Physvol : {PVName} : Vol:Part {part.Name}')
-            volDict[PVName] = part
+            #volDict[PVName] = part
+            volDict.addEntry(PVName, part)
             addSurfList(doc, part)
-            expandVolume(doc, volDict, part, volRef, phylvl, displayMode)
+            expandVolume(importFlag, doc, volDict, part, volRef, phylvl, displayMode)
 
         else:  # Object exists create a Linked Object
             GDMLShared.trace("====> Create Link to : " + volRef)
             part = parent.newObject("App::Link", volRef)
-            volDict[PVName] = part
+            #volDict[PVName] = part
+            volDict.addEntry(PVName, part)
             part.LinkedObject = namedObj
             if part.Name is not volRef:
                 ln = len(volRef)
@@ -2057,9 +2064,28 @@ def getColour(colRef):
 
 # ParseVolume name - structure is global
 # displayMode 1 normal 2 hide 3 wireframe
-def parseVolume(doc, volDict, parent, name, phylvl, displayMode):
+def parseVolume(importFlag, doc, volDict, parent, name, phylvl,displayMode):
     GDMLShared.trace("ParseVolume : " + name)
-    expandVolume(doc, volDict, parent, name, phylvl, displayMode)
+    print(f"Parse Volume : {name} Phylvl {phylvl}")
+    #if importFlag in [2, 3]:
+    #    from .GDMLScanBrepStep import getBrepStepPath, createSavedVolume
+    #    #from .GDMLObjects import GDMLPartStep, ViewProvider
+    #    #path = getStepPath(pathName, parent, name)
+    #    path = getBrepStepPath(importFlag, pathName, parent, name)
+    #    print(f"Path exists {os.path.exists(path)}")
+    #    if os.path.isfile(path):
+    #        createSavedVolume(importFlag, volDict, parent, name, path)
+    #        #part = newPartFeature(parent, "GDMLPartStep_" + volRef)
+    #        #part = newPartFeature(parent, "GDMLPartBrep_" + volRef)
+    #        #part = newPartFeature(parent, "GDMLPartBrep_" + name)
+    #        #GDMLPartStep(part, path)
+    #        #volDict[name] = part
+    #        #volDict.addEntry(name, part)
+    #        #if FreeCAD.GuiUp:
+    #        #    ViewProvider(part.ViewObject)
+    #        return
+
+    expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode)
 
 
 def processParamvol(vol, parent, paramvol):
@@ -2214,14 +2240,14 @@ def processParamvol(vol, parent, paramvol):
             )
 
 
-def processVol(doc, vol, volDict, parent, phylvl, displayMode):
+def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
     # GDMLShared.setTrace(True)
     from .GDMLObjects import checkMaterial
 
     #print(f"pathName {pathName}")
     colour = None
     name = vol.get("name")
-    print(f"Process Volume : {name}")
+    print(f"Process Volume : {name} importFlag{importFlag}")
     for aux in vol.findall("auxiliary"):  # could be more than one auxiliary
         if aux is not None:
             # print('auxiliary')
@@ -2340,7 +2366,7 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
     # Volume may or maynot contain physvol's
     displayMode = 1
     part = None
-    print(f"Process PhysVols")
+    print(f"Process PhysVols importFlag {importFlag}")
     for pv in vol.findall("physvol"):
         # Need to clean up use of phylvl flag
         # create solids at pos & rot in physvols
@@ -2350,8 +2376,8 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
             # if phylvl >= 0 :
             #   phylvl += 1
             # If negative always parse otherwise increase level
-            part = parsePhysVol(
-                doc, volDict, True, parent, pv, phylvl, displayMode
+            part = parsePhysVol (
+                importFlag, doc, volDict, True, parent, pv, phylvl, displayMode
             )
 
         else:  # Just Add to structure
@@ -2373,26 +2399,29 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
                 except:
                     print(volRef + " : volref not supported with FreeCAD 0.18")
             else:
-                print(f"pathName {pathName}")
+                # print(f"pathName {pathName}")
 
-                from .GDMLscanStep import getStepPath
-                from .GDMLObjects import GDMLPartStep, ViewProvider
-                # Not already defined so create
-                # print('Is new : '+volRef)
-                path = getStepPath(pathName, parent, volRef)
-                print(f"Path exists {os.path.exists(path)}")
-                if os.path.isfile(path):
-                    part = newPartFeature(parent, "GDMLPartStep_" + volRef)
-                    GDMLPartStep(part, path)
-                    if FreeCAD.GuiUp:
-                        ViewProvider(part.ViewObject)
-                else :        
-                    part = parent.newObject("App::Part", volRef)
-                    part.Label = "NOT_Expanded_" + part.Name
+                # from .GDMLscanStep import getStepPath
+                # from .GDMLObjects import GDMLPartStep, ViewProvider
+                ##  Not already defined so create
+                ##  print('Is new : '+volRef)
+                # path = getStepPath(pathName, parent, volRef)
+                # print(f"Path exists {os.path.exists(path)}")
+                # if os.path.isfile(path):
+                #     part = newPartFeature(parent, "GDMLPartStep_" + volRef)
+                #    GDMLPartStep(part, path)
+                #    if FreeCAD.GuiUp:
+                #        ViewProvider(part.ViewObject)
+                # else :        
+                #    part = parent.newObject("App::Part", volRef)
+                #    part.Label = "NOT_Expanded_" + part.Name
+                # addSurfList(doc, part)
+                part = parent.newObject("App::Part", volRef)
+                part.Label = "NOT_Expanded_" + part.Name
                 addSurfList(doc, part)
-            part.addProperty(
-                "App::PropertyString", "VolRef", "GDML", "volref name"
-            ).VolRef = volRef
+                part.addProperty(
+                    "App::PropertyString", "VolRef", "GDML", "volref name"
+                ).VolRef = volRef
             if cpyNum is not None:
                 part.addProperty(
                     "App::PropertyInteger", "CopyNumber", "GDML", "copynumber"
@@ -2415,15 +2444,28 @@ def processVol(doc, vol, volDict, parent, phylvl, displayMode):
             processParamvol(vol, parentpart, paramvol)
 
 
-def expandVolume(doc, volDict, parent, name, phylvl, displayMode):
+def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
     import FreeCAD as App
 
     # also used in ScanCommand
     # GDMLShared.setTrace(True)
+    print(f"expandVolume : {name} importFlag {importFlag}")
     GDMLShared.trace("expandVolume : " + name)
+    print(f"Parse Volume : {name} Phylvl {phylvl}")
+    if importFlag in [2, 3]:
+        from .GDMLScanBrepStep import getBrepStepPath, createSavedVolume
+        from .GDMLObjects import GDMLPartStep, ViewProvider
+        path = getBrepStepPath(importFlag, pathName, parent, name)
+        print(f"Path exists {os.path.exists(path)}")
+        if os.path.isfile(path):
+            createSavedVolume(importFlag, volDict, parent, name, path)
+            #if FreeCAD.GuiUp:
+            #    ViewProvider(part.ViewObject)
+            return
     vol = structure.find("volume[@name='%s']" % name)
     if vol is not None:  # If not volume test for assembly
-        processVol(doc, vol, volDict, parent, phylvl, displayMode)
+        processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode)
+
 
     else:
         asm = structure.find("assembly[@name='%s']" % name)
@@ -2432,7 +2474,7 @@ def expandVolume(doc, volDict, parent, name, phylvl, displayMode):
             for pv in asm.findall("physvol"):
                 # obj = parent.newObject("App::Part", name)
                 parsePhysVol(
-                    doc, volDict, False, parent, pv, phylvl, displayMode
+                    importFlag, doc, volDict, False, parent, pv, phylvl, displayMode
                 )
         else:
             print(name + " is Not a defined Volume or Assembly")
@@ -2797,7 +2839,8 @@ def processSurfaces(doc, volDict, structure):
                 if pv is not None:
                     pvRef = pv.get("ref")
                     # print(f"{i} : {pvRef}")
-                    volRef = volDict[pvRef]
+                    #volRef = volDict[pvRef]
+                    volRef = volDict.lookUp(pvRef)
                     print(f"Vol : {volRef.Label}")
                     if volRef is not None:
                         volLst.append(volRef)
@@ -2996,13 +3039,14 @@ def findWorldVol():
     return None
 
 
-def processGDML(doc, flag, filename, prompt, initFlg):
+def processGDML(doc, flag, filename, prompt, processType, initFlg):
     # flag == True open, flag == False import
     from FreeCAD import Base
     from . import preProcessLoops
 
     # Process GDML
-    volDict = {}
+    #volDict = {}
+    volDict = physVolDict()
 
     import time
     from . import GDMLShared
@@ -3023,9 +3067,15 @@ def processGDML(doc, flag, filename, prompt, initFlg):
             #   print('Import')
             #   phylvl = -1
 
-            if dialog.retStatus == 2:
+            print(f"retStatus {dialog.retStatus}")
+            processType = dialog.retStatus
+            if dialog.retStatus == 4:
                 print("Scan Vol")
                 phylvl = 0
+
+
+            if dialog.retStatus in [2, 3]:
+                print("Look for processed Volumes")
 
             params = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/GDML"
@@ -3038,7 +3088,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
     print("Print Verbose : " + str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage("Import GDML file : " + filename + "\n")
-    FreeCAD.Console.PrintMessage("ImportGDML Version 1.9a\n")
+    FreeCAD.Console.PrintMessage("ImportGDML Version 1.9b\n")
     startTime = time.perf_counter()
 
     global pathName
@@ -3090,7 +3140,7 @@ def processGDML(doc, flag, filename, prompt, initFlg):
             part = doc.addObject("App::Part", world)
     if hasattr(part, "Material"):
         part.setEditorMode("Material", 2)
-    parseVolume(doc, volDict, part, world, phylvl, 3)
+    parseVolume(processType, doc, volDict, part, world, phylvl, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
     if len(part.OutList) == 2 and initFlg is False:

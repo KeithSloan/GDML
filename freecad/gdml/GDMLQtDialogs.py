@@ -11,6 +11,10 @@ class importPrompt(QtGui.QDialog):
     def initUI(self):
         importButton = QtGui.QPushButton('Import')
         importButton.clicked.connect(self.onImport)
+        brepButton = QtGui.QPushButton('Brep')
+        brepButton.clicked.connect(self.onBrep)
+        stepButton = QtGui.QPushButton('Step')
+        stepButton.clicked.connect(self.onStep)
         scanButton = QtGui.QPushButton('Scan Vol')
         scanButton .clicked.connect(self.onScan)
         #
@@ -18,6 +22,8 @@ class importPrompt(QtGui.QDialog):
         buttonBox.setFixedWidth(400)
         # buttonBox = Qt.QDialogButtonBox(QtCore.Qt.Vertical)
         buttonBox.addButton(importButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(brepButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(stepButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(scanButton, QtGui.QDialogButtonBox.ActionRole)
         #
         mainLayout = QtGui.QVBoxLayout()
@@ -30,13 +36,26 @@ class importPrompt(QtGui.QDialog):
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.retStatus = 0
 
+
     def onImport(self):
         self.retStatus = 1
         self.close()
 
-    def onScan(self):
+
+    def onBrep(self):
         self.retStatus = 2
         self.close()
+
+
+    def onStep(self):
+        self.retStatus = 3
+        self.close()
+
+
+    def onScan(self):
+        self.retStatus = 4
+        self.close()
+
 
 
 class showInvalidWorldVol(QtGui.QWidget):

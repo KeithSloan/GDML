@@ -3051,6 +3051,12 @@ class CycleFeature:
 
 def expandFunction(obj, eNum):
     from .importGDML import expandVolume
+    from .PhysVolDict import physVolDict
+
+    if 'volDict' not in globals():
+        global VolDict
+        volDict = physVolDict()
+        volDict.reBuild()
 
     print("Expand Function")
     volDict = {}
