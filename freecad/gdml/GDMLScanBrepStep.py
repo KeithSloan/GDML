@@ -26,15 +26,17 @@ import FreeCAD
 
 def getStepPath(path, parent, volRef):
     print(f"==== Get Step Path : {path} {parent.Label} {volRef}")
-    print(f"Parents {parent.Parents}")
-    for t in parent.Parents:
-        print(f"==== tuple {t}")
-        #path = os.path.join(path, t[0].Label)
-        #print(f"== Path ==> {path}")
-        #print(f"==== Parent {t[0]} Label {t[0].Label}")
-        for s in str(t[1]).split('.'):
-            path = os.path.join(path,s)
-    path = os.path.join(path, volRef)
+    par = parent.Parents
+    print(f"Parents {par}")
+    if len(par) > 0:
+        nl = par[0]
+        print(f"nl {nl}")
+        nlst = nl[1]
+        print(f"nlst {nlst}")
+        for i, s in enumerate(nlst.rsplit('.')):
+            if i > 0 :
+                path = os.path.join(path,s)
+
     path = os.path.join(path, volRef+".step")
     print(f"== Path ==> {path}")
     return path
