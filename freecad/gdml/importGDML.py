@@ -85,9 +85,9 @@ if open.__module__ == "__builtin__":
 def open(filename, processType=1):
     "called when freecad opens a file."
     global doc
-    print("Open : " + filename)
+    print(f"Open : {filename} {processType}")
     docName = os.path.splitext(os.path.basename(filename))[0]
-    print("path : " + filename)
+    print(f"path : {filename}")
     if filename.lower().endswith(".gdml"):
 
         # import cProfile, pstats
@@ -3045,6 +3045,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     from . import preProcessLoops
 
     # Process GDML
+    print(f"processGDML type {processType}")
     #volDict = {}
     volDict = physVolDict()
 
@@ -3057,7 +3058,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     if FreeCAD.GuiUp:
         from . import GDMLCommands
 
-        if prompt:
+        if prompt and processType not in [2,3]:
             from .GDMLQtDialogs import importPrompt
 
             dialog = importPrompt()
