@@ -32,6 +32,7 @@ __url__ = ["http://www.freecadweb.org"]
 This Script includes the GUI Commands of the GDML module
 """
 
+import os
 import FreeCAD, FreeCADGui
 import Part
 from PySide import QtGui, QtCore
@@ -3078,6 +3079,21 @@ def recomputeVol(obj):
         obj.recompute()
 
 
+def expandStepObj(obj):
+    from .importGDML import processXMLDefines, processXMLMaterials, processXMLSolids, processXMLStruct
+    print(f"Expand Step Obj {obj.Name} Path{obj.path}")
+    vaName = obj.Name
+    # pathDet = os.path.split(obj.path)
+    #print(f"Directory is {pathDet[0]} fileName{pathDet[1].split('.')[0]}")
+    xmlPath = obj.path.split(".")[0]
+    print(f"Parents {obj.Parents} xml Path {xmlPath}")
+    doc = FreeCAD.ActiveDocument
+    doc.removeObject(obj.Name)
+    processXMLDefines(doc, xmlPath + '_define.xml')
+    processXMLMaterials(doc, xmlPath + '_materials.xml')
+    xml_solids = processXMLSolids(doc, xmlPath + '_solids.xml')
+    newObj = processXMLStruct(doc, vaName, xmlPath + '_struct.xml', xml_solids)
+
 class ExpandFeature:
     def Activated(self):
 
@@ -3087,13 +3103,18 @@ class ExpandFeature:
             #   add check for Part i.e. Volume
             print("Selected")
             print(obj.Label[:13])
-            if obj.Label[:13] == "NOT_Expanded_":
+            if obj.TypeId == "Part::FeaturePython":
+                if hasattr(obj,"Proxy"):
+                    if hasattr(obj.Proxy,"Type"):
+                        if obj.Proxy.Type == "GDMLPartStep":
+                            expandStepObj(obj)
+            elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, 0)
-            if obj.Label[:5] == "Link_":
+            elif obj.Label[:5] == "Link_":
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, 0)
-            recomputeVol(obj)
+                recomputeVol(obj)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -3105,10 +3126,10 @@ class ExpandFeature:
         return {
             "Pixmap": "GDML_Expand_One",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "GDML_Expand_One", "Expand Volume"
+                "GDML_Expand_One", "Expand Function"
             ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "GDML_Expand_One", "Expand Volume"
+                "GDML_Expand_One", "Expand Function"
             ),
         }
 
@@ -3139,10 +3160,10 @@ class ExpandMaxFeature:
         return {
             "Pixmap": "GDML_Expand_Max",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "GDML_Expand_Max", "Max Expand Volume"
+                "GDML_Expand_Max", "Max Expand Function"
             ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "GDML_Expand_Max", "Max Expand Volume"
+                "GDML_Expand_Max", "Max Expand Function"
             ),
         }
 

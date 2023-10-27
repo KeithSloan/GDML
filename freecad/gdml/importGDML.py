@@ -2744,33 +2744,68 @@ def findPart(doc, name):
     return doc.addObject("App::Part", name)
 
 
-def processXMLVolumes(doc, root):
+def processXMLVolumes(doc, root, xmlSolids):
     from .GDMLObjects import checkMaterial
-    solids_xml = root.find("solids")
-    if solids_xml is not None:
-        for vol in root.findall("volume"):
-            vName = vol.get("name")
-            if vName is not None:
-                volObj = findPart(doc, vName)
-            print(f"Vol name {vName}")
-            material = GDMLShared.getRef(vol, "materialref")
-            print(f"Material {material}")
-            solidref = GDMLShared.getRef(vol, "solidref")
-            print(f"Solid  {solidref}")
-            solid = solids_xml.find("*[@name='%s']" % solidref)
-            if checkMaterial(material) is True:
-                createSolid( volObj, solid, material, None,
+    print(f"processXMLVolumes xmlSolids {xmlSolids}")
+    for vol in root.findall("volume"):
+        vName = vol.get("name")
+        if vName is not None:
+            volObj = findPart(doc, vName)
+        print(f"Vol name {vName}")
+        material = GDMLShared.getRef(vol, "materialref")
+        print(f"Material {material}")
+        solidref = GDMLShared.getRef(vol, "solidref")
+        print(f"Solid  {solidref}")
+        solid = xmlSolids.find("*[@name='%s']" % solidref)
+        if checkMaterial(material) is True:
+            createSolid( volObj, solid, material, None,
                         0, 0, 0, None, None)
-            else:
-                print(f"Material {material} not defined")
-    doc.recompute()
+        else:
+            print(f"Material {material} not defined")
 
 def processXML(doc, filename):
+    # Process an xml file with any type of definitions and add to current document
     print("process XML : " + filename)
     etree, root = setupEtree(filename)
     # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
     processMaterialsDocSet(doc, root)
-    processXMLVolumes(doc, root)
+    xml_solids = root.find("solids")
+    processXMLVolumes(doc, root, xml_solids)
+    doc.recompute()
+
+
+def processXMLMaterials(doc, filename):
+    print(f"process XML Materials: {filename}")
+    etree, root = setupEtree(filename)
+    # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    processMaterialsDocSet(doc, root)
+
+
+def processXMLDefines(doc, filename):
+    print(f"process XML Defines : {filename}")
+    etree, root = setupEtree(filename)
+    define = root.find("define")
+    print(str(define))
+    GDMLShared.setDefine(define)
+    if define is not None:
+        processDefines(root, doc)
+
+
+def processXMLSolids(doc, filename):
+    print(f"process XML Solids : {filename}")
+    etree, root = setupEtree(filename)
+    xml_solids = root.find("solids")
+    print(str(xml_solids))
+    print(f"XML Solids {xml_solids}")
+    return xml_solids
+
+
+def processXMLStruct(doc, va_name, filename, xmlSolids):
+    print(f"process XML va_name {va_name} {filename} xmlSolids {xmlSolids}")
+    etree, root = setupEtree(filename)
+    processXMLVolumes(doc, root, xmlSolids)
+    obj = doc.getObject(va_name)
+    print(f"Object {va_name} {obj}")
 
 
 def processPhysVolFile(doc, volDict, parent, fname):
@@ -2876,6 +2911,7 @@ def processMaterialsDocSet(doc, root):
     define_xml = root.find("define")
     print(f"define xml {define_xml}")
     mats_xml = root.find("materials")
+    print(f"materialsl {mats_xml}")
     solids_xml = root.find("solids")
     struct_xml = root.find("structure")
     if mats_xml is not None:

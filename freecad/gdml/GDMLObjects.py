@@ -5199,6 +5199,7 @@ class GDMLPartStep(GDMLsolid):  # GDMLsolid ?
         ).path = path
         obj.Proxy = self
         self.Object = obj
+        self.Type = "GDMLPartStep"
         loadShape = Part.Shape()
         loadShape.read(path)
         self.Object.Shape = loadShape
@@ -5228,6 +5229,7 @@ class GDMLPartBrep(GDMLsolid):  # GDMLsolid ?
             "App::PropertyString", "path", "GDMLBrepPart", "directory path"
         ).path = path
         obj.Proxy = self
+        self.Type = "GDMLPartBrep"
         self.Object = obj
         loadShape = Part.Shape()
         loadShape.read(path)
