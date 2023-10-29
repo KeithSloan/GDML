@@ -132,6 +132,16 @@ def getSelectedPM():
     return objPart, material
 
 
+def getParent(obj):
+    print(f" Get Parent {obj.Name}")
+    if hasattr(obj, "InList"):
+        print(f"InList {obj.InList}")
+        if len(obj.InList) > 0:
+            parent = obj.InList[0]
+            return parent
+        else:
+            return None    
+
 def createPartVol(obj):
     from .importGDML import addSurfList
 
@@ -3050,6 +3060,14 @@ class CycleFeature:
             ),
         }
 
+def getParent(obj):
+    parent = None
+    if hasattr(obj, "InList"):
+        if len(obj.InList) > 0:
+            parent = obj.InList[0]
+    return parent    
+
+
 def expandFunction(obj, eNum):
     from .importGDML import expandVolume
     from .PhysVolDict import physVolDict
@@ -3060,7 +3078,6 @@ def expandFunction(obj, eNum):
         volDict.reBuild()
 
     print("Expand Function")
-    volDict = {}
     # Get original volume name i.e. loose _ or _nnn
     name = obj.Label[13:]
     if hasattr(obj, "VolRef"):
@@ -3079,20 +3096,44 @@ def recomputeVol(obj):
         obj.recompute()
 
 
-def expandStepObj(obj):
+def replaceObj(doc, obj, newObj):
+    print(f"Replace Object old {obj.Name} new {newObj.Name}")
+    """ Need to handle situation that old Obj had Links
+    """
+    if hasattr(obj, "InList"):
+        print(f"Obj {obj.Name} InList {obj.InList}")
+        #saveInList = obj.InList
+        print(f"Attempt at updating newObj InList")
+        newObj.InList.append(obj.InList)
+    doc.removeObject(obj.Name)
+    return
+    # inExprs = []
+    #inobjs = [o for o in obj.InList]
+    #for inobj in inobjs:
+    #    for expr in inobj.ExpressionEngine:
+    #        if prop in expr[1]:
+    #            inExprs.append(tuple([inobj, expr[0], expr[1]]))
+    #for inExpr in inExprs:
+    #        inExpr[0].setExpression(inExpr[1], inExpr[2].replace(prop,newName))
+            
+
+def expandStepObj(obj, processType):
+    # Used by expand and expand Max
     from .importGDML import processXMLDefines, processXMLMaterials, processXMLSolids, processXMLStruct
+
     print(f"Expand Step Obj {obj.Name} Path{obj.path}")
-    vaName = obj.Name
+    parent = getParent(obj)
     # pathDet = os.path.split(obj.path)
     #print(f"Directory is {pathDet[0]} fileName{pathDet[1].split('.')[0]}")
     xmlPath = obj.path.split(".")[0]
     print(f"Parents {obj.Parents} xml Path {xmlPath}")
     doc = FreeCAD.ActiveDocument
-    doc.removeObject(obj.Name)
     processXMLDefines(doc, xmlPath + '_define.xml')
     processXMLMaterials(doc, xmlPath + '_materials.xml')
     xml_solids = processXMLSolids(doc, xmlPath + '_solids.xml')
-    newObj = processXMLStruct(doc, vaName, xmlPath + '_struct.xml', xml_solids)
+    newObj = processXMLStruct(doc, parent, xmlPath + '_struct.xml', xml_solids, processType)
+    replaceObj(doc, obj, newObj)
+    return newObj
 
 class ExpandFeature:
     def Activated(self):
@@ -3107,14 +3148,15 @@ class ExpandFeature:
                 if hasattr(obj,"Proxy"):
                     if hasattr(obj.Proxy,"Type"):
                         if obj.Proxy.Type == "GDMLPartStep":
-                            expandStepObj(obj)
+                            obj = expandStepObj(obj, 3)
             elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, 0)
             elif obj.Label[:5] == "Link_":
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, 0)
-                recomputeVol(obj)
+            recomputeVol(obj)
+
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:
@@ -3142,9 +3184,15 @@ class ExpandMaxFeature:
             #  add check for Part i.e. Volume
             print("Selected")
             print(obj.Label[:13])
-            if obj.Label[:13] == "NOT_Expanded_":
+            if obj.TypeId == "Part::FeaturePython":
+                if hasattr(obj,"Proxy"):
+                    if hasattr(obj.Proxy,"Type"):
+                        if obj.Proxy.Type == "GDMLPartStep":
+                            obj = expandStepObj(obj, 1)
+
+            elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, -1)
-            if obj.Label[:5] == "Link_":
+            elif obj.Label[:5] == "Link_":
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, -1)

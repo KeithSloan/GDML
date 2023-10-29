@@ -2314,6 +2314,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
     solidref = GDMLShared.getRef(vol, "solidref")
     print(f"solidref : {solidref}")
     global root
+    retPart = None
     if solidref is not None:
         solidFound = False
         for solids in root.findall("solids"):
@@ -2328,7 +2329,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
                     material = GDMLShared.getRef(vol, "materialref")
                     if material is not None:
                         if checkMaterial(material) is True:
-                            createSolid(
+                            retPart = createSolid(
                                 parent,
                                 solid,
                                 material,
@@ -2442,6 +2443,8 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
         if (parentpart is not None) and (paramvol is not None):
             print(f"volume {name} contains a parameterized volume")
             processParamvol(vol, parentpart, paramvol)
+    print(f"ProcessVol returning {retPart} {retPart.Name}")
+    return retPart        
 
 
 def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
@@ -2465,7 +2468,6 @@ def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
     vol = structure.find("volume[@name='%s']" % name)
     if vol is not None:  # If not volume test for assembly
         processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode)
-
 
     else:
         asm = structure.find("assembly[@name='%s']" % name)
@@ -2703,6 +2705,15 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
     GDMLShared.trace(MaterialsList)
 
 
+def setupEtreeInclude(filename):
+    print(f"setup Etree for includes")
+    import builtins
+    import lxml
+    from lxml import etree
+    root = lxml.etree.fromstring('<xml>' + builtins.open(filename).read() +'</xml>')
+    return etree, root
+
+
 def setupEtree(filename):
     # modifs
     # before from lxml import etree
@@ -2744,13 +2755,29 @@ def findPart(doc, name):
     return doc.addObject("App::Part", name)
 
 
+def processXMLVolume(doc, root, parent, xmlSolids, importFlag):
+    # Single Volume used by expand function
+    from .GDMLObjects import checkMaterial
+    from .PhysVolDict import physVolDict
+    from .GDMLCommands import getParent
+
+    print(f"processXMLVolume root {root} Parent {parent.Name} xmlSolids {xmlSolids}")
+    struct = root.find("structure")
+    print(f"Struct Found {struct}")
+    vol = struct.find("*[@name='%s']" % parent.Name)
+    print(f"Vol Found {vol}")
+    volDict = physVolDict()
+    return processVol(importFlag, doc, vol, volDict, parent, -1, 3)
+
+
 def processXMLVolumes(doc, root, xmlSolids):
+    # Multiple Volumes used by processXML
     from .GDMLObjects import checkMaterial
     print(f"processXMLVolumes xmlSolids {xmlSolids}")
     for vol in root.findall("volume"):
         vName = vol.get("name")
         if vName is not None:
-            volObj = findPart(doc, vName)
+           volObj = findPart(doc, vName)
         print(f"Vol name {vName}")
         material = GDMLShared.getRef(vol, "materialref")
         print(f"Material {material}")
@@ -2774,38 +2801,48 @@ def processXML(doc, filename):
     doc.recompute()
 
 
+def checkFileExists(path):
+    import os
+    if os.path.isfile(path):
+        return True
+    else:
+        print(f"Warning file {path} does not exist")    
+
 def processXMLMaterials(doc, filename):
     print(f"process XML Materials: {filename}")
-    etree, root = setupEtree(filename)
-    # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
-    processMaterialsDocSet(doc, root)
+    if checkFileExists(filename):
+        etree, root = setupEtree(filename)
+        # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+        mat_xml = root.find("Materials")
+        processMaterialsElement(doc, mat_xml)
 
 
 def processXMLDefines(doc, filename):
     print(f"process XML Defines : {filename}")
-    etree, root = setupEtree(filename)
-    define = root.find("define")
-    print(str(define))
-    GDMLShared.setDefine(define)
-    if define is not None:
-        processDefines(root, doc)
+    if checkFileExists(filename):
+        etree, root = setupEtreeInclude(filename)
+        define = root.find("define")
+        #print(str(define))
+        GDMLShared.setDefine(define)
+        if define is not None:
+            processDefines(root, doc)
 
 
 def processXMLSolids(doc, filename):
     print(f"process XML Solids : {filename}")
-    etree, root = setupEtree(filename)
-    xml_solids = root.find("solids")
-    print(str(xml_solids))
-    print(f"XML Solids {xml_solids}")
-    return xml_solids
+    if checkFileExists(filename):
+        etree, root = setupEtreeInclude(filename)
+        xml_solids = root.find("solids")
+        #print(str(xml_solids))
+        print(f"XML Solids {xml_solids}")
+        return xml_solids
 
 
-def processXMLStruct(doc, va_name, filename, xmlSolids):
-    print(f"process XML va_name {va_name} {filename} xmlSolids {xmlSolids}")
-    etree, root = setupEtree(filename)
-    processXMLVolumes(doc, root, xmlSolids)
-    obj = doc.getObject(va_name)
-    print(f"Object {va_name} {obj}")
+def processXMLStruct(doc, obj, filename, xmlSolids, processType):
+    print(f"process XML va_name {obj.Name} {filename} xmlSolids {xmlSolids}")
+    if checkFileExists(filename):
+        etree, root = setupEtreeInclude(filename)
+        return processXMLVolume(doc, root, obj, xmlSolids, processType)
 
 
 def processPhysVolFile(doc, volDict, parent, fname):
@@ -2914,6 +2951,17 @@ def processMaterialsDocSet(doc, root):
     print(f"materialsl {mats_xml}")
     solids_xml = root.find("solids")
     struct_xml = root.find("structure")
+    processMaterialsElement(doc, mats_xml)
+    # Process Opticals
+    try:
+        opticalsGrp = FreeCAD.ActiveDocument.Opticals
+    except:
+        opticalsGrp = doc.addObject(
+            "App::DocumentObjectGroupPython", "Opticals"
+            )
+    processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml)
+
+def processMaterialsElement(doc, mats_xml):    
     if mats_xml is not None:
         try:
             isotopesGrp = FreeCAD.ActiveDocument.Isotopes
@@ -2936,14 +2984,6 @@ def processMaterialsDocSet(doc, root):
                 "App::DocumentObjectGroupPython", "Materials"
             )
         processMaterials(materialsGrp, mats_xml)
-    # Process Opticals
-    try:
-        opticalsGrp = FreeCAD.ActiveDocument.Opticals
-    except:
-        opticalsGrp = doc.addObject(
-            "App::DocumentObjectGroupPython", "Opticals"
-        )
-    processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml)
 
 
 def processMatrixSpreadsheet(name, spreadsheet, coldim, values):
