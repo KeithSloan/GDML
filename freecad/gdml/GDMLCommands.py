@@ -3096,17 +3096,16 @@ def recomputeVol(obj):
         obj.recompute()
 
 
-def replaceObj(doc, obj, newObj):
-    print(f"Replace Object old {obj.Name} new {newObj.Name}")
+def replaceObj(obj, newObj):
     """ Need to handle situation that old Obj had Links
     """
-    if hasattr(obj, "InList"):
-        print(f"Obj {obj.Name} InList {obj.InList}")
-        #saveInList = obj.InList
-        print(f"Attempt at updating newObj InList")
-        newObj.InList.append(obj.InList)
-    doc.removeObject(obj.Name)
-    return
+    if newObj is not None:
+        print(f"Replace Object old {obj.Name} new {newObj.Name}")
+        if hasattr(obj, "InList"):
+            print(f"Obj {obj.Name} InList {obj.InList}")
+            #saveInList = obj.InList
+            print(f"Attempt at updating newObj InList")
+            newObj.InList.append(obj.InList)
     # inExprs = []
     #inobjs = [o for o in obj.InList]
     #for inobj in inobjs:
@@ -3132,8 +3131,16 @@ def expandStepObj(obj, processType):
     processXMLMaterials(doc, xmlPath + '_materials.xml')
     xml_solids = processXMLSolids(doc, xmlPath + '_solids.xml')
     newObj = processXMLStruct(doc, parent, xmlPath + '_struct.xml', xml_solids, processType)
-    replaceObj(doc, obj, newObj)
-    return newObj
+    if newObj is not None:
+        replaceObj(obj, newObj)
+        print(f"Remove Object {obj.Name}")
+        doc.removeObject(obj.Name)
+        # Updates need to be parent ?
+        return parent
+    else:
+        print(f"newObj is None")
+        doc.removeObject(obj.Name)
+        return obj    
 
 class ExpandFeature:
     def Activated(self):
@@ -3155,6 +3162,7 @@ class ExpandFeature:
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, 0)
+            print(f"Recompute {obj.Name}")            
             recomputeVol(obj)
 
 
@@ -3189,6 +3197,8 @@ class ExpandMaxFeature:
                     if hasattr(obj.Proxy,"Type"):
                         if obj.Proxy.Type == "GDMLPartStep":
                             obj = expandStepObj(obj, 1)
+                            FreeCAD.ActiveDocument.recompute()
+                            return
 
             elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, -1)
@@ -3196,6 +3206,7 @@ class ExpandMaxFeature:
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, -1)
+            print(f"Recompute {obj.Name}")            
             recomputeVol(obj)
 
     def IsActive(self):

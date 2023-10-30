@@ -2755,20 +2755,35 @@ def findPart(doc, name):
     return doc.addObject("App::Part", name)
 
 
-def processXMLVolume(doc, root, parent, xmlSolids, importFlag):
+def processXMLVolAsm(doc, root, parent, xmlSolids, importFlag):
     # Single Volume used by expand function
     from .GDMLObjects import checkMaterial
     from .PhysVolDict import physVolDict
     from .GDMLCommands import getParent
 
-    print(f"processXMLVolume root {root} Parent {parent.Name} xmlSolids {xmlSolids}")
+    print(f"processXMLVolAsm root {root} Parent {parent.Name} xmlSolids {xmlSolids}")
     struct = root.find("structure")
     print(f"Struct Found {struct}")
-    vol = struct.find("*[@name='%s']" % parent.Name)
-    print(f"Vol Found {vol}")
+    volAsm = struct.find("*[@name='%s']" % parent.Name)
+    name = volAsm.get("name")
+    print(f"VolAsm Found {volAsm} Name {name} Parent {parent.Name}")
     volDict = physVolDict()
-    return processVol(importFlag, doc, vol, volDict, parent, -1, 3)
-
+    if volAsm.tag == "volume":
+        print(f"Vol Found {name}")
+        retObj = processVol(importFlag, doc, volAsm, volDict, parent, -1, 3)
+        print(f"retObj {retObj}")
+        return retObj
+    elif volAsm.tag == "assembly":
+        print(f"Assembly : {name}")
+        for pv in volAsm.findall("physvol"):
+            # obj = parent.newObject("App::Part", name)
+            parsePhysVol(
+                 importFlag, doc, volDict, False, parent, pv, -1, 3
+                )
+        print(f"Assembly return parent {parent.Name}")    
+        return parent    
+    else:
+        print(name + " is Not a defined Volume or Assembly")
 
 def processXMLVolumes(doc, root, xmlSolids):
     # Multiple Volumes used by processXML
@@ -2842,7 +2857,7 @@ def processXMLStruct(doc, obj, filename, xmlSolids, processType):
     print(f"process XML va_name {obj.Name} {filename} xmlSolids {xmlSolids}")
     if checkFileExists(filename):
         etree, root = setupEtreeInclude(filename)
-        return processXMLVolume(doc, root, obj, xmlSolids, processType)
+        return processXMLVolAsm(doc, root, obj, xmlSolids, processType)
 
 
 def processPhysVolFile(doc, volDict, parent, fname):
