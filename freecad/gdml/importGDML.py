@@ -1975,7 +1975,7 @@ def parsePhysVol(
     # if volAsmFlag == False : Assembly
     # physvol is xml entity
     # GDMLShared.setTrace(True)
-    print(f"Parse physvol : importFlag {importFlag}")
+    print(f"Parse physvol : importFlag {importFlag} parent {parent.Name}")
     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
     #print(f"ParsePhyVol : level : {phylvl}")
     # Test if any physvol file imports
@@ -2066,7 +2066,7 @@ def getColour(colRef):
 # displayMode 1 normal 2 hide 3 wireframe
 def parseVolume(importFlag, doc, volDict, parent, name, phylvl,displayMode):
     GDMLShared.trace("ParseVolume : " + name)
-    print(f"Parse Volume : {name} Phylvl {phylvl}")
+    print(f"Parse Volume : {name} Phylvl {phylvl} parent {parent.Name}")
     #if importFlag in [2, 3]:
     #    from .GDMLScanBrepStep import getBrepStepPath, createSavedVolume
     #    #from .GDMLObjects import GDMLPartStep, ViewProvider
@@ -2862,7 +2862,7 @@ def processXMLStruct(doc, obj, filename, xmlSolids, processType):
 
 def processPhysVolFile(doc, volDict, parent, fname):
     global pathName
-    print("Process physvol file import")
+    print(f"Process physvol file import {fname} parent {parent.Name}")
     print(pathName)
     filename = os.path.join(pathName, fname)
     print("Full Path : " + filename)

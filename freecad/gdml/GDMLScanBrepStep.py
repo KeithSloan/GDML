@@ -34,8 +34,10 @@ def getStepPath(path, parent, volRef):
         nlst = nl[1]
         print(f"nlst {nlst}")
         for i, s in enumerate(nlst.rsplit('.')):
-            if i > 0 :
-                path = os.path.join(path,s)
+            # NOT SURE Why test i>0 is in error
+            #if i > 0 :
+            #    path = os.path.join(path,s)
+            path = os.path.join(path,s)
 
     path = os.path.join(path, volRef+".step")
     print(f"== Path ==> {path}")
