@@ -196,6 +196,9 @@ def setDisplayMode(obj, mode):
     if mode == 3:
         obj.ViewObject.DisplayMode = "Wireframe"
 
+    if obj.material == "G4_AIR":
+        obj.ViewObject.Transparency = 98
+
 
 def newPartFeature(obj, name):
     newobj = obj.newObject("Part::FeaturePython", name)
