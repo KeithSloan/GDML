@@ -1151,6 +1151,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, soli
     )
 
     GDMLShared.trace("CreateXtru : ")
+    print(f"CreateXtru : ")
     # print(solid)
     # print(getName(solid))
     myXtru = newPartFeature(part, getSolidName(solid, solidName))

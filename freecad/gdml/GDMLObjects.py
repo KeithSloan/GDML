@@ -2706,6 +2706,7 @@ class GDMLXtru(GDMLsolid):
         return vl
 
     def createGeometry(self, fp):
+        print(f"Create Geometry Xtru")
         # GDMLShared.setTrace(True)
         currPlacement = fp.Placement
         # print("Create Geometry")
@@ -2796,6 +2797,7 @@ class GDML2dVertex(GDMLcommon):
         pass
 
     def execute(self, fp):
+        print(f"2D execute")
         pass
 
 
