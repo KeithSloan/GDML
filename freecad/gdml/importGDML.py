@@ -984,7 +984,7 @@ def createTrd(
 
 
 def createTwistedbox(
-    part, solid, material, colour, px, py, pz, rot, displayMod, solidName = None
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     # parent, sold
     from .GDMLObjects import GDMLTwistedbox, ViewProvider
@@ -1022,7 +1022,7 @@ def createTwistedbox(
 
 
 def createTwistedtrap(
-    part, solid, material, colour, px, py, pz, rot, displayMod, solidName=None
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
 ):
     from .GDMLObjects import GDMLTwistedtrap, ViewProvider
 
