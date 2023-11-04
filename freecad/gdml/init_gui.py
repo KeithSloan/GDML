@@ -74,7 +74,8 @@ class GDML_Workbench(FreeCADGui.Workbench):
                     doc,
                     True,
                     joinDir("Resources/Default.gdml"),
-                    False,
+                    False,          # Prompt
+                    1,              # processType
                     True,
                 )
 
