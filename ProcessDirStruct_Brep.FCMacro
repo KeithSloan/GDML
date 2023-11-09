@@ -1,0 +1,247 @@
+# **************************************************************************
+# *                                                                        *
+# *   Copyright (c) 2023 Keith Sloan <keith@sloan-home.co.uk>              *
+# *                      Munther Hindi                                      *
+# *                                                                        *
+# *   This program is free software; you can redistribute it and/or modify *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)   *
+# *   as published by the Free Software Foundation; either version 2 of    *
+# *   the License, or (at your option) any later version.                  *
+# *   for detail see the LICENCE text file.                                *
+# *                                                                        *
+# *   This program is distributed in the hope that it will be useful,      *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+# *   GNU Library General Public License for more details.                 *
+# *                                                                        *
+# *   You should have received a copy of the GNU Library General Public    *
+# *   License along with this program; if not, write to the Free Software  *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 *
+# *   USA                                                                  *
+# *                                                                        *
+# *   Acknowledgements :                                                   *
+#                                                                          *
+#     Takes as input a GDML file directory and creates/updates             *
+#          STEP / BREP files from the GDML definitions                     *
+#                                                                          *
+#             python3 processDirStruct.py <directory>                      *
+#                                                                          *
+#***************************************************************************
+import sys, os
+
+class volAsm_class:
+ 	# ??? volasm in several places aslo different levels?
+	def __init__(self, vaName, path, level):
+		print(f"New volasm {vaName} path {path} level {level}")
+		self.vaName = vaName
+		self.path = path
+		self.subVolAsmList = []
+		self.level = level
+
+
+	def getName(self):
+		return self.vaName
+
+
+	def addSubVolAsms(self, volasmList):
+		self.subVolAsmList = volasmList
+
+
+	def getSubVolAsms(self):
+		return self.subVolAsmList
+
+
+	def printSubVolAsms(self):
+		print(f"Volume {self.vaName}")
+		for i in self.subVolAsmList:
+			print(i.getName())    
+
+
+	def processPath(self, path, level, levels, volAsmDict):
+		print(f"Processing path {path} level {level}")
+		vaName = os.path.splitext(os.path.basename(path))[0]
+		print(f"Processing VolAsm {vaName}")
+		volAsm = volAsm_class(vaName, path, level)
+		#volAsm = volAsm_class(vaName, path)
+		# Add volume to dictionary
+		volAsmDict[self.vaName] = vaName
+		#print(f"new Volume {volAsm.getName()}")
+		levels.addVolAsm(volAsm, self.path, level)
+		subVolAsms = os.scandir(path)
+		for p in subVolAsms:
+			if p.is_dir():
+				self.processPath(p.path, level+1, levels, volAsmDict)
+
+	def join(self, path, name):
+		import os
+		return(os.path.join(path, name))
+
+
+	def exportStep(self, obj):
+		# Step export uses Import
+		import Import
+		exportPath = self.join(self.path, self.vaName+".step")
+		print(f"export Path {exportPath}")
+		if hasattr(Import, "exportOptions"):        
+			options = Import.exportOptions(exportPath)
+			Import.export(obj, exportPath, options)
+			print(f"exported {obj.Name} type {typeId} wih Options")
+		else:
+			Import.export([obj], exportPath)
+			print(f"Step exported {obj.Name} ")
+
+	def exportBrep(self, obj):
+		# Brep export uses Part:
+		import Part
+		exportPath = self.join(self.path, self.vaName+".brep")
+		print(f"export Path {exportPath}")
+		if hasattr(Part, "exportOptions"):        
+			options = Part.exportOptions(exportPath)
+			Part.export(obj, exportPath, options)
+			print(f"exported {obj.Name} type {typeId} wih Options")
+		else:
+			Part.export([obj], exportPath)
+			print(f"Brep exported {obj.Name}")
+
+	def exportBrepStep(self):
+		print(f"Export STEP & Brep {self.vaName} path {self.path}")
+		name = self.vaName+".gdml"
+		#path = "u"+ self.join(self.path, name)
+		path = self.join(self.path, name)
+     
+		import freecad.gdml.importGDML
+		#freecad.gdml.importGDML.open(u"/Users/keithsloan/Downloads/CERN-Dipole/Dipole/DCoil/DL0/DL1/DL1.gdml")
+		freecad.gdml.importGDML.open(path, processType = 1, prompt=False)
+		doc = FreeCAD.ActiveDocument
+		print(f"GDML file opened {path} Root Volume {self.vaName}")
+		obj = doc.getObject(self.vaName)
+		doc.recompute()
+		# If problem with name i,e has underscore etc
+		if obj is None:
+			obj = doc.RootObjects[-1]
+			print(f"Root Vol {self.vaName} type {obj.TypeId}")
+		#self.export(obj, ".step")
+      
+		#print(f"Save FC file {doc.Name}")
+		#savePath = self.join(self.path, self.vaName)
+		#doc.saveAs(savePath
+		# Make Compound and save Brep
+		print(f"obj {obj.Name}")
+		#print(f"obj {obj.Name} OutList {obj.OutList}")
+		saveList = obj.OutList
+		asm = obj.newObject("Part::Compound","Assembly")
+		#print(dir(asm))
+		#if hasattr(asm, "Links"):
+		#	print("Has Links")
+		#	print(asm.Links)
+		#	print(type(asm.Links))
+		asm.Links = []
+		for o in saveList:
+			if hasattr(o,"Shape"):
+				#print(f"Has Shape {o.Name}")
+				#asm.Links.append(o)
+				asm.Links = asm.Links + [o]
+		#print(f"Assembly Links {asm.Links}")
+		print("Recompute")
+		doc.recompute()
+		#asm.recompute()
+		print(f"Assembly Created")
+		self.exportBrep(asm)
+		FreeCAD.closeDocument(doc.Name)
+
+
+class levelDet:
+    def __init__(self):
+        self.volAsmList = []
+
+
+    def getNumVolAsm(self):
+        return len(self.volAsmList)
+
+
+    def getVolAsms(self):
+        return self.volAsmList
+
+
+    def levelAddVolAsm(self, volAsm, path, level):
+        print(f"Add Volume {volAsm.getName()} to level {level}")
+        #self.volAsmList.append(volAsm_class(vaName, path, level))    
+        self.volAsmList.append(volAsm)   
+
+
+class levels_class:
+    def __init__(self):
+        self.levels = []
+
+
+    def addLevel(self):
+        #print(f"levels add level")
+        self.levels.append(levelDet())
+        #print(f"len self.levels {len(self.levels)}")
+
+
+    def checkLevel(self, lvlNum):
+        #print(f"levels checkLevel lvlNum {lvlNum} levels {len(self.levels)}")
+        #print(f"test {lvlNum > len(self.levels)}")
+        # Lists index from 0
+        lvl = int(lvlNum) - 1
+        if lvlNum > len(self.levels):
+            self.addLevel()
+        #else:
+        #    print("No need to add")    
+
+        return self.levels[lvl]
+
+
+    def addVolAsm(self, volAsm, path, lvlNum):
+        #print(f"levels add VolAsm {volAsm.getName()}")
+        levelDet = self.checkLevel(lvlNum)
+        levelDet.levelAddVolAsm(volAsm, path, lvlNum)
+
+
+    def print(self):
+        # print(f"Levels {self.levels}")
+        for i, l in enumerate(self.levels):
+            print(f" Level {i} Number of VolAsm {l.getNumVolAsm()}")
+
+    def process(self):
+        self.numVolAsm = 3
+        # print(f"Levels {self.levels}")
+        print(f"\nProcess levels in Reverse order\n")
+        for i, l in reversed(list(enumerate(self.levels))):
+            numVolAsm = l.getNumVolAsm()
+            print(f" Level {i} Number of VolAsm {numVolAsm}")
+            if numVolAsm > self.numVolAsm or i == 0 :
+                volAsmList = l.getVolAsms()
+                for volAsm in volAsmList:
+                    print(f"volAsm {volAsm.getName()}")
+                    volAsm.exportBrepStep()
+           
+
+
+
+
+class dirBase_class:
+	def __init__(self):
+		from PySide2 import QtGui, QtCore, QtWidgets
+		self.volAsmDict = {}
+		self.levels = levels_class()
+		self.basePath = QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory")
+		print(f"\nProcessing GDML directory : {self.basePath}")
+		vaName = os.path.splitext(os.path.basename(self.basePath))[0]
+
+		self.baseVolAsm = volAsm_class(vaName, self.basePath, 1)
+		self.baseVolAsm.processPath(self.basePath, 1, self.levels, self.volAsmDict)
+
+		print(f"Base Path {self.basePath}\n")
+		#print(f"Path List \n")
+		#for i in self.pathList:
+		#    print(i.getName()
+		self.baseVolAsm.printSubVolAsms()
+		self.levels.print()
+		self.levels.process()
+
+		#baseVaName = os.path.splitext(os.path.basename(basePath))[0]
+		#evels = levels_class()
+
+base = dirBase_class()

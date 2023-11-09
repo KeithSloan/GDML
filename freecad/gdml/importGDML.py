@@ -82,7 +82,7 @@ if open.__module__ == "__builtin__":
 #        return QtGui.QApplication.translate(context, text, None)
 
 
-def open(filename, processType=1):
+def open(filename, processType=1, prompt=True):
     "called when freecad opens a file."
     global doc
     print(f"Open : {filename} {processType}")
@@ -94,9 +94,9 @@ def open(filename, processType=1):
         # profiler = cProfile.Profile()
         # profiler.enable()
         doc = FreeCAD.newDocument(docName)
-        prompt = True
-        if processType == 2:
-            prompt = False
+        # prompt = True
+        #if processType == 2:
+        #    prompt = False
         processGDML(doc, True, filename, prompt, processType, False)
         # profiler.disable()
         # stats = pstats.Stats(profiler).sort_stats('cumtime')
