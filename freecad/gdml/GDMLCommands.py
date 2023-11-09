@@ -3116,11 +3116,12 @@ def replaceObj(obj, newObj):
     #        inExpr[0].setExpression(inExpr[1], inExpr[2].replace(prop,newName))
             
 
-def expandStepObj(obj, processType):
+def expandBrepStepObj(obj, processType):
     # Used by expand and expand Max
     from .importGDML import processXMLDefines, processXMLMaterials, processXMLSolids, processXMLStruct
 
-    print(f"Expand Step Obj {obj.Name} Path{obj.path}")
+    processLabels = ["", "Brep", "Step"]
+    print(f"Expand processLabels[processType] Obj {obj.Name} Path{obj.path}")
     parent = getParent(obj)
     # pathDet = os.path.split(obj.path)
     #print(f"Directory is {pathDet[0]} fileName{pathDet[1].split('.')[0]}")
@@ -3154,8 +3155,12 @@ class ExpandFeature:
             if obj.TypeId == "Part::FeaturePython":
                 if hasattr(obj,"Proxy"):
                     if hasattr(obj.Proxy,"Type"):
-                        if obj.Proxy.Type == "GDMLPartStep":
-                            obj = expandStepObj(obj, 3)
+                        if obj.Proxy.Type == "GDMLPartBrep":
+                            obj = expandBrepStepObj(obj, 2)
+
+                        elif obj.Proxy.Type == "GDMLPartStep":
+                            obj = expandBrepStepObj(obj, 3)
+
             elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, 0)
             elif obj.Label[:5] == "Link_":
@@ -3195,10 +3200,14 @@ class ExpandMaxFeature:
             if obj.TypeId == "Part::FeaturePython":
                 if hasattr(obj,"Proxy"):
                     if hasattr(obj.Proxy,"Type"):
-                        if obj.Proxy.Type == "GDMLPartStep":
-                            obj = expandStepObj(obj, 1)
-                            FreeCAD.ActiveDocument.recompute()
-                            return
+                        if obj.Proxy.Type == "GDMLPartBrep":
+                            obj = expandBrepStepObj(obj, 1)
+
+                        elif obj.Proxy.Type == "GDMLPartStep":
+                            obj = expandBrepStepObj(obj, 1)
+
+                        FreeCAD.ActiveDocument.recompute()
+                        return
 
             elif obj.Label[:13] == "NOT_Expanded_":
                 expandFunction(obj, -1)

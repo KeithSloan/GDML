@@ -24,8 +24,8 @@
 import os
 import FreeCAD
 
-def getStepPath(path, parent, volRef):
-    print(f"==== Get Step Path : {path} {parent.Label} {volRef}")
+def getPath(path, parent, volRef):
+    print(f"==== Get Path : {path} {parent.Label} {volRef}")
     par = parent.Parents
     print(f"Parents {par}")
     if len(par) > 0:
@@ -34,29 +34,20 @@ def getStepPath(path, parent, volRef):
         nlst = nl[1]
         print(f"nlst {nlst}")
         for i, s in enumerate(nlst.rsplit('.')):
-            # NOT SURE Why test i>0 is in error
-            #if i > 0 :
-            #    path = os.path.join(path,s)
-            path = os.path.join(path,s)
+            # Need to ignore first as already in path
+            if i > 0 :
+               path = os.path.join(path,s)
+    return path + volRef
 
-    path = os.path.join(path, volRef+".step")
-    print(f"== Path ==> {path}")
+def getStepPath(path, parent, volRef):
+    path = getPath(path, parent, volRef)+".step"
+    print(f"== Step Path ==> {path}")
     return path
 
 
 def getBrepPath(path, parent, volRef):
-    print(f"==== Get Brep Path : {path} Parent : {parent.Label} Volume : {volRef}")
-    print(f"Parents {parent.Parents}")
-    #for t in parent.Parents:
-    #    print(f"==== tuple {t}")
-    #    #path = os.path.join(path, t[0].Label)
-    #    #print(f"== Path ==> {path}")
-    #    #print(f"==== Parent {t[0]} Label {t[0].Label}")
-    #    for s in str(t[1]).split('.'):
-    #        path = os.path.join(path,s)
-    #path = os.path.join(path, volRef)
-    path = os.path.join(path, volRef+".brep")
-    print(f"== Path ==> {path}")
+    path = getPath(path, parent, volRef)+".brep"
+    print(f"== Brep Path ==> {path}")
     return path
 
 
@@ -72,22 +63,6 @@ def getBrepStepPath(importType, path, parent, volRef):
     else:
         return None
 
-def getPath(path, obj):
-    print(f"==== Get Path : {path} {obj.Label}")
-    #pList = []
-    #print(f"Parent {obj.Parents}")
-    for t in obj.Parents:
-        print(f"==== tuple {t}")
-        path = os.path.join(path, t[0].Label)
-        #print(f"== Path ==> {path}")
-        #print(f"==== Parent {t[0]} Label {t[0].Label}")
-        for s in str(t[1]).split('.'):
-            path = os.path.join(path,s)
-        #pList.append(t[1])
-    print(f"== Path ==> {path}")
-    print(f"==== End Get Path")
-    #print(f" Path {pList}")
-    #return pList
 
 def createSavedVolume(importType, volDict, parent, name, path):
     from .GDMLObjects import GDMLPartStep, GDMLPartBrep, ViewProvider
