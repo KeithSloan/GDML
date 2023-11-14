@@ -2774,7 +2774,7 @@ def processXMLVolAsm(doc, root, parent, xmlSolids, importFlag):
     if volAsm.tag == "volume":
         print(f"Vol Found {name}")
         retObj = processVol(importFlag, doc, volAsm, volDict, parent, -1, 3)
-        print(f"retObj {retObj}")
+        print(f"Volume return {retObj}")
         return retObj
     elif volAsm.tag == "assembly":
         print(f"Assembly : {name}")
