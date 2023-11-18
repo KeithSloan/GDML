@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -47,15 +37,15 @@ class gdml_lxml() :
         try:
             from lxml import etree
             print('Running with lxml.etree\n')
-            print(f"Parsing {filename}")
+            print(f"Parsing {self.filename}")
             parser = etree.XMLParser(resolve_entities=True)
-            self.root = etree.parse(filename, parser=parser)
+            self.root = etree.parse(self.filename, parser=parser)
 
         except ImportError:
             try:
                 import xml.etree.ElementTree as etree
                 print("Rnning with etree.ElementTree (import limitations)\n")
-                self.tree = etree.parse(filename)
+                self.tree = etree.parse(self.filename)
                 self.root = self.tree.getroot()
             except:
                 print('No lxml or xml')
