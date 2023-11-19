@@ -28,6 +28,7 @@ class processGDML(gdml_lxml):
 
 
     def parseVolAsm(self, vaName):
+        # parse depending on process option, test for PartStep, PartBrep
         print(f"Parse VolAsm {vaName}")
         volasm = self.structure.find("*[@name='%s']" % vaName)
         if volasm is not None:
@@ -39,12 +40,27 @@ class processGDML(gdml_lxml):
 
 
     def parseVol(self, volasm, vaName):
+        # volasm volume element
+        # parse depending on process option, test for PartStep, PartBrep
         print(f"Parse Volume {vaName}")
-
+        self.parsePhysVols(volasm)
 
     def parseAsm(self, volasm, vaName):
+        # volasm assemble element
+        # parse depending on process option, test for PartStep, PartBrep
         print(f"Parse Assembly {vaName}")
 
 
+    def parsePhysVols(self, volasm):
+        print(f"Parse Phys Vols")
+        for pv in volasm.findall("physvol"):
+            self.parsePhysVol(pv)
+
+
+    def parsePhysVol(self, physVol):
+        print(f"Parse Phys Vols : {physVol.get('name')}")
+        wrk = physVol.find("volumeref")
+        volumeRef = wrk.get("ref")
+        print(f"Physvol : volumeRef {volumeRef}")
 
 
