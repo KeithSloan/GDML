@@ -62,6 +62,7 @@ class gdml_lxml() :
         self.materials = self.root.find('materials')
         self.solids    = self.root.find('solids')
         self.structure = self.root.find('structure')
+        self.setup = self.root.find('setup')
         #self.volAsmDict = {}  # Can have number of PhysVols that refer to same
         # Needs to be in VolAsm
         self.VolAsmStructDict = {}
