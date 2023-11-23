@@ -120,8 +120,8 @@ def checkMaterial(material):
 
 def setMaterial(obj, m):
     # print(f'setMaterial {obj} {m}')
-    if m == "G4_AIR":
-        print("G4_AIR")
+    if m in ['G4_AIR', 'AIR']:
+        print(f"Material {m}")
         if hasattr(obj,"ViewObject"):
             print("Set transparency")
             obj.ViewObject.Transparency = 98
