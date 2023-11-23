@@ -4,8 +4,9 @@ import sys
 #sys.path.append("/usr/lib/freecad-daily/lib") # example for Linux
 #sys.path.append("/usr/lib/freecad-daily/Mod") # example for Linux
 #sys.path.append("/usr/lib/freecad/lib") # example for Linux
-sys.path.append("/Applications/FreeCAD_0.19-B.app/Contents/Resources/lib")
-sys.path.append("/Applications/FreeCAD_0.19-B.app/Contents/Resources/lib/python3.8/site-packages") # example for Mac OS
+sys.path.append("/Applications/FreeCAD_0.21.app/Contents/Resources/lib")
+sys.path.append("/Applications/FreeCAD_0.21.app/Contents/Resources/lib/python3.10/site-packages") # example for Mac OS
+sys.path.append("/Applications/FreeCAD_0.21.app/Contents/Resources/lib/python3.10/site-packages/PySide2") # example for Mac OS
 
 print(sys.path)
 try :
