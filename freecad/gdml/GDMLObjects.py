@@ -120,11 +120,12 @@ def checkMaterial(material):
 
 def setMaterial(obj, m):
     # print(f'setMaterial {obj} {m}')
-    if m in ['G4_AIR', 'AIR']:
-        print(f"Material {m}")
-        if hasattr(obj,"ViewObject"):
-            print("Set transparency")
-            obj.ViewObject.Transparency = 98
+    if FreeCAD.GuiUp:
+        if m in ['G4_AIR', 'AIR']:
+            print(f"Material {m}")
+            if hasattr(obj,"ViewObject"):
+                print("Set transparency")
+                obj.ViewObject.Transparency = 98
 
     if MaterialsList is not None:
         if len(MaterialsList) > 0:
