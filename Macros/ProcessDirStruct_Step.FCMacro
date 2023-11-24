@@ -115,7 +115,7 @@ class volAsm_class:
      
 		import freecad.gdml.importGDML
 		#freecad.gdml.importGDML.open(u"/Users/keithsloan/Downloads/CERN-Dipole/Dipole/DCoil/DL0/DL1/DL1.gdml")
-		freecad.gdml.importGDML.open(path, processType = 2, prompt=False)
+		freecad.gdml.importGDML.open(path, processType = 3, prompt=False)
 		doc = FreeCAD.ActiveDocument
 		print(f"GDML file opened {path} Root Volume {self.vaName}")
 		obj = doc.getObject(self.vaName)
