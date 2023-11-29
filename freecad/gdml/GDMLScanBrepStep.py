@@ -25,7 +25,7 @@ import os
 import FreeCAD
 
 def getPath(path, parent, volRef):
-    print(f"==== Get Path : {path} {parent.Label} {volRef}")
+    print(f"==== Get Path : {path} : Parent {parent.Label} : name {volRef}")
     par = parent.Parents
     print(f"Parents {par}")
     if len(par) > 0:
@@ -37,7 +37,7 @@ def getPath(path, parent, volRef):
             # Need to ignore first as already in path
             if i > 0 :
                path = os.path.join(path,s)
-    return path + volRef
+    return os.path.join(path, volRef)
 
 def getStepPath(path, parent, volRef):
     path = getPath(path, parent, volRef)+".step"

@@ -2461,6 +2461,7 @@ def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
     if importFlag in [2, 3]:
         from .GDMLScanBrepStep import getBrepStepPath, createSavedVolume
         from .GDMLObjects import GDMLPartStep, ViewProvider
+        print(f"Path Name : {pathName} parent : {parent.Name} name : {name}")
         path = getBrepStepPath(importFlag, pathName, parent, name)
         print(f"Path exists {os.path.exists(path)}")
         if os.path.isfile(path):
