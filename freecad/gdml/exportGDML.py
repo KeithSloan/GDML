@@ -1956,8 +1956,56 @@ def invPlacement(placement):
     # return R*T
 
 
+def isArrayType(obj):
+    obj1 = obj
+    if obj.TypeId == "App::Link":
+        obj1 = obj.LinkedObject
+    if obj1.TypeId == "Part::FeaturePython":
+        typeId = obj1.Proxy.Type
+        if typeId == "Array":
+            if obj1.ArrayType == "ortho":
+                return True
+            elif obj1.ArrayType == "polar":
+                return True
+        elif typeId == "PathArray":
+            return True
+        elif typeId == "PointArray":
+            return True
+        elif typeId == "Clone":
+            clonedObj = obj1.Objects[0]
+            return isArrayType(clonedObj)
+
+        else:
+            return False
+    else:
+        return False
+
+
+def typeOfArray(obj):
+    obj1 = obj
+    if obj.TypeId == "App::Link":
+        obj1 = obj.LinkedObject
+    if obj1.TypeId == "Part::FeaturePython":
+        typeId = obj1.Proxy.Type
+        if typeId == "Array":
+            return obj1.ArrayType
+        elif typeId == "PathArray":
+            return "PathArray"
+        elif typeId == "PointArray":
+            return "PointArray"
+        elif typeId == "Clone":
+            clonedObj = obj1.Objects[0]
+            return typeOfArray(clonedObj)
+
+        else:
+            return None
+    else:
+        return None
+
+
 def processArrayPart(vol, xmlVol, parentVol):
     global physVolStack
+    from . import arrayUtils
 
     print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol}")
     processVolAssem(vol.Base, xmlVol, vol.Base.Label, isPhysVol=False)
@@ -1966,40 +2014,37 @@ def processArrayPart(vol, xmlVol, parentVol):
 
     parent = vol.InList[0]
     print(f"parent {parent}")
-    if vol.ArrayType == "ortho":
-        for ix in range(vol.NumberX):
-            for iy in range(vol.NumberY):
-                for iz in range(vol.NumberZ):
-                    baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
-                        '-' + str(iz)
-                    print(f"Base Name {baseName}")
-                    # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
-                    pos = (basePhysVol.placement.Base +
-                           ix * vol.IntervalX +
-                           iy * vol.IntervalY +
-                           iz * vol.IntervalZ)
-                    # print(f"pos {pos}")
-                    newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
-                    addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
-                                        parent.Placement*newPlace, pvName=str(baseName),
-                                        refName=vol.Base.Label)
+    arrayType = typeOfArray(vol)
+    while switch(arrayType):
+        if case("ortho"):
+            basePos = basePhysVol.placement.Base
+            for i, placement in enumerate(arrayUtils.placementList(vol, offsetVector=basePos)):
+                ix, iy, iz = arrayUtils.orthoIndexes(i, vol)
+                baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
+                    '-' + str(iz)
+                print(f"Base Name {baseName}")
+                # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+                pos = placement.Base
+                newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
+                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+                                    parent.Placement*newPlace, pvName=str(baseName),
+                                    refName=vol.Base.Label)
+                break
 
-    elif vol.ArrayType == "polar":
-        if vol.Angle == 360:
-            dthet = vol.Angle / vol.NumberPolar
-        else:
-            dthet = vol.Angle / (vol.NumberPolar - 1)
-        positionVector = basePhysVol.placement.Base
-        axis = vol.Axis
-        for i in range(vol.NumberPolar):
-            baseName = vol.Base.Label + '-' + str(i)
-            rot = FreeCAD.Rotation(axis, i * dthet)
-            pos = rot * positionVector  # position has to be rotated too!
-            rot = rot * baseRotation  # add rotation of base
-            newPlace = FreeCAD.Placement(pos, rot)
-            addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
-                                parent.Placement*newPlace, pvName=str(baseName),
-                                refName=vol.Base.Label)
+        if case("polar"):
+            positionVector = basePhysVol.placement.Base
+            for i, placement in enumerate(arrayUtils.placementList(vol,
+                                                                   offsetVector=positionVector)):
+
+                baseName = vol.Base.Label + '-' + str(i)
+                rot = placement.Rotation
+                pos = placement.Base
+                rot = rot * baseRotation  # add rotation of base
+                newPlace = FreeCAD.Placement(pos, rot)
+                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+                                    parent.Placement*newPlace, pvName=str(baseName),
+                                    refName=vol.Base.Label)
+                break
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
@@ -2041,7 +2086,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=T
             if isPhysVol:
                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
             physVolStack.append(PhysVolPlacement(volName, obj.Placement))
-        elif hasattr(obj, "ArrayType"):
+        elif isArrayType(obj):
             processArrayPart(obj, xmlVol, vol)
         else:
             _ = processVolume(obj, xmlVol, isPhysVol, volName=None)
@@ -2345,9 +2390,9 @@ def isContainer(obj):
 
 
 def isAssembly(obj):
-    # return True if obj is an assembly
-    # to be an assembly the obj must be:
-    # (1) and App::Part or an App::Link and
+    # return True if obj is an assembly.
+    # To be an assembly the obj must be:
+    # (1) an App::Part or an App::Link and
     # (2) it has either (1) At least one App::Part as a subpart or
     #                   (2) more than one "terminal" object
     # A terminal object is one that has associated with it ONE volume
@@ -2369,9 +2414,7 @@ def isAssembly(obj):
                 subObjs.append(ob)
 
     # now remove any OutList objects from the subObjs
-    for subObj in subObjs[
-        :
-    ]:  # the slice is a COPY of the list, not the list itself
+    for subObj in subObjs[:]:  # the slice is a COPY of the list, not the list itself
         if hasattr(subObj, "OutList"):
             for o in subObj.OutList:
                 if o in subObjs:
@@ -4423,6 +4466,7 @@ class OrthoArrayExporter(SolidExporter):
         self._name = "MultiUnion-" + self.obj.Label
 
     def export(self):
+        from . import arrayUtils
         base = self.obj.OutList[0]
         print(f"Base {base.Label}")
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
@@ -4441,39 +4485,31 @@ class OrthoArrayExporter(SolidExporter):
         baseRotation = FreeCAD.Rotation(baseExporter.rotation())
         baseRotation.Angle = -baseRotation.Angle  # for booleans rotation are reversed
         rotationName = ""
-        for ix in range(self.obj.NumberX):
-            for iy in range(self.obj.NumberY):
-                for iz in range(self.obj.NumberZ):
-                    nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
-                    translate = (
-                        basePos
-                        + ix * self.obj.IntervalX
-                        + iy * self.obj.IntervalY
-                        + iz * self.obj.IntervalZ
-                    )
-                    nodeXML = ET.SubElement(
-                        unionXML, "multiUnionNode", {"name": nodeName}
-                    )
-                    ET.SubElement(nodeXML, "solid", {"ref": volRef})
-                    ET.SubElement(
-                        nodeXML,
-                        "position",
-                        {
-                            "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
-                            "x": str(translate.x),
-                            "y": str(translate.y),
-                            "z": str(translate.z),
-                            "unit": "mm",
-                        },
-                    )
-                    if baseRotation.Angle != 0:
-                        if rotationName == "":
-                            rotationName = exportRotation(self.name(), nodeXML, baseRotation)
-                        else:
-                            ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
+        for i, placement in enumerate(arrayUtils.placementList(self.obj, offsetVector=basePos)):
+            ix, iy, iz = arrayUtils.orthoIndexes(i, self.obj)
+            nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
+            translate = placement.Base
+            nodeXML = ET.SubElement(
+                unionXML, "multiUnionNode", {"name": nodeName}
+            )
+            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+            ET.SubElement(
+                nodeXML,
+                "position",
+                {
+                    "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
+                    "x": str(translate.x),
+                    "y": str(translate.y),
+                    "z": str(translate.z),
+                    "unit": "mm",
+                },
+            )
+            if baseRotation.Angle != 0:
+                if rotationName == "":
+                    rotationName = exportRotation(self.name(), nodeXML, baseRotation)
+                else:
+                    ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
 
-                            
-                    
         self._exportScaled()
 
 
@@ -4486,6 +4522,7 @@ class PolarArrayExporter(SolidExporter):
         return solidName
 
     def export(self):
+        from . import arrayUtils
         base = self.obj.OutList[0]
         print(base.Label)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
@@ -4498,16 +4535,11 @@ class PolarArrayExporter(SolidExporter):
         baseRotation = baseExporter.rotation()
         volRef = baseExporter.name()
         unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
-        if self.obj.Angle == 360:
-            dthet = 360 / self.obj.NumberPolar
-        else:
-            dthet = self.obj.Angle / (self.obj.NumberPolar - 1)
         positionVector = baseExporter.position()
-        axis = self.obj.Axis
-        # TODO adjust for center of rotation != origin
-        for i in range(self.obj.NumberPolar):
-            rot = FreeCAD.Rotation(axis, i * dthet)
-            pos = rot * positionVector  # position has to be rotated too!
+        for i, placement in enumerate(arrayUtils.placementList(self.obj,
+                                                               offsetVector=positionVector)):
+            rot = placement.Rotation
+            pos = placement.Base
             rot = rot * baseRotation
             rot.Angle = -rot.Angle  # undo angle reversal by exportRotation
             nodeName = f"{self.name()}_{i}"
