@@ -36,21 +36,26 @@ class importPrompt(QtGui.QDialog):
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.retStatus = 0
 
+
     def onImport(self):
         self.retStatus = 1
         self.close()
+
 
     def onBrep(self):
         self.retStatus = 2
         self.close()
 
+
     def onStep(self):
         self.retStatus = 3
         self.close()
 
+
     def onScan(self):
         self.retStatus = 4
         self.close()
+
 
 
 class showInvalidWorldVol(QtGui.QWidget):

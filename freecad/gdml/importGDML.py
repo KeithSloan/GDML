@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+# Mon Apr 18 09:46:41 AM PDT 2022
 # emacs insert date command: Ctrl-U ESC-! date
-# Fri Dec  1 11:54:33 AM PST 2023
-# Fri Sep 15 10:00:44 AM PDT 2023
 # Sun Mar 27 12:57:07 PM PDT 2022
 # Mon Feb 28 12:47:38 PM PST 2022
 # **************************************************************************
@@ -668,7 +667,7 @@ def createParaboloid(
 
 
 def createPolycone(
-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     from .GDMLObjects import (
         GDMLPolycone,
@@ -718,7 +717,7 @@ def createPolycone(
 
 
 def createPolyhedra(
-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     from .GDMLObjects import (
         GDMLPolyhedra,
@@ -846,7 +845,7 @@ def createSphere(
     return mysphere
 
 
-def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
+def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTetra, ViewProvider
 
     # GDMLShared.setTrace(True)
@@ -911,7 +910,7 @@ def createTorus(
     return mytorus
 
 
-def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
+def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTrap, ViewProvider
 
     GDMLShared.trace("CreateTrap : ")
@@ -988,7 +987,7 @@ def createTrd(
 
 
 def createTwistedbox(
-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
+    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
 ):
     # parent, sold
     from .GDMLObjects import GDMLTwistedbox, ViewProvider
@@ -1145,7 +1144,7 @@ def createTwistedtubs(
     return mypart
 
 
-def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
+def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import (
         GDMLXtru,
         GDML2dVertex,
@@ -1200,7 +1199,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, soli
     return myXtru
 
 
-def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
+def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLTube, ViewProvider
 
     GDMLShared.trace("CreateTube : ")
@@ -1240,7 +1239,7 @@ def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, soli
     return mytube
 
 
-def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
+def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
     from .GDMLObjects import GDMLcutTube, ViewProvider
 
     GDMLShared.trace("CreateCutTube : ")
@@ -1981,7 +1980,7 @@ def parsePhysVol(
     # GDMLShared.setTrace(True)
     print(f"Parse physvol : importFlag {importFlag} parent {parent.Name}")
     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
-    # print(f"ParsePhyVol : level : {phylvl}")
+    #print(f"ParsePhyVol : level : {phylvl}")
     # Test if any physvol file imports
     filePtr = physVol.find("file")
     if filePtr is not None:
@@ -2008,7 +2007,7 @@ def parsePhysVol(
         else:  # Object exists create a Linked Object
             GDMLShared.trace("====> Create Link to : " + volRef)
             part = parent.newObject("App::Link", volRef)
-            # volDict[PVName] = part
+            #volDict[PVName] = part
             volDict.addEntry(PVName, part)
             part.LinkedObject = namedObj
             if part.Name is not volRef:
@@ -2381,7 +2380,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
             # if phylvl >= 0 :
             #   phylvl += 1
             # If negative always parse otherwise increase level
-            part = parsePhysVol(
+            part = parsePhysVol (
                 importFlag, doc, volDict, True, parent, pv, phylvl, displayMode
             )
 
@@ -2448,7 +2447,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
             print(f"volume {name} contains a parameterized volume")
             processParamvol(vol, parentpart, paramvol)
     print(f"ProcessVol returning {retPart} {retPart.Name}")
-    return retPart
+    return retPart        
 
 
 def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):

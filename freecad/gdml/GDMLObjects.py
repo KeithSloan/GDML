@@ -1,6 +1,4 @@
 # insert date with Ctrl-u ESC-! date
-# Fri Dec  1 11:36:24 AM PST 2023
-# Fri Sep 15 10:00:44 AM PDT 2023
 # Wed Jan 26 04:44:48 PM PST 2022
 #
 # **************************************************************************
@@ -125,7 +123,7 @@ def setMaterial(obj, m):
     if FreeCAD.GuiUp:
         if m in ['G4_AIR', 'AIR']:
             print(f"Material {m}")
-            if hasattr(obj, "ViewObject"):
+            if hasattr(obj,"ViewObject"):
                 print("Set transparency")
                 obj.ViewObject.Transparency = 98
 
@@ -689,7 +687,7 @@ class GDMLBox(GDMLsolid):
                         fp.ViewObject.ShapeColor = colourMaterial(fp.material)
                 if fp.material == "G4_AIR":
                     print("Set Transparency")
-                    fp.ViewObject.Transparency = 98
+                    fp.ViewObject.Transparency = 98        
 
         if prop in ["x", "y", "z", "lunit"]:
             self.createGeometry(fp)
