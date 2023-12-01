@@ -1,3 +1,4 @@
+# Fri Dec 1 11:59:50 AM PST 2023
 # **************************************************************************
 # *                                                                        *
 # *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
@@ -141,7 +142,8 @@ def getParent(obj):
             parent = obj.InList[0]
             return parent
         else:
-            return None    
+            return None
+
 
 def createPartVol(obj):
     from .importGDML import addSurfList
@@ -2953,7 +2955,7 @@ def getParent(obj):
     if hasattr(obj, "InList"):
         if len(obj.InList) > 0:
             parent = obj.InList[0]
-    return parent    
+    return parent
 
 
 def expandFunction(obj, eNum):
@@ -3055,7 +3057,7 @@ class ExpandFeature:
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, 0)
-            print(f"Recompute {obj.Name}")            
+            print(f"Recompute {obj.Name}")
             recomputeVol(obj)
 
 
@@ -3103,7 +3105,7 @@ class ExpandMaxFeature:
                 if hasattr(obj, "LinkedObject"):
                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
                         expandFunction(obj.LinkedObject, -1)
-            print(f"Recompute {obj.Name}")            
+            print(f"Recompute {obj.Name}")
             recomputeVol(obj)
 
     def IsActive(self):
