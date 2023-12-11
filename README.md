@@ -22,6 +22,11 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
 
 ## Important Noticies
 
+### Munthers presentation prepared for the 15th GEANT4 Space Users Workshop - NASA Pasadena
+
+* Video : https://www.youtube.com/watch?v=VrcFnbr1HLQ
+* PDF   : https://github.com/KeithSloan/GDML/blob/Main/Presentation/GDML_Workbench_Pasadena_without_animation.pdf
+
 ### New Gmsh facility - (12/22) [Gmsh Min Tessellate](https://github.com/KeithSloan/GDML/wiki/Gmsh---Min-Tessellate)
 
 Uses a recent facility in Gmsh to Tessellate and then **recombine** facets, reducing the
