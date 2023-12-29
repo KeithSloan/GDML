@@ -1924,7 +1924,9 @@ class GDMLGenericPolyhedra(GDMLsolid):
                         verts[k],
                     ]
                 )
-                faces.append(Part.Face(wire))
+                f = Part.Face(wire)
+                if f.Area != 0:
+                    faces.append(f)
 
         # inner faces
         for i in range(0, numsides):
@@ -1932,7 +1934,9 @@ class GDMLGenericPolyhedra(GDMLsolid):
             wire = Part.makePolygon(
                 [verts[i], verts[k], verts[k + 1], verts[i + 1], verts[i]]
             )
-            faces.append(Part.Face(wire))
+            f = Part.Face(wire)
+            if f.Area != 0:
+                faces.append(f)
 
         # side faces
         if checkFullCircle(fp.aunit, fp.deltaphi) is False:
@@ -1945,7 +1949,9 @@ class GDMLGenericPolyhedra(GDMLsolid):
             verts1 = [verts[k] for k in range(numsides, numverts, stride)]
             verts1.append(verts1[0])
             wire = Part.makePolygon(verts1)
-            faces.append(Part.Face(wire))
+            f = Part.Face(wire)
+            if f.Area != 0:
+                faces.append(f)
 
         shell = Part.makeShell(faces)
         solid = Part.makeSolid(shell)
