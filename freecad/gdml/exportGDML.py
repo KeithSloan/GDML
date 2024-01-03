@@ -2029,7 +2029,7 @@ def processArrayPart(vol, xmlVol, parentVol):
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
                                     parent.Placement*newPlace, pvName=str(baseName),
                                     refName=vol.Base.Label)
-                break
+            break
 
         if case("polar"):
             positionVector = basePhysVol.placement.Base
@@ -2044,7 +2044,7 @@ def processArrayPart(vol, xmlVol, parentVol):
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
                                     parent.Placement*newPlace, pvName=str(baseName),
                                     refName=vol.Base.Label)
-                break
+            break
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
