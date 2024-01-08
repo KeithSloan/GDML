@@ -482,7 +482,7 @@ def getDefinedPosition(name):
     elif name == "center":
         print("Center Position")
         return 0, 0, 0
-    else:     
+    else:
         pos = positions[name]
         if pos is not None:
             # print('Position : '+str(pos))
