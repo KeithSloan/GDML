@@ -1,0 +1,1109 @@
+diff --git a/freecad/gdml/diff_Main_r125.txt b/freecad/gdml/diff_Main_r125.txt
+new file mode 100644
+index 00000000..461df8fe
+--- /dev/null
++++ b/freecad/gdml/diff_Main_r125.txt
+@@ -0,0 +1,836 @@
++diff --git a/Presentation/GDML_Workbench_Pasadena_without_animation.pdf b/Presentation/GDML_Workbench_Pasadena_without_animation.pdf
++deleted file mode 100644
++index d2fa69e0..00000000
++Binary files a/Presentation/GDML_Workbench_Pasadena_without_animation.pdf and /dev/null differ
++diff --git a/Presentation/GDML_Workbench_Pasadena_without_animation.pptx b/Presentation/GDML_Workbench_Pasadena_without_animation.pptx
++deleted file mode 100644
++index 671844d7..00000000
++Binary files a/Presentation/GDML_Workbench_Pasadena_without_animation.pptx and /dev/null differ
++diff --git a/README.md b/README.md
++index dd5674f7..a9fd7cb5 100644
++--- a/README.md
+++++ b/README.md
++@@ -22,11 +22,6 @@ Viewing CERN's LHCBVelo.gdml using the experimental FreeCAD LinkStage3 Daily bra
++ 
++ ## Important Noticies
++ 
++-### Munthers presentation prepared for the 15th GEANT4 Space Users Workshop - NASA Pasadena
++-
++-* Video : https://www.youtube.com/watch?v=VrcFnbr1HLQ
++-* PDF   : https://github.com/KeithSloan/GDML/blob/Main/Presentation/GDML_Workbench_Pasadena_without_animation.pdf
++-
++ ### New Gmsh facility - (12/22) [Gmsh Min Tessellate](https://github.com/KeithSloan/GDML/wiki/Gmsh---Min-Tessellate)
++ 
++ Uses a recent facility in Gmsh to Tessellate and then **recombine** facets, reducing the
++@@ -559,8 +554,6 @@ In theory other file extension should produfile of the appropriate type, e.g. ig
++ If you found this Workbench useful in your research we would appreciate being cited
++ as per the above link.
++ 
++-* See reference 245 http://doi.org/10.1140/epjs/s11734-021-00249-z
++-
++ 
++ ## Roadmap
++ 
++diff --git a/freecad/gdml/GDMLCommands.py b/freecad/gdml/GDMLCommands.py
++index 5adb06bf..7679db1f 100644
++--- a/freecad/gdml/GDMLCommands.py
+++++ b/freecad/gdml/GDMLCommands.py
++@@ -1,3 +1,4 @@
+++# Fri Dec 1 11:59:50 AM PST 2023
++ # **************************************************************************
++ # *                                                                        *
++ # *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
++@@ -36,6 +37,7 @@ import os
++ import FreeCAD, FreeCADGui
++ import Part
++ from PySide import QtGui, QtCore
+++from enum import Enum
++ 
++ 
++ if FreeCAD.GuiUp:
++@@ -140,7 +142,8 @@ def getParent(obj):
++             parent = obj.InList[0]
++             return parent
++         else:
++-            return None    
+++            return None
+++
++ 
++ def createPartVol(obj):
++     from .importGDML import addSurfList
++@@ -984,11 +987,21 @@ class SetScaleFeature:
++         }
++ 
++ 
++-class BooleanCutFeature:
+++class BooleanOperation(Enum):
+++    Cut = "Cut"
+++    Intersection = "Common"
+++    Union = "Fuse"
+++
+++
+++class BooleanFeature:
++ 
+++    ''' Base class for all boolean features '''
++     # def IsActive(self):
++     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
++ 
+++    def __init__(self, operation):
+++        self.op = operation.value
+++
++     def Activated(self):
++ 
++         sel = FreeCADGui.Selection.getSelectionEx()
++@@ -1000,7 +1013,7 @@ class BooleanCutFeature:
++                     sel[0].Object.TypeId == "App::Part"
++                     and sel[1].Object.TypeId == "App::Part"
++                 ):
++-                    print("Boolean Cut")
+++                    print(f"Boolean {self.op}")
++                     if len(sel[0].Object.InList) > 0:
++                         parent = sel[0].Object.InList[0]
++                         print("Parent : " + parent.Label)
++@@ -1018,10 +1031,12 @@ class BooleanCutFeature:
++                         tool = sel[1].Object.OutList[-1]
++                         tool.Placement = toolVol.Placement * tool.Placement
++                         print(f"tool Placement {tool.Placement}")
++-                        boolVol = parent.newObject("App::Part", "Bool-Cut")
+++                        volName = "Bool-" + self.op
+++                        boolVol = parent.newObject("App::Part", volName)
++                         boolVol.addObject(base)
++                         boolVol.addObject(tool)
++-                        boolObj = boolVol.newObject("Part::Cut", "Cut")
+++                        boolObj = boolVol.newObject("Part::" + self.op,
+++                                                    self.op)
++                         boolObj.Base = base
++                         boolObj.Tool = tool
++                         boolObj.Tool.setEditorMode("Placement", 0)
++@@ -1046,164 +1061,39 @@ class BooleanCutFeature:
++             return True
++ 
++     def GetResources(self):
+++        pixFile = {"Cut": "GDML_Cut",
+++                   "Common": "GDML_Intersection",
+++                   "Fuse": "GDML_Union"}
+++        gdmlOpName = {"Cut": "GDML Cut",
+++                      "Common": "GDML Intersection",
+++                      "Fuse": "GDML Union"}
++         return {
++-            "Pixmap": "GDML_Cut",
+++            "Pixmap": pixFile[self.op],
++             "MenuText": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Cut"
+++                "gdmlBooleanFeature", gdmlOpName[self.op]
++             ),
++             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Cut"
++-            ),
+++                "gdmlBooleanFeature", gdmlOpName[self.op]
+++            )
++         }
++ 
++ 
++-class BooleanIntersectionFeature:
+++class BooleanCutFeature(BooleanFeature):
+++    def __init__(self):
+++        super().__init__(BooleanOperation.Cut)
++ 
++-    # def IsActive(self):
++-    #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
++ 
++-    def Activated(self):
++-        import Part
+++class BooleanIntersectionFeature(BooleanFeature):
+++    def __init__(self):
+++        super().__init__(BooleanOperation.Intersection)
++ 
++-        sel = FreeCADGui.Selection.getSelectionEx()
++-        if len(sel) == 2:
++-            print(sel)
++-            selObj = "Gui::SelectionObject"
++-            if sel[0].TypeId == selObj and sel[1].TypeId == selObj:
++-                if (
++-                    sel[0].Object.TypeId == "App::Part"
++-                    and sel[1].Object.TypeId == "App::Part"
++-                ):
++-                    print("Boolean Intersection")
++-                    if len(sel[0].Object.InList) > 0:
++-                        parent = sel[0].Object.InList[0]
++-                        print("Parent : " + parent.Label)
++-                        baseVol = sel[0].Object
++-                        print("Base Vol : " + baseVol.Label)
++-                        print(f"Base Vol Placement {baseVol.Placement}")
++-                        print(sel[0].Object.OutList)
++-                        base = sel[0].Object.OutList[-1]
++-                        base.Placement = baseVol.Placement * base.Placement
++-                        print("base : " + base.Label)
++-                        print(f"base Placement {base.Placement}")
++-                        toolVol = sel[1].Object
++-                        print("Tool Vol : " + toolVol.Label)
++-                        print(f"Tool Vol Placement {toolVol.Placement}")
++-                        tool = sel[1].Object.OutList[-1]
++-                        tool.Placement = toolVol.Placement * tool.Placement
++-                        print(f"tool Placement {tool.Placement}")
++-                        boolVol = parent.newObject("App::Part", "Bool-Intersect")
++-                        boolVol.addObject(base)
++-                        boolVol.addObject(tool)
++-                        boolObj = boolVol.newObject("Part::Common", "Common")
++-                        boolObj.Base = base
++-                        boolObj.Tool = tool
++-                        boolObj.Tool.setEditorMode("Placement", 0)
++-                        print("Tool : " + tool.Label)
++-                        print("Remove Base")
++-                        baseVol.removeObject(base)
++-                        print("Adjust Base Links")
++-                        base.adjustRelativeLinks(baseVol)
++-                        toolVol.removeObject(tool)
++-                        print("Remove Base Vol")
++-                        FreeCAD.ActiveDocument.removeObject(baseVol.Label)
++-                        FreeCAD.ActiveDocument.removeObject(toolVol.Label)
++-                        FreeCAD.ActiveDocument.recompute()
++-                        # boolObj.recompute()
++-                    else:
++-                        print("No Parent Volume/Part")
++ 
++-    def IsActive(self):
++-        if FreeCAD.ActiveDocument is None:
++-            return False
++-        else:
++-            return True
++-
++-    def GetResources(self):
++-        return {
++-            "Pixmap": "GDML_Intersection",
++-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Intersection"
++-            ),
++-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Intersection"
++-            ),
++-        }
++-
++-
++-class BooleanUnionFeature:
+++class BooleanUnionFeature(BooleanFeature):
++ 
++     # def IsActive(self):
++     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
++-
++-    def Activated(self):
++-        import Part
++-
++-        sel = FreeCADGui.Selection.getSelectionEx()
++-        if len(sel) == 2:
++-            print(sel)
++-            selObj = "Gui::SelectionObject"
++-            if sel[0].TypeId == selObj and sel[1].TypeId == selObj:
++-                if (
++-                    sel[0].Object.TypeId == "App::Part"
++-                    and sel[1].Object.TypeId == "App::Part"
++-                ):
++-                    print("Boolean Union")
++-                    if len(sel[0].Object.InList) > 0:
++-                        parent = sel[0].Object.InList[0]
++-                        print("Parent : " + parent.Label)
++-                        baseVol = sel[0].Object
++-                        print("Base Vol : " + baseVol.Label)
++-                        print(f"Base Vol Placement {baseVol.Placement}")
++-                        print(sel[0].Object.OutList)
++-                        base = sel[0].Object.OutList[-1]
++-                        base.Placement = baseVol.Placement * base.Placement
++-                        print("base : " + base.Label)
++-                        print(f"base Placement {base.Placement}")
++-                        toolVol = sel[1].Object
++-                        print("Tool Vol : " + toolVol.Label)
++-                        print(f"Tool Vol Placement {toolVol.Placement}")
++-                        tool = sel[1].Object.OutList[-1]
++-                        tool.Placement = toolVol.Placement * tool.Placement
++-                        print(f"tool Placement {tool.Placement}")
++-                        boolVol = parent.newObject("App::Part", "Bool-Union")
++-                        boolVol.addObject(base)
++-                        boolVol.addObject(tool)
++-                        boolObj = boolVol.newObject("Part::Fuse", "Union")
++-                        boolObj.Placement = sel[0].Object.Placement
++-                        boolObj.Base = base
++-                        boolObj.Tool = tool
++-                        boolObj.Tool.setEditorMode("Placement", 0)
++-                        print("Tool : " + tool.Label)
++-                        print("Remove Base")
++-                        baseVol.removeObject(base)
++-                        print("Adjust Base Links")
++-                        base.adjustRelativeLinks(baseVol)
++-                        toolVol.removeObject(tool)
++-                        print("Remove Base Vol")
++-                        FreeCAD.ActiveDocument.removeObject(baseVol.Label)
++-                        FreeCAD.ActiveDocument.removeObject(toolVol.Label)
++-                        FreeCAD.ActiveDocument.recompute()
++-                        # boolObj.recompute()
++-                    else:
++-                        print("No Parent Volume")
++-
++-    def IsActive(self):
++-        if FreeCAD.ActiveDocument is None:
++-            return False
++-        else:
++-            return True
++-
++-    def GetResources(self):
++-        return {
++-            "Pixmap": "GDML_Union",
++-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Union"
++-            ),
++-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
++-                "gdmlBooleanFeature", "GDML Union"
++-            ),
++-        }
+++    def __init__(self):
+++        super().__init__(BooleanOperation.Union)
++ 
++ 
++ class BoxFeature:
++@@ -3065,7 +2955,7 @@ def getParent(obj):
++     if hasattr(obj, "InList"):
++         if len(obj.InList) > 0:
++             parent = obj.InList[0]
++-    return parent    
+++    return parent
++ 
++ 
++ def expandFunction(obj, eNum):
++@@ -3167,7 +3057,7 @@ class ExpandFeature:
++                 if hasattr(obj, "LinkedObject"):
++                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
++                         expandFunction(obj.LinkedObject, 0)
++-            print(f"Recompute {obj.Name}")            
+++            print(f"Recompute {obj.Name}")
++             recomputeVol(obj)
++ 
++ 
++@@ -3215,7 +3105,7 @@ class ExpandMaxFeature:
++                 if hasattr(obj, "LinkedObject"):
++                     if obj.LinkedObject.Label[0:13] == "NOT_Expanded_":
++                         expandFunction(obj.LinkedObject, -1)
++-            print(f"Recompute {obj.Name}")            
+++            print(f"Recompute {obj.Name}")
++             recomputeVol(obj)
++ 
++     def IsActive(self):
++diff --git a/freecad/gdml/GDMLObjects.py b/freecad/gdml/GDMLObjects.py
++index 94e0eae5..3c8d20de 100644
++--- a/freecad/gdml/GDMLObjects.py
+++++ b/freecad/gdml/GDMLObjects.py
++@@ -1,4 +1,6 @@
++ # insert date with Ctrl-u ESC-! date
+++# Fri Dec  1 11:36:24 AM PST 2023
+++# Fri Sep 15 10:00:44 AM PDT 2023
++ # Wed Jan 26 04:44:48 PM PST 2022
++ #
++ # **************************************************************************
++@@ -123,7 +125,7 @@ def setMaterial(obj, m):
++     if FreeCAD.GuiUp:
++         if m in ['G4_AIR', 'AIR']:
++             print(f"Material {m}")
++-            if hasattr(obj,"ViewObject"):
+++            if hasattr(obj, "ViewObject"):
++                 print("Set transparency")
++                 obj.ViewObject.Transparency = 98
++ 
++@@ -687,7 +689,7 @@ class GDMLBox(GDMLsolid):
++                         fp.ViewObject.ShapeColor = colourMaterial(fp.material)
++                 if fp.material == "G4_AIR":
++                     print("Set Transparency")
++-                    fp.ViewObject.Transparency = 98        
+++                    fp.ViewObject.Transparency = 98
++ 
++         if prop in ["x", "y", "z", "lunit"]:
++             self.createGeometry(fp)
++diff --git a/freecad/gdml/GDMLQtDialogs.py b/freecad/gdml/GDMLQtDialogs.py
++index 70b086d1..34d69ac2 100644
++--- a/freecad/gdml/GDMLQtDialogs.py
+++++ b/freecad/gdml/GDMLQtDialogs.py
++@@ -36,28 +36,23 @@ class importPrompt(QtGui.QDialog):
++         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
++         self.retStatus = 0
++ 
++-
++     def onImport(self):
++         self.retStatus = 1
++         self.close()
++ 
++-
++     def onBrep(self):
++         self.retStatus = 2
++         self.close()
++ 
++-
++     def onStep(self):
++         self.retStatus = 3
++         self.close()
++ 
++-
++     def onScan(self):
++         self.retStatus = 4
++         self.close()
++ 
++ 
++-
++ class showInvalidWorldVol(QtGui.QWidget):
++ 
++     def __init__(self):
++diff --git a/freecad/gdml/GDMLShared.py b/freecad/gdml/GDMLShared.py
++index f1c5332e..f5069acf 100644
++--- a/freecad/gdml/GDMLShared.py
+++++ b/freecad/gdml/GDMLShared.py
++@@ -482,7 +482,7 @@ def getDefinedPosition(name):
++     elif name == "center":
++         print("Center Position")
++         return 0, 0, 0
++-    else:     
+++    else:
++         pos = positions[name]
++         if pos is not None:
++             # print('Position : '+str(pos))
++diff --git a/freecad/gdml/Presentations b/freecad/gdml/Presentations
++deleted file mode 100644
++index 671844d7..00000000
++Binary files a/freecad/gdml/Presentations and /dev/null differ
++diff --git a/freecad/gdml/arrayUtils.py b/freecad/gdml/arrayUtils.py
++new file mode 100644
++index 00000000..b8cc3925
++--- /dev/null
+++++ b/freecad/gdml/arrayUtils.py
++@@ -0,0 +1,45 @@
+++import FreeCAD
+++from FreeCAD import Vector
+++
+++
+++def orthoIndexes(i, array):
+++    ''' Return a triplet ix, iy, iz of the ith element on an nx x ny x nz grid '''
+++    nx = array.NumberX
+++    ny = array.NumberY
+++    # nz = array.IntervalZ not needed
+++    # The forward mapping of ix, iy, iz -> i:
+++    # i = ix + iy * nx + iz * nx * ny
+++    # The inverse is:
+++    iz = int(i/(nx*ny))
+++    i1 = i % (nx * ny)
+++    iy = int(i1/nx)
+++    ix = i1 % nx
+++    return ix, iy, iz
+++
+++
+++def placementList(array, offsetVector=Vector(0, 0, 0)):
+++    ''' return list of placements for an array '''
+++    if array.ArrayType == "ortho":
+++        rot = FreeCAD.Rotation()
+++        return [FreeCAD.Placement(offsetVector +
+++                                  ix * array.IntervalX
+++                                  + iy * array.IntervalY
+++                                  + iz * array.IntervalZ, rot)
+++                for iz in range(array.NumberZ)
+++                for iy in range(array.NumberY)
+++                for ix in range(array.NumberX)]
+++
+++    elif array.ArrayType == "polar":
+++        placementList = []
+++        if array.Angle == 360:
+++            dthet = 360 / array.NumberPolar
+++        else:
+++            dthet = array.Angle / (array.NumberPolar - 1)
+++        axis = array.Axis
+++        for i in range(array.NumberPolar):
+++            rot = FreeCAD.Rotation(axis, i * dthet)
+++            pos = array.Center + rot * (offsetVector - array.Center)
+++            placementList.append(FreeCAD.Placement(pos, rot))
+++        return placementList
+++
+++
++diff --git a/freecad/gdml/exportGDML.py b/freecad/gdml/exportGDML.py
++index 0d58500e..b88c915d 100644
++--- a/freecad/gdml/exportGDML.py
+++++ b/freecad/gdml/exportGDML.py
++@@ -1956,8 +1956,56 @@ def invPlacement(placement):
++     # return R*T
++ 
++ 
+++def isArrayType(obj):
+++    obj1 = obj
+++    if obj.TypeId == "App::Link":
+++        obj1 = obj.LinkedObject
+++    if obj1.TypeId == "Part::FeaturePython":
+++        typeId = obj1.Proxy.Type
+++        if typeId == "Array":
+++            if obj1.ArrayType == "ortho":
+++                return True
+++            elif obj1.ArrayType == "polar":
+++                return True
+++        elif typeId == "PathArray":
+++            return True
+++        elif typeId == "PointArray":
+++            return True
+++        elif typeId == "Clone":
+++            clonedObj = obj1.Objects[0]
+++            return isArrayType(clonedObj)
+++
+++        else:
+++            return False
+++    else:
+++        return False
+++
+++
+++def typeOfArray(obj):
+++    obj1 = obj
+++    if obj.TypeId == "App::Link":
+++        obj1 = obj.LinkedObject
+++    if obj1.TypeId == "Part::FeaturePython":
+++        typeId = obj1.Proxy.Type
+++        if typeId == "Array":
+++            return obj1.ArrayType
+++        elif typeId == "PathArray":
+++            return "PathArray"
+++        elif typeId == "PointArray":
+++            return "PointArray"
+++        elif typeId == "Clone":
+++            clonedObj = obj1.Objects[0]
+++            return typeOfArray(clonedObj)
+++
+++        else:
+++            return None
+++    else:
+++        return None
+++
+++
++ def processArrayPart(vol, xmlVol, parentVol):
++     global physVolStack
+++    from . import arrayUtils
++ 
++     print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol}")
++     processVolAssem(vol.Base, xmlVol, vol.Base.Label, isPhysVol=False)
++@@ -1966,40 +2014,37 @@ def processArrayPart(vol, xmlVol, parentVol):
++ 
++     parent = vol.InList[0]
++     print(f"parent {parent}")
++-    if vol.ArrayType == "ortho":
++-        for ix in range(vol.NumberX):
++-            for iy in range(vol.NumberY):
++-                for iz in range(vol.NumberZ):
++-                    baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
++-                        '-' + str(iz)
++-                    print(f"Base Name {baseName}")
++-                    # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
++-                    pos = (basePhysVol.placement.Base +
++-                           ix * vol.IntervalX +
++-                           iy * vol.IntervalY +
++-                           iz * vol.IntervalZ)
++-                    # print(f"pos {pos}")
++-                    newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
++-                    addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
++-                                        parent.Placement*newPlace, pvName=str(baseName),
++-                                        refName=vol.Base.Label)
++-
++-    elif vol.ArrayType == "polar":
++-        if vol.Angle == 360:
++-            dthet = vol.Angle / vol.NumberPolar
++-        else:
++-            dthet = vol.Angle / (vol.NumberPolar - 1)
++-        positionVector = basePhysVol.placement.Base
++-        axis = vol.Axis
++-        for i in range(vol.NumberPolar):
++-            baseName = vol.Base.Label + '-' + str(i)
++-            rot = FreeCAD.Rotation(axis, i * dthet)
++-            pos = rot * positionVector  # position has to be rotated too!
++-            rot = rot * baseRotation  # add rotation of base
++-            newPlace = FreeCAD.Placement(pos, rot)
++-            addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
++-                                parent.Placement*newPlace, pvName=str(baseName),
++-                                refName=vol.Base.Label)
+++    arrayType = typeOfArray(vol)
+++    while switch(arrayType):
+++        if case("ortho"):
+++            basePos = basePhysVol.placement.Base
+++            for i, placement in enumerate(arrayUtils.placementList(vol, offsetVector=basePos)):
+++                ix, iy, iz = arrayUtils.orthoIndexes(i, vol)
+++                baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
+++                    '-' + str(iz)
+++                print(f"Base Name {baseName}")
+++                # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+++                pos = placement.Base
+++                newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
+++                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+++                                    parent.Placement*newPlace, pvName=str(baseName),
+++                                    refName=vol.Base.Label)
+++            break
+++
+++        if case("polar"):
+++            positionVector = basePhysVol.placement.Base
+++            for i, placement in enumerate(arrayUtils.placementList(vol,
+++                                                                   offsetVector=positionVector)):
+++
+++                baseName = vol.Base.Label + '-' + str(i)
+++                rot = placement.Rotation
+++                pos = placement.Base
+++                rot = rot * baseRotation  # add rotation of base
+++                newPlace = FreeCAD.Placement(pos, rot)
+++                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+++                                    parent.Placement*newPlace, pvName=str(baseName),
+++                                    refName=vol.Base.Label)
+++            break
++ 
++ 
++ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
++@@ -2041,7 +2086,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=T
++             if isPhysVol:
++                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
++             physVolStack.append(PhysVolPlacement(volName, obj.Placement))
++-        elif hasattr(obj, "ArrayType"):
+++        elif isArrayType(obj):
++             processArrayPart(obj, xmlVol, vol)
++         else:
++             _ = processVolume(obj, xmlVol, isPhysVol, volName=None)
++@@ -2345,9 +2390,9 @@ def isContainer(obj):
++ 
++ 
++ def isAssembly(obj):
++-    # return True if obj is an assembly
++-    # to be an assembly the obj must be:
++-    # (1) and App::Part or an App::Link and
+++    # return True if obj is an assembly.
+++    # To be an assembly the obj must be:
+++    # (1) an App::Part or an App::Link and
++     # (2) it has either (1) At least one App::Part as a subpart or
++     #                   (2) more than one "terminal" object
++     # A terminal object is one that has associated with it ONE volume
++@@ -2369,9 +2414,7 @@ def isAssembly(obj):
++                 subObjs.append(ob)
++ 
++     # now remove any OutList objects from the subObjs
++-    for subObj in subObjs[
++-        :
++-    ]:  # the slice is a COPY of the list, not the list itself
+++    for subObj in subObjs[:]:  # the slice is a COPY of the list, not the list itself
++         if hasattr(subObj, "OutList"):
++             for o in subObj.OutList:
++                 if o in subObjs:
++@@ -4423,6 +4466,7 @@ class OrthoArrayExporter(SolidExporter):
++         self._name = "MultiUnion-" + self.obj.Label
++ 
++     def export(self):
+++        from . import arrayUtils
++         base = self.obj.OutList[0]
++         print(f"Base {base.Label}")
++         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
++@@ -4441,39 +4485,31 @@ class OrthoArrayExporter(SolidExporter):
++         baseRotation = FreeCAD.Rotation(baseExporter.rotation())
++         baseRotation.Angle = -baseRotation.Angle  # for booleans rotation are reversed
++         rotationName = ""
++-        for ix in range(self.obj.NumberX):
++-            for iy in range(self.obj.NumberY):
++-                for iz in range(self.obj.NumberZ):
++-                    nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
++-                    translate = (
++-                        basePos
++-                        + ix * self.obj.IntervalX
++-                        + iy * self.obj.IntervalY
++-                        + iz * self.obj.IntervalZ
++-                    )
++-                    nodeXML = ET.SubElement(
++-                        unionXML, "multiUnionNode", {"name": nodeName}
++-                    )
++-                    ET.SubElement(nodeXML, "solid", {"ref": volRef})
++-                    ET.SubElement(
++-                        nodeXML,
++-                        "position",
++-                        {
++-                            "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
++-                            "x": str(translate.x),
++-                            "y": str(translate.y),
++-                            "z": str(translate.z),
++-                            "unit": "mm",
++-                        },
++-                    )
++-                    if baseRotation.Angle != 0:
++-                        if rotationName == "":
++-                            rotationName = exportRotation(self.name(), nodeXML, baseRotation)
++-                        else:
++-                            ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
+++        for i, placement in enumerate(arrayUtils.placementList(self.obj, offsetVector=basePos)):
+++            ix, iy, iz = arrayUtils.orthoIndexes(i, self.obj)
+++            nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
+++            translate = placement.Base
+++            nodeXML = ET.SubElement(
+++                unionXML, "multiUnionNode", {"name": nodeName}
+++            )
+++            ET.SubElement(nodeXML, "solid", {"ref": volRef})
+++            ET.SubElement(
+++                nodeXML,
+++                "position",
+++                {
+++                    "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
+++                    "x": str(translate.x),
+++                    "y": str(translate.y),
+++                    "z": str(translate.z),
+++                    "unit": "mm",
+++                },
+++            )
+++            if baseRotation.Angle != 0:
+++                if rotationName == "":
+++                    rotationName = exportRotation(self.name(), nodeXML, baseRotation)
+++                else:
+++                    ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
++ 
++-                            
++-                    
++         self._exportScaled()
++ 
++ 
++@@ -4486,6 +4522,7 @@ class PolarArrayExporter(SolidExporter):
++         return solidName
++ 
++     def export(self):
+++        from . import arrayUtils
++         base = self.obj.OutList[0]
++         print(base.Label)
++         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
++@@ -4498,16 +4535,11 @@ class PolarArrayExporter(SolidExporter):
++         baseRotation = baseExporter.rotation()
++         volRef = baseExporter.name()
++         unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
++-        if self.obj.Angle == 360:
++-            dthet = 360 / self.obj.NumberPolar
++-        else:
++-            dthet = self.obj.Angle / (self.obj.NumberPolar - 1)
++         positionVector = baseExporter.position()
++-        axis = self.obj.Axis
++-        # TODO adjust for center of rotation != origin
++-        for i in range(self.obj.NumberPolar):
++-            rot = FreeCAD.Rotation(axis, i * dthet)
++-            pos = rot * positionVector  # position has to be rotated too!
+++        for i, placement in enumerate(arrayUtils.placementList(self.obj,
+++                                                               offsetVector=positionVector)):
+++            rot = placement.Rotation
+++            pos = placement.Base
++             rot = rot * baseRotation
++             rot.Angle = -rot.Angle  # undo angle reversal by exportRotation
++             nodeName = f"{self.name()}_{i}"
++diff --git a/freecad/gdml/importGDML.py b/freecad/gdml/importGDML.py
++index 1cec909b..9f1459e0 100644
++--- a/freecad/gdml/importGDML.py
+++++ b/freecad/gdml/importGDML.py
++@@ -1,6 +1,7 @@
++ # -*- coding: utf-8 -*-
++-# Mon Apr 18 09:46:41 AM PDT 2022
++ # emacs insert date command: Ctrl-U ESC-! date
+++# Fri Dec  1 11:54:33 AM PST 2023
+++# Fri Sep 15 10:00:44 AM PDT 2023
++ # Sun Mar 27 12:57:07 PM PDT 2022
++ # Mon Feb 28 12:47:38 PM PST 2022
++ # **************************************************************************
++@@ -667,7 +668,7 @@ def createParaboloid(
++ 
++ 
++ def createPolycone(
++-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
+++    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
++ ):
++     from .GDMLObjects import (
++         GDMLPolycone,
++@@ -717,7 +718,7 @@ def createPolycone(
++ 
++ 
++ def createPolyhedra(
++-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
+++    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
++ ):
++     from .GDMLObjects import (
++         GDMLPolyhedra,
++@@ -845,7 +846,7 @@ def createSphere(
++     return mysphere
++ 
++ 
++-def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
+++def createTetra(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
++     from .GDMLObjects import GDMLTetra, ViewProvider
++ 
++     # GDMLShared.setTrace(True)
++@@ -910,7 +911,7 @@ def createTorus(
++     return mytorus
++ 
++ 
++-def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
+++def createTrap(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
++     from .GDMLObjects import GDMLTrap, ViewProvider
++ 
++     GDMLShared.trace("CreateTrap : ")
++@@ -987,7 +988,7 @@ def createTrd(
++ 
++ 
++ def createTwistedbox(
++-    part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None
+++    part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None
++ ):
++     # parent, sold
++     from .GDMLObjects import GDMLTwistedbox, ViewProvider
++@@ -1144,7 +1145,7 @@ def createTwistedtubs(
++     return mypart
++ 
++ 
++-def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
+++def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
++     from .GDMLObjects import (
++         GDMLXtru,
++         GDML2dVertex,
++@@ -1199,7 +1200,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, soli
++     return myXtru
++ 
++ 
++-def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
+++def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
++     from .GDMLObjects import GDMLTube, ViewProvider
++ 
++     GDMLShared.trace("CreateTube : ")
++@@ -1239,7 +1240,7 @@ def createTube(part, solid, material, colour, px, py, pz, rot, displayMode, soli
++     return mytube
++ 
++ 
++-def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName = None):
+++def createCutTube(part, solid, material, colour, px, py, pz, rot, displayMode, solidName=None):
++     from .GDMLObjects import GDMLcutTube, ViewProvider
++ 
++     GDMLShared.trace("CreateCutTube : ")
++@@ -1980,7 +1981,7 @@ def parsePhysVol(
++     # GDMLShared.setTrace(True)
++     print(f"Parse physvol : importFlag {importFlag} parent {parent.Name}")
++     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
++-    #print(f"ParsePhyVol : level : {phylvl}")
+++    # print(f"ParsePhyVol : level : {phylvl}")
++     # Test if any physvol file imports
++     filePtr = physVol.find("file")
++     if filePtr is not None:
++@@ -2007,7 +2008,7 @@ def parsePhysVol(
++         else:  # Object exists create a Linked Object
++             GDMLShared.trace("====> Create Link to : " + volRef)
++             part = parent.newObject("App::Link", volRef)
++-            #volDict[PVName] = part
+++            # volDict[PVName] = part
++             volDict.addEntry(PVName, part)
++             part.LinkedObject = namedObj
++             if part.Name is not volRef:
++@@ -2380,7 +2381,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
++             # if phylvl >= 0 :
++             #   phylvl += 1
++             # If negative always parse otherwise increase level
++-            part = parsePhysVol (
+++            part = parsePhysVol(
++                 importFlag, doc, volDict, True, parent, pv, phylvl, displayMode
++             )
++ 
++@@ -2447,7 +2448,7 @@ def processVol(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
++             print(f"volume {name} contains a parameterized volume")
++             processParamvol(vol, parentpart, paramvol)
++     print(f"ProcessVol returning {retPart} {retPart.Name}")
++-    return retPart        
+++    return retPart
++ 
++ 
++ def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
+diff --git a/freecad/gdml/exportGDML.py b/freecad/gdml/exportGDML.py
+index 0d58500e..b88c915d 100644
+--- a/freecad/gdml/exportGDML.py
++++ b/freecad/gdml/exportGDML.py
+@@ -1956,8 +1956,56 @@ def invPlacement(placement):
+     # return R*T
+ 
+ 
++def isArrayType(obj):
++    obj1 = obj
++    if obj.TypeId == "App::Link":
++        obj1 = obj.LinkedObject
++    if obj1.TypeId == "Part::FeaturePython":
++        typeId = obj1.Proxy.Type
++        if typeId == "Array":
++            if obj1.ArrayType == "ortho":
++                return True
++            elif obj1.ArrayType == "polar":
++                return True
++        elif typeId == "PathArray":
++            return True
++        elif typeId == "PointArray":
++            return True
++        elif typeId == "Clone":
++            clonedObj = obj1.Objects[0]
++            return isArrayType(clonedObj)
++
++        else:
++            return False
++    else:
++        return False
++
++
++def typeOfArray(obj):
++    obj1 = obj
++    if obj.TypeId == "App::Link":
++        obj1 = obj.LinkedObject
++    if obj1.TypeId == "Part::FeaturePython":
++        typeId = obj1.Proxy.Type
++        if typeId == "Array":
++            return obj1.ArrayType
++        elif typeId == "PathArray":
++            return "PathArray"
++        elif typeId == "PointArray":
++            return "PointArray"
++        elif typeId == "Clone":
++            clonedObj = obj1.Objects[0]
++            return typeOfArray(clonedObj)
++
++        else:
++            return None
++    else:
++        return None
++
++
+ def processArrayPart(vol, xmlVol, parentVol):
+     global physVolStack
++    from . import arrayUtils
+ 
+     print(f"Process Array Part {vol.Label} Base {vol.Base} {xmlVol}")
+     processVolAssem(vol.Base, xmlVol, vol.Base.Label, isPhysVol=False)
+@@ -1966,40 +2014,37 @@ def processArrayPart(vol, xmlVol, parentVol):
+ 
+     parent = vol.InList[0]
+     print(f"parent {parent}")
+-    if vol.ArrayType == "ortho":
+-        for ix in range(vol.NumberX):
+-            for iy in range(vol.NumberY):
+-                for iz in range(vol.NumberZ):
+-                    baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
+-                        '-' + str(iz)
+-                    print(f"Base Name {baseName}")
+-                    # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
+-                    pos = (basePhysVol.placement.Base +
+-                           ix * vol.IntervalX +
+-                           iy * vol.IntervalY +
+-                           iz * vol.IntervalZ)
+-                    # print(f"pos {pos}")
+-                    newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
+-                    addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+-                                        parent.Placement*newPlace, pvName=str(baseName),
+-                                        refName=vol.Base.Label)
+-
+-    elif vol.ArrayType == "polar":
+-        if vol.Angle == 360:
+-            dthet = vol.Angle / vol.NumberPolar
+-        else:
+-            dthet = vol.Angle / (vol.NumberPolar - 1)
+-        positionVector = basePhysVol.placement.Base
+-        axis = vol.Axis
+-        for i in range(vol.NumberPolar):
+-            baseName = vol.Base.Label + '-' + str(i)
+-            rot = FreeCAD.Rotation(axis, i * dthet)
+-            pos = rot * positionVector  # position has to be rotated too!
+-            rot = rot * baseRotation  # add rotation of base
+-            newPlace = FreeCAD.Placement(pos, rot)
+-            addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
+-                                parent.Placement*newPlace, pvName=str(baseName),
+-                                refName=vol.Base.Label)
++    arrayType = typeOfArray(vol)
++    while switch(arrayType):
++        if case("ortho"):
++            basePos = basePhysVol.placement.Base
++            for i, placement in enumerate(arrayUtils.placementList(vol, offsetVector=basePos)):
++                ix, iy, iz = arrayUtils.orthoIndexes(i, vol)
++                baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
++                    '-' + str(iz)
++                print(f"Base Name {baseName}")
++                # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
++                pos = placement.Base
++                newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
++                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
++                                    parent.Placement*newPlace, pvName=str(baseName),
++                                    refName=vol.Base.Label)
++            break
++
++        if case("polar"):
++            positionVector = basePhysVol.placement.Base
++            for i, placement in enumerate(arrayUtils.placementList(vol,
++                                                                   offsetVector=positionVector)):
++
++                baseName = vol.Base.Label + '-' + str(i)
++                rot = placement.Rotation
++                pos = placement.Base
++                rot = rot * baseRotation  # add rotation of base
++                newPlace = FreeCAD.Placement(pos, rot)
++                addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
++                                    parent.Placement*newPlace, pvName=str(baseName),
++                                    refName=vol.Base.Label)
++            break
+ 
+ 
+ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
+@@ -2041,7 +2086,7 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=T
+             if isPhysVol:
+                 addPhysVolPlacement(obj, xmlVol, volName, obj.Placement, volRef)
+             physVolStack.append(PhysVolPlacement(volName, obj.Placement))
+-        elif hasattr(obj, "ArrayType"):
++        elif isArrayType(obj):
+             processArrayPart(obj, xmlVol, vol)
+         else:
+             _ = processVolume(obj, xmlVol, isPhysVol, volName=None)
+@@ -2345,9 +2390,9 @@ def isContainer(obj):
+ 
+ 
+ def isAssembly(obj):
+-    # return True if obj is an assembly
+-    # to be an assembly the obj must be:
+-    # (1) and App::Part or an App::Link and
++    # return True if obj is an assembly.
++    # To be an assembly the obj must be:
++    # (1) an App::Part or an App::Link and
+     # (2) it has either (1) At least one App::Part as a subpart or
+     #                   (2) more than one "terminal" object
+     # A terminal object is one that has associated with it ONE volume
+@@ -2369,9 +2414,7 @@ def isAssembly(obj):
+                 subObjs.append(ob)
+ 
+     # now remove any OutList objects from the subObjs
+-    for subObj in subObjs[
+-        :
+-    ]:  # the slice is a COPY of the list, not the list itself
++    for subObj in subObjs[:]:  # the slice is a COPY of the list, not the list itself
+         if hasattr(subObj, "OutList"):
+             for o in subObj.OutList:
+                 if o in subObjs:
+@@ -4423,6 +4466,7 @@ class OrthoArrayExporter(SolidExporter):
+         self._name = "MultiUnion-" + self.obj.Label
+ 
+     def export(self):
++        from . import arrayUtils
+         base = self.obj.OutList[0]
+         print(f"Base {base.Label}")
+         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+@@ -4441,39 +4485,31 @@ class OrthoArrayExporter(SolidExporter):
+         baseRotation = FreeCAD.Rotation(baseExporter.rotation())
+         baseRotation.Angle = -baseRotation.Angle  # for booleans rotation are reversed
+         rotationName = ""
+-        for ix in range(self.obj.NumberX):
+-            for iy in range(self.obj.NumberY):
+-                for iz in range(self.obj.NumberZ):
+-                    nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
+-                    translate = (
+-                        basePos
+-                        + ix * self.obj.IntervalX
+-                        + iy * self.obj.IntervalY
+-                        + iz * self.obj.IntervalZ
+-                    )
+-                    nodeXML = ET.SubElement(
+-                        unionXML, "multiUnionNode", {"name": nodeName}
+-                    )
+-                    ET.SubElement(nodeXML, "solid", {"ref": volRef})
+-                    ET.SubElement(
+-                        nodeXML,
+-                        "position",
+-                        {
+-                            "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
+-                            "x": str(translate.x),
+-                            "y": str(translate.y),
+-                            "z": str(translate.z),
+-                            "unit": "mm",
+-                        },
+-                    )
+-                    if baseRotation.Angle != 0:
+-                        if rotationName == "":
+-                            rotationName = exportRotation(self.name(), nodeXML, baseRotation)
+-                        else:
+-                            ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
++        for i, placement in enumerate(arrayUtils.placementList(self.obj, offsetVector=basePos)):
++            ix, iy, iz = arrayUtils.orthoIndexes(i, self.obj)
++            nodeName = f"{self.name()}_{ix}_{iy}_{iz}"
++            translate = placement.Base
++            nodeXML = ET.SubElement(
++                unionXML, "multiUnionNode", {"name": nodeName}
++            )
++            ET.SubElement(nodeXML, "solid", {"ref": volRef})
++            ET.SubElement(
++                nodeXML,
++                "position",
++                {
++                    "name": f"{self.name()}_pos_{ix}_{iy}_{iz}",
++                    "x": str(translate.x),
++                    "y": str(translate.y),
++                    "z": str(translate.z),
++                    "unit": "mm",
++                },
++            )
++            if baseRotation.Angle != 0:
++                if rotationName == "":
++                    rotationName = exportRotation(self.name(), nodeXML, baseRotation)
++                else:
++                    ET.SubElement(nodeXML, "rotationref", {"ref": rotationName})
+ 
+-                            
+-                    
+         self._exportScaled()
+ 
+ 
+@@ -4486,6 +4522,7 @@ class PolarArrayExporter(SolidExporter):
+         return solidName
+ 
+     def export(self):
++        from . import arrayUtils
+         base = self.obj.OutList[0]
+         print(base.Label)
+         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
+@@ -4498,16 +4535,11 @@ class PolarArrayExporter(SolidExporter):
+         baseRotation = baseExporter.rotation()
+         volRef = baseExporter.name()
+         unionXML = ET.SubElement(solids, "multiUnion", {"name": self.name()})
+-        if self.obj.Angle == 360:
+-            dthet = 360 / self.obj.NumberPolar
+-        else:
+-            dthet = self.obj.Angle / (self.obj.NumberPolar - 1)
+         positionVector = baseExporter.position()
+-        axis = self.obj.Axis
+-        # TODO adjust for center of rotation != origin
+-        for i in range(self.obj.NumberPolar):
+-            rot = FreeCAD.Rotation(axis, i * dthet)
+-            pos = rot * positionVector  # position has to be rotated too!
++        for i, placement in enumerate(arrayUtils.placementList(self.obj,
++                                                               offsetVector=positionVector)):
++            rot = placement.Rotation
++            pos = placement.Base
+             rot = rot * baseRotation
+             rot.Angle = -rot.Angle  # undo angle reversal by exportRotation
+             nodeName = f"{self.name()}_{i}"
