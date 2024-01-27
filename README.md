@@ -559,7 +559,10 @@ In theory other file extension should produfile of the appropriate type, e.g. ig
 If you found this Workbench useful in your research we would appreciate being cited
 as per the above link.
 
-* See reference 245 http://doi.org/10.1140/epjs/s11734-021-00249-z
+* See reference - 245 http://doi.org/10.1140/epjs/s11734-021-00249-z
+
+* See referenece - 1 https://www.researchgate.net/publication/372909610_VPG4_Versatile_Parallelizable_Geant4_Interface_A_Novel_Platform_for_Modeling_Complex_Nuclear_Medicine_Imaging_Scanners
+  
 
 
 ## Roadmap
