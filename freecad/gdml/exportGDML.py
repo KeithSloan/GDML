@@ -2018,7 +2018,9 @@ def processArrayPart(vol, xmlVol, parentVol):
     while switch(arrayType):
         if case("ortho"):
             basePos = basePhysVol.placement.Base
-            for i, placement in enumerate(arrayUtils.placementList(vol, offsetVector=basePos)):
+            placements = arrayUtils.placementList(vol, offsetVector=basePos)
+            print(f'Number of placements = {len(placements)}')
+            for i, placement in enumerate(placements):
                 ix, iy, iz = arrayUtils.orthoIndexes(i, vol)
                 baseName = vol.Base.Label + '-' + str(ix) + '-' + str(iy) + \
                     '-' + str(iz)
@@ -2029,13 +2031,13 @@ def processArrayPart(vol, xmlVol, parentVol):
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
                                     parent.Placement*newPlace, pvName=str(baseName),
                                     refName=vol.Base.Label)
-                break
+            break
 
         if case("polar"):
             positionVector = basePhysVol.placement.Base
-            for i, placement in enumerate(arrayUtils.placementList(vol,
-                                                                   offsetVector=positionVector)):
-
+            placements = arrayUtils.placementList(vol, offsetVector=positionVector)
+            print(f'Number of placements = {len(placements)}')
+            for i, placement in enumerate(placements):
                 baseName = vol.Base.Label + '-' + str(i)
                 rot = placement.Rotation
                 pos = placement.Base
@@ -2044,7 +2046,7 @@ def processArrayPart(vol, xmlVol, parentVol):
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
                                     parent.Placement*newPlace, pvName=str(baseName),
                                     refName=vol.Base.Label)
-                break
+            break
 
 
 def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement, isPhysVol=True):
