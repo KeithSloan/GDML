@@ -2305,11 +2305,11 @@ def processReplica(importFlag, doc, vol, volDict, parent, phylvl, displayMode):
         # array = Draft.make_array(replicatedSolid, center, stotalangle, number)
         array = Draft.make_array(part, center, stotalangle, number)
         offsetAngle1 = getAngleRad(offsetAunit, offset)
-        offsetAngle2 = getAngleRad(aunit, -width/2)
+        offsetAngle2 = getAngleRad(aunit, +width/2)
         array.Placement.Rotation.Angle += offsetAngle1 + offsetAngle2
-        enclosingVolume = getReplicaEnclosingVolume(parent)
-        if enclosingVolume is not None:
-            enclosingVolume.Placement.Rotation.Angle += offsetAngle2
+        # enclosingVolume = getReplicaEnclosingVolume(parent)
+        # if enclosingVolume is not None:
+        #    enclosingVolume.Placement.Rotation.Angle += offsetAngle2
         parent.addObject(array)
     elif "rho" in direction.attrib:
         print(f'{replicatedSolid.TypeId}')

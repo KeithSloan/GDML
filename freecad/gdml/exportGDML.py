@@ -195,7 +195,7 @@ class MirrorPlacer(MultiPlacer):
 class PhysVolPlacement:
     def __init__(self, ref, placement):
         self.ref = ref  # name reference: a string
-        self.placement = placement  #physvol placement
+        self.placement = placement  # physvol placement
 
 
 #########################################################
@@ -2004,6 +2004,7 @@ def typeOfArray(obj):
 
 
 def processArrayPart(vol, xmlVol, parentVol):
+    # vol: array object
     global physVolStack
     from . import arrayUtils
 
@@ -2012,13 +2013,18 @@ def processArrayPart(vol, xmlVol, parentVol):
     basePhysVol = physVolStack.pop()
     baseRotation = basePhysVol.placement.Rotation
 
+    arrayPos = vol.Placement.Base
+    arrayRot = vol.Placement.Rotation
+    
     parent = vol.InList[0]
     print(f"parent {parent}")
     arrayType = typeOfArray(vol)
     while switch(arrayType):
         if case("ortho"):
-            basePos = basePhysVol.placement.Base
-            placements = arrayUtils.placementList(vol, offsetVector=basePos)
+            pos = basePhysVol.placement.Base + vol.Placement.Base
+            print(f"basePhysVol: {basePhysVol.ref} position: {arrayPos}")
+            placements = arrayUtils.placementList(vol, offsetVector=arrayPos,
+                                                  rot=arrayRot)
             print(f'Number of placements = {len(placements)}')
             for i, placement in enumerate(placements):
                 ix, iy, iz = arrayUtils.orthoIndexes(i, vol)
@@ -2026,21 +2032,23 @@ def processArrayPart(vol, xmlVol, parentVol):
                     '-' + str(iz)
                 print(f"Base Name {baseName}")
                 # print(f"Add Placement to {parent.Label} volref {vol.Base.Label}")
-                pos = placement.Base
-                newPlace = FreeCAD.Placement(pos, FreeCAD.Rotation(baseRotation))
+                rot = placement.Rotation
+                pos = rot*placement.Base  # position must be rotated too!
+                rot = rot * baseRotation  # add rotation of base
+                newPlace = FreeCAD.Placement(pos, rot)
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
                                     parent.Placement*newPlace, pvName=str(baseName),
                                     refName=vol.Base.Label)
             break
 
         if case("polar"):
-            positionVector = basePhysVol.placement.Base
+            positionVector = basePhysVol.placement.Base  # + vol.Placement.Base
             placements = arrayUtils.placementList(vol, offsetVector=positionVector)
             print(f'Number of placements = {len(placements)}')
             for i, placement in enumerate(placements):
                 baseName = vol.Base.Label + '-' + str(i)
-                rot = placement.Rotation
-                pos = placement.Base
+                rot = vol.Placement.Rotation * placement.Rotation
+                pos = placement.Base + vol.Placement.Base
                 rot = rot * baseRotation  # add rotation of base
                 newPlace = FreeCAD.Placement(pos, rot)
                 addPhysVolPlacement(parent, xmlVol, vol.Base.Label,
