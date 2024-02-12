@@ -91,6 +91,7 @@ def addMaterialsFromGroup(doc, MatList, grpName):
             doc,
             True,
             joinDir("Resources/Default.gdml"),
+            1,          # Process type = 1
             False,
             True,
         )
