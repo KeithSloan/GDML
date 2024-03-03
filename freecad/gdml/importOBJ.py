@@ -112,10 +112,12 @@ def getVert(s):
 
 def processOBJ(doc, filename):
 
-    import Mesh, re
+    import FreeCADGui, Mesh, re
+    from datetime import datetime
+
     from .GDMLObjects import GDMLTessellated, ViewProvider
     print("import OBJ as GDML Tessellated")
-
+    startTime = datetime.now()
     # Preprocess file collecting Object and Material definitions
     fp = pythonopen(filename)
     data = fp.read()
@@ -134,10 +136,16 @@ def processOBJ(doc, filename):
             print(f"Material {material}")
         objDict[name] = material
     print(f"Obj Dict {objDict}")
-
+    preTime = datetime.now()
+    print(f"Time for preprocess objects materials {preTime - startTime}")
     # Read OBJ file using FC mesh
+    doc = FreeCAD.newDocument("TempObj")
+    print(f"Active document {FreeCADGui.ActiveDocument.Document.Name}")
+    #Mesh.open(filename)
+    Mesh.insert(filename)
+    fcMeshTime = datetime.now()
+    print(f"Time for FC mesh load of OBJ file {fcMeshTime - preTime}")
 
-    Mesh.open(filename)
     return
 
     obj = doc.addObject("Part::FeaturePython", "GDMLTessellated")
