@@ -38,8 +38,8 @@ def joinDir(path):
     __dirname__ = os.path.dirname(__file__)
     return(os.path.join(__dirname__, path))
 
-
-if open.__module__ == '__builtin__':
+# Save the native open function to avoid collisions
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open  # to distinguish python built-in open function from the one declared her
 
 
@@ -112,8 +112,34 @@ def getVert(s):
 
 def processOBJ(doc, filename):
 
+    import Mesh, re
     from .GDMLObjects import GDMLTessellated, ViewProvider
     print("import OBJ as GDML Tessellated")
+
+    # Preprocess file collecting Object and Material definitions
+    fp = pythonopen(filename)
+    data = fp.read()
+    pattern = re.compile(r"^(?:[0g]|usemtl)\s.*", re.MULTILINE)
+    objMatList = pattern.findall(data)
+    print(f"Obj Mat List {objMatList}")
+    objDict = {}
+    name = ""
+    material = ""
+    for i in objMatList:
+        if i[:2] == 'g ':
+            name = i.lstrip('g ')
+            print(f"Name {name}")
+        if i[:7] == 'usemtl ':
+            material = i.lstrip('usemtl ')
+            print(f"Material {material}")
+        objDict[name] = material
+    print(f"Obj Dict {objDict}")
+
+    # Read OBJ file using FC mesh
+
+    Mesh.open(filename)
+    return
+
     obj = doc.addObject("Part::FeaturePython", "GDMLTessellated")
     vertex = []
     faces = []
