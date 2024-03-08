@@ -1128,26 +1128,35 @@ def processMatrix(obj):
     )
 
 
-def cleanFinish(finish):
-    print(f"finish {finish}")
-    if finish == "polished | polished":
+def cleanFinish(obj):
+    print(f"finish {obj.finish}")
+    if obj.finish == "polished | polished":
         return "polished"
+    elif obj.finish == "Numeric":
+        return str(obj.finishNum)
     else:
-        ext = "extended | "
-        if ext not in finish:
+        ext = "extended | "     # Could be old files
+        if ext not in obj.finish:
             # print('Does not contain')
-            return finish.replace(" | ", "")
+            return obj.finish.replace(" | ", "")
         else:
             # print(f"Replace {finish.replace(ext,'')}")
-            return finish.replace(ext, "")
+            return obj.finish.replace(ext, "")
 
 
-def cleanExtended(var):
-    ext = "extended | "
-    if ext not in var:
-        return var
+def cleanType(obj):
+    if obj.type == "Numeric":
+        return str(obj.typeNum)
+    ext = "extended | "         # Could be old files
+    if ext not in obj.type:
+        return obj.type
     else:
-        return var.replace(ext, "")
+        return obj.replace(ext, "")
+
+
+def cleanModel(obj):
+    if obj.model == "Numeric":
+        return str(obj.modelNum)
 
 
 def processOpticalSurface(obj):
@@ -1155,8 +1164,10 @@ def processOpticalSurface(obj):
     # print(solids)
     print("Add opticalsurface")
     print(str(solids))
-    finish = cleanFinish(obj.finish)
-    type = cleanExtended(obj.type)
+    finish = cleanFinish(obj)
+    print(f"finish {finish}")
+    typeVal = cleanType(obj)
+    model = cleanModel(obj)
     op = ET.SubElement(
         solids,
         "opticalsurface",
@@ -1164,7 +1175,7 @@ def processOpticalSurface(obj):
             "name": obj.Label,
             "model": obj.model,
             "finish": finish,
-            "type": type,
+            "type": typeVal,
             "value": str(obj.value),
         },
     )

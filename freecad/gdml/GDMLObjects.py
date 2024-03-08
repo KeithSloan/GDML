@@ -5147,25 +5147,40 @@ class GDMLmatrix(GDMLcommon):
 
 
 class GDMLopticalsurface(GDMLcommon):
-    def __init__(self, obj, name, model, finish, type, value):
+    def __init__(self, obj, name, model, finish, typeVal, value):
         super().__init__(obj)
-        print(f"passed name {name} model {model} finish {finish} type {type}")
+        print(f"passed name {name} model {model} finish {finish} type {typeVal}")
         obj.addProperty(
             "App::PropertyEnumeration", "model", "GDMLoptical", "model"
         )
-        obj.model = [
+        obj.addProperty(
+            "App::PropertyInteger", "modelNum", "GDMLoptical", "modelNum"
+        )
+        self.modelList = [
             "glisur",  # original GEANT3 model \
             "unified",  # UNIFIED model  \
             "LUT",  # Look-Up-Table model (LBNL model) \
             "DAVIS",  # DAVIS model \
             "dichroic",  # dichroic filter \
+            "Numeric",
         ]
+        obj.model = self.modelList
         # Set passed value
-        obj.model = model
+        if model.isnumeric():
+            obj.modelNum = int(model)
+            obj.model = "Numeric"
+        else:
+            obj.model = model
+            obj.modelNum = self.modelList.index(model)
+
+        # finish    
         obj.addProperty(
             "App::PropertyEnumeration", "finish", "GDMLoptical" "finish"
         )
-        obj.finish = [
+        obj.addProperty(
+            "App::PropertyInteger", "finishNum", "GDMLoptical" "finishNum"
+        )
+        self.finish = [
             "polished | polished",  # smooth perfectly polished surface
             "polished | frontpainted",  # smooth top-layer (front) paint
             "polished | backpainted",  # same is 'polished' but with a back-paint
@@ -5210,20 +5225,12 @@ class GDMLopticalsurface(GDMLcommon):
             "PolishedESRGrease_LUT",  # polished surface wrapped with ESR \
             # and coupled with optical grease
             "Detector_LUT",  # polished surface with optical grease
-            "extended | 0",
-            "extended | 1",
-            "extended | 2",
-            "extended | 3",
-            "extended | 4",
-            "extended | 5",
-            "extended | 6",
-            "extended | 7",
-            "extended | 8",
-            "extended | 9",
+            "Numeric"
         ]
-        print(f"finish {finish}")
-        if finish in "0123456789":
-            obj.finish = "extended | " + finish
+        obj.finish = self.finish
+        if finish.isnumeric():
+            obj.finishNum = int(finish)
+            obj.finish = "Numeric"
         elif finish == "polished":
             obj.finish = "polished | polished"
         elif finish == "ground":
@@ -5234,12 +5241,15 @@ class GDMLopticalsurface(GDMLcommon):
             finish = finish.replace("etched", "etched | ")
             finish = finish.replace("ground", "ground | ")
             obj.finish = finish
+            obj.finishNum = self.finish.index(finish)
 
         obj.addProperty(
             "App::PropertyEnumeration", "type", "GDMLoptical", "type"
         )
-
-        obj.type = [                  # enum G4SurfaceType
+        obj.addProperty(
+            "App::PropertyInteger", "typeNum", "GDMLoptical", "typeNum"
+        )
+        self.type = [                  # enum G4SurfaceType
             "dielectric_metal",       # dielectric-metal interface
             "dielectric_dielectric",  # dielectric-dielectric interface
             "dielectric_LUT",         # dielectric-Look-Up-Table interface
@@ -5248,26 +5258,47 @@ class GDMLopticalsurface(GDMLcommon):
             "firsov",                 # for Firsov Process
             "x_ray",                  # for x-ray mirror process
             "coated",                 # coated_dielectric-dielectric interface
-            "extended | 0",
-            "extended | 1",
-            "extended | 2",
-            "extended | 3",
-            "extended | 4",
-            "extended | 5",
-            "extended | 6",
-            "extended | 7",
-            "extended | 8",
-            "extended | 9",
+            "Numeric"
         ]
-        if type in "0123456789":
-            obj.type = "extended | " + type
+        obj.type = self.type
+        if typeVal.isnumeric():
+            obj.typeNum = int(typeVal)
+            obj.type = "Numeric"
         else:
-            obj.type = type
+            obj.type = typeVal
+            obj.typeNum = self.type.index(typeVal)
+
         obj.addProperty(
             "App::PropertyFloat", "value", "GDMLoptical"
         ).value = value
         obj.Proxy = self
         self.Object = obj
+
+    def onChanged(self, fp, prop):
+        print(f"OnChanged prop {prop}")
+        if prop == fp.finish:
+            print(f"Change finish")
+            obj.finishNum = self.finish.index(fp.finish)
+        
+        elif prop == fp.finishNum:
+            print(f"Change finish Num")
+            fp.finish = "Numeric"
+
+        elif prop == fp.type:
+            print(f"Change Type")
+            obj.typeNum = self.type.index(fp.type)
+        
+        elif prop == fp.typeNum:
+            print(f"Change TypeNum")
+            obj.type = "Numeric"
+
+        elif prop == fp.model:
+            print(f"Change Model")
+            obj.modelNum = self.model.index(fp.model)
+
+        elif prop == fp.modelNum:
+            print(f"Change ModelNum")
+            obj.type = "Numeric"
 
 
 class GDMLskinsurface(GDMLcommon):
