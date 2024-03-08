@@ -5273,32 +5273,48 @@ class GDMLopticalsurface(GDMLcommon):
         ).value = value
         obj.Proxy = self
         self.Object = obj
+        self.ToNum = False
 
     def onChanged(self, fp, prop):
         print(f"OnChanged prop {prop}")
-        if prop == fp.finish:
-            print(f"Change finish")
-            obj.finishNum = self.finish.index(fp.finish)
+        if prop == "finish":
+            print(f"Change finish {fp.finish} {fp.finishNum} {self.ToNum}")
+            if fp.finish != "Numeric":
+                self.ToNum = True
+                fp.finishNum = self.finish.index(fp.finish)
         
-        elif prop == fp.finishNum:
-            print(f"Change finish Num")
-            fp.finish = "Numeric"
+        elif prop == "finishNum":
+            print(f"Change finishNum {fp.finish} {fp.finishNum} {self.ToNum}")
+            if self.ToNum == False:
+                if fp.finish != "Numeric":
+                    fp.finish = "Numeric"
+            self.ToNum = False
 
-        elif prop == fp.type:
-            print(f"Change Type")
-            obj.typeNum = self.type.index(fp.type)
+        if prop == "type":
+            print(f"Change type {fp.type} {fp.typeNum} {self.ToNum}")
+            if fp.type != "Numeric":
+                self.ToNum = True
+                fp.typeNum = self.type.index(fp.type)
         
-        elif prop == fp.typeNum:
+        elif prop == "typeNum":
             print(f"Change TypeNum")
-            obj.type = "Numeric"
+            if self.ToNum == False:
+                if fp.type != "Numeric":
+                    fp.type = "Numeric"
+            self.ToNum = False
 
-        elif prop == fp.model:
-            print(f"Change Model")
-            obj.modelNum = self.model.index(fp.model)
+        if prop == "model":
+            print(f"Change model {fp.model} {fp.modelNum} {self.ToNum}")
+            if fp.type != "Numeric":
+                self.ToNum = True
+                fp.modelNum = self.modelList.index(fp.model)
 
-        elif prop == fp.modelNum:
-            print(f"Change ModelNum")
-            obj.type = "Numeric"
+        elif prop == "modelNum":
+            print(f"Change model {fp.model} {fp.modelNum} {self.ToNum}")
+            if self.ToNum == False:
+                if fp.model != "Numeric":
+                    fp.model = "Numeric"
+            self.ToNum = False
 
 
 class GDMLskinsurface(GDMLcommon):
