@@ -5149,7 +5149,7 @@ class GDMLmatrix(GDMLcommon):
 class GDMLopticalsurface(GDMLcommon):
     def __init__(self, obj, name, model, finish, type, value):
         super().__init__(obj)
-        print(f"passed finish {finish} type {type}")
+        print(f"passed name {name} model {model} finish {finish} type {type}")
         obj.addProperty(
             "App::PropertyEnumeration", "model", "GDMLoptical", "model"
         )
@@ -5160,6 +5160,8 @@ class GDMLopticalsurface(GDMLcommon):
             "DAVIS",  # DAVIS model \
             "dichroic",  # dichroic filter \
         ]
+        # Set passed value
+        obj.model = model
         obj.addProperty(
             "App::PropertyEnumeration", "finish", "GDMLoptical" "finish"
         )
@@ -5236,9 +5238,16 @@ class GDMLopticalsurface(GDMLcommon):
         obj.addProperty(
             "App::PropertyEnumeration", "type", "GDMLoptical", "type"
         )
-        obj.type = [
-            "dielectric_dielectric",
-            "dielectric_metal",
+
+        obj.type = [                  # enum G4SurfaceType
+            "dielectric_metal",       # dielectric-metal interface
+            "dielectric_dielectric",  # dielectric-dielectric interface
+            "dielectric_LUT",         # dielectric-Look-Up-Table interface
+            "dielectric_LUTDAVIS",    # dielectric-Look-Up-Table DAVIS interface
+            "dielectric_dichroic",    # dichroic filter interface
+            "firsov",                 # for Firsov Process
+            "x_ray",                  # for x-ray mirror process
+            "coated",                 # coated_dielectric-dielectric interface
             "extended | 0",
             "extended | 1",
             "extended | 2",

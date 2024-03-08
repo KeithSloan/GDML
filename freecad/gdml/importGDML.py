@@ -3198,9 +3198,11 @@ def processOpticals(doc, opticalsGrp, define_xml, solids_xml, struct_xml):
             surfaceGrp = newGroupPython(opticalsGrp, "Surfaces")
         for opSurface in solids_xml.findall("opticalsurface"):
             name = opSurface.get("name")
+            print(f"Optical Surface Name {name}")
             if name is not None:
                 surfaceObj = newGroupPython(surfaceGrp, name)
                 model = opSurface.get("model")
+                print(f"Optical Surface Model {model}")
                 finish = opSurface.get("finish")
                 print(f"scanned finish : {finish}")
                 type = opSurface.get("type")
