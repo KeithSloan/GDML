@@ -113,9 +113,14 @@ def getVert(s):
 def processOBJ(doc, filename):
 
     import FreeCADGui, Mesh, re
+    from .GDMLObjects import checkMaterialDefinitionsExist
     from datetime import datetime
 
     from .GDMLObjects import GDMLTessellated, ViewProvider
+    from .GDMLCommands import Mesh2TessDialog
+
+    print("Check Materials definitions exist")
+    checkMaterialDefinitionsExist(doc)
     print("import OBJ as GDML Tessellated")
     startTime = datetime.now()
     # Preprocess file collecting Object and Material definitions
@@ -145,7 +150,14 @@ def processOBJ(doc, filename):
     Mesh.insert(filename)
     fcMeshTime = datetime.now()
     print(f"Time for FC mesh load of OBJ file {fcMeshTime - preTime}")
-
+    FreeCADGui.Selection.clearSelection()
+    #for obj in doc.Objects:
+    #    FreeCADGui.Selection.addSelection(obj)
+    FreeCADGui.Selection.addSelection(doc.Objects[0])
+    sel = FreeCADGui.Selection.getSelection()
+    print(f"Selection {sel}")
+    dialog = Mesh2TessDialog(sel)
+    dialog.exec_()
     return
 
     obj = doc.addObject("Part::FeaturePython", "GDMLTessellated")

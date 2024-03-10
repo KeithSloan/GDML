@@ -84,12 +84,16 @@ def addMaterialsFromGroup(doc, MatList, grpName):
                     MatList.append(i.Label)
     else:
         # rebuild Materials from scratch
-        print(f"Rebuilding Materials Structure")
-        from .importGDML import processGDML, joinDir
+        buildDefaultGDMLDoc(doc)
 
-        processGDML(
+
+def buildDefaultGDMLDoc(doc):
+    from .importGDML import processGDML, joinDir
+    print(f"Rebuilding Materials Structure")
+
+    processGDML(
             doc,
-            True,
+            False,      # Prompt
             joinDir("Resources/Default.gdml"),
             1,          # Process type = 1
             False,
@@ -110,6 +114,12 @@ def rebuildMaterialsList():
             addMaterialsFromGroup(doc, MaterialsList, g.Label)
     # print('MaterialsList')
     # print(MaterialsList)
+
+
+def checkMaterialDefinitionsExist(doc):
+    G4Materials = doc.getObject("G4Materials")
+    if G4Materials is None:
+        buildDefaultGDMLDoc(doc)
 
 
 def checkMaterial(material):
