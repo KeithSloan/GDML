@@ -93,10 +93,10 @@ def buildDefaultGDMLDoc(doc):
 
     processGDML(
             doc,
-            False,      # Prompt
+            False,      # Open / Insert
             joinDir("Resources/Default.gdml"),
+            False,      # Prompt
             1,          # Process type = 1
-            False,
             True,
         )
 
@@ -116,10 +116,14 @@ def rebuildMaterialsList():
     # print(MaterialsList)
 
 
-def checkMaterialDefinitionsExist(doc):
-    G4Materials = doc.getObject("G4Materials")
-    if G4Materials is None:
+def checkMaterialDefinitionsExist():
+    doc = FreeCAD.ActiveDocument
+    if doc is None:
         buildDefaultGDMLDoc(doc)
+    else:
+        G4Materials = doc.getObject("G4Materials")
+        if G4Materials is None:
+            buildDefaultGDMLDoc(doc)
 
 
 def checkMaterial(material):

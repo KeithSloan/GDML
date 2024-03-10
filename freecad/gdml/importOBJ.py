@@ -120,7 +120,7 @@ def processOBJ(doc, filename):
     from .GDMLCommands import Mesh2TessDialog
 
     print("Check Materials definitions exist")
-    checkMaterialDefinitionsExist(doc)
+    checkMaterialDefinitionsExist()
     print("import OBJ as GDML Tessellated")
     startTime = datetime.now()
     # Preprocess file collecting Object and Material definitions
