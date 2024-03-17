@@ -51,7 +51,14 @@ def getBrepPath(path, parent, volRef):
     return path
 
 
+def getShellPath(path, parent, volRef):
+    path = getPath(path, parent, volRef)+"_Shell.brep"
+    print(f"== Shell Path ==> {path}")
+    return path
+
+
 def getBrepStepPath(importType, path, parent, volRef):
+    print(f"get BrepStepPath {importType}")
     if importType == 2:
         return getBrepPath(path, parent, volRef)
 
@@ -60,12 +67,16 @@ def getBrepStepPath(importType, path, parent, volRef):
         return getStepPath(path, parent, volRef)
 
 
+    elif importType == 4:
+        return getShellPath(path, parent, volRef)
+
     else:
         return None
 
 
 def createSavedVolume(importType, volDict, parent, name, path):
-    from .GDMLObjects import GDMLPartStep, GDMLPartBrep, ViewProvider
+    from .GDMLObjects import GDMLPartStep, GDMLPartBrep, GDMLPartShell, \
+            ViewProvider
     from .importGDML import newPartFeature
 
     part = None
@@ -76,6 +87,10 @@ def createSavedVolume(importType, volDict, parent, name, path):
     elif importType == 3:    # Is Step
         part = newPartFeature(parent, "GDMLPartStep_" + name)
         GDMLPartStep(part, path)
+
+    elif importType == 4:    # Is Shell
+        part = newPartFeature(parent, "GDMLPartShell_" + name)
+        GDMLPartShell(part, path)
 
     else:
         print(f"Not a valid import Type")

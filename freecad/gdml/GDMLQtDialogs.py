@@ -15,6 +15,8 @@ class importPrompt(QtGui.QDialog):
         brepButton.clicked.connect(self.onBrep)
         stepButton = QtGui.QPushButton('Step')
         stepButton.clicked.connect(self.onStep)
+        shellButton = QtGui.QPushButton('Shell')
+        shellButton.clicked.connect(self.onShell)
         scanButton = QtGui.QPushButton('Scan Vol')
         scanButton .clicked.connect(self.onScan)
         #
@@ -24,6 +26,7 @@ class importPrompt(QtGui.QDialog):
         buttonBox.addButton(importButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(brepButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(stepButton, QtGui.QDialogButtonBox.ActionRole)
+        buttonBox.addButton(shellButton, QtGui.QDialogButtonBox.ActionRole)
         buttonBox.addButton(scanButton, QtGui.QDialogButtonBox.ActionRole)
         #
         mainLayout = QtGui.QVBoxLayout()
@@ -48,8 +51,12 @@ class importPrompt(QtGui.QDialog):
         self.retStatus = 3
         self.close()
 
-    def onScan(self):
+    def onShell(self):
         self.retStatus = 4
+        self.close()
+
+    def onScan(self):
+        self.retStatus = 5
         self.close()
 
 

@@ -2596,7 +2596,7 @@ def expandVolume(importFlag, doc, volDict, parent, name, phylvl, displayMode):
     print(f"expandVolume : {name} importFlag {importFlag}")
     GDMLShared.trace("expandVolume : " + name)
     print(f"Parse Volume : {name} Phylvl {phylvl}")
-    if importFlag in [2, 3]:
+    if importFlag in [2, 3, 4]:
         from .GDMLScanBrepStep import getBrepStepPath, createSavedVolume
         from .GDMLObjects import GDMLPartStep, ViewProvider
         print(f"Path Name : {pathName} parent : {parent.Name} name : {name}")
@@ -3293,7 +3293,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     if FreeCAD.GuiUp:
         from . import GDMLCommands
 
-        if prompt and processType not in [2,3]:
+        if prompt and processType not in [2,3,4]:
             from .GDMLQtDialogs import importPrompt
 
             dialog = importPrompt()
@@ -3305,12 +3305,12 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
 
             print(f"retStatus {dialog.retStatus}")
             processType = dialog.retStatus
-            if dialog.retStatus == 4:
+            if dialog.retStatus == 5:
                 print("Scan Vol")
                 phylvl = 0
 
 
-            if dialog.retStatus in [2, 3]:
+            if dialog.retStatus in [2, 3, 4]:
                 print("Look for processed Volumes")
 
             params = FreeCAD.ParamGet(
