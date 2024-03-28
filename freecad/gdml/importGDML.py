@@ -3264,6 +3264,7 @@ def processDefines(root, doc):
 
 
 def findWorldVol():
+    doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
         if obj.TypeId == "App::Part":
             print(f"World Volume {obj.Name}")

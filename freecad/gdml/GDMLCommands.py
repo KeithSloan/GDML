@@ -145,12 +145,14 @@ def getParent(obj):
             return None
 
 
-def createPartVol(obj):
+def createPartVol(obj, doc):
     from .importGDML import addSurfList
+
+    if doc == None:
+        doc = FreeCAD.ActiveDocument
 
     # Create Part(GDML Vol) Shared with a number of Features
     LVname = "LV-" + obj.Label
-    doc = FreeCAD.ActiveDocument
     if hasattr(obj, "InList"):
         if len(obj.InList) > 0:
             parent = obj.InList[0]
@@ -2525,9 +2527,10 @@ class TessellateGmshFeature:
 
 
 class Mesh2TessDialog(QtGui.QDialog):
-    def __init__(self, selList):
+    def __init__(self, selList, doc=FreeCAD.ActiveDocument):
         super(Mesh2TessDialog, self).__init__()
         self.selList = selList
+        self.doc = doc
         self.setupUi()
         self.initUI()
 
@@ -2617,13 +2620,13 @@ class Mesh2TessDialog(QtGui.QDialog):
             GDMLSampledTessellated,
         )
 
-        import cProfile, pstats
+        #import cProfile, pstats
 
         solidFlag = self.fullDisplayRadioButton.isChecked()
         sampledFraction = self.fractionSpinBox.value()
 
-        profiler = cProfile.Profile()
-        profiler.enable()
+        #profiler = cProfile.Profile()
+        #profiler.enable()
         for obj in self.selList:
             # if len(obj.InList) == 0: # allowed only for for top level objects
             print(obj.TypeId)
@@ -2634,7 +2637,7 @@ class Mesh2TessDialog(QtGui.QDialog):
                 print("Facets : " + str(obj.Mesh.CountFacets))
                 # print(obj.Mesh.Topology[0])
                 # print(obj.Mesh.Topology[1])
-                vol = createPartVol(obj)
+                vol = createPartVol(obj, self.doc)
                 if hasattr(obj, "material"):
                     mat = obj.material
                 else:
@@ -2658,9 +2661,9 @@ class Mesh2TessDialog(QtGui.QDialog):
 
                 FreeCAD.ActiveDocument.recompute()
                 FreeCADGui.SendMsgToActiveView("ViewFit")
-        profiler.disable()
-        stats = pstats.Stats(profiler).sort_stats("cumtime")
-        stats.print_stats()
+        # profiler.disable()
+        #stats = pstats.Stats(profiler).sort_stats("cumtime")
+        #stats.print_stats()
 
         self.accept()
 
