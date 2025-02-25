@@ -4386,7 +4386,7 @@ class GDMLGmshTessellated(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        breakpoint()
+        # breakpoint()
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         FCfaces = []

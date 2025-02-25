@@ -156,7 +156,6 @@ class NameManager:
 
     @staticmethod
     def getVolumeName(vol) -> str:
-        # breakpoint()
         if vol in NameManager._volumeNamesDict:
             return NameManager._volumeNamesDict[vol]
 
@@ -1257,7 +1256,6 @@ class SurfaceManager:
 
         # vol must be an assembly, recurse
         for obj in childObjects[vol]:
-            # breakpoint()
             typeId = obj.TypeId
             tObj = obj
             # print(obj.Label)
@@ -2139,7 +2137,6 @@ def processVolume(vol, xmlParent, psPlacement):
     # So for s in list is not so good
     # type 1 straight GDML type = 2 for GEMC
     # xmlVol could be created dummy volume
-    # breakpoint()
     if vol.TypeId == "App::Link":
         print("Volume is Link")
         placement = vol.Placement
@@ -2294,7 +2291,6 @@ def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
     #               If the vol is placed inside a solid
     #               and that solid has a non-zero placement
     #               we need to shift vol by inverse of the psPlacement
-    # breakpoint()
     if vol.Label[:12] != "NOT_Expanded":
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
         volName = NameManager.getName(vol)
@@ -2374,20 +2370,16 @@ def createWorldVol(volName):
     ET.SubElement(gxml, "volume", {"name": volName, "material": "G4_AIR"})
     return worldVol
 
-
 def buildDocTree():
     from PySide import QtWidgets
 
-    # buildDocTree now builds global childObjects
-    # Used in exportGDML and GDMLCommands
     global childObjects
     childObjects = {}  # dictionary of list of child objects for each object
-
-
     # TypeIds that should not go in to the tree
     skippedTypes = ["App::Origin", "Sketcher::SketchObject", "Part::Compound"]
 
     def addDaughters(item: QtWidgets.QTreeWidgetItem):
+        print (f"--------addDaughters {item.text(0)}")
         objectLabel = item.text(0)
         object = App.ActiveDocument.getObjectsByLabel(objectLabel)[0]
         if object not in childObjects:
@@ -2407,32 +2399,44 @@ def buildDocTree():
 
     # Get world volume from document tree widget
     worldObj = FreeCADGui.Selection.getSelection()[0]
-    tree = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)[0]
-    it = QtGui.QTreeWidgetItemIterator(tree)
+    # tree = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)[0]
+    # it = QtGui.QTreeWidgetItemIterator(tree)
+
+    mw1 = FreeCADGui.getMainWindow()
+    print (f"---------Number of trees {len(mw1.findChildren(QtGui.QTreeWidget))}")
+    treesSel = mw1.findChildren(QtGui.QTreeWidget)
+    print (f"---------Number of trees {len(treesSel)}")
+    # breakpoint()
+
     doc = FreeCAD.ActiveDocument
     found = False
 
-    for nextObject in it:
-        item = nextObject.value()
-        treeLabel = item.text(0)
-        if not found:
-            if treeLabel != doc.Label:
-                continue
+    for tree in treesSel:
+        print(f"--------Tree {tree.objectName()}")
+        items = tree.selectedItems()
+        for item in items:
+            treeLabel = item.text(0)
+            print(f"--------Item {treeLabel}")
+            print(f"--------Doc.Label {doc.Label}")
+            # if not found:
+            #     if treeLabel != doc.Label:
+            #         continue
+            # found = True
+            try:
+                objs = doc.getObjectsByLabel(treeLabel)
+                print(f"--------Objects {objs}")
+                if len(objs) == 0:
+                    continue
 
-        found = True
-        try:
-            objs = doc.getObjectsByLabel(treeLabel)
-            if len(objs) == 0:
-                continue
-
-            obj = objs[0]
-            if obj == worldObj:
-                # we presume first app part is world volume
-                addDaughters(item)
-                break
-        except Exception as e:
-            print(e)
-            FreeCADobject = None
+                obj = objs[0]
+                if obj == worldObj:
+                    print(f"--------World Object {obj.Label}")
+                    # we presume first app part is world volume
+                    addDaughters(item)
+                    break
+            except Exception as e:
+                print(e)
+                FreeCADobject = None
 
 
 def isContainer(obj):
