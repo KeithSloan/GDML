@@ -1848,6 +1848,80 @@ class TorusFeature:
             ),
         }
 
+class TwistedboxFeature:
+	# def IsActive(self):
+	#    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+	def Activated(self):
+		from .GDMLObjects import GDMLTwistedbox, ViewProvider
+
+		objPart, material = getSelectedPM()
+		obj = insertPartVol(objPart, "LV-TwistedBox", "GDMLTwistedBox")
+
+		# PhiTwist, x, y, z, aunit, lunit, material, colour=Nonep
+		GDMLTwistedbox(obj, 30, 20, 30, 40, "deg", "mm", material)
+		if FreeCAD.GuiUp:
+			obj.ViewObject.Visibility = True
+			ViewProvider(obj.ViewObject)
+
+			FreeCAD.ActiveDocument.recompute()
+			FreeCADGui.SendMsgToActiveView("ViewFit")
+
+	def IsActive(self):
+		if FreeCAD.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+			"Pixmap": "GDMLTwistedbox",
+			"MenuText": QtCore.QT_TRANSLATE_NOOP(
+			"GDMLTwistedboxFeature", "Twistedbox Object"
+			),
+			"ToolTip": QtCore.QT_TRANSLATE_NOOP(
+				"GDMLTwistedboxFeature", "Twistedbox Object"
+			),
+		}
+
+
+class TwistedtrapFeature:
+	# def IsActive(self):
+	#    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+	def Activated(self):
+		from .GDMLObjects import GDMLTwistedtrap, ViewProvider
+
+		objPart, material = getSelectedPM()
+		obj = insertPartVol(objPart, "LV-TwistedTrap", "GDMLTwistedTrap")
+
+		# PhiTwist, z,  theta, phi, x1, x2, x3, x4, y1, y2, alpha, aunit, lunit
+		GDMLTwistedtrap(obj, 30, 50, 00, 360, 10, 20, 30, 40, 10, 50, 20,  "deg", "mm", material)
+		if FreeCAD.GuiUp:
+			obj.ViewObject.Visibility = True
+			ViewProvider(obj.ViewObject)
+
+			FreeCAD.ActiveDocument.recompute()
+			FreeCADGui.SendMsgToActiveView("ViewFit")
+
+	def IsActive(self):
+		if FreeCAD.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+			"Pixmap": "GDMLTwistedtrap",
+			"MenuText": QtCore.QT_TRANSLATE_NOOP(
+			"GDMLTwistedtrapFeature", "Twistedtrap Object"
+			),
+			"ToolTip": QtCore.QT_TRANSLATE_NOOP(
+				"GDMLTwistedtrapFeature", "Twistedtrap Object"
+			),
+		}
+
+
 class TwistedtubsFeature:
 	# def IsActive(self):
 	#    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -3906,6 +3980,8 @@ FreeCADGui.addCommand("SphereCommand", SphereFeature())
 FreeCADGui.addCommand("TorusCommand", TorusFeature())
 FreeCADGui.addCommand("TrapCommand", TrapFeature())
 FreeCADGui.addCommand("TubeCommand", TubeFeature())
+FreeCADGui.addCommand("TwistedboxCommand", TwistedboxFeature())
+FreeCADGui.addCommand("TwistedtrapCommand", TwistedtrapFeature())
 FreeCADGui.addCommand("TwistedtrdCommand", TwistedtrdFeature())
 FreeCADGui.addCommand("TwistedtubsCommand", TwistedtubsFeature())
 FreeCADGui.addCommand("CutTubeCommand", CutTubeFeature())
