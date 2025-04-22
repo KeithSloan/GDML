@@ -1848,6 +1848,39 @@ class TorusFeature:
             ),
         }
 
+
+
+class TwistedGroupFeature:
+	"""Group of Twisted Commands""" 
+
+	def GetCommands(self):
+		"""Tuple of Commands""" 
+		return ("TwistedboxCommand",
+				 "TwistedtrapCommand",
+				 "TwistedtrdCommand",
+				 "TwistedtubsCommand",
+				)
+
+	def GetResources(self):                                                
+		"""Set icon, menu and tooltip."""
+
+		return {
+			"Pixmap": "GDML_Twisted_Group",                                   
+			"MenuText": QtCore.QT_TRANSLATE_NOOP("Twisted Group", "Twisted Group"),
+			"ToolTip": QtCore.QT_TRANSLATE_NOOP(
+				"Twsited Group", " Group of Twisted Commands"
+			),
+		}
+
+	def IsActive(self):
+		"""Return True when this command should be available."""
+
+		if FreeCAD.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+
 class TwistedboxFeature:
 	# def IsActive(self):
 	#    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -3980,6 +4013,7 @@ FreeCADGui.addCommand("SphereCommand", SphereFeature())
 FreeCADGui.addCommand("TorusCommand", TorusFeature())
 FreeCADGui.addCommand("TrapCommand", TrapFeature())
 FreeCADGui.addCommand("TubeCommand", TubeFeature())
+FreeCADGui.addCommand("TwistedGroupCommand", TwistedGroupFeature())
 FreeCADGui.addCommand("TwistedboxCommand", TwistedboxFeature())
 FreeCADGui.addCommand("TwistedtrapCommand", TwistedtrapFeature())
 FreeCADGui.addCommand("TwistedtrdCommand", TwistedtrdFeature())
