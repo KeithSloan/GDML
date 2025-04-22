@@ -1848,6 +1848,40 @@ class TorusFeature:
             ),
         }
 
+class TwistedtrdFeature:
+	# def IsActive(self):
+	#    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+	def Activated(self):
+		from .GDMLObjects import GDMLTwistedtrd, ViewProvider
+
+		objPart, material = getSelectedPM()
+		obj = insertPartVol(objPart, "LV-TwistedTrd", "GDMLTwistedTrd")
+		# PhiTwist, z, x1, x2, y1, y2, aunit,lunit, material, colour=N
+		GDMLTwistedtrd(obj, 30, 20, 50, 50, 10, 60, "deg", "mm", material)
+		if FreeCAD.GuiUp:
+			obj.ViewObject.Visibility = True
+			ViewProvider(obj.ViewObject)
+
+			FreeCAD.ActiveDocument.recompute()
+			FreeCADGui.SendMsgToActiveView("ViewFit")
+
+	def IsActive(self):
+		if FreeCAD.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+			"Pixmap": "GDMLTwistedtrd",
+			"MenuText": QtCore.QT_TRANSLATE_NOOP(
+			"GDMLTwistedtrdFeature", "Twistedtrd Object"
+			),
+			"ToolTip": QtCore.QT_TRANSLATE_NOOP(
+				"GDMLTwistedtrdFeature", "Twistedtrd Object"
+			),
+		}
 
 class TrapFeature:
     # def IsActive(self):
@@ -1860,7 +1894,7 @@ class TrapFeature:
         obj = insertPartVol(objPart, "LV-Trap", "GDMLTrap")
         print("GDMLTrap Object - added")
         # obj z, theta, phi, x1, x2, x3, x4, y1, y2,
-        # pAlp2, aunits, lunits, material
+        Feature# pAlp2, aunits, lunits, material
         GDMLTrap(
             obj,
             10.0,
@@ -3835,6 +3869,7 @@ FreeCADGui.addCommand("SphereCommand", SphereFeature())
 FreeCADGui.addCommand("TorusCommand", TorusFeature())
 FreeCADGui.addCommand("TrapCommand", TrapFeature())
 FreeCADGui.addCommand("TubeCommand", TubeFeature())
+FreeCADGui.addCommand("TwistedtrdCommand", TwistedtrdFeature())
 FreeCADGui.addCommand("CutTubeCommand", CutTubeFeature())
 FreeCADGui.addCommand("PolyHedraCommand", PolyHedraFeature())
 FreeCADGui.addCommand("AddCompound", CompoundFeature())
