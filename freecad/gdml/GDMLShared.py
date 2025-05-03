@@ -1078,21 +1078,37 @@ def setPlacement(obj, xml, invertRotation=True):
     obj.Placement.Base = FreeCAD.Vector(0, 0, 0)
     posName = getRef(xml, "positionref")
 
-    # TODO deal with unit
     if posName is not None:
         row = getPositionRow(posName)
         if row is not None:
+            unit_alias = defineSpreadsheet.getAlias(definesColumn['pos_unit'] + str(row))
+            default_unit = True
+            if unit_alias is not None:
+                unit = defineSpreadsheet.get(unit_alias)
+                default_unit = False
             xAlias = defineSpreadsheet.getAlias(definesColumn['pos_x'] + str(row))
             if xAlias is not None:
-                obj.setExpression('.Placement.Base.x', f"<<defines>>.{xAlias}")
+                if default_unit:
+                    expr = f"<<defines>>.{xAlias}"
+                else:
+                    expr = f"<<defines>>.{xAlias}*1{unit}"
+                obj.setExpression('.Placement.Base.x', expr)
 
             yAlias = defineSpreadsheet.getAlias(definesColumn['pos_y'] + str(row))
             if yAlias is not None:
-                obj.setExpression('.Placement.Base.y', f"<<defines>>.{yAlias}")
+                if default_unit:
+                    expr = f"<<defines>>.{yAlias}"
+                else:
+                    expr = f"<<defines>>.{yAlias}*1{unit}"
+                obj.setExpression('.Placement.Base.y', expr)
 
             zAlias = defineSpreadsheet.getAlias(definesColumn['pos_z'] + str(row))
             if zAlias is not None:
-                obj.setExpression('.Placement.Base.z', f"<<defines>>.{zAlias}")
+                if default_unit:
+                    expr = f"<<defines>>.{zAlias}"
+                else:
+                    expr = f"<<defines>>.{zAlias}*1{unit}"
+                obj.setExpression('.Placement.Base.z', expr)
 
     else:
         pos = xml.find("position")
