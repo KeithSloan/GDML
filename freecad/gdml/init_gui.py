@@ -42,7 +42,7 @@ import SketcherGui
 import MeshGui
 import FreeCADGui
 from freecad.gdml import GDMLCommands, GDMLResources
-
+from freecad.gdml import MacroObject
 
 def joinDir(path):
     import os
@@ -193,10 +193,14 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "AddCompound",
         ]
 
-        toolbarCmds = tbSolidsCmds + tbPartCmds + tbTessCmds
+        extraCmds = [
+            "MacroObjectCmd",
+		]
+
+        toolbarCmds = tbSolidsCmds + extraCmds + tbPartCmds + tbTessCmds
+        
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "GDMLTools"), toolbarCmds
-        )
+            QT_TRANSLATE_NOOP("Workbench", "GDMLTools"), toolbarCmds)
         self.appendMenu("GDML", commands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Mesh Tools'),meshtoolbarcommands)
