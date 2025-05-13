@@ -31,6 +31,8 @@
 import FreeCAD as App
 import FreeCADGui
 
+import os, sys, tempfile
+
 from PySide import QtGui, QtCore
 from PySide.QtCore import Qt
 
@@ -50,42 +52,70 @@ class MacroObjectClass(BaseClass):
 	def initMacroObject(self):
 		print(f"Init Macro  Object")
 		self.Macro = self.obj.addProperty("App::PropertyString","MacroName","Base","Macro to be invoked")
-		self.ListFloatVars = self.obj.addProperty("App::PropertyStringList","ListFloatVars","Base","List of Macro Float Variables")
-		self.ListFloatVars = []
-		self.ListOfIntVars = self.obj.addProperty("App::PropertyStringList","ListOfIntVars","Base","List of Macro Int Variables")
-		self.ListOfIntVars = []
+		#self.ListVars = self.obj.addProperty("App::PropertyStringList","ListVars","Base","List of Macro Variables")
+		#self.ListVars = []
 		self.Execute = self.obj.addProperty("App::PropertyBool","Execute","Base","Execute Macro")
 		self.Execute = False
-		self.Parameters = self.obj.addProperty("App::PropertyBool","Parameters","Base","Set Variable Parameters")
-		self.Parameters = False
+		#self.Parameters = self.obj.addProperty("App::PropertyBool","Parameters","Base","Set Variable Parameters")
+		#self.Parameters = False
+
+	def read_file_into_buffer(self, file_path):
+		with open(file_path, 'r') as file:
+			file_contents = file.read()
+		return file_contents
 
 	def onChanged(self, fp, prop):
 		# print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
+		print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
 		if "Restore" in fp.State:
 			return
 
-		if prop in ["ListFloatVars"]:
-			if App.GuiUp:
-				for var in self.obj.ListFloatVars:
-					if not hasattr(self.obj, var): 
-						self.obj.addProperty("App::PropertyFloat", var, "Base", var)
-						
-		if prop in ["ListIntVars"]:
-			if App.GuiUp:
-				for var in self.obj.ListIntVars:
-					if not hasattr(self.obj, var): 
-						self.obj.addProperty("App::PropertyFloat", var, "Base", var)
-						
-		
 		if prop in ["Execute"]:
 			print("Execute")
-			if self.Execute:
-				for var in self.obj.ListIntVars:
-					print(f"Write {var}")
-				for var in self.obj.ListFloatVars:
-					print(f"Write {var}")
+			if open.__module__ == "__builtin__":
+				pythonopen = open  # to distinguish python built-in open function from the one declared here
+			tmpDir = tempfile.gettempdir()
+			print(f"Temp directory {tmpDir}")
+			tmpOutFile = os.path.join(tmpDir, fp.Label+'.FCMacro')
+			preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
+			macroPath = preference.GetString("MacroPath")
+			print(f"Macro Path {macroPath}")
+			file = open(tmpOutFile,"w")
+			#'file = pythonopen(tmpOutFile,"w")
+			#print(dir(prop))
+			if fp.Execute:
+				codeLines = ''
+				commentLines = ''
+				for var in fp.PropertiesList:
+					print(f"prop {var}")
+					#print(dir(var))
+					if var.startswith("Variable"):
+						value = getattr(fp, var)
+						print(f"Variable var {var.rsplit('_')}")
+						varName = var.rsplit('_')
+						codeLines = codeLines + varName[1] + ' = ' + str(value) + '\n'
+						commentLines = commentLines + '# ' +varName[1] + ' : ' + str(type(value)) + '\n'
+						#file.write(value + '=' +)
+				print("Comment Line")
+				print(commentLines) 
+				print("Python Line")
+				print(codeLines) 
 				print("Execute")
-			self.Execute = False
+				macroFileName = '"' +  macroPath + fp.MacroName + '.FCMacro"'
+				print(f"Macro File Name {macroFileName}")
+				macroTxt = self.read_file_into_buffer(macroFileName)
+				#f = open(tmpOutFile, 'wt', encoding='utf-8')
+				#f.write(commentLines)
+				#f.write(codeLines
+				#f.write(macroTxt)
+				#f.close()
+				newMacroFileName = '"' +  macroPath + '"' + fp.Label + '.FCMacro'
+				f = open(newMacroFileName, 'wt', encoding='utf-8')
+				f.write(commentLines)
+				f.write(codeLines)
+				f.write(macroTxt)				
+				f.close()
+			#fp.Execute = False
 
 		if prop in ["Parameters"]:
 			print("Setup Variables")
