@@ -92,12 +92,6 @@ class MacroObjectClass(BaseClass):
 						print(f"Variable var {var.rsplit('_')} value {value}")
 						varName = var.rsplit('_')
 						varDict[varName[1]] = value
-						#codeLines = codeLines + varName[1] + ' = ' + str(value)  + '# ' + str(type(value)) + '\n'
-						#file.write(value + '=' +)
-				#print("Comment Line")
-				#print(commentLines) 
-				#print("Python Line")
-				#print(codeLines) 
 				print(f"VarDict {varDict}")
 				print(f"Execute varDict {varDict}")
 				preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
@@ -120,7 +114,7 @@ class MacroObjectClass(BaseClass):
 				#f = open(newMacroFile, 'wt', encoding='utf-8')
 				#f.write(codeLines)				
 				#f.close()
-			#fp.Execute = False
+				fp.Execute = False
 
 		if prop in ["Parameters"]:
 			print("Setup Variables")

@@ -114,19 +114,22 @@ class VariableInputDialog(QDialog):
         self.accept()
 
 
-def checkVariablesSet(var_types: dict):
+def checkVariablesSet(var_types: dict, scope_vars):
     missing_vars = {}
     present_vars = {}
     
-    scope_vars = dict(globals(), **locals())
-	
+    #scope_vars = dict(globals(), **locals()
+    print(f"scope vars {scope_vars}")
+    
     for name, vtype in var_types.items():
+        print(f"name {name} vtype {vtype}")
         if name in scope_vars:
-            present_vars[name] = scope_vars[name]
+            present_vars[name] = vtype
         else:
             missing_vars[name] = vtype
 
     # All variables present
+    print(f"missing {missing_vars}")
     if not missing_vars:
         return True
 
