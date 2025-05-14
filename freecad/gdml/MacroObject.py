@@ -72,20 +72,17 @@ class MacroObjectClass(BaseClass):
 
 		if prop in ["Execute"]:
 			print("Execute")
-			if open.__module__ == "__builtin__":
-				pythonopen = open  # to distinguish python built-in open function from the one declared here
-			tmpDir = tempfile.gettempdir()
-			print(f"Temp directory {tmpDir}")
-			tmpOutFile = os.path.join(tmpDir, fp.Label+'.FCMacro')
-			preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
-			macroPath = preference.GetString("MacroPath")
-			print(f"Macro Path {macroPath}")
-			file = open(tmpOutFile,"w")
+			#if open.__module__ == "__builtin__":
+			#	pythonopen = open  # to distinguish python built-in open function from the one declared here
+			#tmpDir = tempfile.gettempdir()
+			#print(f"Temp directory {tmpDir}")
+			#tmpOutFile = os.path.join(tmpDir, fp.Label+'.FCMacro')
+			#file = open(tmpOutFile,"w")
 			#'file = pythonopen(tmpOutFile,"w")
 			#print(dir(prop))
 			if fp.Execute:
 				codeLines = ''
-				commentLines = ''
+				#commentLines = ''
 				for var in fp.PropertiesList:
 					print(f"prop {var}")
 					#print(dir(var))
@@ -93,27 +90,31 @@ class MacroObjectClass(BaseClass):
 						value = getattr(fp, var)
 						print(f"Variable var {var.rsplit('_')}")
 						varName = var.rsplit('_')
-						codeLines = codeLines + varName[1] + ' = ' + str(value) + '\n'
-						commentLines = commentLines + '# ' +varName[1] + ' : ' + str(type(value)) + '\n'
+						codeLines = codeLines + varName[1] + ' = ' + str(value)  + '# ' + str(type(value)) + '\n'
 						#file.write(value + '=' +)
-				print("Comment Line")
-				print(commentLines) 
+				#print("Comment Line")
+				#print(commentLines) 
 				print("Python Line")
 				print(codeLines) 
 				print("Execute")
-				macroFileName = '"' +  macroPath + fp.MacroName + '.FCMacro"'
+				preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
+				macroPath = preference.GetString("MacroPath")
+				print(f"Macro Path {macroPath}")
+				macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
 				print(f"Macro File Name {macroFileName}")
 				macroTxt = self.read_file_into_buffer(macroFileName)
+				codeLines = codeLines + macroTxt
+				exec(codeLines)
 				#f = open(tmpOutFile, 'wt', encoding='utf-8')
 				#f.write(commentLines)
-				#f.write(codeLines
+				#f.write(codeLines)
 				#f.write(macroTxt)
 				#f.close()
-				newMacroFileName = '"' +  macroPath + '"' + fp.Label + '.FCMacro'
-				f = open(newMacroFileName, 'wt', encoding='utf-8')
-				f.write(commentLines)
-				f.write(codeLines)
-				f.write(macroTxt)				
+				#newMacroFile = os.path.join('"' +  macroPath + '"', fp.Label + '.FCMacro')
+				newMacroFile = os.path.join(macroPath, fp.Label + '.FCMacro')
+				print(f"newMacroFile {newMacroFile}")
+				f = open(newMacroFile, 'wt', encoding='utf-8')
+				f.write(codeLines)				
 				f.close()
 			#fp.Execute = False
 
