@@ -81,41 +81,45 @@ class MacroObjectClass(BaseClass):
 			#'file = pythonopen(tmpOutFile,"w")
 			#print(dir(prop))
 			if fp.Execute:
-				codeLines = ''
+				#codeLines = ''
 				#commentLines = ''
+				varDict = {}
 				for var in fp.PropertiesList:
 					print(f"prop {var}")
 					#print(dir(var))
 					if var.startswith("Variable"):
 						value = getattr(fp, var)
-						print(f"Variable var {var.rsplit('_')}")
+						print(f"Variable var {var.rsplit('_')} value {value}")
 						varName = var.rsplit('_')
-						codeLines = codeLines + varName[1] + ' = ' + str(value)  + '# ' + str(type(value)) + '\n'
+						varDict[varName[1]] = value
+						#codeLines = codeLines + varName[1] + ' = ' + str(value)  + '# ' + str(type(value)) + '\n'
 						#file.write(value + '=' +)
 				#print("Comment Line")
 				#print(commentLines) 
-				print("Python Line")
-				print(codeLines) 
-				print("Execute")
+				#print("Python Line")
+				#print(codeLines) 
+				print(f"VarDict {varDict}")
+				print(f"Execute varDict {varDict}")
 				preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
 				macroPath = preference.GetString("MacroPath")
 				print(f"Macro Path {macroPath}")
 				macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
 				print(f"Macro File Name {macroFileName}")
 				macroTxt = self.read_file_into_buffer(macroFileName)
-				codeLines = codeLines + macroTxt
-				exec(codeLines)
+				exec(macroTxt, varDict)
+				#codeLines = codeLines + macroTxt
+				#exec(codeLines)
 				#f = open(tmpOutFile, 'wt', encoding='utf-8')
 				#f.write(commentLines)
 				#f.write(codeLines)
 				#f.write(macroTxt)
 				#f.close()
 				#newMacroFile = os.path.join('"' +  macroPath + '"', fp.Label + '.FCMacro')
-				newMacroFile = os.path.join(macroPath, fp.Label + '.FCMacro')
-				print(f"newMacroFile {newMacroFile}")
-				f = open(newMacroFile, 'wt', encoding='utf-8')
-				f.write(codeLines)				
-				f.close()
+				#newMacroFile = os.path.join(macroPath, fp.Label + '.FCMacro')
+				#print(f"newMacroFile {newMacroFile}")
+				#f = open(newMacroFile, 'wt', encoding='utf-8')
+				#f.write(codeLines)				
+				#f.close()
 			#fp.Execute = False
 
 		if prop in ["Parameters"]:
