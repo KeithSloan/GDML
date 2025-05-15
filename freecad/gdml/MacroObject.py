@@ -48,14 +48,18 @@ class MacroObjectClass(BaseClass):
 		super().__init__(obj, "MacroObject")
 		self.initMacroObject()
 		self.sketch = None
+		self.Material = None
 				
 	def initMacroObject(self):
-		print(f"Init Macro  Object")
+		from freecad.gdml.GDMLObjects import setMaterial
+		print(f"Init Macro Object")
 		self.Macro = self.obj.addProperty("App::PropertyString","MacroName","Base","Macro to be invoked")
 		#self.ListVars = self.obj.addProperty("App::PropertyStringList","ListVars","Base","List of Macro Variables")
 		#self.ListVars = []
 		self.Execute = self.obj.addProperty("App::PropertyBool","Execute","Base","Execute Macro")
 		self.Execute = False
+		self.material = self.obj.addProperty("App::PropertyEnumeration","material","GDML","GDML Material")
+		setMaterial(self.obj, self.material)
 		#self.Parameters = self.obj.addProperty("App::PropertyBool","Parameters","Base","Set Variable Parameters")
 		#self.Parameters = False
 
@@ -64,11 +68,17 @@ class MacroObjectClass(BaseClass):
 			file_contents = file.read()
 		return file_contents
 
+	def getMaterial(self):
+		return self.Material
+
 	def onChanged(self, fp, prop):
 		# print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
 		print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
 		if "Restore" in fp.State:
 			return
+
+		if prop in "material":
+			self.material = fp.material
 
 		if prop in ["Execute"]:
 			print("Execute")
@@ -83,7 +93,10 @@ class MacroObjectClass(BaseClass):
 			if fp.Execute:
 				#codeLines = ''
 				#commentLines = ''
+				print(f"self {dir(self)}")
 				varDict = {}
+				print(dir(fp))
+				print(fp.PropertiesList)
 				for var in fp.PropertiesList:
 					print(f"prop {var}")
 					#print(dir(var))
@@ -92,6 +105,13 @@ class MacroObjectClass(BaseClass):
 						print(f"Variable var {var.rsplit('_')} value {value}")
 						varName = var.rsplit('_')
 						varDict[varName[1]] = value
+					elif var == "material":
+						print(fp.material)
+						varDict[var] = fp.material
+						#print(fp.getEnumerationsOfProperty(var))
+						matIdx = fp.getEnumerationsOfProperty(var).index(fp.material)
+						print(f"Material Index {matIdx}")
+						varDict["matIdx"] = matIdx
 				print(f"VarDict {varDict}")
 				print(f"Execute varDict {varDict}")
 				preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
