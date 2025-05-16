@@ -32,12 +32,19 @@ __url__ = ["https://github.com/KeithSloan/FreeCAD_Geant4"]
 from sys import breakpointhook
 
 import FreeCAD as App
-import FreeCADGui
-from PySide import QtGui
 
 import os, sys
 from pathlib import Path
 
+def check_macro_file(MacroName):
+  preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
+  macroPath = preference.GetString("MacroPath")
+  print(f"Macro Path {macroPath}")
+  macroFileName = os.path.join(macroPath, MacroName + '.FCMacro')
+  print(f"Macro File Name {macroFileName}")
+  filePath = Path(macroFileName)
+  return filePath.is_file(), macroFileName
+  
 def read_file_into_buffer(file_path):
 	with open(file_path, 'r') as file:
 		file_contents = file.read()
@@ -69,27 +76,30 @@ def exportFCMacro(first, filepath, fileExt):
             print(f"v {v} type {type(v)} {type(v).__name__}")
             varDict[varName[1]] = type(v).__name__
             valDict[varName[1]] = value
-          #elif var == "material":
-          #  print(first.material)
-          #  varDict[var] = first.material
-          #  #print(fp.getEnumerationsOfProperty(var))
-          #  matIdx = first.getEnumerationsOfProperty(var).index(first.material)
-          #  print(f"Material Index {matIdx}")
-          #  varDict["matIdx"] = matIdx
+          elif var == "material":
+            print(first.material)
+            matIdx = first.getEnumerationsOfProperty(var).index(first.material)
+            print(f"Material Index {matIdx}")
         print(f"VarDict {varDict}")
         print(f"ValDict {valDict}")
-        f.write('Type = "MacroObject"')
+        f.write("#********************* Macro Object *************************\n")
+        f.write("#****** Set Variables ***************************************\n")
+        f.write('Type = "MacroObject"\n')
+        print(f"material {first.material}")
+        f.write("material = {0}\n".format(first.material))
+        f.write("matIdx = {0}\n".format(matIdx))
         f.write("var = {0}\n".format(varDict))
         f.write("val = {0}\n".format(valDict))
+        f.write("#*************************************************************\n")
+        f.write("#******** Macro now follows **********************************\n")
+        f.write("from freecad.gdml.QtInputVars import checkVariablesSet\n")
+        f.write("# checkVariablesSet - will check if variables passed or prompt\n")
+        f.write("checkVariablesSet(vars, dir())\n")
+        f.write("#********** Rest of Macro Follows ****************************\n")
+        #exist, macroFile = check_macro_file(var.MacroName)
+        #macroBuff = read_file_into_buffer(macroFile)
+        #f.write(macroBuff)
         f.close()
-
-  #preference = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-  #macroPath = preference.GetString("MacroPath")
-  #print(f"Macro Path {macroPath}")
-  #macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
-  #print(f"Macro File Name {macroFileName}")
-	#macroTxt = read_file_into_buffer(macroFileName)
-  
 
 def export(exportList, filepath):
   "called when FreeCAD exports a file"

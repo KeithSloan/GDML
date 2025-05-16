@@ -28,21 +28,12 @@ __author__ = "Keith Sloan <ipad2@keith@sloan-home.co.uk>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_GDML"]
 
 import FreeCAD
-from PySide import QtGui
-import os, io, sys, re
-import Part, Draft
-
 
 def joinDir(path):
     import os
 
     __dirname__ = os.path.dirname(__file__)
     return os.path.join(__dirname__, path)
-
-
-if open.__module__ == "__builtin__":
-    pythonopen = open  # to distinguish python built-in open function from the one declared here
-
 
 def open(filename):
     "called when freecad opens a file."
@@ -66,4 +57,32 @@ def insert(filename, docname):
         processFCMacro(filename)
 
 def processFCMacro(filename):
-	print(f"Process FCMacro file {filename} to Macro Object")	
+    import builtins
+
+    print(f"Procces Import FCMacro file {filename} to Macro Object")
+    file = builtins.open(filename, "r")
+    for line in file:
+        print("Line{}".format(line.strip()))
+        if line.startswith("#******"):
+            break
+        else:     
+            # Split at the first comma using partition
+            var, _, val = line.partition('=')
+            print(f"Var {var} Value {val}")
+            # Safer than using Exec
+            if var == "Type":
+                print(f"Type {val}")
+                Type = val
+            if var == "varDict":
+                print(f"varDict {val}")
+                varDict = val
+            elif var == "valDict":
+                 print(f"valDict {val}")
+                 valDict = val
+            elif var == "material":
+                 print(f"material {val}")
+                 material = val
+            elif var == "matIdx":
+                 print(f"matidx {val}")
+                 matIdx = val  
+       
