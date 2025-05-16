@@ -148,6 +148,14 @@ def checkMaterialDefinitionsExist():
         if G4Materials is None:
             buildDefaultGDMLDoc(doc)
 
+def getMaterialIndex(material):
+	global MaterialsList
+	try:
+		idx = MaterialsList.index(material)
+	except ValueError:
+		rebuildMaterialsList()
+		idx = MaterialsList.index(material)
+	return idx
 
 def checkMaterial(material):
     global MaterialsList

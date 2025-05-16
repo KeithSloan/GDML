@@ -31,28 +31,72 @@ __url__ = ["https://github.com/KeithSloan/FreeCAD_Geant4"]
 
 from sys import breakpointhook
 
-import FreeCAD
+import FreeCAD as App
 import FreeCADGui
 from PySide import QtGui
 
-import sys
+import os, sys
 from pathlib import Path
 
+def read_file_into_buffer(file_path):
+	with open(file_path, 'r') as file:
+		file_contents = file.read()
+	return file_contents
 
 def exportFCMacro(first, filepath, fileExt):
-	print(f"Export Macro Object {first} as FCMacro file")
-	pass
+  import FreeCAD
+  print(f"Export Macro Object {first} as FCMacro file")
+  print(f"Object Type {first.TypeId}")
+  if first.TypeId == "App::FeaturePython":
+    #print(dir(first))
+    if hasattr(first, "Proxy"):
+      print("Proxy")
+    if hasattr(first.Proxy, "initMacroObject"):
+        print("MacroObject")
+        f = open(filepath, "w")
+        #f.write("Now the file has more content!")
+        print(first.PropertiesList)
+        varDict  = {}
+        valDict = {}
+        for var in first.PropertiesList:
+          print(f"prop {var}")
+					#print(dir(var))
+          if var.startswith("Variable"):
+            value = getattr(first, var)
+            print(f"Variable var {var.rsplit('_')} value {value}")
+            varName = var.rsplit('_')
+            v = getattr(first, var)
+            print(f"v {v} type {type(v)} {type(v).__name__}")
+            varDict[varName[1]] = type(v).__name__
+            valDict[varName[1]] = value
+          #elif var == "material":
+          #  print(first.material)
+          #  varDict[var] = first.material
+          #  #print(fp.getEnumerationsOfProperty(var))
+          #  matIdx = first.getEnumerationsOfProperty(var).index(first.material)
+          #  print(f"Material Index {matIdx}")
+          #  varDict["matIdx"] = matIdx
+        print(f"VarDict {varDict}")
+        print(f"ValDict {valDict}")
+        f.write('Type = "MacroObject"')
+        f.write("var = {0}\n".format(varDict))
+        f.write("val = {0}\n".format(valDict))
+        f.close()
+
+  #preference = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+  #macroPath = preference.GetString("MacroPath")
+  #print(f"Macro Path {macroPath}")
+  #macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
+  #print(f"Macro File Name {macroFileName}")
+	#macroTxt = read_file_into_buffer(macroFileName)
+  
 
 def export(exportList, filepath):
-    "called when FreeCAD exports a file"
-    first = exportList[0]
-    print(f"Export Macro Object: {first.Label}")
-
-    import os
-
-    path, fileExt = os.path.splitext(filepath)
-    print("filepath : " + path)
-    print("file extension : " + fileExt)
-
-    if fileExt == ".FCMacro":
-      exportFCMacro(first, filepath, ".FCMacro")
+  "called when FreeCAD exports a file"
+  first = exportList[0]
+  print(f"Export Macro Object: {first.Label}")
+  path, fileExt = os.path.splitext(filepath)
+  print("filepath : " + path)
+  print("file extension : " + fileExt)
+  if fileExt == ".FCMacro":
+    exportFCMacro(first, filepath, ".FCMacro")
