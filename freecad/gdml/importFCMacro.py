@@ -36,12 +36,14 @@ def joinDir(path):
     return os.path.join(__dirname__, path)
 
 def open(filename):
+    import os
     "called when freecad opens a file."
-    print(f"Open : {filename} {processType}")
-    fileName = os.path.splitext(os.path.basename(filename))[0]
+    print(f"Open : {filename}")
+    docName = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docName)
     print(f"path : {filename}")
     if filename.endswith(".FCMacro"):
-        processFCMacro(filename)
+        processFCMacro(doc, filename)
         # profiler.disable()
         # stats = pstats.Stats(profiler).sort_stats('cumtime')
         # stats.print_stats()
@@ -49,22 +51,26 @@ def open(filename):
 def insert(filename, docname):
     "called when freecad imports a file"
     print("Insert filename : " + filename + " docname : " + docname)
+    doc = FreeCAD.ActiveDocument
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     if filename.endswith(".FCMacro"):
-        processFCMacro(filename)
+        processFCMacro(doc, filename)
 
-def processFCMacro(filename):
+def processFCMacro(doc, filename):
     import builtins
+    from freecad.gdml.MacroObject import MacroObjectClass
 
     print(f"Procces Import FCMacro file {filename} to Macro Object")
     file = builtins.open(filename, "r")
     for line in file:
-        print("Line{}".format(line.strip()))
-        if line.startswith("#******"):
+        #print("Line : {}".format(line.strip()))
+        if line.startswith("#<<< End Variables >>>>"):
             break
+        elif line.startswith("#*****"):
+            pass
         else:     
             # Split at the first comma using partition
             var, _, val = line.partition('=')
@@ -73,16 +79,33 @@ def processFCMacro(filename):
             if var == "Type":
                 print(f"Type {val}")
                 Type = val
-            if var == "varDict":
+            elif var == "varDict":
                 print(f"varDict {val}")
                 varDict = val
             elif var == "valDict":
-                 print(f"valDict {val}")
-                 valDict = val
+                print(f"valDict {val}")
+                valDict = val
             elif var == "material":
-                 print(f"material {val}")
-                 material = val
+                print(f"material {val}")
+                material = val
             elif var == "matIdx":
-                 print(f"matidx {val}")
-                 matIdx = val  
+                print(f"matidx {val}")
+                matIdx = val
+    obj = newMacroObject(doc, Type)
+
+def newMacroObject(doc, Type):
+    from freecad.gdml.MacroGroup import MacroObject, MacroShape, MacroGroup
+    if Type == "MacroObject":
+        obj = doc.addObject("App::FeaturePython", Type)
+        MacroObject(obj)
+    elif Type == "MacroShape":
+        obj = doc.addObject("App::PartFeaturePython", Type)
+        MacroShape(obj)
+    elif Type == "MacroGroup":
+        obj = doc.addObject("App::GroupFeaturePython", Type)
+        MacroGroup(obj)
+    else:
+        print(f"{Type} Not a Valid Macro Group")
+    return obj
+
        

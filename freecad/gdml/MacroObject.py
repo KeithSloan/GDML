@@ -36,21 +36,14 @@ import os, sys, tempfile
 from PySide import QtGui, QtCore
 from PySide.QtCore import Qt
 
-class BaseClass():
+class MacroBaseClass():
 	def __init__(self, obj, type_):
 		super().__init__()
 		self.obj = obj
 		obj.Proxy = self
 		obj.Proxy.Type = type_
 
-class MacroObjectClass(BaseClass):
-	def __init__(self, obj):
-		super().__init__(obj, "MacroObject")
-		self.initMacroObject()
-		self.sketch = None
-		self.Material = None
-				
-	def initMacroObject(self):
+	def initBaseObject(self):
 		from freecad.gdml.GDMLObjects import setMaterial
 		print(f"Init Macro Object")
 		self.Macro = self.obj.addProperty("App::PropertyString","MacroName","Base","Macro to be invoked")
@@ -63,13 +56,13 @@ class MacroObjectClass(BaseClass):
 		#self.Parameters = self.obj.addProperty("App::PropertyBool","Parameters","Base","Set Variable Parameters")
 		#self.Parameters = False
 
+	def getMaterial(self):
+		return self.Material
+
 	def read_file_into_buffer(self, file_path):
 		with open(file_path, 'r') as file:
 			file_contents = file.read()
 		return file_contents
-
-	def getMaterial(self):
-		return self.Material
 
 	def onChanged(self, fp, prop):
 		# print(fp.Label+" State : "+str(fp.State)+" prop : "+prop)
@@ -77,14 +70,13 @@ class MacroObjectClass(BaseClass):
 		if "Restore" in fp.State:
 			return
 
-		if prop in "material":
+		if prop in ["material"]:
+			print(f"Prop material {fp.material}")
 			self.material = fp.material
 
 		if prop in ["Execute"]:
 			print("Execute")
-			#if open.__module__ == "__builtin__":
-			#	pythonopen = open  # to distinguish python built-in open function from the one declared here
-			#tmpDir = tempfile.gettempdir()
+			#
 			#print(f"Temp directory {tmpDir}")
 			#tmpOutFile = os.path.join(tmpDir, fp.Label+'.FCMacro')
 			#file = open(tmpOutFile,"w")
@@ -106,10 +98,15 @@ class MacroObjectClass(BaseClass):
 						varName = var.rsplit('_')
 						varDict[varName[1]] = value
 					elif var == "material":
-						print(fp.material)
+						print(f"material {fp.material}")
 						varDict[var] = fp.material
 						#print(fp.getEnumerationsOfProperty(var))
-						matIdx = fp.getEnumerationsOfProperty(var).index(fp.material)
+						if fp.material != 0:
+							matList = fp.getEnumerationsOfProperty(var)
+							print("list read")
+							matIdx = matList.index(fp.material)
+						else:
+							matIdx = 0
 						print(f"Material Index {matIdx}")
 						varDict["matIdx"] = matIdx
 				print(f"VarDict {varDict}")
@@ -136,15 +133,43 @@ class MacroObjectClass(BaseClass):
 				#f.close()
 				fp.Execute = False
 
-		if prop in ["Parameters"]:
-			print("Setup Variables")
-			if self.Execute:
-				for var in self.obj.ListIntVars:
-					print(f"Write {var}")
-				for var in self.obj.ListFloatVars:
-					print(f"Write {var}")
-				print("Execute")
-			self.Execute = False
+		#if prop in ["Parameters"]:
+		#	print("Setup Variables")
+		#	if self.Execute:
+		#		for var in self.obj.ListIntVars:
+		#			print(f"Write {var}")
+		#		for var in self.obj.ListFloatVars:
+		#			print(f"Write {var}")
+		#		print("Execute")
+		#	self.Execute = False
+
+class MacroObjectClass(MacroBaseClass):
+	def __init__(self, obj):
+		super().__init__(obj, "MacroObject")
+		self.initBaseObject()
+				
+	def initMacroObject(self):
+		self.initBaseObject()
+
+
+class MacroShapeClass(MacroBaseClass):
+	def __init__(self, obj):
+		super().__init__(obj, "MacroShape")
+		self.sketch = None
+		self.InitMacroShape()
+				
+	def initMacroShape(self):
+		self.initBaseObject()
+
+
+class MacroGroupClass(MacroBaseClass):
+	def __init__(self, obj):
+		super().__init__(obj, "MacroGroup")
+		self.initMacroGroup()
+				
+	def initMacroGroup(self):
+		self.initBaseObject()
+		
 
 class MacroObjectFeature:
 	def Activated(self):
@@ -168,8 +193,93 @@ class MacroObjectFeature:
                 "MacroObject", "Macro Object"
             ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "MacroObject", "Macfro Object"
+                "MacroObject", "Macro Object"
+            ),
+        }
+	
+FreeCADGui.addCommand("MacroObjectCmd", MacroObjectFeature())
+
+
+class MacroShapeFeature:
+	def Activated(self):
+		from freecad.gdml.MacroObject import MacroObjectShape
+		print("Macro Shape Feature")
+		doc = App.ActiveDocument
+		obj = doc.addObject("Part::FeaturePython","MacroShape")
+		MacroObjectShape(obj)
+		doc.recompute
+		return
+
+	def IsActive(self):
+		if App.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+            "Pixmap": "MacroShape",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "MacroShape", "Macro Shape"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "MacroShape", "Macro Shape"
+            ),
+		}
+
+FreeCADGui.addCommand("MacroShapeCmd", MacroShapeFeature())
+
+class MacroGroupFeature:
+
+	def Activated(self):
+		from freecad.gdml.MacroObject import MacroObjectGroup
+		print("Macro Group Feature")
+		doc = App.ActiveDocument
+		obj = doc.addObject("App::GroupFeaturePython","MacroGroup")
+		MacroObjectGroup(obj)
+		doc.recompute
+		return
+
+	def IsActive(self):
+		if App.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+            "Pixmap": "MacroGroup",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "MacroGroup", "Macro Group"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "MacroGroup", "Macro Group"
+            ),
+		}
+
+FreeCADGui.addCommand("MacroGroupCmd", MacroGroupFeature())
+
+class MacroGroup:
+    """Group of  Commands""" 
+
+    def GetCommands(self):
+        """Tuple of Commands""" 
+        return ("MacroObject", "MacroShape", "MacroGroup")
+
+    def GetResources(self):                                                
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "Macro_Group",                                   
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Macro Group", "Macro Group"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Macro Group", " Group of Macro Commands"
             ),
         }
 
-FreeCADGui.addCommand("MacroObjectCmd", MacroObjectFeature())
+    def IsActive(self):
+        """Return True when this command should be available."""
+        if App.ActiveDocument is None:
+            return False
+
+FreeCADGui.addCommand("MacroGroupCommand", MacroGroup())

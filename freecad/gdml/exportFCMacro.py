@@ -90,7 +90,7 @@ def exportFCMacro(first, filepath, fileExt):
         f.write("matIdx = {0}\n".format(matIdx))
         f.write("var = {0}\n".format(varDict))
         f.write("val = {0}\n".format(valDict))
-        f.write("#*************************************************************\n")
+        f.write("#<<<< End Variables >>>>\n")
         f.write("#******** Macro now follows **********************************\n")
         f.write("from freecad.gdml.QtInputVars import checkVariablesSet\n")
         f.write("# checkVariablesSet - will check if variables passed or prompt\n")
