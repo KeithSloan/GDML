@@ -166,12 +166,12 @@ class MacroShapeClass(MacroBaseClass):
 class MacroCurveClass(MacroBaseClass):
 	def __init__(self, obj):
 		import Part
-		super().__init__(obj, "MacroShape")
+		super().__init__(obj, "MacroCurve")
 		self.Shape = Part.Shape
 		self.sketch = None
-		self.initMacroShape()
+		self.initMacroCurve()
 				
-	def initMacroShape(self):
+	def initMacroCurve(self):
 		self.initBaseObject()
 
 
@@ -246,9 +246,9 @@ FreeCADGui.addCommand("MacroShapeCmd", MacroShapeFeature())
 class MacroCurveFeature:
 	def Activated(self):
 		#from freecad.gdml.MacroObject import MacroObjectCurve
-		print("Macro Shape Feature")
+		print("Macro Curve Feature")
 		doc = App.ActiveDocument
-		obj = doc.addObject("Part::FeaturePython","MacroShape")
+		obj = doc.addObject("Part::FeaturePython","MacroCurve")
 		MacroCurveClass(obj)
 		doc.recompute
 		return

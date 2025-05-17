@@ -1,0 +1,35 @@
+How to Generate Complex Helical / Stellarator-Inspired Geometries in FreeCAD?
+by ZeusMaggna » Sat Apr 12, 2025 5:46 am
+Hello everyone,
+
+I'm currently working on a scientific design project inspired by nuclear fusion devices – specifically stellarators, such as the Wendelstein 7-X. I'm looking to model helically twisted toroidal shapes similar to those used for magnetic confinement in fusion research.
+
+What I'm trying to achieve in FreeCAD:
+
+A toroidal body (like a donut) with a helical twist along the toroidal direction.
+
+Ability to parametrize key features:
+
+Major radius (torus size)
+
+Minor radius (cross-section)
+
+Helical pitch / twist rate
+
+Number of turns or symmetry sectors
+
+Ideally, a way to create and adjust multiple versions with different dimensions quickly.
+
+So far, I’ve experimented with:
+
+Part → Sweep and Helix tools
+
+Draft to Sketch → Lofting approaches
+
+Curves Workbench (limited success with 3D spirals)
+
+But I’m struggling to get a clean, fully parametric, 3D twisted torus.
+Is there a recommended workflow or macro/addon that would help with this?
+Has anyone here successfully modeled stellarator-like shapes in FreeCAD?
+
+Thanks in advance for any suggestions, workflows, or shared examples!
