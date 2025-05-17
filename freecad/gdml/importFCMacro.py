@@ -63,7 +63,7 @@ def processFCMacro(doc, filename):
     import builtins
     from freecad.gdml.MacroObject import MacroObjectClass
 
-    print(f"Procces Import FCMacro file {filename} to Macro Object")
+    print(f"Procces Import FCMacro file {filename} to Doc {doc.Label}")
     file = builtins.open(filename, "r")
     for line in file:
         #print("Line : {}".format(line.strip()))
@@ -76,9 +76,9 @@ def processFCMacro(doc, filename):
             var, _, val = line.partition('=')
             print(f"Var {var} Value {val}")
             # Safer than using Exec
-            if var == "Type":
-                print(f"Type {val}")
-                Type = val
+            if var == "macroType":
+                print(f"MacroType {val}")
+                macroType = val
             elif var == "varDict":
                 print(f"varDict {val}")
                 varDict = val
@@ -91,7 +91,8 @@ def processFCMacro(doc, filename):
             elif var == "matIdx":
                 print(f"matidx {val}")
                 matIdx = val
-    obj = newMacroObject(doc, Type)
+    print(f"Macro Type {macroType}")
+    obj = newMacroObject(doc, macroType)
 
 def newMacroObject(doc, Type):
     from freecad.gdml.MacroGroup import MacroObject, MacroShape, MacroGroup

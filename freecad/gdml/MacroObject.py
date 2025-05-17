@@ -153,7 +153,6 @@ class MacroObjectClass(MacroBaseClass):
 
 
 class MacroShapeClass(MacroBaseClass):
-	
 	def __init__(self, obj):
 		import Part
 		super().__init__(obj, "MacroShape")
@@ -164,9 +163,11 @@ class MacroShapeClass(MacroBaseClass):
 		self.initBaseObject()
 				
 
-class MacroCurveClass(MacroShapeClass):
+class MacroCurveClass(MacroBaseClass):
 	def __init__(self, obj):
+		import Part
 		super().__init__(obj, "MacroShape")
+		self.Shape = Part.Shape
 		self.sketch = None
 		self.initMacroShape()
 				
