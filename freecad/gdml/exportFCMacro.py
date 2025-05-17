@@ -54,52 +54,59 @@ def exportFCMacro(first, filepath, fileExt):
   import FreeCAD
   print(f"Export Macro Object {first} as FCMacro file")
   print(f"Object Type {first.TypeId}")
-  if first.TypeId == "App::FeaturePython":
+  if first.TypeId == "App::FeaturePython" or first.TypeId == "Part::FeaturePython":
     #print(dir(first))
     if hasattr(first, "Proxy"):
       print("Proxy")
-    if hasattr(first.Proxy, "initMacroObject"):
-        print("MacroObject")
-        f = open(filepath, "w")
-        #f.write("Now the file has more content!")
-        print(first.PropertiesList)
-        varDict  = {}
-        valDict = {}
-        for var in first.PropertiesList:
-          print(f"prop {var}")
-					#print(dir(var))
-          if var.startswith("Variable"):
-            value = getattr(first, var)
-            print(f"Variable var {var.rsplit('_')} value {value}")
-            varName = var.rsplit('_')
-            v = getattr(first, var)
-            print(f"v {v} type {type(v)} {type(v).__name__}")
-            varDict[varName[1]] = type(v).__name__
-            valDict[varName[1]] = value
-          elif var == "material":
-            print(first.material)
-            matIdx = first.getEnumerationsOfProperty(var).index(first.material)
-            print(f"Material Index {matIdx}")
-        print(f"VarDict {varDict}")
-        print(f"ValDict {valDict}")
-        f.write("#********************* Macro Object *************************\n")
-        f.write("#****** Set Variables ***************************************\n")
-        f.write('Type = "MacroObject"\n')
-        print(f"material {first.material}")
-        f.write("material = {0}\n".format(first.material))
-        f.write("matIdx = {0}\n".format(matIdx))
-        f.write("var = {0}\n".format(varDict))
-        f.write("val = {0}\n".format(valDict))
-        f.write("#<<<< End Variables >>>>\n")
-        f.write("#******** Macro now follows **********************************\n")
-        f.write("from freecad.gdml.QtInputVars import checkVariablesSet\n")
-        f.write("# checkVariablesSet - will check if variables passed or prompt\n")
-        f.write("checkVariablesSet(vars, dir())\n")
-        f.write("#********** Rest of Macro Follows ****************************\n")
-        #exist, macroFile = check_macro_file(var.MacroName)
-        #macroBuff = read_file_into_buffer(macroFile)
-        #f.write(macroBuff)
-        f.close()
+      #if first.Proxy.Type in ["MacroObject", "MacroGroup", "MacroShape", "MacroCurve"]:
+      #    print("Macro Type {first.Proxy,Type}")
+      #print(dir(first.Proxy))
+      if hasattr(first.Proxy, "initBaseObject"):
+          f = open(filepath, "w")
+          #f.write("Now the file has more content!")
+          print(first.PropertiesList)
+          varDict  = {}
+          valDict = {}
+          for var in first.PropertiesList:
+            print(f"prop {var}")
+					  #print(dir(var))
+            if var.startswith("Variable"):
+              value = getattr(first, var)
+              print(f"Variable var {var.rsplit('_')} value {value}")
+              varName = var.rsplit('_')
+              v = getattr(first, var)
+              print(f"v {v} type {type(v)} {type(v).__name__}")
+              varDict[varName[1]] = type(v).__name__
+              valDict[varName[1]] = value
+            elif var == "material":
+              print(first.material)
+              matIdx = first.getEnumerationsOfProperty(var).index(first.material)
+              print(f"Material Index {matIdx}")
+          print(f"VarDict {varDict}")
+          print(f"ValDict {valDict}")
+          f.write("#********************* Macro Object *************************\n")
+          f.write("#****** Set Variables ***************************************\n")
+          Type = "Unknown"
+          for i in ["initMacroObject", "initMacroGroup", "initMacroShape", "initMacroCurve"]:
+            if hasattr(first.Proxy, i):
+              Type = i.removeprefix('init')
+          print(f"Type {Type}")    
+          f.write('Type = "{0}\n'.format(Type))
+          print(f"material {first.material}")
+          f.write("material = {0}\n".format(first.material))
+          f.write("matIdx = {0}\n".format(matIdx))
+          f.write("var = {0}\n".format(varDict))
+          f.write("val = {0}\n".format(valDict))
+          f.write("#<<<< End Variables >>>>\n")
+          f.write("#******** Macro now follows **********************************\n")
+          f.write("from freecad.gdml.QtInputVars import checkVariablesSet\n")
+          f.write("# checkVariablesSet - will check if variables passed or prompt\n")
+          f.write("checkVariablesSet(vars, dir())\n")
+          f.write("#********** Rest of Macro Follows ****************************\n")
+          #exist, macroFile = check_macro_file(var.MacroName)
+          #macroBuff = read_file_into_buffer(macroFile)
+          #f.write(macroBuff)
+          f.close()
 
 def export(exportList, filepath):
   "called when FreeCAD exports a file"
