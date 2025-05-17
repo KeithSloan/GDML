@@ -153,10 +153,22 @@ class MacroObjectClass(MacroBaseClass):
 
 
 class MacroShapeClass(MacroBaseClass):
+	
+	def __init__(self, obj):
+		import Part
+		super().__init__(obj, "MacroShape")
+		self.Shape  = Part.Shape
+		self.initMacroShape()
+				
+	def initMacroShape(self):
+		self.initBaseObject()
+				
+
+class MacroCurveClass(MacroShapeClass):
 	def __init__(self, obj):
 		super().__init__(obj, "MacroShape")
 		self.sketch = None
-		self.InitMacroShape()
+		self.initMacroShape()
 				
 	def initMacroShape(self):
 		self.initBaseObject()
@@ -202,11 +214,11 @@ FreeCADGui.addCommand("MacroObjectCmd", MacroObjectFeature())
 
 class MacroShapeFeature:
 	def Activated(self):
-		from freecad.gdml.MacroObject import MacroObjectShape
+		#from freecad.gdml.MacroObject import MacroObjectShape
 		print("Macro Shape Feature")
 		doc = App.ActiveDocument
 		obj = doc.addObject("Part::FeaturePython","MacroShape")
-		MacroObjectShape(obj)
+		MacroShapeClass(obj)
 		doc.recompute
 		return
 
@@ -229,14 +241,45 @@ class MacroShapeFeature:
 
 FreeCADGui.addCommand("MacroShapeCmd", MacroShapeFeature())
 
+
+class MacroCurveFeature:
+	def Activated(self):
+		#from freecad.gdml.MacroObject import MacroObjectCurve
+		print("Macro Shape Feature")
+		doc = App.ActiveDocument
+		obj = doc.addObject("Part::FeaturePython","MacroShape")
+		MacroCurveClass(obj)
+		doc.recompute
+		return
+
+	def IsActive(self):
+		if App.ActiveDocument is None:
+			return False
+		else:
+			return True
+
+	def GetResources(self):
+		return {
+            "Pixmap": "MacroCurve",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "MacroCurve", "Macro Curve"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "MacroCurve", "Macro Curve"
+            ),
+		}
+
+FreeCADGui.addCommand("MacroCurveCmd", MacroCurveFeature())
+
+
 class MacroGroupFeature:
 
 	def Activated(self):
-		from freecad.gdml.MacroObject import MacroObjectGroup
+		#from freecad.gdml.MacroObject import MacroObjectGroup
 		print("Macro Group Feature")
 		doc = App.ActiveDocument
-		obj = doc.addObject("App::GroupFeaturePython","MacroGroup")
-		MacroObjectGroup(obj)
+		obj = doc.addObject("App::DocumentObjectGroupPython","MacroGroup")
+		MacroGroupClass(obj)
 		doc.recompute
 		return
 
@@ -259,17 +302,17 @@ class MacroGroupFeature:
 
 FreeCADGui.addCommand("MacroGroupCmd", MacroGroupFeature())
 
-class MacroGroup:
-    """Group of  Commands""" 
+class MacroGroupFeature:
+	"""Group of  Commands""" 
 
-    def GetCommands(self):
-        """Tuple of Commands""" 
-        return ("MacroObject", "MacroShape", "MacroGroup")
+	def GetCommands(self):
+	    """Tuple of Commands""" 
+	    return ("MacroObjectCmd", "MacroShapeCmd", "MacroCurveCmd", "MacroGroupCmd")
 
-    def GetResources(self):                                                
-        """Set icon, menu and tooltip."""
+	def GetResources(self):                                                
+	    """Set icon, menu and tooltip."""
 
-        return {
+	    return {
             "Pixmap": "Macro_Group",                                   
             "MenuText": QtCore.QT_TRANSLATE_NOOP("Macro Group", "Macro Group"),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
@@ -277,9 +320,11 @@ class MacroGroup:
             ),
         }
 
-    def IsActive(self):
-        """Return True when this command should be available."""
-        if App.ActiveDocument is None:
-            return False
+	def IsActive(self):
+		"""Return True when this command should be available."""
+		return True
+		#
+	    #if App.ActiveDocument is None:
+	    #    return False
 
-FreeCADGui.addCommand("MacroGroupCommand", MacroGroup())
+FreeCADGui.addCommand("MacroGroup", MacroGroupFeature())

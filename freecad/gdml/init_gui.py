@@ -187,17 +187,24 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "DecimateCommand",
             "Mesh_FromPartShape",
             "Mesh_Evaluation",
-            "Mesh2TessGroupCommand",
-            #"Tess2MeshCommand",
+            #"Mesh2TessGroupCommand",
+            "Tess2MeshCommand",
             "TetrahedronCommand",
             "AddCompound",
         ]
 
-        extraCmds = [
-            "MacroObjectCmd",
+        macroGroup = [
+            "MacroGroup",
 		]
 
-        toolbarCmds = tbSolidsCmds + extraCmds + tbPartCmds + tbTessCmds
+        macroCmds = [
+            "MacroObjectCmd",
+            "MacroShapeCmd",
+            "MacroCurceCmd",
+            "MacroGroupCmd"
+		]
+
+        toolbarCmds = tbSolidsCmds + macroGroup + tbPartCmds + tbTessCmds
         
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "GDMLTools"), toolbarCmds)
