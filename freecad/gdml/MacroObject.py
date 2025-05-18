@@ -46,7 +46,7 @@ class MacroBaseClass():
 	def initBaseObject(self):
 		from freecad.gdml.GDMLObjects import setMaterial
 		print(f"Init Macro Object")
-		self.Macro = self.obj.addProperty("App::PropertyString","MacroName","Base","Macro to be invoked")
+		self.MacroName = self.obj.addProperty("App::PropertyString","MacroName","Base","Macro to be invoked")
 		#self.ListVars = self.obj.addProperty("App::PropertyStringList","ListVars","Base","List of Macro Variables")
 		#self.ListVars = []
 		self.Execute = self.obj.addProperty("App::PropertyBool","Execute","Base","Execute Macro")
@@ -83,41 +83,46 @@ class MacroBaseClass():
 			#'file = pythonopen(tmpOutFile,"w")
 			#print(dir(prop))
 			if fp.Execute:
+				#print(f"self {dir(self)}")
 				#codeLines = ''
 				#commentLines = ''
-				print(f"self {dir(self)}")
-				varDict = {}
-				print(dir(fp))
-				print(fp.PropertiesList)
-				for var in fp.PropertiesList:
-					print(f"prop {var}")
-					#print(dir(var))
-					if var.startswith("Variable"):
-						value = getattr(fp, var)
-						print(f"Variable var {var.rsplit('_')} value {value}")
-						varName = var.rsplit('_')
-						varDict[varName[1]] = value
-					elif var == "material":
-						print(f"material {fp.material}")
-						varDict[var] = fp.material
-						#print(fp.getEnumerationsOfProperty(var))
-						if fp.material != 0:
-							matList = fp.getEnumerationsOfProperty(var)
-							print("list read")
-							matIdx = matList.index(fp.material)
-						else:
-							matIdx = 0
-						print(f"Material Index {matIdx}")
-						varDict["matIdx"] = matIdx
-				print(f"VarDict {varDict}")
-				print(f"Execute varDict {varDict}")
-				preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
-				macroPath = preference.GetString("MacroPath")
-				print(f"Macro Path {macroPath}")
-				macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
-				print(f"Macro File Name {macroFileName}")
-				macroTxt = self.read_file_into_buffer(macroFileName)
-				exec(macroTxt, varDict)
+				import os.path
+				if len(fp.MacroName) > 0:
+					preference = App.ParamGet("User parameter:BaseApp/Preferences/Macro")
+					macroPath = preference.GetString("MacroPath")
+					print(f"Macro Path {macroPath}")
+					macroFileName = os.path.join(macroPath, fp.MacroName + '.FCMacro')
+					print(f"Macro File Name {macroFileName}")
+					if os.path.exists(macroFileName):
+						varDict = {}
+						#print(dir(fp))
+						print(fp.PropertiesList)
+						for var in fp.PropertiesList:
+							print(f"prop {var}")
+							#print(dir(var))
+							if var.startswith("Variable"):
+								value = getattr(fp, var)
+								print(f"Variable var {var.rsplit('_')} value {value}")
+								varName = var.rsplit('_')
+								varDict[varName[1]] = value
+							elif var == "material":
+								print(f"material {fp.material}")
+								varDict[var] = fp.material
+								#print(fp.getEnumerationsOfProperty(var))
+								if fp.material != 0:
+									matList = fp.getEnumerationsOfProperty(var)
+									print("list read")
+									matIdx = matList.index(fp.material)
+								else:
+									matIdx = 0
+								print(f"Material Index {matIdx}")
+								varDict["matIdx"] = matIdx
+						print(f"VarDict {varDict}")
+						print(f"Execute varDict {varDict}")
+						macroTxt = self.read_file_into_buffer(macroFileName)
+						exec(macroTxt, varDict)	
+				else:
+					print(f"MacroName Not set")
 				#codeLines = codeLines + macroTxt
 				#exec(codeLines)
 				#f = open(tmpOutFile, 'wt', encoding='utf-8')
