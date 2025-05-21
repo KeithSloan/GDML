@@ -67,23 +67,33 @@ def exportFCMacro(first, filepath, fileExt):
           print(first.PropertiesList)
           varDict  = {}
           valDict = {}
+          wrkVars = []
+          inputVars = []
           for var in first.PropertiesList:
             print(f"prop {var}")
 					  #print(dir(var))
-            if var.startswith("Variable"):
-              value = getattr(first, var)
-              print(f"Variable var {var.rsplit('_')} value {value}")
-              varName = var.rsplit('_')
-              v = getattr(first, var)
-              print(f"v {v} type {type(v)} {type(v).__name__}")
-              varDict[varName[1]] = type(v).__name__
-              valDict[varName[1]] = value
-            elif var == "material":
+            grp = first.getGroupOfProperty(var)
+            #if var.startswith("Variable"):
+            if grp not in ["", "GDML", "Base"]:
+              if grp == "wrk":
+                wrkVars.append(var)
+              else: 
+                inputVars.append(var) 
+                value = getattr(first, var)
+                print(f"Variable var {var.rsplit('_')} value {value}")
+                varName = var.rsplit('_')
+                v = getattr(first, var)
+                print(f"v {v} type {type(v)} {type(v).__name__}")
+                varDict[varName[1]] = type(v).__name__
+                valDict[varName[1]] = value
+            if var == "material":
               print(first.material)
               matIdx = first.getEnumerationsOfProperty(var).index(first.material)
               print(f"Material Index {matIdx}")
           print(f"VarDict {varDict}")
           print(f"ValDict {valDict}")
+          print(f"inputVars {inputVars}")
+          print(f"wrkvars {wrkVars}")
           f.write("#********************* Macro Object *************************\n")
           f.write("#****** Set Variables ***************************************\n")
           Type = "Unknown"
@@ -91,12 +101,16 @@ def exportFCMacro(first, filepath, fileExt):
             if hasattr(first.Proxy, i):
               Type = i.removeprefix('init')
           print(f"Type {Type}")    
-          f.write('Type = "{0}\n'.format(Type))
+          f.write('Type = "{0}"\n'.format(Type))
           print(f"material {first.material}")
-          f.write("material = {0}\n".format(first.material))
+          f.write("# material is enum set to {0} just use material variable in script\n".format(first.material))
+          f.write('# Material = "{0}" # Note: this is for import\n'.format(first.material))
           f.write("matIdx = {0}\n".format(matIdx))
           f.write("var = {0}\n".format(varDict))
           f.write("val = {0}\n".format(valDict))
+          f.write("#******** FreeCAD expoersion variables **********************\n")          
+          f.write("inputVars = {0}\n".format(inputVars))
+          f.write("wrkVars = {0}\n".format(wrkVars))
           f.write("#<<<< End Variables >>>>\n")
           f.write("#******** Macro now follows **********************************\n")
           f.write("from freecad.gdml.QtInputVars import checkVariablesSet\n")
