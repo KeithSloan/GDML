@@ -99,13 +99,19 @@ class MacroBaseClass():
 						print(fp.PropertiesList)
 						for var in fp.PropertiesList:
 							print(f"prop {var}")
-							#print(dir(var))
-							if var.startswith("Variable"):
-								value = getattr(fp, var)
-								print(f"Variable var {var.rsplit('_')} value {value}")
-								varName = var.rsplit('_')
-								varDict[varName[1]] = value
-							elif var == "material":
+					  		#print(dir(var))
+							grp = fp.getGroupOfProperty(var)
+							if grp not in ["", "GDML", "Base"]:
+								v = getattr(fp, var)								
+								varDict[var] = v
+							#value = getattr(fp, var)
+							#print(f"Variable var {var.rsplit('_')} value {value}")
+							#varName = var.rsplit('_')
+							#v = getattr(fp, var)
+							#print(f"v {v} type {type(v)} {type(v).__name__}")
+							#varDict[varName[1]] = type(v).__name__
+							#valDict[varName[1]] = value
+							if var == "material":
 								print(f"material {fp.material}")
 								varDict[var] = fp.material
 								#print(fp.getEnumerationsOfProperty(var))

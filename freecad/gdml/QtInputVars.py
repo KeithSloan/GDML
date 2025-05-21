@@ -118,6 +118,7 @@ def checkVariablesSet(var_types: dict, scope_vars):
     missing_vars = {}
     present_vars = {}
     
+    print(f"Check variables var_types {var_types} scaoe_vars {scope_vars}")
     #scope_vars = dict(globals(), **locals()
     print(f"scope vars {scope_vars}")
     
