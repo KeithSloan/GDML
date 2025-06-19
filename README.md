@@ -598,6 +598,7 @@ as per the above link.
   
    - Anh Le, Amirreza Hashemi, Mark P. Ottensmeyer, Hamid Sabet
    - https://arxiv.org/abs/2411.12751
+   - Published : journal https://www.cad-journal.net/files/vol_23/Vol23No1.html
   
 ## Roadmap
 
