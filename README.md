@@ -690,7 +690,7 @@ Based on `gdml.xsd`
     
 ## Notes
 
-* For NIST Materials database see http://physics.nist.gov/PhysRefData
+* For NIST Materials database see https://www.nist.gov/pml/productsservices/physical-reference-data
 * Need to sort out AIR definition
 
 ## Feedback
