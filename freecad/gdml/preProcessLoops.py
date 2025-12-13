@@ -99,7 +99,10 @@ def preprocessLoops(root):
     #
     # get all loop elements
     #
-    for loop in root.getroot().iterdescendants(tag="loop"):
+    #for loop in root.getroot().iterdescendants(tag="loop"):
+    print(f"PreProcess Loops - root {root}")
+    for loop in root.iterdescendants(tag="loop"):
+    
         # print(loop.getparent(), loop.tag, loop.attrib)
         stack.append(loop)
     #

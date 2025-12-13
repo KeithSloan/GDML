@@ -3461,106 +3461,89 @@ class GDMLSphere(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        # Based on code by Dam Lamb
+        import math
+        import FreeCAD, Part
+
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         rmax = mul * fp.rmax
         if rmax <= 0.0:
             return
         rmin = mul * fp.rmin
+
         spos = FreeCAD.Vector(0, 0, 0)
         sdir = FreeCAD.Vector(0, 0, 1)
         HalfPi = math.pi / 2.0
-        deltaphi_deg = getAngleDeg(fp.aunit, fp.deltaphi)
-        if deltaphi_deg < 360.0 and deltaphi_deg > 0:
-            sphere2 = Part.makeSphere(
-                rmax, spos, sdir, -90.0, 90.0, deltaphi_deg
-            )
+        tol = 1e-6  # small tolerance to avoid floating point errors
+
+        # Handle phi slicing
+        deltaphiDeg = getAngleDeg(fp.aunit, fp.deltaphi)
+        if 0 < deltaphiDeg < 360.0:
+            sphere = Part.makeSphere(rmax, spos, sdir, -90.0, 90.0, deltaphiDeg)
             if fp.startphi != 0:
-                sphere2.rotate(spos, sdir, getAngleDeg(fp.aunit, fp.startphi))
+                sphere.rotate(spos, sdir, getAngleDeg(fp.aunit, fp.startphi))
         else:
-            sphere2 = Part.makeSphere(rmax)
+            sphere = Part.makeSphere(rmax)
 
-        # if starttheta > 0 cut the upper cone
+        # Convert starttheta and deltatheta to radians
         startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
-        startthetaDeg = getAngleDeg(fp.aunit, fp.starttheta)
-
-        if startthetaDeg > 0.0:
-            if startthetaDeg == 90.0:
-                cylToCut = Part.makeCylinder(
-                    2.0 * rmax, rmax, FreeCAD.Vector(0, 0, 0)
-                )
-                sphere2 = sphere2.cut(cylToCut)
-            elif startthetaDeg < 90.0:
-                sphere2 = sphere2.cut(
-                    Part.makeCone(
-                        0.0,
-                        rmax * math.sin(startthetaRad),
-                        rmax * math.cos(startthetaRad),
-                    )
-                )
-
-                cylToCut = Part.makeCylinder(
-                    2.0 * rmax,
-                    rmax,
-                    FreeCAD.Vector(0, 0, rmax * math.cos(startthetaRad)),
-                )
-                sphere2 = sphere2.cut(cylToCut)
-
-            elif startthetaDeg < 180.0:
-                sphere2 = sphere2.common(
-                    Part.makeCone(
-                        0.0,
-                        rmax / math.cos(math.pi - startthetaRad),
-                        rmax,
-                        spos,
-                        FreeCAD.Vector(0, 0, -1.0),
-                    )
-                )
-
-        # if deltatheta -> cut the down cone
         deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
         thetaSumRad = startthetaRad + deltathetaRad
-        if thetaSumRad < math.pi:
-            if thetaSumRad > HalfPi:
 
-                sphere2 = sphere2.cut(
-                    Part.makeCone(
-                        0.0,
-                        rmax * math.sin(math.pi - thetaSumRad),
-                        rmax * math.cos(math.pi - thetaSumRad),
-                        spos,
-                        FreeCAD.Vector(0, 0, -1.0),
-                    )
+        # ----- Cut upper part if starttheta > 0 -----
+        if startthetaRad > tol:
+            if startthetaRad < HalfPi:
+                # Small theta cut - use cone
+                h = rmax * math.cos(startthetaRad)
+                r_top = rmax * math.sin(startthetaRad)
+                if h > tol:
+                    cone = Part.makeCone(0.0, r_top, h, spos, FreeCAD.Vector(0, 0, 1))
+                    sphere = sphere.cut(cone)
+            else:
+                # Theta > HalfPi - use cylinder cut to be safe
+                cyl = Part.makeCylinder(
+                    2.0 * rmax, rmax, spos + FreeCAD.Vector(0, 0, rmax * math.cos(startthetaRad))
                 )
+                sphere = sphere.cut(cyl)
 
-                cylToCut = Part.makeCylinder(
+        # ----- Cut lower part if deltatheta + starttheta < pi -----
+        if thetaSumRad < math.pi - tol:
+            if thetaSumRad > HalfPi:
+                # Cone cut downward
+                h = rmax * math.cos(math.pi - thetaSumRad)
+                r_top = rmax * math.sin(math.pi - thetaSumRad)
+                if h > tol:
+                    cone = Part.makeCone(0.0, r_top, h, spos, FreeCAD.Vector(0, 0, -1))
+                    sphere = sphere.cut(cone)
+                # Optional cylinder to clean bottom
+                cyl = Part.makeCylinder(
                     2.0 * rmax,
                     rmax,
-                    FreeCAD.Vector(
-                        0, 0, rmax * (-1.0 + math.cos(thetaSumRad))
-                    ),
+                    spos + FreeCAD.Vector(0, 0, rmax * (-1 + math.cos(thetaSumRad))),
                 )
-                sphere2 = sphere2.cut(cylToCut)
+                sphere = sphere.cut(cyl)
+            elif abs(thetaSumRad - HalfPi) < tol:
+                # HalfPi - simple cylinder cut
+                cyl = Part.makeCylinder(2.0 * rmax, rmax, spos + FreeCAD.Vector(0, 0, -rmax))
+                sphere = sphere.cut(cyl)
+            elif thetaSumRad > tol:
+                # Small thetaSum - use cone intersection
+                cone = Part.makeCone(0.0, 2 * rmax * math.tan(thetaSumRad), 2 * rmax, spos, FreeCAD.Vector(0, 0, -1))
+                sphere = sphere.common(cone)
 
-            elif thetaSumRad == HalfPi:
-                cylToCut = Part.makeCylinder(
-                    2.0 * rmax, rmax, FreeCAD.Vector(0, 0, -rmax)
-                )
-                sphere2 = sphere2.cut(cylToCut)
-            elif thetaSumRad > 0:
-                sphere2 = sphere2.common(
-                    Part.makeCone(
-                        0.0, 2 * rmax * math.tan(thetaSumRad), 2 * rmax
-                    )
-                )
+        # ----- Apply rmin cut if needed -----
+        if 0 < rmin < rmax:
+            inner_sphere = Part.makeSphere(rmin)
+            sphere = sphere.cut(inner_sphere)
 
-        if rmin <= 0 or rmin > rmax:
-            fp.Shape = sphere2
-        else:
-            fp.Shape = sphere2.cut(Part.makeSphere(rmin))
+        # Assign final shape
+        fp.Shape = sphere
+
+        # Apply scaling if present
         if hasattr(fp, "scale"):
             super().scale(fp)
+
+        # Restore placement
         fp.Placement = currPlacement
 
 
