@@ -2895,6 +2895,7 @@ def processElements(elementsGrp, mats_xml):
                 # print(f'n {n}')
                 fractObj = newGroupPython(elementObj, ref)
                 GDMLfraction(fractObj, ref, n)
+                ViewProviderGDMLfraction(fractObj.ViewObject)
                 fractObj.Label = ref + " : " + "{0:0.3f}".format(n)
         elif len(element.findall("composite")) > 0:
             for composite in element.findall("composite"):
@@ -2902,6 +2903,7 @@ def processElements(elementsGrp, mats_xml):
                 n = int(composite.get("n"))
                 compositeObj = newGroupPython(elementObj, ref)
                 GDMLcomposite(compositeObj, ref, n)
+                ViewProviderGDMLcomposite(compositeObj.ViewObject)
                 compositeObj.Label = ref + " : " + str(n)
 
 
@@ -3005,6 +3007,7 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
                 fractionObj = newGroupPython(materialObj, ref)
                 # print('fractionObj Name : '+fractionObj.Name)
                 GDMLfraction(fractionObj, ref, n)
+                ViewProviderGDMLfraction(fractionObj.ViewObject)
                 # problems with changing labels if more than one
                 #
                 fractionObj.Label = ref + " : " + "{0:0.3f}".format(n)
@@ -3018,6 +3021,7 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
                 # print('ref : '+ref)
                 compObj = newGroupPython(materialObj, ref)
                 GDMLcomposite(compObj, "comp", n, ref)
+                ViewProviderGDMLcomposite(compObj.ViewObject)
                 # problems with changing labels if more than one
                 #
                 # print('Comp Label : ' +compObj.Label)

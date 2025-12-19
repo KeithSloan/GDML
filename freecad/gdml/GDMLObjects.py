@@ -5294,6 +5294,86 @@ class GDMLfraction(GDMLcommon):
         obj.Proxy = self
         self.Object = obj
 
+import FreeCAD
+import FreeCADGui
+
+class ViewProviderGDMLfraction:
+    """
+    ViewProvider enforcing label format:
+        <ref> : <n>
+    """
+
+    def __init__(self, vobj):
+        self.attach(vobj)
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self._guard = False
+
+        self._syncLabel()
+
+    # -----------------------------------------------------------------
+
+    def _canonicalLabel(self):
+        obj = self.Object
+
+        # ref is stored as the property group name used for 'n'
+        # (from obj.addProperty(..., "n", ref))
+        try:
+            ref = obj.getGroupOfProperty("n")
+        except Exception:
+            ref = obj.Name
+
+        n = obj.n
+
+        # Format n consistently
+        return f"{ref} : {n:g}"
+
+    def _syncLabel(self):
+        label = self._canonicalLabel()
+
+        if self.Object.Label != label:
+            self._guard = True
+            self.Object.Label = label
+            self._guard = False
+
+    # -----------------------------------------------------------------
+
+    def onChanged(self, vobj, prop):
+        # User edits label → revert
+        if prop == "Label" and not self._guard:
+            FreeCAD.Console.PrintWarning(
+                "Label is generated automatically from fraction value.\n"
+            )
+            self._syncLabel()
+
+    def updateData(self, fp, prop):
+        # Model changes → update label
+        if prop == "n":
+            self._syncLabel()
+
+    # -----------------------------------------------------------------
+    # Boilerplate ViewProvider methods
+
+    def getDisplayModes(self, vobj):
+        return []
+
+    def getDefaultDisplayMode(self):
+        return "Flat Lines"
+
+    def setDisplayMode(self, mode):
+        return mode
+
+    def claimChildren(self):
+        return []
+
+    def setupContextMenu(self, vobj, menu):
+        pass
+
+    def getIcon(self):
+        return None
+
 
 class GDMLcomposite(GDMLcommon):
     def __init__(self, obj, name, n, ref):
@@ -5302,6 +5382,81 @@ class GDMLcomposite(GDMLcommon):
         obj.addProperty("App::PropertyString", "ref", name).ref = ref
         obj.Proxy = self
         self.Object = obj
+import FreeCAD
+import FreeCADGui
+
+class ViewProviderGDMLcomposite:
+    """
+    ViewProvider enforcing label format:
+        <ref> : x <n>
+    """
+
+    def __init__(self, vobj):
+        self.attach(vobj)
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self._guard = False
+
+        self._syncLabel()
+
+    # -------------------------------------------------------------
+
+    def _canonicalLabel(self):
+        obj = self.Object
+
+        # ref is an explicit property
+        ref = obj.ref if hasattr(obj, "ref") else obj.Name
+
+        # integer multiplicity
+        n = obj.n
+
+        return f"{ref} : x {n}"
+
+    def _syncLabel(self):
+        label = self._canonicalLabel()
+
+        if self.Object.Label != label:
+            self._guard = True
+            self.Object.Label = label
+            self._guard = False
+
+    # -------------------------------------------------------------
+
+    def onChanged(self, vobj, prop):
+        # User edits Label → revert
+        if prop == "Label" and not self._guard:
+            FreeCAD.Console.PrintWarning(
+                "Label is generated automatically from composite data.\n"
+            )
+            self._syncLabel()
+
+    def updateData(self, fp, prop):
+        # Model changes → update label
+        if prop in ("n", "ref"):
+            self._syncLabel()
+
+    # -------------------------------------------------------------
+    # Boilerplate ViewProvider methods
+
+    def getDisplayModes(self, vobj):
+        return []
+
+    def getDefaultDisplayMode(self):
+        return "Flat Lines"
+
+    def setDisplayMode(self, mode):
+        return mode
+
+    def claimChildren(self):
+        return []
+
+    def setupContextMenu(self, vobj, menu):
+        pass
+
+    def getIcon(self):
+        return None
 
 
 class GDMLelement(GDMLcommon):
