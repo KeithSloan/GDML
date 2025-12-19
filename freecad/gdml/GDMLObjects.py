@@ -5290,100 +5290,67 @@ class GDMLmaterial(GDMLcommon):
 class GDMLfraction(GDMLcommon):
     def __init__(self, obj, ref, n):
         super().__init__(obj)
-        obj.addProperty("App::PropertyFloat", "n", ref).n = n
+
+        self.ref = ref  # store group name explicitly
+        obj.addProperty("App::PropertyQuantity", "n", ref)
+        obj.n = FreeCAD.Units.Quantity(n)
         obj.Proxy = self
         self.Object = obj
 
-import FreeCAD
-import FreeCADGui
+        self._updatingLabel = False
 
-class ViewProviderGDMLfraction:
-    """
-    ViewProvider enforcing label format:
-        <ref> : <n>
-    """
+        # set initial label
+        obj.Label = self.makeLabel(obj)
 
-    def __init__(self, vobj):
-        self.attach(vobj)
+    def makeLabel(self, obj):
+        return f"{self.ref} : {float(obj.n):.4f}"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-        self._guard = False
+    def onChanged(self, obj, prop):
+        # React to both label edits and property edits
+        if prop in ("Label", "n"):
+            if self._updatingLabel:
+                return
 
-        self._syncLabel()
-
-    # -----------------------------------------------------------------
-
-    def _canonicalLabel(self):
-        obj = self.Object
-
-        # ref is stored as the property group name used for 'n'
-        # (from obj.addProperty(..., "n", ref))
-        try:
-            ref = obj.getGroupOfProperty("n")
-        except Exception:
-            ref = obj.Name
-
-        n = obj.n
-
-        # Format n consistently
-        return f"{ref} : {n:g}"
-
-    def _syncLabel(self):
-        label = self._canonicalLabel()
-
-        if self.Object.Label != label:
-            self._guard = True
-            self.Object.Label = label
-            self._guard = False
-
-    # -----------------------------------------------------------------
-
-    def onChanged(self, vobj, prop):
-        # User edits label → revert
-        if prop == "Label" and not self._guard:
-            FreeCAD.Console.PrintWarning(
-                "Label is generated automatically from fraction value.\n"
-            )
-            self._syncLabel()
-
-    def updateData(self, fp, prop):
-        # Model changes → update label
-        if prop == "n":
-            self._syncLabel()
-
-    # -----------------------------------------------------------------
-    # Boilerplate ViewProvider methods
-
-    def getDisplayModes(self, vobj):
-        return []
-
-    def getDefaultDisplayMode(self):
-        return "Flat Lines"
-
-    def setDisplayMode(self, mode):
-        return mode
-
-    def claimChildren(self):
-        return []
-
-    def setupContextMenu(self, vobj, menu):
-        pass
-
-    def getIcon(self):
-        return None
+            self._updatingLabel = True
+            try:
+                newLabel = self.makeLabel(obj)
+                if obj.Label != newLabel:
+                    obj.Label = newLabel
+            finally:
+                self._updatingLabel = False
 
 
 class GDMLcomposite(GDMLcommon):
     def __init__(self, obj, name, n, ref):
         super().__init__(obj)
+
         obj.addProperty("App::PropertyInteger", "n", name).n = n
         obj.addProperty("App::PropertyString", "ref", name).ref = ref
+
         obj.Proxy = self
         self.Object = obj
-import FreeCAD
-import FreeCADGui
+
+        self._updatingLabel = False
+
+        # set initial label
+        obj.Label = self.makeLabel(obj)
+
+    def makeLabel(self, obj):
+        return f"{obj.ref} : {obj.n}"
+
+    def onChanged(self, obj, prop):
+        if prop in ("Label", "n", "ref"):
+            if self._updatingLabel:
+                return
+
+            self._updatingLabel = True
+            try:
+                newLabel = self.makeLabel(obj)
+                if obj.Label != newLabel:
+                    obj.Label = newLabel
+            finally:
+                self._updatingLabel = False
+
 
 class ViewProviderGDMLcomposite:
     """
@@ -5427,7 +5394,7 @@ class ViewProviderGDMLcomposite:
     def onChanged(self, vobj, prop):
         # User edits Label → revert
         if prop == "Label" and not self._guard:
-            FreeCAD.Console.PrintWarning(
+            FreeCAD.Console.PrintError(
                 "Label is generated automatically from composite data.\n"
             )
             self._syncLabel()
