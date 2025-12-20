@@ -5291,8 +5291,9 @@ class GDMLfraction(GDMLcommon):
     def __init__(self, obj, ref, n):
         super().__init__(obj)
 
-        self.ref = ref  # store group name explicitly
-        obj.addProperty("App::PropertyQuantity", "n", ref)
+        obj.addProperty("App::PropertyString", "ref", "Base")
+        obj.ref = ref
+        obj.addProperty("App::PropertyQuantity", "n", "Base")
         obj.n = FreeCAD.Units.Quantity(n)
         obj.Proxy = self
         self.Object = obj
@@ -5303,7 +5304,7 @@ class GDMLfraction(GDMLcommon):
         obj.Label = self.makeLabel(obj)
 
     def makeLabel(self, obj):
-        return f"{self.ref} : {float(obj.n):.4f}"
+        return f"{obj.ref} : {float(obj.n):.4f}"
 
     def onChanged(self, obj, prop):
         # React to both label edits and property edits
@@ -5324,8 +5325,8 @@ class GDMLcomposite(GDMLcommon):
     def __init__(self, obj, name, n, ref):
         super().__init__(obj)
 
-        obj.addProperty("App::PropertyInteger", "n", name).n = n
-        obj.addProperty("App::PropertyString", "ref", name).ref = ref
+        obj.addProperty("App::PropertyInteger", "n", "Base").n = n
+        obj.addProperty("App::PropertyString", "ref", "Base").ref = ref
 
         obj.Proxy = self
         self.Object = obj

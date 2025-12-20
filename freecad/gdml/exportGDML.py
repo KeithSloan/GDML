@@ -1461,7 +1461,8 @@ def processFractionsComposites(obj, item):
         ET.SubElement(
             item,
             "fraction",
-            {"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
+            {"n": str(obj.n), "ref": str(obj.ref)},
+            #{"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
         )
 
     if isinstance(obj.Proxy, GDMLcomposite):
@@ -1469,7 +1470,8 @@ def processFractionsComposites(obj, item):
         ET.SubElement(
             item,
             "composite",
-            {"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
+            {"n": str(obj.n), "ref": str(obj.ref)},
+            #{"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
         )
 
 
