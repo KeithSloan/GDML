@@ -1819,7 +1819,7 @@ class TorusFeature:
     #    return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
-        from .GDMLObjects import GDMLTorus, ViewProvider
+        from freecad.gdml.GDMLObjects import GDMLTorus, ViewProvider
 
         objPart, material = getSelectedPM()
         obj = insertPartVol(objPart, "LV-Torus", "GDMLTorus")
