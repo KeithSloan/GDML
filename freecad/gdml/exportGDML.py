@@ -975,6 +975,7 @@ def processIsotope(
         # print(dir(obj))
         item.set("formula", str(obj.formula))
 
+
     if (
         hasattr(obj, "unit")
         or hasattr(obj, "atom_value")
@@ -3144,6 +3145,7 @@ class SolidExporter:
         "Part::Revolution": "RevolutionExporter",
         "Part::Box": "BoxExporter",
         "Part::Cylinder": "CylinderExporter",
+        "Tube": "TubeExporter",
         "Part::Cone": "ConeExporter",
         "Part::Sphere": "SphereExporter",
         "Part::Cut": "BooleanExporter",
@@ -3209,6 +3211,11 @@ class SolidExporter:
                 elif typeId == "Clone":
                     return CloneExporter(obj)
             else:
+                name = obj.Name
+                if name[:4] == 'Tube':
+                    return TubeExporter(obj)
+
+                # default, fall thru
                 typeId = obj.TypeId
         else:
             typeId = obj.TypeId
@@ -3474,6 +3481,39 @@ class CylinderExporter(SolidExporter):
                 "name": self.name(),
                 "rmax": str(self.obj.Radius.Value),
                 "deltaphi": str(float(self.obj.Angle.Value)),
+                "aunit": "deg",
+                "z": str(self.obj.Height.Value),
+                "lunit": "mm",
+            },
+        )
+        self._exportScaled()
+
+    def position(self):
+        delta = FreeCAD.Vector(0, 0, self.obj.Height.Value / 2)
+        # see comments in BoxExporter
+        pos = self.obj.Placement.Base + self.obj.Placement.Rotation * delta
+        return pos
+
+
+class TubeExporter(SolidExporter):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def export(self):
+        if self.exported():
+            return
+        super().export()
+
+        # Needs unique Name
+        # This is for non GDML cylinder/tube
+        ET.SubElement(
+            solids,
+            "tube",
+            {
+                "name": self.name(),
+                "rmin": str(self.obj.InnerRadius.Value),
+                "rmax": str(self.obj.OuterRadius.Value),
+                "deltaphi": str(360),
                 "aunit": "deg",
                 "z": str(self.obj.Height.Value),
                 "lunit": "mm",
@@ -4521,9 +4561,9 @@ class PointArrayExporter(SolidExporter):
         extraRotation.Angle = -extraRotation.Angle
         rot = extraRotation * rotBase
         pointObj = self.obj.PointObject
-        points = pointObj.Links
+        points = pointObj.Points.Points
         for i, point in enumerate(points):
-            pos = point.Placement.Base + positionVector + extraTranslation
+            pos = point + positionVector + extraTranslation
             nodeName = f"{self.name()}_{i}"
             nodeXML = ET.SubElement(
                 unionXML, "multiUnionNode", {"name": nodeName}

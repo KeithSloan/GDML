@@ -31,6 +31,8 @@ import FreeCAD
 
 from PySide import QtGui, QtCore
 
+from freecad.gdml.importGDML import processReactor
+
 
 class GDMLMaterial(QtGui.QComboBox):
 
@@ -63,9 +65,21 @@ def getMaterialsList():
         g4Mats = doc.getObject('G4Materials')
 
     try:
+        reactorMats = doc.getObject('ReactorMaterials')
+
+    except:
+        from .importGDML import processReactor
+        from .init_gui import joinDir
+
+        print('Load Geant4 Materials XML')
+        processReactor(doc, joinDir("Resources/ReactorMaterials.xml"))
+        materials = doc.Materials
+        reactorMats = doc.getObject('ReactorMaterials')
+
+    try:
         if materials is not None:
             for m in materials.OutList:
-                if m.Label != "Geant4":
+                if m.Label != "Geant4" and m.Label != "RaactorMaterials":
                     matList.append(m.Label)
                     print(matList)
     except:
@@ -74,6 +88,15 @@ def getMaterialsList():
     try:
         if g4Mats is not None:
             for m in g4Mats.OutList:
+                for n in m.OutList:
+                    matList.append(n.Label)
+            # print(matList)
+    except:
+        pass
+
+    try:
+        if reactorMats is not None:
+            for m in reactorMats.OutList:
                 for n in m.OutList:
                     matList.append(n.Label)
             # print(matList)
@@ -100,20 +123,23 @@ def refreshG4Materials(doc):
 
 
 def newGetGroupedMaterials():
-    from .importGDML import joinDir, processGEANT4
+    from .importGDML import joinDir, processGEANT4, processReactor
     from .GDMLObjects import GroupedMaterials
     print(f'New getGroupedMaterials len GroupMaterials {len(GroupedMaterials)}')
     # if len(GroupedMaterials) == 0:
     mlen = len(GroupedMaterials)
     if mlen >= 0:
         doc = FreeCAD.activeDocument()
-        if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials'):
+        if not hasattr(doc, 'Materials') or not hasattr(doc, 'G4Materials') or not hasattr(doc, 'ReactorMaterials'):
             processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+            processReactor(doc, joinDir("Resources/ReactorMaterials.xml"))
             docG4Materials = doc.G4Materials
             if not hasattr(docG4Materials, 'version'):
                 refreshG4Materials(doc)
         docG4Materials = doc.G4Materials
+        reactorMaterials = doc.ReactorMaterials
         print(f'doc.G4Materials {docG4Materials}')
+        print(f'doc.ReactorMaterials {reactorMaterials}')
         for g in docG4Materials.Group:
             # print(f'g : {g.Label}')
             for s in g.Group:
@@ -122,6 +148,9 @@ def newGetGroupedMaterials():
                     GroupedMaterials[g.Label].append(s.Label)
                 else:
                     GroupedMaterials[g.Label] = [s.Label]
+
+        GroupedMaterials[reactorMaterials.Label] = [g.Label for g in reactorMaterials.Group]
+
         matList = []
         docMaterials = doc.Materials
         print(f'doc.Materials {docMaterials}')
@@ -134,46 +163,5 @@ def newGetGroupedMaterials():
 
         if len(matList) > 0:
             GroupedMaterials['Normal'] = matList
-
-    return GroupedMaterials
-
-
-def getGroupedMaterials():
-    print('getGroupedMaterials')
-    from .GDMLObjects import GroupedMaterials
-    from .importGDML import setupEtree
-    from .init_gui import joinDir
-
-    if len(GroupedMaterials) == 0:
-        etree, root = setupEtree(joinDir("Resources/Geant4Materials.xml"))
-        materials = root.find('materials')
-
-        for material in materials.findall('material'):
-            name = material.get('name')
-            print(name)
-            if name is None:
-                print("Missing Name")
-            else:
-                for auxiliary in material.findall('auxiliary'):
-                    auxtype = auxiliary.get('auxtype')
-                    if auxtype == 'Material-type':
-                        auxvalue = auxiliary.get('auxvalue')
-                        if auxvalue in GroupedMaterials:
-                            GroupedMaterials[auxvalue].append(name)
-                        else:
-                            GroupedMaterials[auxvalue] = [name]
-
-    doc = FreeCAD.activeDocument()
-    docMaterials = doc.Materials
-    matList = []
-
-    if doc.Materials is not None:
-        for m in docMaterials.OutList:
-            if m.Label != "Geant4":
-                if m.Label not in matList:
-                    matList.append(m.Label)
-
-    if len(matList) > 0:
-        GroupedMaterials['Normal'] = matList
 
     return GroupedMaterials

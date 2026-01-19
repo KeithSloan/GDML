@@ -3289,6 +3289,22 @@ def processGEANT4(doc, filename):
         geant4Grp = newGroupPython(materials, "Geant4")
         processMaterialsG4(geant4Grp, root)
 
+def processReactor(doc, filename):
+    print("process Reactor Materials : " + filename)
+    etree, root = setupEtree(filename)
+    # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    materials = doc.getObject("Materials")
+    if materials is None:
+        materials = doc.addObject(
+            "App::DocumentObjectGroupPython", "Materials"
+        )
+    # Avoid duplicate Geant4 group - Palo import of GDML
+    reactorGrp = doc.getObject("ReactorMaterials")
+    if reactorGrp is None:
+        reactorGrp = newGroupPython(materials, "ReactorMaterials")
+
+    processMaterialsReactor(reactorGrp, root)
+
 
 def processMaterialsDocSet(doc, root):
     print("Process Materials DocSet")
@@ -3446,6 +3462,24 @@ def processMaterialsG4(G4rp, root):
         ).version = 1.0
         processNewG4(materialsGrp, mats_xml)
 
+def processMaterialsReactor(grp, root):
+    mats_xml = root.find("materials")
+    if mats_xml is not None:
+        try:
+            isotopesGrp = FreeCAD.ActiveDocument.Isotopes
+        except:
+            isotopesGrp = doc.addObject(
+                "App::DocumentObjectGroupPython", "Isotopes"
+            )
+        processIsotopes(isotopesGrp, mats_xml)
+        try:
+            elementsGrp = FreeCAD.ActiveDocument.Elements
+        except:
+            elementsGrp = doc.addObject(
+                "App::DocumentObjectGroupPython", "Elements"
+            )
+        processElements(elementsGrp, mats_xml)
+        processMaterials(grp, mats_xml)
 
 def processDefines(root, doc):
     GDMLShared.trace("Call set Define")
@@ -3545,11 +3579,11 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
         GDMLShared.trace(setup.attrib)
         preProcessLoops.preprocessLoops(root)
 
-    from .GDMLMaterials import getGroupedMaterials
     from .GDMLMaterials import newGetGroupedMaterials
 
     processMaterialsDocSet(doc, root)
     processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+    processReactor(doc, joinDir("Resources/ReactorMaterials.xml"))
     groupMaterials = newGetGroupedMaterials()
 
     solids = root.find("solids")
