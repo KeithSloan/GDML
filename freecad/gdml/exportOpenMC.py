@@ -6383,7 +6383,7 @@ class AutoTessellateExporter(SolidExporter):
 
 
     def generate_surfaces(self):
-        from .chatGPT_extrusionExporter import analyze_extruded_mesh
+        #from .chatGPT_extrusionExporter import analyze_extruded_mesh
         import MeshPart
 
         if self.obj.TypeId != 'Mesh::Feature':
