@@ -1548,15 +1548,15 @@ class BooleanFeature:
                         parent = sel[0].Object.InList[0]
                         print("Parent : " + parent.Label)
                         baseVol = sel[0].Object
-                        print("Base Vol : " + baseVol.Label)
+                        print("Base Vol : " + baseVol.Name)
                         print(f"Base Vol Placement {baseVol.Placement}")
                         print(sel[0].Object.OutList)
                         base = sel[0].Object.OutList[-1]
                         base.Placement = baseVol.Placement * base.Placement
-                        print("base : " + base.Label)
+                        print("base : " + base.Name)
                         print(f"base Placement {base.Placement}")
                         toolVol = sel[1].Object
-                        print("Tool Vol : " + toolVol.Label)
+                        print("Tool Vol : " + toolVol.Name)
                         print(f"Tool Vol Placement {toolVol.Placement}")
                         tool = sel[1].Object.OutList[-1]
                         tool.Placement = toolVol.Placement * tool.Placement
@@ -1570,15 +1570,15 @@ class BooleanFeature:
                         boolObj.Base = base
                         boolObj.Tool = tool
                         boolObj.Tool.setEditorMode("Placement", 0)
-                        print("Tool : " + tool.Label)
+                        print("Tool : " + tool.Name)
                         print("Remove Base")
                         baseVol.removeObject(base)
                         print("Adjust Base Links")
                         base.adjustRelativeLinks(baseVol)
                         toolVol.removeObject(tool)
                         print("Remove Base Vol")
-                        FreeCAD.ActiveDocument.removeObject(baseVol.Label)
-                        FreeCAD.ActiveDocument.removeObject(toolVol.Label)
+                        FreeCAD.ActiveDocument.removeObject(baseVol.Name)
+                        FreeCAD.ActiveDocument.removeObject(toolVol.Name)
                         FreeCAD.ActiveDocument.recompute()
                         # boolObj.recompute()
                 else:
