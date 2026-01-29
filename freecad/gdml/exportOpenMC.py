@@ -43,6 +43,7 @@ from PySide import QtGui
 from FreeCAD import Vector
 import  BOPTools.SplitAPI
 from BOPTools import BOPFeatures
+from collections import defaultdict
 
 
 import random
@@ -84,15 +85,6 @@ global element_table   # dictionary of ElementIsotopes object for an element sym
 global nuclide_table   # dictionary of Isotope obj for nuclide name as key
 
 element_table = None
-
-from .GDMLObjects import (
-    GDMLfraction,
-    GDMLcomposite,
-    GDMLisotope,
-    GDMLconstant,
-    GDMLvariable,
-    GDMLquantity,
-)
 
 from . import GDMLShared
 
@@ -288,12 +280,6 @@ class MirrorPlacer(MultiPlacer):
         exportScaling(name, pvol, scl)
 
         self.assembly = assembly
-
-
-class PhysVolPlacement:
-    def __init__(self, ref, placement):
-        self.ref = ref  # name reference: a string
-        self.placement = placement  # physvol placement
 
 
 #########################################################
@@ -747,7 +733,25 @@ def processPlacement(name, xml, placement):
 import re
 
 
+def elementSymbol_from_Z(Z):
+    '''return element symbol for element with atomic number Z'''
+    global element_table
+    for sym in element_table:
+        elementIsotopes = element_table[sym]
+        if elementIsotopes.Z == Z:
+            return sym
+    return None
+
+
+
 def elementSymbol(elem):
+    # first try an actual element define via material
+    obj = FreeCAD.ActiveDocument.getObject(elem)
+    if hasattr(obj, 'Z'):
+        Z = int(obj.Z)
+        sym = elementSymbol_from_Z(Z)
+        return sym
+
     pattern = r'^([A-Z][a-z]?)$'  # Element symbol, say C, or Cd
     match = re.match(pattern, elem)
     if match:
@@ -769,7 +773,7 @@ def elementSymbol(elem):
 
     # Try element defined in Elements Group
     elem_grp = elementGroup(elem)
-    if elem_grp is not None:
+    if elem_grp is not None and hasattr(elem_grp, 'formula'):
         sym = elem_grp.formula
         return sym
 
@@ -778,8 +782,16 @@ def elementSymbol(elem):
 
 def elementGroup(elem):
     elementsGroup = FreeCAD.ActiveDocument.getObject('Elements')
+    elem1 = elem[:]
+    if elem1.endswith("_element"):
+        elem1 = elem1[:-len("_element")]
+
     for grp in elementsGroup.Group:
-        if grp.Label == elem:
+        label = grp.Label
+        if label.endswith("_element"):
+            label = label[:-len("_element")]
+
+        if label == elem1:
             return grp
 
     return None
@@ -787,6 +799,7 @@ def elementGroup(elem):
 
 def materialGroup(mat):
     materialGroup = FreeCAD.ActiveDocument.getObject('Materials')
+
     for grp in materialGroup.Group:
         if grp.Label == mat:
             return grp
@@ -800,7 +813,7 @@ def merge_lists(list1, list2):
     and list2 is
     [{nuclide: C,'fraction': fC, 'type': typeC}, {nuclide: A,'fraction': fA2, 'type': typeA2},...]
 
-    then we eant to return a list
+    then we want to return a list
     [{'nuclide': A, 'fraction': fA+fA2, 'type': typeA}, {'nuclide': 'B', ....}, {'nuclide': C, ...}]
     '''
 
@@ -888,7 +901,7 @@ def material_nuclides(mat):
         weight_fraction = float(grp.Label[1+grp.Label.find(':'):])
         print(mat_or_element)
         sym = elementSymbol(mat_or_element)
-        if sym is not None:  # The mixture invloves a natural element
+        if sym is not None:  # The mixture involves a natural element
             component_list = material_nuclides(mat_or_element)
             for component in component_list:
                 isotopeName = component['nuclide']
@@ -897,7 +910,8 @@ def material_nuclides(mat):
                 # for mixtures (of elements) the fractions should be weight fractions
                 # The components returned above are for an element an so need to convert to weight_fractions
                 component['fraction'] *= weight_fraction * isotopeObject.atomic_weight/isotopeObject.element.atomic_weight
-                nuclide_list = merge_lists(nuclide_list, component_list)
+                component['type'] = 'wo'
+            nuclide_list = merge_lists(nuclide_list, component_list)
             continue
 
         print(f"checking if {grp.Label} is defined in the Elements Group")
@@ -915,7 +929,7 @@ def material_nuclides(mat):
                 # but here we are processing mixtures, the fractions should be WEIGHT fractions
                 # so we need to convert
                 isotopeObject = nuclide_table[isotope_name]
-                nuc_dict['fraction'] = isotope_fraction * isotopeObject.atomic_weight/isotopeObject.element.atomic_weight
+                nuc_dict['fraction'] = weight_fraction*isotope_fraction * isotopeObject.atomic_weight/isotopeObject.element.atomic_weight
                 nuc_dict['type'] = 'wo'
                 nuclide_list.append(nuc_dict)
             continue
@@ -939,7 +953,7 @@ def material_nuclides(mat):
                 if component['type'] == 'ao':
                     nuclideName = component['nuclide']
                     nuclideObject = nuclide_table[nuclideName]
-                    component['fraction'] *= nuclideObject.atomic_weight/nuclideObject.element.atomic_weight
+                    component['fraction'] *= weight_fraction*nuclideObject.atomic_weight/nuclideObject.element.atomic_weight
             # update the current nuclide_list with that of the current material
             nuclide_list = merge_lists(nuclide_list, component_list)
 
@@ -1029,7 +1043,10 @@ def createMaterials(group):
             else:  # default to g/cm3, if no Dunit is given
                 D.set("units", 'g/cm3')
             if hasattr(obj, "Dvalue"):
-                D.set("value", str(obj.Dvalue*unit_multiplier))
+                density = float(obj.Dvalue)
+                if obj.Dvalue <= 0:
+                    density = 1.0e-25
+                D.set("value", str(density*unit_multiplier))
 
         # process common options material / element
         nuclides_in_material = material_nuclides(mat)
@@ -1230,8 +1247,6 @@ def isArrayOfPart(obj):
 
 def processArrayPart(array):
     # array: array object
-    global physVolStack
-    global universe_dict
     from . import arrayUtils
     # array: Array item
     # new approach 2024-08-07:
@@ -1309,20 +1324,64 @@ def createWorldVol(volName):
     ET.SubElement(gxml, "volume", {"name": volName, "material": "G4_AIR"})
     return worldVol
 
+
+def get_global_placement(obj):
+    """
+    Placement of obj in the current traversal context.
+
+    If the current logical parent on parent_stack is an App::Link,
+    use that link's hierarchy; otherwise fall back to the object's
+    own global placement in the document.
+
+    GPT-5.1 crap that does not work
+    if parent_stack:
+        parent = parent_stack[-1]
+        if parent.TypeId == "App::Link" and getattr(parent, "LinkedObject", None):
+            try:
+                # Placement via the Link's hierarchy: includes link.Placement
+                return parent.getSubObject(obj.Name, retType=3)
+            except Exception:
+                pass
+
+    # Generic / non-link context
+    try:
+        return obj.getSubObject("", retType=3)
+    except Exception:
+        return obj.Placement
+
+    """
+
+    pl = obj.Placement
+    for parent in reversed(parent_stack):
+        pl = parent.Placement*pl
+
+    return pl
+
+
+#------------------------------------------------------------------------------
 def buildDocTree():
     from PySide import QtWidgets
 
     global obj_top_children_dict
+    global parent_stack
+
     obj_top_children_dict = {}  # dictionary of list of child objects for each object
+    parent_stack  = [] # a LIFO of the parent of the current child being processed by exporters
+
     # TypeIds that should not go in to the tree
-    skippedTypes = ["App::Origin", "Sketcher::SketchObject", "Part::Compound"]
+    skippedTypes = ["App::Origin", "Sketcher::SketchObject", "Part::Compound", "App::FeaturePython", "Points::Feature"]
 
     def addDaughters(item: QtWidgets.QTreeWidgetItem):
         print (f"--------addDaughters {item.text(0)}")
         objectLabel = item.text(0)
         object = App.ActiveDocument.getObjectsByLabel(objectLabel)[0]
+
         if object not in obj_top_children_dict:
             obj_top_children_dict[object] = []
+
+        if SolidExporter.isSolid(object):   # that takes care of arrays and booleans
+            return
+
         for i in range(item.childCount()):
             childItem = item.child(i)
             treeLabel = childItem.text(0)
@@ -1375,6 +1434,24 @@ def buildDocTree():
             except Exception as e:
                 print(e)
                 FreeCADobject = None
+
+
+    # Links will have empty children with above because iemchildcount is zero for links
+    # so we populate links with the children of the object they are linked to
+    for obj in obj_top_children_dict:
+        if obj.TypeId == "App::Link":
+            target = obj.LinkedObject
+            if target in obj_top_children_dict:
+                obj_top_children_dict[obj] = obj_top_children_dict[target]
+
+
+def dot_separated_path_to(target):
+    global paretn_stack
+
+    ''' Return a string of the form rootParentLabel.parent_1_Label.parent_2_Label...target Label'''
+    path = parent_stack[:]
+    return ".".join(obj.Label for obj in path[1:])+"."+target.Label
+#------------------------------------------------------------------------------
 
 
 def isContainer(obj):
@@ -1448,10 +1525,11 @@ def isAssembly(obj):
 
     print(f"testing isAsembly for: {obj.Label}")
     if obj.TypeId != "App::Part":
-        return False
+        if (obj.TypeId == "App::Link" and obj.LinkedObject.TypeId != "App::Part"):
+            return False
 
     for ob in obj_top_children_dict[obj]:
-        if ob.TypeId == "App::Part" or ob.TypeId == "App::Link":
+        if ob.TypeId == "App::Part" or (ob.TypeId == "App::Link" and ob.LinkedObject.TypeId == "App::Part"):
             print(True)
             return True  # Yes, even if ONE App::Part is under this, we treat it as an assembly
 
@@ -1723,6 +1801,22 @@ class GeomObjExporter(ABC):
 
     @staticmethod
     def getExporter(obj):
+        '''
+        if obj.TypeId == "App::Link":
+            target = obj.LinkedObject
+            doc = FreeCAD.ActiveDocument
+            children = [doc.copyObject(child, True) for child in obj_top_children_dict[target]]
+            obj_top_children_dict[obj] = children
+            for child in children:
+                obj_top_children_dict[child] = []
+            if len(children) == 1:
+                return SingleVolumeExporter(obj)
+            elif len(children) > 1:
+                return AssemblyExporter(obj)
+            else:
+                return None
+        '''
+
         if isContainer(obj):
             return ContainerExporter(obj)
         elif isAssembly(obj):
@@ -1791,9 +1885,18 @@ class ContainerExporter(GeomObjExporter):
         if self.obj == worldObject:
             self.containerSolidExporter.set_boundary_type("vacuum")
 
-        self.containerSolidExporter.export()  # This exports the SURFACES of the container
-        for child_geom_exporter in self.children_geom_exporters:
-            child_geom_exporter.export()
+        # Push this container as current parent
+        parent_stack.append(self.obj)
+        try:
+            # Export container's own surfaces
+            self.containerSolidExporter.export()
+
+            # Export all children under this container
+            for child_geom_exporter in self.children_geom_exporters:
+                child_geom_exporter.export()
+        finally:
+            parent_stack.pop()
+
         region = self.myRegion()
         # material is that of the containing box
         mat_name = getMaterial(self.containerSolidExporter.obj)
@@ -1808,7 +1911,7 @@ class AssemblyExporter(GeomObjExporter):
         firstChild = obj_top_children_dict[obj][0]
 
         arrayOfPart = False
-        if isArrayType(firstChild) and obj_top_children_dict[firstChild][0].TypeId == "App::Part":
+        if isArrayType(firstChild) and firstChild.Base.isDerivedFrom("App::Part"):
             processArrayPart(firstChild)
             arrayOfPart = True
 
@@ -1830,13 +1933,18 @@ class AssemblyExporter(GeomObjExporter):
         return children_region
 
     def export(self):
-        for child_geom_exporter in self.children_geom_exporters:
-            child_geom_exporter.export()
+        # Push this assembly as current parent
+        parent_stack.append(self.obj)
+        try:
+            for child_geom_exporter in self.children_geom_exporters:
+                child_geom_exporter.export()
+        finally:
+            parent_stack.pop()
 
 
 class SingleVolumeExporter(GeomObjExporter):
     '''
-    A Logical volume of the forma:
+    A Logical volume of the form:
     App::Part
        Solid
     '''
@@ -1859,10 +1967,20 @@ class SingleVolumeExporter(GeomObjExporter):
     def export(self):
         if self.child_solid_exporter is None:
             return
-        self.child_solid_exporter.export()
+
+        # Treat this volume (App::Part or App::Link) as the current parent
+        parent_stack.append(self.obj)
+        try:
+            # Inside here, the solid exporter will see self.obj as parent
+            self.child_solid_exporter.export()
+        finally:
+            parent_stack.pop()
+
         mat_name = getMaterial(self.child_solid_exporter.obj)
         solidRegion = self.child_solid_exporter.get_region()
-        cellExporter = CellExporter(self.obj.Label, material_name=mat_name, region=solidRegion.expr)
+        cellExporter = CellExporter(self.obj.Label,
+                                    material_name=mat_name,
+                                    region=solidRegion.expr)
         cellExporter.export()
 
 
@@ -2215,6 +2333,11 @@ class SurfaceExporter:
         self.boundary = boundary
         self.coeffs = coeffs
 
+        self.saved_state = vars(self).copy()
+
+    def copy(self):
+        return  # should be declared abstract
+
     @staticmethod
     def reset_ids():
         SurfaceExporter._ids = []
@@ -2285,6 +2408,11 @@ class SphereSurfaceExporter(SurfaceExporter):
         self.radius = 0.1*radius
         self.to_coeffs()
         super().__init__(name, "sphere", self.coeffs)
+        self.saved_radius = radius
+        self.saved_center = center
+
+    def copy(self):
+        return SphereSurfaceExporter(self.name, self.saved_center, self.saved_radius)
 
     def to_coeffs(self):
         self.coeffs = f"{self.center.x} {self.center.y} {self.center.z} {self.radius}"
@@ -2307,6 +2435,13 @@ class CylinderSurfaceExporter(SurfaceExporter):
         self.radius = 0.1*radius
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
+        self.saved_radius = radius
+        self.saved_center = center
+        self.saved_axis = axis
+
+
+    def copy(self):
+        return CylinderSurfaceExporter(self.name, self.saved_center, self.saved_axis, self.saved_radius)
 
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(cylinder, radius=self.radius,
@@ -2335,6 +2470,15 @@ class EllipticalCylinderSurfaceExporter(SurfaceExporter):
         self.rotation = FreeCAD.Rotation()
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
+        self.saved_dx = dx
+        self.saved_dy = dy
+        self.saved_rotation = FreeCAD.Rotation()
+        self.saved_center = center
+
+
+    def copy(self):
+        return EllipticalCylinderSurfaceExporter(self.name, self.saved_center, self.saved_dx, self.saved_dy)
+
 
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(elliptical_tube, dx=self.dx, dy=self.dy,
@@ -2364,6 +2508,16 @@ class EllipticalConeSurfaceExporter(SurfaceExporter):
         self.rotation = FreeCAD.Rotation()
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
+        self.saved_center = center
+        self.saved_dx = dx
+        self.saved_dy = dy
+        self.saved_zHeight = zHeight
+        self.saved_rotation = FreeCAD.Rotation()
+
+
+    def copy(self):
+        return EllipticalConeSurfaceExporter(self.name, self.saved_center, self.saved_dx, self.saved_dy, self.saved_zHeight)
+
 
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(elliptical_cone, dx=self.dx, dy=self.dy,
@@ -2399,6 +2553,13 @@ class ConeSurfaceExporter(SurfaceExporter):
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
 
+        self.saved_center = center
+        self.saved_axis = axis
+        self.saved_theta = theta
+
+    def copy(self):
+        return ConeSurfaceExporter(self.name, self.saved_center, self.saved_axis, self.saved_theta)
+
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(cone, center=self.center, axis=self.axis, theta=self.theta)
         self.coeffs = f"{A} {B} {C} {D} {E} {F} {G} {H} {J} {K}"
@@ -2432,6 +2593,15 @@ class EllipsoidSurfaceExporter(SurfaceExporter):
 
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
+        self.saved_ax = ax
+        self.saved_by = by
+        self.saved_cz = cz
+        self.saved_center = center
+        self.saved_rotation = rotation
+
+
+    def copy(self):
+        return EllipsoidSurfaceExporter(self.name, self.saved_ax, self.saved_by, self.saved_cz, self.saved_center, self.saved_rotation)
 
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(ellipsoid, ax=self.ax, by=self.by, cz=self.cz,
@@ -2482,6 +2652,15 @@ class ParaboloidSurfaceExporter(SurfaceExporter):
 
         self.to_quadric()
         super().__init__(name, "quadric", self.coeffs)
+
+        self.saved_rlo = rlo
+        self.saved_rhi = rhi
+        self.saved_dz = dz
+        self.saved_center = center
+        self.saved_rotation = rotation
+
+    def copy(self):
+        return ParaboloidSurfaceExporter(self.name, self.saved_rlo, self.saved_rhi, self.saved_dz, self.saved_center, self.saved_rotation)
 
     def to_quadric(self):
         A, B, C, D, E, F, G, H, J, K = quadric_coeffs(paraboloid, k1=self.k1, k2=self.k2,
@@ -2580,6 +2759,10 @@ class SolidExporter:
             # optional: treat Body as container rather than primitive
             return False
 
+        # we tread arrays of parts as containers, not as solids
+        if isArrayType(obj1) and obj1.Base.isDerivedFrom("App::Part"):
+            return False
+
         # Part::Compound is a grey zone:
         # treat it as "real shape" or as aggregate depending on your needs
         # Example: treat as aggregate and skip here:
@@ -2598,6 +2781,11 @@ class SolidExporter:
 
     @staticmethod
     def getExporter(obj):
+        if hasattr(obj, 'LinkedObject'):
+            solidExporter = SolidExporter.getExporter(obj.LinkedObject)
+            if solidExporter is not None:
+                return type(solidExporter)(obj)
+
         if obj.TypeId == "Part::FeaturePython":
             if hasattr(obj.Proxy, 'Type'):
                 typeId = obj.Proxy.Type
@@ -2704,7 +2892,8 @@ class SolidExporter:
 
     def position_globally(self):
         identity = FreeCAD.Placement()
-        placement = self.obj.getGlobalPlacement()
+
+        placement = get_global_placement(self.obj)
 
         if placement != identity:
             rot = placement.Rotation
@@ -2712,7 +2901,6 @@ class SolidExporter:
             for surf in self.surfaces:
                 surf.rotate(rot)
                 surf.translate(trans)
-
 
     def getMult(self):
         ''' return multiplier for length units of self.obj'''
@@ -2883,21 +3071,21 @@ class BoxExporter(SolidExporter):
 
         normal = Vector(1, 0, 0)
         D = 0
-        x1surface = PlaneSurfaceExporter(f"{self.obj.Label}_x1_plane)", normal, D)
+        x1surface = PlaneSurfaceExporter(f"{self.obj.Label}_x1_plane", normal, D)
         D = self.obj.Length.Value
-        x2surface = PlaneSurfaceExporter(f"{self.obj.Label}_x2_plane)", normal, D)
+        x2surface = PlaneSurfaceExporter(f"{self.obj.Label}_x2_plane", normal, D)
 
         normal = Vector(0, 1, 0)
         D = 0
-        y1surface = PlaneSurfaceExporter(f"{self.obj.Label}_y1_plane)", normal, D)
+        y1surface = PlaneSurfaceExporter(f"{self.obj.Label}_y1_plane", normal, D)
         D = self.obj.Width.Value
-        y2surface = PlaneSurfaceExporter(f"{self.obj.Label}_y2_plane)", normal, D)
+        y2surface = PlaneSurfaceExporter(f"{self.obj.Label}_y2_plane", normal, D)
 
         normal = Vector(0, 0, 1)
         D = 0
-        z1surface = PlaneSurfaceExporter(f"{self.obj.Label}_z1_plane)", normal, D)
+        z1surface = PlaneSurfaceExporter(f"{self.obj.Label}_z1_plane", normal, D)
         D = self.obj.Height.Value
-        z2surface = PlaneSurfaceExporter(f"{self.obj.Label}_z2_plane)", normal, D)
+        z2surface = PlaneSurfaceExporter(f"{self.obj.Label}_z2_plane", normal, D)
 
         self.surfaces = [x1surface, x2surface, y1surface, y2surface, z1surface, z2surface]
         self.region = Region(f"+{x1surface.id} -{x2surface.id} +{y1surface.id} -{y2surface.id} +{z1surface.id} -{z2surface.id}")
@@ -3055,27 +3243,27 @@ class SphereExporter(SolidExporter):
             z1 = self.obj.Radius * math.sin(math.radians(self.obj.Angle1))
             normal = Vector(0, 0, 1)
             D = z1
-            z1surface = PlaneSurfaceExporter(f"{self.obj.Label}_z1_plane)", normal, D)
+            z1surface = PlaneSurfaceExporter(f"{self.obj.Label}_z1_plane", normal, D)
             self.surfaces.append(z1surface)
 
         if self.obj.Angle2 != 0:
             z2 = self.obj.Radius * math.sin(math.radians(self.obj.Angle2))
             normal = Vector(0, 0, 1)
             D = z2
-            z2surface = PlaneSurfaceExporter(f"{self.obj.Label}_z2_plane)", normal, D)
+            z2surface = PlaneSurfaceExporter(f"{self.obj.Label}_z2_plane", normal, D)
             self.surfaces.append(z2surface)
 
         if self.obj.Angle3 != 360:
             phi0_normal = Vector(0, 1, 0)
             D = 0
-            phi0_plane = PlaneSurfaceExporter(f"{self.obj.Label}_pho0_plane)", phi0_normal, D)
+            phi0_plane = PlaneSurfaceExporter(f"{self.obj.Label}_pho0_plane", phi0_normal, D)
             self.surfaces.append(phi0_plane)
 
             nx = -math.sin(math.radians(self.obj.Angle3))
             ny = math.cos(math.radians(self.obj.Angle3))
             phi1_normal = Vector(nx, ny, 0)
 
-            phi1_plane = PlaneSurfaceExporter(f"{self.obj.Label}_pho1_plane)", phi1_normal, D)
+            phi1_plane = PlaneSurfaceExporter(f"{self.obj.Label}_pho1_plane", phi1_normal, D)
             self.surfaces.append(phi1_plane)
 
         region = f"-{sphere_surface.id}"
@@ -3101,6 +3289,8 @@ class BooleanExporter(SolidExporter):
         baseExporter = SolidExporter.getExporter(self.obj.Base)
         basePlacement = baseExporter.placement()
         self._placement = self.obj.Placement * basePlacement
+        # self._placement = get_global_placement(obj)  # according to GPT-5.1. Does not work!
+
 
     def isBoolean(self, obj):
         id = obj.TypeId
@@ -3160,8 +3350,6 @@ class BooleanExporter(SolidExporter):
         In the process of scanning for booleans, the Nonbooleans are exported
         """
 
-        objPlacement = self.obj.Placement
-
         obj = self.obj
         boolsList = [obj]  # list of booleans that are part of obj
         # dynamic list that is used to figure out when we've iterated over all
@@ -3193,8 +3381,8 @@ class BooleanExporter(SolidExporter):
             solidName = boolobj.Label
             solidExporter1 = ref1[boolobj]
             solidExporter2 = ref2[boolobj]
-            region1 = solidExporter1.get_region()
-            region2 = solidExporter2.get_region()
+            region1 = solidExporter1.get_region()  # this will generate the surfaces
+            region2 = solidExporter2.get_region()  # this will generate the surfaces
 
             self.surfaces += solidExporter1.surfaces
             self.surfaces += solidExporter2.surfaces
@@ -3203,12 +3391,12 @@ class BooleanExporter(SolidExporter):
                 self.region = region1.union(region2)
             elif operation == 'subtraction':
                 self.region = region1.cut(region2)
-            elif operation == 'common':
+            elif operation == 'intersection':
                 self.region = region1.intersection(region2)
 
-        if objPlacement != FreeCAD.Placement():
-            translation = objPlacement.Base
-            rotation = objPlacement.Rotation
+        if self._placement != FreeCAD.Placement():
+            translation = self._placement.Base
+            rotation = self._placement.Rotation
             for surf in self.surfaces:
                 surf.rotate(rotation)
                 surf.translate(translation)
@@ -3285,7 +3473,7 @@ class GDMLConeExporter(SolidExporter):
         region_expr += f"-{outer_cone.id} "
 
         bottom_plane = PlaneSurfaceExporter(self.obj.Label+'_bot', Vector(0, 0, 1), -self.obj.z/2*mul)
-        top_plane = PlaneSurfaceExporter(self.obj.Label+'_bot', Vector(0, 0, 1), self.obj.z/2*mul)
+        top_plane = PlaneSurfaceExporter(self.obj.Label+'_top', Vector(0, 0, 1), self.obj.z/2*mul)
 
         self.surfaces += [bottom_plane, top_plane]
         region_expr += f"+{bottom_plane.id} -{top_plane.id}"
@@ -4809,7 +4997,7 @@ class PointArrayExporter(SolidExporter):
         for point in points:
             if not arrayRotation.isSame(FreeCAD.Rotation(), 1e-7):
                 point = arrayRotation*point
-            pos = point + arrayTranslation
+            pos = point + arrayTranslation + extraTranslation
             solidExporter = SolidExporter.getExporter(base)
             item_region = solidExporter.get_region()
             solidExporter.rotate(arrayRotation)
@@ -5875,6 +6063,110 @@ class ExtrusionExporter(SolidExporter):
             surf.rotate(R)
             surf.translate(T)
 
+#--------------------Auto tessellation classes and routines -----------------------------------------------------------
+
+class Plane:
+    def __init__(self, normal, D):
+        self.normal = normal
+        self.D = D
+
+    def inside(self, point):
+        return self.normal.dot(point) < self.D
+
+    def __hash__(self):
+        s = [float(f" {f:.4e}") for f in self.normal]
+        s.append(float(f" {self.D:.4e}"))
+        return hash(tuple(s))
+
+    def __eq__(self, other):
+        if not (type(self) is type(other)):
+            return False
+
+        return hash(self) == hash(other)
+
+
+class RegionSet:
+    def __init__(self, v2planes_dict, mesh):
+        ''' v2planes_dict is a dictionary of a mesh point index and all the Planes that pass through that point
+        and a Plane that contains it as value '''
+        self.v2p = v2planes_dict
+        self.mesh = mesh
+
+    def is_edge_inside(self, edge, plane):
+        ''' test if the edge (a pair of point indexes is inside this RegionSet
+        To be inside both points must be in the set of points AND there must be points
+        in the set on BOTH sides of the given plane
+        '''
+
+        mypoints = self.v2p.keys()
+
+        count = 0
+        for vid in edge:
+            if vid in mypoints:
+                count += 1
+                if count >= 2:
+                    break
+
+        if count < 2:
+            return False
+
+        nplus = 0  # number of points on the + side of the plane
+        nminus = 0  # number of points on the nedgative side of the plane
+
+        eps = 1.0e-9
+        for vid in mypoints:
+            point = self.mesh.Points[vid].Vector
+            dist = plane.normal.dot(point) - plane.D
+            if dist < -eps:
+                nminus += 1
+            elif dist > eps:
+                nplus += 1
+            if nplus > 0 and nminus > 0:
+                return True
+
+        return False
+
+    def split_by_plane(self, plane):
+        ''' split this region set into two region sets, one where all the points are on the inside of
+        the plane and one on the outside'''
+
+        region1 = defaultdict(list)
+        region2 = defaultdict(list)
+
+        eps = 1.0e-9
+        onplane = []   # list of points on the plane (gain, there are point indexes, not points)
+        for vid in list(self.v2p.keys()):
+            vec = self.mesh.Points[vid].Vector
+            dist = plane.normal.dot(vec) - plane.D
+            if dist < -eps:
+                region1[vid] = self.v2p[vid][:]
+            elif dist > eps:
+                region2[vid] = self.v2p[vid][:]   # otherwise, put the planes in region 2
+            else:
+                onplane.append(vid)
+
+        # add the splitting plane to the edge points and remove the "wrong" face from the edge vertexes
+        plane1 = plane  # just a change of notation for clarity
+        plane2 = Plane(-plane.normal, -plane.D)  # flip the cutting plane for region2
+        for vid in  onplane:
+            region1[vid] = self.v2p[vid][:]
+            region2[vid] = self.v2p[vid][:]
+            for pl in region1[vid][:]:  # copy so we don't screw up the list while we're iterating over it
+                if pl.normal.dot(plane1.normal) < 0:
+                    region1[vid].remove(pl)   # remove the wrong plane
+            region1[vid].append(plane1)  # and add the cutting plane
+
+            for pl in region2[vid][:]:  # copy so we don't screw up the list while we're iterating over it
+                if pl.normal.dot(plane2.normal) < 0:
+                    region2[vid].remove(pl)   # remove the wrong plane
+            region2[vid].append(plane2)  # and add the cutting plane
+
+        R1 = RegionSet(region1, self.mesh)
+        R2 = RegionSet(region2, self.mesh)
+
+        return R1, R2
+
+
 
 class ShapeMesher:
     deflection = 0.5
@@ -5891,6 +6183,7 @@ class ShapeMesher:
         # Debug
 
         self.edge_dict = self.edge_face_dict()
+        self.parallel_face_dict = self.parallel_set()
 
         print(f"Num faces = {len(self.mesh.Facets)}")
         print(f"Num edges = {len(self.edge_dict)}")
@@ -5905,6 +6198,37 @@ class ShapeMesher:
             return v
         v.normalize()
         return v
+
+    def plane(self, facet):
+        normal = facet.Normal
+        vid = facet.PointIndices[0]
+        p0 = self.mesh.Points[vid].Vector
+        D = normal.dot(p0)
+        return Plane(normal, D)
+
+    def vertex_to_planes_map(self):
+        v2planes = {}
+        for fi, facet in enumerate(self.mesh.Facets):
+            for vid in facet.PointIndices:
+                plane = self.plane(facet)
+                v2planes[vid] = plane
+        return v2planes
+
+    def parallel_set(self):
+        ''' return a dictionary of face as key and set of faces that are parallel with that face'''
+        par_face_dict = {}
+        for face1 in self.mesh.Facets:
+            s = set()
+            normal1 = face1.Normal
+            for face2 in self.mesh.Facets:
+                if face1.Index == face2.Index:
+                    continue
+                normal2 = face2.Normal
+                if normal2.dot(normal1) > 0.999:
+                    s.add(face2.Index)
+            par_face_dict[face1.Index] = s
+
+        return par_face_dict
 
     def edge_face_dict(self):
         d = {}
@@ -5937,8 +6261,7 @@ class ShapeMesher:
         p2 = c2 - eps * f2.Normal
 
         if abs(f1.Normal.dot(f2.Normal)) > 0.999:
-            self.display_edge(edge)
-            return True
+            return False
 
         if (p2 - p1).Length > (c2 - c1).Length:
             self.display_edge(edge)
@@ -6080,6 +6403,12 @@ class ShapeMesher:
                 f2 = self.edge_dict[e][1]
                 face_set.add(f1)
                 face_set.add(f2)
+                # add all edges that are parallel to the two faces to the same chain
+                for f1par in self.parallel_face_dict[f1]:
+                    face_set.add(f1par)
+                for f2par in self.parallel_face_dict[f2]:
+                    face_set.add(f2par)
+
             concave_chains.append(face_set)
 
         return concave_chains
@@ -6173,6 +6502,61 @@ class ShapeMesher:
         shape = L.toShape()
         # shape.ViewObject.LineColor = (255, 255, 255)
         Part.show(shape, "edge")
+
+    def edge_plane(self, edge):
+        ''' Return a plane that passes through the edge. The plane is midway between the two
+        faces that border thed edge
+        '''
+        faceIndexes = self.edge_dict[edge]
+        f1 = self.mesh.Facets[faceIndexes[0]]
+        f2 = self.mesh.Facets[faceIndexes[1]]
+        v_edge = self._edge_dir(edge)
+        n1 = f1.Normal
+        n2 = f2.Normal
+        nmean = n1 + n2  # only direction matters, so we don't need to normalize
+
+        plane_normal = v_edge.cross(nmean)  # note that the sense of the plane_normal could be eiher way
+        plane_normal.normalize()
+        p0 = self.mesh.Points[list(edge)[0]].Vector  # one of the points on the edge
+        D = plane_normal.dot(p0)
+
+        return Plane(plane_normal, D)
+
+
+    def split_along_concaves(self):
+        ''' Returns a list of RegionSets that are presumably all convex
+        It does this by splitting an initial RegionSet containing all the mesh points (point indexes, actually)
+        into two halves by a splitting plane that passes through a concaved edge. Do this until all the
+        concaved edges have been consumed
+        '''
+
+        concave_edges = self.get_concave_edges()
+
+        # first form a RegionSet of all the points and planes of faces
+        v2p = defaultdict(list)
+        for fi, facet in enumerate(self.mesh.Facets):
+            for vid in facet.PointIndices:
+                plane = self.plane(facet)
+                v2p[vid].append(plane)
+
+        r0 = RegionSet(v2p, self.mesh)
+        regions = [r0]
+        while len(concave_edges) > 0:
+            edge = concave_edges[0]
+            for region in regions:
+                plane = self.edge_plane(edge)  # create a splitting plane along that edge
+                if region.is_edge_inside(edge, plane):  # find which region edge is inside
+                    region1, region2 = region.split_by_plane(plane)  # get the two split regions
+                    if region1 is None or region2 is None:
+                        break  # no split happened. Cutting by a degenerate plane, ie. a plane that has been used before
+                    regions.remove(region)  # remove the region that has been just split
+                    regions.append(region1) # and replace with the two split regions
+                    regions.append(region2)
+                    break
+            concave_edges.remove(edge) # remove the splitting edge from the list of concave edges
+
+        return regions
+
 
 def compound_to_solids(shape):
     """Convert a Compound (or other) to a list of Solids if possible."""
@@ -6365,12 +6749,147 @@ class AutoTessellateExporter(SolidExporter):
         # the normal is arbitrary. When we build the regions for each tetrahedron, we will
         # figure out the in/out of each plane
 
+        self.surfacesDict = {}  # to reducs the number of duplicate planes for parallel faces
+
+    def solidMesh(self):
+        import ObjectsFem
+        import femmesh.gmshtools as gmshtools
+
+        def gmsh_sizes_from_view(obj,
+                                 elems_across=10,
+                                 interior_factor=3.0,
+                                 min_hmin = 10.0):
+            """
+            Map FreeCAD ViewObject Deviation / AngularDeflection to Gmsh mesh sizes.
+            Returns:
+              h_min, h_max, min_elems_2pi
+            """
+            v = obj.ViewObject
+
+            shp = obj.Shape
+            bbox = shp.BoundBox
+
+            L = max(bbox.XLength, bbox.YLength, bbox.ZLength)
+
+            if L <= 0:
+                # degenerate
+                h_min = min_hmin
+            else:
+                h_min = max(L / elems_across, min_hmin)
+
+            h_max = h_min * interior_factor
+
+            return h_min, h_max
+
+        doc = FreeCAD.ActiveDocument
+
+
+
+        h_min, h_max = gmsh_sizes_from_view(self.obj)
+        # mesh = doc.addObject('Fem::FemMeshGmshFromShape', 'GmshMesh')
+        mesh = ObjectsFem.makeMeshGmsh(doc, f"{self.obj.Label}_temporary_mesh")
+        print(mesh, mesh.TypeId)
+
+        mesh.Shape = self.obj
+
+        mesh.CharacteristicLengthMin = h_min
+        mesh.CharacteristicLengthMax = h_max
+
+        # Curvature-based refinement
+        mesh.MeshSizeFromCurvature = True
+
+        # 3D mesh algorithm and optimization
+        mesh.Algorithm3D = 1  # Tetrahedral
+        mesh.OptimizeStd = True
+
+        mesher = gmshtools.GmshTools(mesh)
+        mesher.create_mesh()
+        doc.recompute()
+
+        # 4 loop over tetrahedra, creating planes and regions for each
+
+        fem_mesh = mesh.FemMesh
+        faces_attr = fem_mesh.Faces
+        if isinstance(faces_attr, dict):
+            face_ids = list(faces_attr.keys())
+        else:
+            face_ids = list(faces_attr)
+
+        # So my understanding of the structure of the mesh, so far, is the following
+        # if E is the number of Edges, F the number of faces and V the number of Volumes
+        # then Edge_ids go from 1 - E
+        # Face ids go form E+1 - E+1+F
+        # and volume ids go from E+F+1+1 - E+F+1+1+V
+        # so mesh.getElementNoded(id) will get the edge node ids of id is in the Edge ids range
+        # will get the face id nodes for ids in the Face ids range
+        # and will get the volume id nodes for id in the Volume id range.
+        # For edges there will be two node ids, corresponding to the ends of the edge
+        # For faces, there will be three ids, corresponding to the triangle coordinates
+        # and for Volume ids, there will be four node ids, corresponding to the four coreners of
+        # of the tetrahedron
+        # mesh.Node[id] gives the Vector coordinates of the node, that is the point
+        # P.S: Face ids are those of the boundary faces only, not of every tetrahedron surface
+
+        # get a list of planes, one for each face. At present the sense of
+        # the normal is arbitrary. When we build the regions for each tetrahedron, we will
+        # figure out the in/out of each plane
+
+        def plane_from_face(node_ids):
+            face_key = frozenset(node_ids)
+            coords = [fem_mesh.Nodes[n] for n in node_ids]
+            v1 = coords[1] - coords[0]
+            v2 = coords[2] - coords[1]
+            normal = v1.cross(v2)
+            normal.normalize()
+            D = normal.dot(coords[0])
+            surf = PlaneSurfaceExporter(f"{self.obj.Label}_{vol_id}_{i}", normal, D)
+            plane_nodes_dict[face_key] = surf  # given three node ids, we identify the plane
+            # regardless of the order in which node ids are given
+            surfaces.append(surf)
+
+        surfaces = []
+        plane_nodes_dict = {}
+        region_expr = ""
+
+        for vol_id in fem_mesh.Volumes:
+            volume_region = ""
+            # Get the node IDs associated with this tetrahedron
+            # For a 1st order mesh, this will return 4 nodes
+            node_ids = fem_mesh.getElementNodes(vol_id)
+            for i in range(4):  # we should doublecheck we are using tetrahedra
+                opposite_corner = node_ids[i]
+                face_corners = node_ids[:i] + node_ids[i + 1:]  # other corners
+                face = frozenset(face_corners)
+                if face not in plane_nodes_dict:  # if face not already in dictionary, build it
+                    plane_from_face(face_corners)
+                vector_to_face = fem_mesh.Nodes[face_corners[0]] - fem_mesh.Nodes[opposite_corner]
+                surface = plane_nodes_dict[face]
+                if surface.normal.dot(vector_to_face) > 0:  # normal points to outside, we want to be in
+                    volume_region += f"-{surface.id} "
+                else:
+                    volume_region += f"+{surface.id} "
+
+            if region_expr == "":
+                region_expr = f"({volume_region})"
+            else:
+                region_expr += f"|({volume_region})"
+
+        return surfaces, Region(region_expr)
+
     def face_to_plane(self, face):
+        def plane_key():
+            return (round(normal.x, 7), round(normal.y, 7), round(normal.z, 7), round(D, 7))
+
         normal = Vector(face.Normal.x, face.Normal.y, face.Normal.z)
         # remember we need to convert from mm to cm
         point0 = Vector(face.Points[0][0], face.Points[0][1], face.Points[0][2])
         D = normal.dot(point0)
-        planesurface = PlaneSurfaceExporter(self.name()+f"_{self.index}", normal, D)
+        key =  plane_key()
+        if  key in self.surfacesDict:
+            return None  # may be a poor way of signaling to the caller that the surface has been processed
+        else:
+            planesurface = PlaneSurfaceExporter(self.name()+f"_{self.index}", normal, D)
+            self.surfacesDict[key] = planesurface
 
         self.index += 1
         return planesurface
@@ -6381,18 +6900,31 @@ class AutoTessellateExporter(SolidExporter):
             set_of_planes.add(plane)
         return list(set_of_planes)
 
+    def check_convex_face(self, face, mesh):
+        normal = Vector(face.Normal.x, face.Normal.y, face.Normal.z)
+        point0 = Vector(face.Points[0][0], face.Points[0][1], face.Points[0][2])
+        D = normal.dot(point0)
+        pnts = [p.Vector for p in mesh.Points]
+
+        for p in pnts:
+            if p.dot(normal) > D:
+                return False
+        return True
 
     def generate_surfaces(self):
-        from .chatGPT_extrusionExporter import analyze_extruded_mesh
         import MeshPart
+        global obj_top_children_dict
 
         if self.obj.TypeId != 'Mesh::Feature':
+
             shape = self.obj.Shape.copy(False)
+
             bbox = shape.BoundBox
             minLength = min([bbox.XLength, bbox.YLength, bbox.ZLength])
 
             # shape.Placement = FreeCAD.Placement()  # remove object's placement
 
+            print(f"Autotessellating {self.obj.Label} which is of type {self.obj.TypeId}")
             viewObject = self.obj.ViewObject
             deflection = viewObject.Deviation  # this is in percent
             linearDeflection = deflection/100*minLength
@@ -6417,44 +6949,35 @@ class AutoTessellateExporter(SolidExporter):
 
             shape = Part.Shape()
             tolerance = 0.1
-            shape.makeShapeFromMesh(comp.Topology, 0.1)
+            shape.makeShapeFromMesh(comp.Topology, tolerance)
             componentMesher = ShapeMesher(shape)
             component_region = ""
 
-            concave_face_indexes = set()
-            # region for concave edges
-            concave_chains = componentMesher.concave_face_chains()
-            colors = [(200, 0, 0), (0,200, 0), (0, 0, 200), (200, 0, 200), (0, 200, 200), (200, 200, 0)]
-            nc = len(colors)
+            region_sets = componentMesher.split_along_concaves()
             j = 0
-            for chain in concave_chains:
-                chain_region = ""
-                color = colors[j]
-                j = (j +1) % nc
-                for iFace in chain:
-                    face = componentMesher.mesh.Facets[iFace]
-                    surf = self.face_to_plane(face)
+            for region in region_sets:
+                planes = set()
+                for vid in region.v2p:
+                    vid_planes = region.v2p[vid]
+                    for pl in vid_planes:
+                        planes.add(pl)
+                region_expr = ""
+                k = 0
+                for plane in planes:
+                    # i = mesh component index
+                    # j = region index in this component
+                    # k = plane index for planes in this region
+                    surf = PlaneSurfaceExporter(self.name()+f"_{i}_{j}_{k}", Vector(plane.normal), plane.D)
+                    k += 1
                     self.surfaces.append(surf)
-                    if chain_region == "":
-                        chain_region += f"-{surf.id} "
-                    else:
-                        chain_region += f"| -{surf.id} "
-                    concave_face_indexes.add(iFace)
-                    componentMesher.display_face(iFace, color)
-                component_region += f"({chain_region}) "
+                    region_expr += f"-{surf.id} "
+                if component_region == "":
+                    component_region = f"({region_expr})"
+                else:
+                    component_region += f" | ({region_expr})"
+                j += 1
 
-            # non-concave faces
-            facet_indexes = [facet.Index for facet in componentMesher.mesh.Facets]
-            for idx in facet_indexes:
-                if idx in concave_face_indexes:  # skip faces that have been already processed as concave faces
-                    continue
-                face = componentMesher.mesh.Facets[idx]
-                componentMesher.display_face(idx, (150, 150, 150))
-                surf = self.face_to_plane(face)
-                self.surfaces.append(surf)
-                component_region += f"-{surf.id} "
-
-
+            # TODO, test if the regions formaed are convex or not.
             self.region = self.region.union(Region(component_region))
 
         self.position_globally()
