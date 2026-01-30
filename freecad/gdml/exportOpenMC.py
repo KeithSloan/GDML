@@ -1742,6 +1742,10 @@ def exportGDML(first, filepath, fileExt):
         openmc = ET.Element('openmc')
         openmc.append(materials)
         openmc.append(geometry)
+
+        SurfaceExporter.export_surfaces()
+        CellExporter.export_cells()
+
         if platform == "win32":
             indent(geometry)
             indent(materials)
@@ -2150,6 +2154,8 @@ class Region:
 class CellExporter:
     _ids = []  # dictionary of name vs id: __ids[name] = id
     _ids_dict = {}
+    cell_cache = []
+
     def __init__(self, name, material_name=None, region=None, universe=None, fill=None,
                  rotation=None, translation=None):
 
@@ -2173,7 +2179,24 @@ class CellExporter:
         self.translation = translation
         self.universe = universe
 
-    def export(self):
+    @staticmethod
+    def export_cells():
+        for cell in CellExporter.cell_cache:
+            cell.replace_surface_ids(SurfaceExporter.replacement_ids)
+            cell._export()
+
+        CellExporter.cell_cache = []  # reset the cache after exporting
+
+    def replace_surface_ids(self, replacement_dict):
+        ''' replace every occurrence of a surface id in our region with its replacement id'''
+        region = self.region
+        for surface_id in replacement_dict:
+            pattern = rf"([+-]){re.escape(str(surface_id))}\b"
+            replacement = rf"\g<1>{str(replacement_dict[surface_id])}"
+            region = re.sub(pattern, replacement, region)
+        self.region = region
+
+    def _export(self):
         cell = ET.SubElement(geometry, 'cell')
         cell.attrib['name'] = self.name
         cell.attrib['id'] = str(self.id)
@@ -2194,6 +2217,9 @@ class CellExporter:
 
             if self.translation is not None:
                 cell.attrib['translation'] = f"{self.translation.x} {self.translation.y} {self.translation.z}"
+
+    def export(self):
+        CellExporter.cell_cache.append(self)
 
 
 def quadric_coeffs(F, **kwargs):
@@ -2316,14 +2342,16 @@ def paraboloid(x, y, z, k1, k2, center=Vector(0,0,0), rotation=FreeCAD.Rotation(
 class SurfaceExporter:
     _ids = []  # dictionary of name vs id: __ids[name] = id
     _ids_dict = {}
+    cached_surfaces = {}
+    replacement_ids = {}
+
     def __init__(self, name, type, coeffs, boundary="transmission"):
         id = 1
         while id in SurfaceExporter._ids:
             id += 1
         SurfaceExporter._ids.append(id)
         SurfaceExporter._ids_dict[name] = id
-        print(f"Creating {name} id={id}")
-
+#
         self.id = id
         self.type = type
         if name != "":
@@ -2339,11 +2367,19 @@ class SurfaceExporter:
         return  # should be declared abstract
 
     @staticmethod
+    def export_surfaces():
+        for key in SurfaceExporter.cached_surfaces:
+            surface = SurfaceExporter.cached_surfaces[key]
+            surface._export()
+
+    @staticmethod
     def reset_ids():
         SurfaceExporter._ids = []
         SurfaceExporter._ids_dict = {}
+        SurfaceExporter.cached_surfaces = {}
+        SurfaceExporter.replacement_ids = {}
 
-    def export(self):
+    def _export(self):
         surface = ET.SubElement(geometry, 'surface')
         surface.attrib['id'] = str(self.id)
         surface.attrib['name'] = str(self.name)
@@ -2351,19 +2387,33 @@ class SurfaceExporter:
         surface.attrib['coeffs'] = str(self.coeffs)
         surface.attrib['boundary'] = self.boundary
 
+    def export(self):
+        key = self.mykey()
+        if key not in self.cached_surfaces:
+            SurfaceExporter.cached_surfaces[key] = self
+        else:
+            cached_surface = SurfaceExporter.cached_surfaces[key]
+            SurfaceExporter.replacement_ids[self.id] = cached_surface.id
+
     def translate(self, T):
         return
 
     def rotate(self, R):
         return
 
+    def mykey(self):
+        s = ""
+        for w in self.coeffs.strip().split():
+            s += f" {float(w):.6e}"
+        return s
+
     def __hash__(self):
-        # hash coefficients to within 1 part in 10^4. This so when we compare two
+        # hash coefficients to within 1 part in 10^6. This so when we compare two
         # surfaces we will consider them to be the same if all the coefficients agree
-        # to within 1 part in 10^4
+        # to within 1 part in 10^6
         s = []
         for w in self.coeffs.strip().split():
-            s.append(float(f" {float(w):.4e}"))
+            s.append(float(f" {float(w):.6e}"))
 
         return hash(tuple(s))
 
