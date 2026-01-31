@@ -3249,9 +3249,9 @@ class GDMLPolycone(GDMLsolid):  # Thanks to Dam Lamb
                 rmax1 = zplanes[i].rmax * mul
                 z1 = zplanes[i].z * mul
             else:
-                rmin1 = rmin2  # for i > 0, rmin2 will have been defined below
-                rmax1 = rmax2
-                z1 = z2
+                rmin2 = rmin1  # for i > 0, rmin2 will have been defined below
+                rmax2 = rmax1
+                z2 = z1
 
             rmin2 = zplanes[i + 1].rmin * mul
             rmax2 = zplanes[i + 1].rmax * mul
