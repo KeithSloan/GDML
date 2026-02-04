@@ -39,6 +39,8 @@ import Sketcher
 import FreeCAD as App
 import FreeCADGui
 from PySide import QtGui
+import copy
+
 
 from FreeCAD import Vector
 import  BOPTools.SplitAPI
@@ -550,7 +552,6 @@ def quaternion2XYZ(rot):
     and g = atan2(yp, zp)
     """
     v = rot * Vector(0, 0, 1)
-    print(v)
     # solution 1.
     if v.x > 1.0:
         v.x = 1.0
@@ -596,10 +597,6 @@ def exportPosition(name, xml, pos):
     z = pos[2]
 
     posType, posName = GDMLShared.getPositionName(name)
-    print(f"exportPosition: name {name} posType {posType} posName {posName}")
-    print(f"x {x}")
-    print(f"y {y}")
-    print(f"z {z}")
 
     if posType is None:  # The part is not in the gdmlInfo spread spreadsheet
         if x == 0 and y == 0 and z == 0:
@@ -724,10 +721,6 @@ def exportScaling(name, xml, scl):
     )
     ET.SubElement(xml, "scaleref", {"ref": sclName})
 
-
-def processPlacement(name, xml, placement):
-    exportPosition(name, xml, placement.Base)
-    exportRotation(name, xml, placement.Rotation)
 
 #-------------------------- OpenMC Materials exporting code -----------------------------------
 import re
@@ -859,7 +852,6 @@ def material_nuclides(mat):
             nuclide_list.append({'nuclide': isotope.nuclide, 'fraction': isotope.fraction, 'type': 'ao'})
         return nuclide_list
 
-    print(mat)
     mat_obj = FreeCAD.ActiveDocument.getObject(mat)
     if mat_obj is None:
         # perhaps the minus in the name. clean the name
@@ -867,7 +859,6 @@ def material_nuclides(mat):
         mat_obj = FreeCAD.ActiveDocument.getObject(mat)
         print(f"Cannot find object with name {mat}")
 
-    print(mat_obj.Label)
 
     # A Chemical formula
     if hasattr(mat_obj, 'formula'):
@@ -896,10 +887,8 @@ def material_nuclides(mat):
     print(mat_obj.Group)
     # in a mixture the fractions are weight fractions
     for grp in mat_obj.Group:
-        print(grp.Label)
         mat_or_element = grp.Label[:grp.Label.find(' :')]
         weight_fraction = float(grp.Label[1+grp.Label.find(':'):])
-        print(mat_or_element)
         sym = elementSymbol(mat_or_element)
         if sym is not None:  # The mixture involves a natural element
             component_list = material_nuclides(mat_or_element)
@@ -975,8 +964,6 @@ def processMaterials():
     ]:
         Grp = FreeCAD.ActiveDocument.getObject(GName)
         if Grp is not None:
-            # print(Grp.TypeId+" : "+Grp.Label)
-            print(Grp.Label)
             if processGroup(Grp) is False:
                 break
 
@@ -1027,7 +1014,7 @@ def createMaterials(group):
                     temperature += 273.15
                 elif obj.Tunit == 'Fahrenheit' or obj.Tunit == 'F':  # ich!! nobody should do that
                     temperature = 273.15 + (temperature - 32)/9*5
-            item['temperature'] = str(temperature)
+            item.attrib['temperature'] = str(temperature)
 
 
         if hasattr(obj, "Dunit") or hasattr(obj, "Dvalue"):
@@ -1180,22 +1167,6 @@ def getMaterial(obj):
     return material
 
 
-"""
-def printObjectInfo(xmlVol, volName, xmlParent, parentName):
-    print("Process Object : "+obj.Label+' Type '+obj.TypeId)
-    if xmlVol is not None :
-       xmlstr = ET.tostring(xmlVol)
-    else :
-       xmlstr = 'None'
-    print('Volume : '+volName+' : '+str(xmlstr))
-    if xmlParent is not None :
-       xmlstr = ET.tostring(xmlParent)
-    else :
-       xmlstr = 'None'
-    print('Parent : '+str(parentName)+' : '+str(xmlstr))
-"""
-
-
 def invPlacement(placement):
     inv = placement.inverse()
     return inv
@@ -1270,7 +1241,6 @@ def processArrayPart(array):
     while switch(arrayType):
         if case("ortho"):
             placements = arrayUtils.placementList(array)
-            print(f'Number of placements = {len(placements)}')
             for i, placement in enumerate(placements):
                 base.Placement = placement
                 doc.recompute()
@@ -1279,8 +1249,7 @@ def processArrayPart(array):
             break
 
         if case("polar"):
-            placements = arrayUtils.placementList(array)
-            print(f'Number of placements = {len(placements)}')
+            placements = arrayUtils.placementList(array, offsetVector=base.Placement.Base)
             for i, placement in enumerate(placements):
                 base.Placement = placement
                 doc.recompute()
@@ -1299,19 +1268,6 @@ def processArrayPart(array):
 
     base.Placement = saved_placement
     doc.recompute()
-
-def printVolumeInfo(vol, xmlVol, xmlParent, parentName):
-    if xmlVol is not None:
-        xmlstr = ET.tostring(xmlVol)
-    else:
-        xmlstr = "None"
-    print(xmlstr)
-    GDMLShared.trace("     " + vol.Label + " - " + str(xmlstr))
-    if xmlParent is not None:
-        xmlstr = ET.tostring(xmlParent)
-    else:
-        xmlstr = "None"
-    GDMLShared.trace("     Parent : " + str(parentName) + " : " + str(xmlstr))
 
 
 def createWorldVol(volName):
@@ -1916,8 +1872,10 @@ class AssemblyExporter(GeomObjExporter):
 
         arrayOfPart = False
         if isArrayType(firstChild) and firstChild.Base.isDerivedFrom("App::Part"):
+            parent_stack.append(self.obj)
             processArrayPart(firstChild)
             arrayOfPart = True
+            parent_stack.pop()
 
         for child in obj_top_children_dict[obj]:
             if child is firstChild and arrayOfPart:
@@ -2345,7 +2303,7 @@ class SurfaceExporter:
     cached_surfaces = {}
     replacement_ids = {}
 
-    def __init__(self, name, type, coeffs, boundary="transmission"):
+    def __init__(self, name, type, coeffs="", boundary="transmission"):
         id = 1
         while id in SurfaceExporter._ids:
             id += 1
@@ -2428,11 +2386,11 @@ class SurfaceExporter:
 
 class PlaneSurfaceExporter(SurfaceExporter):
     def __init__(self, name:str, normal:FreeCAD.Vector, D:float):
+        super().__init__(name, "plane")
         self.normal = normal
         self.D = 0.1*D/self.normal.Length
         self.normal.normalize()
         self.to_coeffs()
-        super().__init__(name, "plane", self.coeffs)
 
     def translate(self, T):
         T = 0.1 * T  # convert from mm to cm for openmc
@@ -2454,10 +2412,10 @@ class PlaneSurfaceExporter(SurfaceExporter):
 
 class SphereSurfaceExporter(SurfaceExporter):
     def __init__(self, name, center, radius):
+        super().__init__(name, "sphere")
         self.center = 0.1*center
         self.radius = 0.1*radius
         self.to_coeffs()
-        super().__init__(name, "sphere", self.coeffs)
         self.saved_radius = radius
         self.saved_center = center
 
@@ -2480,11 +2438,11 @@ class SphereSurfaceExporter(SurfaceExporter):
 class CylinderSurfaceExporter(SurfaceExporter):
     def __init__(self, name, center, axis, radius):
         # convert to quadric surface:
+        super().__init__(name, "quadric")
         self.center = 0.1*center
         self.axis = axis
         self.radius = 0.1*radius
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
         self.saved_radius = radius
         self.saved_center = center
         self.saved_axis = axis
@@ -2498,6 +2456,7 @@ class CylinderSurfaceExporter(SurfaceExporter):
                                                       center=self.center, axis=self.axis)
 
         self.coeffs = f"{A} {B} {C} {D} {E} {F} {G} {H} {J} {K}"
+        print(self.name, self.coeffs)
 
     def translate(self, T):
         T = 0.1 * T  # convert from mm to cm for openmc
@@ -2514,12 +2473,12 @@ class CylinderSurfaceExporter(SurfaceExporter):
 class EllipticalCylinderSurfaceExporter(SurfaceExporter):
     def __init__(self, name, center,dx, dy):
         # convert to quadric surface:
+        super().__init__(name, "quadric")
         self.center = 0.1*center
         self.dx = 0.1*dx
         self.dy = 0.1*dy
         self.rotation = FreeCAD.Rotation()
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
         self.saved_dx = dx
         self.saved_dy = dy
         self.saved_rotation = FreeCAD.Rotation()
@@ -2551,13 +2510,13 @@ class EllipticalCylinderSurfaceExporter(SurfaceExporter):
 class EllipticalConeSurfaceExporter(SurfaceExporter):
     def __init__(self, name, center, dx, dy, zHeight):
         # convert to quadric surface:
+        super().__init__(name, "quadric")
         self.center = 0.1*center
         self.dx = dx  # this is  ration, so no conversion from mm to cm
         self.dy = dy
         self.zHeight = 0.1*zHeight
         self.rotation = FreeCAD.Rotation()
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
         self.saved_center = center
         self.saved_dx = dx
         self.saved_dy = dy
@@ -2596,12 +2555,12 @@ class ConeSurfaceExporter(SurfaceExporter):
         :param: theta: cone half angle, in radians
         '''
         # convert to quadric surface:
+        super().__init__(name, "quadric")
         self.center = 0.1*center
         self.axis = axis
         self.theta = theta
 
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
 
         self.saved_center = center
         self.saved_axis = axis
@@ -2635,6 +2594,7 @@ class EllipsoidSurfaceExporter(SurfaceExporter):
         :param: theta: cone half angle, in radians
         '''
         # convert to quadric surface:
+        super().__init__(name, "quadric")
         self.ax = 0.1*ax
         self.by = 0.1*by
         self.cz = 0.1*cz
@@ -2642,7 +2602,6 @@ class EllipsoidSurfaceExporter(SurfaceExporter):
         self.rotation = rotation
 
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
         self.saved_ax = ax
         self.saved_by = by
         self.saved_cz = cz
@@ -2692,6 +2651,8 @@ class ParaboloidSurfaceExporter(SurfaceExporter):
         # ==> k2 = (rlo^2+rhi^2)/2
 
         # convert to quadric surface:
+        super().__init__(name, "quadric")
+
         dz *= 0.1  # convert to cm
         rlo *= 0.1
         rhi *= 0.1
@@ -2701,7 +2662,6 @@ class ParaboloidSurfaceExporter(SurfaceExporter):
         self.rotation = rotation
 
         self.to_quadric()
-        super().__init__(name, "quadric", self.coeffs)
 
         self.saved_rlo = rlo
         self.saved_rhi = rhi
@@ -2891,6 +2851,9 @@ class SolidExporter:
         self.region = None
         self.surfaces = []
 
+    def copy(self):
+        return  SolidExporter(self.obj)
+
     def generate_surfaces(self):
         ''' build the list of surfaces. Implemented by implementors'''
         return
@@ -2917,6 +2880,10 @@ class SolidExporter:
     def export(self):
         if self.region is None:
             self.generate_surfaces()
+        if hasattr(self.obj, "BoundaryType"):
+            boundary_type = self.obj.BoundaryType
+            self.set_boundary_type(boundary_type)
+
         for surf in self.surfaces:
             surf.export()
         return
@@ -3174,20 +3141,20 @@ class TubeExporter(SolidExporter):
         normal = Vector(0, 0, 1)
 
         D = self.obj.Height.Value
-        top_surface = PlaneSurfaceExporter(f"{self.obj.Label}_top)", normal, D)
+        top_surface = PlaneSurfaceExporter(f"{self.obj.Label}_top", normal, D)
         D = 0
-        bottom_surface = PlaneSurfaceExporter(f"{self.obj.Label}_bot)", normal, D)
+        bottom_surface = PlaneSurfaceExporter(f"{self.obj.Label}_bot", normal, D)
 
+        axis = normal
+        center = Vector(0, 0, 0)
         if self.obj.InnerRadius != 0:
             radius = self.obj.InnerRadius.Value
-            axis = normal
-            center = Vector(0, 0, 0)
-            inner_surface = CylinderSurfaceExporter(f"{self.name()}_ir)", center, axis, radius)
+            inner_surface = CylinderSurfaceExporter(f"{self.name()}_ir", center, axis, radius)
         else:
             inner_surface = None
 
         radius = self.obj.OuterRadius.Value
-        outer_surface = CylinderSurfaceExporter(f"{self.name()}_ot)", center, axis, radius)
+        outer_surface = CylinderSurfaceExporter(f"{self.name()}_or", center, axis, radius)
 
         self.surfaces = [top_surface, bottom_surface, outer_surface]
         if inner_surface is not None:
@@ -4904,7 +4871,6 @@ class PolarArrayExporter(SolidExporter):
 
         self.region = Region("")
 
-        print(base.Label)
         appPartBase = False
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
@@ -4926,7 +4892,7 @@ class PolarArrayExporter(SolidExporter):
         # Since the array itself is not exported, but rather the array base is,
         # the base global position does not reflect the arrays global position
 
-        placements = arrayUtils.placementList(self.obj, rot=arrayRotation)
+        placements = arrayUtils.placementList(self.obj, offsetVector=basePos)
 
         # I'll try doing the rotations from scratch
         # let GlobalPlacement = G   # Note: FOR AN ARRAY GLOBAL PLACEMENT APPLIES to the ARRAY, NOT BASE of the ARRAY
@@ -4941,35 +4907,31 @@ class PolarArrayExporter(SolidExporter):
         # We need to first unrotate and untranslate the surfaces, then translate and rotate by the array rotation and
         # translation as above
         arrayObj = self.obj
-        G = arrayObj.getGlobalPlacement()
+        G = arrayObj.getGlobalPlacement()   # In top_obj_dict, arrays don't have children.
         P = arrayObj.Placement
         Pinv = P.inverse()
         C = G*Pinv  # this is what puts the array in its position globally
         baseInvPlacement = base.Placement.inverse()
 
         for placement in placements:
-            rot = arrayRotation*placement.Rotation
-            local_rotated_position = arrayObj.Placement.Base + self.obj.Center + rot*(basePos - self.obj.Center)
-            global_rotated_position = C*local_rotated_position
-
-            # rot = rot * baseRotation
-            # rot.Angle = -rot.Angle  # undo angle reversal by exportRotation
-
+            placement1 = placement*baseInvPlacement
+            rot = placement1.Rotation
+            pos = placement1.Base
 
             solidExporter = SolidExporter.getExporter(base)
             # get region generates a region with # global translation and global rotation
             # let us assume now that object rotation is 0
-            # array utils give position rotated about array center then shifter by array center
+            # array utils give position rotated about array center then shifted by array center
             #
-            item_region = solidExporter.get_region()  # also positions solidExorter object globally
-            # undo surfaces positioning
-            solidExporter.translate(baseInvPlacement.Base)
-            solidExporter.rotate(baseInvPlacement.Rotation)
-            # then apply rotated global position
+            item_region = solidExporter.get_region()
+            # the get_region will position the base globally already. Here we should only add the array
+            # placements
             solidExporter.rotate(rot)
-            solidExporter.translate(global_rotated_position)
+            solidExporter.translate(pos)
             self.region = self.region.union(item_region)
             self.surfaces += solidExporter.surfaces
+
+        # self.position_globally()  # this should take care of the array's global position
 
 
 class PathArrayExporter(SolidExporter):
@@ -4981,7 +4943,6 @@ class PathArrayExporter(SolidExporter):
         self.region = Region("")
 
         base = self.obj.Base
-        print(base.Label)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
                 f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
@@ -5023,7 +4984,6 @@ class PointArrayExporter(SolidExporter):
         self.region = Region("")
 
         base = self.obj.Base
-        print(base.Label)
         if hasattr(base, "TypeId") and base.TypeId == "App::Part":
             print(
                 f"**** Arrays of {base.TypeId} ({base.Label}) currently not supported ***"
