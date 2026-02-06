@@ -1,5 +1,0 @@
-# The following files were created outside this installation path during the installation of this Addon on 2023-11-09 20:53:48.681819+00:00:
-/Users/keithsloan/Library/Application Support/FreeCAD/Macro/ProcessDirStruct_Brep.FCMacro
-/Users/keithsloan/Library/Application Support/FreeCAD/Macro/ExpandArrayCN3.FCMacro
-/Users/keithsloan/Library/Application Support/FreeCAD/Macro/ExpandArray.FCMacro
-/Users/keithsloan/Library/Application Support/FreeCAD/Macro/ExpandArray-MMH-5.FCMacro
