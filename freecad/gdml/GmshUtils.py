@@ -23,9 +23,7 @@
 # *                                                                        *
 # **************************************************************************
 
-import gmsh
 import os
-import numpy as np
 import sys
 import FreeCAD
 
@@ -37,8 +35,26 @@ __url__ = ["http://www.freecadweb.org"]
 This Script includes the GUI Commands of the GDML module
 """
 
-# Note: gmsh must be installed for the same Python version that FreeCAD uses.
-# Install with: pip install gmsh  (using FreeCAD's bundled Python if needed)
+# Gmsh must be installed for the same Python interpreter that FreeCAD uses.
+# If the import below fails, install gmsh with FreeCAD's Python, e.g.:
+#   /path/to/freecad-python -m pip install gmsh
+# The Python version in use is reported in the ImportError message below.
+
+_py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+_py_executable = sys.executable
+
+try:
+    import gmsh
+    import numpy as np
+    _GMSH_AVAILABLE = True
+except ImportError as _gmsh_import_error:
+    _GMSH_AVAILABLE = False
+    FreeCAD.Console.PrintError(
+        f"[GmshUtils] Failed to import gmsh: {_gmsh_import_error}\n"
+        f"  FreeCAD is running Python {_py_version} ({_py_executable})\n"
+        f"  Install gmsh for this Python:\n"
+        f"    {_py_executable} -m pip install gmsh\n"
+    )
 
 
 def Gmsh(obj):
@@ -59,12 +75,18 @@ def Gmsh(obj):
 
 
 def initialize():
+    if not _GMSH_AVAILABLE:
+        FreeCAD.Console.PrintError(
+            f"[GmshUtils] Cannot initialize: gmsh is not installed for "
+            f"Python {_py_version} ({_py_executable})\n"
+        )
+        return
+    print(f"[GmshUtils] FreeCAD Python {_py_version} — Gmsh API {gmsh.GMSH_API_VERSION}")
     try:
         gmsh.initialize()
     except Exception as e:
         print(f"Gmsh initialize failed: {e}")
         print("Gmsh shared library must be accessible to FreeCAD's Python")
-    print(f"Gmsh version {gmsh.GMSH_API_VERSION}")
     gmsh.clear()
     gmsh.option.setNumber("Mesh.Algorithm3D", 1)
     gmsh.option.setNumber("Mesh.Algorithm", 6)

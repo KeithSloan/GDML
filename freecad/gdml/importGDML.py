@@ -3632,7 +3632,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     parseVolume(processType, doc, volDict, part, world, phylvl, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
-    if len(part.OutList) == 2 and initFlg is False:
+    if FreeCAD.GuiUp and len(part.OutList) == 2 and initFlg is False:
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = "Shaded"
     FreeCAD.ActiveDocument.recompute()

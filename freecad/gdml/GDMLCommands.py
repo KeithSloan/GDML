@@ -2715,10 +2715,11 @@ class AddTessellateTask:
         if FreeCAD.GuiUp:
             if self.operationType in [1, 2]:
                 self.obj.ViewObject.Visibility = False
-                ViewProvider(self.tess.ViewObject)
-                self.tess.ViewObject.DisplayMode = "Wireframe"
-                self.tess.recompute()
-                # FreeCAD.ActiveDocument.recompute()
+                if self.tess is not None:
+                    ViewProvider(self.tess.ViewObject)
+                    self.tess.ViewObject.DisplayMode = "Wireframe"
+                    self.tess.recompute()
+                    # FreeCAD.ActiveDocument.recompute()
             else:
                 print("Recompute : " + self.obj.Name)
                 self.obj.recompute()
@@ -2830,8 +2831,9 @@ class AddTessellateTask:
                 self.obj.tessellated.meshCurveLen = float(mshCL)
                 self.obj.tessellated.meshPointFromLen = float(mshPL)
             elif self.operationType == 1:
-                FreeCADGui.Selection.clearSelection()
-                FreeCADGui.Selection.addSelection(self.tess)
+                if FreeCAD.GuiUp and self.tess is not None:
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(self.tess)
 
 
     def leaveEvent(self, event):
@@ -2971,10 +2973,10 @@ class TessGmshMinFeature:
                                 print("Update panel for EXISTING Gmsh Tessellate")
                                 panel.form.meshInfoLayout = QtGui.QHBoxLayout()
                                 panel.form.meshInfoLayout.addWidget(
-                                    oField("Vertex", 6, str(len(obj.Proxy.Vertex)))
-                                )  
+                                    oField("Vertex", 6, str(len(obj.Proxy.vertex)))
+                                )
                                 panel.form.meshInfoLayout.addWidget(
-                                    oField("Facets", 6, str(len(obj.Proxy.Facets)))
+                                    oField("Facets", 6, str(len(obj.Proxy.facets)))
                                 )
                     FreeCADGui.Control.showDialog(panel)
                 else:

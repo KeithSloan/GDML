@@ -4407,7 +4407,8 @@ class GDMLGmshTessellated(GDMLsolid):
         self.Object.numVertex = len(self.vertex)
         fp.Proxy.facets = self.facets
         self.Object.numFacets = len(self.facets)
-        FreeCADGui.updateGui()
+        if FreeCAD.GuiUp:
+            FreeCADGui.updateGui()
 
     # def execute(self, fp): in GDMLsolid
 

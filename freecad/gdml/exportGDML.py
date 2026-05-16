@@ -913,6 +913,8 @@ def addVolRef(volxml, volName, obj, solidName=None):
 
     if (
         addColor is True
+        and FreeCAD.GuiUp
+        and hasattr(obj, "ViewObject")
         and hasattr(obj.ViewObject, "ShapeColor")
         and volName != WorldVOL
     ):
@@ -2938,7 +2940,7 @@ def scanForStl(first, gxml, path, flag):
             # Set Defaults
             colHex = "ff0000"
             mat = "G4Si"
-            if hasattr(first.ViewObject, "ShapeColor"):
+            if FreeCAD.GuiUp and hasattr(first, "ViewObject") and hasattr(first.ViewObject, "ShapeColor"):
                 # print(dir(first))
                 col = first.ViewObject.ShapeColor
                 colHex = hexInt(col[0]) + hexInt(col[1]) + hexInt(col[2])
@@ -4925,7 +4927,10 @@ class RevolutionExporter(SolidExporter):
         revolveCenter = revolveObj.Base
 
         # Fractional deviation
-        Deviation = revolveObj.ViewObject.Deviation / 100.0
+        if FreeCAD.GuiUp and hasattr(revolveObj, "ViewObject"):
+            Deviation = revolveObj.ViewObject.Deviation / 100.0
+        else:
+            Deviation = 0.001  # FreeCAD default fractional deviation
 
         # rotation to take revolve direction to z -axis
         rot_dir_to_z = FreeCAD.Rotation(axis, Vector(0, 0, 1))
@@ -5695,7 +5700,10 @@ class ExtrusionExporter(SolidExporter):
         super().__init__(extrudeObj)
         self.sketchObj = extrudeObj.Base
         self.lastName = self.obj.Label  # initial name: might be modified later
-        Deviation = self.obj.ViewObject.Deviation / 100.0
+        if FreeCAD.GuiUp and hasattr(self.obj, "ViewObject"):
+            Deviation = self.obj.ViewObject.Deviation / 100.0
+        else:
+            Deviation = 0.001  # FreeCAD default fractional deviation
         # generate the positions that get computed during export
         self.export(doExport=False)
 
@@ -5914,9 +5922,13 @@ class AutoTessellateExporter(SolidExporter):
         else:
             AutoTessellateExporter.shapesDict[shape] = self.name()
 
-        viewObject = self.obj.ViewObject
-        deflection = viewObject.Deviation
-        angularDeflection = math.radians(viewObject.AngularDeflection)
+        if FreeCAD.GuiUp and hasattr(self.obj, "ViewObject"):
+            viewObject = self.obj.ViewObject
+            deflection = viewObject.Deviation
+            angularDeflection = math.radians(viewObject.AngularDeflection)
+        else:
+            deflection = 0.1        # sensible default: 0.1 mm linear deflection
+            angularDeflection = math.radians(28.5)  # FreeCAD default angular deflection
         mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=deflection,
                                       AngularDeflection=angularDeflection, Relative=False)
 
