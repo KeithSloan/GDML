@@ -2631,6 +2631,11 @@ class AddMinTessellateTask:
                     # Indicate that Object has been Tessellated
                     self.obj.addProperty("App::PropertyLinkGlobal","tessellated","Base")
                     self.obj.tessellated = self.tess
+                    # Suppress original from GDML export — tessellated version replaces it
+                    if not hasattr(self.obj, "exportFlag"):
+                        self.obj.addProperty("App::PropertyBool", "exportFlag",
+                                             "Base", "Export to GDML")
+                    self.obj.exportFlag = False
             #else:
             #    self.processMesh(self.vertex, self.facets)
             self.processMesh(self.vertex, self.facets)
@@ -2806,6 +2811,11 @@ class AddTessellateTask:
                     # Indicate that Object has been Tessellated
                     self.obj.addProperty("App::PropertyLinkGlobal","tessellated","Base")
                     self.obj.tessellated = self.tess
+                    # Suppress original from GDML export — tessellated version replaces it
+                    if not hasattr(self.obj, "exportFlag"):
+                        self.obj.addProperty("App::PropertyBool", "exportFlag",
+                                             "Base", "Export to GDML")
+                    self.obj.exportFlag = False
             print(f"Number of Facets {len(self.facets)}")
             self.processMesh(self.vertex, self.facets)
             print(f"Operation {self.operationType}")
