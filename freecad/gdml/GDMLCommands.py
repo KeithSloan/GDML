@@ -504,7 +504,7 @@ class SetBorderSurfaceFeature:
                 return obj
 
     def popup(self, msg):
-        from PySide2 import QtWidgets
+        from PySide import QtWidgets
         msg_box = QtWidgets.QMessageBox()
         msg_box.setIcon(QtWidgets.QMessageBox.Information)
         msg_box.setText(msg)
@@ -2114,7 +2114,8 @@ class AddDecimateTask:
         self.form.buttonToSize.clicked.connect(self.actionToSize)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        btn = QtGui.QDialogButtonBox.Close
+        return btn.value if hasattr(btn, 'value') else int(btn)
 
     def isAllowedAlterSelection(self):
         return True
@@ -2488,7 +2489,8 @@ class AddMinTessellateTask:
         # self.form.buttonrefresh.clicked.connect(self.refreshelement)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        btn = QtGui.QDialogButtonBox.Close
+        return btn.value if hasattr(btn, 'value') else int(btn)
 
     def isAllowedAlterSelection(self):
         return True
@@ -2662,7 +2664,8 @@ class AddTessellateTask:
         # self.form.buttonrefresh.clicked.connect(self.refreshelement)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        btn = QtGui.QDialogButtonBox.Close
+        return btn.value if hasattr(btn, 'value') else int(btn)
 
     def isAllowedAlterSelection(self):
         return True

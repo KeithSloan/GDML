@@ -4350,6 +4350,49 @@ class GDMLGmshTessellated(GDMLsolid):
     def execute(self, fp):  # Here for remesh?
         self.createGeometry(fp)
 
+    def __getstate__(self):
+        """Serialize proxy state for FreeCAD document save.
+        vertex (list of FreeCAD.Vector) and facets (list of int lists) are
+        stored as plain lists so they survive JSON serialisation."""
+        state = {"type": self.Type}
+        if hasattr(self, "vertex"):
+            state["vertex"] = [[v.x, v.y, v.z] for v in self.vertex]
+        if hasattr(self, "facets"):
+            state["facets"] = [list(f) for f in self.facets]
+        if hasattr(self, "colour"):
+            state["colour"] = self.colour
+        if hasattr(self, "SourceObj") and self.SourceObj is not None:
+            try:
+                state["sourceObjName"] = self.SourceObj.Name
+            except Exception:
+                pass
+        return state
+
+    def __setstate__(self, state):
+        """Restore proxy state after FreeCAD document load."""
+        if state is None or state == {}:
+            return
+        key = "type" if "type" in state else "Type"
+        self.Type = state.get(key, "GDMLGmshTessellated")
+        if "vertex" in state:
+            self.vertex = [FreeCAD.Vector(v[0], v[1], v[2])
+                           for v in state["vertex"]]
+        if "facets" in state:
+            self.facets = [f for f in state["facets"]]
+        self.colour = state.get("colour", None)
+        # SourceObj is a live document object — look it up in onDocumentRestored
+        self._sourceObjName = state.get("sourceObjName", None)
+        self.SourceObj = None
+
+    def onDocumentRestored(self, fp):
+        """Re-link SourceObj after document load."""
+        self.Object = fp
+        if hasattr(self, "_sourceObjName") and self._sourceObjName is not None:
+            try:
+                self.SourceObj = fp.Document.getObject(self._sourceObjName)
+            except Exception:
+                self.SourceObj = None
+
     def addProperties(self):
         print("Add Properties")
 
@@ -4369,6 +4412,9 @@ class GDMLGmshTessellated(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
+        if not (hasattr(self, "vertex") and hasattr(self, "facets")):
+            # Not yet meshed, or proxy state not yet restored — nothing to draw
+            return
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         FCfaces = []

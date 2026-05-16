@@ -168,7 +168,7 @@ class MaterialMapList(QtGui.QScrollArea):
 
 
     def getMatColour(self, objMat):
-        from PySide2.QtGui import QColor  # Use PySide2, or PyQt5.QtGui for PyQt5
+        from PySide.QtGui import QColor
 
         #print(f"objMtlDict {self.objMtlDict}")
         #print(f"objMat {objMat} {self.objMtlDict[objMat]}")
