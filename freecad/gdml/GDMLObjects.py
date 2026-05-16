@@ -5351,21 +5351,29 @@ class GDMLfraction(GDMLcommon):
         obj.Label = self.makeLabel(obj)
 
     def makeLabel(self, obj):
-        return f"{obj.ref} : {float(obj.n):.4f}"
+        try:
+            # Convert n to float if it is a quantity
+            nval = float(obj.n) if hasattr(obj.n, 'getValue') or not isinstance(obj.n, (int, float)) else obj.n
+            return f"{obj.ref} : {nval:.4f}" if isinstance(nval, (int, float)) else f"{obj.ref} : {obj.n}"
+        except AttributeError:
+            # Missing 'ref' or 'n' – return the existing label unchanged
+            return getattr(obj, 'Label', '')
 
     def onChanged(self, obj, prop):
         # React to both label edits and property edits
         if prop in ("Label", "n"):
-            if self._updatingLabel:
+            # Guard against recursive updates; default to False if missing
+            if getattr(self, "_updatingLabel", False):
                 return
 
-            self._updatingLabel = True
+            # Ensure the attribute exists before setting
+            setattr(self, "_updatingLabel", True)
             try:
                 newLabel = self.makeLabel(obj)
                 if obj.Label != newLabel:
                     obj.Label = newLabel
             finally:
-                self._updatingLabel = False
+                setattr(self, "_updatingLabel", False)
 
 
 class GDMLcomposite(GDMLcommon):
@@ -5384,20 +5392,33 @@ class GDMLcomposite(GDMLcommon):
         obj.Label = self.makeLabel(obj)
 
     def makeLabel(self, obj):
-        return f"{obj.ref} : {obj.n}"
+        # fetch attributes safely
+        ref = getattr(obj, 'ref', None)
+        n = getattr(obj, 'n', None)
+        if ref is not None and n is not None:
+            try:
+                # If n is a FreeCAD quantity, convert to its value for display
+                val = float(n) if hasattr(n, 'getValue') or not isinstance(n, (int, float)) else n
+                return f"{ref} : {val}"
+            except Exception:
+                return f"{ref} : {n}"
+        # fallback
+        return getattr(obj, 'Label', '')
 
     def onChanged(self, obj, prop):
         if prop in ("Label", "n", "ref"):
-            if self._updatingLabel:
+            # Guard against recursive updates; default to False if missing
+            if getattr(self, "_updatingLabel", False):
                 return
 
-            self._updatingLabel = True
+            # Ensure the attribute exists before setting
+            setattr(self, "_updatingLabel", True)
             try:
                 newLabel = self.makeLabel(obj)
                 if obj.Label != newLabel:
                     obj.Label = newLabel
             finally:
-                self._updatingLabel = False
+                setattr(self, "_updatingLabel", False)
 
 
 

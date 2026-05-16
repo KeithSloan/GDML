@@ -34,10 +34,8 @@
 # from FreeCAD import *
 import FreeCAD
 import PartGui
-try:
-    from draftguitools import gui_arrays
-except:
-    import DraftTools
+
+
 import SketcherGui
 import MeshGui
 import FreeCADGui
@@ -167,7 +165,6 @@ class GDML_Workbench(FreeCADGui.Workbench):
 
         tbPartCmds = [
             "Separator",
-            "Draft_ArrayTools",
             "Part_Mirror",
             "Separator",
             "Sketcher_NewSketch",
