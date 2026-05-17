@@ -1459,12 +1459,17 @@ def processFractionsComposites(obj, item):
     # Fractions are used in Material and Elements
     if isinstance(obj.Proxy, GDMLfraction):
         # print("GDML fraction :" + obj.Label)
-        # need to strip number making it unique
+        # GDMLfraction stores ref as the property group name, not as a
+        # separate property.  Recover it via getGroupOfProperty("n").
+        ref = (
+            str(obj.ref)
+            if hasattr(obj, "ref")
+            else obj.getGroupOfProperty("n")
+        )
         ET.SubElement(
             item,
             "fraction",
-            {"n": str(obj.n), "ref": str(obj.ref)},
-            #{"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
+            {"n": str(obj.n), "ref": ref},
         )
 
     if isinstance(obj.Proxy, GDMLcomposite):
@@ -1473,7 +1478,6 @@ def processFractionsComposites(obj, item):
             item,
             "composite",
             {"n": str(obj.n), "ref": str(obj.ref)},
-            #{"n": str(obj.n), "ref": nameFromLabel(obj.Label)},
         )
 
 
