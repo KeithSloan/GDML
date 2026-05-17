@@ -166,7 +166,7 @@ def MonteCarloMoments(shape, nsim: int) -> Moments:
     return moments
 
 
-def topObjects(part: App.Part) -> list:
+def topObjects(part) -> list:
     ''' return a list containing the top shapes contained in part
     a top shape may contain other shapes, but cannot be contained in
     other shapes within Part
@@ -177,7 +177,7 @@ def topObjects(part: App.Part) -> list:
         return []
 
 
-def partCM(part: App.Part) -> tuple:
+def partCM(part) -> tuple:
     '''
     Note, what we are calling the total moment of inertia is NOT the total moment
     of inertia at all!
@@ -250,6 +250,26 @@ def partCM(part: App.Part) -> tuple:
             totVol += vol
 
             # prettyPrint(obj.Label, vol, cmglob, IIorigin)
+
+        elif obj.TypeId == "Mesh::Feature":
+            mesh = obj.Mesh
+            shape = Part.Shape()
+            shape.makeShapeFromMesh(mesh.Topology, 0.5)
+            solid = Part.makeSolid(shape)
+            II0 = solid.MatrixOfInertia
+            globalPlacement = obj.getGlobalPlacement()
+            rotglob = globalPlacement.Rotation
+            rotobj = obj.Placement.Rotation
+            cm0 = shape.CenterOfGravity
+            vol = shape.Volume
+            cmglob = globalPlacement.Base + rotglob*rotobj.inverted()*(cm0 - obj.Placement.Base)
+            mom0: Moments = Moments(vol, cmglob, II0)
+            mom0.M = mom0.inertiaRotated(rotobj.inverted())
+            mom0.M = mom0.inertiaRotated(rotglob)
+            IIorigin: Matrix = mom0.inertiaAboutOrigin()
+            II += IIorigin
+            cm += vol * cmglob
+            totVol += vol
 
         elif obj.TypeId == 'App::Part':
             partVol, cm0, II0 = partCM(obj)

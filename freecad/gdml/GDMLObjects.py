@@ -2249,7 +2249,7 @@ class GDMLTorus(GDMLsolid):
         sdir = FreeCAD.Vector(0, 0, 1)
 
         outerTorus = Part.makeTorus(
-            rtor, rmax, spnt, sdir, 0, 360, getAngleDeg(fp.aunit, fp.deltaphi)
+            rtor, rmax, spnt, sdir, -180, 180, getAngleDeg(fp.aunit, fp.deltaphi)
         )
         if rmin > 0:
             innerTorus = Part.makeTorus(
@@ -2257,15 +2257,16 @@ class GDMLTorus(GDMLsolid):
                 rmin,
                 spnt,
                 sdir,
-                0,
-                360,
+                -180,
+                180,
                 getAngleDeg(fp.aunit, fp.deltaphi),
             )
             torus = outerTorus.cut(innerTorus)
         else:
             torus = outerTorus
+
         if fp.startphi != 0:
-            torus.rotate(spnt, sdir, getAngleDeg(fp.aunit, fp.startphi))
+            torus = torus.rotated(spnt, sdir, getAngleDeg(fp.aunit, fp.startphi))
         fp.Shape = torus
         if hasattr(fp, "scale"):
             super().scale(fp)
@@ -2365,7 +2366,7 @@ class GDMLTwistedbox(GDMLsolid):
             y = mul * fp.y
             z = mul * fp.z
             angle = getAngleDeg(fp.aunit, fp.PhiTwist)
-            # lower rectanngle vertexes
+            # lower rectangle vertexes
             v1 = FreeCAD.Vector(-x / 2, -y / 2, -z / 2)
             v2 = FreeCAD.Vector(x / 2, -y / 2, -z / 2)
             v3 = FreeCAD.Vector(x / 2, y / 2, -z / 2)
@@ -3461,89 +3462,106 @@ class GDMLSphere(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        import math
-        import FreeCAD, Part
-
+        # Based on code by Dam Lamb
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         rmax = mul * fp.rmax
         if rmax <= 0.0:
             return
         rmin = mul * fp.rmin
-
         spos = FreeCAD.Vector(0, 0, 0)
         sdir = FreeCAD.Vector(0, 0, 1)
         HalfPi = math.pi / 2.0
-        tol = 1e-6  # small tolerance to avoid floating point errors
-
-        # Handle phi slicing
-        deltaphiDeg = getAngleDeg(fp.aunit, fp.deltaphi)
-        if 0 < deltaphiDeg < 360.0:
-            sphere = Part.makeSphere(rmax, spos, sdir, -90.0, 90.0, deltaphiDeg)
+        deltaphi_deg = getAngleDeg(fp.aunit, fp.deltaphi)
+        if deltaphi_deg < 360.0 and deltaphi_deg > 0:
+            sphere2 = Part.makeSphere(
+                rmax, spos, sdir, -90.0, 90.0, deltaphi_deg
+            )
             if fp.startphi != 0:
-                sphere.rotate(spos, sdir, getAngleDeg(fp.aunit, fp.startphi))
+                sphere2.rotate(spos, sdir, getAngleDeg(fp.aunit, fp.startphi))
         else:
-            sphere = Part.makeSphere(rmax)
+            sphere2 = Part.makeSphere(rmax)
 
-        # Convert starttheta and deltatheta to radians
+        # if starttheta > 0 cut the upper cone
         startthetaRad = getAngleRad(fp.aunit, fp.starttheta)
-        deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
-        thetaSumRad = startthetaRad + deltathetaRad
+        startthetaDeg = getAngleDeg(fp.aunit, fp.starttheta)
 
-        # ----- Cut upper part if starttheta > 0 -----
-        if startthetaRad > tol:
-            if startthetaRad < HalfPi:
-                # Small theta cut - use cone
-                h = rmax * math.cos(startthetaRad)
-                r_top = rmax * math.sin(startthetaRad)
-                if h > tol:
-                    cone = Part.makeCone(0.0, r_top, h, spos, FreeCAD.Vector(0, 0, 1))
-                    sphere = sphere.cut(cone)
-            else:
-                # Theta > HalfPi - use cylinder cut to be safe
-                cyl = Part.makeCylinder(
-                    2.0 * rmax, rmax, spos + FreeCAD.Vector(0, 0, rmax * math.cos(startthetaRad))
+        if startthetaDeg > 0.0:
+            if startthetaDeg == 90.0:
+                cylToCut = Part.makeCylinder(
+                    2.0 * rmax, rmax, FreeCAD.Vector(0, 0, 0)
                 )
-                sphere = sphere.cut(cyl)
+                sphere2 = sphere2.cut(cylToCut)
+            elif startthetaDeg < 90.0:
+                sphere2 = sphere2.cut(
+                    Part.makeCone(
+                        0.0,
+                        rmax * math.sin(startthetaRad),
+                        rmax * math.cos(startthetaRad),
+                    )
+                )
 
-        # ----- Cut lower part if deltatheta + starttheta < pi -----
-        if thetaSumRad < math.pi - tol:
-            if thetaSumRad > HalfPi:
-                # Cone cut downward
-                h = rmax * math.cos(math.pi - thetaSumRad)
-                r_top = rmax * math.sin(math.pi - thetaSumRad)
-                if h > tol:
-                    cone = Part.makeCone(0.0, r_top, h, spos, FreeCAD.Vector(0, 0, -1))
-                    sphere = sphere.cut(cone)
-                # Optional cylinder to clean bottom
-                cyl = Part.makeCylinder(
+                cylToCut = Part.makeCylinder(
                     2.0 * rmax,
                     rmax,
-                    spos + FreeCAD.Vector(0, 0, rmax * (-1 + math.cos(thetaSumRad))),
+                    FreeCAD.Vector(0, 0, rmax * math.cos(startthetaRad)),
                 )
-                sphere = sphere.cut(cyl)
-            elif abs(thetaSumRad - HalfPi) < tol:
-                # HalfPi - simple cylinder cut
-                cyl = Part.makeCylinder(2.0 * rmax, rmax, spos + FreeCAD.Vector(0, 0, -rmax))
-                sphere = sphere.cut(cyl)
-            elif thetaSumRad > tol:
-                # Small thetaSum - use cone intersection
-                cone = Part.makeCone(0.0, 2 * rmax * math.tan(thetaSumRad), 2 * rmax, spos, FreeCAD.Vector(0, 0, -1))
-                sphere = sphere.common(cone)
+                sphere2 = sphere2.cut(cylToCut)
 
-        # ----- Apply rmin cut if needed -----
-        if 0 < rmin < rmax:
-            inner_sphere = Part.makeSphere(rmin)
-            sphere = sphere.cut(inner_sphere)
+            elif startthetaDeg < 180.0:
+                sphere2 = sphere2.common(
+                    Part.makeCone(
+                        0.0,
+                        rmax / math.cos(math.pi - startthetaRad),
+                        rmax,
+                        spos,
+                        FreeCAD.Vector(0, 0, -1.0),
+                    )
+                )
 
-        # Assign final shape
-        fp.Shape = sphere
+        # if deltatheta -> cut the down cone
+        deltathetaRad = getAngleRad(fp.aunit, fp.deltatheta)
+        thetaSumRad = startthetaRad + deltathetaRad
+        if thetaSumRad < math.pi:
+            if thetaSumRad > HalfPi:
 
-        # Apply scaling if present
+                sphere2 = sphere2.cut(
+                    Part.makeCone(
+                        0.0,
+                        rmax * math.sin(math.pi - thetaSumRad),
+                        rmax * math.cos(math.pi - thetaSumRad),
+                        spos,
+                        FreeCAD.Vector(0, 0, -1.0),
+                    )
+                )
+
+                cylToCut = Part.makeCylinder(
+                    2.0 * rmax,
+                    rmax,
+                    FreeCAD.Vector(
+                        0, 0, rmax * (-1.0 + math.cos(thetaSumRad))
+                    ),
+                )
+                sphere2 = sphere2.cut(cylToCut)
+
+            elif thetaSumRad == HalfPi:
+                cylToCut = Part.makeCylinder(
+                    2.0 * rmax, rmax, FreeCAD.Vector(0, 0, -rmax)
+                )
+                sphere2 = sphere2.cut(cylToCut)
+            elif thetaSumRad > 0:
+                sphere2 = sphere2.common(
+                    Part.makeCone(
+                        0.0, 2 * rmax * math.tan(thetaSumRad), 2 * rmax
+                    )
+                )
+
+        if rmin <= 0 or rmin > rmax:
+            fp.Shape = sphere2
+        else:
+            fp.Shape = sphere2.cut(Part.makeSphere(rmin))
         if hasattr(fp, "scale"):
             super().scale(fp)
-
-        # Restore placement
         fp.Placement = currPlacement
 
 
@@ -4350,49 +4368,6 @@ class GDMLGmshTessellated(GDMLsolid):
     def execute(self, fp):  # Here for remesh?
         self.createGeometry(fp)
 
-    def __getstate__(self):
-        """Serialize proxy state for FreeCAD document save.
-        vertex (list of FreeCAD.Vector) and facets (list of int lists) are
-        stored as plain lists so they survive JSON serialisation."""
-        state = {"type": self.Type}
-        if hasattr(self, "vertex"):
-            state["vertex"] = [[v.x, v.y, v.z] for v in self.vertex]
-        if hasattr(self, "facets"):
-            state["facets"] = [list(f) for f in self.facets]
-        if hasattr(self, "colour"):
-            state["colour"] = self.colour
-        if hasattr(self, "SourceObj") and self.SourceObj is not None:
-            try:
-                state["sourceObjName"] = self.SourceObj.Name
-            except Exception:
-                pass
-        return state
-
-    def __setstate__(self, state):
-        """Restore proxy state after FreeCAD document load."""
-        if state is None or state == {}:
-            return
-        key = "type" if "type" in state else "Type"
-        self.Type = state.get(key, "GDMLGmshTessellated")
-        if "vertex" in state:
-            self.vertex = [FreeCAD.Vector(v[0], v[1], v[2])
-                           for v in state["vertex"]]
-        if "facets" in state:
-            self.facets = [f for f in state["facets"]]
-        self.colour = state.get("colour", None)
-        # SourceObj is a live document object — look it up in onDocumentRestored
-        self._sourceObjName = state.get("sourceObjName", None)
-        self.SourceObj = None
-
-    def onDocumentRestored(self, fp):
-        """Re-link SourceObj after document load."""
-        self.Object = fp
-        if hasattr(self, "_sourceObjName") and self._sourceObjName is not None:
-            try:
-                self.SourceObj = fp.Document.getObject(self._sourceObjName)
-            except Exception:
-                self.SourceObj = None
-
     def addProperties(self):
         print("Add Properties")
 
@@ -4407,15 +4382,11 @@ class GDMLGmshTessellated(GDMLsolid):
         self.Object.numVertex = len(self.vertex)
         fp.Proxy.facets = self.facets
         self.Object.numFacets = len(self.facets)
-        if FreeCAD.GuiUp:
-            FreeCADGui.updateGui()
+        FreeCADGui.updateGui()
 
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        if not (hasattr(self, "vertex") and hasattr(self, "facets")):
-            # Not yet meshed, or proxy state not yet restored — nothing to draw
-            return
         currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         FCfaces = []
@@ -5337,89 +5308,18 @@ class GDMLmaterial(GDMLcommon):
 class GDMLfraction(GDMLcommon):
     def __init__(self, obj, ref, n):
         super().__init__(obj)
-
-        obj.addProperty("App::PropertyString", "ref", "Base")
-        obj.ref = ref
-        obj.addProperty("App::PropertyQuantity", "n", "Base")
-        obj.n = FreeCAD.Units.Quantity(n)
+        obj.addProperty("App::PropertyFloat", "n", ref).n = n
         obj.Proxy = self
         self.Object = obj
-
-        self._updatingLabel = False
-
-        # set initial label
-        obj.Label = self.makeLabel(obj)
-
-    def makeLabel(self, obj):
-        try:
-            # Convert n to float if it is a quantity
-            nval = float(obj.n) if hasattr(obj.n, 'getValue') or not isinstance(obj.n, (int, float)) else obj.n
-            return f"{obj.ref} : {nval:.4f}" if isinstance(nval, (int, float)) else f"{obj.ref} : {obj.n}"
-        except AttributeError:
-            # Missing 'ref' or 'n' – return the existing label unchanged
-            return getattr(obj, 'Label', '')
-
-    def onChanged(self, obj, prop):
-        # React to both label edits and property edits
-        if prop in ("Label", "n"):
-            # Guard against recursive updates; default to False if missing
-            if getattr(self, "_updatingLabel", False):
-                return
-
-            # Ensure the attribute exists before setting
-            setattr(self, "_updatingLabel", True)
-            try:
-                newLabel = self.makeLabel(obj)
-                if obj.Label != newLabel:
-                    obj.Label = newLabel
-            finally:
-                setattr(self, "_updatingLabel", False)
 
 
 class GDMLcomposite(GDMLcommon):
     def __init__(self, obj, name, n, ref):
         super().__init__(obj)
-
-        obj.addProperty("App::PropertyInteger", "n", "Base").n = n
-        obj.addProperty("App::PropertyString", "ref", "Base").ref = ref
-
+        obj.addProperty("App::PropertyInteger", "n", name).n = n
+        obj.addProperty("App::PropertyString", "ref", name).ref = ref
         obj.Proxy = self
         self.Object = obj
-
-        self._updatingLabel = False
-
-        # set initial label
-        obj.Label = self.makeLabel(obj)
-
-    def makeLabel(self, obj):
-        # fetch attributes safely
-        ref = getattr(obj, 'ref', None)
-        n = getattr(obj, 'n', None)
-        if ref is not None and n is not None:
-            try:
-                # If n is a FreeCAD quantity, convert to its value for display
-                val = float(n) if hasattr(n, 'getValue') or not isinstance(n, (int, float)) else n
-                return f"{ref} : {val}"
-            except Exception:
-                return f"{ref} : {n}"
-        # fallback
-        return getattr(obj, 'Label', '')
-
-    def onChanged(self, obj, prop):
-        if prop in ("Label", "n", "ref"):
-            # Guard against recursive updates; default to False if missing
-            if getattr(self, "_updatingLabel", False):
-                return
-
-            # Ensure the attribute exists before setting
-            setattr(self, "_updatingLabel", True)
-            try:
-                newLabel = self.makeLabel(obj)
-                if obj.Label != newLabel:
-                    obj.Label = newLabel
-            finally:
-                setattr(self, "_updatingLabel", False)
-
 
 
 class GDMLelement(GDMLcommon):
@@ -5885,6 +5785,7 @@ def makeTube(rmin, rmax, z, startphi, deltaphi, aunit, lunit, material, \
         obj.recompute()
     return obj
    
+
 def makeArb8(v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
         v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLArb8")

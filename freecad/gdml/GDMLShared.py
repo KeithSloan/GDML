@@ -762,8 +762,7 @@ def extract_variables(expression):
 
 def adjust_floats(expression) -> str:
     # change floats of the form d[dd..]. to d.0
-    # pattern = r'\b\d[.]\w*'   # change this line
-    pattern = r'\b\d+[.]\w*'    # to this (note the + after the \d )
+    pattern = r'\b\d+[.]\w*'
 
     # Find all matches in the expression
     floats = re.findall(pattern, expression)

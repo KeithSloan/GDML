@@ -1,0 +1,120 @@
+<xml>
+  <materials>
+	<element name="enriched_U1" >
+	  <fraction ref="U235" n="0.01" />
+	  <fraction ref="U238" n="0.99" />
+	</element>
+	<element name="enriched_U2" >
+	  <fraction ref="U235" n="0.02" />
+	  <fraction ref="U238" n="0.98" />
+	</element>
+	<element name="enriched_U3" >
+	  <fraction ref="U235" n="0.03" />
+	  <fraction ref="U238" n="0.97" />
+	</element>
+	<element name="enriched_U4" >
+	  <fraction ref="U235" n="0.04" />
+	  <fraction ref="U238" n="0.96" />
+	</element>
+	<element name="enriched_U5" >
+	  <fraction ref="U235" n="0.05" />
+	  <fraction ref="U238" n="0.95" />
+	</element>
+	<element name="enriched_U6" >
+	  <fraction ref="U235" n="0.06" />
+	  <fraction ref="U238" n="0.94" />
+	</element>
+	<element name="enriched_U7" >
+	  <fraction ref="U235" n="0.07" />
+	  <fraction ref="U238" n="0.93" />
+	</element>
+	<element name="enriched_U8" >
+	  <fraction ref="U235" n="0.08" />
+	  <fraction ref="U238" n="0.92" />
+	</element>
+	<element name="enriched_U9" >
+	  <fraction ref="U235" n="0.09" />
+	  <fraction ref="U238" n="0.91" />
+	</element>
+	<element name="enriched_U10" >
+	  <fraction ref="U235" n="0.10" />
+	  <fraction ref="U238" n="0.90" />
+	</element>
+	<element name="enriched_U12" >
+	  <fraction ref="U235" n="0.12" />
+	  <fraction ref="U238" n="0.88" />
+	</element>
+	<element name="enriched_U14" >
+	  <fraction ref="U235" n="0.14" />
+	  <fraction ref="U238" n="0.86" />
+	</element>
+	<element name="enriched_U16" >
+	  <fraction ref="U235" n="0.16" />
+	  <fraction ref="U238" n="0.84" />
+	</element>
+	<element name="enriched_U18" >
+	  <fraction ref="U235" n="0.18" />
+	  <fraction ref="U238" n="0.82" />
+	</element>
+	<element name="enriched_U20" >
+	  <fraction ref="U235" n="0.20" />
+	  <fraction ref="U238" n="0.80" />
+	</element>
+	<material formula="Enriched_Uranium" name="Enriched_Uranium" >
+      <D unit="g/cm3" value="19.2" />
+      <composite n="1" ref="enriched_U5"/>
+	  <auxiliary auxtype="Material-type" auxvalue="ReactorMaterial"/>
+    </material>
+    <material name="TMZ">
+      <D unit="g/cm3" value="10.22"/>
+      <fraction n="0.9947958366693355" ref="G4_Mo"/>
+      <fraction n="0.005004003202562" ref="G4_Ti"/>
+      <fraction n="0.0002001601281025" ref="G4_C"/>
+    </material>
+    <material name="U_Cr">
+      <D unit="g/cm3" value="17.47"/>
+      <fraction n="0.0478" ref="G4_Cr"/>
+      <fraction n="0.9522" ref="Enriched_Uranium"/>
+    </material>
+    <material name="U_Mn">
+      <D unit="g/cm3" value="17.30"/>
+      <fraction n="0.0590" ref="G4_Mn"/>
+      <fraction n="0.941" ref="Enriched_Uranium"/>
+    </material>
+    <material name="U_Fe">
+      <D unit="g/cm3" value="16.90"/>
+      <fraction n="0.102" ref="G4_Fe"/>
+      <fraction n="0.898" ref="Enriched_Uranium"/>
+    </material>
+    <material name="U_Ni">
+      <D unit="g/cm3" value="16.91"/>
+      <fraction n="0.110" ref="G4_Ni"/>
+      <fraction n="0.890" ref="Enriched_Uranium"/>
+    </material>
+    <material name="LBE">
+      <D unit="g/cm3" value="9.8"/>
+      <fraction n="0.445" ref="G4_Pb"/>
+      <fraction n="0.555" ref="G4_Bi"/>
+    </material>
+    <material name="Tungsten_Carbide">
+      <D unit="g/cm3" value="15.6"/>
+      <fraction n="0.061" ref="G4_C"/>
+      <fraction n="0.939" ref="G4_W"/>
+    </material>
+    <material name="Graphite">
+      <D unit="g/cm3" value="1.9"/>
+      <fraction n="1.0" ref="G4_C"/>
+    </material>
+    <material formula="ZrH2" name="Zirconium_hydride">
+      <D unit="g/cm3" value="5.6"/>
+      <composition n="1" ref="G4_Zr"/>
+      <composition n="2" ref="G4_H"/>
+    </material>
+    <material formula="YH2" name="Yttrium_hydride">
+      <D unit="g/cm3" value="4.4"/>
+      <composition n="1" ref="G4_Y"/>
+      <composition n="2" ref="G4_H"/>
+    </material>
+	
+  </materials>
+</xml>

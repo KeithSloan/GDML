@@ -2175,15 +2175,14 @@ def parsePhysVol(
     print(f"Parse physvol : importFlag {importFlag} parent {parent.Name}")
     GDMLShared.trace("ParsePhyVol : level : " + str(phylvl))
     # print(f"ParsePhyVol : level : {phylvl}")
-    # File Imports should be handled by etree.parse etree.xinclude see issue 164
+    # Test if any physvol file imports
+    filePtr = physVol.find("file")
+    if filePtr is not None:
+        fname = filePtr.get("name")
+        processPhysVolFile(importFlag, doc, volDict, parent, fname)
     volRef = GDMLShared.getRef(physVol, "volumeref")
     GDMLShared.trace("Volume Ref : " + str(volRef))
     print(f"Parse physvol : {volRef} importFlag {importFlag}")
-    # Test if any physvol file imports
-    #filePtr = physVol.find("file")
-    #if filePtr is not None:
-    #    fname = filePtr.get("name")
-    #    processPhysVolFile(importFlag, doc, volDict, parent, fname)
     if volRef is not None:
         copyNum = physVol.get("copynumber")
         GDMLShared.trace("Copynumber : " + str(copyNum))
@@ -2849,11 +2848,7 @@ def processIsotopes(isotopesGrp, mats_xml, isotopelist=None):
 
 
 def processElements(elementsGrp, mats_xml):
-    from .GDMLObjects import (
-          GDMLelement,
-          GDMLfraction,
-          GDMLcomposite,
-          )
+    from .GDMLObjects import GDMLelement, GDMLfraction, GDMLcomposite
 
     for element in mats_xml.findall("element"):
         name = element.get("name")
@@ -3041,58 +3036,6 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
     GDMLShared.trace("Materials List :")
     GDMLShared.trace(MaterialsList)
 
-#--- Helper: get (or create) a subsection in the main file ---
-def get_or_create(etree, parent, tag):
-    el = parent.find(tag)
-    if el is None:
-        el = etree.SubElement(parent, tag)
-    return el
-
-def mergeFile(main_tree, parser, mergeFile):
-    from lxml import etree
-    import copy
-
-    print(f"Merge file {mergeFile}")
-    main_root = main_tree.getroot()
-    merge_tree = etree.parse(mergeFile, parser)
-    merge_root = merge_tree.getroot()
-
-# --- Merge <defines> ---
-    main_defs = get_or_create(etree, main_root, "define")
-    for defs in merge_root.findall("defines/*"):
-        main_defs.append(copy.deepcopy(defs))
-
-
-# --- Merge <materials> ---
-    main_mats = get_or_create(etree, main_root, "materials")
-    for mat in merge_root.findall("materials/*"):
-        main_mats.append(copy.deepcopy(mat))
-
-# --- Merge <solids> ---
-    main_solids = get_or_create(etree, main_root, "solids")
-    for solid in merge_root.findall("solids/*"):
-        main_solids.append(copy.deepcopy(solid))
-
-# --- Merge <structure> volumes ---
-    main_struct = get_or_create(etree, main_root, "structure")
-    for vol in merge_root.findall("structure/volume"):
-        main_struct.append(copy.deepcopy(vol))
-
-# --- Merge setup (optional): take from main or part ---
-#main_setup = main_root.find("setup")
-#if main_setup is None:
-#    setup = part_root.find("setup")
-#    if setup is not None:
-#        main_root.append(copy.deepcopy(setup))
-
-# --- Write output ---
-    main_tree.write('/tmp/merge_output_file.xml', pretty_print=True, xml_declaration=True, encoding="UTF-8")
-    print(f"Merged GDML written to /tmp/merge_output_file.xml")
-
-    return main_tree
-
-
-    # part_root = part_tree.getroot()
 
 def setupEtreeInclude(filename):
     print(f"setup Etree for includes")
@@ -3111,19 +3054,10 @@ def setupEtree(filename):
         from lxml import etree
 
         FreeCAD.Console.PrintMessage("running with lxml.etree \n")
-        parser = etree.XMLParser(remove_blank_text=True,resolve_entities=True)
-        #root = etree.parse(filename, parser=parser)
-        #tree = etree.XMLParser(resolve_entities=True)
-        tree = etree.parse(filename, parser)
-        #tree.xinclude()
-        #tree.write('/tmp/output.xml', pretty_print=True)
-        root = tree.getroot()
-
-        # Look for includes
-        print(f"Find all file includes")
-        for filePtr in tree.findall(".//file"):
-            if filePtr is not None:
-                etree = mergeFile(tree, parser, os.path.join(os.path.dirname(filename),filePtr.get("name")))
+        parser = etree.XMLParser(resolve_entities=True)
+        root = etree.parse(filename, parser=parser)
+        # print('error log')
+        # print(parser.error_log)
 
     except ImportError:
         try:
@@ -3258,7 +3192,7 @@ def processXMLStruct(doc, obj, filename, xmlSolids, processType):
         return processXMLVolAsm(doc, root, obj, xmlSolids, processType)
 
 
-def processPhysVolFile(importFlag, doc, volDict, parent, fname):
+def processPhysVolFile(doc, volDict, parent, fname):
     global pathName
     print(f"Process physvol file import {fname} parent {parent.Name}")
     print(pathName)
@@ -3289,7 +3223,7 @@ def processPhysVolFile(importFlag, doc, volDict, parent, fname):
             if hasattr(part, "Material"):
                 part.setEditorMode("Material", 2)
             # expandVolume(None,vName,-1,1)
-            processVol(importFlag, doc, vol, volDict, part, -1, 1)
+            processVol(doc, vol, volDict, part, -1, 1)
 
     processSurfaces(doc, volDict, structure)
 
@@ -3354,6 +3288,22 @@ def processGEANT4(doc, filename):
     if geant4Grp is None:
         geant4Grp = newGroupPython(materials, "Geant4")
         processMaterialsG4(geant4Grp, root)
+
+def processReactor(doc, filename):
+    print("process Reactor Materials : " + filename)
+    etree, root = setupEtree(filename)
+    # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
+    materials = doc.getObject("Materials")
+    if materials is None:
+        materials = doc.addObject(
+            "App::DocumentObjectGroupPython", "Materials"
+        )
+    # Avoid duplicate Geant4 group - Palo import of GDML
+    reactorGrp = doc.getObject("ReactorMaterials")
+    if reactorGrp is None:
+        reactorGrp = newGroupPython(materials, "ReactorMaterials")
+
+    processMaterialsReactor(reactorGrp, root)
 
 
 def processMaterialsDocSet(doc, root):
@@ -3512,6 +3462,24 @@ def processMaterialsG4(G4rp, root):
         ).version = 1.0
         processNewG4(materialsGrp, mats_xml)
 
+def processMaterialsReactor(grp, root):
+    mats_xml = root.find("materials")
+    if mats_xml is not None:
+        try:
+            isotopesGrp = FreeCAD.ActiveDocument.Isotopes
+        except:
+            isotopesGrp = doc.addObject(
+                "App::DocumentObjectGroupPython", "Isotopes"
+            )
+        processIsotopes(isotopesGrp, mats_xml)
+        try:
+            elementsGrp = FreeCAD.ActiveDocument.Elements
+        except:
+            elementsGrp = doc.addObject(
+                "App::DocumentObjectGroupPython", "Elements"
+            )
+        processElements(elementsGrp, mats_xml)
+        processMaterials(grp, mats_xml)
 
 def processDefines(root, doc):
     GDMLShared.trace("Call set Define")
@@ -3583,7 +3551,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     global pathName
     pathName = os.path.dirname(os.path.normpath(filename))
     print(f"pathName {pathName}")
-    # FilesEntity = False
+    FilesEntity = False
 
     global root, setup, define, materials, solids, structure, extension, groupMaterials
 
@@ -3611,11 +3579,11 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
         GDMLShared.trace(setup.attrib)
         preProcessLoops.preprocessLoops(root)
 
-    from .GDMLMaterials import getGroupedMaterials
     from .GDMLMaterials import newGetGroupedMaterials
 
     processMaterialsDocSet(doc, root)
     processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
+    processReactor(doc, joinDir("Resources/ReactorMaterials.xml"))
     groupMaterials = newGetGroupedMaterials()
 
     solids = root.find("solids")
@@ -3632,7 +3600,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     parseVolume(processType, doc, volDict, part, world, phylvl, 3)
     processSurfaces(doc, volDict, structure)
     # If only single volume reset Display Mode
-    if FreeCAD.GuiUp and len(part.OutList) == 2 and initFlg is False:
+    if len(part.OutList) == 2 and initFlg is False:
         worldGDMLobj = part.OutList[1]
         worldGDMLobj.ViewObject.DisplayMode = "Shaded"
     FreeCAD.ActiveDocument.recompute()
