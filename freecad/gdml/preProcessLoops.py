@@ -98,10 +98,11 @@ def preprocessLoops(root):
     stack = []
     #
     # get all loop elements
-    #
-    #for loop in root.getroot().iterdescendants(tag="loop"):
+    # root may be an lxml _ElementTree (from etree.parse) or an _Element;
+    # iterdescendants lives on _Element, so unwrap if needed.
+    element = root.getroot() if hasattr(root, 'getroot') else root
     print(f"PreProcess Loops - root {root}")
-    for loop in root.iterdescendants(tag="loop"):
+    for loop in element.iterdescendants(tag="loop"):
     
         # print(loop.getparent(), loop.tag, loop.attrib)
         stack.append(loop)
