@@ -170,10 +170,14 @@ Creates a GDML tessellated solid from any FreeCAD shape using FreeCAD's built-in
 ### Tessellate with Gmsh
 ![GDML Tessellate Gmsh icon](freecad/gdml/Resources/icons/GDML_Tessellate_Gmsh.svg)
 
-Opens a Gmsh panel with controls for mesh type (Triangular, Quadrangular, Parallelogram) and characteristic lengths. Allows iterative re-meshing before committing.
+Opens a Gmsh panel with controls for mesh type (Triangular, Quadrangular, Parallelogram) and characteristic lengths. Allows iterative re-meshing before committing. As with Gmsh Min Tessellate, the original source object is suppressed from GDML export and only the resulting **GmshTessellated** object is written.
 
 ### Gmsh Min Tessellate
-Uses Gmsh's recombination algorithm to reduce mesh complexity. A cube, for example, becomes 6 quad facets rather than 12 triangles, keeping GDML files compact.
+![GDML Gmsh Min icon](freecad/gdml/Resources/icons/GDML_Tess_Gmsh_Min.svg)
+
+Tessellates the selected object using Gmsh's STL-based recombination algorithm. A cube, for example, becomes 6 quad facets rather than 12 triangles, keeping GDML files compact.
+
+When Gmsh Min Tessellate is run on an object, a new **GmshTessellated** object is created as a sibling in the document tree. On export, **only the GmshTessellated object is written to GDML** — the original source object is automatically suppressed (its `exportFlag` property is set to `False`). Re-running the command on the same source object updates the existing tessellation in place.
 
 ### Mesh ↔ Tessellated conversion
 - **FC Mesh → GDML Tessellated** ![icon](freecad/gdml/Resources/icons/GDML_Mesh2Tess.svg) — converts any FreeCAD mesh (STL, PLY, etc.) to a GDML tessellated solid

@@ -2608,11 +2608,15 @@ class AddMinTessellateTask:
                         parent = self.obj.InList[0]
                         if parent.TypeId != "PartDesign::Body" and \
                                 parent is not None:
-                           self.tess = parent.newObject(
-                                 "Part::FeaturePython", name)
-                        else:    
+                            self.tess = parent.newObject(
+                                "Part::FeaturePython", name)
+                        else:
                             self.tess = FreeCAD.ActiveDocument.addObject(
                                 "Part::FeaturePython", name)
+                    else:
+                        # No parent container — add directly to the document
+                        self.tess = FreeCAD.ActiveDocument.addObject(
+                            "Part::FeaturePython", name)
                     GDMLGmshTessellated( self.tess, self.obj,
                          getMeshLen(self.obj), self.vertex, self.facets,
                         "mm", getSelectedMaterial())
@@ -2780,10 +2784,14 @@ class AddTessellateTask:
                         parent = self.obj.InList[0]
                         if parent.TypeId != "PartDesign::Body" and \
                                 parent is not None:
-                           self.tess = parent.newObject(
-                                 "Part::FeaturePython", name)
+                            self.tess = parent.newObject(
+                                "Part::FeaturePython", name)
                         else:
                             self.tess = FreeCAD.ActiveDocument.addObject(
+                                "Part::FeaturePython", name)
+                    else:
+                        # No parent container — add directly to the document
+                        self.tess = FreeCAD.ActiveDocument.addObject(
                             "Part::FeaturePython", name)
                     GDMLGmshTessellated( self.tess, self.obj,
                          getMeshLen(self.obj), self.vertex, self.facets,
@@ -2793,7 +2801,7 @@ class AddTessellateTask:
                             "Mesh Type")
                     self.tess.meshType = ["Triangular", "Quadrangular", \
                             "Parallelograms"]
-                    self.tess.meshType = self.tess.meshType.index(mshType)        
+                    self.tess.meshType = self.tess.meshType.index(mshType)
                     self.tess.addProperty(
                         "App::PropertyLength","meshMaxLen","GmshParms", \
                         "Mesh Max Len")

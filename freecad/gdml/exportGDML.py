@@ -1885,6 +1885,9 @@ def buildAssemblyTree(worldVol):
         objects = assemblyHeads(vol)
         imprNum = 1
         for obj in objects[1:]:
+            # Skip objects suppressed from GDML export (e.g. source replaced by GmshTessellated)
+            if not checkExportFlag(obj):
+                continue
             print(
                 f" buildAssemblyTree::processContainer {obj.Label} {obj.TypeId} "
             )
@@ -1932,6 +1935,9 @@ def buildAssemblyTree(worldVol):
         assemObjs = assemblyHeads(vol)
         imprNum += 1
         for obj in assemObjs:
+            # Skip objects suppressed from GDML export (e.g. source replaced by GmshTessellated)
+            if not checkExportFlag(obj):
+                continue
             print(
                 f" buildAssemblyTree::processAssembly {obj.Label} {obj.TypeId} "
             )
@@ -2108,6 +2114,9 @@ def processAssembly(vol, xmlVol, xmlParent, parentName, psPlacement):
     # placement.
     #
     for obj in assemObjs:
+        # Skip objects suppressed from GDML export (e.g. source replaced by GmshTessellated)
+        if not checkExportFlag(obj):
+            continue
         if obj.TypeId == "App::Part":
             processVolAssem(obj, xmlVol, volName, None)
         elif obj.TypeId == "App::Link":
@@ -2276,6 +2285,9 @@ def processContainer(vol, xmlParent, psPlacement):
         myPlacement = solidPlacement
 
     for obj in objects[1:]:
+        # Skip objects suppressed from GDML export (e.g. source replaced by GmshTessellated)
+        if not checkExportFlag(obj):
+            continue
         if obj.TypeId == "App::Link":
             print("Process Link")
             if solidPlacement == FreeCAD.Placement():
