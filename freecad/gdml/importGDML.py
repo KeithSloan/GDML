@@ -3463,23 +3463,134 @@ def processMaterialsG4(G4rp, root):
         processNewG4(materialsGrp, mats_xml)
 
 def processMaterialsReactor(grp, root):
+    # Reactor isotopes/elements are OpenMC-only.  They are stored in
+    # "ReactorMaterials" sub-groups under the top-level Isotopes and Elements
+    # groups so that exportGDML.py can skip them (just as it skips the
+    # "ReactorMaterials" sub-group under Materials).
     mats_xml = root.find("materials")
     if mats_xml is not None:
-        try:
-            isotopesGrp = FreeCAD.ActiveDocument.Isotopes
-        except:
+        doc = FreeCAD.ActiveDocument
+
+        def _getOrCreateSubGroup(parentGrp, subLabel):
+            """Return the sub-group with the given label inside parentGrp,
+            creating it if it doesn't already exist."""
+            for child in parentGrp.Group:
+                if child.Label == subLabel:
+                    return child
+            return newGroupPython(parentGrp, subLabel)
+
+        # --- Isotopes: put reactor isotopes in Isotopes/ReactorMaterials ---
+        isotopesGrp = doc.getObject("Isotopes")
+        if isotopesGrp is None:
             isotopesGrp = doc.addObject(
                 "App::DocumentObjectGroupPython", "Isotopes"
             )
-        processIsotopes(isotopesGrp, mats_xml)
-        try:
-            elementsGrp = FreeCAD.ActiveDocument.Elements
-        except:
+        reactorIsotopesGrp = _getOrCreateSubGroup(isotopesGrp, "ReactorMaterials")
+        processIsotopes(reactorIsotopesGrp, mats_xml)
+
+        # --- Elements: put reactor elements in Elements/ReactorMaterials ---
+        elementsGrp = doc.getObject("Elements")
+        if elementsGrp is None:
             elementsGrp = doc.addObject(
                 "App::DocumentObjectGroupPython", "Elements"
             )
-        processElements(elementsGrp, mats_xml)
+        reactorElementsGrp = _getOrCreateSubGroup(elementsGrp, "ReactorMaterials")
+        processElements(reactorElementsGrp, mats_xml)
+
+        # --- Materials: already stored in grp (ReactorMaterials under Materials) ---
         processMaterials(grp, mats_xml)
+
+def migrateReactorSubGroups(doc=None):
+    """Repair documents saved before the ReactorMaterials sub-group fix.
+
+    In older documents, reactor isotopes/elements were placed directly in the
+    top-level 'Isotopes' and 'Elements' FreeCAD groups.  This function moves
+    them into 'ReactorMaterials' sub-groups within those groups (matching the
+    structure expected by the current exporter).
+
+    The set of reactor element/isotope names is determined by parsing
+    Resources/ReactorMaterials.xml so the repair stays in sync with the file.
+
+    Returns a (moved_isotopes, moved_elements) count tuple.
+    """
+    import xml.etree.ElementTree as ET
+    if doc is None:
+        doc = FreeCAD.ActiveDocument
+
+    # --- parse ReactorMaterials.xml to learn which names are reactor-specific ---
+    reactor_xml_path = joinDir("Resources/ReactorMaterials.xml")
+    try:
+        tree = ET.parse(reactor_xml_path)
+        root_xml = tree.getroot()
+        mats_xml = root_xml.find("materials")
+    except Exception as e:
+        print(f"[migrateReactorSubGroups] Cannot parse ReactorMaterials.xml: {e}")
+        return (0, 0)
+
+    reactor_element_names = set()
+    reactor_isotope_names = set()
+
+    if mats_xml is not None:
+        for elem in mats_xml.findall("element"):
+            name = elem.get("name")
+            if name:
+                reactor_element_names.add(name)
+        for iso in mats_xml.findall("isotope"):
+            name = iso.get("name")
+            if name:
+                reactor_isotope_names.add(name)
+        # Also collect isotope names referenced by reactor elements (e.g. U235, U238)
+        for elem in mats_xml.findall("element"):
+            for frac in elem.findall("fraction"):
+                ref = frac.get("ref")
+                if ref:
+                    reactor_isotope_names.add(ref)
+
+    def _getOrCreateSubGroup(parentGrp, subLabel):
+        for child in parentGrp.Group:
+            if child.Label == subLabel:
+                return child
+        return newGroupPython(parentGrp, subLabel)
+
+    def _moveObjects(parentGrp, names_set, label):
+        """Move top-level children of parentGrp whose labels are in names_set
+        into the 'ReactorMaterials' sub-group.  Returns count moved."""
+        to_move = [obj for obj in parentGrp.Group
+                   if obj.Label in names_set and obj.Label != "ReactorMaterials"]
+        if not to_move:
+            return 0
+        subGrp = _getOrCreateSubGroup(parentGrp, "ReactorMaterials")
+        already_in_sub = {obj.Label for obj in subGrp.Group}
+        count = 0
+        for obj in to_move:
+            if obj.Label in already_in_sub:
+                print(f"[migrateReactorSubGroups] {label}: '{obj.Label}' "
+                      f"already in sub-group, removing duplicate from top level")
+                parentGrp.removeObject(obj)
+            else:
+                parentGrp.removeObject(obj)
+                subGrp.addObject(obj)
+                count += 1
+                print(f"[migrateReactorSubGroups] {label}: moved '{obj.Label}' "
+                      f"→ ReactorMaterials sub-group")
+        return count
+
+    moved_isotopes = 0
+    moved_elements = 0
+
+    isotopesGrp = doc.getObject("Isotopes")
+    if isotopesGrp is not None and reactor_isotope_names:
+        moved_isotopes = _moveObjects(isotopesGrp, reactor_isotope_names, "Isotopes")
+
+    elementsGrp = doc.getObject("Elements")
+    if elementsGrp is not None and reactor_element_names:
+        moved_elements = _moveObjects(elementsGrp, reactor_element_names, "Elements")
+
+    doc.recompute()
+    print(f"[migrateReactorSubGroups] Done: "
+          f"{moved_isotopes} isotope(s), {moved_elements} element(s) migrated.")
+    return (moved_isotopes, moved_elements)
+
 
 def processDefines(root, doc):
     GDMLShared.trace("Call set Define")

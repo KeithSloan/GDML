@@ -1437,6 +1437,104 @@ def processOpticals():
                     break
 
 
+_nist_isotope_cache = None   # loaded once on first use
+
+
+def _getNISTIsotopeMap():
+    """Parse Resources/NIST_Isotopes.xml once and return a dict name→ET.Element."""
+    global _nist_isotope_cache
+    if _nist_isotope_cache is not None:
+        return _nist_isotope_cache
+    _nist_isotope_cache = {}
+    try:
+        from .init_gui import joinDir
+        path = joinDir("Resources/NIST_Isotopes.xml")
+        tree = ET.parse(path)
+        for iso in tree.getroot().iter("isotope"):
+            name = iso.get("name")
+            if name:
+                _nist_isotope_cache[name] = iso
+        print(f"[GDML export] Loaded {len(_nist_isotope_cache)} isotopes "
+              f"from NIST_Isotopes.xml")
+    except Exception as exc:
+        print(f"[GDML export] WARNING: could not load NIST_Isotopes.xml: {exc}")
+    return _nist_isotope_cache
+
+
+def _fixMissingIsotopes():
+    """Post-export pass: insert any isotope definitions that are referenced
+    by <element> fraction children but were not emitted by createIsotopes().
+
+    Priority order for sourcing a missing isotope definition:
+      1. GDMLisotope proxy objects anywhere in the FreeCAD document
+      2. NIST_Isotopes.xml (covers all standard isotopes incl. U235, U238 …)
+
+    Inserts definitions immediately before the first <element> node so that
+    GDML ordering rules (definitions before references) are satisfied.
+    """
+    global materials
+
+    # Isotopes already written to the materials section
+    defined = {iso.get("name") for iso in materials.findall("isotope")}
+
+    # Isotope names referenced as fraction targets inside any <element>
+    referenced = set()
+    for elem in materials.findall("element"):
+        for frac in elem.findall("fraction"):
+            ref = frac.get("ref")
+            if ref:
+                referenced.add(ref)
+
+    missing = referenced - defined
+    if not missing:
+        return
+
+    print(f"[GDML export] Isotopes referenced in elements but not defined: "
+          f"{sorted(missing)}")
+
+    # Source 1: GDMLisotope proxy objects anywhere in the document
+    iso_map = {}
+    for obj in FreeCAD.ActiveDocument.Objects:
+        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, GDMLisotope):
+            iso_map[obj.Label] = obj
+
+    # Source 2: NIST_Isotopes.xml (pre-parsed ET.Element nodes)
+    nist_map = _getNISTIsotopeMap()
+
+    # Insertion point: just before the first <element> so ordering is valid
+    children = list(materials)
+    first_elem_idx = next(
+        (i for i, c in enumerate(children) if c.tag == "element"), None
+    )
+
+    inserted = 0
+    for name in sorted(missing):
+        iso_xml = None
+        if name in iso_map:
+            # Build from FreeCAD proxy object
+            iso_xml = ET.Element("isotope", {"name": name})
+            processIsotope(iso_map[name], iso_xml)
+        elif name in nist_map:
+            # Copy directly from NIST table
+            import copy
+            iso_xml = copy.deepcopy(nist_map[name])
+        else:
+            print(f"[GDML export]   WARNING: isotope '{name}' not found in "
+                  f"document or NIST table — it will be absent from output")
+
+        if iso_xml is not None:
+            if first_elem_idx is not None:
+                materials.insert(first_elem_idx, iso_xml)
+                first_elem_idx += 1   # keep subsequent inserts in order
+            else:
+                materials.append(iso_xml)
+            inserted += 1
+            print(f"[GDML export]   Inserted missing isotope: {name}")
+
+    if inserted:
+        print(f"[GDML export] {inserted} missing isotope definition(s) added.")
+
+
 def processMaterials():
     print("\nProcess Materials")
     global materials
@@ -1453,6 +1551,10 @@ def processMaterials():
             print(Grp.Label)
             if processGroup(Grp) is False:
                 break
+
+    # Note: _fixMissingIsotopes() is NOT called here.  It is called once
+    # after ALL material-writing passes (including postCreateGeantMaterials)
+    # complete, in the main export function.
 
 
 def processFractionsComposites(obj, item):
@@ -1483,50 +1585,156 @@ def processFractionsComposites(obj, item):
 
 def createMaterials(group):
     global materials
+    # "Geant4" is handled by postCreateGeantMaterials().
+    # "ReactorMaterials" is an OpenMC-only container — never exported to GDML.
+    _SKIP_LABELS = {"Geant4", "ReactorMaterials"}
     for obj in group:
-        if obj.Label != "Geant4":
-            if not hasattr(obj, 'Group'):
-                continue
-            item = ET.SubElement(
-                materials, "material", {"name": nameFromLabel(obj.Label)}
+        if obj.Label in _SKIP_LABELS:
+            continue
+        if not hasattr(obj, 'Group'):
+            continue
+        item = ET.SubElement(
+            materials, "material", {"name": nameFromLabel(obj.Label)}
+        )
+
+        # property must be first
+        for prop in obj.PropertiesList:
+            if obj.getGroupOfProperty(prop) == "Properties":
+                ET.SubElement(
+                    item,
+                    "property",
+                    {"name": prop, "ref": getattr(obj, prop)},
+                )
+
+        if hasattr(obj, "Tunit") and hasattr(obj, "Tvalue"):
+            ET.SubElement(
+                item,
+                "T",
+                {"unit": obj.Tunit, "value": str(obj.Tvalue)},
             )
 
-            # property must be first
-            for prop in obj.PropertiesList:
-                if obj.getGroupOfProperty(prop) == "Properties":
-                    ET.SubElement(
-                        item,
-                        "property",
-                        {"name": prop, "ref": getattr(obj, prop)},
-                    )
+        if hasattr(obj, "MEEunit"):
+            ET.SubElement(
+                item,
+                "MEE",
+                {"unit": obj.MEEunit, "value": str(obj.MEEvalue)},
+            )
 
-            if hasattr(obj, "Tunit") and hasattr(obj, "Tvalue"):
+        if hasattr(obj, "Dunit") or hasattr(obj, "Dvalue"):
+            D = ET.SubElement(item, "D")
+            if hasattr(obj, "Dunit"):
+                D.set("unit", str(obj.Dunit))
+            if hasattr(obj, "Dvalue"):
+                D.set("value", str(obj.Dvalue))
+
+        # process common options material / element
+        processIsotope(obj, item)
+        for o in obj.Group:
+            processFractionsComposites(o, item)
+
+
+def _getSubGroup(topGroupName, subLabel):
+    """Return the sub-group with label *subLabel* inside the top-level FreeCAD
+    group named *topGroupName*, or None if not found."""
+    doc = FreeCAD.ActiveDocument
+    topGrp = doc.getObject(topGroupName)
+    if topGrp is None:
+        return None
+    for child in topGrp.Group:
+        if child.Label == subLabel:
+            return child
+    return None
+
+
+def _isReactorMaterial(name):
+    """Return True if *name* is defined in Materials/ReactorMaterials."""
+    grp = _getSubGroup("Materials", "ReactorMaterials")
+    if grp is None:
+        return False
+    return any(obj.Label == name for obj in grp.Group)
+
+
+def postCreateReactorMaterials():
+    """Export reactor material definitions that are actually referenced by
+    volumes, together with any element and isotope dependencies.
+
+    Called only when one or more volumes have a material that lives in the
+    Materials/ReactorMaterials sub-group (normally an OpenMC-only document).
+    Isotope gaps (U235, U238 etc.) are filled by _fixMissingIsotopes() which
+    runs as a post-pass after this function.
+    """
+    global materials
+    global usedReactorMaterials
+
+    if not usedReactorMaterials:
+        return
+
+    reactorMatGrp  = _getSubGroup("Materials", "ReactorMaterials")
+    reactorElemGrp = _getSubGroup("Elements",  "ReactorMaterials")
+
+    # Names already written to <materials> — avoid duplicates
+    already_elems = {e.get("name") for e in materials.findall("element")}
+    already_mats  = {m.get("name") for m in materials.findall("material")}
+
+    for matName in sorted(usedReactorMaterials):
+        # --- find the FreeCAD object ---
+        matObj = None
+        if reactorMatGrp:
+            for obj in reactorMatGrp.Group:
+                if obj.Label == matName:
+                    matObj = obj
+                    break
+        if matObj is None:
+            print(f"[GDML export] WARNING: reactor material '{matName}' used "
+                  f"by a volume but not found in Materials/ReactorMaterials")
+            continue
+
+        # --- export element dependencies first ---
+        if reactorElemGrp and hasattr(matObj, 'Group'):
+            elem_refs = set()
+            for frac in matObj.Group:
+                if hasattr(frac, 'ref'):
+                    elem_refs.add(str(frac.ref))
+            for elemObj in reactorElemGrp.Group:
+                if elemObj.Label in elem_refs and \
+                        elemObj.Label not in already_elems:
+                    createElement(elemObj)
+                    already_elems.add(elemObj.Label)
+
+        # --- export the material definition ---
+        if matName in already_mats:
+            continue
+        item = ET.SubElement(
+            materials, "material", {"name": nameFromLabel(matObj.Label)}
+        )
+        for prop in matObj.PropertiesList:
+            if matObj.getGroupOfProperty(prop) == "Properties":
                 ET.SubElement(
-                    item,
-                    "T",
-                    {"unit": obj.Tunit, "value": str(obj.Tvalue)},
+                    item, "property",
+                    {"name": prop, "ref": getattr(matObj, prop)},
                 )
-
-            if hasattr(obj, "MEEunit"):
-                ET.SubElement(
-                    item,
-                    "MEE",
-                    {"unit": obj.MEEunit, "value": str(obj.MEEvalue)},
-                )
-
-            if hasattr(obj, "Dunit") or hasattr(obj, "Dvalue"):
-                # print("Dunit or DValue")
-                D = ET.SubElement(item, "D")
-                if hasattr(obj, "Dunit"):
-                    D.set("unit", str(obj.Dunit))
-
-                if hasattr(obj, "Dvalue"):
-                    D.set("value", str(obj.Dvalue))
-
-            # process common options material / element
-            processIsotope(obj, item)
-            for o in obj.Group:
+        if hasattr(matObj, "Tunit") and hasattr(matObj, "Tvalue"):
+            ET.SubElement(
+                item, "T",
+                {"unit": matObj.Tunit, "value": str(matObj.Tvalue)},
+            )
+        if hasattr(matObj, "MEEunit"):
+            ET.SubElement(
+                item, "MEE",
+                {"unit": matObj.MEEunit, "value": str(matObj.MEEvalue)},
+            )
+        if hasattr(matObj, "Dunit") or hasattr(matObj, "Dvalue"):
+            D = ET.SubElement(item, "D")
+            if hasattr(matObj, "Dunit"):
+                D.set("unit", str(matObj.Dunit))
+            if hasattr(matObj, "Dvalue"):
+                D.set("value", str(matObj.Dvalue))
+        processIsotope(matObj, item)
+        if hasattr(matObj, 'Group'):
+            for o in matObj.Group:
                 processFractionsComposites(o, item)
+        already_mats.add(matName)
+        print(f"[GDML export] Reactor material '{matName}' exported on demand")
 
 
 def postCreateGeantMaterials():
@@ -1537,19 +1745,10 @@ def postCreateGeantMaterials():
     global materials
     global usedGeant4Materials
 
-    usedElements = set()
-
-    # collect the used elements in all the used materials
-    for mat in usedGeant4Materials:
-        obj = FreeCAD.ActiveDocument.getObjectsByLabel(mat)[0]
-        for grpItem in obj.Group:
-            words = grpItem.Label.split(':')
-            elemName = words[0][:-1]
-            usedElements.add(elemName)
-    # create <elements> for them
-    for elemName in usedElements:
-        obj = FreeCAD.ActiveDocument.getObject(elemName)
-        createElement(obj)
+    # Note: element/isotope decomposition for G4_* materials is intentionally
+    # omitted here. Geant4 resolves G4_* materials via its internal NIST manager
+    # and does not need explicit element/isotope definitions in the GDML file.
+    # Element/isotope decomposition is only needed for OpenMC export (exportOpenMC.py).
 
     for mat in usedGeant4Materials:
         obj = FreeCAD.ActiveDocument.getObjectsByLabel(mat)[0]
@@ -1597,6 +1796,9 @@ def postCreateGeantMaterials():
 def createElements(group):
     global materials
     for obj in group:
+        # "ReactorMaterials" sub-group holds OpenMC-only elements — skip for GDML
+        if obj.Label == "ReactorMaterials":
+            continue
         createElement(obj)
 
 
@@ -1728,6 +1930,9 @@ def createQuantities(group):
 def createIsotopes(group):
     global materials
     for obj in group:
+        # "ReactorMaterials" sub-group holds OpenMC-only isotopes — skip for GDML
+        if obj.Label == "ReactorMaterials":
+            continue
         if isinstance(obj.Proxy, GDMLisotope):
             # print("GDML isotope")
             # item = ET.SubElement(materials,'isotope',{'N': str(obj.N), \
@@ -1836,6 +2041,19 @@ def getMaterial(obj):
     if material[0:3] == "G4_":
         print(f"Found Geant material {material}")
         usedGeant4Materials.add(material)
+    elif material == "ReactorMaterials":
+        # The volume has been assigned the OpenMC container group name itself,
+        # which has no GDML definition.  Substitute the default and warn.
+        default = getDefaultMaterial()
+        print(f"WARNING: volume '{obj.Label}' has material set to "
+              f"'ReactorMaterials' (the container group, not a material) — "
+              f"substituting {default} for GDML export")
+        material = default
+    elif _isReactorMaterial(material):
+        # Material is a named entry inside Materials/ReactorMaterials (e.g.
+        # TMZ, LBE).  Track it so postCreateReactorMaterials() exports its
+        # definition on demand.
+        usedReactorMaterials.add(material)
 
     return material
 
@@ -2767,6 +2985,9 @@ def exportGDML(first, filepath, fileExt):
     global usedGeant4Materials
     usedGeant4Materials = set()
 
+    global usedReactorMaterials
+    usedReactorMaterials = set()
+
     global physVolStack
     physVolStack = []
 
@@ -2787,6 +3008,14 @@ def exportGDML(first, filepath, fileExt):
     exportG4Materials = params.GetBool('exportG4Materials', False)
     if exportG4Materials:
         postCreateGeantMaterials()
+    # Export any reactor materials actually referenced by volumes (rare —
+    # only when the user has deliberately assigned a ReactorMaterials material
+    # to a GDML object).  Must run after volumes so usedReactorMaterials is
+    # fully populated, and before _fixMissingIsotopes so isotope gaps are
+    # caught in the same post-pass.
+    postCreateReactorMaterials()
+    # Single post-pass: fill any isotope definitions missing from elements.
+    _fixMissingIsotopes()
     processOpticals()
     # format & write GDML file
     # xmlstr = ET.tostring(structure)
@@ -4070,11 +4299,20 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
         """
         tess = ET.SubElement(solids, "tessellated", {"name": tessName})
         placementCorrection = self.obj.Placement.inverse()
-        for i, v in enumerate(self.obj.Shape.Vertexes):
+        # GDMLGmshTessellated stores the compound in GmshShape (not Shape) to
+        # bypass BRepMesh_IncrementalMesh in FreeCAD 1.1+.  fp.Shape is kept
+        # empty to prevent the UI hang.  Fall back to Shape for GDMLTessellated.
+        _gmsh_shape = getattr(self.obj, "GmshShape", None)
+        _export_shape = (
+            _gmsh_shape
+            if _gmsh_shape is not None and not _gmsh_shape.isNull()
+            else self.obj.Shape
+        )
+        for i, v in enumerate(_export_shape.Vertexes):
             vertexHashcodeDict[v.hashCode()] = i
             exportDefineVertex(tessVname, placementCorrection * v.Point, i)
 
-        for f in self.obj.Shape.Faces:
+        for f in _export_shape.Faces:
             # print(f'len(f.Edges) {len(f.Edges)}')
             # print(f'Normal at : {n} dot {dot} {clockWise}')
             vertexes = f.OuterWire.OrderedVertexes

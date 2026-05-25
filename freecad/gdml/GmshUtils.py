@@ -57,6 +57,76 @@ except ImportError as _gmsh_import_error:
     )
 
 
+def check_python_version_match():
+    """
+    Verify that the gmsh package is installed for the same Python that
+    FreeCAD is running.
+
+    Mismatches are easy to create on systems with multiple Python
+    installations (e.g. Homebrew Python 3.13 alongside FreeCAD's Python
+    3.11).  Because gmsh is a pure-Python wrapper that loads a shared
+    library via ctypes, ``import gmsh`` can succeed even when the package
+    was installed for a different Python version — failures only appear
+    later, at gmsh.initialize() or when the mesh API is called.
+
+    Strategy: the gmsh install path normally embeds the Python version
+    (e.g. ``.../python3.11/site-packages/gmsh.py``).  We extract that
+    and compare it to sys.version_info.
+
+    Returns True if the versions match or cannot be determined from the
+    path, False if a mismatch is detected.
+    """
+    if not _GMSH_AVAILABLE:
+        return False  # already reported at import time
+
+    import re
+
+    fc_major = sys.version_info.major
+    fc_minor = sys.version_info.minor
+
+    gmsh_file = getattr(gmsh, '__file__', '') or ''
+
+    # Match patterns like:  python3.11/  python3/  python311/
+    match = re.search(r'[/\\]python(\d+)\.?(\d*)[/\\]', gmsh_file, re.IGNORECASE)
+    if match:
+        gmsh_major = int(match.group(1))
+        gmsh_minor_str = match.group(2)
+        gmsh_minor = int(gmsh_minor_str) if gmsh_minor_str else None
+
+        version_ok = (gmsh_major == fc_major and
+                      (gmsh_minor is None or gmsh_minor == fc_minor))
+
+        if not version_ok:
+            gmsh_ver = (f"{gmsh_major}"
+                        + (f".{gmsh_minor}" if gmsh_minor is not None else ""))
+            FreeCAD.Console.PrintError(
+                f"[GmshUtils] Python version MISMATCH detected:\n"
+                f"  FreeCAD is running Python {fc_major}.{fc_minor}"
+                f" ({_py_executable})\n"
+                f"  gmsh appears to be installed for Python {gmsh_ver}"
+                f" ({gmsh_file})\n"
+                f"  Gmsh operations will likely fail."
+                f" Reinstall gmsh for FreeCAD's Python:\n"
+                f"    {_py_executable} -m pip install --upgrade gmsh\n"
+            )
+            return False
+        else:
+            FreeCAD.Console.PrintMessage(
+                f"[GmshUtils] Python version OK:"
+                f" FreeCAD Python {fc_major}.{fc_minor},"
+                f" gmsh installed for Python {fc_major}.{fc_minor}\n"
+            )
+            return True
+    else:
+        # Path contains no Python version string — report and continue.
+        FreeCAD.Console.PrintMessage(
+            f"[GmshUtils] FreeCAD Python {_py_version} —"
+            f" gmsh location: {gmsh_file}"
+            f" (Python version not extractable from path)\n"
+        )
+        return True
+
+
 def Gmsh(obj):
     # Uses FreeCAD FEM
     import ObjectsFem
@@ -81,6 +151,7 @@ def initialize():
             f"Python {_py_version} ({_py_executable})\n"
         )
         return
+    check_python_version_match()
     print(f"[GmshUtils] FreeCAD Python {_py_version} — Gmsh API {gmsh.GMSH_API_VERSION}")
     try:
         gmsh.initialize()

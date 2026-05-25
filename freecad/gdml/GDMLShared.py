@@ -1561,5 +1561,5 @@ def quad(v1, v2, v3, v4):
         f1 = Part.Face(w1)
         return f1
     except:
-        print(f"Failed to create Face {v1} {v2} {v3} {v4}")
+        # Non-planar quad — caller counts and reports the total
         return None

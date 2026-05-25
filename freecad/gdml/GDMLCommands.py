@@ -2147,7 +2147,13 @@ class AddDecimateTask:
 
         # print(dir(self.obj))
         self.obj.Proxy.updateParams(mesh.Topology[0], mesh.Topology[1], False)
-        self.obj.recompute()
+        # FreeCAD 1.1+: obj.recompute() triggers a full document recompute.
+        # Call createGeometry() directly then purgeTouched() to update the
+        # Shape without re-queuing the object.
+        if hasattr(self.obj, 'Proxy') and \
+                hasattr(self.obj.Proxy, 'createGeometry'):
+            self.obj.Proxy.createGeometry(self.obj)
+            self.obj.purgeTouched()
         self.obj.ViewObject.Visibility = True
         FreeCADGui.SendMsgToActiveView("ViewFit")
         print("Update Gui")
@@ -2504,7 +2510,7 @@ class AddMinTessellateTask:
     def processMesh(self, vertex, facets):
         from .GDMLObjects import ViewProvider
 
-        print("Update Tessellated Object Operation Type {self.operationType}")
+        print(f"Update Tessellated Object Operation Type {self.operationType}")
         #print(dir(self))
         #print("Object Name " + self.obj.Name)
         print("Object Name " + self.obj.Label)
@@ -2544,14 +2550,21 @@ class AddMinTessellateTask:
             if self.operationType in [1, 2]:
                 self.obj.ViewObject.Visibility = False
                 if self.tess is not None:
-                    ViewProvider(self.tess.ViewObject)
-                    self.tess.ViewObject.DisplayMode = "Wireframe"
-                    self.tess.recompute()
-                    # FreeCAD.ActiveDocument.recompute()
+                    # Do NOT overwrite ViewProviderGmshTessellated here.
+                    # FreeCAD 1.1+: avoid recompute() loop — call directly.
+                    self.tess.Proxy.createGeometry(self.tess)
+                    # Re-set DisplayMode *after* createGeometry so it fires
+                    # on the (possibly reinstalled) VP that was registered
+                    # with addDisplayMode during createGeometry.
+                    self.tess.ViewObject.DisplayMode = "Flat Lines"
+                    self.tess.purgeTouched()
             else:
-                #print("Recompute : " + self.obj.Name)
                 print("Recompute : " + self.obj.Label)
-                self.obj.recompute()
+                # Same FreeCAD 1.1+ fix — avoid recompute() loop
+                if hasattr(self.obj, 'Proxy') and \
+                        hasattr(self.obj.Proxy, 'createGeometry'):
+                    self.obj.Proxy.createGeometry(self.obj)
+                    self.obj.purgeTouched()
                 self.obj.ViewObject.Visibility = True
             print(f"View Fit Gmsh Min")
             FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -2720,13 +2733,21 @@ class AddTessellateTask:
             if self.operationType in [1, 2]:
                 self.obj.ViewObject.Visibility = False
                 if self.tess is not None:
-                    ViewProvider(self.tess.ViewObject)
-                    self.tess.ViewObject.DisplayMode = "Wireframe"
-                    self.tess.recompute()
-                    # FreeCAD.ActiveDocument.recompute()
+                    # ViewProviderGmshTessellated is set in __init__ — don't
+                    # overwrite it with the generic ViewProvider here.
+                    # FreeCAD 1.1+: avoid recompute() loop — call directly.
+                    self.tess.Proxy.createGeometry(self.tess)
+                    # Re-set DisplayMode *after* createGeometry so it fires
+                    # on the (possibly reinstalled) VP.
+                    self.tess.ViewObject.DisplayMode = "Flat Lines"
+                    self.tess.purgeTouched()
             else:
                 print("Recompute : " + self.obj.Name)
-                self.obj.recompute()
+                # FreeCAD 1.1+: avoid recompute() loop — call directly
+                if hasattr(self.obj, 'Proxy') and \
+                        hasattr(self.obj.Proxy, 'createGeometry'):
+                    self.obj.Proxy.createGeometry(self.obj)
+                    self.obj.purgeTouched()
                 self.obj.ViewObject.Visibility = True
             FreeCADGui.SendMsgToActiveView("ViewFit")
             FreeCADGui.updateGui()
@@ -2745,22 +2766,27 @@ class AddTessellateTask:
 
         print("Action Gmsh : " + self.obj.Name)
         initialize()
-        typeDict = {'Triangular': 6, 'Quadrangular': 8, 'Parallelogram': 9}
+        typeDict = {'Triangular': 6, 'Quadrangular': 8, 'Parallelograms': 9}
         print("Object " + self.obj.Label)
         self.operationType = 1
         obj2Mesh = self.obj
         if hasattr(self.obj, 'tessellated'):
             if self.obj.tessellated is not None:
                 self.operationType = 2
+
+        # Read mesh parameters from the dialog — always available regardless
+        # of whether the selected object has a Proxy (e.g. plain STEP imports
+        # are Part::Feature objects with no Proxy).
+        mshType = self.form.meshType.currentText()
+        mshTy = typeDict[mshType]
+        mshML = self.form.maxLen.value.text()
+        mshCL = self.form.curveLen.value.text()
+        mshPL = self.form.pointLen.value.text()
+
         if hasattr(self.obj, "Proxy"):
             print(f"Has proxy {self.obj.Proxy}")
             #print(dir(self.obj.Proxy))
             #print(dir(self.obj))
-            mshType = self.form.meshType.currentText()
-            mshTy = typeDict[mshType]
-            mshML = self.form.maxLen.value.text()
-            mshCL = self.form.curveLen.value.text()
-            mshPL = self.form.pointLen.value.text()
             # Is this a remesh of GDMLGmshTessellated
             if hasattr(self.obj.Proxy, "Type"):
                 if self.obj.Proxy.Type == "GDMLGmshTessellated":
@@ -3710,7 +3736,14 @@ class ResetWorldFeature:
 
     def BoundingBox(self, vol):
         if hasattr(vol, "Shape"):
-            return vol.Shape.BoundBox
+            shape = vol.Shape
+            # GDMLGmshTessellated keeps fp.Shape empty to avoid the
+            # BRepMesh hang; the real geometry lives in fp.GmshShape.
+            if shape.isNull() or not shape.isValid():
+                gmsh_shape = getattr(vol, "GmshShape", None)
+                if gmsh_shape is not None and not gmsh_shape.isNull():
+                    return gmsh_shape.BoundBox
+            return shape.BoundBox
         elif vol.TypeId == "App::Part" or vol.TypeId == "App::Link":
             placement = vol.Placement
             matrix = placement.Matrix
@@ -3834,10 +3867,46 @@ class CompoundFeature:
         }
 
 
+class MigrateReactorSubGroupsFeature:
+    """Repair documents saved before the ReactorMaterials sub-group fix.
+
+    Moves reactor isotopes/elements that were incorrectly placed at the top
+    level of the 'Isotopes'/'Elements' groups into 'ReactorMaterials'
+    sub-groups, so that GDML export no longer emits them.
+    """
+
+    def Activated(self):
+        from .importGDML import migrateReactorSubGroups
+        n_iso, n_elem = migrateReactorSubGroups()
+        msg = (f"Migration complete: {n_iso} isotope(s), "
+               f"{n_elem} element(s) moved to ReactorMaterials sub-groups.")
+        print(msg)
+        from PySide import QtWidgets
+        QtWidgets.QMessageBox.information(None, "Migrate Reactor Sub-Groups", msg)
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDML_Compound",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "MigrateReactorSubGroups", "Migrate Reactor Sub-Groups"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "MigrateReactorSubGroups",
+                "Move reactor isotopes/elements from top-level groups into "
+                "ReactorMaterials sub-groups (fixes documents saved before "
+                "the sub-group structure was introduced)",
+            ),
+        }
+
+
 FreeCADGui.addCommand("CycleCommand", CycleFeature())
 FreeCADGui.addCommand("ExpandCommand", ExpandFeature())
 FreeCADGui.addCommand("ExpandMaxCommand", ExpandMaxFeature())
 FreeCADGui.addCommand("ResetWorldCommand", ResetWorldFeature())
+FreeCADGui.addCommand("MigrateReactorSubGroupsCommand", MigrateReactorSubGroupsFeature())
 FreeCADGui.addCommand("ColourMapCommand", ColourMapFeature())
 FreeCADGui.addCommand("AddMaterialCommand", AddMaterialFeature())
 FreeCADGui.addCommand("SetMaterialCommand", SetMaterialFeature())

@@ -64,6 +64,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
     class MyObserver:
         def __init__(self):
             self.signal = []
+            self._warned_docs = set()   # track docs already warned this session
 
         def slotCreatedDocument(self, doc):
             from .importGDML import processGDML
@@ -81,6 +82,54 @@ class GDML_Workbench(FreeCADGui.Workbench):
                     1,              # processType
                     True,
                 )
+
+        def _checkReactorMigration(self, doc):
+            """Check whether reactor elements sit directly in the top-level
+            'Elements' group instead of in a 'ReactorMaterials' sub-group.
+            Warns once per document per session."""
+            try:
+                if doc.Name in self._warned_docs:
+                    return
+                elementsGrp = doc.getObject("Elements")
+                if elementsGrp is None:
+                    return
+                # Quick probe: enriched_U1 is always present in the old
+                # (flat) structure written by processReactor.
+                needs_migration = any(
+                    obj.Label == "enriched_U1"
+                    for obj in elementsGrp.Group
+                )
+                if not needs_migration:
+                    return
+
+                self._warned_docs.add(doc.Name)
+                from PySide import QtWidgets
+                msg = (
+                    "This document contains reactor elements (e.g. 'enriched_U1') "
+                    "directly in the top-level Elements group.\n\n"
+                    "These should be in a 'ReactorMaterials' sub-group so that "
+                    "GDML export works correctly.\n\n"
+                    "Run  GDML → Migrate Reactor Sub-Groups  to fix this."
+                )
+                QtWidgets.QMessageBox.warning(
+                    None,
+                    "Reactor Sub-Groups Migration Needed",
+                    msg,
+                )
+            except Exception as e:
+                print(f"[GDML] reactor migration check failed: {e}")
+
+        def slotOpenDocument(self, doc):
+            """Fires when a file is opened from disk."""
+            self._checkReactorMigration(doc)
+
+        def slotActivateDocument(self, doc):
+            """Fires whenever a document becomes active."""
+            self._checkReactorMigration(doc)
+
+        def slotFinishRestoreDocument(self, doc):
+            """Fires after full restore on newer FreeCAD."""
+            self._checkReactorMigration(doc)
 
     "GDML workbench object"
 
@@ -100,6 +149,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "ExpandCommand",
             "ExpandMaxCommand",
             "ResetWorldCommand",
+            "MigrateReactorSubGroupsCommand",
             "SetMaterialCommand",
             "AddMaterialCommand",
             "SetSensDetCommand",
@@ -211,6 +261,12 @@ class GDML_Workbench(FreeCADGui.Workbench):
         print("Activated")
         self.obs = self.MyObserver()
         FreeCAD.addDocumentObserver(self.obs)
+        # Check any document that is already open/active at the moment the
+        # workbench activates — the observer would miss events that fired
+        # before it was registered.
+        doc = FreeCAD.ActiveDocument
+        if doc is not None:
+            self.obs._checkReactorMigration(doc)
         return
 
     def Deactivated(self):

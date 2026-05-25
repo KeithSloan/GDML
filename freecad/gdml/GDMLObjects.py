@@ -99,11 +99,15 @@ def getSurfsListFromGroup(doc):
 
 
 def addMaterialsFromGroup(doc, MatList, grpName):
+    # Labels to exclude: "Geant4" is a pre-defined G4_* container handled
+    # separately; "ReactorMaterials" is OpenMC-only and must not appear as a
+    # selectable material for GDML objects.
+    _SKIP_LABELS = {"Geant4", "ReactorMaterials"}
     mmats = doc.getObject(grpName)
     if mmats is not None:
         if hasattr(mmats, "Group"):
             for i in mmats.Group:
-                if i.Label != "Geant4":
+                if i.Label not in _SKIP_LABELS:
                     MatList.append(i.Label)
     else:
         # rebuild Materials from scratch
@@ -456,9 +460,50 @@ class GDMLsolid:
         mat = FreeCAD.Matrix()
         mat.scale(fp.scale)
         fp.Shape = fp.Shape.transformGeometry(mat)
+        fp.purgeTouched()
+
+    @staticmethod
+    def _log(msg):
+        """Write a timestamped line to /tmp/gdml_loop.log (survives UI freeze)."""
+        import time, traceback as _tb
+        try:
+            with open('/tmp/gdml_loop.log', 'a') as _f:
+                _f.write(f"{time.strftime('%H:%M:%S')} {msg}\n")
+                _f.flush()
+        except Exception:
+            pass
 
     def execute(self, fp):
-        self.createGeometry(fp)
+        cls = self.__class__.__name__
+        count = getattr(self.__class__, '_exec_count', {})
+        key = fp.Name
+        count[key] = count.get(key, 0) + 1
+        self.__class__._exec_count = count
+        GDMLsolid._log(f"execute #{count[key]} {cls} {fp.Label}")
+        if count[key] > 5:
+            import traceback
+            import io
+            buf = io.StringIO()
+            traceback.print_stack(file=buf, limit=8)
+            GDMLsolid._log(f"  LOOP on {fp.Label}:\n{buf.getvalue()}")
+            fp.purgeTouched()
+            count[key] = 0
+            return
+        if getattr(self, '_in_execute', False):
+            GDMLsolid._log(f"  re-entry blocked {fp.Label}")
+            fp.purgeTouched()
+            return
+        self._in_execute = True
+        try:
+            self.createGeometry(fp)
+            fp.purgeTouched()
+        finally:
+            self._in_execute = False
+
+    def mustExecute(self, fp=None):
+        name = fp.Name if fp else '?'
+        GDMLsolid._log(f"mustExecute {self.__class__.__name__} {name} → False")
+        return False
 
     def __getstate__(self):
         """When saving the document this object gets stored using Python's json
@@ -701,7 +746,6 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
 
     def createGeometry(self, fp):
 
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         subdivisions = 0
         if self.isTwisted(fp):
@@ -753,7 +797,7 @@ class GDMLArb8(GDMLsolid):  # Thanks to Dam Lamb
 
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLBox(GDMLsolid):
@@ -812,7 +856,6 @@ class GDMLBox(GDMLsolid):
 
         if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
 
-            currPlacement = fp.Placement
             mul = GDMLShared.getMult(fp)
             GDMLShared.trace("mul : " + str(mul))
             x = mul * fp.x
@@ -821,9 +864,9 @@ class GDMLBox(GDMLsolid):
             box = Part.makeBox(x, y, z)
             base = FreeCAD.Vector(-x / 2, -y / 2, -z / 2)
             fp.Shape = translate(box, base)
-            fp.Placement = currPlacement
         if hasattr(fp, "scale"):
             super().scale(fp)
+            fp.purgeTouched()
 
     def OnDocumentRestored(self, obj):
         print("Doc Restored")
@@ -937,7 +980,6 @@ class GDMLCone(GDMLsolid):
             # Need to add code to check variables will make a valid cone
             # i.e.max > min etc etc
             # print("execute cone")
-            currPlacement = fp.Placement
             mul = GDMLShared.getMult(fp)
             rmin1 = mul * fp.rmin1
             rmin2 = mul * fp.rmin2
@@ -976,7 +1018,7 @@ class GDMLCone(GDMLsolid):
                 fp.Shape = translate(cone3, base)
             if hasattr(fp, "scale"):
                 super().scale(fp)
-            fp.Placement = currPlacement
+            fp.purgeTouched()
 
 
 class GDMLElCone(GDMLsolid):
@@ -1035,7 +1077,6 @@ class GDMLElCone(GDMLsolid):
 
     # def execute(self, fp): in GDMLsolid
 
-    '''
     def createGeometry(self, fp):
         # Form the Web page documentation page for elliptical cone:
         # https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
@@ -1055,59 +1096,6 @@ class GDMLElCone(GDMLsolid):
         # ditto for dy
 
         mul = GDMLShared.getMult(fp)
-        currPlacement = fp.Placement
-        rmax = (fp.zmax + fp.zcut) * mul
-        cone1 = Part.makeCone(rmax, 0, rmax)
-        mat = FreeCAD.Matrix()
-        mat.unity()
-        # Semi axis values so need to double
-        dx = fp.dx
-        dy = fp.dy
-        zcut = fp.zcut * mul
-        zmax = fp.zmax * mul
-        mat.A11 = dx
-        mat.A22 = dy
-        mat.A33 = 1
-        mat.A34 = -zcut  # move bottom of cone to -zcut
-        mat.A44 = 1
-        xmax = dx * rmax
-        ymax = dy * rmax
-        cone2 = cone1.transformGeometry(mat)
-        if zcut is not None:
-            box = Part.makeBox(2 * xmax, 2 * ymax, zmax)
-            pl = FreeCAD.Placement()
-            # Only need to move to semi axis
-            pl.move(FreeCAD.Vector(-xmax, -ymax, zcut))
-            box.Placement = pl
-            fp.Shape = cone2.cut(box)
-        else:
-            fp.Shape = cone2
-        if hasattr(fp, "scale"):
-            super().scale(fp)
-        fp.Placement = currPlacement
-        '''
-
-
-    def createGeometry(self, fp):
-        # Form the Web page documentation page for elliptical cone:
-        # https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Detector/Geometry/geomSolids.html
-        # the parametric equation of the elliptical cone:
-        # x = dx*(zmax - u) * cos(v), v = 0..2Pi (note, as of 2021-11-21,
-        # web page mistakenly shows /u)
-        # y = dy*(zmax - u) * sin(v)
-        # z = u, u = -zcut..zcut
-        # Therefore the bottom base of the cone (at z=u=-zcut) has
-        # xmax = dxmax = dx*(zmax+zcut)
-        # and ymax=dymax = dy*(zmax+zcut)
-        # The ellipse at the top has simi-major axis dx*(zmax-zcut) and
-        # semiminor axis dy*(zmax-zcut)
-        # as per the above, the "bottom of the cone is at z = -zcut
-        # Note that dx is a SCALING factor for the semi major axis,
-        # NOT the actual semi major axis
-        # ditto for dy
-
-        mul = GDMLShared.getMult(fp)
-        currPlacement = fp.Placement
         # Semi axis values so need to double
         dx = fp.dx
         dy = fp.dy
@@ -1141,7 +1129,7 @@ class GDMLElCone(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLEllipsoid(GDMLsolid):
@@ -1206,7 +1194,6 @@ class GDMLEllipsoid(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         sphere = Part.makeSphere(100)  # 100= sphere radius = 1/2 diameter
         ax = fp.ax * mul
@@ -1254,7 +1241,7 @@ class GDMLEllipsoid(GDMLsolid):
         fp.Shape = translate(shape, base)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLElTube(GDMLsolid):
@@ -1310,27 +1297,7 @@ class GDMLElTube(GDMLsolid):
 
     # def execute(self, fp): in GDMLsolid
 
-    '''
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
-        mul = GDMLShared.getMult(fp)
-        tube = Part.makeCylinder(100, 100)
-        mat = FreeCAD.Matrix()
-        mat.unity()
-        mat.A11 = (fp.dx * mul) / 100
-        mat.A22 = (fp.dy * mul) / 100
-        mat.A33 = (fp.dz * mul) / 50
-        mat.A44 = 1
-        # trace mat
-        newtube = tube.transformGeometry(mat)
-        base = FreeCAD.Vector(0, 0, -(fp.dz * mul))  # dz is half height
-        fp.Shape = translate(newtube, base)
-        if hasattr(fp, "scale"):
-            super().scale(fp)
-        fp.Placement = currPlacement
-    '''
-    def createGeometry(self, fp):
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         dx = fp.dx * mul
         dy = fp.dy * mul
@@ -1350,7 +1317,7 @@ class GDMLElTube(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLOrb(GDMLsolid):
@@ -1401,7 +1368,6 @@ class GDMLOrb(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Orb")
         mul = GDMLShared.getMult(fp.lunit)
@@ -1409,7 +1375,7 @@ class GDMLOrb(GDMLsolid):
         fp.Shape = Part.makeSphere(r)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLPara(GDMLsolid):
@@ -1493,7 +1459,6 @@ class GDMLPara(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Polyparallepiped")
         mul = GDMLShared.getMult(fp)
@@ -1559,7 +1524,7 @@ class GDMLPara(GDMLsolid):
         fp.Shape = translate(solid, -center)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLHype(GDMLsolid):
@@ -1639,7 +1604,6 @@ class GDMLHype(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Hyperbolic Tube")
         # this should probably be a global variable, but
@@ -1705,7 +1669,7 @@ class GDMLHype(GDMLsolid):
             fp.Shape = outersolid.cut(innersolid)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLParaboloid(GDMLsolid):
@@ -1769,7 +1733,6 @@ class GDMLParaboloid(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Hyperbolic Tube")
         # this should probably be a global variable, but
@@ -1803,7 +1766,7 @@ class GDMLParaboloid(GDMLsolid):
         fp.Shape = outersolid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLPolyhedra(GDMLsolid):
@@ -1880,7 +1843,6 @@ class GDMLPolyhedra(GDMLsolid):
     def createGeometry(self, fp):
         from math import sin, cos, pi
 
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute Polyhedra")
         parms = fp.OutList
@@ -1988,7 +1950,7 @@ class GDMLPolyhedra(GDMLsolid):
         fp.Shape = Part.makeSolid(shell)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLGenericPolyhedra(GDMLsolid):
@@ -2078,7 +2040,6 @@ class GDMLGenericPolyhedra(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # GDMLShared.setTrace(True)
         GDMLShared.trace("Execute GenericPolyhedra")
         rzpoints = fp.OutList
@@ -2152,7 +2113,7 @@ class GDMLGenericPolyhedra(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTorus(GDMLsolid):
@@ -2238,7 +2199,6 @@ class GDMLTorus(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         GDMLShared.trace("Create Torus")
         mul = GDMLShared.getMult(fp)
         rmin = mul * fp.rmin
@@ -2270,7 +2230,7 @@ class GDMLTorus(GDMLsolid):
         fp.Shape = torus
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTwistedbox(GDMLsolid):
@@ -2357,7 +2317,6 @@ class GDMLTwistedbox(GDMLsolid):
         # print(fp)
 
         if all((fp.x, fp.y, fp.z, fp.PhiTwist)):
-            currPlacement = fp.Placement
 
             # if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
             mul = GDMLShared.getMult(fp)
@@ -2389,7 +2348,7 @@ class GDMLTwistedbox(GDMLsolid):
             fp.Shape = loft
             if hasattr(fp, "scale"):
                 super().scale(fp)
-            fp.Placement = currPlacement
+            fp.purgeTouched()
 
     def OnDocumentRestored(self, obj):
         print("Doc Restored")
@@ -2529,7 +2488,6 @@ class GDMLTwistedtrap(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # Define six vetices for the shape
         alpha = getAngleRad(fp.aunit, fp.Alph)
         theta = getAngleRad(fp.aunit, fp.Theta)
@@ -2586,7 +2544,7 @@ class GDMLTwistedtrap(GDMLsolid):
         fp.Shape = loft
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTwistedtrd(GDMLsolid):
@@ -2699,7 +2657,6 @@ class GDMLTwistedtrd(GDMLsolid):
         # print(fp)
 
         if all((fp.x1, fp.x2, fp.y1, fp.y2, fp.z, fp.PhiTwist)):
-            currPlacement = fp.Placement
 
             # if (hasattr(fp,'x') and hasattr(fp,'y') and hasattr(fp,'z')) :
             mul = GDMLShared.getMult(fp)
@@ -2734,7 +2691,7 @@ class GDMLTwistedtrd(GDMLsolid):
             fp.Shape = loft
             if hasattr(fp, "scale"):
                 super().scale(fp)
-            fp.Placement = currPlacement
+            fp.purgeTouched()
 
     def OnDocumentRestored(self, obj):
         print("Doc Restored")
@@ -2851,7 +2808,6 @@ class GDMLTwistedtubs(GDMLsolid):
         # print(fp)
 
         if all((fp.endouterrad, fp.zlen, fp.phi)):
-            currPlacement = fp.Placement
 
             mul = GDMLShared.getMult(fp)
             rin = fp.endinnerrad * mul
@@ -2908,7 +2864,7 @@ class GDMLTwistedtubs(GDMLsolid):
             fp.Shape = loft
             if hasattr(fp, "scale"):
                 super().scale(fp)
-            fp.Placement = currPlacement
+            fp.purgeTouched()
 
     def OnDocumentRestored(self, obj):
         print("Doc Restored")
@@ -2973,7 +2929,6 @@ class GDMLXtru(GDMLsolid):
 
     def createGeometry(self, fp):
         # GDMLShared.setTrace(True)
-        currPlacement = fp.Placement
         # print("Create Geometry")
         parms = fp.OutList
         # print("OutList")
@@ -3037,7 +2992,7 @@ class GDMLXtru(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDML2dVertex(GDMLcommon):
@@ -3220,7 +3175,6 @@ class GDMLPolycone(GDMLsolid):  # Thanks to Dam Lamb
 
     def createGeometry(self, fp):
 
-        currPlacement = fp.Placement
         zplanes = fp.OutList
         # GDMLShared.trace("Number of zplanes : "+str(len(zplanes)))
         mul = GDMLShared.getMult(fp.lunit)
@@ -3280,7 +3234,7 @@ class GDMLPolycone(GDMLsolid):  # Thanks to Dam Lamb
         fp.Shape = Part.makeCompound(listShape)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
@@ -3344,7 +3298,6 @@ class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
 
     def createGeometry(self, fp):
 
-        currPlacement = fp.Placement
         rzpoints = fp.OutList
         if len(rzpoints) < 3:
             print("Error in genericPolycone: number of rzpoints less than 3")
@@ -3369,7 +3322,7 @@ class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLSphere(GDMLsolid):
@@ -3463,7 +3416,6 @@ class GDMLSphere(GDMLsolid):
 
     def createGeometry(self, fp):
         # Based on code by Dam Lamb
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         rmax = mul * fp.rmax
         if rmax <= 0.0:
@@ -3562,7 +3514,7 @@ class GDMLSphere(GDMLsolid):
             fp.Shape = sphere2.cut(Part.makeSphere(rmin))
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTrap(GDMLsolid):
@@ -3683,7 +3635,6 @@ class GDMLTrap(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         # Define six vetices for the shape
         alpha = getAngleRad(fp.aunit, fp.alpha)
         theta = getAngleRad(fp.aunit, fp.theta)
@@ -3754,7 +3705,7 @@ class GDMLTrap(GDMLsolid):
         fp.Shape = translate(solid, -center)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTrd(GDMLsolid):
@@ -3814,7 +3765,6 @@ class GDMLTrd(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         GDMLShared.trace("x2  : " + str(fp.x2))
 
         mul = GDMLShared.getMult(fp)
@@ -3847,7 +3797,7 @@ class GDMLTrd(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTube(GDMLsolid):
@@ -3933,7 +3883,6 @@ class GDMLTube(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         rmax = mul * fp.rmax
         rmin = mul * fp.rmin
@@ -3958,7 +3907,7 @@ class GDMLTube(GDMLsolid):
         fp.Shape = translate(tube, base)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLcutTube(GDMLsolid):
@@ -4096,7 +4045,6 @@ class GDMLcutTube(GDMLsolid):
 
     def createGeometry(self, fp):
         # Munther improved version Sep 23
-        currPlacement = fp.Placement
         angle = getAngleDeg(fp.aunit, fp.deltaphi)
         pntC = FreeCAD.Vector(0, 0, 0)
         dirC = FreeCAD.Vector(0, 0, 1)
@@ -4164,7 +4112,7 @@ class GDMLcutTube(GDMLsolid):
         fp.Shape = cutTube2
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
     def createGeometry_hardcoded(self, fp):
         angle = getAngleDeg(fp.aunit, fp.deltaphi)
@@ -4321,6 +4269,13 @@ class GDMLGmshTessellated(GDMLsolid):
             "Material",
         )
         setMaterial(obj, material)
+        # GmshShape holds the full Part compound (tri + genuine quad faces).
+        # Stored here rather than in fp.Shape so FreeCAD's C++ ViewProvider
+        # does NOT call BRepMesh_IncrementalMesh (it only watches "Shape").
+        obj.addProperty(
+            "Part::PropertyPartShape", "GmshShape",
+            "GDMLGmshTessellated", "Full tessellation shape (triangles and quads)"
+        )
         if FreeCAD.GuiUp:
             updateColour(obj, colour, material)
         self.Type = "GDMLGmshTessellated"
@@ -4331,6 +4286,8 @@ class GDMLGmshTessellated(GDMLsolid):
         self.colour = colour
         obj.Proxy = self
         obj.Proxy.Type = "GDMLGmshTessellated"
+        if FreeCAD.GuiUp:
+            ViewProviderGmshTessellated(obj.ViewObject)
 
     def updateParams(self, vertex, facets, flag):
         self.vertex = vertex
@@ -4360,13 +4317,19 @@ class GDMLGmshTessellated(GDMLsolid):
         if prop in ["m_Remesh"]:
             if fp.m_Remesh is True:
                 self.reMesh(fp)
-                self.execute(fp)
+                self.createGeometry(fp)
+                fp.purgeTouched()
 
         if prop in ["scale"]:
             self.createGeometry(fp)
+            fp.purgeTouched()
 
-    def execute(self, fp):  # Here for remesh?
-        self.createGeometry(fp)
+    def execute(self, fp):
+        # Shape is built ONLY by explicit createGeometry() calls from
+        # processMesh (actionMesh/actionRemesh) and onChanged.
+        # FreeCAD's auto-execute must never rebuild the shape.
+        GDMLsolid._log(f"GDMLGmshTessellated execute (no-op) {fp.Label}")
+        fp.purgeTouched()
 
     def addProperties(self):
         print("Add Properties")
@@ -4387,9 +4350,25 @@ class GDMLGmshTessellated(GDMLsolid):
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
+        GDMLsolid._log(f"createGeometry START {fp.Label} facets={len(self.facets)} vertex={len(self.vertex)}")
+        # FreeCAD's document recompute cycle (triggered by property additions
+        # after __init__) silently replaces our ViewProviderGmshTessellated
+        # with the generic ViewProvider.  Re-install it if that has happened.
+        if FreeCAD.GuiUp:
+            try:
+                if not isinstance(fp.ViewObject.Proxy,
+                                   ViewProviderGmshTessellated):
+                    print(f"[GDML] Reinstalling ViewProviderGmshTessellated"
+                          f" (was {type(fp.ViewObject.Proxy).__name__})")
+                    # Setting obj.Proxy triggers FreeCAD to call attach()
+                    # automatically — do NOT call it again manually as that
+                    # would double-register all display modes.
+                    ViewProviderGmshTessellated(fp.ViewObject)
+            except Exception:
+                pass
         mul = GDMLShared.getMult(fp)
         FCfaces = []
+        quad_fail = 0
         for f in self.facets:
             if len(f) == 3:
                 face = GDMLShared.triangle(
@@ -4399,7 +4378,7 @@ class GDMLGmshTessellated(GDMLsolid):
                 )
                 if face is not None:
                     FCfaces.append(face)
-            else:  # len should then be 4
+            else:  # quad
                 quadFace = GDMLShared.quad(
                     mul * self.vertex[f[0]],
                     mul * self.vertex[f[1]],
@@ -4409,8 +4388,7 @@ class GDMLGmshTessellated(GDMLsolid):
                 if quadFace is not None:
                     FCfaces.append(quadFace)
                 else:
-                    print(f"Create Quad Failed {f[0]} {f[1]} {f[2]} {f[3]}")
-                    print("Creating as two triangles")
+                    quad_fail += 1
                     face = GDMLShared.triangle(
                         mul * self.vertex[f[0]],
                         mul * self.vertex[f[1]],
@@ -4426,32 +4404,112 @@ class GDMLGmshTessellated(GDMLsolid):
                     if face is not None:
                         FCfaces.append(face)
 
-        shell = Part.makeShell(FCfaces)
-        if shell.isValid is False:
-            FreeCAD.Console.PrintWarning("Not a valid Shell/n")
+        quad_ok = sum(1 for f in self.facets if len(f) == 4) - quad_fail
+        GDMLsolid._log(f"createGeometry loop done: FCfaces={len(FCfaces)} quad_fail={quad_fail}")
+        if quad_fail:
+            print(f"[GDML] Gmsh quads → BRep: {quad_ok} kept as quads,"
+                  f" {quad_fail} non-planar split to triangles"
+                  f" ({len(FCfaces)} total BRep faces)."
+                  f" Coin3D display uses original Gmsh topology.")
 
-        try:
-            solid = Part.Solid(shell)
-        except:
-            # make compound rather than just barf
-            # visually able to view at least
-            FreeCAD.Console.PrintWarning("Problem making Solid/n")
-            solid = Part.makeCompound(FCfaces)
-        # if solid.Volume < 0:
-        #   solid.reverse()
-        # print(dir(solid))
-        # bbox = solid.BoundBox
-        # base = FreeCAD.Vector(-(bbox.XMin+bbox.XMax)/2, \
-        #                      -(bbox.YMin+bbox.YMax)/2 \
-        #                      -(bbox.ZMin+bbox.ZMax)/2)
-        # print(base)
+        shape = Part.makeCompound(FCfaces)
+        GDMLsolid._log(f"createGeometry compound done: {len(FCfaces)} faces")
 
-        # base = FreeCAD.Vector(0,0,0)
-        # fp.Shape = translate(solid,base)
-        fp.Shape = solid
+        # Store the compound in GmshShape (not fp.Shape).
+        #
+        # FreeCAD 1.1+'s C++ ViewProvider (PartGui::ViewProviderPart) calls
+        # BRepMesh_IncrementalMesh whenever the property named "Shape" changes.
+        # For 15 000+ faces this hangs the UI.  The C++ code compares the
+        # changed property by pointer to pcObject->Shape specifically, so a
+        # Part shape stored under any other name does NOT trigger BRepMesh.
+        #
+        # GmshShape is used by:
+        #   - GDMLTessellatedExporter  (GDML export, reads .Faces / .Vertexes)
+        #   - ViewProviderGmshTessellated (Coin3D display, genuine tri + quad)
+        #
+        # fp.Shape is kept empty so BRepMesh is called on a null shape → instant.
+        if hasattr(fp, "GmshShape"):
+            fp.GmshShape = shape
+            GDMLsolid._log(f"createGeometry GmshShape assigned")
+        else:
+            # Fallback for objects created before GmshShape was added
+            fp.Shape = shape
+            GDMLsolid._log(f"createGeometry fp.Shape assigned (GmshShape not present)")
+
+        fp.Shape = Part.Shape()
+        GDMLsolid._log(f"createGeometry fp.Shape set to empty (BRepMesh bypass)")
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+
+        # FreeCAD batches property-change notifications; updateData("GmshShape")
+        # fires before the shape is populated, then never again.  Drive the
+        # Coin3D rebuild explicitly so the display is always up to date.
+        if FreeCAD.GuiUp:
+            try:
+                vp = fp.ViewObject
+                vp_proxy = vp.Proxy if vp is not None else None
+                print(f"[GDML] VP proxy type: {type(vp_proxy).__name__}")
+                if hasattr(vp_proxy, "_rebuild"):
+                    vp_proxy._rebuild(fp)
+                else:
+                    print(f"[GDML] VP has no _rebuild — VP class: {type(vp_proxy).__name__}")
+            except Exception as exc:
+                import traceback
+                print(f"[GDML] VP rebuild failed: {exc}")
+                traceback.print_exc()
+
+        fp.purgeTouched()
+        GDMLsolid._log(f"createGeometry END {fp.Label}")
+
+    # ------------------------------------------------------------------
+    # Serialisation — vertex/facets are Python lists and are NOT saved by
+    # FreeCAD's C++ property system, so we must handle them ourselves.
+    # GmshShape (Part::PropertyPartShape) is saved automatically by FreeCAD.
+    # ------------------------------------------------------------------
+
+    def __getstate__(self):
+        state = {"type": self.Type}
+        if hasattr(self, "vertex") and self.vertex:
+            state["vertex"] = [[v.x, v.y, v.z] for v in self.vertex]
+        if hasattr(self, "facets") and self.facets:
+            state["facets"] = [[int(i) for i in f] for f in self.facets]
+        if hasattr(self, "colour") and self.colour is not None:
+            c = self.colour
+            state["colour"] = list(c) if hasattr(c, "__iter__") else c
+        if hasattr(self, "SourceObj") and self.SourceObj is not None:
+            try:
+                state["sourceObjName"] = self.SourceObj.Name
+            except Exception:
+                pass
+        return state
+
+    def __setstate__(self, state):
+        if state is None:
+            return
+        self.Type = state.get("type") or state.get("Type", "GDMLGmshTessellated")
+        if "vertex" in state:
+            self.vertex = [FreeCAD.Vector(v[0], v[1], v[2])
+                           for v in state["vertex"]]
+        else:
+            self.vertex = []
+        if "facets" in state:
+            self.facets = state["facets"]
+        else:
+            self.facets = []
+        self.colour = state.get("colour")
+        # SourceObj is a live document object; stash the name and resolve it
+        # in onDocumentRestored once the full document is loaded.
+        self._sourceObjName = state.get("sourceObjName", "")
+        self.SourceObj = None
+
+    def onDocumentRestored(self, fp):
+        """Resolve SourceObj after full document load."""
+        if self._sourceObjName:
+            try:
+                self.SourceObj = FreeCAD.ActiveDocument.getObject(
+                    self._sourceObjName)
+            except Exception:
+                pass
 
 
 class GDMLTessellated(GDMLsolid):
@@ -4519,11 +4577,15 @@ class GDMLTessellated(GDMLsolid):
 
         if prop in ["scale"]:
             self.createGeometry(fp)
+            fp.purgeTouched()
 
     def addProperties(self):
         print("Add Properties")
 
-    # def execute(self, fp): in GDMLsolid
+    def execute(self, fp):
+        # Same as GDMLGmshTessellated: shape is built only by explicit
+        # createGeometry() calls. FreeCAD auto-execute just clears the flag.
+        fp.purgeTouched()
 
     def createGeometry(self, fp):
         if hasattr(self, "pshape"):
@@ -4535,6 +4597,7 @@ class GDMLTessellated(GDMLsolid):
             fp.facets = self.facets
         if hasattr(fp, "scale"):
             super().scale(fp)
+            fp.purgeTouched()
 
     def createShape(self, vertex, facets, flag):
         # Viewing outside of face vertex must be counter clockwise
@@ -4771,11 +4834,15 @@ class GDMLSampledTessellated(GDMLsolid):
 
         if prop in ["scale"]:
             self.createGeometry(fp)
+            fp.purgeTouched()
 
     def addProperties(self):
         print("Add Properties")
 
-    # def execute(self, fp): in GDMLsolid
+    def execute(self, fp):
+        # Same as GDMLGmshTessellated: shape is built only by explicit
+        # createGeometry() calls. FreeCAD auto-execute just clears the flag.
+        fp.purgeTouched()
 
     def createGeometry(self, fp):
         if hasattr(self, "pshape"):
@@ -4787,6 +4854,7 @@ class GDMLSampledTessellated(GDMLsolid):
             fp.facets = self.facets
         if hasattr(fp, "scale"):
             super().scale(fp)
+            fp.purgeTouched()
 
     def createShape(self, vertex, facets, solidFlag, sampledFraction, flag):
         # Viewing outside of face vertex must be counter clockwise
@@ -4938,7 +5006,6 @@ class GDMLSampledTessellated(GDMLsolid):
     def createGeometry0(self, fp):
         import time
 
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         if int(fp.sampledFraction) == 0:
             return
@@ -5027,7 +5094,6 @@ class GDMLSampledTessellated(GDMLsolid):
         fp.Shape = solid
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
 
 
 class GDMLTetra(GDMLsolid):  # 4 point Tetrahedron
@@ -5078,7 +5144,6 @@ class GDMLTetra(GDMLsolid):  # 4 point Tetrahedron
     # def execute(self, fp): in GDMLsolid
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         mul = GDMLShared.getMult(fp)
         pt1 = mul * fp.v1
         pt2 = mul * fp.v2
@@ -5091,7 +5156,7 @@ class GDMLTetra(GDMLsolid):  # 4 point Tetrahedron
         fp.Shape = Part.makeSolid(Part.makeShell([face1, face2, face3, face4]))
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLTetrahedron(GDMLsolid):
@@ -5160,7 +5225,6 @@ class GDMLTetrahedron(GDMLsolid):
         return Part.makeShell([face1, face2, face3, face4])
 
     def createGeometry(self, fp):
-        currPlacement = fp.Placement
         print("Tetrahedron")
         mul = GDMLShared.getMult(fp)
         print(len(self.Tetra))
@@ -5174,7 +5238,7 @@ class GDMLTetrahedron(GDMLsolid):
         fp.Shape = Part.makeCompound(tetraShells)
         if hasattr(fp, "scale"):
             super().scale(fp)
-        fp.Placement = currPlacement
+        fp.purgeTouched()
 
 
 class GDMLFiles(GDMLcommon):
@@ -5729,6 +5793,168 @@ class ViewProvider(GDMLcommon):
     def __setstate__(self, state):
         """When restoring the serialized object from document we have the chance to set some internals here.\
                Since no data were serialized nothing needs to be done here."""
+        return None
+
+
+class ViewProviderGmshTessellated(ViewProvider):
+    """
+    Coin3D-based ViewProvider for GDMLGmshTessellated.
+
+    Renders the tessellation mesh directly via SoIndexedFaceSet, preserving
+    genuine triangle AND quad faces as produced by Gmsh.
+
+    Design rationale
+    ----------------
+    FreeCAD 1.1+'s C++ ViewProvider (PartGui::ViewProviderPart) calls
+    BRepMesh_IncrementalMesh whenever the property named "Shape" changes.
+    For meshes with 15 000+ faces this hangs the UI.  The C++ code
+    identifies the Shape property by pointer comparison, so any Part shape
+    stored under a different name bypasses BRepMesh entirely.
+
+    GDMLGmshTessellated stores the compound in fp.GmshShape (not fp.Shape).
+    fp.Shape is kept as an empty Part.Shape() so BRepMesh is called on a
+    null shape and returns immediately.  This ViewProvider watches GmshShape
+    and rebuilds the Coin3D scene graph whenever it changes.
+    """
+
+    def _init_coin_nodes(self):
+        """Create Coin3D nodes if not already present.
+
+        Called from __init__, attach(), and _rebuild() so the nodes always
+        exist regardless of whether __init__ was called before attach() during
+        document restore.
+        """
+        if hasattr(self, "_sep"):
+            return
+        from pivy import coin
+        self._sep = coin.SoSeparator()
+        # SoShapeHints UNKNOWN_ORDERING disables back-face culling.
+        self._hints = coin.SoShapeHints()
+        self._hints.vertexOrdering.setValue(coin.SoShapeHints.UNKNOWN_ORDERING)
+        self._hints.shapeType.setValue(coin.SoShapeHints.UNKNOWN_SHAPE_TYPE)
+        # SoDrawStyle LINES renders polygon edges only (wireframe mesh view).
+        self._draw_style = coin.SoDrawStyle()
+        self._draw_style.style.setValue(coin.SoDrawStyle.LINES)
+        self._coords = coin.SoCoordinate3()
+        self._face_set = coin.SoIndexedFaceSet()
+        self._sep.addChild(self._hints)
+        self._sep.addChild(self._draw_style)
+        self._sep.addChild(self._coords)
+        self._sep.addChild(self._face_set)
+
+    def __init__(self, obj):
+        self._init_coin_nodes()
+        super().__init__(obj)   # sets obj.Proxy = self; FreeCAD calls attach()
+
+    def _inject_into_sg(self):
+        """Add _sep directly to the active 3D view scene graph.
+
+        addDisplayMode() alone does not reliably activate the Coin3D node
+        in FreeCAD 1.1+, so we bypass the mode-switch and add the separator
+        directly to the root scene graph.  Guard with _in_sg so it's done
+        at most once per VP instance.
+        """
+        if getattr(self, "_in_sg", False):
+            return
+        try:
+            import FreeCADGui
+            view = FreeCADGui.ActiveDocument.ActiveView
+            sg = view.getSceneGraph()
+            sg.addChild(self._sep)
+            self._in_sg = True
+        except Exception:
+            pass
+
+    def attach(self, obj):
+        """Register Coin3D nodes with the scene graph display modes."""
+        self._init_coin_nodes()
+        obj.addDisplayMode(self._sep, "Flat Lines")
+        obj.addDisplayMode(self._sep, "Shaded")
+        obj.addDisplayMode(self._sep, "Wireframe")
+        obj.addDisplayMode(self._sep, "Points")
+        self._inject_into_sg()
+        self._rebuild(obj.Object)
+
+    def updateData(self, fp, prop):
+        """Rebuild Coin3D nodes when relevant properties change."""
+        if prop not in ("GmshShape", "Shape"):
+            return
+        self._rebuild(fp)
+
+    def _rebuild(self, fp):
+        """Populate Coin3D nodes from proxy vertex/facet data.
+
+        Reads proxy.vertex and proxy.facets directly rather than traversing
+        fp.GmshShape.Faces, so genuine Gmsh quads (including non-planar ones
+        that cannot be represented as BRep planar faces) are displayed correctly.
+        """
+        self._init_coin_nodes()
+        if not hasattr(self, "_coords"):
+            return  # coin nodes unavailable (shouldn't happen after _init)
+        proxy = getattr(fp, "Proxy", None)
+        if proxy is None:
+            return
+        vertex = getattr(proxy, "vertex", None)
+        facets = getattr(proxy, "facets", None)
+        if not vertex or not facets:
+            return
+        try:
+            from pivy import coin
+            mul = GDMLShared.getMult(fp)
+            # Build SbVec3f list — explicit type avoids silent pivy no-ops
+            # that can occur when passing plain Python tuples in some builds.
+            pts = [coin.SbVec3f(float(mul * v.x if hasattr(v, 'x') else (mul * v)[0]),
+                                float(mul * v.y if hasattr(v, 'y') else (mul * v)[1]),
+                                float(mul * v.z if hasattr(v, 'z') else (mul * v)[2]))
+                   for v in vertex]
+            self._coords.point.setValues(0, len(pts), pts)
+            n_pts = self._coords.point.getNum()
+            # Convert every index to Python int — numpy int32 can silently
+            # fail with some pivy SoMFInt32.setValues builds.
+            indices = []
+            for f in facets:
+                for idx in f:
+                    indices.append(int(idx))
+                indices.append(-1)   # Coin3D face terminator
+            self._face_set.coordIndex.setValues(0, len(indices), indices)
+            n_idx = self._face_set.coordIndex.getNum()
+            print(f"[GDML] Tessellation: {len(pts)} verts → Coin3D has {n_pts},"
+                  f" {len(facets)} faces, {len(indices)} indices → Coin3D has {n_idx}")
+        except Exception as exc:
+            import traceback
+            print(f"[GDML] ViewProviderGmshTessellated display error: {exc}")
+            traceback.print_exc()
+
+    def onDocumentRestored(self, fp):
+        """Re-populate Coin3D nodes after document load.
+
+        attach() may have been called before the feature proxy's __setstate__
+        restored vertex/facets, leaving the Coin3D nodes empty.  By the time
+        onDocumentRestored fires, all proxies are fully restored, so _rebuild
+        can actually populate the mesh.  Also redo the scene-graph injection
+        because the 3D view's SG is rebuilt on document load.
+        """
+        if not FreeCAD.GuiUp:
+            return
+        self._init_coin_nodes()
+        self._in_sg = False      # force re-injection into the fresh SG
+        self._inject_into_sg()
+        self._rebuild(fp)
+
+    def getDisplayModes(self, obj):
+        return ["Flat Lines", "Shaded", "Wireframe", "Points"]
+
+    def getDefaultDisplayMode(self):
+        return "Flat Lines"
+
+    def setDisplayMode(self, mode):
+        """Map display mode names — required by some FreeCAD versions."""
+        return mode
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
         return None
 
 

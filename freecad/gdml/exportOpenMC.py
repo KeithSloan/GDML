@@ -774,25 +774,38 @@ def elementGroup(elem):
     if elem1.endswith("_element"):
         elem1 = elem1[:-len("_element")]
 
-    for grp in elementsGroup.Group:
-        label = grp.Label
-        if label.endswith("_element"):
-            label = label[:-len("_element")]
+    def _search(group):
+        for grp in group:
+            label = grp.Label
+            if label.endswith("_element"):
+                label = label[:-len("_element")]
+            if label == elem1:
+                return grp
+            # Recurse into sub-groups (e.g. ReactorMaterials sub-group)
+            if hasattr(grp, 'Group'):
+                found = _search(grp.Group)
+                if found is not None:
+                    return found
+        return None
 
-        if label == elem1:
-            return grp
-
-    return None
+    return _search(elementsGroup.Group)
 
 
 def materialGroup(mat):
-    materialGroup = FreeCAD.ActiveDocument.getObject('Materials')
+    materialsGroup = FreeCAD.ActiveDocument.getObject('Materials')
 
-    for grp in materialGroup.Group:
-        if grp.Label == mat:
-            return grp
+    def _search(group):
+        for grp in group:
+            if grp.Label == mat:
+                return grp
+            # Recurse into sub-groups (e.g. ReactorMaterials sub-group)
+            if hasattr(grp, 'Group'):
+                found = _search(grp.Group)
+                if found is not None:
+                    return found
+        return None
 
-    return None
+    return _search(materialsGroup.Group)
 
 
 def merge_lists(list1, list2):
@@ -1047,14 +1060,26 @@ def createElement(elementLabel, item):
     global materials
 
     elementsGroup = FreeCAD.ActiveDocument.getObject('Elements')
-    for grp in elementsGroup.Group:
-        if grp.Label == elementLabel:
-            for nuclideGrp in grp.Group:
-                nuclide_name = nuclideGrp.Label[:nuclideGrp.Label.find(' :')]
-                fraction = nuclideGrp.n
-                xml_item = ET.SubElement(item, 'nuclide')
-                xml_item.attrib['name'] = str(nuclide_name)
-                xml_item.attrib['ao'] = str(fraction)
+
+    def _findElement(group):
+        """Search group and any sub-groups for an element with elementLabel."""
+        for grp in group:
+            if grp.Label == elementLabel:
+                return grp
+            if hasattr(grp, 'Group'):
+                found = _findElement(grp.Group)
+                if found is not None:
+                    return found
+        return None
+
+    elemGrp = _findElement(elementsGroup.Group)
+    if elemGrp is not None:
+        for nuclideGrp in elemGrp.Group:
+            nuclide_name = nuclideGrp.Label[:nuclideGrp.Label.find(' :')]
+            fraction = nuclideGrp.n
+            xml_item = ET.SubElement(item, 'nuclide')
+            xml_item.attrib['name'] = str(nuclide_name)
+            xml_item.attrib['ao'] = str(fraction)
 
 # -------------------------- End process OpenMC materials ------------------------
 

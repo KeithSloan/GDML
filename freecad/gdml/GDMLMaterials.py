@@ -51,57 +51,40 @@ def getMaterialsList():
     print('getMaterialsList')
     matList = []
     doc = FreeCAD.activeDocument()
+
+    # Ensure Geant4 materials are loaded
     try:
         materials = doc.Materials
         g4Mats = doc.getObject('G4Materials')
-
     except:
         from .importGDML import processGEANT4
         from .init_gui import joinDir
-
         print('Load Geant4 Materials XML')
         processGEANT4(doc, joinDir("Resources/Geant4Materials.xml"))
         materials = doc.Materials
         g4Mats = doc.getObject('G4Materials')
 
-    try:
-        reactorMats = doc.getObject('ReactorMaterials')
-
-    except:
-        from .importGDML import processReactor
-        from .init_gui import joinDir
-
-        print('Load Geant4 Materials XML')
-        processReactor(doc, joinDir("Resources/ReactorMaterials.xml"))
-        materials = doc.Materials
-        reactorMats = doc.getObject('ReactorMaterials')
-
+    # User-defined materials (exclude OpenMC-only containers)
+    _SKIP_LABELS = {"Geant4", "ReactorMaterials"}
     try:
         if materials is not None:
             for m in materials.OutList:
-                if m.Label != "Geant4" and m.Label != "ReactorMaterials":
+                if m.Label not in _SKIP_LABELS:
                     matList.append(m.Label)
-                    print(matList)
     except:
         pass
 
+    # Geant4 NIST / HEP / Space / … materials
     try:
         if g4Mats is not None:
             for m in g4Mats.OutList:
                 for n in m.OutList:
                     matList.append(n.Label)
-            # print(matList)
     except:
         pass
 
-    try:
-        if reactorMats is not None:
-            for m in reactorMats.OutList:
-                for n in m.OutList:
-                    matList.append(n.Label)
-            # print(matList)
-    except:
-        pass
+    # Note: ReactorMaterials are intentionally excluded — they are OpenMC-only
+    # and must not appear as selectable materials for GDML objects.
 
     return matList
 
@@ -154,10 +137,15 @@ def newGetGroupedMaterials():
         matList = []
         docMaterials = doc.Materials
         print(f'doc.Materials {docMaterials}')
+        # Exclude sub-group containers that are not selectable materials.
+        # "Geant4" holds G4_* pre-defined materials (handled via G4Materials group above).
+        # "ReactorMaterials" is an OpenMC-only container; its contents are
+        # already added as a separate group via GroupedMaterials[reactorMaterials.Label].
+        _NORMAL_SKIP = {"Geant4", "ReactorMaterials"}
         if docMaterials is not None:
             for m in docMaterials.OutList:
                 print(m.Label)
-                if m.Label != "Geant4":
+                if m.Label not in _NORMAL_SKIP:
                     if m.Label not in matList:
                         matList.append(m.Label)
 

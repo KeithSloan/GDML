@@ -222,6 +222,34 @@ The `Materials/` directory includes pre-built material XML files including the f
 
 ---
 
+## Materials Architecture
+
+The workbench maintains a structured hierarchy of material groups in each document:
+
+```
+Materials/
+    Geant4/              ← G4_* NIST pre-defined materials (GEANT4 resolves these internally)
+    ReactorMaterials/    ← OpenMC-only reactor materials (TMZ, LBE, enriched uranium alloys…)
+Elements/
+    ReactorMaterials/    ← OpenMC-only enriched uranium elements
+Isotopes/
+    ReactorMaterials/    ← OpenMC-only isotopes (U234, U235, U238)
+```
+
+**For GDML/GEANT4 workflows:** only user-defined materials and `G4_*` NIST materials appear in the material selector. Reactor materials are intentionally excluded from GDML export to avoid invalid GEANT4 geometry.
+
+**For OpenMC workflows:** reactor materials are accessible via the **Set Material** command dialog (select the object, GDML menu → Set Material, choose the ReactorMaterials group). The OpenMC exporter finds them automatically through the sub-group structure.
+
+### Migrating older documents
+
+Documents created before May 2026 may have reactor elements placed directly in the top-level `Elements` group rather than in a `ReactorMaterials` sub-group. When the workbench detects this on opening a file it will prompt you to run:
+
+**GDML menu → Migrate Reactor Sub-Groups**
+
+This command moves the reactor isotopes and elements into the correct sub-groups and is safe to re-run on already-correct documents.
+
+---
+
 ## FEM (Finite Element Analysis)
 
 Use the **Compound icon** ![Compound icon](freecad/gdml/Resources/icons/GDML_Compound.svg) to prepare a GDML geometry for FEM analysis:
@@ -277,7 +305,7 @@ If this workbench contributed to published research, please cite it:
 ## Roadmap
 
 **Core:**
-- [ ] Support for OpenMC geometry format (PR open)
+- [~] OpenMC export (alpha — basic geometry and materials working; reactor materials sub-group support complete)
 - [ ] Change XML handling to use Python classes rather than global variables
 - [ ] Add support for GDML `quantity` elements
 - [ ] Add facility to edit Materials, Isotopes, and Elements interactively
