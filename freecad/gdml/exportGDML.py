@@ -4299,53 +4299,98 @@ class GDMLTessellatedExporter(GDMLSolidExporter):
         """
         tess = ET.SubElement(solids, "tessellated", {"name": tessName})
         placementCorrection = self.obj.Placement.inverse()
-        # GDMLGmshTessellated stores the compound in GmshShape (not Shape) to
-        # bypass BRepMesh_IncrementalMesh in FreeCAD 1.1+.  fp.Shape is kept
-        # empty to prevent the UI hang.  Fall back to Shape for GDMLTessellated.
-        _gmsh_shape = getattr(self.obj, "GmshShape", None)
-        _export_shape = (
-            _gmsh_shape
-            if _gmsh_shape is not None and not _gmsh_shape.isNull()
-            else self.obj.Shape
-        )
-        for i, v in enumerate(_export_shape.Vertexes):
-            vertexHashcodeDict[v.hashCode()] = i
-            exportDefineVertex(tessVname, placementCorrection * v.Point, i)
 
-        for f in _export_shape.Faces:
-            # print(f'len(f.Edges) {len(f.Edges)}')
-            # print(f'Normal at : {n} dot {dot} {clockWise}')
-            vertexes = f.OuterWire.OrderedVertexes
-            if len(f.Edges) == 3:
-                i0 = vertexHashcodeDict[vertexes[0].hashCode()]
-                i1 = vertexHashcodeDict[vertexes[1].hashCode()]
-                i2 = vertexHashcodeDict[vertexes[2].hashCode()]
-                ET.SubElement(
-                    tess,
-                    "triangular",
-                    {
-                        "vertex1": tessVname + str(i0),
-                        "vertex2": tessVname + str(i1),
-                        "vertex3": tessVname + str(i2),
-                        "type": "ABSOLUTE",
-                    },
+        # keepQuads mode: GmshShape is intentionally empty; export directly
+        # from proxy.vertex / proxy.facets to preserve all quads (including
+        # non-planar ones that cannot be represented as BRep faces).
+        proxy = getattr(self.obj, "Proxy", None)
+        if getattr(self.obj, "keepQuads", False) and proxy is not None \
+                and hasattr(proxy, "vertex") and hasattr(proxy, "facets"):
+            vertex = proxy.vertex
+            facets = proxy.facets
+            mul = 1.0  # vertex coordinates are already in document units
+            for i, v in enumerate(vertex):
+                pt = placementCorrection * FreeCAD.Vector(
+                    float(v.x) * mul, float(v.y) * mul, float(v.z) * mul
                 )
-            elif len(f.Edges) == 4:
-                i0 = vertexHashcodeDict[vertexes[0].hashCode()]
-                i1 = vertexHashcodeDict[vertexes[1].hashCode()]
-                i2 = vertexHashcodeDict[vertexes[2].hashCode()]
-                i3 = vertexHashcodeDict[vertexes[3].hashCode()]
-                ET.SubElement(
-                    tess,
-                    "quadrangular",
-                    {
-                        "vertex1": tessVname + str(i0),
-                        "vertex2": tessVname + str(i1),
-                        "vertex3": tessVname + str(i2),
-                        "vertex4": tessVname + str(i3),
-                        "type": "ABSOLUTE",
-                    },
-                )
+                exportDefineVertex(tessVname, pt, i)
+            tri_count = quad_count = 0
+            for f in facets:
+                if len(f) == 3:
+                    ET.SubElement(
+                        tess, "triangular",
+                        {
+                            "vertex1": tessVname + str(int(f[0])),
+                            "vertex2": tessVname + str(int(f[1])),
+                            "vertex3": tessVname + str(int(f[2])),
+                            "type": "ABSOLUTE",
+                        },
+                    )
+                    tri_count += 1
+                elif len(f) == 4:
+                    ET.SubElement(
+                        tess, "quadrangular",
+                        {
+                            "vertex1": tessVname + str(int(f[0])),
+                            "vertex2": tessVname + str(int(f[1])),
+                            "vertex3": tessVname + str(int(f[2])),
+                            "vertex4": tessVname + str(int(f[3])),
+                            "type": "ABSOLUTE",
+                        },
+                    )
+                    quad_count += 1
+            FreeCAD.Console.PrintMessage(
+                f"[GDML] keepQuads export: {len(vertex)} vertices,"
+                f" {tri_count} triangles, {quad_count} quads\n"
+            )
+        else:
+            # Normal path: read from GmshShape (tri + BRep-representable quads)
+            # or fp.Shape for GDMLTessellated.
+            # GDMLGmshTessellated stores the compound in GmshShape (not Shape) to
+            # bypass BRepMesh_IncrementalMesh in FreeCAD 1.1+.  fp.Shape is kept
+            # empty to prevent the UI hang.  Fall back to Shape for GDMLTessellated.
+            _gmsh_shape = getattr(self.obj, "GmshShape", None)
+            _export_shape = (
+                _gmsh_shape
+                if _gmsh_shape is not None and not _gmsh_shape.isNull()
+                else self.obj.Shape
+            )
+            for i, v in enumerate(_export_shape.Vertexes):
+                vertexHashcodeDict[v.hashCode()] = i
+                exportDefineVertex(tessVname, placementCorrection * v.Point, i)
+
+            for f in _export_shape.Faces:
+                vertexes = f.OuterWire.OrderedVertexes
+                if len(f.Edges) == 3:
+                    i0 = vertexHashcodeDict[vertexes[0].hashCode()]
+                    i1 = vertexHashcodeDict[vertexes[1].hashCode()]
+                    i2 = vertexHashcodeDict[vertexes[2].hashCode()]
+                    ET.SubElement(
+                        tess,
+                        "triangular",
+                        {
+                            "vertex1": tessVname + str(i0),
+                            "vertex2": tessVname + str(i1),
+                            "vertex3": tessVname + str(i2),
+                            "type": "ABSOLUTE",
+                        },
+                    )
+                elif len(f.Edges) == 4:
+                    i0 = vertexHashcodeDict[vertexes[0].hashCode()]
+                    i1 = vertexHashcodeDict[vertexes[1].hashCode()]
+                    i2 = vertexHashcodeDict[vertexes[2].hashCode()]
+                    i3 = vertexHashcodeDict[vertexes[3].hashCode()]
+                    ET.SubElement(
+                        tess,
+                        "quadrangular",
+                        {
+                            "vertex1": tessVname + str(i0),
+                            "vertex2": tessVname + str(i1),
+                            "vertex3": tessVname + str(i2),
+                            "vertex4": tessVname + str(i3),
+                            "type": "ABSOLUTE",
+                        },
+                    )
         self._exportScaled()
 
 

@@ -176,6 +176,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "TessellateCommand",
             "TessellateGmshCommand",
             "TessGmshMinCommand",
+            "TessGmshMinQuadCommand",
             "GmshGroupCommand",
             "DecimateCommand",
             "Mesh_FromPartShape",

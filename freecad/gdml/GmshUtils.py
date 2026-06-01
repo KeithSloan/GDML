@@ -177,11 +177,13 @@ def initialize():
     gmsh.option.setString("Geometry.OCCTargetUnit", "mm")
     gmsh.option.setString("General.ErrorFileName", "/tmp/error.log")
     gmsh.option.setNumber("General.Terminal", 1)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", 11)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 10)
-    #gmsh.option.setNumber("Mesh.CharacteristicLengthMin", 1e-3)
+    # These are overridden per-object by the dialog / meshObject() call.
+    # Set large sentinel values so they never silently constrain the mesh
+    # when the caller supplies its own characteristic lengths.
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", 1e9)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 1e9)
     gmsh.option.setNumber("Mesh.CharacteristicLengthMin", 1.0)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 10)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 1e9)
 
 
 def maxCord(bbox):

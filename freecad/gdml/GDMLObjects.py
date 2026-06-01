@@ -4276,6 +4276,10 @@ class GDMLGmshTessellated(GDMLsolid):
             "Part::PropertyPartShape", "GmshShape",
             "GDMLGmshTessellated", "Full tessellation shape (triangles and quads)"
         )
+        obj.addProperty(
+            "App::PropertyBool", "keepQuads",
+            "GDMLGmshTessellated", "Keep all Gmsh quads as-is (no flatness check)"
+        ).keepQuads = False
         if FreeCAD.GuiUp:
             updateColour(obj, colour, material)
         self.Type = "GDMLGmshTessellated"
@@ -4349,23 +4353,40 @@ class GDMLGmshTessellated(GDMLsolid):
 
     # def execute(self, fp): in GDMLsolid
 
+    def _ensure_vp(self, fp):
+        """Re-install ViewProviderGmshTessellated if FreeCAD replaced it."""
+        if not FreeCAD.GuiUp:
+            return
+        try:
+            if not isinstance(fp.ViewObject.Proxy, ViewProviderGmshTessellated):
+                print(f"[GDML] Reinstalling ViewProviderGmshTessellated"
+                      f" (was {type(fp.ViewObject.Proxy).__name__})")
+                ViewProviderGmshTessellated(fp.ViewObject)
+        except Exception:
+            pass
+
     def createGeometry(self, fp):
         GDMLsolid._log(f"createGeometry START {fp.Label} facets={len(self.facets)} vertex={len(self.vertex)}")
-        # FreeCAD's document recompute cycle (triggered by property additions
-        # after __init__) silently replaces our ViewProviderGmshTessellated
-        # with the generic ViewProvider.  Re-install it if that has happened.
-        if FreeCAD.GuiUp:
-            try:
-                if not isinstance(fp.ViewObject.Proxy,
-                                   ViewProviderGmshTessellated):
-                    print(f"[GDML] Reinstalling ViewProviderGmshTessellated"
-                          f" (was {type(fp.ViewObject.Proxy).__name__})")
-                    # Setting obj.Proxy triggers FreeCAD to call attach()
-                    # automatically — do NOT call it again manually as that
-                    # would double-register all display modes.
-                    ViewProviderGmshTessellated(fp.ViewObject)
-            except Exception:
-                pass
+        # Re-install VP if FreeCAD's recompute cycle replaced it.
+        self._ensure_vp(fp)
+
+        # keepQuads mode: skip BRep build entirely.  Coin3D display reads
+        # proxy.vertex / proxy.facets directly via _rebuild(), so no BRep
+        # compound is needed.  GmshShape stays empty; the exporter reads
+        # vertex/facets directly too (see GDMLTessellatedExporter).
+        if getattr(fp, "keepQuads", False):
+            GDMLsolid._log(f"createGeometry keepQuads=True — BRep skipped")
+            if FreeCAD.GuiUp:
+                try:
+                    vp_proxy = fp.ViewObject.Proxy if fp.ViewObject is not None else None
+                    if hasattr(vp_proxy, "_rebuild"):
+                        vp_proxy._rebuild(fp)
+                except Exception as exc:
+                    print(f"[GDML] VP rebuild (keepQuads) failed: {exc}")
+            fp.purgeTouched()
+            GDMLsolid._log(f"createGeometry END (keepQuads) {fp.Label}")
+            return
+
         mul = GDMLShared.getMult(fp)
         FCfaces = []
         quad_fail = 0
@@ -4487,6 +4508,8 @@ class GDMLGmshTessellated(GDMLsolid):
         if state is None:
             return
         self.Type = state.get("type") or state.get("Type", "GDMLGmshTessellated")
+        # keepQuads is stored as an App::PropertyBool on the FP object itself,
+        # not in the proxy state, so nothing extra needed here.
         if "vertex" in state:
             self.vertex = [FreeCAD.Vector(v[0], v[1], v[2])
                            for v in state["vertex"]]

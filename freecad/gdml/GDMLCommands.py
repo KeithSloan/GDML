@@ -2313,6 +2313,11 @@ class AddTessellateWidget(QtGui.QWidget):
         maxl = int( ( Obj.Shape.BoundBox.XLength + Obj.Shape.BoundBox.YLength \
              + Obj.Shape.BoundBox.ZLength) / 3
         )
+        # FreeCAD default mesher uses maxDimension/10 as characteristic length.
+        # Use the same formula as the default for curveLen and pointLen so that
+        # Gmsh full produces a mesh density comparable to FC default out of the box.
+        from .GmshUtils import getMeshLen as _getMeshLen
+        _fcDefaultMeshLen = str(int(_getMeshLen(Obj)))
         # Current Mesh Info
         self.meshInfoGroup = QtGui.QGroupBox("Mesh Info")
         meshInfo = QtGui.QHBoxLayout()
@@ -2348,11 +2353,11 @@ class AddTessellateWidget(QtGui.QWidget):
         if hasattr(self.tess, "meshCurveLen"):
             mshCurveLen = str(self.tess.meshCurveLen)
         else:
-            mshCurveLen = "10"
+            mshCurveLen = _fcDefaultMeshLen
         if hasattr(self.tess, "meshLenFromPoint"):
             mshLenFromPoint = str(self.tess.meshFromPoint)
         else:
-            mshLenFromPoint = "10"
+            mshLenFromPoint = _fcDefaultMeshLen
         self.meshType = QtGui.QComboBox()
         self.meshType.addItems(["Triangular", "Quadrangular", "Parallelograms"])
         self.maxLen = iField("Max Length", 5, mshMaxLen)
@@ -3930,10 +3935,72 @@ FreeCADGui.addCommand("TubeCommand", TubeFeature())
 FreeCADGui.addCommand("CutTubeCommand", CutTubeFeature())
 FreeCADGui.addCommand("PolyHedraCommand", PolyHedraFeature())
 FreeCADGui.addCommand("AddCompound", CompoundFeature())
+class AddMinTessellateQuadTask(AddMinTessellateTask):
+    """Like AddMinTessellateTask but sets keepQuads=True on the new object.
+
+    All quads produced by Gmsh are kept as-is (no flatness check / tri
+    fallback).  The Coin3D display reads proxy.vertex/facets directly, so
+    non-planar quads display correctly.  GDML export likewise reads
+    vertex/facets directly, emitting genuine <quadrangular> elements.
+    """
+
+    def actionMesh(self):
+        # Delegate to the parent implementation which creates the tessellated
+        # object and calls processMesh.
+        super().actionMesh()
+        # After the object is created, flip keepQuads on.
+        tess = self.tess
+        if tess is None and hasattr(self.obj, "tessellated"):
+            tess = self.obj.tessellated
+        if tess is not None and hasattr(tess, "keepQuads"):
+            tess.keepQuads = True
+            # Re-drive display so the Coin3D VP fires (BRep not built).
+            if hasattr(tess, "Proxy") and hasattr(tess.Proxy, "createGeometry"):
+                tess.Proxy.createGeometry(tess)
+            print(f"[GDML] keepQuads=True set on {tess.Label}")
+
+
+class TessGmshMinQuadFeature:
+    """Gmsh Min Tessellate — keep all quads (no non-planar split to triangles).
+
+    Produces the same STL → recombine mesh as Gmsh Min, but skips the BRep
+    flatness check entirely.  All quads are exported to GDML as
+    <quadrangular> elements; triangles as <triangular>.  Coin3D display uses
+    proxy.vertex/facets directly, so non-planar quads display correctly.
+    """
+
+    def Activated(self):
+        print("Action Gmsh Min Quad Activated")
+        for obj in FreeCADGui.Selection.getSelection():
+            if hasattr(obj, "Shape") and obj.TypeId != "App::Part":
+                if FreeCADGui.Control.activeDialog() is False:
+                    panel = AddMinTessellateQuadTask(obj)
+                    FreeCADGui.Control.showDialog(panel)
+                else:
+                    print("Already an Active Task")
+            return
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDML_Tess_Gmsh_Min",   # reuse existing icon
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup", "Gmsh Min Quad & Tessellate"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "GDML_TessGroup",
+                "Mesh with Gmsh Min and tessellate keeping all quads as quads"
+            ),
+        }
+
+
 FreeCADGui.addCommand("TessellateCommand", TessellateFeature())
 FreeCADGui.addCommand("GmshGroupCommand", GmshGroup())
 FreeCADGui.addCommand("TessellateGmshCommand", TessellateGmshFeature())
 FreeCADGui.addCommand("TessGmshMinCommand", TessGmshMinFeature())
+FreeCADGui.addCommand("TessGmshMinQuadCommand", TessGmshMinQuadFeature())
 FreeCADGui.addCommand("DecimateCommand", DecimateFeature())
 FreeCADGui.addCommand("Mesh2TessGroupCommand", Mesh2TessGroup())
 #FreeCADGui.addCommand("RecombineCommand", RecombineFeature())

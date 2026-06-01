@@ -1,0 +1,6 @@
+build/
+*.o
+gdml_bench
+cmake_out.txt
+make_out.txt
+qtlibs/
