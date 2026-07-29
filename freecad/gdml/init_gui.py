@@ -34,10 +34,6 @@
 # from FreeCAD import *
 import FreeCAD
 import PartGui
-try:
-    from draftguitools import gui_arrays
-except:
-    import DraftTools
 import SketcherGui
 import MeshGui
 import FreeCADGui
@@ -142,6 +138,18 @@ class GDML_Workbench(FreeCADGui.Workbench):
         def QT_TRANSLATE_NOOP(scope, text):
             return text
 
+        # Register Draft's GUI commands (incl. the Draft_ArrayTools flyout and
+        # its seven array sub-commands). Importing DraftTools pulls in
+        # draftguitools.gui_arrays, which is what creates the array group.
+        # Done here, not at module level: at module-import time (FreeCAD's
+        # startup scan) the Draft GUI stack isn't ready and the import loops.
+        try:
+            import DraftTools  # noqa: F401
+        except Exception as e:
+            FreeCAD.Console.PrintError(
+                "GDML: could not load Draft tools; "
+                "array tools unavailable: {}\n".format(e))
+
         # import GDMLCommands, GDMLResources
         commands = [
             "CycleCommand",
@@ -168,7 +176,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             #"Part_Extrude",
             #"Part_Revolve",
             #"Part_Mirror",
-            #"Draft_ArrayTools",
+            "Draft_ArrayTools",
             "BooleanCutCommand",
             "BooleanIntersectionCommand",
             "BooleanUnionCommand",
@@ -260,8 +268,12 @@ class GDML_Workbench(FreeCADGui.Workbench):
     def Activated(self):
         "This function is executed when the workbench is activated"
         print("Activated")
-        self.obs = self.MyObserver()
-        FreeCAD.addDocumentObserver(self.obs)
+        # Only register once. Without this guard, switching to the workbench
+        # repeatedly would stack duplicate observers, each firing on every
+        # document event — which behaves like a loop.
+        if getattr(self, "obs", None) is None:
+            self.obs = self.MyObserver()
+            FreeCAD.addDocumentObserver(self.obs)
         # Check any document that is already open/active at the moment the
         # workbench activates — the observer would miss events that fired
         # before it was registered.
@@ -272,7 +284,9 @@ class GDML_Workbench(FreeCADGui.Workbench):
 
     def Deactivated(self):
         "This function is executed when the workbench is deactivated"
-        FreeCAD.removeDocumentObserver(self.obs)
+        if getattr(self, "obs", None) is not None:
+            FreeCAD.removeDocumentObserver(self.obs)
+            self.obs = None
         return
 
     def GetClassName(self):
