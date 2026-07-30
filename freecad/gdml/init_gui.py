@@ -280,7 +280,31 @@ class GDML_Workbench(FreeCADGui.Workbench):
         doc = FreeCAD.ActiveDocument
         if doc is not None:
             self.obs._checkReactorMigration(doc)
+        # Force the Draft working-plane grid off in GDML.
+        self._hideDraftGrid()
         return
+
+    def _hideDraftGrid(self):
+        """Force the Draft working-plane grid off in the active 3D view.
+
+        Mirrors what Draft_ToggleGrid does when the grid is visible, but
+        deterministically (off, not toggle). Safe no-op if the Draft
+        Snapper/grid isn't available (e.g. no 3D view yet).
+        """
+        try:
+            if not hasattr(FreeCADGui, "Snapper"):
+                return
+            FreeCADGui.Snapper.setTrackers(update_grid=False)
+            grid = getattr(FreeCADGui.Snapper, "grid", None)
+            if grid is None:
+                return
+            if grid.Visible:
+                grid.off()
+            grid.show_always = False
+            grid.show_during_command = False
+        except Exception as e:
+            FreeCAD.Console.PrintLog(
+                "GDML: could not hide Draft grid: {}\n".format(e))
 
     def Deactivated(self):
         "This function is executed when the workbench is deactivated"

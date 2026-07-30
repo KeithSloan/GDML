@@ -2918,6 +2918,10 @@ class TessellateFeature:
                 GDMLTessellated(
                     myTess, mesh.Topology[0], mesh.Facets, True, "mm", mat
                 )
+                # execute() is now a no-op, so build the Shape explicitly
+                # (matches the Gmsh path). Without this fp.Shape stays null
+                # and the object is invisible in the 3D view.
+                myTess.Proxy.createGeometry(myTess)
                 # Update Part Placment with source Placement
                 vol.Placement = obj.Placement
                 base = obj.Placement.Base
