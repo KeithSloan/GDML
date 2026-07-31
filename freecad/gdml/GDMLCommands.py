@@ -3239,6 +3239,11 @@ class Mesh2TessDialog(QtGui.QDialog):
                     solidFlag,
                     sampledFraction,
                 )
+                # execute() is a no-op, so build the Shape explicitly, else
+                # fp.Shape stays null -> invisible in 3D view and empty GDML
+                # export (the exporter reads fp.Shape). Matches the
+                # TessellateFeature / Gmsh paths.
+                m2t.Proxy.createGeometry(m2t)
                 if FreeCAD.GuiUp:
                     obj.ViewObject.Visibility = False
                     # print(dir(obj.ViewObject))
