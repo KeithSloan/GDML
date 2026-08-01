@@ -2,6 +2,7 @@ import FreeCAD
 FreeCAD.addImportType("GDML (*.gdml)","freecad.gdml.importGDML")
 FreeCAD.addImportType("XML (*.xml)","freecad.gdml.importGDML")
 FreeCAD.addImportType("OBJ -> GDMLMesh (*.obj)","freecad.gdml.importOBJ")
+FreeCAD.addImportType("AP242 Step (*.step)","freecad.gdml.importAP242.py")
 FreeCAD.addExportType("GDML (*.gdml)","freecad.gdml.exportGDML")
 FreeCAD.addExportType("GDML (*.GDML)","freecad.gdml.exportGDML")
 FreeCAD.addExportType("XML (*.XML)","freecad.gdml.exportGDML")
