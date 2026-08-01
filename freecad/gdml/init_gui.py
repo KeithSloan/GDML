@@ -181,6 +181,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "BooleanIntersectionCommand",
             "BooleanUnionCommand",
             "SetScaleCommand",
+            "AnalyseShapeCommand",
             "TessellateCommand",
             "TessellateGmshCommand",
             "TessGmshMinCommand",
@@ -241,6 +242,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
 
         tbTessCmds = [    
             "Separator",
+            "AnalyseShapeCommand",
             "TessellateCommand",
             "GmshGroupCommand",
             "DecimateCommand",
