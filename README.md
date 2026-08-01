@@ -222,6 +222,31 @@ The `Materials/` directory includes pre-built material XML files including the f
 
 ---
 
+## Shapes2GDML (Experimental)
+
+> **Experimental.** Converts imported CAD solids (STEP/IGES/BREP) into native
+> GDML. **GDML export to Geant4 is currently untested** and assumes the
+> existing exporter suffices; treat output as provisional. Needs more test
+> cases and Geant4 performance-comparison runs.
+
+Imported parts are boundary-representation solids; GDML/Geant4 prefer
+constructive solid geometry from analytic primitives. Shapes2GDML analyses a
+selected solid and rebuilds it from native primitives where possible,
+falling back to tessellation only for genuinely freeform geometry.
+
+**GDML → Analyse Shape → GDML** (also on the GDML toolbar): select solids, run
+it, and the dialog reports the analysis and offers **Convert to Native**,
+**Recover CSG**, and **Tessellate**, enabled by what was found.
+
+Guiding principle: **prefer native primitives — cylinders and spheres
+especially — over tessellation**, even when the surrounding body must itself
+be tessellated. Analytic solids are exact and cheaper for Geant4 navigation;
+tessellation introduces faceting error and is slower.
+
+See [`Documentation/Shapes2GDML.md`](Documentation/Shapes2GDML.md) for the
+recovery pipeline, the tessellate-vs-boolean trade-offs, accuracy notes, and
+current limitations.
+
 ## Materials Architecture
 
 The workbench maintains a structured hierarchy of material groups in each document:
