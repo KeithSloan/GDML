@@ -52,6 +52,16 @@ EPS = 1e-7
 # the calling command overrides it with the shape's real material when known.
 DEFAULT_MATERIAL = "G4_Galactic"
 
+# When True, regular hole patterns build as Draft arrays (Draft.make_array);
+# when False they build as a Part::MultiFuse of tubes.  Both export as a
+# GDML <multiUnion>.
+USE_DRAFT_ARRAYS = True
+
+# Minimum number of members a regular pattern must have before it is built as a
+# Draft array (smaller patterns stay a MultiFuse).  Will become a workbench
+# preference; constant for now.
+MIN_ARRAY_NUMBER = 4
+
 
 # --------------------------------------------------------------------------
 # Surface-type classification constants
@@ -300,11 +310,13 @@ def _make_box(doc, shape):
 
 
 def _is_tube(shape, hist):
-    """True if the solid is a solid rod or hollow pipe: one or two coaxial
-    cylindrical faces plus planar caps, and no other surface types."""
+    """True only for a clean rod/pipe: one or two coaxial cylindrical faces plus
+    EXACTLY two planar caps and nothing else.  A cylinder carrying extra planar
+    faces (flats, milled features, mounting pads) is not a tube -- it is left
+    for CSG recovery."""
     return (
         hist.get(CYLINDER, 0) in (1, 2)
-        and hist.get(PLANE, 0) >= 1
+        and hist.get(PLANE, 0) == 2
         and set(hist) <= {CYLINDER, PLANE}
     )
 
@@ -349,18 +361,38 @@ def _is_sphere(shape, hist):
 
 
 def _make_sphere(doc, shape):
-    """Create a GDML sphere/orb from a recognised spherical solid."""
-    # TODO: radius from Part.Sphere.Radius; centre -> Placement.
-    return None
+    """Create a native GDMLSphere from a recognised spherical solid.
+
+    Spheres, like cylinders, are always preferred over tessellation.
+    """
+    face = next((f for f in shape.Faces if _surface_type(f) == SPHERE), None)
+    if face is None:
+        return None
+    surf = face.Surface
+    obj = _add_gdml(
+        doc, "GDMLSphere",
+        0.0, surf.Radius, 0.0, 2 * math.pi, 0.0, math.pi,
+        "rad", "mm", DEFAULT_MATERIAL,
+    )
+    if obj is not None:
+        obj.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(surf.Center), FreeCAD.Rotation()
+        )
+    return obj
 
 
 # ---- cone ----------------------------------------------------------------
 
 
 def _is_cone(shape, hist):
-    """True if the solid is a cone/frustum: exactly one conical face plus
-    planar caps, and no other surface types."""
-    return hist.get(CONE, 0) == 1 and set(hist) <= {CONE, PLANE}
+    """True only for a clean cone/frustum: exactly one conical face plus one or
+    two planar caps and nothing else.  A cone with extra planar features is
+    left for CSG recovery."""
+    return (
+        hist.get(CONE, 0) == 1
+        and hist.get(PLANE, 0) in (1, 2)
+        and set(hist) <= {CONE, PLANE}
+    )
 
 
 def _make_cone(doc, shape):
@@ -427,12 +459,15 @@ def recover_csg_tree(doc, shape, hist):
     the next step).  Returning a dict is truthy, so the caller can report that
     an analysis was produced.
     """
-    body = _recover_body_primitive(shape)
     holes = _find_internal_cylinders(shape)
     patterns = _detect_hole_patterns(holes)
-    report = _format_csg_hierarchy(shape, body, holes, patterns)
-    FreeCAD.Console.PrintMessage(report + "\n")
-    return {"body": body, "holes": holes, "patterns": patterns, "report": report}
+    bosses = _find_external_cylinders(shape)
+    filled = _fill_holes(shape, holes)
+    body = _recover_body_primitive(shape, filled)
+    report = _format_csg_hierarchy(shape, body, holes, patterns, bosses)
+    FreeCAD.Console.PrintMessage(report + chr(10))
+    return {"body": body, "holes": holes, "patterns": patterns,
+            "bosses": bosses, "filled": filled, "report": report}
 
 
 def _oriented_bounding_box(shape):
@@ -447,17 +482,132 @@ def _oriented_bounding_box(shape):
     return (bb.XLength, bb.YLength, bb.ZLength), FreeCAD.Vector(bb.Center)
 
 
-def _recover_body_primitive(shape):
-    """Describe the outer body primitive of a composite solid.
+def _fill_holes(shape, holes):
+    """Return the outer body envelope: the solid with its recovered holes filled
+    (solid fused with a solid cylinder per hole).  Used to recognise the body."""
+    import Part
+    fills = []
+    for h in holes:
+        length = h["length"]          # flush fill -- no protrusion
+        axis = FreeCAD.Vector(h["axis"])
+        base = FreeCAD.Vector(h["origin"]) - axis * (length / 2.0)
+        try:
+            fills.append(Part.makeCylinder(h["radius"], length, base, axis))
+        except Exception:
+            pass
+    if not fills:
+        return shape
+    try:
+        return shape.fuse(fills)
+    except Exception:
+        return shape
 
-    First pass: an axis-aligned bounding box.  Returns a description dict
-    ``{"kind": "box", "dims": (dx, dy, dz), "centre": Vector}``.
+
+def _boss_cut_shapes(bosses):
+    """Part cylinder shapes for each boss, used to cut the bosses out of the
+    body core before tessellation (they are added back as native cylinders)."""
+    import Part
+    shapes = []
+    for b in bosses:
+        length = b["length"]
+        axis = FreeCAD.Vector(b["axis"])
+        base = FreeCAD.Vector(b["origin"]) - axis * (length / 2.0)
+        try:
+            shapes.append(Part.makeCylinder(b["radius"], length, base, axis))
+        except Exception:
+            pass
+    return shapes
+
+
+def _make_tessellated(doc, shape, name):
+    """Create a GDMLTessellated from a Part shape (mesh only the body core;
+    bosses and holes stay native).  Returns the object or None."""
+    if shape is None or shape.isNull():
+        return None
+    try:
+        import MeshPart
+        from freecad.gdml import GDMLObjects
+        mesh = MeshPart.meshFromShape(
+            Shape=shape, LinearDeflection=0.1,
+            AngularDeflection=0.523599, Relative=False,
+        )
+        obj = doc.addObject("Part::FeaturePython", name)
+        GDMLObjects.GDMLTessellated(
+            obj, mesh.Topology[0], mesh.Facets, True, "mm", DEFAULT_MATERIAL
+        )
+        obj.Proxy.createGeometry(obj)
+        try:
+            GDMLObjects.ViewProvider(obj.ViewObject)
+        except Exception:
+            pass
+        return obj
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning(
+            "[BRepdeconstruction] tessellation failed (" + str(exc) + ")" + chr(10))
+        return None
+
+
+def _recover_axis_box(shape):
+    """Recover an axis-aligned box core from the solid's planar faces.
+
+    For each axis, the two box boundary planes are the two largest-area planar
+    faces whose normal lies along that axis (bosses/pads have small tops, so the
+    box faces dominate).  Returns ((dx, dy, dz), centre) or None.
     """
-    dims, centre = _oriented_bounding_box(shape)
+    axes = {"x": FreeCAD.Vector(1, 0, 0),
+            "y": FreeCAD.Vector(0, 1, 0),
+            "z": FreeCAD.Vector(0, 0, 1)}
+    bounds = {}
+    for key, av in axes.items():
+        cand = []
+        for f in shape.Faces:
+            if _surface_type(f) != PLANE:
+                continue
+            if abs(_unit(f.Surface.Axis).dot(av)) < 0.99:
+                continue
+            cand.append((f.CenterOfMass.dot(av), f.Area))
+        if len(cand) < 2:
+            return None
+        by_area = sorted(cand, key=lambda c: -c[1])
+        p1 = by_area[0][0]
+        opp = [c for c in by_area if abs(c[0] - p1) > 1e-3]
+        if not opp:
+            return None
+        p2 = opp[0][0]
+        bounds[key] = (min(p1, p2), max(p1, p2))
+    dims = (round(bounds["x"][1] - bounds["x"][0], 3),
+            round(bounds["y"][1] - bounds["y"][0], 3),
+            round(bounds["z"][1] - bounds["z"][0], 3))
+    if min(dims) <= 0:
+        return None
+    centre = FreeCAD.Vector((bounds["x"][0] + bounds["x"][1]) / 2.0,
+                            (bounds["y"][0] + bounds["y"][1]) / 2.0,
+                            (bounds["z"][0] + bounds["z"][1]) / 2.0)
+    return dims, centre
+
+
+def _recover_body_primitive(shape, filled):
+    """Classify the hole-filled body envelope as box / tube / cone / complex.
+
+    If ``filled`` is a clean primitive the build uses that exact primitive
+    (via recognise_primitive); otherwise the body falls back to the bounding
+    box (and, later, tessellation of the residual body).
+    """
+    hist = _face_type_histogram(filled)
+    if _is_box(filled, hist):
+        kind = "box"
+    elif _is_tube(filled, hist):
+        kind = "tube"
+    elif _is_cone(filled, hist):
+        kind = "cone"
+    else:
+        kind = "complex"
+    bb = shape.BoundBox
     return {
-        "kind": "box",
-        "dims": tuple(round(d, 3) for d in dims),
-        "centre": centre,
+        "kind": kind,
+        "dims": (round(bb.XLength, 3), round(bb.YLength, 3), round(bb.ZLength, 3)),
+        "centre": FreeCAD.Vector(bb.Center),
+        "filled_faces": len(filled.Faces),
     }
 
 
@@ -528,7 +678,31 @@ def _merge_coaxial_holes(holes):
     return list(merged.values())
 
 
-def _format_csg_hierarchy(shape, body, holes, patterns):
+def _find_external_cylinders(shape):
+    """Return external (FORWARD-orientation) cylindrical faces -- candidate
+    bosses / pins (material lies INSIDE the cylinder), which also picks up edge
+    fillets.  Same geometry recovery as holes; classified boss-vs-fillet later.
+    """
+    ext = []
+    for face in shape.Faces:
+        if _surface_type(face) != CYLINDER or face.Orientation != "Forward":
+            continue
+        surf = face.Surface
+        axis = _unit(surf.Axis)
+        pts = [v.Point for v in face.Vertexes]
+        if pts:
+            length, mid = _axis_extent(pts, axis, surf.Center)
+            origin = surf.Center + axis * mid
+        else:
+            length, origin = 0.0, FreeCAD.Vector(surf.Center)
+        ext.append({
+            "axis": axis, "origin": origin, "radius": round(surf.Radius, 3),
+            "length": round(length, 3), "through": False,
+        })
+    return _merge_coaxial_holes(ext)
+
+
+def _format_csg_hierarchy(shape, body, holes, patterns, bosses=None):
     """Render the recovered body, holes and detected patterns as ASCII."""
     dx, dy, dz = body["dims"]
     c = body["centre"]
@@ -536,10 +710,15 @@ def _format_csg_hierarchy(shape, body, holes, patterns):
         "[BRepdeconstruction] CSG analysis (first pass, axis-aligned body):",
         f"  High-level solid : {len(shape.Faces)} faces, "
         f"{len(shape.Solids)} solid(s)",
-        f"  Body primitive   : Box {dx} x {dy} x {dz} mm "
-        f"@ ({c.x:.2f}, {c.y:.2f}, {c.z:.2f})",
+        f"  Body (holes filled): {body['kind'].upper()}  bbox "
+        f"{dx} x {dy} x {dz} mm @ ({c.x:.2f}, {c.y:.2f}, {c.z:.2f}), "
+        f"{body.get('filled_faces', '?')} faces",
         f"  Internal cylindrical features (holes): {len(holes)}",
     ]
+    if body.get("kind") == "complex":
+        out.append(
+            "    -> body core tessellated; bosses + holes stay native cylinders"
+        )
     for i, h in enumerate(holes):
         a, o = h["axis"], h["origin"]
         kind = "through" if h["through"] else "blind"
@@ -547,6 +726,23 @@ def _format_csg_hierarchy(shape, body, holes, patterns):
             f"    hole {i}: r={h['radius']} len={h['length']} "
             f"axis=({a.x:.2f},{a.y:.2f},{a.z:.2f}) "
             f"origin=({o.x:.2f},{o.y:.2f},{o.z:.2f}) [{kind}]"
+        )
+    bosses = bosses or []
+    out.append(
+        f"  External cylinders (candidate bosses/fillets): {len(bosses)}"
+    )
+    _seen = []
+    for b in bosses:
+        key = (b["radius"], _vkey(b["axis"]))
+        if key in _seen:
+            continue
+        _seen.append(key)
+        cnt = sum(1 for x in bosses
+                  if (x["radius"], _vkey(x["axis"])) == key)
+        a = b["axis"]
+        out.append(
+            f"    r={b['radius']} x{cnt} len={b['length']} "
+            f"axis=({a.x:.2f},{a.y:.2f},{a.z:.2f})"
         )
     out.append(f"  Detected hole patterns: {len(patterns)}")
     for p in patterns:
@@ -586,19 +782,26 @@ def _describe_pattern(p):
 
 
 def _pattern_tool(p):
+    """Describe how this pattern will actually be built, honouring
+    USE_DRAFT_ARRAYS and MIN_ARRAY_NUMBER so the report matches the tree."""
     r, ln = p["radius"], p["length"]
     t = p["type"]
-    if t == "single":
+    n = len(p["members"])
+    if t == "single" or n == 1:
         return f"Tube r={r} len={ln}  -> single cut"
-    if t == "linear":
-        return f"OrthoArray x{p['count']} of Tube r={r}  -> multiUnion + one cut"
-    if t == "grid":
-        return (f"OrthoArray {p['nx']}x{p['ny']} of Tube r={r}  "
+    if n < MIN_ARRAY_NUMBER:
+        return (f"{n}x Tube r={r}  -> {n} individual cuts "
+                f"(< MIN_ARRAY_NUMBER={MIN_ARRAY_NUMBER})")
+    if USE_DRAFT_ARRAYS and t == "grid":
+        return (f"Draft OrthoArray {p['nx']}x{p['ny']} of Tube r={r}  "
                 f"-> multiUnion + one cut")
-    if t == "polar":
-        return f"PolarArray x{p['count']} of Tube r={r}  -> multiUnion + one cut"
-    return (f"MultiFuse of {len(p['members'])}x Tube r={r}  "
-            f"-> multiUnion + one cut")
+    if USE_DRAFT_ARRAYS and t == "polar":
+        return (f"Draft PolarArray x{p['count']} of Tube r={r}  "
+                f"-> multiUnion + one cut")
+    if USE_DRAFT_ARRAYS and t == "linear":
+        return (f"Draft OrthoArray x{p['count']} of Tube r={r}  "
+                f"-> multiUnion + one cut")
+    return f"MultiFuse of {n}x Tube r={r}  -> multiUnion + one cut"
 
 
 def _inplane_basis(axis):
@@ -742,16 +945,218 @@ def _uniform_spacing(reps, tol):
         return None
     return gaps[0]
 
-def _build_subtraction_tree(doc, body, holes):
-    """NEXT STEP (not yet enabled): assemble the actual GDML <subtraction> --
-    body box minus one GDMLTube per recovered hole -- via GDMLObjects.
-    ``recover_csg_tree`` currently only analyses/reports; this will turn the
-    recovered description into real objects.
+def _make_tube_tool(doc, hole):
+    """Create a GDMLTube cutting tool for one hole (rmin=0), placed on its
+    axis.  Through holes are extended slightly so the cut is clean."""
+    length = hole["length"]
+    if hole.get("through"):
+        length = length + 0.4
+    tube = _add_gdml(
+        doc, "GDMLTube",
+        0.0, hole["radius"], max(length, 1e-3), 0.0, 2 * math.pi,
+        "rad", "mm", DEFAULT_MATERIAL,
+    )
+    if tube is not None:
+        tube.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(hole["origin"]),
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), hole["axis"]),
+        )
+    return tube
+
+
+def _try_build_array(doc, pattern, members):
+    """Build a Draft array tool for a regular pattern, reconstructing the array
+    vectors from the member hole origins.  Uses Draft.make_array (the same call
+    the workbench uses in importGDML).  Returns the array object, or None to
+    fall back to a MultiFuse.
+
+      linear : step vector between adjacent holes, base at the line end
+      grid   : in-plane u/v steps (sx, sy), base at the min-corner hole
+      polar  : centre + total angle, base at the first hole
     """
-    # TODO: build GDMLBox body from body["dims"]/["centre"]; for each hole make
-    #       a GDMLTube (rmin=0, rmax=radius, z=length) placed on hole axis;
-    #       chain via GDMLObjects.makeSubtraction. See _make_box / _make_tube.
+    try:
+        import Draft
+        t = pattern["type"]
+        axis = members[0]["axis"]
+        origins = [FreeCAD.Vector(h["origin"]) for h in members]
+        zero = FreeCAD.Vector(0, 0, 0)
+
+        if t == "linear":
+            d = _unit(origins[-1] - origins[0])
+            ordered = sorted(members,
+                             key=lambda h: FreeCAD.Vector(h["origin"]).dot(d))
+            step = FreeCAD.Vector(ordered[1]["origin"]) - FreeCAD.Vector(ordered[0]["origin"])
+            base = _make_tube_tool(doc, ordered[0])
+            if base is None:
+                return None
+            return Draft.make_array(base, step, zero, zero, len(members), 1, 1)
+
+        if t == "grid":
+            u, v = _inplane_basis(axis)
+            ustep = u * pattern["sx"]
+            vstep = v * pattern["sy"]
+            corner = min(members, key=lambda h: (
+                round(FreeCAD.Vector(h["origin"]).dot(u), 4),
+                round(FreeCAD.Vector(h["origin"]).dot(v), 4)))
+            base = _make_tube_tool(doc, corner)
+            if base is None:
+                return None
+            return Draft.make_array(base, ustep, vstep, zero,
+                                    int(pattern["nx"]), int(pattern["ny"]), 1)
+
+        if t == "polar":
+            base = _make_tube_tool(doc, members[0])
+            if base is None:
+                return None
+            total = pattern["angle"] * pattern["count"]
+            return Draft.make_array(base, FreeCAD.Vector(pattern["centre"]),
+                                    total, int(pattern["count"]))
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning(
+            "[BRepdeconstruction] Draft array failed (" + str(exc)
+            + "); using MultiFuse" + chr(10)
+        )
     return None
+
+
+def _build_pattern_tool(doc, pattern, holes):
+    """Build the cutting tool for one detected pattern.
+
+    single                     -> one GDMLTube
+    regular pattern >= MIN_ARRAY_NUMBER (and USE_DRAFT_ARRAYS) -> Draft array
+    otherwise                  -> Part::MultiFuse of tubes
+    A MultiFuse and a Draft array both export as a GDML <multiUnion>, so the
+    pattern subtracts with a single cut either way.
+    """
+    members = [holes[i] for i in pattern["members"]]
+    if not members:
+        return None
+    n = len(members)
+    if n == 1:
+        return _make_tube_tool(doc, members[0])
+    if USE_DRAFT_ARRAYS and n >= MIN_ARRAY_NUMBER:
+        arr = _try_build_array(doc, pattern, members)
+        if arr is not None:
+            try:
+                arr.Label = "GDML_MultUnion"
+            except Exception:
+                pass
+            return arr
+    tools = [t for t in (_make_tube_tool(doc, h) for h in members) if t is not None]
+    if not tools:
+        return None
+    if len(tools) == 1:
+        return tools[0]
+    fuse = doc.addObject("Part::MultiFuse", "GDML_MultUnion")
+    fuse.Label = "GDML_MultUnion"
+    fuse.Shapes = tools
+    return fuse
+
+def _build_subtraction_tree(doc, structure, name_base="GDML_Solid"):
+    """Build the recovered CSG as native objects: a GDMLBox body minus one
+    tool per detected pattern, chained with Part::Cut.
+
+    Naming (name_base e.g. "GDML_TopCover"): top-level result -> name_base,
+    inner cuts -> name_base + "_<n>_Cut" (numbered descending from the top),
+    body -> name_base + "_Body", tube unions -> "GDML_MultUnion".
+
+    One cut per pattern keeps the boolean tree shallow; each patterned tool is
+    a Draft array / MultiFuse that exports as a <multiUnion>.  The body is the
+    axis-aligned bounding box -- exact only when the solid really is a box.
+    """
+    body_desc = structure["body"]
+    patterns = structure.get("patterns") or []
+    holes = structure["holes"]
+    bosses = structure.get("bosses") or []
+    filled = structure.get("filled")
+
+    # --- body: recognised primitive from the filled envelope, else box core,
+    #     else bounding box (residual to be tessellated) ---
+    body = None
+    # 1. native primitive from the filled envelope (clean box/tube/cone/sphere).
+    if filled is not None:
+        try:
+            body = recognise_primitive(doc, filled, _face_type_histogram(filled))
+        except Exception as exc:
+            FreeCAD.Console.PrintWarning(
+                "[BRepdeconstruction] body recognise failed (" + str(exc)
+                + ")" + chr(10))
+            body = None
+    # 2. complex body -> tessellate the DE-BOSSED core (cut the boss cylinders
+    #    out first) so the mesh excludes the bosses; they are unioned back as
+    #    native cylinders below.  Nothing native is ever fused into the mesh.
+    if body is None and filled is not None:
+        core_shape = filled
+        cuts = _boss_cut_shapes(bosses)
+        deboss_ok = False
+        if cuts:
+            try:
+                cut_shape = filled.cut(cuts)
+                if (cut_shape is not None and not cut_shape.isNull()
+                        and cut_shape.Volume > 1e-6):
+                    core_shape = cut_shape
+                    deboss_ok = True
+            except Exception:
+                pass
+        if not deboss_ok:
+            # the external cylinders are the body's own surface, not separable
+            # bosses (cutting them empties the shape) -- tessellate the whole
+            # envelope and do not union them back.
+            bosses = []
+        body = _make_tessellated(doc, core_shape, name_base + "_Body")
+    # 3. last-resort fallback: bounding box.
+    if body is None:
+        dx, dy, dz = body_desc["dims"]
+        body = _add_gdml(doc, "GDMLBox", dx, dy, dz, "mm", DEFAULT_MATERIAL)
+        if body is None:
+            return None
+        body.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(body_desc["centre"]), FreeCAD.Rotation()
+        )
+        FreeCAD.Console.PrintWarning(
+            "[BRepdeconstruction] body fallback to bounding box" + chr(10))
+    body.Label = name_base + "_Body"
+
+    # --- union native cylinder bosses onto the body ---
+    result = body
+    if bosses:
+        boss_tubes = [t for t in (_make_tube_tool(doc, b) for b in bosses)
+                      if t is not None]
+        if boss_tubes:
+            fuse = doc.addObject("Part::MultiFuse", name_base + "_Bosses")
+            fuse.Label = name_base + "_Bosses"
+            fuse.Shapes = [result] + boss_tubes
+            result = fuse
+
+    cuts = []
+    tools = []
+    for pattern in patterns:
+        members = pattern["members"]
+        n = len(members)
+        if n == 1:
+            tools.append(_make_tube_tool(doc, holes[members[0]]))
+        elif n >= MIN_ARRAY_NUMBER:
+            tools.append(_build_pattern_tool(doc, pattern, holes))
+        else:
+            # a group below MIN_ARRAY_NUMBER is not a genuine array -- cut each
+            # hole individually rather than bundle a meaningless MultUnion.
+            for idx in members:
+                tools.append(_make_tube_tool(doc, holes[idx]))
+    for tool in tools:
+        if tool is None:
+            continue
+        cut = doc.addObject("Part::Cut", "GDML_Cut")
+        cut.Base = result
+        cut.Tool = tool
+        cuts.append(cut)
+        result = cut
+    total = len(cuts)
+    for i, cut in enumerate(cuts, start=1):
+        cut.Label = name_base if i == total else f"{name_base}_{total - i}_Cut"
+    if total == 0:
+        body.Label = name_base
+    doc.recompute()
+    return result
 
 
 # --------------------------------------------------------------------------

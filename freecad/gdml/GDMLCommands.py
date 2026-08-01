@@ -3949,27 +3949,89 @@ class AnalyseShapeDialog(QtGui.QDialog):
         self.btnCSG.clicked.connect(self.onCSG)
         self.btnTess.clicked.connect(self.onTess)
         self.btnClose.clicked.connect(self.accept)
+        self._recovered = []
+        self._csg_mode = False
         self._runAnalysis()
 
     def _log(self, text):
         self.report.append(text)
         FreeCAD.Console.PrintMessage(text + "\n")
 
+    def _gather(self):
+        """Return [(owner, solid), ...] for every solid under the selection,
+        recursing into containers (App::Part / Std_Part / compounds that carry
+        no direct solids) so Part::Compound and grouped imports work too."""
+        pairs = []
+        visited = set()
+
+        def rec(obj):
+            if id(obj) in visited:
+                return
+            visited.add(id(obj))
+            shape = getattr(obj, "Shape", None)
+            if shape is not None and not shape.isNull():
+                if shape.Solids:
+                    for sol in shape.Solids:
+                        pairs.append((obj, sol))
+                    return
+                # Compound of closed shells but no Solids: solidify each shell.
+                made = False
+                for sh in shape.Shells:
+                    try:
+                        sol = Part.Solid(sh)
+                        if not sol.isNull():
+                            pairs.append((obj, sol))
+                            made = True
+                    except Exception:
+                        pass
+                if made:
+                    return
+            for child in (getattr(obj, "Group", None)
+                          or getattr(obj, "OutList", None) or []):
+                if child is not obj:
+                    rec(child)
+
+        for o in self.objs:
+            rec(o)
+        return pairs
+
+    def _eachSolid(self):
+        return self._gather()
+
     def _runAnalysis(self):
         from freecad.gdml import shapeAnalysis
         self.report.clear()
+        pairs = self._gather()
+        if not pairs:
+            self.report.append(
+                "No solids found in selection (empty container or no Shape)."
+            )
+            self._setButtonStates([])
+            return
+        by_owner, order = {}, []
+        for owner, sol in pairs:
+            if owner not in by_owner:
+                by_owner[owner] = []
+                order.append(owner)
+            by_owner[owner].append(sol)
         verdicts = []
-        for obj in self.objs:
-            shape = getattr(obj, "Shape", None)
-            if shape is None or shape.isNull():
+        for owner in order:
+            sols = by_owner[owner]
+            st = getattr(getattr(owner, "Shape", None), "ShapeType", "-")
+            self.report.append(
+                "Object: " + owner.Label + " (" + owner.Name + ")  shape="
+                + str(st) + "  solids=" + str(len(sols))
+            )
+            for i, sol in enumerate(sols):
+                info = shapeAnalysis.analyse_solid(sol, i)
+                hist = ", ".join(f"{k}:{v}" for k, v in sorted(info["hist"].items()))
                 self.report.append(
-                    "Object: " + getattr(obj, "Label", "?") + "  (no shape)"
+                    f"    Solid {i}: {info['n_faces']} faces [{hist}]  "
+                    f"primitive={info['primitive'] or '-'}  "
+                    f"verdict={info['verdict']}"
                 )
-                continue
-            info = shapeAnalysis.analyse_shape(shape)
-            self.report.append(shapeAnalysis.format_report(obj, info))
+                verdicts.append(info["verdict"])
             self.report.append("")
-            verdicts.extend(sd["verdict"] for sd in info["solids"])
         self._setButtonStates(verdicts)
 
     def _setButtonStates(self, verdicts):
@@ -4004,17 +4066,26 @@ class AnalyseShapeDialog(QtGui.QDialog):
         self.report.append("")
         self.report.append("  Available actions: " + (", ".join(actions) or "none"))
 
-    def _eachSolid(self):
-        for obj in self.objs:
-            shape = getattr(obj, "Shape", None)
-            if shape is None or shape.isNull():
-                continue
-            for sol in shape.Solids:
-                yield obj, sol
-
     def onNative(self):
         from freecad.gdml import BRepdeconstruction as brep
         doc = FreeCAD.ActiveDocument
+        if self._csg_mode and self._recovered:
+            built = 0
+            for structure in self._recovered:
+                try:
+                    nb = structure.get("name_base", "GDML_Solid")
+                    if brep._build_subtraction_tree(doc, structure, nb) is not None:
+                        built += 1
+                except Exception as exc:
+                    self._log(f"  [native/csg] build failed: {exc}")
+            doc.recompute()
+            self._log(
+                f"[Shapes2GDML] Convert to Native (CSG): built {built} "
+                "subtraction solid(s). Body = native primitive if the filled "
+                "envelope is one, else a tessellated de-bossed core; bosses and "
+                "holes are kept as native cylinders."
+            )
+            return
         made = tried = 0
         for obj, sol in self._eachSolid():
             tried += 1
@@ -4032,6 +4103,8 @@ class AnalyseShapeDialog(QtGui.QDialog):
     def onCSG(self):
         from freecad.gdml import BRepdeconstruction as brep
         doc = FreeCAD.ActiveDocument
+        self._recovered = []
+        self._namecount = {}
         analysed = tried = 0
         for obj, sol in self._eachSolid():
             tried += 1
@@ -4044,10 +4117,22 @@ class AnalyseShapeDialog(QtGui.QDialog):
             if res is not None:
                 analysed += 1
                 self.report.append(res["report"])
+                base = "GDML_" + getattr(obj, "Label", "Solid")
+                seen = self._namecount.get(base, 0)
+                self._namecount[base] = seen + 1
+                res["name_base"] = base if seen == 0 else base + "_" + str(seen)
+                self._recovered.append(res)
+        if self._recovered:
+            self._csg_mode = True
+            self.btnNative.setEnabled(True)
+            self.btnNative.setToolTip(
+                "Build the CSG-recovered structure (body minus holes) as native "
+                "GDML objects."
+            )
         self._log(
             f"[Shapes2GDML] Recover CSG: analysed {analysed}/{tried} solid(s); "
-            "recovered body + holes hierarchy printed above (analysis pass -- "
-            "boolean objects not built yet)."
+            "hierarchy printed above. Convert to Native is now enabled to build "
+            "the recovered structure."
         )
 
     def onTess(self):
