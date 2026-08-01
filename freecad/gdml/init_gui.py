@@ -181,6 +181,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
             "BooleanIntersectionCommand",
             "BooleanUnionCommand",
             "SetScaleCommand",
+            "AnalyseShapeCommand",
             "TessellateCommand",
             "TessellateGmshCommand",
             "TessGmshMinCommand",
@@ -241,6 +242,7 @@ class GDML_Workbench(FreeCADGui.Workbench):
 
         tbTessCmds = [    
             "Separator",
+            "AnalyseShapeCommand",
             "TessellateCommand",
             "GmshGroupCommand",
             "DecimateCommand",
@@ -253,13 +255,16 @@ class GDML_Workbench(FreeCADGui.Workbench):
         ]
 
         toolbarCmds = tbSolidsCmds + tbPartCmds + tbTessCmds
+        # Register the icon search path BEFORE building the toolbar/menu so
+        # FreeCAD can resolve each command's Pixmap when the buttons are
+        # created (FreeCAD 1.1 resolves icons at menu-build time).
+        FreeCADGui.addIconPath(joinDir("Resources/icons"))
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "GDMLTools"), toolbarCmds
         )
         self.appendMenu("GDML", commands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Part tools'),parttoolbarcommands)
         # self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','GDML Mesh Tools'),meshtoolbarcommands)
-        FreeCADGui.addIconPath(joinDir("Resources/icons"))
         FreeCADGui.addLanguagePath(joinDir("Resources/translations"))
         FreeCADGui.addPreferencePage(
             joinDir("Resources/ui/GDML-base.ui"), "GDML"

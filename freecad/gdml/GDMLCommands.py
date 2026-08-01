@@ -3916,7 +3916,181 @@ class MigrateReactorSubGroupsFeature:
         }
 
 
+# --------------------------------------------------------------------------
+# Shapes2GDML : analyse a selected shape and convert to GDML
+# --------------------------------------------------------------------------
+
+
+class AnalyseShapeDialog(QtGui.QDialog):
+    """Analyse selected object(s) and offer conversion actions."""
+
+    def __init__(self, objs):
+        super().__init__(FreeCADGui.getMainWindow())
+        self.objs = objs
+        self.setWindowTitle("Analyse Shape → GDML")
+        self.resize(620, 500)
+        lay = QtGui.QVBoxLayout(self)
+        self.report = QtGui.QTextEdit()
+        self.report.setReadOnly(True)
+        try:
+            self.report.setFontFamily("Monospace")
+        except Exception:
+            pass
+        lay.addWidget(self.report)
+        row = QtGui.QHBoxLayout()
+        self.btnNative = QtGui.QPushButton("Convert to Native")
+        self.btnCSG = QtGui.QPushButton("Recover CSG")
+        self.btnTess = QtGui.QPushButton("Tessellate")
+        self.btnClose = QtGui.QPushButton("Close")
+        for b in (self.btnNative, self.btnCSG, self.btnTess, self.btnClose):
+            row.addWidget(b)
+        lay.addLayout(row)
+        self.btnNative.clicked.connect(self.onNative)
+        self.btnCSG.clicked.connect(self.onCSG)
+        self.btnTess.clicked.connect(self.onTess)
+        self.btnClose.clicked.connect(self.accept)
+        self._runAnalysis()
+
+    def _log(self, text):
+        self.report.append(text)
+        FreeCAD.Console.PrintMessage(text + "\n")
+
+    def _runAnalysis(self):
+        from freecad.gdml import shapeAnalysis
+        self.report.clear()
+        verdicts = []
+        for obj in self.objs:
+            shape = getattr(obj, "Shape", None)
+            if shape is None or shape.isNull():
+                self.report.append(
+                    "Object: " + getattr(obj, "Label", "?") + "  (no shape)"
+                )
+                continue
+            info = shapeAnalysis.analyse_shape(shape)
+            self.report.append(shapeAnalysis.format_report(obj, info))
+            self.report.append("")
+            verdicts.extend(sd["verdict"] for sd in info["solids"])
+        self._setButtonStates(verdicts)
+
+    def _setButtonStates(self, verdicts):
+        """Enable actions by scan verdict: Convert-to-Native only when every
+        solid maps directly to a GDML primitive; Recover-CSG when there is a
+        composite analytic solid to decompose; Tessellate whenever there is a
+        solid (universal fallback)."""
+        has_solid = len(verdicts) > 0
+        all_native = has_solid and all(v == "primitive" for v in verdicts)
+        any_csg = any(v == "analytic" for v in verdicts)
+        self.btnNative.setEnabled(all_native)
+        self.btnCSG.setEnabled(any_csg)
+        self.btnTess.setEnabled(has_solid)
+        self.btnNative.setToolTip(
+            "" if all_native else
+            "Enabled only when every solid maps directly to a GDML primitive "
+            "(box / tube / cone)."
+        )
+        self.btnCSG.setToolTip(
+            "Decompose composite analytic solids into a body + array/multiUnion "
+            "of holes." if any_csg else
+            "No composite analytic solids to recover."
+        )
+        self.btnTess.setToolTip("Tessellate (universal fallback).")
+        actions = []
+        if all_native:
+            actions.append("Convert-to-Native")
+        if any_csg:
+            actions.append("Recover-CSG")
+        if has_solid:
+            actions.append("Tessellate")
+        self.report.append("")
+        self.report.append("  Available actions: " + (", ".join(actions) or "none"))
+
+    def _eachSolid(self):
+        for obj in self.objs:
+            shape = getattr(obj, "Shape", None)
+            if shape is None or shape.isNull():
+                continue
+            for sol in shape.Solids:
+                yield obj, sol
+
+    def onNative(self):
+        from freecad.gdml import BRepdeconstruction as brep
+        doc = FreeCAD.ActiveDocument
+        made = tried = 0
+        for obj, sol in self._eachSolid():
+            tried += 1
+            try:
+                if brep.deconstruct_solid(doc, sol) is not None:
+                    made += 1
+            except Exception as exc:
+                self._log(f"  [native] solid failed: {exc}")
+        doc.recompute()
+        self._log(
+            f"[Shapes2GDML] Convert to Native: {made}/{tried} solid(s) produced "
+            "a GDML primitive (others need CSG or tessellation)."
+        )
+
+    def onCSG(self):
+        from freecad.gdml import BRepdeconstruction as brep
+        doc = FreeCAD.ActiveDocument
+        analysed = tried = 0
+        for obj, sol in self._eachSolid():
+            tried += 1
+            hist = brep._face_type_histogram(sol)
+            try:
+                res = brep.recover_csg_tree(doc, sol, hist)
+            except Exception as exc:
+                self._log(f"  [csg] solid failed: {exc}")
+                res = None
+            if res is not None:
+                analysed += 1
+                self.report.append(res["report"])
+        self._log(
+            f"[Shapes2GDML] Recover CSG: analysed {analysed}/{tried} solid(s); "
+            "recovered body + holes hierarchy printed above (analysis pass -- "
+            "boolean objects not built yet)."
+        )
+
+    def onTess(self):
+        try:
+            FreeCADGui.Selection.clearSelection()
+            for obj in self.objs:
+                FreeCADGui.Selection.addSelection(obj)
+            FreeCADGui.runCommand("TessellateCommand", 0)
+            self._log("[Shapes2GDML] Tessellate: handed off to TessellateCommand.")
+        except Exception as exc:
+            self._log(f"[Shapes2GDML] Tessellate failed: {exc}")
+
+
+class AnalyseShapeFeature:
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if not sel:
+            FreeCAD.Console.PrintWarning(
+                "[Shapes2GDML] Select one or more objects with a Shape first.\n"
+            )
+            return
+        dlg = AnalyseShapeDialog(sel)
+        (getattr(dlg, "exec", None) or dlg.exec_)()
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def GetResources(self):
+        return {
+            "Pixmap": "GDMLAnalyseShape",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "Shapes2GDML", "Analyse Shape → GDML"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Shapes2GDML",
+                "Analyse selected shape(s) and convert to GDML "
+                "(native primitive / CSG / tessellate)",
+            ),
+        }
+
+
 FreeCADGui.addCommand("CycleCommand", CycleFeature())
+FreeCADGui.addCommand("AnalyseShapeCommand", AnalyseShapeFeature())
 FreeCADGui.addCommand("ExpandCommand", ExpandFeature())
 FreeCADGui.addCommand("ExpandMaxCommand", ExpandMaxFeature())
 FreeCADGui.addCommand("ResetWorldCommand", ResetWorldFeature())
