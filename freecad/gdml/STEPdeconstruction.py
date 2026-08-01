@@ -15,7 +15,7 @@
 # *                                                                        *
 # **************************************************************************
 """
-FreeCAD GDML Workbench - B-rep -> GDML deconstruction (OUTLINE / SCAFFOLD)
+FreeCAD GDML Workbench - STEP -> GDML deconstruction (OUTLINE / SCAFFOLD)
 
 Takes an exact Boundary-Representation solid (a ``TopoDS_Solid`` / FreeCAD
 ``Part`` shape) and attempts to express it as native GDML constructive solid
@@ -39,7 +39,7 @@ STATUS: outline only. Function bodies are stubs marked ``# TODO``.
 import FreeCAD
 import Part
 
-__title__ = "FreeCAD GDML Workbench - B-rep Deconstruction"
+__title__ = "FreeCAD GDML Workbench - STEP Deconstruction"
 __author__ = "Keith Sloan"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -95,26 +95,26 @@ def deconstruct_solid(doc, shape):
     """
     hist = _face_type_histogram(shape)
     FreeCAD.Console.PrintMessage(
-        f"[BRepDeconstruct] Solid with {len(shape.Faces)} faces {hist}\n"
+        f"[STEPdeconstruction] Solid with {len(shape.Faces)} faces {hist}\n"
     )
 
     obj = recognise_primitive(doc, shape, hist)
     if obj is not None:
         FreeCAD.Console.PrintMessage(
-            f"[BRepDeconstruct] -> recognised primitive: {obj.Label}\n"
+            f"[STEPdeconstruction] -> recognised primitive: {obj.Label}\n"
         )
         return obj
 
     obj = recover_csg_tree(doc, shape, hist)
     if obj is not None:
         FreeCAD.Console.PrintMessage(
-            f"[BRepDeconstruct] -> recovered CSG tree: {obj.Label}\n"
+            f"[STEPdeconstruction] -> recovered CSG tree: {obj.Label}\n"
         )
         return obj
 
     # Tessellation fallback deliberately deferred -- just report it.
     FreeCAD.Console.PrintWarning(
-        "[BRepDeconstruct] No analytical match; tessellation fallback "
+        "[STEPdeconstruction] No analytical match; tessellation fallback "
         "not implemented yet -- solid skipped\n"
     )
     return None
@@ -323,7 +323,7 @@ def tessellation_fallback(doc, shape):
     that the solid would need tessellating.
     """
     FreeCAD.Console.PrintWarning(
-        "[BRepDeconstruct] tessellation_fallback() not implemented -- "
+        "[STEPdeconstruction] tessellation_fallback() not implemented -- "
         "solid would be meshed to a <tessellated> solid here\n"
     )
     return None

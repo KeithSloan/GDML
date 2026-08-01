@@ -19,7 +19,7 @@ FreeCAD GDML Workbench - AP242 STEP importer (OUTLINE / SCAFFOLD)
 
 Priority at this stage: **read a STEP AP242 file and navigate/scan it for
 solids**.  Mapping those solids onto native GDML objects (primitive
-recognition / CSG recovery) is delegated to :mod:`BRepDeconstruct`; the
+recognition / CSG recovery) is delegated to :mod:`STEPdeconstruction`; the
 tessellation fallback is deliberately not implemented yet -- unrecognised
 solids are simply reported.
 
@@ -45,7 +45,7 @@ import os
 import FreeCAD
 import Part
 
-import BRepDeconstruct
+from freecad.gdml import STEPdeconstruction
 
 __title__ = "FreeCAD GDML Workbench - AP242 STEP Importer"
 __author__ = "Keith Sloan"
@@ -104,6 +104,38 @@ def _resolve_occ_xcaf():
         }
     except ImportError:
         return None
+
+
+# --------------------------------------------------------------------------
+# FreeCAD importer entry points
+# --------------------------------------------------------------------------
+#
+# FreeCAD's module_io.OpenInsertObject imports this module by its dotted name
+# (registered via FreeCAD.addImportType in init_gui.py -- the registered name
+# must be "freecad.gdml.importAP242", WITHOUT a trailing ".py") and then calls
+# open() for File > Open and insert() for File > Insert.
+
+
+def open(filename):
+    """FreeCAD File > Open handler: create a new document from a STEP file."""
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    doc.Label = docname
+    import_ap242(filename, doc)
+    return doc
+
+
+def insert(filename, docname=None):
+    """FreeCAD File > Insert handler: import a STEP file into an open document."""
+    if docname:
+        try:
+            doc = FreeCAD.getDocument(docname)
+        except NameError:
+            doc = FreeCAD.newDocument(docname)
+    else:
+        doc = FreeCAD.ActiveDocument or FreeCAD.newDocument("GDML_AP242")
+    import_ap242(filename, doc)
+    return doc
 
 
 # --------------------------------------------------------------------------
@@ -315,7 +347,7 @@ def _dispatch_solid(doc, shape, attrs):
     if shape is None or shape.isNull():
         return None
 
-    obj = BRepDeconstruct.deconstruct_solid(doc, shape)
+    obj = STEPdeconstruction.deconstruct_solid(doc, shape)
     if obj is None:
         return None
 
