@@ -1,274 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="64px"
-   height="64px"
-   id="svg2980"
-   sodipodi:version="0.32"
-   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
-   sodipodi:docname="GDML_AddMaterial.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   version="1.1"
-   inkscape:export-filename="/home/user1/freecad_dev/keith_stuff/gdml/gdml_material/GDML_Material.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs
-     id="defs2982">
-    <inkscape:path-effect
-       effect="bspline"
-       id="path-effect5"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
-       uniform="false" />
-    <inkscape:path-effect
-       effect="bspline"
-       id="path-effect4"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
-       uniform="false" />
-    <inkscape:path-effect
-       effect="bspline"
-       id="path-effect3"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
-       uniform="false" />
-    <inkscape:path-effect
-       effect="bspline"
-       id="path-effect2"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
-       uniform="false" />
-    <inkscape:path-effect
-       effect="bspline"
-       id="path-effect1"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
-       uniform="false" />
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient3794">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop3796" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3798" />
+<svg xmlns="http://www.w3.org/2000/svg" width="64px" height="64px"
+     viewBox="0 0 64 64" version="1.1">
+  <defs>
+    <linearGradient id="matLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e7a9e7"/>
+      <stop offset="1" stop-color="#a94ea9"/>
     </linearGradient>
-    <linearGradient
-       id="linearGradient3864">
-      <stop
-         id="stop3866"
-         offset="0"
-         style="stop-color:#71b2f8;stop-opacity:1;" />
-      <stop
-         id="stop3868"
-         offset="1"
-         style="stop-color:#002795;stop-opacity:1;" />
-    </linearGradient>
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       id="perspective2988" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3794"
-       id="radialGradient3800"
-       cx="1"
-       cy="45"
-       fx="1"
-       fy="45"
-       r="41"
-       gradientTransform="matrix(0.93348213,-2.2905276e-8,0,0.28687573,0.06651751,32.090592)"
-       gradientUnits="userSpaceOnUse" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="6.265625"
-     inkscape:cx="32"
-     inkscape:cy="26.972569"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="2560"
-     inkscape:window-height="1374"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:snap-bbox="true"
-     inkscape:snap-nodes="false"
-     inkscape:window-maximized="1"
-     inkscape:showpageshadow="2"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2991"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       originx="0"
-       originy="0"
-       spacingy="1"
-       spacingx="1"
-       units="px" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata2985">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:creator>
-          <cc:Agent>
-            <dc:title>[wmayer]</dc:title>
-          </cc:Agent>
-        </dc:creator>
-        <dc:title>Part_Box</dc:title>
-        <dc:date>2011-10-10</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
-        <dc:publisher>
-          <cc:Agent>
-            <dc:title>FreeCAD</dc:title>
-          </cc:Agent>
-        </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Part/Gui/Resources/icons/Part_Box.svg</dc:identifier>
-        <dc:rights>
-          <cc:Agent>
-            <dc:title>FreeCAD LGPL2+</dc:title>
-          </cc:Agent>
-        </dc:rights>
-        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
-          </cc:Agent>
-        </dc:contributor>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 6.0648379,4.3092269 c 0,0 -0.319202,19.1521201 -0.319202,19.1521201"
-       id="path1"
-       inkscape:path-effect="#path-effect1"
-       inkscape:original-d="M 6.0648379,4.3092269 5.7456359,23.461347"
-       transform="translate(-1.276808)" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 5.7456359,23.780549 c 0,0 43.0922691,0.159601 43.0922691,0.159601"
-       id="path2"
-       inkscape:path-effect="#path-effect2"
-       inkscape:original-d="M 5.7456359,23.780549 48.837905,23.94015"
-       transform="matrix(1.3113254,0,0,0.99220893,-3.7085908,0.18589759)" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 11.650873,40.538653 c 0,0 0,16.119701 0,16.119701"
-       id="path4"
-       inkscape:path-effect="#path-effect4"
-       inkscape:original-d="M 11.650873,40.538653 V 56.658354"
-       transform="matrix(1,0,0,1.7722772,-3.830424,-47.58638)" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 11.970075,56.339152 c 0,0 43.571072,0 43.571072,0"
-       id="path5"
-       inkscape:path-effect="#path-effect5"
-       inkscape:original-d="M 11.970075,56.339152 H 55.541147"
-       transform="matrix(1.1831502,0,0,1,-6.8207503,-3.3516209)" />
-    <text
-       xml:space="preserve"
-       style="font-size:22.6772px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
-       x="10.214464"
-       y="15.321696"
-       id="text5"><tspan
-         sodipodi:role="line"
-         id="tspan5"
-         x="10.214464"
-         y="15.321696" /></text>
-    <text
-       xml:space="preserve"
-       style="font-size:22.6772px;line-height:125%;font-family:Stick;-inkscape-font-specification:Stick;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="9.7356606"
-       y="13.246883"
-       id="text6"><tspan
-         sodipodi:role="line"
-         id="tspan6"
-         x="9.7356606"
-         y="13.246883" /></text>
-    <text
-       xml:space="preserve"
-       style="font-size:22.6772px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="8.2992516"
-       y="20.748129"
-       id="text7"><tspan
-         sodipodi:role="line"
-         id="tspan7"
-         x="8.2992516"
-         y="20.748129">Mat</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:22.6772px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="6.7032428"
-       y="47.401497"
-       id="text8"><tspan
-         sodipodi:role="line"
-         id="tspan8"
-         x="6.7032428"
-         y="47.401497">+mat</tspan></text>
+
+  <!-- isometric material box (echoes Set Material, mauve) -->
+  <g stroke="#2b1030" stroke-width="2.4" stroke-linejoin="round">
+    <polygon points="8,22 26,12 44,22 26,32" fill="#f0c4f0"/>
+    <polygon points="8,22 26,32 26,54 8,44" fill="url(#matLeft)"/>
+    <polygon points="44,22 26,32 26,54 44,44" fill="#8f3d8f"/>
+  </g>
+  <!-- material 'content' dots -->
+  <g fill="#5a2d12">
+    <ellipse cx="26" cy="21" rx="4.2" ry="2.4"/>
+    <ellipse cx="17" cy="37" rx="3.2" ry="4.6"/>
+    <ellipse cx="35" cy="37" rx="3.2" ry="4.6"/>
+  </g>
+
+  <!-- green 'add' badge -->
+  <g>
+    <circle cx="49" cy="16" r="12" fill="#2ea043" stroke="#12481f"
+            stroke-width="2.2"/>
+    <path d="M49 9.5 V22.5 M42.5 16 H55.5" stroke="#ffffff"
+          stroke-width="3.4" stroke-linecap="round"/>
   </g>
 </svg>
