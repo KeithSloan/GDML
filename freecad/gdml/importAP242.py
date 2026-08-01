@@ -41,6 +41,7 @@ STATUS: read + navigation being fleshed out; GDML mapping still outline.
 """
 
 import os
+from builtins import open as builtins_open
 
 import FreeCAD
 import Part
@@ -50,6 +51,18 @@ from freecad.gdml import STEPdeconstruction
 __title__ = "FreeCAD GDML Workbench - AP242 STEP Importer"
 __author__ = "Keith Sloan"
 __url__ = ["http://www.freecadweb.org"]
+
+
+# --------------------------------------------------------------------------
+# Feature flag: the XCAF (STEPCAFControl_Reader) path is still a scaffold and,
+# worse, importing an EXTERNAL OCC/OCP binding built against a different
+# OpenCASCADE than the one FreeCAD bundles (OCC 7.8.1) causes a hard native
+# crash (ABI clash) the instant we call into it -- not a catchable Python
+# exception.  Until the XCAF path is reworked on FreeCAD's own OCC, keep it
+# OFF so imports use the always-available FreeCAD Import fallback.  Flip to
+# True only when actively developing the XCAF path.
+# --------------------------------------------------------------------------
+USE_XCAF = False
 
 
 # --------------------------------------------------------------------------
@@ -143,6 +156,73 @@ def insert(filename, docname=None):
 # --------------------------------------------------------------------------
 
 
+def detect_step_schema(file_path, _max_bytes=65536):
+    """Return the STEP schema identifier(s) from a file's HEADER section.
+
+    Reads only the ISO-10303-21 header (up to the first ENDSEC or ``_max_bytes``)
+    and pulls the quoted identifier(s) out of the ``FILE_SCHEMA`` entity.
+
+    Returns a list of schema strings (usually one), or ``[]`` if none found.
+    """
+    import re
+
+    chunk = ""
+    try:
+        with builtins_open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
+            while len(chunk) < _max_bytes:
+                line = fh.readline()
+                if not line:
+                    break
+                chunk += line
+                # HEADER ends at the first ENDSEC; no need to read the DATA block.
+                if "ENDSEC" in line:
+                    break
+    except OSError:
+        return []
+
+    m = re.search(r"FILE_SCHEMA\s*\(\s*\((.*?)\)\s*\)", chunk, re.S | re.I)
+    if not m:
+        return []
+    return [s.strip() for s in re.findall(r"'([^']*)'", m.group(1))]
+
+
+def classify_step_ap(schemas):
+    """Map STEP schema identifier string(s) to a human AP label.
+
+    Returns one of "AP242", "AP214", "AP203", or "UNKNOWN".
+    """
+    joined = " ".join(schemas).upper()
+    if "AP242" in joined or "MANAGED_MODEL_BASED_3D_ENGINEERING" in joined:
+        return "AP242"
+    if "AUTOMOTIVE_DESIGN" in joined:
+        return "AP214"
+    if "CONFIG_CONTROL_DESIGN" in joined or "AP203" in joined:
+        return "AP203"
+    return "UNKNOWN"
+
+
+def check_ap242(file_path):
+    """Log the STEP application protocol and return True if it is AP242.
+
+    Non-AP242 files are still importable via the geometry reader, so this only
+    warns -- it does not block the import.
+    """
+    schemas = detect_step_schema(file_path)
+    ap = classify_step_ap(schemas)
+    schema_txt = schemas[0] if schemas else "<none found>"
+    if ap == "AP242":
+        FreeCAD.Console.PrintMessage(
+            f"[importAP242] STEP schema: {schema_txt} (AP242) OK\n"
+        )
+        return True
+    FreeCAD.Console.PrintWarning(
+        f"[importAP242] STEP schema: {schema_txt} -- detected {ap}, not AP242. "
+        "Geometry will still import, but AP242 semantic data "
+        "(PMI / materials) will be absent.\n"
+    )
+    return False
+
+
 def import_ap242(file_path, doc=None):
     """Import a STEP AP242 file and populate ``doc`` with GDML objects.
 
@@ -166,16 +246,40 @@ def import_ap242(file_path, doc=None):
 
     FreeCAD.Console.PrintMessage(f"[importAP242] Reading {file_path}\n")
 
-    occ = _resolve_occ_xcaf()
+    if not check_ap242(file_path):
+        FreeCAD.Console.PrintError(
+            "[importAP242] Not an AP242 file -- this importer accepts AP242 "
+            "only. Aborting import. (Use the Hybrid STEP importer for other "
+            "application protocols.)\n"
+        )
+        return []
+
+    occ = _resolve_occ_xcaf() if USE_XCAF else None
+    solids = None
     if occ is not None:
         FreeCAD.Console.PrintMessage(
             "[importAP242] Using STEPCAFControl_Reader (XCAF)\n"
         )
-        solids = list(read_step_xcaf(file_path, occ))
-    else:
+        try:
+            solids = list(read_step_xcaf(file_path, occ))
+        except Exception as exc:
+            # OCCT raises Standard_Failure -- a wrapped C++ exception.  Catch
+            # it so the real cause is logged instead of the opaque
+            # "Unknown C++ exception", then fall back.  (A true native
+            # segfault from an ABI-mismatched binding cannot be caught here --
+            # that is why USE_XCAF is gated off by default.)
+            import traceback
+            FreeCAD.Console.PrintError(
+                "[importAP242] XCAF read failed: "
+                f"{type(exc).__name__}: {exc}\n"
+            )
+            FreeCAD.Console.PrintError(traceback.format_exc() + "\n")
+            solids = None
+
+    if solids is None:
         FreeCAD.Console.PrintWarning(
-            "[importAP242] OCCT XCAF binding not found -- "
-            "falling back to FreeCAD Import module\n"
+            "[importAP242] Using FreeCAD Import module (XCAF path disabled "
+            "or failed)\n"
         )
         solids = list(read_step_freecad(file_path))
 
