@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TestReplica : identical sensors, uniform 30 mm pitch
+     testReplica expected result: Param Replica (linear, pitch 30, axis z) -->
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define/>
+  <materials>
+    <material name="Vacuum" Z="1"><D value="1e-25" unit="g/cm3"/><atom value="1.008"/></material>
+    <material name="Silicon" Z="14"><D value="2.33" unit="g/cm3"/><atom value="28.09"/></material>
+  </materials>
+  <solids>
+    <tube name="rSensor" rmin="8" rmax="42.0" z="0.3" startphi="0" deltaphi="180" aunit="deg" lunit="mm"/>
+    <box name="veloBox" x="160" y="160" z="1600" lunit="mm"/>
+    <box name="worldBox" x="240" y="240" z="2000" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="lvRSensor"><materialref ref="Silicon"/><solidref ref="rSensor"/></volume>
+    <volume name="lvVelo">
+      <materialref ref="Vacuum"/>
+      <solidref ref="veloBox"/>
+      <physvol name="pv_00"><volumeref ref="lvRSensor"/><position name="p_00" x="0" y="0" z="-175.0" unit="mm"/></physvol>
+      <physvol name="pv_01"><volumeref ref="lvRSensor"/><position name="p_01" x="0" y="0" z="-145.0" unit="mm"/></physvol>
+      <physvol name="pv_02"><volumeref ref="lvRSensor"/><position name="p_02" x="0" y="0" z="-115.0" unit="mm"/></physvol>
+      <physvol name="pv_03"><volumeref ref="lvRSensor"/><position name="p_03" x="0" y="0" z="-85.0" unit="mm"/></physvol>
+      <physvol name="pv_04"><volumeref ref="lvRSensor"/><position name="p_04" x="0" y="0" z="-55.0" unit="mm"/></physvol>
+      <physvol name="pv_05"><volumeref ref="lvRSensor"/><position name="p_05" x="0" y="0" z="-25.0" unit="mm"/></physvol>
+      <physvol name="pv_06"><volumeref ref="lvRSensor"/><position name="p_06" x="0" y="0" z="5.0" unit="mm"/></physvol>
+      <physvol name="pv_07"><volumeref ref="lvRSensor"/><position name="p_07" x="0" y="0" z="35.0" unit="mm"/></physvol>
+      <physvol name="pv_08"><volumeref ref="lvRSensor"/><position name="p_08" x="0" y="0" z="65.0" unit="mm"/></physvol>
+      <physvol name="pv_09"><volumeref ref="lvRSensor"/><position name="p_09" x="0" y="0" z="95.0" unit="mm"/></physvol>
+      <physvol name="pv_10"><volumeref ref="lvRSensor"/><position name="p_10" x="0" y="0" z="125.0" unit="mm"/></physvol>
+      <physvol name="pv_11"><volumeref ref="lvRSensor"/><position name="p_11" x="0" y="0" z="155.0" unit="mm"/></physvol>
+      <physvol name="pv_12"><volumeref ref="lvRSensor"/><position name="p_12" x="0" y="0" z="185.0" unit="mm"/></physvol>
+      <physvol name="pv_13"><volumeref ref="lvRSensor"/><position name="p_13" x="0" y="0" z="215.0" unit="mm"/></physvol>
+      <physvol name="pv_14"><volumeref ref="lvRSensor"/><position name="p_14" x="0" y="0" z="245.0" unit="mm"/></physvol>
+      <physvol name="pv_15"><volumeref ref="lvRSensor"/><position name="p_15" x="0" y="0" z="275.0" unit="mm"/></physvol>
+    </volume>
+    <volume name="World">
+      <materialref ref="Vacuum"/>
+      <solidref ref="worldBox"/>
+      <physvol name="pvVelo"><volumeref ref="lvVelo"/></physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="World"/>
+  </setup>
+</gdml>
