@@ -3475,7 +3475,8 @@ def processMaterialsReactor(grp, root):
             """Return the sub-group with the given label inside parentGrp,
             creating it if it doesn't already exist."""
             for child in parentGrp.Group:
-                if child.Label == subLabel:
+                # Tolerate FreeCAD numeric suffixes (e.g. "ReactorMaterials002"); see #176
+                if child.Label == subLabel or child.Label.rstrip("0123456789") == subLabel:
                     return child
             return newGroupPython(parentGrp, subLabel)
 
@@ -3548,7 +3549,8 @@ def migrateReactorSubGroups(doc=None):
 
     def _getOrCreateSubGroup(parentGrp, subLabel):
         for child in parentGrp.Group:
-            if child.Label == subLabel:
+            # Tolerate FreeCAD numeric suffixes (e.g. "ReactorMaterials002"); see #176
+            if child.Label == subLabel or child.Label.rstrip("0123456789") == subLabel:
                 return child
         return newGroupPython(parentGrp, subLabel)
 

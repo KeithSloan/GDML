@@ -42,6 +42,7 @@ from PySide import QtGui
 from FreeCAD import Vector
 
 import random
+import re
 from .GDMLObjects import GDMLcommon, GDMLBox, GDMLTube
 
 # modif add
@@ -1583,13 +1584,32 @@ def processFractionsComposites(obj, item):
         )
 
 
+# --- Container-group label handling (issue #176) --------------------------
+# FreeCAD appends a numeric suffix (e.g. "ReactorMaterials002") when a Label
+# collides with another object's Label.  The OpenMC-only "ReactorMaterials"
+# container and the "Geant4" predefined container must never be written to a
+# GDML file, so match the base name followed by any trailing digits.
+_REACTOR_CONTAINER_RE = re.compile(r"^ReactorMaterials\d*$")
+_GEANT4_CONTAINER_RE = re.compile(r"^Geant4\d*$")
+
+
+def _isReactorContainer(label):
+    return bool(_REACTOR_CONTAINER_RE.match(label))
+
+
+def _isGeant4Container(label):
+    return bool(_GEANT4_CONTAINER_RE.match(label))
+
+
 def createMaterials(group):
     global materials
     # "Geant4" is handled by postCreateGeantMaterials().
     # "ReactorMaterials" is an OpenMC-only container — never exported to GDML.
-    _SKIP_LABELS = {"Geant4", "ReactorMaterials"}
     for obj in group:
-        if obj.Label in _SKIP_LABELS:
+        # "Geant4" is exported by postCreateGeantMaterials(); "ReactorMaterials"
+        # is an OpenMC-only container.  Both (and their numeric-suffixed
+        # variants, e.g. "ReactorMaterials002") must be skipped here.  See #176.
+        if _isGeant4Container(obj.Label) or _isReactorContainer(obj.Label):
             continue
         if not hasattr(obj, 'Group'):
             continue
@@ -1641,7 +1661,8 @@ def _getSubGroup(topGroupName, subLabel):
     if topGrp is None:
         return None
     for child in topGrp.Group:
-        if child.Label == subLabel:
+        # Tolerate FreeCAD numeric suffixes (e.g. "ReactorMaterials002"); see #176
+        if child.Label == subLabel or child.Label.rstrip("0123456789") == subLabel:
             return child
     return None
 
@@ -1797,7 +1818,7 @@ def createElements(group):
     global materials
     for obj in group:
         # "ReactorMaterials" sub-group holds OpenMC-only elements — skip for GDML
-        if obj.Label == "ReactorMaterials":
+        if _isReactorContainer(obj.Label):
             continue
         createElement(obj)
 
@@ -1931,7 +1952,7 @@ def createIsotopes(group):
     global materials
     for obj in group:
         # "ReactorMaterials" sub-group holds OpenMC-only isotopes — skip for GDML
-        if obj.Label == "ReactorMaterials":
+        if _isReactorContainer(obj.Label):
             continue
         if isinstance(obj.Proxy, GDMLisotope):
             # print("GDML isotope")
@@ -2041,7 +2062,7 @@ def getMaterial(obj):
     if material[0:3] == "G4_":
         print(f"Found Geant material {material}")
         usedGeant4Materials.add(material)
-    elif material == "ReactorMaterials":
+    elif _isReactorContainer(material):
         # The volume has been assigned the OpenMC container group name itself,
         # which has no GDML definition.  Substitute the default and warn.
         default = getDefaultMaterial()
