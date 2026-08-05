@@ -3686,15 +3686,31 @@ class GDMLTrap(GDMLsolid):
             vxy2[i][0] += dx / 2
             vxy2[i][1] += dy / 2
 
-        fxy1 = Part.Face(Part.makePolygon(vxy1))
-        fxy2 = Part.Face(Part.makePolygon(vxy2))
-        fzx1 = Part.Face(Part.makePolygon(vzx1))
-        fzx2 = Part.Face(Part.makePolygon(vzx2))
-        fyz1 = Part.Face(Part.makePolygon(vyz1))
-        fyz2 = Part.Face(Part.makePolygon(vyz2))
+        try:
+            fxy1 = Part.Face(Part.makePolygon(vxy1))
+            fxy2 = Part.Face(Part.makePolygon(vxy2))
+            fzx1 = Part.Face(Part.makePolygon(vzx1))
+            fzx2 = Part.Face(Part.makePolygon(vzx2))
+            fyz1 = Part.Face(Part.makePolygon(vyz1))
+            fyz2 = Part.Face(Part.makePolygon(vyz2))
 
-        shell = Part.makeShell([fxy1, fxy2, fzx1, fzx2, fyz1, fyz2])
-        solid = Part.makeSolid(shell)
+            shell = Part.makeShell([fxy1, fxy2, fzx1, fzx2, fyz1, fyz2])
+            solid = Part.makeSolid(shell)
+            if not solid.isValid():
+                raise ValueError("makeShell/makeSolid produced an invalid solid")
+        except Exception as e:
+            # A trap that tapers almost to an edge (x2/x4 ~ 0, e.g. the CERN
+            # lhcbvelo MSILO2 solid with x2=0.0001, x4=0.0002) yields sliver /
+            # slightly non-planar faces that Part.Face/makeShell cannot sew into
+            # a valid solid.  Fall back to lofting the two end caps: a ruled
+            # loft tolerates the collapsed edge and the twisted side faces.
+            GDMLShared.trace(
+                "GDMLTrap.createGeometry: face/shell build failed (%s); "
+                "using loft fallback" % e
+            )
+            wireBot = Part.makePolygon([v1, v2, v3, v4, v1])
+            wireTop = Part.makePolygon([v5, v6, v7, v8, v5])
+            solid = Part.makeLoft([wireBot, wireTop], True, True)
 
         # center is mid point of diagonal
         #
