@@ -87,7 +87,7 @@ def check_python_version_match():
     gmsh_file = getattr(gmsh, '__file__', '') or ''
 
     # Match patterns like:  python3.11/  python3/  python311/
-    match = re.search(r'[/\\]python(\d+)\.?(\d*)[/\\]', gmsh_file, re.IGNORECASE)
+    match = re.search(r'[/\\]python(\d)\.?(\d{0,2})[/\\]', gmsh_file, re.IGNORECASE)
     if match:
         gmsh_major = int(match.group(1))
         gmsh_minor_str = match.group(2)
