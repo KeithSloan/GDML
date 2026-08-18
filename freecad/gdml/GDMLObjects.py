@@ -161,32 +161,34 @@ def checkMaterial(material):
         return False
     return True
 
-
 def setMaterial(obj, m):
-    # print(f'setMaterial {obj} {m}')
+    global MaterialsList
+
+    # Rebuild the material list from the current document
+    # so newly created custom materials are available.
+    MaterialsList.clear()
+    rebuildMaterialsList()
+
     if FreeCAD.GuiUp:
         if m in ['G4_AIR', 'AIR']:
             print(f"Material {m}")
             if hasattr(obj, "ViewObject"):
                 print("Set transparency")
                 obj.ViewObject.Transparency = 98
+    
+    if MaterialsList is not None and len(MaterialsList) > 0:
+        obj.material = MaterialsList
+        obj.material = 0
+    
+        if not (m == 0 or m is None):
+            try:
+                obj.material = MaterialsList.index(m)
+            except ValueError:
+                print("Material not in List:", m)
+                print(MaterialsList)
+                obj.material = 0
 
-    if MaterialsList is not None:
-        if len(MaterialsList) > 0:
-            obj.material = MaterialsList
-            obj.material = 0
-            if not (m == 0 or m is None):
-                try:
-                    obj.material = MaterialsList.index(m)
-                except:
-                    print("Not in List")
-                    print(MaterialsList)
-                    obj.material = 0
-                return
-            return
-    rebuildMaterialsList()
-    setMaterial(obj, m)
-
+        return
 
 def checkFullCircle(aunit, angle):
     # print(angle)
