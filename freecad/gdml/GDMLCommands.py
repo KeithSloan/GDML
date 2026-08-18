@@ -810,24 +810,16 @@ class AddMaterial(QtGui.QDialog):
 
         if not self.checkGDMLDoc():
             return
-
-        match = re.match(self.mixturePattern, expr)
-        groups = match.groups()
-
+            
         mixtureDict = {}
-        i = 0  # 0 means the item is a fraction, 1 means the item is a Material name
-        for s in groups:
-            if s is None:
-                continue
-            if i == 0:
-                frac = float(s)
-                i = 1 - i
-                continue
-            if i == 1:
-                material = s
-                mixtureDict[material] = frac
-                i = 1 - i
+        
+        # Parse every fraction/material pair independently.
+        pairPattern = r'(\d+(?:\.\d*)?|\.\d+)\s+([A-Za-z][A-Za-z0-9_]*)'
+        pairs = re.findall(pairPattern, expr)
 
+        for frac, material in pairs:
+            mixtureDict[material] = float(frac)
+        
         # step 1: verify that all materials already exist
         exportGeant4Materials = False
         for mat in dict(mixtureDict):  # parse a copy, since we may need to change the material name
