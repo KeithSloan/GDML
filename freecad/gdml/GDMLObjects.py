@@ -4942,30 +4942,64 @@ class GDMLSampledTessellated(GDMLsolid):
             nskip = 1
 
         FCfaces = []
+        skipped = 0
+        split = 0
         for i in range(0, len(facets), nskip):
             f = facets[i]
             # print('Facet')
             # print(f)
             if flag is True:
-                FCfaces.append(GDMLShared.facet(f))
+                face = GDMLShared.facet(f)
+                if face is None:
+                    skipped += 1
+                    continue
+                FCfaces.append(face)
+                continue
+            if len(f) == 3:
+                face = GDMLShared.triangle(
+                    mul * vertex[f[0]], mul * vertex[f[1]], mul * vertex[f[2]]
+                )
+                if face is None:
+                    skipped += 1
+                    continue
+                FCfaces.append(face)
+                continue
+            # quadrangular
+            v0 = mul * vertex[f[0]]
+            v1 = mul * vertex[f[1]]
+            v2 = mul * vertex[f[2]]
+            v3 = mul * vertex[f[3]]
+            face = GDMLShared.quad(v0, v1, v2, v3)
+            if face is not None:
+                FCfaces.append(face)
+                continue
+            # Non-planar quad: BRep can't build a single planar face, so split it
+            # into two triangles (v0,v1,v2)+(v0,v2,v3) rather than dropping it and
+            # leaving a hole in the mesh.
+            added = False
+            for tri in (GDMLShared.triangle(v0, v1, v2),
+                        GDMLShared.triangle(v0, v2, v3)):
+                if tri is not None:
+                    FCfaces.append(tri)
+                    added = True
+            if added:
+                split += 1
             else:
-                if len(f) == 3:
-                    FCfaces.append(
-                        GDMLShared.triangle(
-                            mul * vertex[f[0]],
-                            mul * vertex[f[1]],
-                            mul * vertex[f[2]]
-                        )
-                    )
-                else:  # len should then be 4
-                    FCfaces.append(
-                        GDMLShared.quad(
-                            mul * vertex[f[0]],
-                            mul * vertex[f[1]],
-                            mul * vertex[f[2]],
-                            mul * vertex[f[3]]
-                        )
-                    )
+                skipped += 1
+        if split > 0:
+            FreeCAD.Console.PrintMessage(
+                f"GDML: split {split} non-planar quad(s) into triangles\n"
+            )
+        if skipped > 0:
+            FreeCAD.Console.PrintWarning(
+                f"GDML: skipped {skipped} degenerate facet(s) building "
+                f"tessellated solid\n"
+            )
+        if len(FCfaces) == 0:
+            FreeCAD.Console.PrintError(
+                "GDML: tessellated solid has no valid facets\n"
+            )
+            return Part.Shape()
         if solidFlag is False:
             solid = Part.makeCompound(FCfaces)
         else:

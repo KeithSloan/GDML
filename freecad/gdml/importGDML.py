@@ -1754,7 +1754,7 @@ def createTessellated(
         if elem.tag == "quadrangular":
             v4name = elem.get("vertex4")
             v4 = GDMLShared.getDefinedPosition(v4name)
-            vertsSet.add(v3)
+            vertsSet.add(v4)
     # make a list out of the set
     vertsList = list(vertsSet)
 
@@ -3688,7 +3688,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     print("Print Verbose : " + str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage("Import GDML file : " + filename + "\n")
-    FreeCAD.Console.PrintMessage("ImportGDML Version 1.9c\n")
+    FreeCAD.Console.PrintMessage("ImportGDML Version 2.0\n")
     startTime = time.perf_counter()
 
     global pathName

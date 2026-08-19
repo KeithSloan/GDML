@@ -2,7 +2,7 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>GDML workbench</name>
   <description>An external workbench for creating GDML models for Geant4 and Root</description>
-  <version>2.2.4 Beta</version>
+  <version>2.2.5</version>
   <date>2026-08-19</date>
   <maintainer email="keithsloan52@icloud.com">Keith Sloan</maintainer>
   <license file="LICENSE">LGPL-2.1</license>
