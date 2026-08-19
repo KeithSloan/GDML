@@ -3057,7 +3057,18 @@ def setupEtree(filename):
 
         FreeCAD.Console.PrintMessage("running with lxml.etree \n")
         parser = etree.XMLParser(resolve_entities=True)
-        root = etree.parse(filename, parser=parser)
+        try:
+            root = etree.parse(filename, parser=parser)
+        except etree.XMLSyntaxError as e:
+            # Report malformed XML clearly (file + line + reason) instead of an
+            # unhandled traceback - e.g. a mismatched root tag such as
+            # <gdml_simple_extension> ... </gdml>.
+            FreeCAD.Console.PrintError(
+                f"GDML: cannot parse {os.path.basename(filename)} - "
+                f"malformed XML at line {e.lineno}: {e.msg}\n"
+                f"      (check the file is well-formed, e.g. matching open/close tags)\n"
+            )
+            raise
         # print('error log')
         # print(parser.error_log)
 

@@ -40,6 +40,36 @@ global printverbose
 printverbose = False
 
 
+# ---------------------------------------------------------------------------
+# Geant4 / CLHEP system of units, injected into this module's namespace so that
+# eval() of GDML value expressions such as "5.0*cm", "10*deg" or "7.*ns"
+# resolves. Base units follow Geant4: length mm=1, angle rad=1, time ns=1,
+# energy MeV=1. GDML-defined constants/variables override these (they are
+# assigned into globals() later, by processConstants/Variables/Quantities).
+# ---------------------------------------------------------------------------
+HEP_UNITS = {
+    # length (mm = 1)
+    "mm": 1.0, "millimeter": 1.0, "cm": 10.0, "centimeter": 10.0,
+    "m": 1000.0, "meter": 1000.0, "km": 1.0e6, "kilometer": 1.0e6,
+    "um": 1.0e-3, "micrometer": 1.0e-3, "micron": 1.0e-3,
+    "nm": 1.0e-6, "nanometer": 1.0e-6, "angstrom": 1.0e-7,
+    "pm": 1.0e-9, "picometer": 1.0e-9,
+    "fm": 1.0e-12, "femtometer": 1.0e-12, "fermi": 1.0e-12,
+    # angle (rad = 1)
+    "rad": 1.0, "radian": 1.0, "mrad": 1.0e-3, "milliradian": 1.0e-3,
+    "deg": pi / 180.0, "degree": pi / 180.0, "sr": 1.0, "steradian": 1.0,
+    # time (ns = 1)
+    "ns": 1.0, "nanosecond": 1.0, "s": 1.0e9, "second": 1.0e9,
+    "ms": 1.0e6, "millisecond": 1.0e6, "us": 1.0e3, "microsecond": 1.0e3,
+    "ps": 1.0e-3, "picosecond": 1.0e-3,
+    # energy (MeV = 1)
+    "MeV": 1.0, "megaelectronvolt": 1.0, "eV": 1.0e-6, "electronvolt": 1.0e-6,
+    "keV": 1.0e-3, "kiloelectronvolt": 1.0e-3, "GeV": 1.0e3, "gigaelectronvolt": 1.0e3,
+    "TeV": 1.0e6, "teraelectronvolt": 1.0e6, "J": 6.24151e12, "joule": 6.24151e12,
+}
+globals().update(HEP_UNITS)
+
+
 definesColumn = {
     "type" : 'A',  # type of item (constant, variab;e, quantity, etc
     "name": 'B',  # name of item
@@ -883,7 +913,7 @@ def getVal(ptr, var, default=0):
             try:
                 ret = float(chkval)
             except:
-                print("Illegal float: {}" % chkval)
+                print(f"Illegal float: {chkval}")
                 ret = 0.0
 
         trace("return value : " + str(ret))

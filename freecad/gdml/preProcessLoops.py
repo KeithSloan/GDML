@@ -32,34 +32,43 @@ def processLoop(loopElement):
     - remove the loop element from its parent
     """
     doc = FreeCAD.ActiveDocument
-    constantsGrp = doc.getObject('Constants')
-    constants = {}
-    for obj in constantsGrp.OutList:
-        # skip the spreadsheet for now. Eventually
-        # TODO read the constants from the spreadsheet
-        if obj.TypeId == "Spreadsheet::Sheet":
+    # The loop bounds may reference a constant OR a variable by name, so gather
+    # both groups (the loop variable itself is usually a <variable>).
+    values = {}
+    for grpName in ('Constants', 'Variables'):
+        grp = doc.getObject(grpName)
+        if grp is None:
             continue
+        for obj in grp.OutList:
+            # skip the spreadsheet for now. TODO read values from the spreadsheet
+            if obj.TypeId == "Spreadsheet::Sheet":
+                continue
+            if hasattr(obj, "value"):
+                values[obj.name] = obj.value
 
-        constants[obj.name] = obj.value
+    def loopInt(raw, default=None):
+        # Resolve a loop bound that may be missing (None -> default), a
+        # constant/variable name, or a numeric literal.
+        if raw is None:
+            return default
+        if raw in values:
+            raw = values[raw]
+        return int(float(raw))
 
     var = loopElement.get("for")
-    start = loopElement.get("from")
-    if start in constants:
-        start = int(constants[start])
-    else:
-        start = int(start)
-
-    to = loopElement.get("to")
-    if to in constants:
-        to = int(constants[to])
-    else:
-        to = int(to)
-
-    step = loopElement.get("step")
-    if step in constants:
-        step = int(constants[step])
-    else:
-        step = int(step)
+    # In GDML 'from' and 'step' are optional. A missing 'from' starts at the loop
+    # variable's current value (Geant4 semantics); 'step' defaults to 1.
+    try:
+        varStart = int(float(values.get(var, 1)))
+    except (TypeError, ValueError):
+        varStart = 1
+    start = loopInt(loopElement.get("from"), default=varStart)
+    to = loopInt(loopElement.get("to"))
+    step = loopInt(loopElement.get("step"), default=1)
+    if to is None:
+        print(f"GDML Warning: <loop for='{var}'> has no 'to' value - loop skipped")
+        loopElement.getparent().remove(loopElement)
+        return
 
     # print(f'var {var} from {start} to {to} step {step}')
 
