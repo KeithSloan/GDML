@@ -6,7 +6,7 @@
 #
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2017 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) Dam Lambert 2020                                       *
 # *             (c) Munther Hindi 2021                                     *
 # *                                                                        *
@@ -42,6 +42,10 @@ from . import GDMLShared
 # So need to be able to rebuild from Objects
 global MaterialsList
 MaterialsList = []
+# Set True whenever a material is added/removed so the next setMaterial() does a
+# full rebuild from the document; lets setMaterial() skip the rescan otherwise.
+global MaterialsListDirty
+MaterialsListDirty = True
 global GroupedMaterials
 GroupedMaterials = {}  # dictionary of material lists by type
 
@@ -161,13 +165,15 @@ def checkMaterial(material):
         return False
     return True
 
-def setMaterial(obj, m):
-    global MaterialsList
+def markMaterialsListDirty():
+    # Call whenever a material is added/removed so the next setMaterial()
+    # refreshes the cached MaterialsList from the document (see setMaterial).
+    global MaterialsListDirty
+    MaterialsListDirty = True
 
-    # Rebuild the material list from the current document
-    # so newly created custom materials are available.
-    MaterialsList.clear()
-    rebuildMaterialsList()
+
+def setMaterial(obj, m):
+    global MaterialsList, MaterialsListDirty
 
     if FreeCAD.GuiUp:
         if m in ['G4_AIR', 'AIR']:
@@ -175,20 +181,40 @@ def setMaterial(obj, m):
             if hasattr(obj, "ViewObject"):
                 print("Set transparency")
                 obj.ViewObject.Transparency = 98
-    
-    if MaterialsList is not None and len(MaterialsList) > 0:
-        obj.material = MaterialsList
-        obj.material = 0
-    
-        if not (m == 0 or m is None):
-            try:
-                obj.material = MaterialsList.index(m)
-            except ValueError:
-                print("Material not in List:", m)
-                print(MaterialsList)
-                obj.material = 0
 
+    # Refresh the cached list only when a material has been added since the last
+    # rebuild (MaterialsListDirty) or it was never built. setMaterial() runs once
+    # per solid, so rebuilding unconditionally rescans the whole document for
+    # every object - O(solids x materials) when importing a large GDML file.
+    if MaterialsListDirty or len(MaterialsList) == 0:
+        MaterialsList.clear()
+        rebuildMaterialsList()
+        MaterialsListDirty = False
+
+    if len(MaterialsList) == 0:
         return
+
+    obj.material = MaterialsList
+    obj.material = 0
+    if m == 0 or m is None:
+        return
+
+    try:
+        obj.material = MaterialsList.index(m)
+    except ValueError:
+        # Not cached yet - a material may have been added via a path that did not
+        # flag the list. Rebuild once and retry before giving up, so we never lose
+        # a genuinely-present material.
+        MaterialsList.clear()
+        rebuildMaterialsList()
+        MaterialsListDirty = False
+        obj.material = MaterialsList
+        try:
+            obj.material = MaterialsList.index(m)
+        except ValueError:
+            print("Material not in List:", m)
+            print(MaterialsList)
+            obj.material = 0
 
 def checkFullCircle(aunit, angle):
     # print(angle)

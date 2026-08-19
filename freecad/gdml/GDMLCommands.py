@@ -2,7 +2,7 @@ from __future__ import annotations
 # Fri Dec 1 11:59:50 AM PST 2023
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2017 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) Dam Lambert 2020                                       *
 # *             (c) Munther Hindi 2023                                     *
 # *                                                                        *
@@ -34,6 +34,13 @@ import re
 from typing import Dict
 
 from freecad.gdml.exportGDML import SurfaceManager
+
+# Single "<fraction> <material>" token, shared by the mixture router (inputType)
+# and the mixture parser (processMixture) so the two can never drift apart.
+# fraction: decimal or scientific notation, must contain at least one digit
+#           (so float() never sees an empty string);
+# material: element symbol or material name, hyphens allowed (e.g. Al-7075).
+QMAT_PATTERN = r'((?:\d+\.?\d*|\.\d+)(?:[Ee][+-]?\d+)?)\s+([A-Za-z][A-Za-z0-9_\-]*)'
 
 """
 This Script includes the GUI Commands of the GDML module
@@ -717,7 +724,7 @@ class AddMaterial(QtGui.QDialog):
         # Regular expression to find elements and their counts
         formulaPattern = r'^([A-Z][a-z]?)(\d*)|(\()|(\))(\d*)$'
 
-        qmat = r'(\d*\.?\d*(?:[Ee][+-]?\d{1,2})*)\s+([A-Za-z][A-Za-z0-9_\-]*)'  # quantified material
+        qmat = QMAT_PATTERN  # quantified material - shared with processMixture
         mixture = r'^' + qmat + r'\s+[+]?\s+' + qmat + r'(?:' + r'\s+[+]?\s+' + qmat + r')*' + r'$'
         self.mixturePattern = mixture
 
@@ -804,22 +811,28 @@ class AddMaterial(QtGui.QDialog):
             GDMLfraction,
             GDMLcomposite,
             MaterialsList,
+            markMaterialsListDirty,
         )
         from .importGDML import newGroupPython
         from .formula_parser import recognized_elements
 
         if not self.checkGDMLDoc():
             return
-            
+
         mixtureDict = {}
-        
-        # Parse every fraction/material pair independently.
-        pairPattern = r'(\d+(?:\.\d*)?|\.\d+)\s+([A-Za-z][A-Za-z0-9_]*)'
-        pairs = re.findall(pairPattern, expr)
+
+        # Parse every fraction/material pair independently, using the same token
+        # pattern the router used to classify this string as a mixture, so any
+        # input the router accepts is parsed identically here (hyphenated names
+        # and scientific-notation fractions included).
+        pairs = re.findall(QMAT_PATTERN, expr)
+        if not pairs:
+            self.logErr(f"Could not parse any fraction/material pairs from:\n{expr}")
+            return
 
         for frac, material in pairs:
             mixtureDict[material] = float(frac)
-        
+
         # step 1: verify that all materials already exist
         exportGeant4Materials = False
         for mat in dict(mixtureDict):  # parse a copy, since we may need to change the material name
@@ -845,6 +858,7 @@ class AddMaterial(QtGui.QDialog):
             return
 
         MaterialsList.append(matName)
+        markMaterialsListDirty()
         materialObj = newGroupPython(matGrp, matName)
         GDMLmaterial(materialObj, matName)
 
@@ -874,7 +888,8 @@ class AddMaterial(QtGui.QDialog):
             GDMLelement,
             GDMLfraction,
             GDMLmaterial,
-            MaterialsList)
+            MaterialsList,
+            markMaterialsListDirty)
 
         from .importGDML import newGroupPython
         from .formula_parser import recognized_elements
@@ -955,6 +970,7 @@ class AddMaterial(QtGui.QDialog):
             matName = elementName
             elementName = matName+'_element'
             MaterialsList.append(matName)
+            markMaterialsListDirty()
             materialObj = newGroupPython(matGrp, matName)
             GDMLmaterial(materialObj, matName)
             fractionObj = newGroupPython(materialObj, elementName)
@@ -1037,6 +1053,7 @@ class AddMaterial(QtGui.QDialog):
             GDMLfraction,
             GDMLcomposite,
             MaterialsList,
+            markMaterialsListDirty,
         )
         from .importGDML import newGroupPython
 
@@ -1047,6 +1064,7 @@ class AddMaterial(QtGui.QDialog):
         matName = self.materialName.text()
 
         MaterialsList.append(matName)
+        markMaterialsListDirty()
         materialObj = newGroupPython(matGrp, matName)
         GDMLmaterial(materialObj, matName)
         formula = self.formulaEdit.text()

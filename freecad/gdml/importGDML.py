@@ -11,7 +11,7 @@
 # Mon Feb 28 12:47:38 PM PST 2022
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2017 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) Dam Lambert 2020                                       *
 # *                                                                        *
 # *   This program is free software; you can redistribute it and/or modify *
@@ -35,7 +35,7 @@
 # *                                                                        *
 # **************************************************************************
 __title__ = "FreeCAD - GDML importer"
-__author__ = "Keith Sloan <keith@sloan-home.co.uk>"
+__author__ = "Keith Sloan <keithsloan52@icloud.com>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_GDML"]
 
 import FreeCAD
@@ -2910,6 +2910,7 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
         GDMLfraction,
         GDMLcomposite,
         MaterialsList,
+        markMaterialsListDirty,
     )
 
     # print(f'Process Materials : {materialGrp.Name} SubGrp{subGrp}')
@@ -2921,6 +2922,7 @@ def processMaterials(materialGrp, mats_xml, subGrp=None):
             print("Missing Name")
         else:
             MaterialsList.append(name)
+            markMaterialsListDirty()
             mGrp = materialGrp
             aux = material.find("auxiliary")
             # print(f'Aux {aux}')
