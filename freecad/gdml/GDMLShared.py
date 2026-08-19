@@ -4,7 +4,7 @@
 # anything needing to call eval needs to be in this file
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2017 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2017 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) Dam Lambert 2020                                       *
 # *                                                                        *
 # *   This program is free software; you can redistribute it and/or modify *

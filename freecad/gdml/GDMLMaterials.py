@@ -1,7 +1,7 @@
 # Sun Jan 30 11:32:46 AM PST 2022
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2021 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2021 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) Munther Hindi                                          *
 # *             (c) Dam Lambert                                            *
 # *                                                                        *

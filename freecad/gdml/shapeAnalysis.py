@@ -1,5 +1,5 @@
 # **************************************************************************
-# *   Copyright (c) 2026 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2026 Keith Sloan <keithsloan52@icloud.com>              *
 # *   LGPL -- see LICENCE.                                                 *
 # **************************************************************************
 """FreeCAD GDML Workbench - shape analysis for the Shapes2GDML command.

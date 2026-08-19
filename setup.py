@@ -9,7 +9,7 @@ def mysetup(requires) :
       version=str(__version__),
       packages=['freecad','lxml']
       maintainer="keithsloan52",
-      maintainer_email="keith@sloan-home.co.uk",
+      maintainer_email="keithsloan52@icloud.com",
       url="https://github.com/KeithSloan/FreeCAD_GDML_Workbench",
       description="GDML Workbench for FreeCAD",
       install_requires=[requires],

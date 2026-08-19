@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2024 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2024 Keith Sloan <keithsloan52@icloud.com>              *
 # *                                                                        *
 # *   This program is free software; you can redistribute it and/or modify *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)   *
@@ -24,7 +24,7 @@
 # *                                                                        *
 # **************************************************************************
 __title__ = "FreeCAD - MTL -> Spreadsheet importer"
-__author__ = "Keith Sloan <keith@sloan-home.co.uk>"
+__author__ = "Keith Sloan <keithsloan52@icloud.com>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_GDML"]
 
 import FreeCAD, FreeCADGui

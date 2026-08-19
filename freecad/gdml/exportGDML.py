@@ -3,7 +3,7 @@ from __future__ import annotations
 # Sat Mar 28 8:44 AM PDT 2023
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2019 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2019 Keith Sloan <keithsloan52@icloud.com>              *
 # *             (c) 2020 Dam Lambert                                       *
 # *             (c) 2021 Munther Hindi
 # *                                                                        *
@@ -28,7 +28,7 @@ from __future__ import annotations
 # *                                                                        *
 # ***************************************************************************
 __title__ = "FreeCAD - GDML exporter Version"
-__author__ = "Keith Sloan <keith@sloan-home.co.uk>"
+__author__ = "Keith Sloan <keithsloan52@icloud.com>"
 __url__ = ["https://github.com/KeithSloan/FreeCAD_Geant4"]
 
 from sys import breakpointhook

@@ -1,6 +1,6 @@
 # **************************************************************************
 # *                                                                        * 
-# *   Copyright (c) 2022 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2022 Keith Sloan <keithsloan52@icloud.com>              *
 # *                                                                        *
 # *   This program is free software; you can redistribute it and/or modify *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)   *
@@ -21,7 +21,7 @@
 # *                                                                        *
 # ***************************************************************************
 __title__ = "convertOBJ - Convert Obj to GDML Tessellated"
-__author__ = "Keith Sloan <keith@sloan-home.co.uk>"
+__author__ = "Keith Sloan <keithsloan52@icloud.com>"
 __url__ = ["https://github.com/KeithSloan/GDML/Utils"]
 
 import os, sys

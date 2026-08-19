@@ -1,6 +1,6 @@
 # **************************************************************************
 # *                                                                        *
-# *   Copyright (c) 2023 Keith Sloan <keith@sloan-home.co.uk>              *
+# *   Copyright (c) 2023 Keith Sloan <keithsloan52@icloud.com>              *
 # *                      Munther Hindi                                      *
 # *                                                                        *
 # *   This program is free software; you can redistribute it and/or modify *
