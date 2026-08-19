@@ -3194,7 +3194,7 @@ def processXMLStruct(doc, obj, filename, xmlSolids, processType):
         return processXMLVolAsm(doc, root, obj, xmlSolids, processType)
 
 
-def processPhysVolFile(doc, volDict, parent, fname):
+def processPhysVolFile(importFlag, doc, volDict, parent, fname):
     global pathName
     print(f"Process physvol file import {fname} parent {parent.Name}")
     print(pathName)
@@ -3225,14 +3225,31 @@ def processPhysVolFile(doc, volDict, parent, fname):
             if hasattr(part, "Material"):
                 part.setEditorMode("Material", 2)
             # expandVolume(None,vName,-1,1)
-            processVol(doc, vol, volDict, part, -1, 1)
+            processVol(importFlag, doc, vol, volDict, part, -1, 1)
 
     processSurfaces(doc, volDict, structure)
 
 
 def setSkinSurface(doc, vol, surface):
-    print("set SkinSurface : {vol} : {surface}")
+    from .GDMLObjects import getSurfsListFromGroup
+
+    print(f"set SkinSurface : {vol} : {surface}")
     volObj = doc.getObject(vol)
+    if volObj is None:
+        print(f"GDML Warning: SkinSurface volume '{vol}' not found - skipped")
+        return
+    # Optical surfaces can be defined after the volume that references them, so
+    # the volume may have no SkinSurface enum yet, or one populated before this
+    # surface existed. Add the property / extend the enumeration as needed rather
+    # than crashing on assignment.
+    if not hasattr(volObj, "SkinSurface"):
+        volObj.addProperty(
+            "App::PropertyEnumeration", "SkinSurface", "GDML", "SkinSurface"
+        )
+        volObj.SkinSurface = getSurfsListFromGroup(doc) or ["None"]
+    enums = list(volObj.getEnumerationsOfProperty("SkinSurface"))
+    if surface not in enums:
+        volObj.SkinSurface = enums + [surface]
     volObj.SkinSurface = surface
 
 
@@ -3660,7 +3677,7 @@ def processGDML(doc, flag, filename, prompt, processType, initFlg):
     print("Print Verbose : " + str(GDMLShared.getTrace()))
 
     FreeCAD.Console.PrintMessage("Import GDML file : " + filename + "\n")
-    FreeCAD.Console.PrintMessage("ImportGDML Version 1.9b\n")
+    FreeCAD.Console.PrintMessage("ImportGDML Version 1.9c\n")
     startTime = time.perf_counter()
 
     global pathName

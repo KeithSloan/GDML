@@ -5564,8 +5564,18 @@ class GDMLopticalsurface(GDMLcommon):
         ]
         obj.finish = self.finish
         if finish.isnumeric():
-            obj.finish = self.finish[int(finish)]
+            idx = int(finish)
+            obj.finish = self.finish[idx] if 0 <= idx < len(self.finish) else self.finish[0]
+        elif finish in self.finish:
+            obj.finish = finish
         else:
+            # Non-standard finish value (e.g. the typo 'polishlumirrorair' for
+            # 'polishedlumirrorair' found in some real GDML files, or a value from
+            # a newer Geant4). Keep it rather than crashing the import: extend the
+            # enumeration so the exact value survives round-trip export.
+            print(f"GDML Warning: optical surface finish '{finish}' is not a standard value - keeping as-is")
+            self.finish = self.finish + [finish]
+            obj.finish = self.finish
             obj.finish = finish
 
         obj.addProperty(
