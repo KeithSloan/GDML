@@ -164,6 +164,8 @@ gdmlSpreadsheet = None
 def processDefines(doc):
     global defineSpreadsheet
     global gdmlSpreadsheet
+    invalidateDefineIndex()
+    invalidateGdmlInfoIndex()
     defineGrp = doc.getObject("Define")
     if defineGrp is None:
         defineGrp = doc.addObject("App::DocumentObjectGroupPython", "Define")
@@ -755,7 +757,99 @@ class SheetHandler:
         return expr
 
 
+# --- _SPREADSHEET_ROW_INDEX_ ------------------------------------------------
+#  Fast name -> row indexes for the 'defines' and 'gdmlInfo' spreadsheets.
+#  Previously every position/rotation lookup did a full linear scan of the
+#  sheet, making import/export O(references * rows) - quadratic on large
+#  models.  These helpers build a {name: row} dict once and reuse it; a linear
+#  scan remains as a fallback so a stale/missing index never gives a wrong
+#  answer.  Version independent (no getUsedRange dependency).
+# ---------------------------------------------------------------------------
+_defineRowIndex = None          # {(type, name): row} for defineSpreadsheet
+_gdmlInfoIndex = None           # {identifier: row}   for the gdmlInfo sheet
+_gdmlInfoIndexKey = None        # (docName, sheetName) the index was built for
+
+
+def _cellGet(sheet, cell):
+    try:
+        return sheet.get(cell)
+    except Exception:
+        return None
+
+
+def invalidateDefineIndex():
+    global _defineRowIndex
+    _defineRowIndex = None
+
+
+def invalidateGdmlInfoIndex():
+    global _gdmlInfoIndex, _gdmlInfoIndexKey
+    _gdmlInfoIndex = None
+    _gdmlInfoIndexKey = None
+
+
+def _getDefineIndex():
+    """ {(type, name): row} for the defines sheet, built lazily. """
+    global _defineRowIndex
+    if _defineRowIndex is not None:
+        return _defineRowIndex
+    idx = {}
+    if defineSpreadsheet is not None:
+        try:
+            n = lastRow(defineSpreadsheet)
+        except Exception:
+            n = 0
+        for row in range(1, n + 1):
+            typ = _cellGet(defineSpreadsheet, 'A' + str(row))
+            nm = _cellGet(defineSpreadsheet, 'B' + str(row))
+            if typ and nm:
+                idx[(typ, nm)] = row
+    _defineRowIndex = idx
+    return idx
+
+
+def _gdmlInfoRow(sheet, name):
+    """ Row of identifier `name` in the gdmlInfo sheet via a cached index
+        (keyed to the sheet); linear-scan fallback on a miss. """
+    global _gdmlInfoIndex, _gdmlInfoIndexKey
+    try:
+        key = (sheet.Document.Name, sheet.Name)
+    except Exception:
+        key = None
+    if _gdmlInfoIndex is None or _gdmlInfoIndexKey != key:
+        idx = {}
+        try:
+            n = lastRow(sheet)
+        except Exception:
+            n = 0
+        col = gdmlSheetColumn['identifier']
+        for row in range(1, n + 1):
+            ident = _cellGet(sheet, col + str(row))
+            if ident:
+                idx.setdefault(ident, row)   # first (top-most) row wins
+        _gdmlInfoIndex = idx
+        _gdmlInfoIndexKey = key
+    row = _gdmlInfoIndex.get(name)
+    if row is not None:
+        return row
+    # fallback linear scan (index miss)
+    try:
+        n = lastRow(sheet)
+    except Exception:
+        return None
+    col = gdmlSheetColumn['identifier']
+    for r in range(2, n + 1):
+        if _cellGet(sheet, col + str(r)) == name:
+            return r
+    return None
+
+
 def getPositionRow(name) -> int| None:
+    idx = _getDefineIndex()
+    row = idx.get(('position', name))
+    if row is not None:
+        return row
+    # fallback: linear scan (index miss)
     endRow = lastRow(defineSpreadsheet)
     for row in range(endRow):
         cell = chr(ord("A")) + str(row+1)
@@ -768,6 +862,11 @@ def getPositionRow(name) -> int| None:
 
 
 def getRotationRow(name) -> int| None:
+    idx = _getDefineIndex()
+    row = idx.get(('rotation', name))
+    if row is not None:
+        return row
+    # fallback: linear scan (index miss)
     endRow = lastRow(defineSpreadsheet)
     for row in range(endRow):
         cell = chr(ord("A")) + str(row+1)
@@ -985,90 +1084,39 @@ def getRadians(flag, r):
 
 def getPhysVolName(name) -> str | None:
     ''' return phys_vol name of part or none if not in the gdmlInfo sheet '''
-    # TODO test, for WB version in the doc, rather than spreadsheet name
-    # TODO put part_names in a dictionary for quick access to row number
     sheet = FreeCAD.ActiveDocument.getObject("gdmlInfo")
     if sheet is None:  # an old doc, with no definesSpreadSheet
         return None
+    row = _gdmlInfoRow(sheet, name)
+    if row is None:
+        return None
+    return _cellGet(sheet, gdmlSheetColumn['physvol_name'] + str(row))
 
-    last_row = lastRow(sheet)
-
-    # slow search to find if the volume name is contained in column A
-    # first is header, so start at 2
-    for row in range(2, last_row + 1):
-        cell = gdmlSheetColumn['identifier'] + str(row)
-        part_name = sheet.get(cell)
-        if part_name == name:
-            # The name exists. Does it have a position reference?
-            cell = gdmlSheetColumn['physvol_name'] + str(row)
-            try:
-                name = sheet.get(cell)
-            except:
-                name = None
-            return name
-
-    return None
 
 def getPositionName(name) -> tuple[str|None,str|None]:
-    ''' return (position_type, position_name) name of the part with name 'name. or none if not in the gdmlInfo sheet '''
-    # TODO test, for WB version in the doc, rather than spreadsheet name
+    ''' return (position_type, position_name) of the part 'name', or (None, None) if not in the gdmlInfo sheet '''
     sheet = FreeCAD.ActiveDocument.getObject("gdmlInfo")
     if sheet is None:  # an old doc, with no definesSpreadSheet
         return None, None
+    row = _gdmlInfoRow(sheet, name)
+    if row is None:
+        return None, None
+    pos_type = _cellGet(sheet, gdmlSheetColumn['position_type'] + str(row))
+    pos_name = _cellGet(sheet, gdmlSheetColumn['position_name'] + str(row))
+    return pos_type, pos_name
 
-    last_row = lastRow(sheet)
-
-    # slow search to find if the volume name is contained in column A
-    # first is header, so start at 2
-    for row in range(2, last_row + 1):
-        cell = gdmlSheetColumn['identifier'] + str(row)
-        part_name = sheet.get(cell)
-        if part_name == name:
-            # The name exists. Does it have a position reference?
-            cell = gdmlSheetColumn['position_type'] + str(row)
-            try:
-                pos_type = sheet.get(cell)
-            except:
-                pos_type = None
-
-            cell = gdmlSheetColumn['position_name'] + str(row)
-            try:
-                name = sheet.get(cell)
-            except:
-                name = None
-            return pos_type, name
-
-    return None, None
 
 def getRotationName(name) -> tuple[str|None,str|None]:
-    ''' return rotation_type, rotation_name name of the part with name 'name. or none if not in the gdmlInfo sheet '''
-    # TODO test, for WB version in the doc, rather than spreadsheet name
+    ''' return (rotation_type, rotation_name) of the part 'name', or (None, None) if not in the gdmlInfo sheet '''
     sheet = FreeCAD.ActiveDocument.getObject("gdmlInfo")
     if sheet is None:  # an old doc, with no definesSpreadSheet
         return None, None
-
-    last_row = lastRow(sheet)
-
-    # slow search to find if the volume name is contained in column A
-    for row in range(1, last_row + 1):
-        cell = gdmlSheetColumn['identifier'] + str(row)
-        part_name = sheet.get(cell)
-        if part_name == name:
-            # The name exists. Does it have a position reference?
-            cell = gdmlSheetColumn['rotation_type'] + str(row)
-            try:
-                rot_type = sheet.get(cell)
-            except:
-                rot_type = None
-
-            cell = gdmlSheetColumn['rotation_name'] + str(row)
-            try:
-                name = sheet.get(cell)
-            except:
-                name = None
-            return rot_type, name
-
-    return None, None
+    row = _gdmlInfoRow(sheet, name)
+    if row is None:
+        return None, None
+    rot_type = _cellGet(sheet, gdmlSheetColumn['rotation_type'] + str(row))
+    rot_name = _cellGet(sheet, gdmlSheetColumn['rotation_name'] + str(row))
+    return rot_type, rot_name
 
 
 def getPositionExpressions(solid, property):
@@ -1245,6 +1293,7 @@ def createGdmlSheetEntry(obj, xml):
     if gdmlSpreadsheet is None:
         return
 
+    invalidateGdmlInfoIndex()
     identifier = getIdentifier(obj)
 
     row = lastRow(gdmlSpreadsheet)
