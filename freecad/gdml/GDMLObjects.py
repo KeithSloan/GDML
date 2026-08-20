@@ -3353,6 +3353,46 @@ class GDMLGenericPolycone(GDMLsolid):  # Thanks to Dam Lamb
         fp.purgeTouched()
 
 
+# --- _GDML_SAFE_BOOL_ : boolean cut/common with removeSplitter() retry -------
+#  FreeCAD's Part layer can return a NULL shape for booleans on thin, large-
+#  radius spherical shells (e.g. RICH mirror tiles - a 6 mm shell at 3000 mm
+#  radius) where the raw OCCT kernel does the same operation fine.  Retrying
+#  after removeSplitter() matches the kernel result.  The plain cut/common is
+#  tried first, so behaviour is unchanged whenever it already works; if neither
+#  path yields a valid shape the original operation is returned (raising as
+#  before) so genuinely-degenerate cases are not silently masked.
+def _gdmlSafeCut(base, tool):
+    try:
+        r = base.cut(tool)
+        if not r.isNull():
+            return r
+    except Exception:
+        pass
+    try:
+        r = base.removeSplitter().cut(tool)
+        if not r.isNull():
+            return r
+    except Exception:
+        pass
+    return base.cut(tool)
+
+
+def _gdmlSafeCommon(base, tool):
+    try:
+        r = base.common(tool)
+        if not r.isNull():
+            return r
+    except Exception:
+        pass
+    try:
+        r = base.removeSplitter().common(tool)
+        if not r.isNull():
+            return r
+    except Exception:
+        pass
+    return base.common(tool)
+
+
 class GDMLSphere(GDMLsolid):
     def __init__(
         self,
@@ -3471,9 +3511,9 @@ class GDMLSphere(GDMLsolid):
                 cylToCut = Part.makeCylinder(
                     2.0 * rmax, rmax, FreeCAD.Vector(0, 0, 0)
                 )
-                sphere2 = sphere2.cut(cylToCut)
+                sphere2 = _gdmlSafeCut(sphere2, cylToCut)
             elif startthetaDeg < 90.0:
-                sphere2 = sphere2.cut(
+                sphere2 = _gdmlSafeCut(sphere2, 
                     Part.makeCone(
                         0.0,
                         rmax * math.sin(startthetaRad),
@@ -3486,10 +3526,10 @@ class GDMLSphere(GDMLsolid):
                     rmax,
                     FreeCAD.Vector(0, 0, rmax * math.cos(startthetaRad)),
                 )
-                sphere2 = sphere2.cut(cylToCut)
+                sphere2 = _gdmlSafeCut(sphere2, cylToCut)
 
             elif startthetaDeg < 180.0:
-                sphere2 = sphere2.common(
+                sphere2 = _gdmlSafeCommon(sphere2, 
                     Part.makeCone(
                         0.0,
                         rmax / math.cos(math.pi - startthetaRad),
@@ -3505,7 +3545,7 @@ class GDMLSphere(GDMLsolid):
         if thetaSumRad < math.pi:
             if thetaSumRad > HalfPi:
 
-                sphere2 = sphere2.cut(
+                sphere2 = _gdmlSafeCut(sphere2, 
                     Part.makeCone(
                         0.0,
                         rmax * math.sin(math.pi - thetaSumRad),
@@ -3522,15 +3562,15 @@ class GDMLSphere(GDMLsolid):
                         0, 0, rmax * (-1.0 + math.cos(thetaSumRad))
                     ),
                 )
-                sphere2 = sphere2.cut(cylToCut)
+                sphere2 = _gdmlSafeCut(sphere2, cylToCut)
 
             elif thetaSumRad == HalfPi:
                 cylToCut = Part.makeCylinder(
                     2.0 * rmax, rmax, FreeCAD.Vector(0, 0, -rmax)
                 )
-                sphere2 = sphere2.cut(cylToCut)
+                sphere2 = _gdmlSafeCut(sphere2, cylToCut)
             elif thetaSumRad > 0:
-                sphere2 = sphere2.common(
+                sphere2 = _gdmlSafeCommon(sphere2, 
                     Part.makeCone(
                         0.0, 2 * rmax * math.tan(thetaSumRad), 2 * rmax
                     )
@@ -3539,7 +3579,7 @@ class GDMLSphere(GDMLsolid):
         if rmin <= 0 or rmin > rmax:
             fp.Shape = sphere2
         else:
-            fp.Shape = sphere2.cut(Part.makeSphere(rmin))
+            fp.Shape = _gdmlSafeCut(sphere2, Part.makeSphere(rmin))
         if hasattr(fp, "scale"):
             super().scale(fp)
         fp.purgeTouched()
