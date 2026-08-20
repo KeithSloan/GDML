@@ -2636,72 +2636,43 @@ def createWorldVol(volName):
 
 
 def buildDocTree():
-    from PySide import QtWidgets
-
+    # _MODEL_DOCTREE_ : build childObjects from the document model, not the GUI
+    # tree widget's selection.  claimChildren() is what populates the model tree
+    # (including boolean Base/Tool and App::Part groups); walking it here makes
+    # the export self-contained and re-runnable (the old code scraped
+    # QTreeWidget.selectedItems(), which is empty/stale on a re-run).
     global childObjects
     childObjects = {}  # dictionary of list of child objects for each object
-    # TypeIds that should not go in to the tree
     skippedTypes = ["App::Origin", "Sketcher::SketchObject", "Part::Compound"]
 
-    def addDaughters(item: QtWidgets.QTreeWidgetItem):
-        print (f"--------addDaughters {item.text(0)}")
-        objectLabel = item.text(0)
-        object = App.ActiveDocument.getObjectsByLabel(objectLabel)[0]
-        if object not in childObjects:
-            childObjects[object] = []
-        for i in range(item.childCount()):
-            childItem = item.child(i)
-            treeLabel = childItem.text(0)
-            try:
-                childObject = App.ActiveDocument.getObjectsByLabel(treeLabel)[0]
-                objType = childObject.TypeId
-                if objType not in skippedTypes:
-                    childObjects[object].append(childObject)
-                    addDaughters(childItem)
-            except Exception as e:
-                print(e)
+    def childrenOf(obj):
+        kids = []
+        try:
+            vo = getattr(obj, "ViewObject", None)
+            if vo is not None:
+                kids = vo.claimChildren() or []
+        except Exception:
+            kids = []
+        if not kids:
+            kids = getattr(obj, "Group", []) or []
+        return kids
+
+    def addDaughters(obj):
+        if obj in childObjects:      # already processed (also breaks cycles)
+            return
+        childObjects[obj] = []
+        for child in childrenOf(obj):
+            if child is None or child.TypeId in skippedTypes:
+                continue
+            childObjects[obj].append(child)
+            addDaughters(child)
+
+    # world volume is the App::Part selected for export
+    sel = FreeCADGui.Selection.getSelection()
+    worldObj = sel[0] if sel else None
+    if worldObj is None:
         return
-
-    # Get world volume from document tree widget
-    worldObj = FreeCADGui.Selection.getSelection()[0]
-    # tree = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)[0]
-    # it = QtGui.QTreeWidgetItemIterator(tree)
-
-    mw1 = FreeCADGui.getMainWindow()
-    print (f"---------Number of trees {len(mw1.findChildren(QtGui.QTreeWidget))}")
-    treesSel = mw1.findChildren(QtGui.QTreeWidget)
-    print (f"---------Number of trees {len(treesSel)}")
-
-    doc = FreeCAD.ActiveDocument
-    found = False
-
-    for tree in treesSel:
-        print(f"--------Tree {tree.objectName()}")
-        items = tree.selectedItems()
-        for item in items:
-            treeLabel = item.text(0)
-            print(f"--------Item {treeLabel}")
-            print(f"--------Doc.Label {doc.Label}")
-            # if not found:
-            #     if treeLabel != doc.Label:
-            #         continue
-            # found = True
-            try:
-                objs = doc.getObjectsByLabel(treeLabel)
-                print(f"--------Objects {objs}")
-                if len(objs) == 0:
-                    continue
-
-                obj = objs[0]
-                if obj == worldObj:
-                    print(f"--------World Object {obj.Label}")
-                    # we presume first app part is world volume
-                    addDaughters(item)
-                    break
-            except Exception as e:
-                print(e)
-                FreeCADobject = None
-
+    addDaughters(worldObj)
 
 
 def isContainer(obj):
