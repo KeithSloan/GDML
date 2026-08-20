@@ -2985,7 +2985,7 @@ def exportGDML(first, filepath, fileExt):
 
     # GDMLShared.setTrace(True)
     GDMLShared.trace("exportGDML")
-    print("====> Start GDML Export 2.0")
+    print("====> Start GDML Export 2.1")
     branch = get_active_branch_name()
     print(f"branch: {branch}")
     print("File extension : " + fileExt)
