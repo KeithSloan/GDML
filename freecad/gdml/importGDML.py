@@ -2178,8 +2178,10 @@ def parsePhysVol(
     # Test if any physvol file imports
     filePtr = physVol.find("file")
     if filePtr is not None:
-        fname = filePtr.get("name")
-        processPhysVolFile(importFlag, doc, volDict, parent, fname)
+        part = processPhysVolFile(importFlag, doc, volDict, parent, filePtr)
+        if part is not None:
+            GDMLShared.setPlacement(part, physVol)
+        return
     volRef = GDMLShared.getRef(physVol, "volumeref")
     GDMLShared.trace("Volume Ref : " + str(volRef))
     print(f"Parse physvol : {volRef} importFlag {importFlag}")
@@ -3205,40 +3207,80 @@ def processXMLStruct(doc, obj, filename, xmlSolids, processType):
         return processXMLVolAsm(doc, root, obj, xmlSolids, processType)
 
 
-def processPhysVolFile(importFlag, doc, volDict, parent, fname):
-    global pathName
+def processPhysVolFile(importFlag, doc, volDict, parent, filePtr):
+    global root, setup, define, solids, structure, extension, pathName
+
+    fname = filePtr.get("name")
     print(f"Process physvol file import {fname} parent {parent.Name}")
     print(pathName)
     filename = os.path.join(pathName, fname)
     print("Full Path : " + filename)
-    etree, root = setupEtree(filename)
-    # etree.ElementTree(root).write("/tmp/test2", 'utf-8', True)
-    processMaterialsDocSet(doc, root)
-    print("Now process Volume")
-    define = root.find("define")
-    # print(str(define))
-    GDMLShared.setDefine(define)
-    if define is not None:
-        processDefines(root, doc)
-    global solids
-    solids = root.find("solids")
-    # print(str(solids))
-    structure = root.find("structure")
-    if structure is None:
-        vol = root.find("volume")
-    else:
-        vol = structure.find("volume")
-    # print(str(vol))
-    if vol is not None:
-        vName = vol.get("name")
-        if vName is not None:
-            part = parent.newObject("App::Part", vName)
-            if hasattr(part, "Material"):
-                part.setEditorMode("Material", 2)
-            # expandVolume(None,vName,-1,1)
-            processVol(importFlag, doc, vol, volDict, part, -1, 1)
+    previous_context = (
+        root,
+        setup,
+        define,
+        solids,
+        structure,
+        extension,
+        pathName,
+    )
 
-    processSurfaces(doc, volDict, structure)
+    try:
+        etree, root = setupEtree(filename)
+        setup = root.find("setup")
+        define = root.find("define")
+        solids = root.find("solids")
+        structure = root.find("structure")
+        extension = root.find("extension")
+        pathName = os.path.dirname(os.path.normpath(filename))
+
+        processMaterialsDocSet(doc, root)
+        print("Now process Volume")
+        GDMLShared.setDefine(define)
+        if define is not None:
+            processDefines(root, doc)
+
+        volume_name = filePtr.get("volname")
+        if volume_name is None and setup is not None:
+            volume_name = GDMLShared.getRef(setup, "world")
+
+        if structure is None:
+            vol = root.find("volume")
+        elif volume_name is None:
+            vol = structure.find("volume")
+        else:
+            vol = structure.find("volume[@name='%s']" % volume_name)
+
+        if vol is None:
+            FreeCAD.Console.PrintError(
+                f"GDML: volume '{volume_name}' not found in external file "
+                f"'{fname}'\n"
+            )
+            return None
+
+        vName = vol.get("name")
+        if vName is None:
+            return None
+
+        part = parent.newObject("App::Part", vName)
+        part.Label = vName
+        if hasattr(part, "Material"):
+            part.setEditorMode("Material", 2)
+        processVol(importFlag, doc, vol, volDict, part, -1, 1)
+        if structure is not None:
+            processSurfaces(doc, volDict, structure)
+        return part
+    finally:
+        (
+            root,
+            setup,
+            define,
+            solids,
+            structure,
+            extension,
+            pathName,
+        ) = previous_context
+        GDMLShared.setDefine(define)
 
 
 def setSkinSurface(doc, vol, surface):

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="schema/gdml.xsd">
+  <define>
+    <position name="external_position" x="10" y="20" z="30" unit="mm"/>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="assemblyWorld" x="100" y="100" z="100" lunit="mm"/>
+    <box name="Inline" x="4" y="4" z="4" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_inline">
+      <materialref ref="G4_Al"/>
+      <solidref ref="Inline"/>
+    </volume>
+    <volume name="LV_assembly">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="assemblyWorld"/>
+      <physvol>
+        <file name="part.gdml"/>
+        <positionref ref="external_position"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="LV_inline"/>
+        <positionref ref="center"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="LV_assembly"/>
+  </setup>
+</gdml>

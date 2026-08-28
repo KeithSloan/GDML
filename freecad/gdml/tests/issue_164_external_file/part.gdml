@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="schema/gdml.xsd">
+  <define>
+    <position name="center" x="0" y="0" z="0" unit="mm"/>
+  </define>
+  <materials/>
+  <solids>
+    <box name="partWorld" x="12" y="12" z="12" lunit="mm"/>
+    <box name="Part" x="10" y="10" z="10" lunit="mm"/>
+  </solids>
+  <structure>
+    <volume name="LV_part">
+      <materialref ref="G4_Cu"/>
+      <solidref ref="Part"/>
+    </volume>
+    <volume name="LV_partWorld">
+      <materialref ref="G4_AIR"/>
+      <solidref ref="partWorld"/>
+      <physvol>
+        <volumeref ref="LV_part"/>
+        <positionref ref="center"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="Default" version="1.0">
+    <world ref="LV_partWorld"/>
+  </setup>
+</gdml>
