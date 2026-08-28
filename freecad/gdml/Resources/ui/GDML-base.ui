@@ -70,6 +70,36 @@
           </property>
          </widget>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="defaultMaterialLayout">
+          <item>
+           <widget class="QLabel" name="defaultMaterialLabel">
+            <property name="text">
+             <string>Default material</string>
+            </property>
+            <property name="buddy">
+             <cstring>defaultMaterialLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="defaultMaterialLineEdit">
+            <property name="toolTip">
+             <string>Material assigned when no material is selected. Leave empty to use the existing fallback.</string>
+            </property>
+            <property name="placeholderText">
+             <string>e.g. G4_AIR</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>defaultMaterial</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/GDML</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </item>
      </layout>
@@ -81,6 +111,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

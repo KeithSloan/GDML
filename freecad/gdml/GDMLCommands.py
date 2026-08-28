@@ -117,30 +117,26 @@ def getSelectedMaterial():
                 if isinstance(obj.Proxy, GDMLmaterial) is True:
                     return nameFromLabel(obj.Label)
 
-    return 0
+    return getDefaultMaterial()
+
+
+def getDefaultMaterial():
+    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/GDML")
+    material = params.GetString("defaultMaterial", "").strip()
+    return material if material else 0
 
 
 def getSelectedPM():
-    from .exportGDML import nameFromLabel
-    from .GDMLObjects import GDMLmaterial
-
     objPart = None
-    material = 0
+    material = getSelectedMaterial()
     list = FreeCADGui.Selection.getSelection()
     if list is not None:
         for obj in list:
-            if hasattr(obj, "Proxy"):
-                if (
-                    isinstance(obj.Proxy, GDMLmaterial) is True
-                    and material == 0
-                ):
-                    material = nameFromLabel(obj.Label)
-
             if obj.TypeId == "App::Part" and objPart is None:
                 objPart = obj
 
-            if objPart is not None and material != 0:
-                return objPart, material
+            if objPart is not None:
+                break
 
     if objPart is None:
         # objPart = FreeCAD.ActiveDocument.getObject('worldVOL')
