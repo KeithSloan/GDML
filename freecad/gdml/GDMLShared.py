@@ -175,6 +175,7 @@ def processDefines(doc):
     processConstants(doc)
     processQuantities(doc)
     processVariables(doc)
+    processMatrices()
     processExpression(doc)
     processPositions(doc)
     processRotation(doc)
@@ -921,14 +922,19 @@ def getSheetExpression(ptr, var) -> str | None:
         if len(variables) == 0:
             return None
 
-        for var in variables:
-            varAlias = SheetHandler.alias(var)
-            if defineSpreadsheet.getCellFromAlias(varAlias) is None:
+        # Only link to the spreadsheet when every name is a define that has a
+        # cell there. Matrices (m[i,j]), loop variables and unknown names have
+        # none: return None so the caller keeps the evaluated value.
+        aliases = {}
+        for name in variables:
+            varAlias = SheetHandler.aliasDict.get(name)
+            if varAlias is None or defineSpreadsheet.getCellFromAlias(varAlias) is None:
                 return None
-            else:
-                repl = f"<<{sheet}>>.{varAlias}"
-                chkval = chkval.replace(var, repl)
-        return chkval
+            aliases[name] = f"<<{sheet}>>.{varAlias}"
+
+        # Replace whole names in one pass, so 'i' doesn't match inside 'ii'
+        pattern = r'\b(' + '|'.join(map(re.escape, aliases)) + r')\b'
+        return re.sub(pattern, lambda m: aliases[m.group(1)], chkval)
 
     return None
 
@@ -993,6 +999,65 @@ def getPropertyExpression(obj, property) -> str | float | None:
     return expr1
 
 
+# GDML <matrix> defines: name -> (coldim, values). Kept out of globals(),
+# because a matrix may share its name with a unit (e.g. "m" = metre).
+matrixDict: dict[str, tuple[int, list[float]]] = {}
+
+_MATRIX_REF = re.compile(r"\b([A-Za-z_]\w*)\s*\[([^\[\]]*)\]")
+
+
+def processMatrices():
+    matrixDict.clear()
+    for mdef in define.findall("matrix"):
+        name = mdef.get("name")
+        try:
+            coldim = max(int(mdef.get("coldim", "1")), 1)
+        except ValueError:
+            coldim = 1
+        values = [getFloatVal(v) for v in mdef.get("values", "").split()]
+        if name and values:
+            matrixDict[name] = (coldim, values)
+
+
+def _splitIndices(text):
+    """Split matrix indices on commas that are not inside parentheses."""
+    parts, depth, start = [], 0, 0
+    for i, c in enumerate(text):
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+        elif c == "," and depth == 0:
+            parts.append(text[start:i])
+            start = i + 1
+    parts.append(text[start:])
+    return parts
+
+
+def solveBrackets(expr):
+    """Replace matrix references with their values, as Geant4 does:
+    m[i] for a row or column matrix, m[i,j] otherwise, 1-based indices."""
+
+    def element(match):
+        name = match.group(1)
+        if name not in matrixDict:
+            return match.group(0)
+        coldim, values = matrixDict[name]
+        idx = [int(round(float(eval(solveBrackets(s))))) - 1
+               for s in _splitIndices(match.group(2))]
+        k = idx[0] if len(idx) == 1 else coldim * idx[0] + idx[1]
+        if not 0 <= k < len(values):
+            raise IndexError(f"{match.group(0)} is outside matrix '{name}'")
+        return repr(values[k])
+
+    if "[" not in expr:
+        return expr
+    prev = None
+    while prev != expr:
+        prev, expr = expr, _MATRIX_REF.sub(element, expr)
+    return expr
+
+
 def getVal(ptr, var, default=0):
     # all of math must be imported at global level
     # print ptr.attrib
@@ -1007,7 +1072,7 @@ def getVal(ptr, var, default=0):
             chkval = vval
         trace("chkval : " + str(chkval))
         try:
-            ret = float(eval(chkval))
+            ret = float(eval(solveBrackets(chkval)))
         except:
             try:
                 ret = float(chkval)
