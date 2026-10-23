@@ -128,7 +128,9 @@ class NameManager:
     def getName(obj) -> str:
         if obj in NameManager._solidsNamesDict:
             return NameManager._solidsNamesDict[obj]
-        name = obj.Label
+        # clean the label the same way every writer does (tessellated
+        # solids clean their own name), so solids and refs always match
+        name = cleanGDMLname(obj.Label)
         if len(name) > 4:
             if name[0:4] == "GDML":
                 if "_" in name:
@@ -162,7 +164,7 @@ class NameManager:
             return NameManager._volumeNamesDict[vol]
 
         if vol.TypeId == "App::Part":
-            return vol.Label
+            return cleanGDMLname(vol.Label)
 
         elif vol.TypeId == "App::Link":
             return NameManager.getVolumeName(vol.LinkedObject)
@@ -2252,8 +2254,13 @@ def isArrayOfPart(obj):
     if typeId == "Clone":
         clonedObj = obj1.Objects[0]
         return isArrayOfPart(clonedObj)
-    else:
-        return obj1.Base.TypeId == "App::Part"
+    base = obj1.Base
+    if base is None:
+        return False
+    if isArrayType(base):
+        # array of an array: an array of Parts if the inner one is
+        return isArrayOfPart(base)
+    return base.TypeId == "App::Part"
 
 def processArrayPart(array, xmlVol):
     # vol: array object
@@ -2269,7 +2276,12 @@ def processArrayPart(array, xmlVol):
     arrayRef = NameManager.getName(array)
     arrayXML = createXMLassembly(arrayRef)
     print(f"Process Array Part {array.Label} Base {array.Base} {xmlVol}")
-    processVolAssem(array.Base, None, array.Base.Label)
+    if isArrayType(array.Base):
+        # array of an array of Parts: export the inner array as its own
+        # assembly first; it pushes its placement like processVolAssem does
+        processArrayPart(array.Base, None)
+    else:
+        processVolAssem(array.Base, None, array.Base.Label)
     basePhysVol = physVolStack.pop()
     baseRotation = basePhysVol.placement.Rotation
     baseTranslation = basePhysVol.placement.Base
@@ -2557,7 +2569,11 @@ def processVolAssem(vol, xmlParent, parentName, psPlacement=None):
     # breakpoint()
     if vol.Label[:12] != "NOT_Expanded":
         print(f"process VolAsm Name {vol.Name} Label {vol.Label}")
-        volName = NameManager.getName(vol)
+        # getVolumeName, not getName: placements refer to the assembly by
+        # its volume name, and getName de-duplicates against solid names
+        # (an App::Part "Tube" became assembly "Tube1" when a solid "Tube"
+        # existed, leaving <volumeref ref="Tube"/> dangling)
+        volName = NameManager.getVolumeName(vol)
         if isContainer(vol):
             processContainer(vol, xmlParent, psPlacement)
         elif isAssembly(vol):
