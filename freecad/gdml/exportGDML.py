@@ -89,6 +89,7 @@ from .GDMLObjects import (
 )
 
 from . import GDMLShared
+from . import GDMLLog
 
 
 def get_active_branch_name():
@@ -2504,19 +2505,19 @@ def warnIfOutsideMother(motherSolid, daughter, motherName):
                   mb.YMin - db.YMin, db.YMax - mb.YMax,
                   mb.ZMin - db.ZMin, db.ZMax - mb.ZMax, 0.0)
         if out > 1e-4:
-            FreeCAD.Console.PrintWarning(
-                f"GDML export: {daughter.Label} extends {out:.4g} mm outside "
+            GDMLLog.warning(
+                f"{daughter.Label} extends {out:.4g} mm outside "
                 f"its mother volume {motherName} - Geant4 will report an "
-                f"overlap with the mother volume\n")
+                f"overlap with the mother volume")
             return
         if len(ms.Faces) + len(ds.Faces) > 2000 or ds.Volume <= 0:
             return
         outside = ds.cut(ms).Volume
         if outside > 1e-6 * ds.Volume:
-            FreeCAD.Console.PrintWarning(
-                f"GDML export: {outside:.4g} mm^3 of {daughter.Label} is "
+            GDMLLog.warning(
+                f"{outside:.4g} mm^3 of {daughter.Label} is "
                 f"outside its mother volume {motherName} - Geant4 will report "
-                f"an overlap with the mother volume\n")
+                f"an overlap with the mother volume")
     except Exception as e:
         print(f"warnIfOutsideMother: could not check {daughter.Label}: {e}")
 
@@ -3366,7 +3367,15 @@ def export(exportList, filepath):
         # profiler.enable()
 
         if first.TypeId == "App::Part":
-            exportGDMLworld(first, filepath, fileExt)
+            # warnings/errors go to the Report View and to <file>.gdml.log
+            from . import GDMLLog
+            logPath = GDMLLog.start(filepath)
+            try:
+                exportGDMLworld(first, filepath, fileExt)
+            finally:
+                GDMLLog.stop()
+                if logPath is not None:
+                    print(f"Export log: {logPath}")
         #
         # elif first.Label == "Materials":
         #    exportMaterials(first, filepath)
