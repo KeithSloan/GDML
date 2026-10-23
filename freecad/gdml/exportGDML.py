@@ -2486,6 +2486,41 @@ def processVolume(vol, xmlParent, psPlacement):
     return xmlVol
 
 
+def warnIfOutsideMother(motherSolid, daughter, motherName):
+    # A daughter volume must lie inside its mother's solid, or Geant4
+    # reports "Overlap with mother volume" (GeomVol1002) and stops.
+    # motherSolid and daughter are both children of the container Part,
+    # so their shapes are in the same (container) frame.
+    # Bounding boxes catch clear protrusions cheaply; a boolean cut checks
+    # the rest when both shapes are small enough for it to be quick.
+    try:
+        ms = motherSolid.Shape
+        ds = Part.getShape(daughter)
+        if ms.isNull() or ds.isNull():
+            return
+        mb = ms.BoundBox
+        db = ds.BoundBox
+        out = max(mb.XMin - db.XMin, db.XMax - mb.XMax,
+                  mb.YMin - db.YMin, db.YMax - mb.YMax,
+                  mb.ZMin - db.ZMin, db.ZMax - mb.ZMax, 0.0)
+        if out > 1e-4:
+            FreeCAD.Console.PrintWarning(
+                f"GDML export: {daughter.Label} extends {out:.4g} mm outside "
+                f"its mother volume {motherName} - Geant4 will report an "
+                f"overlap with the mother volume\n")
+            return
+        if len(ms.Faces) + len(ds.Faces) > 2000 or ds.Volume <= 0:
+            return
+        outside = ds.cut(ms).Volume
+        if outside > 1e-6 * ds.Volume:
+            FreeCAD.Console.PrintWarning(
+                f"GDML export: {outside:.4g} mm^3 of {daughter.Label} is "
+                f"outside its mother volume {motherName} - Geant4 will report "
+                f"an overlap with the mother volume\n")
+    except Exception as e:
+        print(f"warnIfOutsideMother: could not check {daughter.Label}: {e}")
+
+
 def processContainer(vol, xmlParent, psPlacement):
     # vol: a container: a volume that has a solid that contains other volume
     # psPlacement: placement of parent solid. Could be None.
@@ -2539,6 +2574,7 @@ def processContainer(vol, xmlParent, psPlacement):
         # Skip objects suppressed from GDML export (e.g. source replaced by GmshTessellated)
         if not checkExportFlag(obj):
             continue
+        warnIfOutsideMother(objects[0], obj, volName)
         if obj.TypeId == "App::Link":
             print("Process Link")
             if solidPlacement == FreeCAD.Placement():
