@@ -4,8 +4,15 @@ Testing uses the companion repository
 [FreeCAD_GDML_Test_Collection](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection):
 FreeCAD test files, GDML test files, committed baselines (exported GDML and
 centres of gravity), and an automated harness under
-[`autotest/`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.3/autotest)
-(see its README for every option).
+[`autotest/`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.4/autotest)
+(see its README for every option). Each FreeCAD version is tested on its own
+branch of the test repo:
+
+| FreeCAD | test repo branch | results below |
+|---|---|---|
+| 1.1.3 | [`test_FC_1.1.3`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.3) | [FreeCAD 1.1.3](#freecad-113--october-2026) |
+| 1.1.4 | [`test_FC_1.1.4`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.4) | [FreeCAD 1.1.4](#freecad-114--october-2026) |
+| 26.3 | to do | |
 
 ## What is tested
 
@@ -97,7 +104,8 @@ for a `geant4.sh` install).
 ## FreeCAD 1.1.3 — October 2026
 
 macOS 26.1 arm64, FreeCAD 1.1.3 (Python 3.11, OCC 7.8.1), Geant4 11.4.3
-(conda-forge); test repo branch `test_FC_1.1.3`, GDML branch
+(conda-forge); test repo branch
+[`test_FC_1.1.3`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.3), GDML branch
 `fix-export-refs`. A subset was also run on Linux (conda-forge FreeCAD 1.1.3,
 Python 3.14, OCC 7.9.3) with identical results.
 
@@ -141,7 +149,8 @@ Open:
 ## FreeCAD 1.1.4 — October 2026
 
 Same Mac, FreeCAD 1.1.4 (Python 3.11, OCC 7.8.1, as 1.1.3), GDML `Main`
-`3b44c561`, test repo branch `test_FC_1.1.4`, run `fc114`, compared file by
+`3b44c561`, test repo branch
+[`test_FC_1.1.4`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.4), run `fc114`, compared file by
 file with the 1.1.3 run (`fix-refs-all`).
 
 **Same as 1.1.3.** 98/98 files OK, no Report View errors; exported GDML and
