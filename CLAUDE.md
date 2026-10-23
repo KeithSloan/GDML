@@ -25,6 +25,7 @@ All Python lives under `freecad/gdml/`.
 | `GmshUtils.py` | Gmsh tessellation helpers (`GmshTessellate`, `GmshMinTessellate`) |
 | `init_gui.py` | Workbench activation, toolbar/menu registration, `MyObserver` |
 | `GDMLShared.py` | Shared globals (trace, define, printverbose) |
+| `GDMLLog.py` | Export warnings/errors → Report View and `<file>.gdml.log` (`start`/`stop` around an export; `warning`, `error`, `info`) |
 | `Resources/` | Icons, `Default.gdml`, `Geant4Materials.xml`, `NIST_Isotopes.xml`, `ReactorMaterials.xml` |
 
 ---
@@ -110,6 +111,22 @@ The project instructions require that Gmsh be installed for the same Python vers
 ## Export Flag
 
 Every GDMLObject has an `exportFlag` boolean property. When `False` the object (and its sub-tree) is skipped during GDML export. Gmsh tessellation sets this on the source object automatically. Users can also set it manually to exclude objects from export without deleting them.
+
+---
+
+## Export Log and Testing
+
+- Report problems found during export with `GDMLLog.warning()` /
+  `GDMLLog.error()`, not `FreeCAD.Console` or `print`: they reach the Report
+  View **and** `<file>.gdml.log`, which the test harness reads
+  (`OK_WITH_WARNINGS`). Keep it cross-platform: `pathlib`, UTF-8, always
+  `stop()` in a `finally`.
+- Tests live in the separate repo
+  [FreeCAD_GDML_Test_Collection](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection)
+  (`autotest/`), including the Geant4 centre-of-mass comparison. See
+  `TESTING.md` for how to run it and the current results. Test a fix on the
+  affected files first (`AT_ONLY`), then a full run.
+- Fixes go on a branch, not directly on `Main`.
 
 ---
 

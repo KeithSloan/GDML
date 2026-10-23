@@ -214,6 +214,10 @@ Objects that do not map to a GDML primitive are automatically tessellated on exp
 3. Set file type to **GDML**
 4. Give the file a `.gdml` extension
 
+Warnings and errors from the export appear in the Report View and are also
+written to `<file>.gdml.log` beside the exported file (turn off with the GDML
+preference `ExportLogFile`).
+
 ### Materials export/import
 
 Select the **Materials Group** in the tree view and use File → Export to save material definitions as an XML file (use `.xml` extension, not `.gdml`). This file can be imported into another FreeCAD document to transfer material definitions.
@@ -336,6 +340,11 @@ If this workbench contributed to published research, please cite it:
 - [ ] Add facility to edit Materials, Isotopes, and Elements interactively
 - [ ] Add further GDML solid types
 
+**Testing** (see [TESTING.md](TESTING.md)):
+- [x] FreeCAD 1.1.3, with Geant4 centre-of-mass comparison
+- [ ] FreeCAD 1.1.4
+- [ ] FreeCAD 26.3
+
 **Workbench:**
 - [ ] Dialog for setting initial GDML object parameter values
 - [ ] Analyse FreeCAD file to identify objects that convert directly vs. require tessellation
@@ -357,6 +366,17 @@ If this workbench contributed to published research, please cite it:
 **FreeCAD forum:** wmayer · Joel_graff · chrisb · DeepSOIC · ickby · edwilliams16 · looooo · easyw-fc · bernd · vocx · sgrogan · onekk (Carlo D) · OpenBrain · Roy_043 · TheMarkster · jeno
 
 **OpenCASCADE forum:** Sergey Slyadnev · **Stack Overflow:** Daniel Haley
+
+---
+
+## Testing
+
+Every release is tested against the
+[FreeCAD_GDML_Test_Collection](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection):
+each test file is opened, exported to GDML and its centre of mass computed,
+then each export is loaded into Geant4 and the volumes and centres of mass
+are compared with FreeCAD's. How to run it, the FreeCAD 1.1.3 results and the
+open items are in [TESTING.md](TESTING.md).
 
 ---
 
