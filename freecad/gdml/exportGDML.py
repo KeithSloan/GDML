@@ -2489,35 +2489,43 @@ def processVolume(vol, xmlParent, psPlacement):
 
 def warnIfOutsideMother(motherSolid, daughter, motherName):
     # A daughter volume must lie inside its mother's solid, or Geant4
-    # reports "Overlap with mother volume" (GeomVol1002) and stops.
+    # reports "Overlap with mother volume" (GeomVol1002), or, if its
+    # sampling misses it, tracks particles outside the mother.
     # motherSolid and daughter are both children of the container Part,
     # so their shapes are in the same (container) frame.
-    # Bounding boxes catch clear protrusions cheaply; a boolean cut checks
-    # the rest when both shapes are small enough for it to be quick.
+    # Only the daughter's solids count: paths, sketches and other 2D/wire
+    # objects inside it are not exported as volumes.
+    # A bounding-box test finds candidates; a boolean cut confirms them
+    # and measures the volume outside, when the shapes are small enough
+    # for that to be quick.  Larger shapes are reported from the bounding
+    # box alone.
     try:
         ms = motherSolid.Shape
-        ds = Part.getShape(daughter)
-        if ms.isNull() or ds.isNull():
+        dShape = Part.getShape(daughter)
+        if ms.isNull() or dShape.isNull() or not ms.Solids or not dShape.Solids:
             return
+        ds = dShape if len(dShape.Solids) == 1 and dShape.ShapeType == "Solid" \
+            else Part.makeCompound(dShape.Solids)
         mb = ms.BoundBox
         db = ds.BoundBox
         out = max(mb.XMin - db.XMin, db.XMax - mb.XMax,
                   mb.YMin - db.YMin, db.YMax - mb.YMax,
                   mb.ZMin - db.ZMin, db.ZMax - mb.ZMax, 0.0)
-        if out > 1e-4:
-            GDMLLog.warning(
-                f"{daughter.Label} extends {out:.4g} mm outside "
-                f"its mother volume {motherName} - Geant4 will report an "
-                f"overlap with the mother volume")
+        if out <= 1e-4:
             return
-        if len(ms.Faces) + len(ds.Faces) > 2000 or ds.Volume <= 0:
-            return
-        outside = ds.cut(ms).Volume
-        if outside > 1e-6 * ds.Volume:
+        if len(ms.Faces) + len(ds.Faces) > 2000:
             GDMLLog.warning(
-                f"{outside:.4g} mm^3 of {daughter.Label} is "
-                f"outside its mother volume {motherName} - Geant4 will report "
+                f"{daughter.Label} extends {out:.4g} mm outside its mother "
+                f"volume {motherName} (bounding boxes) - Geant4 will report "
                 f"an overlap with the mother volume")
+            return
+        dVol = sum(s.Volume for s in ds.Solids)
+        outside = ds.cut(ms).Volume
+        if dVol > 0 and outside > 1e-6 * dVol:
+            GDMLLog.warning(
+                f"{daughter.Label} extends {out:.4g} mm outside its mother "
+                f"volume {motherName} ({outside:.4g} mm^3 outside) - Geant4 "
+                f"will report an overlap with the mother volume")
     except Exception as e:
         print(f"warnIfOutsideMother: could not check {daughter.Label}: {e}")
 
