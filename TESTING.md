@@ -138,11 +138,43 @@ Open:
 - Smaller differences (1–3 %) on tessellated / Monte Carlo cases are probably
   within noise; tolerances may need loosening.
 
+## FreeCAD 1.1.4 — October 2026
+
+Same Mac, FreeCAD 1.1.4 (Python 3.11, OCC 7.8.1, as 1.1.3), GDML `Main`
+`3b44c561`, test repo branch `test_FC_1.1.4`, run `fc114`, compared file by
+file with the 1.1.3 run (`fix-refs-all`).
+
+**Same as 1.1.3.** 98/98 files OK, no Report View errors; exported GDML and
+COGs byte-identical to 1.1.3 except `COG_Expanded_simple_array` (test file
+and COG script changed in between) and last-digit float noise in
+`extrudedParabola-2`. Geant4: 49 MATCH, 24 DIFF, 7 not compared, no file
+changed status.
+
+**New warnings (from the overlap check, not from 1.1.4):** five files were
+`OK_WITH_WARNINGS`. The check was then tightened (branch
+`fix-overlap-check`: daughter solids only, confirmed by a boolean cut), which
+removed two false warnings (`PathArray2`, where a 2D path was counted as a
+daughter, and bounding-box slack on `scaledTube.gdml`). The remaining ones
+are real:
+
+| file | warning | confirmed by |
+|---|---|---|
+| `PathArray` | `Part` 6.4 mm outside the world (25 mm³) | exported world 26×26×31.2 mm; array reaches z = 22 |
+| `array-of-array-of-solid` | `Part001` 105 mm outside the world (24 320 mm³) | world ±50 mm; array reaches 155 mm |
+| `assembly.gdml` (round trip) | `AssemblyVol` 137.5 mm outside `World` | Geant4: protrusion 13.749 cm, also in the original file |
+
+Geant4 loads `PathArray` and `array-of-array-of-solid` without reporting the
+overlap: its check samples surface points and misses these multiUnions, so
+the warning is the only signal. Their world boxes need enlarging in the test
+files. `assembly.gdml` and `scaledTube.gdml` (sibling overlaps) have the
+overlaps in the original files, so the round trip is faithful.
+
 ## TODO
 
-- [ ] **FreeCAD 1.1.4**: full run, Geant4 comparison, compare with 1.1.3.
+- [x] **FreeCAD 1.1.4**: full run, Geant4 comparison, compare with 1.1.3.
 - [ ] **FreeCAD 26.3** (rc2 now, then release): full run and Geant4
-      comparison, after 1.1.4.
+      comparison.
+- [ ] Enlarge the world boxes of `PathArray` and `array-of-array-of-solid`.
 - [ ] Export log on Windows (written to be portable; not yet run there).
 - [ ] Resolve the open items above; refresh the committed baselines once the
       exports are confirmed against Geant4.

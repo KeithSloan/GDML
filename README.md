@@ -342,7 +342,7 @@ If this workbench contributed to published research, please cite it:
 
 **Testing** (see [TESTING.md](TESTING.md)):
 - [x] FreeCAD 1.1.3, with Geant4 centre-of-mass comparison
-- [ ] FreeCAD 1.1.4
+- [x] FreeCAD 1.1.4
 - [ ] FreeCAD 26.3
 
 **Workbench:**
