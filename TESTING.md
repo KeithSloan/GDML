@@ -12,7 +12,7 @@ branch of the test repo:
 |---|---|---|
 | 1.1.3 | [`test_FC_1.1.3`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.3) | [FreeCAD 1.1.3](#freecad-113--october-2026) |
 | 1.1.4 | [`test_FC_1.1.4`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.4) | [FreeCAD 1.1.4](#freecad-114--october-2026) |
-| 26.3 | to do | |
+| 26.3rc2 | [`test_FC_26.3rc`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_26.3rc) | [FreeCAD 26.3rc2](#freecad-263rc2--november-2026) |
 
 ## What is tested
 
@@ -178,11 +178,40 @@ the warning is the only signal. Their world boxes need enlarging in the test
 files. `assembly.gdml` and `scaledTube.gdml` (sibling overlaps) have the
 overlaps in the original files, so the round trip is faithful.
 
+## FreeCAD 26.3rc2 — November 2026
+
+Same Mac, FreeCAD 26.3.0rc2 (Python 3.13.15, OCC 8.0.1), GDML `Main`
+`ff23b2bf` (with `fix-overlap-check`), test repo branch
+[`test_FC_26.3rc`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_26.3rc),
+run `fc263rc2-b`, compared file by file with 1.1.4 on the same GDML commit
+(run `overlap-main-fc114`).
+
+**Same as 1.1.4 apart from the items below.** 98 files tested: 95 OK, 2
+`OK_WITH_WARNINGS` (`PathArray`, `array-of-array-of-solid`, the real overlaps
+listed under 1.1.4), and the `assembly.gdml` round trip still warns about its
+overlap. Geant4: 73 load OK, 1 abort (`COG_Expanded_simple_array`), 6 checker
+crashes (`mirrorTest-*`, `Target-Unmeshed`), the same files as 1.1.4;
+49 MATCH, 24 DIFF, 7 not compared.
+
+Differences from 1.1.4:
+
+| file | difference | cause |
+|---|---|---|
+| `assembly.gdml` | `CONSOLE_ERRORS`: `SyntaxWarning: invalid escape sequence '\['` | `preProcessLoops.py` regex not a raw string; Python 3.13 warns (3.11 did not). Fixed on branch `fix-py313-escape`; it is the only such line in the workbench. Charged to the first file that loads the module. |
+| `extrudedParabola-2` | FreeCAD volume 3.11 → 2.98 cm³ (−4 %); Geant4 difference 1.6 % → 2.7 % | exported GDML unchanged, so FreeCAD's own shape changed (OCC 8.0). Geant4's volume lies between the two. To investigate before 26.3 final. |
+| `Sweep`, `InvoluteGear`, `duplicated_nuts`, `extrudeAllShapes` | exported tessellation / B-spline points differ | OCC 8.0 meshing; Geant4 status unchanged |
+| several COGs | `-0.00` vs `0.00` | rounding |
+
+Setup notes for 26.3: its user `Mod/GDML` symlink pointed at an old checkout
+(`~/Documents/GDML`) and Fasteners / Gears were not installed; both fixed
+before this run. `autotest/check_setup.sh` shows both.
+
 ## TODO
 
 - [x] **FreeCAD 1.1.4**: full run, Geant4 comparison, compare with 1.1.3.
-- [ ] **FreeCAD 26.3** (rc2 now, then release): full run and Geant4
-      comparison.
+- [x] **FreeCAD 26.3rc2**: full run, Geant4 comparison, compare with 1.1.4.
+- [ ] **FreeCAD 26.3** release: rerun when it ships.
+- [ ] `extrudedParabola-2`: FreeCAD 26.3 volume change (OCC 8.0).
 - [ ] Enlarge the world boxes of `PathArray` and `array-of-array-of-solid`.
 - [ ] Export log on Windows (written to be portable; not yet run there).
 - [ ] Resolve the open items above; refresh the committed baselines once the

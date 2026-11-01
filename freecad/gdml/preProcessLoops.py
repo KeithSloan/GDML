@@ -76,7 +76,7 @@ def processLoop(loopElement):
         if element.attrib is None:
             # print(f'{element.tag} has no attributes - no substituions')
             return
-        pattern = "\[ *"+var+" *\]"
+        pattern = r"\[ *" + var + r" *\]"
         for key, value in element.items():
             if len(re.findall(pattern, value)):
                 value = re.sub(pattern, f'_{str(i)}_', value)
