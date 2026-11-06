@@ -1089,10 +1089,95 @@ class AddMaterial(QtGui.QDialog):
         isotopesGrp = FreeCAD.ActiveDocument.Isotopes
         processIsotopes(isotopesGrp, mats_xml, isotopelist=iotopeList)
 
+
+# Children of a logical volume (App::Part) that never carry a material:
+# child volumes / physvols have their own, the rest are not solids.
+_NO_MATERIAL_TYPES = {
+    "App::Origin",
+    "App::Part",
+    "App::Link",
+    "App::DocumentObjectGroup",
+    "Sketcher::SketchObject",
+}
+
+
+def _materialHolder(obj):
+    # The object whose 'material' the exporter reads for obj.
+    # Mirrors exportGDML.getMaterial: own property, else boolean Base,
+    # else Objects[0], else obj itself (the property gets added to it).
+    for _ in range(50):  # guard against link cycles
+        if hasattr(obj, "material"):
+            return obj
+        if hasattr(obj, "Tool") or hasattr(obj, "Base"):
+            nxt = getattr(obj, "Base", None)
+        elif getattr(obj, "Objects", None):
+            nxt = obj.Objects[0]
+        else:
+            return obj
+        if not isinstance(nxt, FreeCAD.DocumentObject):
+            return obj
+        obj = nxt
+    return obj
+
+
+def _volumeSolids(part):
+    # Top-level shapes directly in a logical volume - the same children
+    # exportGDML.buildDocTree() walks (claimChildren, else Group).
+    kids = []
+    vo = getattr(part, "ViewObject", None)
+    if vo is not None:
+        try:
+            kids = vo.claimChildren() or []
+        except Exception:
+            kids = []
+    if not kids:
+        # No GUI: Group holds boolean Base/Tool too - keep only the roots,
+        # as claimChildren() does
+        group = getattr(part, "Group", []) or []
+        inner = {o for g in group for o in g.OutList}
+        kids = [g for g in group if g not in inner]
+    return [
+        k
+        for k in kids
+        if k is not None
+        and k.TypeId not in _NO_MATERIAL_TYPES
+        and (hasattr(k, "Shape") or hasattr(k, "Mesh"))
+    ]
+
+
+def _resolveMaterialTargets(objs):
+    # Issue #182: a GDML logical volume (App::Part) has no material of its
+    # own - its <volume> takes <materialref> from its solid.  App::Part also
+    # answers hasattr(obj, "Shape") (FreeCAD's Part.getShape hook), so Set
+    # Material used to add a 'material' property to the LV that the
+    # exporter never reads.  Redirect volumes to their solid(s).
+    # Returns (targets, volumes): objects to set, App::Parts resolved.
+    targets = []
+    volumes = []
+    for obj in objs:
+        if obj.TypeId == "App::Link":
+            linked = obj.getLinkedObject(True)
+            if linked is not None and linked.TypeId == "App::Part":
+                obj = linked
+        if obj.TypeId == "App::Part":
+            if obj not in volumes:
+                volumes.append(obj)
+            found = [_materialHolder(s) for s in _volumeSolids(obj)]
+        else:
+            found = [obj]
+        for t in found:
+            if t not in targets:
+                targets.append(t)
+    return targets, volumes
+
+
 class GDMLSetMaterial(QtGui.QDialog):
     def __init__(self, selList):
         super(GDMLSetMaterial, self).__init__()
         self.SelList = selList
+        self.Targets, self.Volumes = _resolveMaterialTargets(
+            [s.Object for s in selList]
+        )
         self.initUI()
 
 
@@ -1137,7 +1222,9 @@ class GDMLSetMaterial(QtGui.QDialog):
         mainLayout.addItem(combosLayout)
         mainLayout.addWidget(self.buttonSet)
         self.setLayout(mainLayout)
-        obj = self.SelList[0].Object
+        # Pre-fill from the object that will actually be changed
+        # (for a logical volume that is its solid, not the App::Part)
+        obj = self.Targets[0] if self.Targets else self.SelList[0].Object
         if hasattr(obj, "material"):
             mat = obj.material
             self.lineedit.setText(mat)
@@ -1156,6 +1243,10 @@ class GDMLSetMaterial(QtGui.QDialog):
                 self.materialComboBox.blockSignals(True)
                 self.materialComboBox.setCurrentText(text)
                 self.materialComboBox.blockSignals(False)
+                # groupChanged() put the group's FIRST material in the line
+                # edit (e.g. G4_H) - restore the one actually chosen, else
+                # pressing Set applies the wrong material.
+                self.lineedit.setText(text)
 
     def completionActivated(self, text):
         self.setMaterial(text)
@@ -1184,24 +1275,39 @@ class GDMLSetMaterial(QtGui.QDialog):
             return
 
         print(f"Set Material {mat}")
-        for sel in self.SelList:
-            obj = sel.Object
-            if hasattr(obj, "material"):
-                #  May have an invalid enumeration from previous versions
-                try:
-                    obj.material = self.matList
-                    obj.material = mat
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction("Set Material")
+        try:
+            for obj in self.Targets:
+                self.setObjMaterial(obj, mat)
+            # Drop the dead 'material' an earlier Set Material added to a
+            # logical volume (#182): export ignores it, so it only misleads.
+            # App::Part's own 'Material' (capital M) is a different property.
+            for vol in self.Volumes:
+                if "material" in vol.PropertiesList:
+                    vol.removeProperty("material")
+                    print(f"Removed unused 'material' from {vol.Label}")
+        finally:
+            doc.commitTransaction()
 
-                except ValueError:
-                    print(f"Value Error {mat}")
-                    pass
-
-            else:
-                obj.addProperty(
-                    "App::PropertyEnumeration", "material", "GDML", "Material"
-                )
+    def setObjMaterial(self, obj, mat):
+        if hasattr(obj, "material"):
+            #  May have an invalid enumeration from previous versions
+            try:
                 obj.material = self.matList
-                obj.material = self.matList.index(mat)
+                obj.material = mat
+
+            except ValueError:
+                print(f"Value Error {mat} for {obj.Label}")
+                return
+
+        else:
+            obj.addProperty(
+                "App::PropertyEnumeration", "material", "GDML", "Material"
+            )
+            obj.material = self.matList
+            obj.material = self.matList.index(mat)
+        print(f"  {obj.Label} : {mat}")
 
 
 class GDMLScale(QtGui.QDialog):
@@ -1442,6 +1548,13 @@ class SetMaterialFeature:
                 cnt += 1
                 set.append(s)
         if cnt > 0:
+            targets, _ = _resolveMaterialTargets([s.Object for s in set])
+            if not targets:
+                FreeCAD.Console.PrintWarning(
+                    "Set Material: no solid found in the selected volume(s); "
+                    "select the volume (LV) or its solid\n"
+                )
+                return
             dialog = GDMLSetMaterial(set)
             dialog.exec_()
         return
