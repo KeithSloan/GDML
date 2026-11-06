@@ -3363,6 +3363,14 @@ class Mesh2TessDialog(QtGui.QDialog):
                 # export (the exporter reads fp.Shape). Matches the
                 # TessellateFeature / Gmsh paths.
                 m2t.Proxy.createGeometry(m2t)
+                # Suppress the source mesh from GDML export - the tessellated
+                # solid replaces it (as the Gmsh paths do). Otherwise it is
+                # exported as an extra volume with the default material,
+                # named LV_<label> like the new volume.
+                if not hasattr(obj, "exportFlag"):
+                    obj.addProperty("App::PropertyBool", "exportFlag",
+                                    "Base", "Export to GDML")
+                obj.exportFlag = False
                 if FreeCAD.GuiUp:
                     obj.ViewObject.Visibility = False
                     # print(dir(obj.ViewObject))
