@@ -1539,6 +1539,94 @@ def _fixMissingIsotopes():
         print(f"[GDML export] {inserted} missing isotope definition(s) added.")
 
 
+_g4_element_cache = None
+
+
+def _getG4ElementMap():
+    """Parse Resources/Geant4Materials.xml once: element name -> ET.Element."""
+    global _g4_element_cache
+    if _g4_element_cache is not None:
+        return _g4_element_cache
+    _g4_element_cache = {}
+    try:
+        from .init_gui import joinDir
+        tree = ET.parse(joinDir("Resources/Geant4Materials.xml"))
+        for elem in tree.getroot().iter("element"):
+            name = elem.get("name")
+            if name:
+                _g4_element_cache[name] = elem
+    except Exception as exc:
+        print(f"[GDML export] WARNING: could not load Geant4Materials.xml: "
+              f"{exc}")
+    return _g4_element_cache
+
+
+def _fixMissingElements():
+    """Post-export pass: add <element> definitions that materials reference
+    (through <composite> or <fraction>) but that were never written.
+
+    Materials made from a chemical formula, and mixtures that use element
+    symbols, refer to the predefined Geant4 elements ("H_element",
+    "C_element", ...).  Those live in Materials/Geant4/G4Elements, which
+    createMaterials() skips, so the GDML file referred to elements it never
+    defined and Geant4 stopped with "Referenced element ... was not found".
+    G4_* materials written by postCreateGeantMaterials() (G4_WATER refers to
+    H_element and O_element) had the same gap.
+
+    Sources, in order: GDMLelement objects in the document, then
+    Resources/Geant4Materials.xml.  Definitions are inserted before the first
+    <material> so they come before their first use.  G4_* references are
+    left alone - Geant4 builds those from its NIST database.  Run before
+    _fixMissingIsotopes() so isotopes used by added elements are filled in.
+    """
+    global materials
+    import copy
+
+    defined = {
+        c.get("name") for c in materials
+        if c.tag in ("isotope", "element", "material")
+    }
+    missing = []
+    for mat in materials.findall("material"):
+        for child in mat:
+            if child.tag in ("composite", "fraction"):
+                ref = child.get("ref")
+                if (ref and ref not in defined and ref not in missing
+                        and not ref.startswith("G4_")):
+                    missing.append(ref)
+    if not missing:
+        return
+
+    print(f"[GDML export] Elements referenced by materials but not defined: "
+          f"{missing}")
+    docElements = {}
+    for obj in FreeCAD.ActiveDocument.Objects:
+        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, GDMLelement):
+            docElements.setdefault(nameFromLabel(obj.Label), obj)
+    g4Elements = _getG4ElementMap()
+
+    children = list(materials)
+    insertAt = next(
+        (i for i, c in enumerate(children) if c.tag == "material"),
+        len(children),
+    )
+    for name in missing:
+        if name in docElements:
+            elemXML = _buildElementXML(docElements[name])
+        elif name in g4Elements:
+            elemXML = copy.deepcopy(g4Elements[name])
+        else:
+            GDMLLog.warning(
+                f"Material component '{name}' is referenced but not defined "
+                "in the document or Geant4Materials.xml - Geant4 will not "
+                "be able to load this file"
+            )
+            continue
+        materials.insert(insertAt, elemXML)
+        insertAt += 1
+        print(f"[GDML export]   Inserted missing element: {name}")
+
+
 def processMaterials():
     print("\nProcess Materials")
     global materials
@@ -1826,17 +1914,21 @@ def createElements(group):
         createElement(obj)
 
 
-def createElement(obj):
-    global materials
-    item = ET.SubElement(
-        materials, "element", {"name": nameFromLabel(obj.Label)}
-    )
+def _buildElementXML(obj):
+    """<element> XML for a GDMLelement document object (not attached)."""
+    item = ET.Element("element", {"name": nameFromLabel(obj.Label)})
     # Common code Isotope and Elements1
     processIsotope(obj, item)
 
     if len(obj.Group) > 0:
         for o in obj.Group:
             processFractionsComposites(o, item)
+    return item
+
+
+def createElement(obj):
+    global materials
+    materials.append(_buildElementXML(obj))
 
 
 def createConstants(group):
@@ -3067,6 +3159,9 @@ def exportGDML(first, filepath, fileExt):
     # fully populated, and before _fixMissingIsotopes so isotope gaps are
     # caught in the same post-pass.
     postCreateReactorMaterials()
+    # Add elements that materials reference but that were never written
+    # (formula materials, element-symbol mixtures, exported G4_* materials).
+    _fixMissingElements()
     # Single post-pass: fill any isotope definitions missing from elements.
     _fixMissingIsotopes()
     processOpticals()
