@@ -1707,3 +1707,33 @@ def quad(v1, v2, v3, v4):
     except:
         # Non-planar quad — caller counts and reports the total
         return None
+
+
+_workbenchVersion = None
+
+
+def workbenchVersion():
+    """GDML workbench release version from package.xml (e.g. "2.2.13"),
+    or "unknown".  Read once per session.  Printed next to the importGDML /
+    exportGDML banners so a pasted Report View or .gdml.log shows exactly
+    which release produced it.  The module banner numbers are stepped
+    separately, only when that module changes."""
+    global _workbenchVersion
+    if _workbenchVersion is None:
+        import os
+        import xml.etree.ElementTree as ET
+
+        _workbenchVersion = "unknown"
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "..",
+            "package.xml",
+        )
+        try:
+            for elem in ET.parse(path).getroot():
+                # tags carry the package.xml namespace: "{...}version"
+                if elem.tag.rsplit("}", 1)[-1] == "version":
+                    _workbenchVersion = (elem.text or "").strip() or "unknown"
+                    break
+        except Exception:
+            pass
+    return _workbenchVersion

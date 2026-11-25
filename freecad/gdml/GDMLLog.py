@@ -123,9 +123,15 @@ def start(exportPath):
     if _fileHandler is None:
         return None
     _logger.addHandler(_fileHandler)
+    try:
+        from .GDMLShared import workbenchVersion
+        wb = workbenchVersion()
+    except Exception:
+        wb = "unknown"
     _logger.info(f"GDML export of {Path(exportPath).name} "
                  f"started {datetime.datetime.now().isoformat(timespec='seconds')}, "
-                 f"FreeCAD {'.'.join(FreeCAD.Version()[:3])}")
+                 f"FreeCAD {'.'.join(FreeCAD.Version()[:3])}, "
+                 f"GDML workbench {wb}")
     return _logPath
 
 
