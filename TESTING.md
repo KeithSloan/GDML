@@ -12,6 +12,7 @@ branch of the test repo:
 |---|---|---|
 | 1.1.3 | [`test_FC_1.1.3`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.3) | [FreeCAD 1.1.3](#freecad-113--october-2026) |
 | 1.1.4 | [`test_FC_1.1.4`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_FC_1.1.4) | [FreeCAD 1.1.4](#freecad-114--october-2026) |
+| 1.1.4, GDML 2.2.13 | [`test_GDML_2.2.13`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_GDML_2.2.13) | [GDML 2.2.13](#gdml-2213-on-freecad-114--november-2026) |
 | 26.3 | to do | |
 
 ## What is tested
@@ -178,9 +179,49 @@ the warning is the only signal. Their world boxes need enlarging in the test
 files. `assembly.gdml` and `scaledTube.gdml` (sibling overlaps) have the
 overlaps in the original files, so the round trip is faithful.
 
+## GDML 2.2.13 on FreeCAD 1.1.4 — November 2026
+
+A regression run for the GDML changes since 1 November, on the same Mac and
+FreeCAD 1.1.4 as above: GDML Main `cc28775f` (2.2.13), test repo branch
+[`test_GDML_2.2.13`](https://github.com/KeithSloan/FreeCAD_GDML_Test_Collection/tree/test_GDML_2.2.13)
+(from `test_FC_1.1.4`), run `gdml-2.2.13`, compared file by file with the
+1 November run `overlap-main-fc114` (GDML Main `ff23b2bf`). Changes covered:
+Fix #182 and Mesh 2 Tess (2.2.9); debug log off by default and `execute` no
+longer skipping every 6th recompute (2.2.10); the scripting API (2.2.11);
+Cone command angle unit, zplane/rzpoint view providers and element
+definitions for formula materials (2.2.12); import/export banners (2.2.13).
+
+**FreeCAD side: unchanged.** 98/98 files OK. Against 1 November: COGs 80/80
+byte-identical, exported GDML 79/80 identical (`extrudedParabola-2`
+differs by 6×10⁻¹⁴ mm), round trips 18/18 identical, and the same three
+overlap warnings (`PathArray`, `array-of-array-of-solid`, `assembly.gdml`).
+
+22 files first came out `OK_WITH_DIALOGS`, every one FreeCAD's *Document
+Recovery* box: another FreeCAD was open when the run started
+(`run_versions.sh` warns about this). Re-run with no other FreeCAD open
+(run `gdml-2.2.13-recheck`, GDML 2.2.14): no dialogs.
+
+**Geant4: unchanged.** 49 MATCH, 24 DIFF, 7 not compared; the same 7 files
+rejected as before (`mirrorTest-*`, `Target-Unmeshed`,
+`COG_Expanded_simple_array`).
+
+**Scripting API self-test** (`freecad/gdml/tests/ai_functions/smoke_test.py`),
+run in the same FreeCAD through the FreeCAD MCP server:
+
+- It found two bugs in the new API, fixed in 2.2.14: `makePolyhedra` /
+  `makeGenericPolyhedra` did not add the group extension their classes need,
+  and `makeTessellated` passed unhashable `FreeCAD.Vector` vertices. With
+  them fixed: 57/57 checks pass.
+- Its export defines `C_element` and `H_element` for a material made from a
+  formula (the 2.2.12 fix), and Geant4 loads it.
+- Geant4 reported 22 overlap warnings because the self-test put most of its
+  solids at the origin; it now places them 50 mm apart (2.2.15).
+
 ## TODO
 
 - [x] **FreeCAD 1.1.4**: full run, Geant4 comparison, compare with 1.1.3.
+- [x] **GDML 2.2.13** on FreeCAD 1.1.4: full run, Geant4 comparison, compare
+      with 1 November; scripting API self-test.
 - [ ] **FreeCAD 26.3** (rc2 now, then release): full run and Geant4
       comparison.
 - [ ] Enlarge the world boxes of `PathArray` and `array-of-array-of-solid`.
