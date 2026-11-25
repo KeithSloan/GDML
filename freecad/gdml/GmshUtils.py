@@ -175,7 +175,11 @@ def initialize():
     gmsh.option.setNumber("Mesh.MaxNumThreads2D", threads)
     gmsh.option.setNumber("Mesh.MaxNumThreads3D", threads)
     gmsh.option.setString("Geometry.OCCTargetUnit", "mm")
-    gmsh.option.setString("General.ErrorFileName", "/tmp/error.log")
+    import tempfile
+    gmsh.option.setString(
+        "General.ErrorFileName",
+        os.path.join(tempfile.gettempdir(), "gdml_gmsh_error.log"),
+    )
     gmsh.option.setNumber("General.Terminal", 1)
     # These are overridden per-object by the dialog / meshObject() call.
     # Set large sentinel values so they never silently constrain the mesh

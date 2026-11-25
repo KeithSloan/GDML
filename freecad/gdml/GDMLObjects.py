@@ -34,6 +34,8 @@ from operator import indexOf
 
 import FreeCAD, FreeCADGui, Part
 import math
+import os
+import tempfile
 from . import GDMLShared
 
 # Global Material List
@@ -490,14 +492,28 @@ class GDMLsolid:
         fp.Shape = fp.Shape.transformGeometry(mat)
         fp.purgeTouched()
 
+    # Diagnostic trace used while chasing recompute hangs.  OFF by default.
+    # To enable, set the environment variable GDML_DEBUG_LOG=1 before
+    # starting FreeCAD; lines are appended to gdml_loop.log in the system
+    # temp directory (tempfile.gettempdir(), so it also works on Windows).
+    # Previously this opened /tmp/gdml_loop.log on every execute and
+    # mustExecute call of every GDML solid, growing the file without limit
+    # (and failing on every call where /tmp does not exist, e.g. Windows).
+    _logPath = (
+        os.path.join(tempfile.gettempdir(), "gdml_loop.log")
+        if os.environ.get("GDML_DEBUG_LOG")
+        else None
+    )
+
     @staticmethod
     def _log(msg):
-        """Write a timestamped line to /tmp/gdml_loop.log (survives UI freeze)."""
-        import time, traceback as _tb
+        """Append a timestamped line to the debug log, if enabled."""
+        if GDMLsolid._logPath is None:
+            return
+        import time
         try:
-            with open('/tmp/gdml_loop.log', 'a') as _f:
+            with open(GDMLsolid._logPath, "a") as _f:
                 _f.write(f"{time.strftime('%H:%M:%S')} {msg}\n")
-                _f.flush()
         except Exception:
             pass
 
@@ -529,8 +545,7 @@ class GDMLsolid:
             self._in_execute = False
 
     def mustExecute(self, fp=None):
-        name = fp.Name if fp else '?'
-        GDMLsolid._log(f"mustExecute {self.__class__.__name__} {name} → False")
+        # Called for every object on every recompute - keep it free of I/O.
         return False
 
     def __getstate__(self):
