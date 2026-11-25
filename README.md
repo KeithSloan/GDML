@@ -251,6 +251,49 @@ See [`Documentation/Shapes2GDML.md`](Documentation/Shapes2GDML.md) for the
 recovery pipeline, the tessellate-vs-boolean trade-offs, accuracy notes, and
 current limitations.
 
+## Scripting API (Experimental)
+
+> **Experimental.** New and not yet widely tested — please report problems
+> as a GitHub issue, with your FreeCAD version and operating system.
+
+`freecad.gdml.GDMLDesign` builds GDML geometry from Python: the FreeCAD
+Python console, a macro, or an AI assistant driving FreeCAD (for example
+through an MCP server). Every call checks its input and raises an error
+saying what to do instead — an unknown material, for example, lists the
+closest matches rather than silently substituting another.
+
+```python
+from freecad.gdml import GDMLDesign as gd
+
+gd.newDocument("Demo")
+shield = gd.makeBox(100, 100, 50, material="G4_Pb", name="Shield")
+hole = gd.makeTube(0, 5, 60, material="G4_Pb")
+gd.makeSubtraction(shield, hole)          # hole keeps its placement
+det = gd.makeTube(0, 20, 10, material="G4_SODIUM_IODIDE", name="Detector",
+                  position=(0, 0, 100))
+gd.setSensitive(det, "DetSD")
+print(gd.designTree())                     # text outline of what was built
+gd.exportGDML("~/demo.gdml")               # grows the world box to fit
+```
+
+- Every GDML solid type has a `make*` function; each solid goes in its own
+  logical volume, placed in the world or in the `parent=` volume.
+- Also: `listMaterials`, `addMaterial` (formula or mixture),
+  `assignMaterial`, `makeUnion` / `makeIntersection`, `makeAssembly`,
+  `placeCopy` (another physvol of a volume), `describe`, `fitWorld`.
+- `print(gd.apiSummary())` lists every function; `help(gd.makeCone)` shows
+  the parameters, which follow the GDML element of the same name.
+
+**Trying it out** — after installing or updating the workbench with the
+Addon Manager, paste this into the FreeCAD Python console (View → Panels →
+Python console). It runs a self-test that builds every solid type, a
+boolean and an assembly with copies, exports a GDML file to your temp
+folder and prints PASS/FAIL lines:
+
+```python
+import os, freecad.gdml as g; exec(open(os.path.join(os.path.dirname(g.__file__), "tests", "ai_functions", "smoke_test.py")).read())
+```
+
 ## Materials Architecture
 
 The workbench maintains a structured hierarchy of material groups in each document:

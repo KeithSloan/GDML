@@ -42,7 +42,7 @@ Quick start::
     gd.makeSubtraction(block, hole)             # hole keeps its placement
 
     print(gd.designTree())
-    gd.exportGDML("/tmp/calorimeter.gdml")       # grows world to fit
+    gd.exportGDML("~/calorimeter.gdml")          # grows world to fit
 
 Conventions:
   * Solid dimensions follow the GDML element of the same name (box x/y/z are

@@ -1,14 +1,17 @@
 """Smoke test for the GDMLDesign scripting API (branch AI_Functions).
 
 Run inside FreeCAD with the GUI (Python console, a macro, or the FreeCAD
-MCP execute_code tool):
+MCP execute_code tool).  This line works wherever the workbench is
+installed (Addon Manager or git):
 
-    exec(open("<repo>/freecad/gdml/tests/ai_functions/smoke_test.py").read())
+    import os, freecad.gdml as g; exec(open(os.path.join(os.path.dirname(g.__file__), "tests", "ai_functions", "smoke_test.py")).read())
 
 It builds a small design using every kind of call, checks the results,
-exports /tmp/ai_functions_smoke.gdml and prints PASS/FAIL lines.
+exports ai_functions_smoke.gdml to the system temp folder and prints
+PASS/FAIL lines.
 """
 import os
+import tempfile
 
 from freecad.gdml import GDMLDesign as gd
 
@@ -142,7 +145,8 @@ check("boolean material via base", gd.describe(block)["material"] == "G4_Pb")
 tree = gd.designTree()
 print(tree)
 check("tree lists copies", "Crystal_copy2 = copy of Crystal" in tree)
-path = gd.exportGDML("/tmp/ai_functions_smoke.gdml")
+path = gd.exportGDML(os.path.join(tempfile.gettempdir(),
+                                  "ai_functions_smoke.gdml"))
 text = open(path).read()
 check("export written", os.path.getsize(path) > 0)
 for tag in ("<box", "<cone", "<subtraction", "<assembly", "SensDet",
@@ -152,3 +156,4 @@ wx = gd.describe(world)["solid"]["params"]["x"]
 check("world grown to fit", wx > 100)
 
 print(f"\n{results.count(True)} passed, {results.count(False)} failed")
+print(f"GDML written to {path}")

@@ -26,6 +26,7 @@ All Python lives under `freecad/gdml/`.
 | `init_gui.py` | Workbench activation, toolbar/menu registration, `MyObserver` |
 | `GDMLShared.py` | Shared globals (trace, define, printverbose) |
 | `GDMLLog.py` | Export warnings/errors → Report View and `<file>.gdml.log` (`start`/`stop` around an export; `warning`, `error`, `info`) |
+| `GDMLDesign.py` | Scripting API for building geometry from Python / AI tools (`newDocument`, `make*`, booleans, `placeCopy`, materials, `designTree`, `exportGDML`). Use it rather than creating PartFeatures by hand; `apiSummary()` lists it. The `make*` functions live at the end of `GDMLObjects.py`. Self-test: `tests/ai_functions/smoke_test.py` |
 | `Resources/` | Icons, `Default.gdml`, `Geant4Materials.xml`, `NIST_Isotopes.xml`, `ReactorMaterials.xml` |
 
 ---
