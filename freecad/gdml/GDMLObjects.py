@@ -518,21 +518,11 @@ class GDMLsolid:
             pass
 
     def execute(self, fp):
-        cls = self.__class__.__name__
-        count = getattr(self.__class__, '_exec_count', {})
-        key = fp.Name
-        count[key] = count.get(key, 0) + 1
-        self.__class__._exec_count = count
-        GDMLsolid._log(f"execute #{count[key]} {cls} {fp.Label}")
-        if count[key] > 5:
-            import traceback
-            import io
-            buf = io.StringIO()
-            traceback.print_stack(file=buf, limit=8)
-            GDMLsolid._log(f"  LOOP on {fp.Label}:\n{buf.getvalue()}")
-            fp.purgeTouched()
-            count[key] = 0
-            return
+        # The per-class execute counter that used to sit here never reset
+        # after a normal run, so every 6th recompute of each solid skipped
+        # createGeometry() without any message (keyed by fp.Name, so it was
+        # also shared between documents).  Only the re-entry guard is kept.
+        GDMLsolid._log(f"execute {self.__class__.__name__} {fp.Label}")
         if getattr(self, '_in_execute', False):
             GDMLsolid._log(f"  re-entry blocked {fp.Label}")
             fp.purgeTouched()
