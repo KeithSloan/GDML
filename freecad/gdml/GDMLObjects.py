@@ -6481,6 +6481,13 @@ def _build(typeName, defaultName, material, colour, lunit, aunit,
         # exportGDML strips the leading "GDMLxxx_" so the solid is exported
         # as "<volume>_solid" - solid and volume names stay distinct.
         obj.Label = f"{typeName}_{vol.Label}_solid"
+        if children:
+            # Solids built from child objects (zplanes, rzpoints, 2D vertices,
+            # sections) need the group extension.  GDMLPolycone,
+            # GDMLGenericPolycone and GDMLXtru add it in __init__;
+            # GDMLPolyhedra and GDMLGenericPolyhedra do not, so add it here
+            # first, exactly as importGDML does before creating them.
+            obj.addExtension("App::GroupExtensionPython")
         init(obj, material, colour)
         if children:
             _addChildren(obj, children)
@@ -6902,7 +6909,11 @@ def makeTessellated(vertices, facets, lunit="mm", material=None,
                     rotation=None, doc=None):
     """GDML <tessellated>: vertices list of (x, y, z); facets list of
     vertex-index triples or quads, counter-clockwise seen from outside."""
-    verts = [_vec(v) for v in vertices]
+    # Plain (x, y, z) tuples, as importGDML passes: GDMLSampledTessellated
+    # puts vertices in a set, and FreeCAD.Vector is not hashable.
+    verts = [tuple(float(c) for c in v) for v in vertices]
+    if any(len(v) != 3 for v in verts):
+        raise ValueError("each vertex must be (x, y, z)")
     faces = [tuple(int(i) for i in f) for f in facets]
     for f in faces:
         if len(f) not in (3, 4) or max(f) >= len(verts) or min(f) < 0:
