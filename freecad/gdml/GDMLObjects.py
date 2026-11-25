@@ -400,7 +400,7 @@ def colourMaterial(m):
         return (0.5, 0.5, 0.5, 0.0)
     else:
         if m is None:
-            return (0.5, 0.5, 0.5, 0, 0)
+            return (0.5, 0.5, 0.5, 0.0)
         elif len(MaterialsList) <= 1:
             return (0.5, 0.5, 0.5, 0.0)
         elif m not in MaterialsList:
@@ -6115,66 +6115,793 @@ class ViewProviderGmshTessellated(ViewProvider):
 
 
 #
-#   Need to add variables to these functions or delete?
+# ---------------------------------------------------------------------------
+#   Scripting / AI construction helpers
+# ---------------------------------------------------------------------------
 #
-def makeBox(x, y, z, lunit, material, colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLBox")
-    if obj is not None:
-        GDMLBox(obj, x, y, z, lunit, material, colour=None)
-        ViewProvider(obj.ViewObject)
+#   The make* functions below create a GDML solid *inside its own logical
+#   volume* (an App::Part), placed in a parent volume (the world by default).
+#   That is the structure exportGDML expects:
+#
+#       worldVOL (App::Part)
+#           WorldBox (GDMLBox)          <- the world's own solid, first child
+#           Absorber (App::Part)        <- logical volume / physvol placement
+#               GDMLBox_Absorber_solid  <- the solid, carries the material
+#
+#   Conventions (shared by every make* function):
+#     * Dimensions follow the GDML element of the same name (e.g. box x/y/z
+#       are FULL lengths, eltube dx/dy/dz are HALF lengths).
+#     * lunit defaults to "mm", aunit defaults to "deg".
+#     * material must be a known material name (e.g. "G4_Pb"); unknown names
+#       raise ValueError with close matches, they are never silently replaced.
+#       If omitted, the GDML preference "Default material" is used.
+#     * Keyword-only options:
+#         name     - volume name (GDML <volume name>); solid is "<name>_solid"
+#         parent   - volume to place in: App::Part, a solid inside one, or a
+#                    Label string.  Default: the world volume.
+#         position - (x, y, z) in the same lunit as the solid, or a
+#                    FreeCAD.Placement (then rotation must be None)
+#         rotation - (rx, ry, rz) degrees about the fixed X, then Y, then Z
+#                    axes; or ((ax, ay, az), angle_deg); or FreeCAD.Rotation.
+#                    This is the rotation you see in FreeCAD - exportGDML
+#                    converts it to GDML's (inverse) physvol convention.
+#         doc      - document or document name (default: active document)
+#     * Every function returns the created solid feature.  Use getVolume(solid)
+#       to get its logical volume (App::Part).
+#
+
+import re  # noqa: E402
+
+_LUNIT_TO_MM = {
+    "nm": 1e-6,
+    "um": 1e-3,
+    "mm": 1.0,
+    "cm": 10.0,
+    "m": 1000.0,
+    "km": 1e6,
+}
+
+_COLOUR_NAMES = {
+    "black": (0.0, 0.0, 0.0),
+    "blue": (0.0, 0.0, 1.0),
+    "brown": (0.45, 0.25, 0.0),
+    "cyan": (0.0, 1.0, 1.0),
+    "gray": (0.5, 0.5, 0.5),
+    "grey": (0.5, 0.5, 0.5),
+    "green": (0.0, 1.0, 0.0),
+    "magenta": (1.0, 0.0, 1.0),
+    "orange": (1.0, 0.5, 0.0),
+    "red": (1.0, 0.0, 0.0),
+    "white": (1.0, 1.0, 1.0),
+    "yellow": (1.0, 1.0, 0.0),
+}
+
+_BOOLEAN_TYPES = ("Part::Cut", "Part::Fuse", "Part::Common")
+
+
+def _isGDMLSolid(obj):
+    proxy = getattr(obj, "Proxy", None)
+    typ = getattr(proxy, "Type", "")
+    return isinstance(typ, str) and typ.startswith("GDML") \
+        and obj.TypeId == "Part::FeaturePython"
+
+
+def _isSolidLike(obj):
+    return _isGDMLSolid(obj) or obj.TypeId in _BOOLEAN_TYPES
+
+
+def _getDoc(doc=None):
+    """Return the target document, make it active and make sure it is a
+    GDML document (Materials groups + world volume)."""
+    if doc is None:
+        doc = FreeCAD.ActiveDocument
+        if doc is None:
+            raise RuntimeError(
+                "No active document - create one with "
+                "GDMLDesign.newDocument('MyDesign')"
+            )
+    elif isinstance(doc, str):
+        doc = FreeCAD.getDocument(doc)
+    if FreeCAD.ActiveDocument is not doc:
+        # setMaterial()/rebuildMaterialsList() work on the active document
+        FreeCAD.setActiveDocument(doc.Name)
+        if FreeCAD.GuiUp:
+            FreeCADGui.setActiveDocument(doc.Name)
+    _ensureGDMLDoc(doc)
+    return doc
+
+
+def _ensureGDMLDoc(doc):
+    if doc.getObject("Materials") is not None and getWorld(doc) is not None:
+        return
+    if doc.getObject("Materials") is None and getWorld(doc) is None:
+        # Empty (non GDML) document - give it the default GDML structure
+        from .importGDML import processGDML, joinDir
+
+        processGDML(doc, True, joinDir("Resources/Default.gdml"),
+                    False, 1, True)
+        markMaterialsListDirty()
+        return
+    raise RuntimeError(
+        f"Document '{doc.Name}' is not a GDML document (it has "
+        + ("no Materials group" if getWorld(doc) is not None
+           else "no world volume")
+        + "). Use GDMLDesign.newDocument() to start a GDML design."
+    )
+
+
+def getWorld(doc=None):
+    """Return the world volume (first root App::Part) of doc, or None."""
+    if doc is None:
+        doc = FreeCAD.ActiveDocument
+    if doc is None:
+        return None
+    for obj in doc.RootObjects:
+        if obj.TypeId == "App::Part":
+            return obj
+    return None
+
+
+def getVolume(obj):
+    """Return the logical volume (App::Part) that holds solid obj.
+    An App::Part is returned unchanged."""
+    if obj.TypeId == "App::Part":
+        return obj
+    vol = obj.getParentGeoFeatureGroup()
+    if vol is None or vol.TypeId != "App::Part":
+        raise ValueError(
+            f"{obj.Label} is not inside a GDML volume (App::Part)")
+    return vol
+
+
+def getSolid(volume):
+    """Return the solid (GDML solid or boolean) that defines a logical
+    volume, or None for an assembly / empty volume."""
+    vol = getVolume(volume)
+    claimed = set()
+    for o in vol.Group:
+        if o.TypeId in _BOOLEAN_TYPES:
+            claimed.update([o.Base, o.Tool])
+    # The defining solid is the top-level one, i.e. not a boolean operand
+    for o in vol.Group:
+        if _isSolidLike(o) and o not in claimed:
+            return o
+    return None
+
+
+def _resolveVolume(parent, doc):
+    """parent: None (world), App::Part, solid inside a volume, or Label."""
+    if parent is None:
+        world = getWorld(doc)
+        if world is None:
+            raise RuntimeError("Document has no world volume")
+        return world
+    if isinstance(parent, str):
+        objs = doc.getObjectsByLabel(parent)
+        if not objs:
+            obj = doc.getObject(parent)
+            objs = [obj] if obj is not None else []
+        if not objs:
+            raise ValueError(f"No volume with Label or Name '{parent}'")
+        parent = objs[0]
+    if parent.TypeId == "App::Link":
+        raise ValueError(
+            f"'{parent.Label}' is a placed copy (App::Link); add daughters "
+            f"to the original volume '{parent.LinkedObject.Label}' instead"
+        )
+    return getVolume(parent)
+
+
+def _checkUnit(lunit=None, aunit=None):
+    if lunit is not None and lunit not in LengthQuantityList:
+        raise ValueError(f"lunit '{lunit}' not one of {LengthQuantityList}")
+    if aunit is not None and aunit not in AngleQuantityList:
+        raise ValueError(f"aunit '{aunit}' not one of {AngleQuantityList}")
+
+
+def _checkPositive(**kw):
+    for k, v in kw.items():
+        if v is None or float(v) <= 0:
+            raise ValueError(f"{k} must be > 0 (got {v})")
+
+
+def _vec(v, mul=1.0):
+    if isinstance(v, FreeCAD.Vector):
+        return FreeCAD.Vector(v) * mul
+    x, y, z = v
+    return FreeCAD.Vector(float(x), float(y), float(z)) * mul
+
+
+def _toRotation(rotation):
+    if rotation is None:
+        return FreeCAD.Rotation()
+    if isinstance(rotation, FreeCAD.Rotation):
+        return FreeCAD.Rotation(rotation.Q)
+    if len(rotation) == 2:          # ((ax, ay, az), angle_deg)
+        axis, angle = rotation
+        return FreeCAD.Rotation(_vec(axis), float(angle))
+    if len(rotation) == 3:          # (rx, ry, rz) deg, fixed axes X,Y,Z
+        rx, ry, rz = (float(a) for a in rotation)
+        return FreeCAD.Rotation(rz, ry, rx)  # yaw(Z), pitch(Y), roll(X)
+    raise ValueError(
+        "rotation must be (rx, ry, rz), ((ax, ay, az), angle) "
+        "or FreeCAD.Rotation"
+    )
+
+
+def _toPlacement(position=None, rotation=None, lunit="mm"):
+    if isinstance(position, FreeCAD.Placement):
+        if rotation is not None:
+            raise ValueError("Give either a Placement or position+rotation")
+        return FreeCAD.Placement(position)
+    _checkUnit(lunit=lunit)
+    base = FreeCAD.Vector()
+    if position is not None:
+        base = _vec(position, _LUNIT_TO_MM[lunit])
+    return FreeCAD.Placement(base, _toRotation(rotation))
+
+
+def _normColour(colour):
+    """None, (r,g,b), (r,g,b,transparency), '#RRGGBB' or a colour name ->
+    None or a 4-tuple (r, g, b, transparency) with values 0..1."""
+    if colour is None:
+        return None
+    if isinstance(colour, str):
+        c = colour.strip()
+        if c.startswith("#") and len(c) == 7:
+            rgb = tuple(int(c[i:i + 2], 16) / 255.0 for i in (1, 3, 5))
+        elif c.lower() in _COLOUR_NAMES:
+            rgb = _COLOUR_NAMES[c.lower()]
+        else:
+            raise ValueError(
+                f"Unknown colour '{colour}': use '#RRGGBB', (r, g, b) or "
+                f"one of {sorted(_COLOUR_NAMES)}"
+            )
+        return rgb + (0.0,)
+    vals = tuple(float(v) for v in colour)
+    if any(v > 1.0 for v in vals[:3]):  # 0..255 given
+        vals = tuple(v / 255.0 for v in vals[:3]) + vals[3:]
+    if len(vals) == 3:
+        return vals + (0.0,)
+    if len(vals) == 4:
+        return vals
+    raise ValueError("colour must have 3 or 4 components")
+
+
+def _refreshMaterialsList():
+    global MaterialsListDirty
+    MaterialsList.clear()
+    rebuildMaterialsList()
+    MaterialsListDirty = False
+
+
+def _resolveMaterial(material):
+    """Validate a material name against the active document's materials."""
+    if material in (None, 0, ""):
+        params = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/GDML")
+        material = params.GetString("defaultMaterial", "").strip()
+        if not material:
+            raise ValueError(
+                "material is required, e.g. material='G4_Pb' "
+                "(see GDMLDesign.listMaterials())"
+            )
+    material = str(material)
+    _refreshMaterialsList()
+    if material not in MaterialsList:
+        import difflib
+
+        close = difflib.get_close_matches(material, MaterialsList, n=5,
+                                          cutoff=0.6)
+        hint = f" Did you mean: {', '.join(close)}?" if close else ""
+        raise ValueError(
+            f"Unknown material '{material}'.{hint} "
+            "Use GDMLDesign.listMaterials('pattern') to search or "
+            "GDMLDesign.addMaterial(...) to define one."
+        )
+    return material
+
+
+_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.\-]*$")
+
+
+def _checkName(name):
+    if not isinstance(name, str) or not _NAME_RE.match(name):
+        raise ValueError(
+            f"Invalid name {name!r}: use letters, digits, '_', '-', '.' "
+            "and start with a letter or '_'"
+        )
+    return name
+
+
+def _uniqueName(doc, base):
+    if not doc.getObjectsByLabel(base):
+        return base
+    i = 1
+    while doc.getObjectsByLabel(f"{base}_{i}"):
+        i += 1
+    return f"{base}_{i}"
+
+
+def _newVolume(doc, parent, name, placement):
+    """Create a logical volume (App::Part) called name inside parent."""
+    from .importGDML import addSurfList
+
+    _checkName(name)
+    parentVol = _resolveVolume(parent, doc)
+    if doc.getObjectsByLabel(name):
+        raise ValueError(
+            f"'{name}' is already used in {doc.Name}; "
+            "choose another name (GDML names must be unique)"
+        )
+    vol = parentVol.newObject("App::Part", "LV")
+    vol.Label = name
+    if hasattr(vol, "Material"):
+        vol.setEditorMode("Material", 2)
+    addSurfList(doc, vol)
+    vol.Placement = placement
+    return vol
+
+
+def _removeVolume(vol):
+    try:
+        doc = vol.Document
+        vol.removeObjectsFromDocument()
+        doc.removeObject(vol.Name)
+    except Exception:
+        pass
+
+
+def _build(typeName, defaultName, material, colour, lunit, aunit,
+           name, parent, position, rotation, doc, init, children=None):
+    """Shared body of every make* function.
+
+    Validates everything first, then creates the volume and the
+    Part::FeaturePython, calls init(obj, material, colour) - the unchanged
+    PartFeature class constructor - and adds children (zplanes, rzpoints,
+    2D vertices, sections) for group-extension solids.  If anything fails
+    the half-built volume is removed again so a retry starts clean."""
+    _checkUnit(lunit, aunit)
+    doc = _getDoc(doc)
+    material = _resolveMaterial(material)
+    colour = _normColour(colour)
+    placement = _toPlacement(position, rotation, lunit)
+    name = _uniqueName(doc, defaultName) if name is None else name
+    vol = _newVolume(doc, parent, name, placement)
+    try:
+        obj = vol.newObject("Part::FeaturePython", typeName)
+        # exportGDML strips the leading "GDMLxxx_" so the solid is exported
+        # as "<volume>_solid" - solid and volume names stay distinct.
+        obj.Label = f"{typeName}_{vol.Label}_solid"
+        init(obj, material, colour)
+        if children:
+            _addChildren(obj, children)
+        if FreeCAD.GuiUp:
+            if children:
+                ViewProviderExtension(obj.ViewObject)
+            else:
+                ViewProvider(obj.ViewObject)
         obj.recompute()
+        if obj.Shape.isNull() and hasattr(obj.Proxy, "createGeometry"):
+            obj.Proxy.createGeometry(obj)
+    except Exception:
+        _removeVolume(vol)
+        raise
     return obj
 
 
-def makeCone(rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
-       aunit, lunit, material, colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLCone")
-    if obj is not None:
-        GDMLCone(obj, rmin1, rmin2, rmax1, rmax2, z, startphi, deltaphi, \
-            aunit, lunit, material, colour=None)
-        ViewProvider(obj.ViewObject)
-        obj.recompute()
-    return obj
+def _addChildren(obj, items):
+    """Add helper objects (zplane, rzpoint, 2D vertex, section) to a
+    group-extension solid. items: list of (objName, initFunc, args)."""
+    doc = obj.Document
+    for objName, initFunc, args in items:
+        child = doc.addObject("App::FeaturePython", objName)
+        obj.addObject(child)
+        initFunc(child, *args)
 
 
-def makeSphere(rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
-        aunit, lunit, material, colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLSphere")
-    if obj is not None:
-        GDMLSphere(obj, rmin, rmax, startphi, deltaphi, starttheta, deltatheta, \
-            aunit, lunit, material, colour=None)
-        ViewProvider(obj.ViewObject)
-        obj.recompute()
-    return obj
+#
+#   Box, cone, sphere, trap, tube, arb8 keep their original positional
+#   argument order so existing scripts keep working.
+#
+def makeBox(x, y, z, lunit="mm", material=None, colour=None, *,
+            name=None, parent=None, position=None, rotation=None, doc=None):
+    """GDML <box>: x, y, z are FULL lengths, centred on the origin."""
+    _checkPositive(x=x, y=y, z=z)
+    return _build(
+        "GDMLBox", "Box", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLBox(o, x, y, z, lunit, m, c))
 
-def makeTrap(z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, aunit, lunit, \
-        material, colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLTrap")
-    if obj is not None:
-        GDMLTrap(obj, z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, aunit, lunit, \
-            material, colour=None)
-        ViewProvider(obj.ViewObject)
-        obj.recompute()
-    return obj
 
-def makeTube(rmin, rmax, z, startphi, deltaphi, aunit, lunit, material, \
-        colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLTube")
-    if obj is not None:
-        GDMLTube(obj, rmin, rmax, z, startphi, deltaphi, aunit, lunit, \
-            material, colour=None)
-        ViewProvider(obj.ViewObject)
-        obj.recompute()
-    return obj
-   
+def makeCone(rmin1, rmax1, rmin2, rmax2, z, startphi=0.0, deltaphi=360.0,
+             aunit="deg", lunit="mm", material=None, colour=None, *,
+             name=None, parent=None, position=None, rotation=None, doc=None):
+    """GDML <cone>: radii at -z/2 (rmin1, rmax1) and +z/2 (rmin2, rmax2);
+    z is the FULL length."""
+    _checkPositive(z=z, deltaphi=deltaphi)
+    if rmax1 <= rmin1 and rmax2 <= rmin2:
+        raise ValueError("rmax must exceed rmin at one end at least")
+    return _build(
+        "GDMLCone", "Cone", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLCone(o, rmin1, rmax1, rmin2, rmax2, z, startphi,
+                                 deltaphi, aunit, lunit, m, c))
+
+
+def makeSphere(rmin, rmax, startphi=0.0, deltaphi=360.0, starttheta=0.0,
+               deltatheta=180.0, aunit="deg", lunit="mm", material=None,
+               colour=None, *, name=None, parent=None, position=None,
+               rotation=None, doc=None):
+    """GDML <sphere>: shell rmin..rmax; phi is azimuth, theta polar angle
+    measured from +z."""
+    _checkPositive(rmax=rmax, deltaphi=deltaphi, deltatheta=deltatheta)
+    if rmin < 0 or rmin >= rmax:
+        raise ValueError("need 0 <= rmin < rmax")
+    return _build(
+        "GDMLSphere", "Sphere", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLSphere(o, rmin, rmax, startphi, deltaphi,
+                                   starttheta, deltatheta, aunit, lunit, m, c))
+
+
+def makeTrap(z, theta, phi, x1, x2, x3, x4, y1, y2, alpha, aunit="deg",
+             lunit="mm", material=None, colour=None, *, name=None,
+             parent=None, position=None, rotation=None, doc=None):
+    """GDML <trap> (single alpha used for both ends): z, y1, y2, x1..x4 are
+    FULL lengths; x1, x2 at -z/2 (y1), x3, x4 at +z/2 (y2)."""
+    _checkPositive(z=z, x1=x1, x2=x2, x3=x3, x4=x4, y1=y1, y2=y2)
+    return _build(
+        "GDMLTrap", "Trap", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTrap(o, z, theta, phi, x1, x2, x3, x4, y1, y2,
+                                 alpha, aunit, lunit, m, c))
+
+
+def makeTube(rmin, rmax, z, startphi=0.0, deltaphi=360.0, aunit="deg",
+             lunit="mm", material=None, colour=None, *, name=None,
+             parent=None, position=None, rotation=None, doc=None):
+    """GDML <tube>: cylinder along z, z is the FULL length; rmin=0 for a
+    solid cylinder."""
+    _checkPositive(rmax=rmax, z=z, deltaphi=deltaphi)
+    if rmin < 0 or rmin >= rmax:
+        raise ValueError("need 0 <= rmin < rmax")
+    return _build(
+        "GDMLTube", "Tube", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTube(o, rmin, rmax, z, startphi, deltaphi, aunit,
+                                 lunit, m, c))
+
 
 def makeArb8(v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
-        v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None):
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GDMLArb8")
-    if obj is not None:
-        GDMLArb8(obj, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y, v5x, v5y, v6x,
-            v6y, v7x, v7y, v8x, v8y, dz, lunit, material, colour=None)
-        ViewProvider(obj.ViewObject)
-        obj.recompute()
-    return obj
+             v6y, v7x, v7y, v8x, v8y, dz, lunit="mm", material=None,
+             colour=None, *, name=None, parent=None, position=None,
+             rotation=None, doc=None):
+    """GDML <arb8>: v1..v4 (x, y) at z=-dz, v5..v8 at z=+dz (dz is the
+    HALF length); vertices clockwise seen from +z."""
+    _checkPositive(dz=dz)
+    return _build(
+        "GDMLArb8", "Arb8", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLArb8(o, v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y,
+                                 v5x, v5y, v6x, v6y, v7x, v7y, v8x, v8y, dz,
+                                 lunit, m, c))
 
+
+#
+#   Solids that previously had no make* function: arguments follow the
+#   attribute order of the GDML element.
+#
+def makeOrb(r, lunit="mm", material=None, colour=None, *, name=None,
+            parent=None, position=None, rotation=None, doc=None):
+    """GDML <orb>: full solid sphere of radius r."""
+    _checkPositive(r=r)
+    return _build(
+        "GDMLOrb", "Orb", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLOrb(o, r, lunit, m, c))
+
+
+def makeEllipsoid(ax, by, cz, zcut1=None, zcut2=None, lunit="mm",
+                  material=None, colour=None, *, name=None, parent=None,
+                  position=None, rotation=None, doc=None):
+    """GDML <ellipsoid>: semi-axes ax, by, cz; optional cuts below zcut1
+    and above zcut2 (default: no cut)."""
+    _checkPositive(ax=ax, by=by, cz=cz)
+    zcut1 = -cz if zcut1 is None else zcut1
+    zcut2 = cz if zcut2 is None else zcut2
+    if zcut1 >= zcut2:
+        raise ValueError("need zcut1 < zcut2")
+    return _build(
+        "GDMLEllipsoid", "Ellipsoid", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLEllipsoid(o, ax, by, cz, zcut1, zcut2, lunit, m,
+                                      c))
+
+
+def makeElTube(dx, dy, dz, lunit="mm", material=None, colour=None, *,
+               name=None, parent=None, position=None, rotation=None,
+               doc=None):
+    """GDML <eltube>: elliptical cylinder, semi-axes dx, dy and HALF
+    length dz."""
+    _checkPositive(dx=dx, dy=dy, dz=dz)
+    return _build(
+        "GDMLElTube", "ElTube", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLElTube(o, dx, dy, dz, lunit, m, c))
+
+
+def makeElCone(dx, dy, zmax, zcut, lunit="mm", material=None, colour=None,
+               *, name=None, parent=None, position=None, rotation=None,
+               doc=None):
+    """GDML <elcone>: elliptical cone, dx, dy are dimensionless semi-axis
+    slopes, apex at zmax, cut at +/-zcut (zcut <= zmax)."""
+    _checkPositive(dx=dx, dy=dy, zmax=zmax, zcut=zcut)
+    if zcut > zmax:
+        raise ValueError("need zcut <= zmax")
+    return _build(
+        "GDMLElCone", "ElCone", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLElCone(o, dx, dy, zmax, zcut, lunit, m, c))
+
+
+def makeParaboloid(rlo, rhi, dz, lunit="mm", material=None, colour=None,
+                   *, name=None, parent=None, position=None, rotation=None,
+                   doc=None):
+    """GDML <paraboloid>: radius rlo at -dz, rhi at +dz (dz HALF length)."""
+    _checkPositive(rhi=rhi, dz=dz)
+    return _build(
+        "GDMLParaboloid", "Paraboloid", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLParaboloid(o, rlo, rhi, dz, lunit, m, c))
+
+
+def makeHype(rmin, rmax, z, inst=0.0, outst=0.0, aunit="deg", lunit="mm",
+             material=None, colour=None, *, name=None, parent=None,
+             position=None, rotation=None, doc=None):
+    """GDML <hype>: hyperbolic tube, inner/outer stereo angles inst, outst;
+    z is the FULL length."""
+    _checkPositive(rmax=rmax, z=z)
+    return _build(
+        "GDMLHype", "Hype", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLHype(o, rmin, rmax, z, inst, outst, aunit, lunit,
+                                 m, c))
+
+
+def makePara(x, y, z, alpha=0.0, theta=0.0, phi=0.0, aunit="deg",
+             lunit="mm", material=None, colour=None, *, name=None,
+             parent=None, position=None, rotation=None, doc=None):
+    """GDML <para>: parallelepiped, x, y, z FULL lengths."""
+    _checkPositive(x=x, y=y, z=z)
+    return _build(
+        "GDMLPara", "Para", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLPara(o, x, y, z, alpha, theta, phi, aunit, lunit,
+                                 m, c))
+
+
+def makeTrd(x1, x2, y1, y2, z, lunit="mm", material=None, colour=None, *,
+            name=None, parent=None, position=None, rotation=None, doc=None):
+    """GDML <trd>: x1, y1 at -z/2 and x2, y2 at +z/2; all FULL lengths."""
+    _checkPositive(x1=x1, x2=x2, y1=y1, y2=y2, z=z)
+    return _build(
+        "GDMLTrd", "Trd", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTrd(o, z, x1, x2, y1, y2, lunit, m, c))
+
+
+def makeTorus(rmin, rmax, rtor, startphi=0.0, deltaphi=360.0, aunit="deg",
+              lunit="mm", material=None, colour=None, *, name=None,
+              parent=None, position=None, rotation=None, doc=None):
+    """GDML <torus>: tube radii rmin..rmax swept at radius rtor."""
+    _checkPositive(rmax=rmax, rtor=rtor, deltaphi=deltaphi)
+    if rmin < 0 or rmin >= rmax or rmax > rtor:
+        raise ValueError("need 0 <= rmin < rmax <= rtor")
+    return _build(
+        "GDMLTorus", "Torus", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTorus(o, rmin, rmax, rtor, startphi, deltaphi,
+                                  aunit, lunit, m, c))
+
+
+def makeCutTube(rmin, rmax, z, lowNormal=(0, 0, -1), highNormal=(0, 0, 1),
+                startphi=0.0, deltaphi=360.0, aunit="deg", lunit="mm",
+                material=None, colour=None, *, name=None, parent=None,
+                position=None, rotation=None, doc=None):
+    """GDML <cutTube>: tube (z FULL length) with end faces cut by planes
+    with outward normals lowNormal (at -z/2) and highNormal (at +z/2)."""
+    _checkPositive(rmax=rmax, z=z, deltaphi=deltaphi)
+    lx, ly, lz = (float(v) for v in lowNormal)
+    hx, hy, hz = (float(v) for v in highNormal)
+    if lz >= 0 or hz <= 0:
+        raise ValueError("lowNormal needs z < 0 and highNormal z > 0")
+    return _build(
+        "GDMLcutTube", "CutTube", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLcutTube(o, rmin, rmax, z, startphi, deltaphi,
+                                    aunit, lx, ly, lz, hx, hy, hz, lunit, m,
+                                    c))
+
+
+def makeTwistedBox(PhiTwist, x, y, z, aunit="deg", lunit="mm",
+                   material=None, colour=None, *, name=None, parent=None,
+                   position=None, rotation=None, doc=None):
+    """GDML <twistedbox>: box (FULL lengths) twisted by PhiTwist about z."""
+    _checkPositive(x=x, y=y, z=z)
+    return _build(
+        "GDMLTwistedbox", "TwistedBox", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTwistedbox(o, PhiTwist, x, y, z, aunit, lunit, m,
+                                       c))
+
+
+def makeTwistedTrd(PhiTwist, x1, x2, y1, y2, z, aunit="deg", lunit="mm",
+                   material=None, colour=None, *, name=None, parent=None,
+                   position=None, rotation=None, doc=None):
+    """GDML <twistedtrd>: trd (FULL lengths) twisted by PhiTwist."""
+    _checkPositive(x1=x1, x2=x2, y1=y1, y2=y2, z=z)
+    return _build(
+        "GDMLTwistedtrd", "TwistedTrd", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTwistedtrd(o, PhiTwist, z, x1, x2, y1, y2, aunit,
+                                       lunit, m, c))
+
+
+def makeTwistedTrap(PhiTwist, z, theta, phi, x1, x2, x3, x4, y1, y2,
+                    alpha, aunit="deg", lunit="mm", material=None,
+                    colour=None, *, name=None, parent=None, position=None,
+                    rotation=None, doc=None):
+    """GDML <twistedtrap>: as makeTrap, twisted by PhiTwist."""
+    _checkPositive(z=z, x1=x1, x2=x2, x3=x3, x4=x4, y1=y1, y2=y2)
+    return _build(
+        "GDMLTwistedtrap", "TwistedTrap", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTwistedtrap(o, PhiTwist, z, theta, phi, x1, x2, x3,
+                                        x4, y1, y2, alpha, aunit, lunit, m, c))
+
+
+def makeTwistedTubs(twistedangle, endinnerrad, endouterrad, zlen,
+                    phi=90.0, aunit="deg", lunit="mm", material=None,
+                    colour=None, *, name=None, parent=None, position=None,
+                    rotation=None, doc=None):
+    """GDML <twistedtubs>: tube segment of opening angle phi, radii at the
+    ends endinnerrad..endouterrad, FULL length zlen, twisted by
+    twistedangle."""
+    _checkPositive(endouterrad=endouterrad, zlen=zlen, phi=phi)
+    return _build(
+        "GDMLTwistedtubs", "TwistedTubs", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTwistedtubs(o, endinnerrad, endouterrad, zlen,
+                                        twistedangle, phi, aunit, lunit, m, c))
+
+
+
+
+def makePolycone(zplanes, startphi=0.0, deltaphi=360.0, aunit="deg",
+                 lunit="mm", material=None, colour=None, *, name=None,
+                 parent=None, position=None, rotation=None, doc=None):
+    """GDML <polycone>: zplanes is a list of (rmin, rmax, z), z ascending,
+    at least 2 planes."""
+    planes = [tuple(float(v) for v in p) for p in zplanes]
+    if len(planes) < 2 or any(len(p) != 3 for p in planes):
+        raise ValueError("polycone needs >= 2 zplanes of (rmin, rmax, z)")
+    return _build(
+        "GDMLPolycone", "Polycone", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLPolycone(o, startphi, deltaphi, aunit, lunit,
+                                     m, c),
+        children=[("zplane", GDMLzplane, p) for p in planes])
+
+
+def makePolyhedra(numsides, zplanes, startphi=0.0, deltaphi=360.0,
+                  aunit="deg", lunit="mm", material=None, colour=None, *,
+                  name=None, parent=None, position=None, rotation=None,
+                  doc=None):
+    """GDML <polyhedra>: numsides-sided polygonal cross section; zplanes
+    list of (rmin, rmax, z), z ascending."""
+    planes = [tuple(float(v) for v in p) for p in zplanes]
+    if int(numsides) < 3 or len(planes) < 2 \
+            or any(len(p) != 3 for p in planes):
+        raise ValueError("polyhedra needs numsides >= 3 and >= 2 zplanes "
+                         "of (rmin, rmax, z)")
+    return _build(
+        "GDMLPolyhedra", "Polyhedra", material, colour, lunit, aunit,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLPolyhedra(o, startphi, deltaphi, int(numsides),
+                                      aunit, lunit, m, c),
+        children=[("zplane", GDMLzplane, p) for p in planes])
+
+
+def makeGenericPolycone(rzpoints, startphi=0.0, deltaphi=360.0,
+                        aunit="deg", lunit="mm", material=None,
+                        colour=None, *, name=None, parent=None,
+                        position=None, rotation=None, doc=None):
+    """GDML <genericPolycone>: closed (r, z) outline revolved about z;
+    rzpoints is a list of (r, z), at least 3."""
+    pts = [tuple(float(v) for v in p) for p in rzpoints]
+    if len(pts) < 3 or any(len(p) != 2 for p in pts):
+        raise ValueError("genericPolycone needs >= 3 (r, z) points")
+    return _build(
+        "GDMLGenericPolycone", "GenericPolycone", material, colour, lunit,
+        aunit, name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLGenericPolycone(o, startphi, deltaphi, aunit,
+                                            lunit, m, c),
+        children=[("rzpoint", GDMLrzpoint, p) for p in pts])
+
+
+def makeGenericPolyhedra(numsides, rzpoints, startphi=0.0, deltaphi=360.0,
+                         aunit="deg", lunit="mm", material=None,
+                         colour=None, *, name=None, parent=None,
+                         position=None, rotation=None, doc=None):
+    """GDML <genericPolyhedra>: as makeGenericPolycone with numsides
+    flat sides."""
+    pts = [tuple(float(v) for v in p) for p in rzpoints]
+    if int(numsides) < 3 or len(pts) < 3 or any(len(p) != 2 for p in pts):
+        raise ValueError("needs numsides >= 3 and >= 3 (r, z) points")
+    return _build(
+        "GDMLGenericPolyhedra", "GenericPolyhedra", material, colour,
+        lunit, aunit, name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLGenericPolyhedra(o, startphi, deltaphi,
+                                             int(numsides), aunit, lunit,
+                                             m, c),
+        children=[("rzpoint", GDMLrzpoint, p) for p in pts])
+
+
+def makeXtru(vertices, sections, lunit="mm", material=None, colour=None,
+             *, name=None, parent=None, position=None, rotation=None,
+             doc=None):
+    """GDML <xtru>: extrusion of a 2D polygon.
+    vertices: list of (x, y), clockwise, at least 3.
+    sections: list of zPosition or (zPosition, xOffset, yOffset,
+              scalingFactor), z ascending, at least 2.
+    Simple prism of length L: makeXtru(poly, [-L/2, L/2])."""
+    verts = [tuple(float(v) for v in p) for p in vertices]
+    secs = []
+    for s in sections:
+        if isinstance(s, (int, float)):
+            s = (s,)
+        s = tuple(float(v) for v in s)
+        if not 1 <= len(s) <= 4:
+            raise ValueError(f"bad section {s}")
+        secs.append(s + (0.0, 0.0, 1.0)[len(s) - 1:])
+    if len(verts) < 3 or any(len(v) != 2 for v in verts) or len(secs) < 2:
+        raise ValueError("xtru needs >= 3 (x, y) vertices and >= 2 sections")
+    children = [("GDML2DVertex", GDML2dVertex, v) for v in verts]
+    children += [("GDMLSection", GDMLSection, (i, z, xo, yo, sf))
+                 for i, (z, xo, yo, sf) in enumerate(secs)]
+    return _build(
+        "GDMLXtru", "Xtru", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLXtru(o, lunit, m, c),
+        children=children)
+
+
+def makeTetra(v1, v2, v3, v4, lunit="mm", material=None, colour=None, *,
+              name=None, parent=None, position=None, rotation=None,
+              doc=None):
+    """GDML <tet>: tetrahedron from four (x, y, z) vertices."""
+    vs = [_vec(v) for v in (v1, v2, v3, v4)]
+    return _build(
+        "GDMLTetra", "Tetra", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLTetra(o, vs[0], vs[1], vs[2], vs[3], lunit,
+                                  m, c))
+
+
+def makeTessellated(vertices, facets, lunit="mm", material=None,
+                    colour=None, *, name=None, parent=None, position=None,
+                    rotation=None, doc=None):
+    """GDML <tessellated>: vertices list of (x, y, z); facets list of
+    vertex-index triples or quads, counter-clockwise seen from outside."""
+    verts = [_vec(v) for v in vertices]
+    faces = [tuple(int(i) for i in f) for f in facets]
+    for f in faces:
+        if len(f) not in (3, 4) or max(f) >= len(verts) or min(f) < 0:
+            raise ValueError(f"bad facet {f}: need 3 or 4 valid indices")
+    # Same class and arguments as importGDML.createTessellated (full solid)
+    return _build(
+        "GDMLTessellated", "Tessellated", material, colour, lunit, None,
+        name, parent, position, rotation, doc,
+        lambda o, m, c: GDMLSampledTessellated(o, verts, faces, lunit, m,
+                                               True, 0, c, flag=False))
