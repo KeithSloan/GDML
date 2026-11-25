@@ -536,7 +536,7 @@ def createGenericPolycone(
         mypolycone.addObject(myrzpoint)
         GDMLrzpoint(myrzpoint, r, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myrzpoint)
+            ViewProvider(myrzpoint.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -600,7 +600,7 @@ def createGenericPolyhedra(
         mypolyhedra.addObject(myrzpoint)
         GDMLrzpoint(myrzpoint, r, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myrzpoint)
+            ViewProvider(myrzpoint.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -795,7 +795,7 @@ def createPolycone(
         # myzplane=mypolycone.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myzplane)
+            ViewProvider(myzplane.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -859,7 +859,7 @@ def createPolyhedra(
         # myzplane=mypolyhedra.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myzplane)
+            ViewProvider(myzplane.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -1337,7 +1337,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, soli
         GDML2dVertex(my2dVert, x, y)
         myXtru.addObject(my2dVert)
         if FreeCAD.GuiUp:
-            ViewProvider(my2dVert)
+            ViewProvider(my2dVert.ViewObject)
     for section in solid.findall("section"):
         zOrder = int(GDMLShared.getVal(section, "zOrder"))  # Get Int
         zPosition = GDMLShared.getVal(section, "zPosition")  # Get Float
@@ -1352,7 +1352,7 @@ def createXtru(part, solid, material, colour, px, py, pz, rot, displayMode, soli
         )
         myXtru.addObject(mysection)
         if FreeCAD.GuiUp:
-            ViewProvider(mysection)
+            ViewProvider(mysection.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -1573,7 +1573,7 @@ def createParameterisedPolycone(
         # myzplane=mypolycone.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myzplane)
+            ViewProvider(myzplane.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
@@ -1642,7 +1642,7 @@ def createParameterisedPolyhedra(
         # myzplane=mypolyhedra.newObject('App::FeaturePython', 'zplane')
         GDMLzplane(myzplane, rmin, rmax, z)
         if FreeCAD.GuiUp:
-            ViewProvider(myzplane)
+            ViewProvider(myzplane.ViewObject)
 
     GDMLShared.trace("Position : " + str(px) + "," + str(py) + "," + str(pz))
     base = FreeCAD.Vector(px, py, pz)
