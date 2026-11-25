@@ -46,6 +46,7 @@ Viewing CERN's LHCb Velo detector geometry:
 - **Tessellate** complex CAD shapes for GDML using FreeCAD's built-in mesher or [Gmsh](https://gmsh.info)
 - **Convert** between GDML and STEP/STL/OBJ for exchange with mechanical CAD tools
 - **FEM preparation** — create compound objects and material assignments for finite element analysis
+- **Script** geometry from Python or AI tools with the experimental `GDMLDesign` API — see [Experimental Features](#experimental-features)
 
 ---
 
@@ -226,12 +227,42 @@ The `Materials/` directory includes pre-built material XML files including the f
 
 ---
 
-## Shapes2GDML (Experimental)
+## Experimental Features
 
-> **Experimental.** Converts imported CAD solids (STEP/IGES/BREP) into native
-> GDML. **GDML export to Geant4 is currently untested** and assumes the
-> existing exporter suffices; treat output as provisional. Needs more test
-> cases and Geant4 performance-comparison runs.
+Experimental features are included so that people can try them and report
+back before they are finished. For each one, **experimental** means:
+
+- **Limited testing.** It works in the cases the developers have tried, but
+  it has not been tested widely, and some paths have not been tested at all —
+  each feature below says what is untested.
+- **It may change.** Commands, function names, parameters and output may
+  change between releases without notice, and files or scripts that rely on
+  them may need updating.
+- **Check the results.** Before using its output in a production simulation,
+  check it — for example, load the exported GDML into Geant4 and compare
+  volumes and positions.
+- **Opt in only.** Nothing else in the workbench depends on these features;
+  they do nothing unless you use them.
+- **Feedback is the point.** Please report problems, and things that work
+  well, as a [GitHub issue](https://github.com/KeithSloan/GDML/issues) with
+  the feature name in the title, your FreeCAD version and operating system,
+  the steps to reproduce, and a sample file if you can.
+
+When a feature is considered stable it moves out of this section.
+
+| Feature | How to use it | Status |
+|---------|---------------|--------|
+| [Shapes2GDML](#shapes2gdml) | **GDML → Analyse Shape → GDML** | GDML export to Geant4 untested |
+| [Scripting API](#scripting-api) | Python: `freecad.gdml.GDMLDesign` | New in 2.2.11; not yet tested by users or checked in Geant4 |
+| [OpenMC export](#openmc-export) | **File → Export → OpenMC (\*.xml)** | Alpha: basic geometry and materials |
+
+### Shapes2GDML
+
+> **Untested:** GDML export to Geant4 — it assumes the existing exporter
+> suffices; treat output as provisional. Needs more test cases and Geant4
+> performance-comparison runs.
+
+Converts imported CAD solids (STEP/IGES/BREP) into native GDML.
 
 Imported parts are boundary-representation solids; GDML/Geant4 prefer
 constructive solid geometry from analytic primitives. Shapes2GDML analyses a
@@ -251,10 +282,11 @@ See [`Documentation/Shapes2GDML.md`](Documentation/Shapes2GDML.md) for the
 recovery pipeline, the tessellate-vs-boolean trade-offs, accuracy notes, and
 current limitations.
 
-## Scripting API (Experimental)
+### Scripting API
 
-> **Experimental.** New and not yet widely tested — please report problems
-> as a GitHub issue, with your FreeCAD version and operating system.
+> **Untested:** new in 2.2.11 and not yet tested by users; GDML files written
+> through it have not yet been loaded into Geant4. Function names and
+> defaults may still change.
 
 `freecad.gdml.GDMLDesign` builds GDML geometry from Python: the FreeCAD
 Python console, a macro, or an AI assistant driving FreeCAD (for example
@@ -278,21 +310,41 @@ gd.exportGDML("~/demo.gdml")               # grows the world box to fit
 
 - Every GDML solid type has a `make*` function; each solid goes in its own
   logical volume, placed in the world or in the `parent=` volume.
+- Dimensions follow the GDML element of the same name (box `x`, `y`, `z` are
+  full lengths; eltube `dx`, `dy`, `dz` are half lengths). Lengths default to
+  mm and angles to degrees; `position` uses the same length unit as the solid.
+- `rotation` is the rotation as seen in FreeCAD — `(rx, ry, rz)` degrees about
+  the fixed X, then Y, then Z axes — and the exporter converts it to GDML's
+  convention.
 - Also: `listMaterials`, `addMaterial` (formula or mixture),
   `assignMaterial`, `makeUnion` / `makeIntersection`, `makeAssembly`,
   `placeCopy` (another physvol of a volume), `describe`, `fitWorld`.
 - `print(gd.apiSummary())` lists every function; `help(gd.makeCone)` shows
-  the parameters, which follow the GDML element of the same name.
+  its parameters.
+- `exportGDML` needs FreeCAD running with its GUI.
 
 **Trying it out** — after installing or updating the workbench with the
-Addon Manager, paste this into the FreeCAD Python console (View → Panels →
-Python console). It runs a self-test that builds every solid type, a
-boolean and an assembly with copies, exports a GDML file to your temp
-folder and prints PASS/FAIL lines:
+Addon Manager, paste this line into the FreeCAD Python console
+(**View → Panels → Python console**):
 
 ```python
 import os, freecad.gdml as g; exec(open(os.path.join(os.path.dirname(g.__file__), "tests", "ai_functions", "smoke_test.py")).read())
 ```
+
+It opens a new document, builds every solid type, a boolean and an assembly
+with copies, exports a GDML file to your temp folder and prints PASS/FAIL
+lines. Please include that output when reporting a problem.
+
+### OpenMC export
+
+> **Alpha:** basic geometry and materials work; reactor materials are
+> supported through the `ReactorMaterials` sub-groups (see
+> [Materials Architecture](#materials-architecture)).
+
+Select the **World Volume** in the tree, then **File → Export** and choose
+the file type **OpenMC (\*.xml)**.
+
+---
 
 ## Materials Architecture
 
@@ -377,7 +429,7 @@ If this workbench contributed to published research, please cite it:
 ## Roadmap
 
 **Core:**
-- [~] OpenMC export (alpha — basic geometry and materials working; reactor materials sub-group support complete)
+- [~] OpenMC export (alpha — basic geometry and materials working; reactor materials sub-group support complete — see [Experimental Features](#openmc-export))
 - [ ] Change XML handling to use Python classes rather than global variables
 - [ ] Add support for GDML `quantity` elements
 - [ ] Add facility to edit Materials, Isotopes, and Elements interactively
