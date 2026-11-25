@@ -89,6 +89,14 @@ def setAngleQuantity(obj, m):
                     obj.aunit = AngleQuantityList.index("degree")
                 elif m=="mrad":
                     obj.aunit = AngleQuantityList.index("mrad")
+                else:
+                    # Unknown unit: keep the old fallback (rad) but say so,
+                    # rather than silently reinterpreting the angles.
+                    FreeCAD.Console.PrintWarning(
+                        f"GDML: unknown angle unit '{m}' for "
+                        f"{getattr(obj, 'Label', obj)} - using rad; valid "
+                        f"units are {AngleQuantityList}\n"
+                    )
 
     else:
         obj.aunit = 0  # in geant if angle is not given, it is assumed radians

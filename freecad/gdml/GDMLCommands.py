@@ -1795,7 +1795,7 @@ class ConeFeature:
         obj = insertPartVol(objPart, "LV-Cone", "GDMLCone")
         # print("GDMLCone Object - added")
         #  obj,rmin1,rmax1,rmin2,rmax2,z,startphi,deltaphi,aunit,lunits,material
-        GDMLCone(obj, 1, 3, 4, 7, 10.0, 0, 2, "rads", "mm", material)
+        GDMLCone(obj, 1, 3, 4, 7, 10.0, 0, 2, "rad", "mm", material)
         # print("GDMLCone initiated")
         ViewProvider(obj.ViewObject)
         # print("GDMLCone ViewProvided - added")
